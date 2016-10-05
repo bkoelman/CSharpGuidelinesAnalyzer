@@ -1,0 +1,6 @@
+{
+  "name": "CSharpGuidelinesAnalyzer",
+  "tagline": "Reports diagnostics for C# coding guidelines that are not already covered by Resharper.",
+  "body": "This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), which are not implemented here.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
