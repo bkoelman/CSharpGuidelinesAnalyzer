@@ -141,8 +141,15 @@
       <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
     </Exec>
   </Target>
-  <!--
-  <Target Name="BeforeBuild">
+  <Target Name="CopyExternalAnnotations" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
+    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.3.4.3\tools\NuGet.exe&quot; install JetBrains.ExternalAnnotations -Version 10.0.15 -OutputDirectory &quot;$(SolutionDir)packages&quot;" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+    <Message Importance="High" Text="Copying External Annotations to: &quot;%LOCALAPPDATA%\JetBrains\Installations\ReSharperPlatformVs14\ExternalAnnotations&quot;" />
+    <Exec Command="xcopy &quot;$(SolutionDir)packages\JetBrains.ExternalAnnotations.10.0.15\DotFiles\ExternalAnnotations\*.xml&quot; &quot;%LOCALAPPDATA%\JetBrains\Installations\ReSharperPlatformVs14\ExternalAnnotations&quot; /s /i /r /y /q" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
   </Target>
-  -->
+  <Target Name="BeforeBuild" DependsOnTargets="CopyExternalAnnotations">
+  </Target>
 </Project>
