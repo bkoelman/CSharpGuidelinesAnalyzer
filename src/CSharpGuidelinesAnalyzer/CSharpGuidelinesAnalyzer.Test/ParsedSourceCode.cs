@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CSharpGuidelinesAnalyzer.Utilities;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 

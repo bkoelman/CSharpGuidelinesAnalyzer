@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace CSharpGuidelinesAnalyzer.Utilities
+namespace CSharpGuidelinesAnalyzer
 {
     /// <summary>
     /// Member precondition checks.

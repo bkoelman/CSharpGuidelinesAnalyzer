@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
-using CSharpGuidelinesAnalyzer.Utilities;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;

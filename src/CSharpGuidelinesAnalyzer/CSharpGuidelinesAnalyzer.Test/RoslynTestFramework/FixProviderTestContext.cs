@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using CSharpGuidelinesAnalyzer.Utilities;
 using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework

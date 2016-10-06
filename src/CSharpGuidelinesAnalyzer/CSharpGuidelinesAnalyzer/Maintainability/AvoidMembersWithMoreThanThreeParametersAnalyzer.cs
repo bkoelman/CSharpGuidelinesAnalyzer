@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer
+namespace CSharpGuidelinesAnalyzer.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidMembersWithMoreThanThreeParametersAnalyzer : DiagnosticAnalyzer

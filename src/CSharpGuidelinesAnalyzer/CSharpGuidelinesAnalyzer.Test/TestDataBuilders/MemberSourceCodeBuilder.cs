@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using CSharpGuidelinesAnalyzer.Utilities;
 using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders

@@ -38,9 +38,9 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AvoidExplicitBooleanComparisonsAnalyzer.cs" />
-    <Compile Include="AvoidMembersWithMoreThanThreeParametersAnalyzer.cs" />
-    <Compile Include="Utilities\Guard.cs" />
+    <Compile Include="Maintainability\AvoidExplicitBooleanComparisonsAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidMembersWithMoreThanThreeParametersAnalyzer.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +116,14 @@
       <HintPath>..\..\packages\System.Reflection.Metadata.1.2.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
       <Private>True</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClassDesign\" />
+    <Folder Include="Documentation\" />
+    <Folder Include="Framework\" />
+    <Folder Include="MemberDesign\" />
+    <Folder Include="MiscellaneousDesign\" />
+    <Folder Include="Naming\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
   <Target Name="GetSemanticVersionFromOutputAssembly">

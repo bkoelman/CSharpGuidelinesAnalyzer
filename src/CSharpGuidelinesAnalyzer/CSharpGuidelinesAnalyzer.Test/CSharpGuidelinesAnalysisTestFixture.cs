@@ -1,5 +1,4 @@
 using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
-using CSharpGuidelinesAnalyzer.Utilities;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
