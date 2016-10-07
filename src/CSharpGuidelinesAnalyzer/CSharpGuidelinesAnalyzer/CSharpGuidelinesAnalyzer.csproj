@@ -38,9 +38,51 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Maintainability\AvoidExplicitBooleanComparisonsAnalyzer.cs" />
-    <Compile Include="Maintainability\AvoidMembersWithMoreThanThreeParametersAnalyzer.cs" />
+    <Compile Include="ClassDesign\AvoidStaticClassesAnalyzer.cs" />
+    <Compile Include="ClassDesign\DoNotExposeStatefulObjectsThroughStaticMembersAnalyzer.cs" />
+    <Compile Include="ClassDesign\DoNotHideInheritedMembersAnalyzer.cs" />
+    <Compile Include="ClassDesign\MembersShouldDoASingleThingAnalyzer.cs" />
+    <Compile Include="ClassDesign\TypesShouldHaveASinglePurposeAnalyzer.cs" />
+    <Compile Include="Documentation\AvoidCodeCommentsWithToDosAnalyzer.cs" />
+    <Compile Include="Documentation\AvoidInlineCommentsAnalyzer.cs" />
+    <Compile Include="Documentation\DocumentAllInternalMembersAnalyzer.cs" />
+    <Compile Include="Framework\BuildWithTheHighestWarningLevelAnalyzer.cs" />
+    <Compile Include="Framework\FavorAsyncAwaitOverTaskContinueWithAnalyzer.cs" />
+    <Compile Include="Framework\OnlyUseDynamicForUnknownTypesAnalyzer.cs" />
+    <Compile Include="Framework\ProvideAssemblyInformationAnalyzer.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="Maintainability\AssignVariablesInSeparateStatementsAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidBooleanParametersAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidConditionsWithDoubleNegativesAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidExplicitBooleanComparisonsAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidMembersWithMoreThanSevenStatementsAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidMembersWithMoreThanThreeParametersAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidMultipleTypesPerFileAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidNestedLoopsAnalyzer.cs" />
+    <Compile Include="Maintainability\AvoidUsingNamedArgumentsAnalyzer.cs" />
+    <Compile Include="Maintainability\CaseClausesInSwitchStatementsShouldHaveBracesAnalyzer.cs" />
+    <Compile Include="Maintainability\DoNotAssignToParametersAnalyzer.cs" />
+    <Compile Include="Maintainability\DoNotChangeLoopVariablesAnalyzer.cs" />
+    <Compile Include="Maintainability\IfElseIfStatementsShouldFinishWithElseClauseAnalyzer.cs" />
+    <Compile Include="Maintainability\NamespacesShouldMatchAssemblyNameAnalyzer.cs" />
+    <Compile Include="Maintainability\OverloadsShouldCallOtherOverloadsAnalyzer.cs" />
+    <Compile Include="Maintainability\SwitchStatementsShouldHaveADefaultCaseAnalyzer.cs" />
+    <Compile Include="MemberDesign\ReturnInterfacesToCollectionsAnalyzer.cs" />
+    <Compile Include="MiscellaneousDesign\DoNotPassNullsOnEventInvocationAnalyzer.cs" />
+    <Compile Include="MiscellaneousDesign\EvaluateQueriesBeforeReturningThemAnalyzer.cs" />
+    <Compile Include="MiscellaneousDesign\InvokeEventsFromProtectedVirtualMethodsAnalyzer.cs" />
+    <Compile Include="Naming\AvoidMisleadingNamesAnalyzer.cs" />
+    <Compile Include="Naming\DoNotIncludeContainingTypeNameInMembersAnalyzer.cs" />
+    <Compile Include="Naming\DoNotUseAbbreviationsInIdentifierNamesAnalyzer.cs" />
+    <Compile Include="Naming\DoNotUseHelperMethodsAnalyzer.cs" />
+    <Compile Include="Naming\DoNotUseNumbersInIdentifiersAnalyzer.cs" />
+    <Compile Include="Naming\NameAsyncMethodsCorrectlyAnalyzer.cs" />
+    <Compile Include="Naming\NamePropertiesWithAnAffirmativePhraseAnalyzer.cs" />
+    <Compile Include="Naming\PrefixEventHandlersWithOnAnalyzer.cs" />
+    <Compile Include="Naming\StaticClassesShouldOnlyContainExtensionMethodsAnalyzer.cs" />
+    <Compile Include="Naming\UseDescriptiveNamesForTypeParametersAnalyzer.cs" />
+    <Compile Include="Naming\UseFrameworkTerminologyInMemberNamesAnalyzer.cs" />
+    <Compile Include="Naming\UseUnderscoresForUnusedLambdaParametersAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,14 +159,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClassDesign\" />
-    <Folder Include="Documentation\" />
-    <Folder Include="Framework\" />
-    <Folder Include="MemberDesign\" />
-    <Folder Include="MiscellaneousDesign\" />
-    <Folder Include="Naming\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\v4.6\Microsoft.Portable.CSharp.targets" />
   <Target Name="GetSemanticVersionFromOutputAssembly">
     <PropertyGroup>

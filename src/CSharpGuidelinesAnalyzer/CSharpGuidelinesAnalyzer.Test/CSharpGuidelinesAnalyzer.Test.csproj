@@ -133,14 +133,56 @@
   <ItemGroup>
     <Compile Include="CSharpGuidelinesAnalysisTestFixture.cs" />
     <Compile Include="ParsedSourceCode.cs" />
-    <Compile Include="Specs\Maintainability\AvoidExplicitBooleanComparisonsSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanThreeParametersSpecs.cs" />
     <Compile Include="RoslynTestFramework\AnalysisTestFixture.cs" />
     <Compile Include="RoslynTestFramework\AnalyzerTestContext.cs" />
     <Compile Include="RoslynTestFramework\DocumentWithSpans.cs" />
     <Compile Include="RoslynTestFramework\FixProviderTestContext.cs" />
     <Compile Include="RoslynTestFramework\TestHelpers.cs" />
     <Compile Include="RoslynTestFramework\Verify.cs" />
+    <Compile Include="Specs\ClassDesign\AvoidStaticClassesSpecs.cs" />
+    <Compile Include="Specs\ClassDesign\DoNotExposeStatefulObjectsThroughStaticMembersSpecs.cs" />
+    <Compile Include="Specs\ClassDesign\DoNotHideInheritedMembersSpecs.cs" />
+    <Compile Include="Specs\ClassDesign\MembersShouldDoASingleThingSpecs.cs" />
+    <Compile Include="Specs\ClassDesign\TypesShouldHaveASinglePurposeSpecs.cs" />
+    <Compile Include="Specs\Documentation\AvoidCodeCommentsWithToDosSpecs.cs" />
+    <Compile Include="Specs\Documentation\AvoidInlineCommentsSpecs.cs" />
+    <Compile Include="Specs\Documentation\DocumentAllInternalMembersSpecs.cs" />
+    <Compile Include="Specs\Framework\BuildWithTheHighestWarningLevelSpecs.cs" />
+    <Compile Include="Specs\Framework\FavorAsyncAwaitOverTaskContinueWithSpecs.cs" />
+    <Compile Include="Specs\Framework\OnlyUseDynamicForUnknownTypesSpecs.cs" />
+    <Compile Include="Specs\Framework\ProvideAssemblyInformationSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AssignVariablesInSeparateStatementsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidBooleanParametersSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidConditionsWithDoubleNegativesSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidExplicitBooleanComparisonsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanSevenStatementsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanThreeParametersSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidMultipleTypesPerFileSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidNestedLoopsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\AvoidUsingNamedArgumentsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\CaseClausesInSwitchStatementsShouldHaveBracesSpecs.cs" />
+    <Compile Include="Specs\Maintainability\DoNotAssignToParametersSpecs.cs" />
+    <Compile Include="Specs\Maintainability\DoNotChangeLoopVariablesSpecs.cs" />
+    <Compile Include="Specs\Maintainability\IfElseIfStatementsShouldFinishWithElseClauseSpecs.cs" />
+    <Compile Include="Specs\Maintainability\NamespacesShouldMatchAssemblyNameSpecs.cs" />
+    <Compile Include="Specs\Maintainability\OverloadsShouldCallOtherOverloadsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\SwitchStatementsShouldHaveADefaultCaseSpecs.cs" />
+    <Compile Include="Specs\MemberDesign\ReturnInterfacesToCollectionsSpecs.cs" />
+    <Compile Include="Specs\MiscellaneousDesign\DoNotPassNullsOnEventInvocationSpecs.cs" />
+    <Compile Include="Specs\MiscellaneousDesign\EvaluateQueriesBeforeReturningThemSpecs.cs" />
+    <Compile Include="Specs\MiscellaneousDesign\InvokeEventsFromProtectedVirtualMethodsSpecs.cs" />
+    <Compile Include="Specs\Naming\AvoidMisleadingNamesSpecs.cs" />
+    <Compile Include="Specs\Naming\DoNotIncludeContainingTypeNameInMembersSpecs.cs" />
+    <Compile Include="Specs\Naming\DoNotUseAbbreviationsInIdentifierNamesSpecs.cs" />
+    <Compile Include="Specs\Naming\DoNotUseHelperMethodsSpecs.cs" />
+    <Compile Include="Specs\Naming\DoNotUseNumbersInIdentifiersSpecs.cs" />
+    <Compile Include="Specs\Naming\NameAsyncMethodsCorrectlySpecs.cs" />
+    <Compile Include="Specs\Naming\NamePropertiesWithAnAffirmativePhraseSpecs.cs" />
+    <Compile Include="Specs\Naming\PrefixEventHandlersWithOnSpecs.cs" />
+    <Compile Include="Specs\Naming\StaticClassesShouldOnlyContainExtensionMethodsSpecs.cs" />
+    <Compile Include="Specs\Naming\UseDescriptiveNamesForTypeParametersSpecs.cs" />
+    <Compile Include="Specs\Naming\UseFrameworkTerminologyInMemberNamesSpecs.cs" />
+    <Compile Include="Specs\Naming\UseUnderscoresForUnusedLambdaParametersSpecs.cs" />
     <Compile Include="TestDataBuilders\ClassSourceCodeBuilder.cs" />
     <Compile Include="TestDataBuilders\ITestDataBuilder.cs" />
     <Compile Include="TestDataBuilders\MemberSourceCodeBuilder.cs" />
@@ -165,14 +207,7 @@
     <Analyzer Include="..\..\packages\ResharperCodeContractNullability.1.0.5\analyzers\dotnet\cs\CodeContractNullability.dll" />
     <Analyzer Include="..\..\packages\ResharperCodeContractNullability.1.0.5\analyzers\dotnet\cs\MsgPack.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Specs\ClassDesign\" />
-    <Folder Include="Specs\Documentation\" />
-    <Folder Include="Specs\Framework\" />
-    <Folder Include="Specs\MemberDesign\" />
-    <Folder Include="Specs\MiscellaneousDesign\" />
-    <Folder Include="Specs\Naming\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
