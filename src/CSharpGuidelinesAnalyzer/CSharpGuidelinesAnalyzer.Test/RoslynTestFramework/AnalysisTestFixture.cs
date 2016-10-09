@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private ImmutableArray<Diagnostic> RunDiagnostics([NotNull] AnalyzerTestContext context)
         {
             DocumentWithSpans documentWithSpans = TestHelpers.GetDocumentAndSpansFromMarkup(context.MarkupCode,
-                context.LanguageName, context.References, context.FileName);
+                context.LanguageName, context.References, context.FileName, null);
 
             ImmutableArray<Diagnostic> diagnostics =
                 GetDiagnosticsForDocument(documentWithSpans.Document, context.Options)
@@ -59,8 +59,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
         [ItemNotNull]
-        private ImmutableArray<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
-            [CanBeNull] AnalyzerOptions options)
+        protected ImmutableArray<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
+            [CanBeNull] AnalyzerOptions options, bool mustBeInSourceTree = true)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(CreateAnalyzer());
             Compilation compilation = document.Project.GetCompilationAsync().Result;
@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             foreach (Diagnostic analyzerDiagnostic in compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result)
             {
                 Location location = analyzerDiagnostic.Location;
-                if (location.IsInSource && location.SourceTree == tree)
+                if (!mustBeInSourceTree || (location.IsInSource && location.SourceTree == tree))
                 {
                     builder.Add(analyzerDiagnostic);
                 }
@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 Document document =
                     TestHelpers.GetDocumentAndSpansFromMarkup(context.AnalyzerTestContext.MarkupCode,
                         context.AnalyzerTestContext.LanguageName, context.AnalyzerTestContext.References,
-                        context.AnalyzerTestContext.FileName).Document;
+                        context.AnalyzerTestContext.FileName, null).Document;
 
                 ImmutableArray<CodeAction> codeFixes = GetCodeFixesForDiagnostic(diagnostic, document, fixProvider);
                 codeFixes.Should().HaveCount(context.Expected.Count);
