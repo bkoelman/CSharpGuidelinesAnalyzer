@@ -10,14 +10,15 @@ namespace CSharpGuidelinesAnalyzer.Framework
     {
         public const string DiagnosticId = "AV2210";
 
-        private const string Title = "Build with the highest warning level.";
+        private const string Title = "Compiler warning level is set too low";
         private const string MessageFormat = "Build with warning level 4.";
         private const string Description = "Build with the highest warning level.";
         private const string Category = "Framework";
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description);
+            Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
+            helpLinkUri: HelpLinkUris.GetForCategory(Category));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
