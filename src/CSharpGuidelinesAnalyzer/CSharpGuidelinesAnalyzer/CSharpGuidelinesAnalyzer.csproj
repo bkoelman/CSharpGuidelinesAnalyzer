@@ -51,6 +51,7 @@
     <Compile Include="Framework\OnlyUseDynamicForUnknownTypesAnalyzer.cs" />
     <Compile Include="Framework\ProvideAssemblyInformationAnalyzer.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="HelpLinkUris.cs" />
     <Compile Include="Maintainability\AssignVariablesInSeparateStatementsAnalyzer.cs" />
     <Compile Include="Maintainability\AvoidBooleanParametersAnalyzer.cs" />
     <Compile Include="Maintainability\AvoidConditionsWithDoubleNegativesAnalyzer.cs" />
