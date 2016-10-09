@@ -15,6 +15,12 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
+  <PropertyGroup Label="Start settings">
+    <StartAction>Program</StartAction>
+    <StartProgram>$(UserProfile)\.nuget\packages\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe</StartProgram>
+    <StartArguments>$(AssemblyName).dll -noshadow -wait</StartArguments>
+    <StartWorkingDirectory>$(OutDir)</StartWorkingDirectory>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
