@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         public static DocumentWithSpans GetDocumentAndSpansFromMarkup([NotNull] string markupCode,
             [NotNull] string languageName, [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references,
-            [NotNull] string fileName)
+            [NotNull] string fileName, [CanBeNull] int? warningLevel)
         {
             Guard.NotNull(markupCode, nameof(markupCode));
             Guard.NotNull(languageName, nameof(languageName));
@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             IList<TextSpan> spans;
             GetCodeAndSpansFromMarkup(markupCode, out code, out spans);
 
-            Document document = GetDocument(code, languageName, references, fileName);
+            Document document = GetDocument(code, languageName, references, fileName, warningLevel);
             return new DocumentWithSpans(document, spans);
         }
 
@@ -72,11 +72,19 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [NotNull]
         private static Document GetDocument([NotNull] string code, [NotNull] string languageName,
-            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName)
+            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName,
+            [CanBeNull] int? warningLevel)
         {
+            var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+
+            if (warningLevel != null)
+            {
+                compilationOptions = compilationOptions.WithWarningLevel(warningLevel.Value);
+            }
+
             return new AdhocWorkspace()
                 .AddProject("TestProject", languageName)
-                .WithCompilationOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                .WithCompilationOptions(compilationOptions)
                 .WithParseOptions(new CSharpParseOptions()
                     .WithFeatures(new[]
                     {
@@ -104,7 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private static string RemoveMarkupFrom([NotNull] string expected, [NotNull] string language, bool reformat,
             [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName)
         {
-            Document document = GetDocumentAndSpansFromMarkup(expected, language, references, fileName).Document;
+            Document document = GetDocumentAndSpansFromMarkup(expected, language, references, fileName, null).Document;
             SyntaxNode syntaxRoot = document.GetSyntaxRootAsync().Result;
 
             if (reformat)
