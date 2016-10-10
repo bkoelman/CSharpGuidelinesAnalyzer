@@ -1,11 +1,11 @@
 using System.Collections.Immutable;
-using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp;
 using System.Linq;
 using System.Threading;
+using JetBrains.Annotations;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Maintainability
 {
@@ -52,12 +52,27 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol)context.Symbol;
+            var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.Type.SpecialType == SpecialType.System_Boolean)
+            if (parameter.Type.SpecialType == SpecialType.System_Boolean || IsNullableBooleanType(parameter.Type))
             {
                 AnalyzeBooleanParameter(parameter, context);
             }
+        }
+
+        private bool IsNullableBooleanType([NotNull] ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            {
+                var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
+
+                if (namedTypeSymbol?.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
@@ -83,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private bool HidesBaseMember([NotNull] ISymbol member, CancellationToken cancellationToken)
         {
-            var syntax = member.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
+            SyntaxNode syntax = member.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
 
             var method = syntax as MethodDeclarationSyntax;
             var indexer = syntax as IndexerDeclarationSyntax;
