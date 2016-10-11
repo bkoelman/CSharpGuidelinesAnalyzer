@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         private static bool IdentifierNameContainsAnyOf([NotNull] string identiferName, 
             [NotNull][ItemNotNull] params string[] wordsToFind)
         {
-            var wordsInText = ExtractWords(identiferName);
+            var wordsInText = AnalysisUtilities.ExtractWords(identiferName);
 
             foreach (var wordToFind in wordsToFind)
             {
@@ -57,43 +57,6 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
             }
             
             return false;
-        }
-
-        [NotNull]
-        [ItemNotNull]
-        private static List<string> ExtractWords([NotNull] string identifierName)
-        {
-            var words = new List<string>();
-
-            var builder = new StringBuilder();
-            foreach (char ch in identifierName)
-            {
-                if (char.IsUpper(ch) || char.IsWhiteSpace(ch) || char.IsPunctuation(ch) ||
-                    char.IsDigit(ch) || char.IsSymbol(ch))
-                {                    
-                    FlushBuilder(words, builder);
-
-                    if (!char.IsUpper(ch))
-                    {
-                        continue;
-                    }
-                }
-
-                builder.Append(ch);
-            }
-
-            FlushBuilder(words, builder);
-
-            return words;
-        }
-
-        private static void FlushBuilder([NotNull][ItemNotNull] List<string> words, [NotNull] StringBuilder builder)
-        {
-            if (builder.Length > 0)
-            {
-                words.Add(builder.ToString());
-                builder.Clear();
-            }
         }
     }
 }
