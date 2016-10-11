@@ -33,18 +33,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (SupportsOperations(startContext.Compilation))
+                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
                 {
                     startContext.RegisterOperationAction(AnalyzeExpression, OperationKind.BinaryOperatorExpression);
                 }
             });
-        }
-
-        private bool SupportsOperations([NotNull] Compilation compilation)
-        {
-            IReadOnlyDictionary<string, string> features = compilation.SyntaxTrees.FirstOrDefault()?.Options.Features;
-            return features != null && features.ContainsKey("IOperation") && features["IOperation"] == "true";
-        }
+        }               
 
         private void AnalyzeExpression(OperationAnalysisContext context)
         {
