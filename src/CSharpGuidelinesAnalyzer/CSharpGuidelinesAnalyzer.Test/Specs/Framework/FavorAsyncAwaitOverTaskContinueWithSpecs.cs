@@ -37,7 +37,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_method_contains_invocation_of_another_method_it_must_be_skipped()
+        public void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    using static System.Threading.Tasks.Task;
+
+                    namespace N
+                    {
+                        class C
+                        {
+                            Task<int> M(int i)
+                            {
+                                return [|Delay(1).ContinueWith(t => i)|];
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_contains_invocation_of_TaskContinueWith_in_alternate_namespace_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
