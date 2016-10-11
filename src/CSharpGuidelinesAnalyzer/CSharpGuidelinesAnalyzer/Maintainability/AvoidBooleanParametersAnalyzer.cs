@@ -14,8 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
     {
         public const string DiagnosticId = "AV1564";
 
-        private const string Title = "Parameter is of type bool";
-        private const string MessageFormat = "Parameter {0} is of type bool.";
+        private const string Title = "Parameter is of type bool or bool?";
+        private const string MessageFormat = "Parameter {0} is of type {1}, which should be avoided.";
         private const string Description = "Avoid methods that take a bool flag.";
         private const string Category = "Maintainability";
 
@@ -78,7 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+            context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
         }
 
         private bool HidesBaseMember([NotNull] ISymbol member, CancellationToken cancellationToken)

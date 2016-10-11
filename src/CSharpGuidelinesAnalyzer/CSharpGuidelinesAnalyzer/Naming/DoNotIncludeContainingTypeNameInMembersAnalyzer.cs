@@ -37,6 +37,10 @@ namespace CSharpGuidelinesAnalyzer.Naming
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             string typeName = context.Symbol.ContainingType.Name;
+            if (typeName.Length < 2)
+            {
+                return;
+            }
 
             var method = context.Symbol as IMethodSymbol;
             switch (method?.MethodKind)

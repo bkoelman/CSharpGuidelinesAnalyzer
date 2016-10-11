@@ -25,7 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source, 
+                "Property CustomerAndOrder contains the word 'and'.");
         }
 
         [Fact]
@@ -44,7 +45,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source, 
+                "Method SaveCustomerAndOrder contains the word 'and'.");
         }
 
         [Fact]
@@ -61,7 +63,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source, 
+                "Field _customerAndOrder contains the word 'and'.");
         }
 
         [Fact]
@@ -88,7 +91,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source, 
+                "Event CustomerAndOrderSaved contains the word 'and'.");
         }
         
         [Fact]
@@ -107,7 +111,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source, 
+                "Method save_customer_and_order contains the word 'and'.");
         }
 
         [Fact]
@@ -126,7 +131,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source, 
+                "Method Match1And2 contains the word 'and'.");
         }
 
         [Fact]

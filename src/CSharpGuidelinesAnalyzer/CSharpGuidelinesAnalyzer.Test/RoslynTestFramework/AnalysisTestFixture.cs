@@ -24,15 +24,18 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         protected abstract CodeFixProvider CreateFixProvider();
 
-        protected void AssertDiagnostics([NotNull] AnalyzerTestContext context)
+        protected void AssertDiagnostics([NotNull] AnalyzerTestContext context,
+            [NotNull] [ItemNotNull] params string[] messages)
         {
             Guard.NotNull(context, nameof(context));
+            Guard.NotNull(messages, nameof(messages));
 
-            RunDiagnostics(context);
+            RunDiagnostics(context, messages);
         }
 
         [ItemNotNull]
-        private ImmutableArray<Diagnostic> RunDiagnostics([NotNull] AnalyzerTestContext context)
+        private ImmutableArray<Diagnostic> RunDiagnostics([NotNull] AnalyzerTestContext context,
+            [NotNull] [ItemNotNull] params string[] messages)
         {
             DocumentWithSpans documentWithSpans = TestHelpers.GetDocumentAndSpansFromMarkup(context.MarkupCode,
                 context.LanguageName, context.References, context.FileName, null);
@@ -45,6 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             ImmutableArray<TextSpan> spans = documentWithSpans.TextSpans.OrderBy(s => s).ToImmutableArray();
 
             diagnostics.Should().HaveCount(spans.Length);
+            messages.Should().HaveCount(diagnostics.Length);
 
             for (int index = 0; index < diagnostics.Length; index++)
             {
@@ -53,6 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
                 diagnostic.Location.IsInSource.Should().BeTrue();
                 diagnostic.Location.SourceSpan.Should().Be(span);
+                diagnostic.GetMessage().Should().Be(messages[index]);
             }
 
             return diagnostics;
