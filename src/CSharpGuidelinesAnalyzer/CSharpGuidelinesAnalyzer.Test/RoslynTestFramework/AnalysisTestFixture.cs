@@ -88,7 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private void ValidateCompilerDiagnostics([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)
         {
             bool hasErrors = compilerDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error);
-            hasErrors.Should().BeFalse();
+            hasErrors.Should().BeFalse("test should have no compile errors");
         }
 
         protected void AssertDiagnosticsWithCodeFixes([NotNull] FixProviderTestContext context)
