@@ -54,26 +54,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.Type.SpecialType == SpecialType.System_Boolean || IsNullableBooleanType(parameter.Type))
+            if (parameter.Type.SpecialType == SpecialType.System_Boolean || AnalysisUtilities.IsNullableBoolean(parameter.Type))
             {
                 AnalyzeBooleanParameter(parameter, context);
             }
-        }
-
-        private bool IsNullableBooleanType([NotNull] ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
-            {
-                var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
-
-                if (namedTypeSymbol?.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        }               
 
         private void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
         {
