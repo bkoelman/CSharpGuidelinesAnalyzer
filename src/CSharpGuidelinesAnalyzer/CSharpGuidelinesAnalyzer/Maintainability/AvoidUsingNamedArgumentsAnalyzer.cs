@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         public const string DiagnosticId = "AV1555";
 
         private const string Title = "Avoid using non-(nullable-)boolean named arguments";
-        private const string MessageFormat = "Parameter {0} in the call to {1} is invoked with a named argument.";
+        private const string MessageFormat = "Parameter '{0}' in the call to '{1}' is invoked with a named argument.";
         private const string Description = "Avoid using named arguments.";
         private const string Category = "Maintainability";
 

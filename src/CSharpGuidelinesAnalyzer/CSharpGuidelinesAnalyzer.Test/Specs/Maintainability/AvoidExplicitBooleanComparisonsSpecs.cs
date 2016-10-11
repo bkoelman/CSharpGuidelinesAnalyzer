@@ -32,8 +32,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression contains explicit comparison to True.",
-                "Expression contains explicit comparison to True.");
+                "Expression contains explicit comparison to 'true'.",
+                "Expression contains explicit comparison to 'true'.");
         }
 
         [Fact]
@@ -57,8 +57,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression contains explicit comparison to True.",
-                "Expression contains explicit comparison to True.");
+                "Expression contains explicit comparison to 'true'.",
+                "Expression contains explicit comparison to 'true'.");
         }
 
         [Fact]
@@ -82,8 +82,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression contains explicit comparison to False.",
-                "Expression contains explicit comparison to False.");
+                "Expression contains explicit comparison to 'false'.",
+                "Expression contains explicit comparison to 'false'.");
         }
 
         [Fact]
@@ -107,8 +107,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression contains explicit comparison to False.",
-                "Expression contains explicit comparison to False.");
+                "Expression contains explicit comparison to 'false'.",
+                "Expression contains explicit comparison to 'false'.");
         }
 
         [Fact]

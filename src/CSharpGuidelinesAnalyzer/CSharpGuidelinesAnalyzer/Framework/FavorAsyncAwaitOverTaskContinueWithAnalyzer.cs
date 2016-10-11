@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Framework
         private const string Title = "Call to Task.ContinueWith should be replaced with an async method";
 
         private const string MessageFormat =
-            "The call to Task.ContinueWith in {0} should be replaced with an async method.";
+            "The call to 'Task.ContinueWith' in '{0}' should be replaced with an async method.";
 
         private const string Description = "Favor async/await over the Task.";
         private const string Category = "Framework";

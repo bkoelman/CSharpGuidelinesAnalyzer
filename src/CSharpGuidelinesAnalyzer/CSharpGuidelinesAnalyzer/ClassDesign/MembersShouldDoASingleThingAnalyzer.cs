@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         public const string DiagnosticId = "AV1115";
 
         private const string Title = "Member contains the word 'and'";
-        private const string MessageFormat = "{0} {1} contains the word 'and'.";
+        private const string MessageFormat = "{0} '{1}' contains the word 'and'.";
         private const string Description = "A method or property should do only one thing.";
         private const string Category = "Class Design";
 

@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The call to Task.ContinueWith in C.M(int) should be replaced with an async method.");
+                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an async method.");
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The call to Task.ContinueWith in C.M(int) should be replaced with an async method.");
+                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an async method.");
         }
 
         [Fact]

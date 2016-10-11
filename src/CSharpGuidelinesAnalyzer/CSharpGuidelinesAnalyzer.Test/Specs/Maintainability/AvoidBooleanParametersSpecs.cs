@@ -25,7 +25,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -153,7 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -296,7 +296,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -328,7 +328,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -360,7 +360,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -385,7 +385,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -410,7 +410,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -435,7 +435,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -460,7 +460,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -491,7 +491,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -523,7 +523,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         [Fact]
@@ -554,7 +554,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool, which should be avoided.");
+                "Parameter 'b' is of type 'bool'.");
         }
 
         [Fact]
@@ -586,7 +586,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter b is of type bool?, which should be avoided.");
+                "Parameter 'b' is of type 'bool?'.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         public const string DiagnosticId = "AV1000";
 
         private const string Title = "Type contains the word 'and'";
-        private const string MessageFormat = "Type {0} contains the word 'and'.";
+        private const string MessageFormat = "Type '{0}' contains the word 'and'.";
         private const string Description = "A class or interface should have a single purpose.";
         private const string Category = "Class Design";
 
