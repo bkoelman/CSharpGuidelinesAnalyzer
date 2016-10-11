@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Method GetEmployee contains the name of its containing type Employee.");
         }
 
@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Field IsCustomerActive contains the name of its containing type Customer.");
         }
 
@@ -118,7 +118,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Property IsOrderDeleted contains the name of its containing type Order.");
         }
 
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Event RegistrationCompleted contains the name of its containing type Registration.");
         }
 
@@ -173,7 +173,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(NotImplementedException).Namespace)
+                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     class Registration
                     {
@@ -210,7 +210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Field WindowStateVisible contains the name of its containing type WindowState.");
         }
 

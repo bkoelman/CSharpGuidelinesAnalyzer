@@ -1,10 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using (typeof(Task).Namespace)
+                .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     namespace N
                     {
@@ -33,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "The call to Task.ContinueWith in C.M(int) should be replaced with an async method.");
         }
 
@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(Task).Namespace)
+                .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     using static System.Threading.Tasks.Task;
 
@@ -60,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "The call to Task.ContinueWith in C.M(int) should be replaced with an async method.");
         }
 
@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(NotImplementedException).Namespace)
+                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     namespace N
                     {
@@ -100,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                     }
                 ")
                 .Build();
-            
+
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }

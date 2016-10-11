@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private void AnalyzeArgument(OperationAnalysisContext context)
         {
-            var argument = (IArgument)context.Operation;
+            var argument = (IArgument) context.Operation;
 
             if (argument.ArgumentKind == ArgumentKind.Named)
             {
@@ -48,9 +48,15 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     !AnalysisUtilities.IsNullableBoolean(argument.Parameter.Type))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(),
-                        argument.Parameter.Name, argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                        argument.Parameter.Name, FormatSymbol(argument.Parameter.ContainingSymbol)));
                 }
             }
+        }
+
+        [NotNull]
+        private string FormatSymbol([NotNull] ISymbol symbol)
+        {
+            return symbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -38,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     startContext.RegisterOperationAction(AnalyzeExpression, OperationKind.BinaryOperatorExpression);
                 }
             });
-        }               
+        }
 
         private void AnalyzeExpression(OperationAnalysisContext context)
         {

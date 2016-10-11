@@ -24,7 +24,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Type CustomerAndOrder contains the word 'and'.");
         }
 
@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Type customer_and_order contains the word 'and'.");
         }
 
@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Type Match1And2 contains the word 'and'.");
         }
 
@@ -93,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
-        
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new TypesShouldHaveASinglePurposeAnalyzer();

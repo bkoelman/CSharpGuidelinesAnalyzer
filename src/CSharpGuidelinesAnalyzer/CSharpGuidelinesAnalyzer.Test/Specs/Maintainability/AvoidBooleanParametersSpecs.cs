@@ -495,7 +495,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        public void When_indexer_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
@@ -557,7 +558,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        public void When_indexer_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()

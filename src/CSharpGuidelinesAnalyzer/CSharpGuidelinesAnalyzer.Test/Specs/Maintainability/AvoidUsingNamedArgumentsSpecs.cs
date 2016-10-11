@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, 
+            VerifyGuidelineDiagnostic(source,
                 "Parameter s in the call to Test.M(int, string) is invoked with a named argument.");
         }
 
