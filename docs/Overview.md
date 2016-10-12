@@ -87,7 +87,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports when a digit occurs in a type, parameter or variable name.
 
 ### AV1706: Don't use abbreviations (MEDIUM)
-- [ ] This analyzer reports on single-letter variable names and identifiers that contain the words "Btn", "Ctrl" and "Frm".
+- [ ] This analyzer reports single-letter variable names and identifiers that contain the words "Btn", "Ctrl" and "Frm".
 
 ### AV1708: Name types using nouns, noun phrases or adjective phrases (MEDIUM)
 - [ ] This analyzer reports types that have the words "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.
@@ -114,10 +114,10 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports unused lambda parameters whose names contain any characters other than underscores.
 
 ### AV1745: Group extension methods in a class suffixed with Extensions (LOW)
-- [ ] This analyzer reports static classes whose name does not end in Extensions -or- contain public or internal methods that do not have the `this` modifier on the first parameter.
+- [ ] This analyzer reports static classes whose name does not end in "Extensions" -or- contain public or internal methods that do not have the `this` modifier on the first parameter.
 
 ### AV1755: Post-fix asynchronous methods with Async or TaskAsync (MEDIUM)
-- [ ] This analyzer reports async methods whose names do not end with "Async" or "TaskAsync".
+- [ ] This analyzer reports `async` methods whose names do not end with "Async" or "TaskAsync".
 
 ## Category: Framework
 
