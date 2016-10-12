@@ -145,7 +145,6 @@
     <Compile Include="RoslynTestFramework\FixProviderTestContext.cs" />
     <Compile Include="RoslynTestFramework\TestHelpers.cs" />
     <Compile Include="RoslynTestFramework\Verify.cs" />
-    <Compile Include="Specs\ClassDesign\AvoidStaticClassesSpecs.cs" />
     <Compile Include="Specs\ClassDesign\DoNotExposeStatefulObjectsThroughStaticMembersSpecs.cs" />
     <Compile Include="Specs\ClassDesign\DoNotHideInheritedMembersSpecs.cs" />
     <Compile Include="Specs\ClassDesign\MembersShouldDoASingleThingSpecs.cs" />
