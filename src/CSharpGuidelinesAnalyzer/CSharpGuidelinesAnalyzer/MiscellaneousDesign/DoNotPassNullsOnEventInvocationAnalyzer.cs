@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             helpLinkUri: HelpLinkUris.GetForCategory(Category));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
