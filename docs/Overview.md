@@ -26,7 +26,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports methods that invoke an event, which are non-protected or non-virtual or their name does not end with the word "On" followed by the event name.
 
 ### AV1235: Don't pass null as the sender argument when raising an event (HIGH)
-- [ ] This analyzer reports when a non-static event is invoked with `null` for the "sender" parameter, or when an event is invoked with `null` for the "args" parameter.
+- [x] This analyzer reports when a non-static event is invoked with `null` for the "sender" parameter, or when an event is invoked with `null` for the "args" parameter.
 
 ### AV1250: Evaluate the result of a LINQ expression before returning it (HIGH)
 - [ ] This analyzer reports when the result of a LINQ method that uses deferred execution is returned.
