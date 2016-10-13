@@ -88,7 +88,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InDefaultClass(@"
                     public string this[int first, string second, double third]
                     {
@@ -106,7 +105,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InDefaultClass(@"
                     public string [|this|][int first, string second, double third, object fourth]
                     {

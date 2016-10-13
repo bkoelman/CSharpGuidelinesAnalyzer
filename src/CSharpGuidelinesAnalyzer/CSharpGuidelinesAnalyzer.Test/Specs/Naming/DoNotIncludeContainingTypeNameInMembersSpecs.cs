@@ -144,7 +144,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     class Registration
                     {
