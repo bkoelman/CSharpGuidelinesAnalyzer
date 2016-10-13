@@ -7,7 +7,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports types that have the word "And" in their name.
 
 ### AV1010: Don't hide inherited members with the new keyword (HIGH)
-- [ ] This analyzer reports members that have the `new` modifier in their signature.
+- [x] This analyzer reports members that have the `new` modifier in their signature.
 
 ### AV1115: A method or property should do only one thing (HIGH)
 - [x] This analyzer reports members that have the word "And" in their name.

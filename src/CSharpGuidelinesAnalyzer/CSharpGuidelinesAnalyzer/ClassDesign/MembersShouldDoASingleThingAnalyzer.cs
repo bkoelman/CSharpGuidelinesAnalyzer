@@ -37,14 +37,9 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            var method = context.Symbol as IMethodSymbol;
-            switch (method?.MethodKind)
+            if (AnalysisUtilities.IsPropertyOrEventAccessor(context.Symbol))
             {
-                case MethodKind.PropertyGet:
-                case MethodKind.PropertySet:
-                case MethodKind.EventAdd:
-                case MethodKind.EventRemove:
-                    return;
+                return;
             }
 
             if (IdentifierNameContainsAnyOf(context.Symbol.Name, "And", "and"))

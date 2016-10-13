@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            if (HidesBaseMember(containingMember, context.CancellationToken))
+            if (AnalysisUtilities.HidesBaseMember(containingMember, context.CancellationToken))
             {
                 return;
             }
@@ -80,21 +80,6 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             }
 
             context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
-        }
-
-        private bool HidesBaseMember([NotNull] ISymbol member, CancellationToken cancellationToken)
-        {
-            SyntaxNode syntax = member.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
-
-            var method = syntax as MethodDeclarationSyntax;
-            var indexer = syntax as IndexerDeclarationSyntax;
-
-            return ContainsNewModifier(method?.Modifiers ?? indexer?.Modifiers);
-        }
-
-        private static bool ContainsNewModifier([CanBeNull] SyntaxTokenList? modifiers)
-        {
-            return modifiers != null && modifiers.Value.Any(m => m.Kind() == SyntaxKind.NewKeyword);
         }
 
         private bool IsInterfaceImplementation([NotNull] IParameterSymbol parameter)
