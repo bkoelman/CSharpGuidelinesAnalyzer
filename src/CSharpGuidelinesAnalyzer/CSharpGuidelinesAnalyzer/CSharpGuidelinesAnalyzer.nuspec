@@ -3,17 +3,17 @@
   <metadata>
     <id>CSharpGuidelinesAnalyzer</id>
     <version>0.0.0</version>
-    <title>CSharp Coding Guidelines Analyzer</title>
+    <title>C# Coding Guidelines Analyzer</title>
     <authors>Bart Koelman</authors>
     <owners>Bart Koelman</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper.</description>
-    <releaseNotes>Initial release of this package.</releaseNotes>
+    <releaseNotes>Initial pre-release of this package.</releaseNotes>
     <copyright>Apache License, Version 2.0</copyright>
     <language>en-us</language>
-    <tags>csharp coding guidelines analyzer</tags>
+    <tags>csharp c# coding guidelines analyzer</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
