@@ -3,6 +3,9 @@ using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using System.Threading;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace CSharpGuidelinesAnalyzer
 {
@@ -63,6 +66,39 @@ namespace CSharpGuidelinesAnalyzer
             {
                 words.Add(builder.ToString());
                 builder.Clear();
+            }
+        }
+
+        public static bool HidesBaseMember([NotNull] ISymbol member, CancellationToken cancellationToken)
+        {
+            SyntaxNode syntax = member.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
+
+            var method = syntax as MethodDeclarationSyntax;
+            var propertyEventIndexer = syntax as BasePropertyDeclarationSyntax;
+
+            EventFieldDeclarationSyntax eventField = member is IEventSymbol
+                ? syntax.FirstAncestorOrSelf<EventFieldDeclarationSyntax>() as EventFieldDeclarationSyntax
+                : null;
+
+            return ContainsNewModifier(method?.Modifiers ?? propertyEventIndexer?.Modifiers ?? eventField?.Modifiers);
+        }    
+
+        private static bool ContainsNewModifier([CanBeNull] SyntaxTokenList? modifiers)
+        {
+            return modifiers != null && modifiers.Value.Any(m => m.Kind() == SyntaxKind.NewKeyword);
+        }
+
+        public static bool IsPropertyOrEventAccessor([CanBeNull] ISymbol symbol)
+        {
+            var method = symbol as IMethodSymbol;
+            switch (method?.MethodKind)
+            {
+                case MethodKind.PropertyGet:
+                case MethodKind.PropertySet:
+                case MethodKind.EventAdd:
+                case MethodKind.EventRemove:
+                    return true;
+                default: return false;
             }
         }
     }

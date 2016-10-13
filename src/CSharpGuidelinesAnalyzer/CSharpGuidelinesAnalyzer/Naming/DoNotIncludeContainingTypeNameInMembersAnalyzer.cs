@@ -42,14 +42,9 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 return;
             }
 
-            var method = context.Symbol as IMethodSymbol;
-            switch (method?.MethodKind)
+            if (AnalysisUtilities.IsPropertyOrEventAccessor(context.Symbol))
             {
-                case MethodKind.PropertyGet:
-                case MethodKind.PropertySet:
-                case MethodKind.EventAdd:
-                case MethodKind.EventRemove:
-                    return;
+                return;
             }
 
             if (context.Symbol.Name.Contains(typeName))
