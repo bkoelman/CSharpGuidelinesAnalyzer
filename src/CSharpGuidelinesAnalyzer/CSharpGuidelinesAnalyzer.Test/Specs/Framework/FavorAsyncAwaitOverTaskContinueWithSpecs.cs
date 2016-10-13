@@ -1,10 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using (typeof(Task).Namespace)
+                .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     namespace N
                     {
@@ -33,15 +33,43 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source,
+                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an async method.");
         }
 
         [Fact]
-        public void When_method_contains_invocation_of_another_method_it_must_be_skipped()
+        public void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(NotImplementedException).Namespace)
+                .Using(typeof (Task).Namespace)
+                .InGlobalScope(@"
+                    using static System.Threading.Tasks.Task;
+
+                    namespace N
+                    {
+                        class C
+                        {
+                            Task<int> M(int i)
+                            {
+                                return [|Delay(1).ContinueWith(t => i)|];
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an async method.");
+        }
+
+        [Fact]
+        public void When_method_contains_invocation_of_TaskContinueWith_in_alternate_namespace_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     namespace N
                     {
@@ -72,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                     }
                 ")
                 .Build();
-            
+
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }

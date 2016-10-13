@@ -1,8 +1,8 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JetBrains.Annotations;
+using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer
 {
@@ -38,8 +38,8 @@ namespace CSharpGuidelinesAnalyzer
             var builder = new StringBuilder();
             foreach (char ch in identifierName)
             {
-                if (char.IsUpper(ch) || char.IsWhiteSpace(ch) || char.IsPunctuation(ch) ||
-                    char.IsDigit(ch) || char.IsSymbol(ch))
+                if (char.IsUpper(ch) || char.IsWhiteSpace(ch) || char.IsPunctuation(ch) || char.IsDigit(ch) ||
+                    char.IsSymbol(ch))
                 {
                     FlushBuilder(words, builder);
 
@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer
             return words;
         }
 
-        private static void FlushBuilder([NotNull][ItemNotNull] List<string> words, [NotNull] StringBuilder builder)
+        private static void FlushBuilder([NotNull] [ItemNotNull] List<string> words, [NotNull] StringBuilder builder)
         {
             if (builder.Length > 0)
             {

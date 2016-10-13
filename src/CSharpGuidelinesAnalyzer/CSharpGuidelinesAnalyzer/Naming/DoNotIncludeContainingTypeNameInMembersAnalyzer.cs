@@ -11,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
         public const string DiagnosticId = "AV1710";
 
         private const string Title = "Member name includes the name of its containing type";
-        private const string MessageFormat = "{0} {1} contains the name of its containing type {2}.";
+        private const string MessageFormat = "{0} '{1}' contains the name of its containing type '{2}'.";
         private const string Description = "Don't repeat the name of a class or enumeration in its members.";
         private const string Category = "Naming";
 
@@ -37,6 +37,10 @@ namespace CSharpGuidelinesAnalyzer.Naming
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             string typeName = context.Symbol.ContainingType.Name;
+            if (typeName.Length < 2)
+            {
+                return;
+            }
 
             var method = context.Symbol as IMethodSymbol;
             switch (method?.MethodKind)

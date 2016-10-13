@@ -40,7 +40,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source,
+                "Method 'M' contains more than three parameters.");
         }
 
         [Fact]
@@ -78,7 +79,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source,
+                "Constructor for 'C' contains more than three parameters.");
         }
 
         [Fact]
@@ -112,7 +114,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source,
+                "Indexer contains more than three parameters.");
         }
 
         [Fact]
@@ -140,7 +143,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            VerifyGuidelineDiagnostic(source,
+                "Delegate 'D' contains more than three parameters.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

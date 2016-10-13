@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         public const string DiagnosticId = "AV1555";
 
         private const string Title = "Avoid using non-(nullable-)boolean named arguments";
-        private const string MessageFormat = "Parameter {0} in the call to {1} is invoked with a named argument.";
+        private const string MessageFormat = "Parameter '{0}' in the call to '{1}' is invoked with a named argument.";
         private const string Description = "Avoid using named arguments.";
         private const string Category = "Maintainability";
 
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private void AnalyzeArgument(OperationAnalysisContext context)
         {
-            var argument = (IArgument)context.Operation;
+            var argument = (IArgument) context.Operation;
 
             if (argument.ArgumentKind == ArgumentKind.Named)
             {
@@ -48,9 +48,15 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     !AnalysisUtilities.IsNullableBoolean(argument.Parameter.Type))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(),
-                        argument.Parameter.Name, argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                        argument.Parameter.Name, FormatSymbol(argument.Parameter.ContainingSymbol)));
                 }
             }
+        }
+
+        [NotNull]
+        private string FormatSymbol([NotNull] ISymbol symbol)
+        {
+            return symbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
         }
     }
 }

@@ -1,9 +1,8 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CSharpGuidelinesAnalyzer.ClassDesign
 {
@@ -13,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         public const string DiagnosticId = "AV1000";
 
         private const string Title = "Type contains the word 'and'";
-        private const string MessageFormat = "Type {0} contains the word 'and'.";
+        private const string MessageFormat = "Type '{0}' contains the word 'and'.";
         private const string Description = "A class or interface should have a single purpose.";
         private const string Category = "Class Design";
 
@@ -35,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
 
         private void AnalyzeType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol)context.Symbol;
+            var type = (INamedTypeSymbol) context.Symbol;
 
             if (IdentifierNameContainsAnyOf(type.Name, "And", "and"))
             {
@@ -43,19 +42,19 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
             }
         }
 
-        private static bool IdentifierNameContainsAnyOf([NotNull] string identiferName, 
-            [NotNull][ItemNotNull] params string[] wordsToFind)
+        private static bool IdentifierNameContainsAnyOf([NotNull] string identiferName,
+            [NotNull] [ItemNotNull] params string[] wordsToFind)
         {
-            var wordsInText = AnalysisUtilities.ExtractWords(identiferName);
+            List<string> wordsInText = AnalysisUtilities.ExtractWords(identiferName);
 
-            foreach (var wordToFind in wordsToFind)
+            foreach (string wordToFind in wordsToFind)
             {
                 if (wordsInText.Contains(wordToFind))
                 {
                     return true;
                 }
             }
-            
+
             return false;
         }
     }

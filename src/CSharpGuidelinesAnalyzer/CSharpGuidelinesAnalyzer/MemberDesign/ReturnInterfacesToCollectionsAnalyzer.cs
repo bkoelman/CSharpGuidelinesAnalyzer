@@ -12,7 +12,10 @@ namespace CSharpGuidelinesAnalyzer.MemberDesign
 
         private const string Title = "AV1130";
         private const string MessageFormat = "AV1130";
-        private const string Description = "Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class.";
+
+        private const string Description =
+            "Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class.";
+
         private const string Category = "Member Design";
 
         [NotNull]

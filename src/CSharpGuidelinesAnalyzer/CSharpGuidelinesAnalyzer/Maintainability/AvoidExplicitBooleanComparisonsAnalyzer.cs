@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -14,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         public const string DiagnosticId = "AV1525";
 
         private const string Title = "Expression contains explicit comparison to true or false";
-        private const string MessageFormat = "Expression contains explicit comparison to {0}.";
+        private const string MessageFormat = "Expression contains explicit comparison to '{0}'.";
         private const string Description = "Don't make explicit comparisons to true or false.";
         private const string Category = "Maintainability";
 
@@ -38,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     startContext.RegisterOperationAction(AnalyzeExpression, OperationKind.BinaryOperatorExpression);
                 }
             });
-        }               
+        }
 
         private void AnalyzeExpression(OperationAnalysisContext context)
         {
@@ -63,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         {
             if (IsTrueOrFalseConstant(operand))
             {
-                ReportDiagnostic(context, operand, operand.ConstantValue.Value.ToString());
+                ReportDiagnostic(context, operand, operand.ConstantValue.Value.ToString().ToLowerInvariant());
             }
         }
 

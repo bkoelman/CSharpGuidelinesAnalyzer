@@ -1,9 +1,9 @@
 using System.Collections.Immutable;
+using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
-using System.Linq;
 
 namespace CSharpGuidelinesAnalyzer.Framework
 {
@@ -13,7 +13,10 @@ namespace CSharpGuidelinesAnalyzer.Framework
         public const string DiagnosticId = "AV2235";
 
         private const string Title = "Call to Task.ContinueWith should be replaced with an async method";
-        private const string MessageFormat = "The call to Task.ContinueWith in {0} should be replaced with an async method.";
+
+        private const string MessageFormat =
+            "The call to 'Task.ContinueWith' in '{0}' should be replaced with an async method.";
+
         private const string Description = "Favor async/await over the Task.";
         private const string Category = "Framework";
 
@@ -36,27 +39,29 @@ namespace CSharpGuidelinesAnalyzer.Framework
                 {
                     return;
                 }
-                
-                var taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-                var continueWithMethodGroup = taskType.GetMembers("ContinueWith");
+
+                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+                ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
 
                 if (taskType != null)
                 {
-                    startContext.RegisterOperationAction(c => AnalyzeInvocation(taskType, continueWithMethodGroup, c), OperationKind.InvocationExpression);
+                    startContext.RegisterOperationAction(c => AnalyzeInvocation(taskType, continueWithMethodGroup, c),
+                        OperationKind.InvocationExpression);
                 }
             });
         }
 
-        private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType, [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
+        private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType,
+            [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
         {
-            var invocation = (IInvocationExpression)context.Operation;
+            var invocation = (IInvocationExpression) context.Operation;
             if (invocation.TargetMethod.ContainingType.Equals(taskType))
             {
-                var targetMethodConstructed = invocation.TargetMethod.ConstructedFrom;
+                IMethodSymbol targetMethodConstructed = invocation.TargetMethod.ConstructedFrom;
 
                 if (continueWithMethodGroup.Any(method => method.Equals(targetMethodConstructed)))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Operation.Syntax.GetLocation(), 
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Operation.Syntax.GetLocation(),
                         context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
                 }
             }

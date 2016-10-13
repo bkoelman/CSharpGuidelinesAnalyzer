@@ -12,7 +12,10 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private const string Title = "AV1535";
         private const string MessageFormat = "AV1535";
-        private const string Description = "Always add a block after keywords such as if, else, while, for, foreach and case.";
+
+        private const string Description =
+            "Always add a block after keywords such as if, else, while, for, foreach and case.";
+
         private const string Category = "Maintainability";
 
         [NotNull]

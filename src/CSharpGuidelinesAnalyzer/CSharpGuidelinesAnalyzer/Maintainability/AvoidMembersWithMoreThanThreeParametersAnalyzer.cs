@@ -50,8 +50,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             if (!IsPropertyAccessor(method) && method.Parameters.Length > 3)
             {
                 string name = IsConstructor(method)
-                    ? "Constructor for " + method.ContainingType.Name
-                    : "Method " + method.Name;
+                    ? "Constructor for '" + method.ContainingType.Name + "'"
+                    : "Method '" + method.Name + "'";
 
                 ReportDiagnostic(context, method, name);
             }
@@ -73,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             if (IsDelegate(type) && type.DelegateInvokeMethod?.Parameters.Length > 3)
             {
-                ReportDiagnostic(context, type, "Delegate " + type.Name);
+                ReportDiagnostic(context, type, "Delegate '" + type.Name + "'");
             }
         }
 

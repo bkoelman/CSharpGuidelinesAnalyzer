@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         public const string DiagnosticId = "AV1115";
 
         private const string Title = "Member contains the word 'and'";
-        private const string MessageFormat = "Member {0} contains the word 'and'.";
+        private const string MessageFormat = "{0} '{1}' contains the word 'and'.";
         private const string Description = "A method or property should do only one thing.";
         private const string Category = "Class Design";
 
@@ -48,16 +49,17 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
 
             if (IdentifierNameContainsAnyOf(context.Symbol.Name, "And", "and"))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
+                    context.Symbol.Name));
             }
         }
-        
-        private static bool IdentifierNameContainsAnyOf([NotNull] string identiferName,
-            [NotNull][ItemNotNull] params string[] wordsToFind)
-        {
-            var wordsInText = AnalysisUtilities.ExtractWords(identiferName);
 
-            foreach (var wordToFind in wordsToFind)
+        private static bool IdentifierNameContainsAnyOf([NotNull] string identiferName,
+            [NotNull] [ItemNotNull] params string[] wordsToFind)
+        {
+            List<string> wordsInText = AnalysisUtilities.ExtractWords(identiferName);
+
+            foreach (string wordToFind in wordsToFind)
             {
                 if (wordsInText.Contains(wordToFind))
                 {
