@@ -92,7 +92,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InDefaultClass(@"
                     int this[bool [|b|]]
                     {
@@ -111,7 +110,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InDefaultClass(@"
                     int this[bool? [|b|]]
                     {
@@ -234,7 +232,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public abstract class C
                     {
@@ -264,7 +261,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public abstract class C
                     {
@@ -294,7 +290,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public class C
                     {
@@ -325,7 +320,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public class C
                     {
@@ -452,7 +446,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -482,7 +475,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -512,7 +504,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -542,7 +533,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
