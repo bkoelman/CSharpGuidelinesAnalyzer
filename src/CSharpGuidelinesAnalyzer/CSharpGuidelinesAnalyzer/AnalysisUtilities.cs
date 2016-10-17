@@ -32,6 +32,22 @@ namespace CSharpGuidelinesAnalyzer
             return false;
         }
 
+        public static bool IsNullableEnum([NotNull] ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            {
+                var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
+                var type = namedTypeSymbol?.TypeArguments[0];
+
+                if (type != null && type.BaseType != null && type.BaseType.SpecialType == SpecialType.System_Enum)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         [NotNull]
         [ItemNotNull]
         public static List<string> ExtractWords([NotNull] string identifierName)
