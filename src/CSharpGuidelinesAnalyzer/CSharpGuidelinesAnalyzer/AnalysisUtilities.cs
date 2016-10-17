@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer
 {
@@ -15,6 +16,21 @@ namespace CSharpGuidelinesAnalyzer
         {
             IReadOnlyDictionary<string, string> features = compilation.SyntaxTrees.FirstOrDefault()?.Options.Features;
             return features != null && features.ContainsKey("IOperation") && features["IOperation"] == "true";
+        }
+
+        public static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext)
+        {
+            ISymbol symbol = syntaxContext.SemanticModel.GetDeclaredSymbol(syntaxContext.Node);
+            return SyntaxToSymbolContext(syntaxContext, symbol);
+        }
+
+        private static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext,
+            [NotNull] ISymbol symbol)
+        {
+            Guard.NotNull(symbol, nameof(symbol));
+
+            return new SymbolAnalysisContext(symbol, syntaxContext.SemanticModel.Compilation, syntaxContext.Options,
+                syntaxContext.ReportDiagnostic, x => true, syntaxContext.CancellationToken);
         }
 
         public static bool IsNullableBoolean([NotNull] ITypeSymbol typeSymbol)
