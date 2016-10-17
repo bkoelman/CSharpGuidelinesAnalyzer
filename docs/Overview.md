@@ -46,7 +46,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports when a file contains multiple non-nested types.
 
 ### AV1522: Assign each variable in a separate statement (HIGH)
-- [ ] This analyzer reports when multiple variables or fields are assigned in a single expression.
+- [ ] This analyzer reports when multiple properties, fields, parameters or variables are assigned in a single statement.
 
 ### AV1525: Don't make explicit comparisons to true or false (HIGH)
 - [x] This analyzer reports boolean comparisons with `true` or `false`.
