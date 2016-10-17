@@ -61,7 +61,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports when a case statement does not have a block. The other scenarios are already covered by Resharper.
 
 ### AV1536: Always add a default block after the last case in a switch statement (HIGH)
-- [ ] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case.
+- [x] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case.
 
 ### AV1537: Finish every if-else-if statement with an else-part (MEDIUM)
 - [ ] This analyzer reports `if-else-if` statements that do not end with an unconditional `else` clause.
