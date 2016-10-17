@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
     {
         public const string DiagnosticId = "AV1536";
 
-        private const string Title = "Incomplete switch statement without a default case clause.";
+        private const string Title = "Incomplete switch statement without a default case clause";
         private const string MessageFormat = "Incomplete switch statement without a default case clause.";
         private const string Description = "Always add a default block after the last case in a switch statement.";
         private const string Category = "Maintainability";
