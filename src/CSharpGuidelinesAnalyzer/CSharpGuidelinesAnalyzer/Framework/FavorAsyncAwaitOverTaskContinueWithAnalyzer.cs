@@ -41,10 +41,10 @@ namespace CSharpGuidelinesAnalyzer.Framework
                 }
 
                 INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-                ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
-
                 if (taskType != null)
                 {
+                    ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
+
                     startContext.RegisterOperationAction(c => AnalyzeInvocation(taskType, continueWithMethodGroup, c),
                         OperationKind.InvocationExpression);
                 }

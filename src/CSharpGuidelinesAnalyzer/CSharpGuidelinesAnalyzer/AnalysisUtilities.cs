@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using System.Threading;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CSharpGuidelinesAnalyzer
 {
@@ -37,9 +37,9 @@ namespace CSharpGuidelinesAnalyzer
             if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
             {
                 var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
-                var type = namedTypeSymbol?.TypeArguments[0];
+                ITypeSymbol type = namedTypeSymbol?.TypeArguments[0];
 
-                if (type != null && type.BaseType != null && type.BaseType.SpecialType == SpecialType.System_Enum)
+                if (type?.BaseType != null && type.BaseType.SpecialType == SpecialType.System_Enum)
                 {
                     return true;
                 }
@@ -93,11 +93,11 @@ namespace CSharpGuidelinesAnalyzer
             var propertyEventIndexer = syntax as BasePropertyDeclarationSyntax;
 
             EventFieldDeclarationSyntax eventField = member is IEventSymbol
-                ? syntax.FirstAncestorOrSelf<EventFieldDeclarationSyntax>() as EventFieldDeclarationSyntax
+                ? syntax.FirstAncestorOrSelf<EventFieldDeclarationSyntax>()
                 : null;
 
             return ContainsNewModifier(method?.Modifiers ?? propertyEventIndexer?.Modifiers ?? eventField?.Modifiers);
-        }    
+        }
 
         private static bool ContainsNewModifier([CanBeNull] SyntaxTokenList? modifiers)
         {
@@ -114,7 +114,8 @@ namespace CSharpGuidelinesAnalyzer
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
                     return true;
-                default: return false;
+                default:
+                    return false;
             }
         }
     }
