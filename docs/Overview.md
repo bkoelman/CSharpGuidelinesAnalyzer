@@ -102,7 +102,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports members that are named "AddItem", "Delete" or "NumberOfItems". The other scenarios are already covered by [CA1726](https://msdn.microsoft.com/en-us/library/ms182258.aspx).
 
 ### AV1712: Avoid short names or names that can be mistaken for other names (HIGH)
-- [ ] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl".
+- [x] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1715: Properly name properties (MEDIUM)
 - [ ] This analyzer reports boolean variables, parameters and fields whose names do not start with the word "Is", "Has", "Allows", "Can", "Should", "Will", "Do" or "Supports".

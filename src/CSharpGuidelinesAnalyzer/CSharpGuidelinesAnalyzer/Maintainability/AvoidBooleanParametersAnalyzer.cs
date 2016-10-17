@@ -29,22 +29,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(SyntaxToSymbolContext(c)), SyntaxKind.Parameter);
-        }
-
-        private static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext)
-        {
-            ISymbol symbol = syntaxContext.SemanticModel.GetDeclaredSymbol(syntaxContext.Node);
-            return SyntaxToSymbolContext(syntaxContext, symbol);
-        }
-
-        private static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext,
-            [NotNull] ISymbol symbol)
-        {
-            Guard.NotNull(symbol, nameof(symbol));
-
-            return new SymbolAnalysisContext(symbol, syntaxContext.SemanticModel.Compilation, syntaxContext.Options,
-                syntaxContext.ReportDiagnostic, x => true, syntaxContext.CancellationToken);
+            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(AnalysisUtilities.SyntaxToSymbolContext(c)),
+                SyntaxKind.Parameter);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
