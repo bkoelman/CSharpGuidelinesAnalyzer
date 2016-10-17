@@ -34,7 +34,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Maintainability
 
 ### AV1500: Methods should not exceed 7 statements (HIGH)
-- [ ] This analyzer reports methods that consist of more than seven statements.
+- [x] This analyzer reports methods that consist of more than seven statements. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1502: Avoid conditions with double negatives (MEDIUM)
 - [ ] This analyzer reports usages of the negation operator with an argument that contains the word "No" in it.

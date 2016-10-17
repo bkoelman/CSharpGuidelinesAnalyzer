@@ -75,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName,
             [CanBeNull] int? warningLevel)
         {
-            var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+            var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true);
 
             if (warningLevel != null)
             {
