@@ -120,6 +120,14 @@ namespace CSharpGuidelinesAnalyzer
             return modifiers != null && modifiers.Value.Any(m => m.Kind() == SyntaxKind.NewKeyword);
         }
 
+        [NotNull]
+        public static ISymbol GetContainingMember([NotNull] ISymbol owningSymbol)
+        {
+            return IsPropertyOrEventAccessor(owningSymbol)
+                ? ((IMethodSymbol)owningSymbol).AssociatedSymbol
+                : owningSymbol;
+        }
+
         public static bool IsPropertyOrEventAccessor([CanBeNull] ISymbol symbol)
         {
             var method = symbol as IMethodSymbol;

@@ -29,7 +29,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when a non-static event is invoked with `null` for the "sender" parameter, or when an event is invoked with `null` for the "args" parameter. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1250: Evaluate the result of a LINQ expression before returning it (HIGH)
-- [ ] This analyzer reports when the result of a LINQ method that uses deferred execution is returned.
+- [x] This analyzer reports when the result of a LINQ method that uses deferred execution is returned. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ## Category: Maintainability
 

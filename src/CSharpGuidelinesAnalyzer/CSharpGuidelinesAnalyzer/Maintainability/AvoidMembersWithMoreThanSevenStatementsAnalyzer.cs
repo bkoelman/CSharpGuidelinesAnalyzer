@@ -49,20 +49,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             if (statementWalker.StatementCount > 7)
             {
-                ISymbol containingMember = GetContainingMember(context.OwningSymbol);
+                ISymbol containingMember = AnalysisUtilities.GetContainingMember(context.OwningSymbol);
 
                 string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                 Location location = containingMember.Locations[0];
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName));
             }
-        }
-
-        [NotNull]
-        private ISymbol GetContainingMember([NotNull] ISymbol owningSymbol)
-        {
-            return AnalysisUtilities.IsPropertyOrEventAccessor(owningSymbol)
-                ? ((IMethodSymbol) owningSymbol).AssociatedSymbol
-                : owningSymbol;
         }
 
         private sealed class StatementWalker : OperationWalker
