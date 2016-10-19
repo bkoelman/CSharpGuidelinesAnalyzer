@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
@@ -136,10 +137,12 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
                 return;
             }
 
+            var variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
+
             foreach (IReturnStatement returnStatement in
                 context.OperationBlocks.SelectMany(b => b.DescendantsAndSelf().OfType<IReturnStatement>()))
             {
-                AnalyzeReturnStatement(returnStatement, context);
+                AnalyzeReturnStatement(returnStatement, context, variableEvaluationCache);
             }
         }
 
@@ -151,14 +154,15 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
         }
 
         private void AnalyzeReturnStatement([NotNull] IReturnStatement returnStatement,
-            OperationBlockAnalysisContext context)
+            OperationBlockAnalysisContext context,
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
             if (ReturnsConstant(returnStatement))
             {
                 return;
             }
 
-            AnalyzeReturnValue(returnStatement, context);
+            AnalyzeReturnValue(returnStatement, context, variableEvaluationCache);
         }
 
         private static bool ReturnsConstant([NotNull] IReturnStatement returnStatement)
@@ -167,9 +171,11 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
         }
 
         private void AnalyzeReturnValue([NotNull] IReturnStatement returnStatement,
-            OperationBlockAnalysisContext context)
+            OperationBlockAnalysisContext context,
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
-            EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue, context.OperationBlocks);
+            EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue, context.OperationBlocks,
+                variableEvaluationCache);
 
             if (result.IsConclusive && result.IsDeferred)
             {
@@ -179,12 +185,13 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
         [NotNull]
         private static EvaluationResult AnalyzeExpression([NotNull] IOperation expression,
-            [ItemNotNull] ImmutableArray<IOperation> body)
+            [ItemNotNull] ImmutableArray<IOperation> body,
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
             var local = expression as ILocalReferenceExpression;
             if (local != null)
             {
-                var assignmentWalker = new VariableAssignmentWalker(local, body);
+                var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache);
                 assignmentWalker.VisitMethod();
 
                 return assignmentWalker.Result;
@@ -193,8 +200,8 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             var conditional = expression as IConditionalChoiceExpression;
             if (conditional != null)
             {
-                EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body);
-                EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body);
+                EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body, variableEvaluationCache);
+                EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body, variableEvaluationCache);
 
                 return EvaluationResult.Unify(trueResult, falseResult);
             }
@@ -289,9 +296,16 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
                 if (result.IsConclusive)
                 {
-                    evaluationState = result.evaluationState;
-                    deferredOperationNameOrNull = result.deferredOperationNameOrNull;
+                    CopyFrom(result);
                 }
+            }
+
+            public void CopyFrom([NotNull] EvaluationResult result)
+            {
+                Guard.NotNull(result, nameof(result));
+
+                evaluationState = result.evaluationState;
+                deferredOperationNameOrNull = result.deferredOperationNameOrNull;
             }
 
             [NotNull]
@@ -310,6 +324,11 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
                 }
 
                 return first.IsConclusive ? first : second;
+            }
+
+            public override string ToString()
+            {
+                return evaluationState.ToString();
             }
 
             private enum EvaluationState
@@ -361,25 +380,39 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
         private sealed class VariableAssignmentWalker : LinqOperationWalker
         {
             [NotNull]
-            private readonly ILocalReferenceExpression currentLocal;
+            private readonly ILocalSymbol currentLocal;
 
             [ItemNotNull]
             private readonly ImmutableArray<IOperation> body;
 
-            public VariableAssignmentWalker([NotNull] ILocalReferenceExpression local,
-                [ItemNotNull] ImmutableArray<IOperation> body)
+            [NotNull]
+            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache;
+
+            public VariableAssignmentWalker([NotNull] ILocalSymbol local, [ItemNotNull] ImmutableArray<IOperation> body,
+                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
             {
                 Guard.NotNull(local, nameof(local));
+                Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
 
                 currentLocal = local;
                 this.body = body;
+                this.variableEvaluationCache = variableEvaluationCache;
             }
 
             public void VisitMethod()
             {
-                foreach (IOperation operation in body)
+                if (variableEvaluationCache.ContainsKey(currentLocal))
                 {
-                    Visit(operation);
+                    Result.CopyFrom(variableEvaluationCache[currentLocal]);
+                }
+                else
+                {
+                    foreach (IOperation operation in body)
+                    {
+                        Visit(operation);
+                    }
+
+                    variableEvaluationCache[currentLocal] = Result;
                 }
             }
 
@@ -389,7 +422,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
                 foreach (IVariableDeclaration variable in operation.Variables)
                 {
-                    if (currentLocal.Local.Equals(variable.Variable))
+                    if (currentLocal.Equals(variable.Variable))
                     {
                         AnalyzeAssignmentValue(variable.InitialValue);
                     }
@@ -401,7 +434,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
                 base.VisitAssignmentExpression(operation);
 
                 var targetLocal = operation.Target as ILocalReferenceExpression;
-                if (targetLocal != null && currentLocal.Local.Equals(targetLocal.Local))
+                if (targetLocal != null && currentLocal.Equals(targetLocal.Local))
                 {
                     AnalyzeAssignmentValue(operation.Value);
                 }
@@ -411,7 +444,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             {
                 Guard.NotNull(assignedValue, nameof(assignedValue));
 
-                EvaluationResult result = AnalyzeExpression(assignedValue, body);
+                EvaluationResult result = AnalyzeExpression(assignedValue, body, variableEvaluationCache);
                 Result.CopyIfConclusiveFrom(result);
             }
         }

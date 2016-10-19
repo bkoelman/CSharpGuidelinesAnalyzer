@@ -739,6 +739,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
         }
 
+        [Fact]
+        public void When_method_contains_multiple_returns_it_should_profit_from_cache_hits()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(IList<int> source, bool flag)
+                        {
+                            var result1 = Enumerable.Empty<int>();
+                            result1 = source.Select(x => x);
+
+                            var result2 = result1;
+
+                            var result3 = result2;
+
+                            if (flag)
+                            {
+                                [|return result2;|]
+                            }
+                            else
+                            {
+                                [|return result3;|]
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Select', which uses deferred execution.",
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Select', which uses deferred execution.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new EvaluateQueriesBeforeReturningThemAnalyzer();
