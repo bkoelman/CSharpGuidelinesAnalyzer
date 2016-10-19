@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         protected override string DiagnosticId => EvaluateQueriesBeforeReturningThemAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_returns_void_it_must_be_skipped()
+        public void When_method_return_type_is_void_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_int_it_must_be_skipped()
+        public void When_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -49,6 +49,70 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
+        public void When_method_return_type_is_generic_List_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof (List<string>).Namespace)
+                .InDefaultClass(@"
+                    List<string> M()
+                    {
+                        return new List<string>
+                        {
+                            ""A""
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_returns_null_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .Using(typeof (IEnumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable M()
+                        {
+                            return null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_returns_default_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof (IList<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable M()
+                        {
+                            return default(IList<int>);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_method_returns_the_result_of_Where_call_it_must_be_reported()
         {
             // Arrange
@@ -56,7 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .WithReference(typeof (Enumerable).Assembly)
                 .Using(typeof (Enumerable).Namespace)
                 .Using(typeof (IEnumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .Using(typeof (IList<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -80,7 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
             ParsedSourceCode source = new ClassSourceCodeBuilder()
                 .WithReference(typeof (Enumerable).Assembly)
                 .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .Using(typeof (IList<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -137,6 +201,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         {
                             var result = source.Where(x => true);
                             [|return condition ? result : null;|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void
+            When_method_conditionally_returns_variable_that_contains_the_result_of_Where_call_with_redundant_braces_it_must_be_reported
+            ()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(IList<int> source, bool condition)
+                        {
+                            [|return (condition ? (source.Where(x => true)) : (null));|]
                         }
                     }
                 ")
@@ -283,6 +373,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
+        public void When_method_returns_the_result_of_a_query_expression_with_redundant_braces_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(IList<int> source)
+                        {
+                            [|return ((
+                                from item in Enumerable.Empty<int>()
+                                where item != 2
+                                select item));|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IList<int>)' returns the result of a query that uses deferred execution.");
+        }
+
+        [Fact]
         public void When_method_returns_the_result_of_ToArray_after_a_query_expression_it_must_be_skipped()
         {
             // Arrange
@@ -327,7 +444,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                                 where item != 2
                                 select item;
 
-                            [|return result;|]
+                            [|return (result);|]
                         }
                     }
                 ")
@@ -366,6 +483,260 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_returns_the_result_of_null_conditional_access_operator_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(IList<int> source)
+                        {
+                            var result = source.ToArray();
+
+                            [|return result?.Select(x => x);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_returns_the_result_of_null_coalescing_operator_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(IList<int> source)
+                        {
+                            [|return source ?? new int[0].Select(x => x);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_returns_new_array_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M()
+                        {
+                            return new int[0];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_returns_variable_assignment_to_result_of_Skip_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M()
+                        {
+                            IEnumerable<int> temp;
+
+                            [|return temp = new List<int>
+                            {
+                                1, 2, 3, 4, 5
+                            }.Skip(2);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_returns_parameter_assignment_to_result_of_Skip_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(ref IEnumerable<int> source)
+                        {
+                            [|return source = new List<int>
+                            {
+                                1, 2, 3, 4, 5
+                            }.Skip(2);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(ref IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_returns_field_assignment_to_result_of_Skip_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        private IEnumerable<int> f;
+
+                        IEnumerable<int> M()
+                        {
+                            [|return f = new List<int>
+                            {
+                                1, 2, 3, 4, 5
+                            }.Skip(2);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_returns_property_assignment_to_result_of_Skip_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        private IEnumerable<int> P { get; set; }
+
+                        IEnumerable<int> M()
+                        {
+                            [|return P = new List<int>
+                            {
+                                1, 2, 3, 4, 5
+                            }.Skip(2);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_returns_cast_to_result_of_Skip_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M(IEnumerable<int> source)
+                        {
+                            [|return (IList<int>)source.Skip(2);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
+        }
+
+        [Fact]
+        public void When_method_yield_returns_a_value_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<int> M()
+                        {
+                            yield return 5;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_yield_returns_a_deferred_sequence_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .Using(typeof (IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<IEnumerable<int>> M(IEnumerable<int> source)
+                        {
+                            [|yield return source.Skip(2);|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
