@@ -112,23 +112,26 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol systemIEnumerable =
+                INamedTypeSymbol iEnumerable =
                     startContext.Compilation.GetTypeByMetadataName("System.Collections.IEnumerable");
+                INamedTypeSymbol genericIEnumerable =
+                    startContext.Compilation.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
 
-                if (systemIEnumerable != null)
+                if (iEnumerable != null && genericIEnumerable != null)
                 {
                     if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
                     {
-                        startContext.RegisterOperationBlockAction(c => AnalyzeMethod(c, systemIEnumerable));
+                        startContext.RegisterOperationBlockAction(c => AnalyzeMethod(c, iEnumerable, genericIEnumerable));
                     }
                 }
             });
         }
 
-        private void AnalyzeMethod(OperationBlockAnalysisContext context, [NotNull] INamedTypeSymbol systemIEnumerable)
+        private void AnalyzeMethod(OperationBlockAnalysisContext context, [NotNull] INamedTypeSymbol iEnumerable,
+            [NotNull] INamedTypeSymbol genericIEnumerable)
         {
             var method = (IMethodSymbol) context.OwningSymbol;
-            if (method.ReturnsVoid || !ReturnsEnumerable(method, systemIEnumerable))
+            if (method.ReturnsVoid || !ReturnsEnumerable(method, iEnumerable, genericIEnumerable))
             {
                 return;
             }
@@ -140,11 +143,11 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             }
         }
 
-        private static bool ReturnsEnumerable([NotNull] IMethodSymbol method,
-            [NotNull] INamedTypeSymbol systemIEnumerable)
+        private static bool ReturnsEnumerable([NotNull] IMethodSymbol method, [NotNull] INamedTypeSymbol iEnumerable,
+            [NotNull] INamedTypeSymbol genericIEnumerable)
         {
-            return method.ReturnType.Equals(systemIEnumerable) ||
-                method.ReturnType.AllInterfaces.Contains(systemIEnumerable);
+            return method.ReturnType.OriginalDefinition.Equals(genericIEnumerable) ||
+                method.ReturnType.Equals(iEnumerable);
         }
 
         private void AnalyzeReturnStatement([NotNull] IReturnStatement returnStatement,
