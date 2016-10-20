@@ -58,7 +58,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports when `for`, `foreach`, `while` or `do-while` loops are nested.
 
 ### AV1535: Always add a block after keywords such as if, else, while, for, foreach and case (MEDIUM)
-- [ ] This analyzer reports when a case statement does not have a block. The other scenarios are already covered by Resharper.
+- [x] This analyzer reports when a case statement does not have a block. The other scenarios are already covered by Resharper. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1536: Always add a default block after the last case in a switch statement (HIGH)
 - [x] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
