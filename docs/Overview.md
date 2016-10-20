@@ -52,7 +52,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports boolean comparisons with `true` or `false`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1530: Don't change a loop variable inside a for loop (MEDIUM)
-- [ ] This analyzer reports when loop variables are assigned in the loop body.
+- [x] This analyzer reports when loop variables are assigned in the loop body.
 
 ### AV1532: Avoid nested loops (MEDIUM)
 - [x] This analyzer reports when `for`, `foreach`, `while` or `do-while` loops are nested. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
