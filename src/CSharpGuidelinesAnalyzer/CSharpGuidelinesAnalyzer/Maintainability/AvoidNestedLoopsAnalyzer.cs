@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Maintainability
 {
@@ -10,8 +11,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
     {
         public const string DiagnosticId = "AV1532";
 
-        private const string Title = "AV1532";
-        private const string MessageFormat = "AV1532";
+        private const string Title = "Loop statement contains nested loop";
+        private const string MessageFormat = "Loop statement contains nested loop.";
         private const string Description = "Avoid nested loops.";
         private const string Category = "Maintainability";
 
@@ -25,8 +26,55 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
-            //context.EnableConcurrentExecution();
-            //context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                {
+                    startContext.RegisterOperationAction(AnalyzeLoopStatement, OperationKind.LoopStatement);
+                }
+            });
+        }
+
+        private void AnalyzeLoopStatement(OperationAnalysisContext context)
+        {
+            var loopStatement = (ILoopStatement) context.Operation;
+
+            var walker = new LoopBodyWalker();
+            walker.Visit(loopStatement.Body);
+
+            if (walker.SeenLoopStatement)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, loopStatement.Syntax.GetLocation()));
+            }
+        }
+
+        private sealed class LoopBodyWalker : OperationWalker
+        {
+            public bool SeenLoopStatement { get; private set; }
+
+            public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
+            {
+                SeenLoopStatement = true;
+
+                base.VisitWhileUntilLoopStatement(operation);
+            }
+
+            public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
+            {
+                SeenLoopStatement = true;
+
+                base.VisitForLoopStatement(operation);
+            }
+
+            public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
+            {
+                SeenLoopStatement = true;
+
+                base.VisitForEachLoopStatement(operation);
+            }
         }
     }
 }
