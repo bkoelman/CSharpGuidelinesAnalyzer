@@ -92,9 +92,6 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ### AV1708: Name types using nouns, noun phrases or adjective phrases (MEDIUM)
 - [ ] This analyzer reports types that have the words "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.
 
-### AV1709: Name generic type parameters with descriptive names (MEDIUM)
-- [ ] This analyzer reports single-character type parameters that are not named `T`. The other scenarios are already covered by [CA1715](https://msdn.microsoft.com/en-us/library/ms182243.aspx) and Resharper.
-
 ### AV1710: Don't repeat the name of a class or enumeration in its members (HIGH)
 - [x] This analyzer reports members whose name contains the name of their containing type.
 

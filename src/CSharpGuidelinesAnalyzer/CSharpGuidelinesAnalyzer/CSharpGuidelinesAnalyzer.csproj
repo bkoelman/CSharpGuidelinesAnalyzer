@@ -81,7 +81,6 @@
     <Compile Include="Naming\NamePropertiesWithAnAffirmativePhraseAnalyzer.cs" />
     <Compile Include="Naming\PrefixEventHandlersWithOnAnalyzer.cs" />
     <Compile Include="Naming\StaticClassesShouldOnlyContainExtensionMethodsAnalyzer.cs" />
-    <Compile Include="Naming\UseDescriptiveNamesForTypeParametersAnalyzer.cs" />
     <Compile Include="Naming\UseFrameworkTerminologyInMemberNamesAnalyzer.cs" />
     <Compile Include="Naming\UseUnderscoresForUnusedLambdaParametersAnalyzer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

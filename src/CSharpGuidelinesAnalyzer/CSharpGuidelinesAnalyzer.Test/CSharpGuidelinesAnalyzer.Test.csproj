@@ -185,7 +185,6 @@
     <Compile Include="Specs\Naming\NamePropertiesWithAnAffirmativePhraseSpecs.cs" />
     <Compile Include="Specs\Naming\PrefixEventHandlersWithOnSpecs.cs" />
     <Compile Include="Specs\Naming\StaticClassesShouldOnlyContainExtensionMethodsSpecs.cs" />
-    <Compile Include="Specs\Naming\UseDescriptiveNamesForTypeParametersSpecs.cs" />
     <Compile Include="Specs\Naming\UseFrameworkTerminologyInMemberNamesSpecs.cs" />
     <Compile Include="Specs\Naming\UseUnderscoresForUnusedLambdaParametersSpecs.cs" />
     <Compile Include="TestDataBuilders\ClassSourceCodeBuilder.cs" />
