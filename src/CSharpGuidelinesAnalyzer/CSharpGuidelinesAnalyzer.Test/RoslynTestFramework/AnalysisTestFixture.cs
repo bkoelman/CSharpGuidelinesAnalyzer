@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 context.LanguageName, context.References, context.FileName, null);
 
             ImmutableArray<Diagnostic> diagnostics =
-                GetDiagnosticsForDocument(documentWithSpans.Document, context.Options)
+                GetDiagnosticsForDocument(documentWithSpans.Document, context.Options, context.ValidationMode)
                     .OrderBy(d => d.Location.SourceSpan)
                     .Where(d => d.Id == DiagnosticId)
                     .ToImmutableArray();
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [ItemNotNull]
         protected ImmutableArray<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
-            [CanBeNull] AnalyzerOptions options, bool mustBeInSourceTree = true)
+            [CanBeNull] AnalyzerOptions options, TestValidationMode validationMode, bool mustBeInSourceTree = true)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(CreateAnalyzer());
             Compilation compilation = document.Project.GetCompilationAsync().Result;
@@ -73,7 +73,10 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 CancellationToken.None);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(CancellationToken.None);
-            ValidateCompilerDiagnostics(compilerDiagnostics);
+            if (validationMode != TestValidationMode.AllowCompileErrors)
+            {
+                ValidateCompileErrors(compilerDiagnostics);
+            }
 
             SyntaxTree tree = document.GetSyntaxTreeAsync().Result;
 
@@ -90,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return builder.ToImmutable();
         }
 
-        private void ValidateCompilerDiagnostics([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)
+        private void ValidateCompileErrors([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)
         {
             bool hasErrors = compilerDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error);
             hasErrors.Should().BeFalse("test should have no compile errors");

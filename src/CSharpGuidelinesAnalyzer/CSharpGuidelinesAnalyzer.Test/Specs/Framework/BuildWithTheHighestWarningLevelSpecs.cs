@@ -24,7 +24,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             DocumentWithSpans documentWithSpans = CreateEmptyDocumentWithWarningLevel(warningLevel);
 
             // Act
-            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null, false);
+            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null,
+                TestValidationMode.AllowCompileWarnings, false);
 
             // Assert
             diagnostics.Should().HaveCount(0);
@@ -38,7 +39,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             DocumentWithSpans documentWithSpans = CreateEmptyDocumentWithWarningLevel(warningLevel);
 
             // Act
-            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null, false);
+            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null,
+                TestValidationMode.AllowCompileWarnings, false);
 
             // Assert
             diagnostics.Should().HaveCount(1);
@@ -54,7 +56,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             DocumentWithSpans documentWithSpans = CreateEmptyDocumentWithWarningLevel(warningLevel);
 
             // Act
-            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null, false);
+            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null,
+                TestValidationMode.AllowCompileWarnings, false);
 
             // Assert
             diagnostics.Should().HaveCount(1);
@@ -70,7 +73,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             DocumentWithSpans documentWithSpans = CreateEmptyDocumentWithWarningLevel(warningLevel);
 
             // Act
-            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null, false);
+            ImmutableArray<Diagnostic> diagnostics = GetDiagnosticsForDocument(documentWithSpans.Document, null,
+                TestValidationMode.AllowCompileWarnings, false);
 
             // Assert
             diagnostics.Should().HaveCount(1);
@@ -78,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             diagnostics[0].Location.Should().Be(Location.None);
         }
 
-        // Note: at warning level 0, analyzer do not even run. So a test for that is omitted here.
+        // Note: at warning level 0, analyzers do not even run. So a test for that is omitted here.
 
         [NotNull]
         private static DocumentWithSpans CreateEmptyDocumentWithWarningLevel(int warningLevel)

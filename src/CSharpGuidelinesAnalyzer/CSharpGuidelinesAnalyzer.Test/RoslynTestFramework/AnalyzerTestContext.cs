@@ -34,23 +34,28 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [ItemNotNull]
         public ImmutableList<MetadataReference> References { get; }
 
+        public TestValidationMode ValidationMode { get; }
+
         [CanBeNull]
         public AnalyzerOptions Options { get; }
 
         private AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName,
             [NotNull] string fileName, [CanBeNull] AnalyzerOptions options,
-            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references)
+            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, TestValidationMode validationMode)
         {
             MarkupCode = markupCode;
             LanguageName = languageName;
             FileName = fileName;
             Options = options;
             References = references;
+            ValidationMode = validationMode;
         }
 
         public AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName,
             [CanBeNull] AnalyzerOptions options)
-            : this(markupCode, languageName, DefaultFileName, options, DefaultReferences)
+            : this(
+                markupCode, languageName, DefaultFileName, options, DefaultReferences,
+                TestValidationMode.AllowCompileWarnings)
         {
             Guard.NotNull(markupCode, nameof(markupCode));
             Guard.NotNull(languageName, nameof(languageName));
@@ -61,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         {
             Guard.NotNull(fileName, nameof(fileName));
 
-            return new AnalyzerTestContext(MarkupCode, LanguageName, fileName, Options, References);
+            return new AnalyzerTestContext(MarkupCode, LanguageName, fileName, Options, References, ValidationMode);
         }
 
         [NotNull]
@@ -70,7 +75,13 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Guard.NotNull(references, nameof(references));
 
             ImmutableList<MetadataReference> referenceList = ImmutableList.CreateRange(references);
-            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, Options, referenceList);
+            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, Options, referenceList, ValidationMode);
+        }
+
+        [NotNull]
+        public AnalyzerTestContext InValidationMode(TestValidationMode validationMode)
+        {
+            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, Options, References, validationMode);
         }
     }
 }

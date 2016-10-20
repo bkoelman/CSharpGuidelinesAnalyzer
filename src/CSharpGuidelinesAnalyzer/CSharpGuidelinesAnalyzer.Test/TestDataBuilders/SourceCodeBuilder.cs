@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -29,6 +30,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [NotNull]
         private string codeNamespaceImportExpected = string.Empty;
 
+        private TestValidationMode validationMode;
+
         [NotNull]
         protected abstract string GetSourceCode();
 
@@ -52,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             IList<string> nestedTypes = new string[0];
 
             return new ParsedSourceCode(sourceText, sourceFilename, ImmutableHashSet.Create(references.ToArray()),
-                nestedTypes, codeNamespaceImportExpected, true);
+                nestedTypes, codeNamespaceImportExpected, true, validationMode);
         }
 
         [NotNull]
@@ -111,6 +114,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         internal void _ExpectingImportForNamespace([NotNull] string codeNamespace)
         {
             codeNamespaceImportExpected = codeNamespace;
+        }
+
+        internal void _AllowingCompileErrors()
+        {
+            validationMode = TestValidationMode.AllowCompileErrors;
         }
 
         internal void _WithHeader([NotNull] string text)
@@ -203,6 +211,16 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNull(expectedImportText, nameof(expectedImportText));
 
             source._ExpectingImportForNamespace(expectedImportText);
+            return source;
+        }
+
+        [NotNull]
+        public static TBuilder AllowingCompileErrors<TBuilder>([NotNull] this TBuilder source)
+            where TBuilder : SourceCodeBuilder
+        {
+            Guard.NotNull(source, nameof(source));
+
+            source._AllowingCompileErrors();
             return source;
         }
     }

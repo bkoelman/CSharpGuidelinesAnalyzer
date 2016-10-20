@@ -144,6 +144,7 @@
     <Compile Include="RoslynTestFramework\DocumentWithSpans.cs" />
     <Compile Include="RoslynTestFramework\FixProviderTestContext.cs" />
     <Compile Include="RoslynTestFramework\TestHelpers.cs" />
+    <Compile Include="RoslynTestFramework\TestValidationMode.cs" />
     <Compile Include="RoslynTestFramework\Verify.cs" />
     <Compile Include="Specs\ClassDesign\DoNotExposeStatefulObjectsThroughStaticMembersSpecs.cs" />
     <Compile Include="Specs\ClassDesign\DoNotHideInheritedMembersSpecs.cs" />

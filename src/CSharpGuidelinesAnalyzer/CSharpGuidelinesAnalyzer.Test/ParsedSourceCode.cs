@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
@@ -35,12 +36,15 @@ namespace CSharpGuidelinesAnalyzer.Test
 
         public bool ReIndentExpected { get; }
 
+        public TestValidationMode ValidationMode { get; private set; }
+
         [NotNull]
         private readonly string attributePrefix;
 
         public ParsedSourceCode([NotNull] string text, [NotNull] string filename,
             [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references,
-            [ItemNotNull] [NotNull] IList<string> nestedTypes, [NotNull] string codeNamespaceImport, bool reIndent)
+            [ItemNotNull] [NotNull] IList<string> nestedTypes, [NotNull] string codeNamespaceImport, bool reIndent,
+            TestValidationMode validationMode)
         {
             Guard.NotNull(text, nameof(text));
             Guard.NotNull(filename, nameof(filename));
@@ -54,6 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Test
             attributePrefix = ExtractAttributePrefix(nestedTypes);
             CodeNamespaceImport = codeNamespaceImport;
             ReIndentExpected = reIndent;
+            ValidationMode = validationMode;
         }
 
         [NotNull]

@@ -16,7 +16,8 @@ namespace CSharpGuidelinesAnalyzer.Test
 
             AnalyzerTestContext analyzerContext = new AnalyzerTestContext(text, LanguageNames.CSharp, null)
                 .WithReferences(source.References)
-                .WithFileName(source.Filename);
+                .WithFileName(source.Filename)
+                .InValidationMode(source.ValidationMode);
 
             AssertDiagnostics(analyzerContext, messages);
         }
