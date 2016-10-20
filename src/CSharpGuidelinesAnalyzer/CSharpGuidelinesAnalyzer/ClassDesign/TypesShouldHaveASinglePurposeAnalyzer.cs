@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -24,6 +23,9 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [ItemNotNull]
+        private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And", "and" }.ToImmutableArray();
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -36,26 +38,10 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            if (IdentifierNameContainsAnyOf(type.Name, "And", "and"))
+            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist) != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], type.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name));
             }
-        }
-
-        private static bool IdentifierNameContainsAnyOf([NotNull] string identiferName,
-            [NotNull] [ItemNotNull] params string[] wordsToFind)
-        {
-            List<string> wordsInText = AnalysisUtilities.ExtractWords(identiferName);
-
-            foreach (string wordToFind in wordsToFind)
-            {
-                if (wordsInText.Contains(wordToFind))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 }

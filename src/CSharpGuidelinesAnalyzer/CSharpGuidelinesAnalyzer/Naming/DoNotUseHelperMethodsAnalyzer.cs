@@ -10,8 +10,8 @@ namespace CSharpGuidelinesAnalyzer.Naming
     {
         public const string DiagnosticId = "AV1708";
 
-        private const string Title = "AV1708";
-        private const string MessageFormat = "AV1708";
+        private const string Title = "Type name contains term that should be avoided";
+        private const string MessageFormat = "Name of type '{0}' contains the term '{1}'.";
         private const string Description = "Name types using nouns, noun phrases or adjective phrases.";
         private const string Category = "Naming";
 
@@ -23,10 +23,28 @@ namespace CSharpGuidelinesAnalyzer.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [ItemNotNull]
+        private static readonly ImmutableArray<string> WordsBlacklist =
+            new[] { "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common", "Shared" }
+                .ToImmutableArray();
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
-            //context.EnableConcurrentExecution();
-            //context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+
+            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+        }
+
+        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        {
+            var type = (INamedTypeSymbol) context.Symbol;
+
+            string word = AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist);
+            if (word != null)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, word));
+            }
         }
     }
 }

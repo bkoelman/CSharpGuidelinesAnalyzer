@@ -90,7 +90,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports single-letter variable names and identifiers that contain the words "Btn", "Ctrl" and "Frm".
 
 ### AV1708: Name types using nouns, noun phrases or adjective phrases (MEDIUM)
-- [ ] This analyzer reports types that have the words "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.
+- [x] This analyzer reports types that have any of the terms "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.
 
 ### AV1710: Don't repeat the name of a class or enumeration in its members (HIGH)
 - [x] This analyzer reports members whose name contains the name of their containing type.

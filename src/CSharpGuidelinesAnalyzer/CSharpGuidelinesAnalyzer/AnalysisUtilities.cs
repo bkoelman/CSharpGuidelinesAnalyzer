@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -64,9 +65,26 @@ namespace CSharpGuidelinesAnalyzer
             return false;
         }
 
+        [CanBeNull]
+        public static string GetFirstWordInSetFromIdentifier([NotNull] string identiferName,
+            [ItemNotNull] ImmutableArray<string> wordsToFind)
+        {
+            List<string> wordsInText = ExtractWords(identiferName);
+
+            foreach (string wordToFind in wordsToFind)
+            {
+                if (wordsInText.Contains(wordToFind))
+                {
+                    return wordToFind;
+                }
+            }
+
+            return null;
+        }
+
         [NotNull]
         [ItemNotNull]
-        public static List<string> ExtractWords([NotNull] string identifierName)
+        private static List<string> ExtractWords([NotNull] string identifierName)
         {
             var words = new List<string>();
 
@@ -124,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer
         public static ISymbol GetContainingMember([NotNull] ISymbol owningSymbol)
         {
             return IsPropertyOrEventAccessor(owningSymbol)
-                ? ((IMethodSymbol)owningSymbol).AssociatedSymbol
+                ? ((IMethodSymbol) owningSymbol).AssociatedSymbol
                 : owningSymbol;
         }
 
