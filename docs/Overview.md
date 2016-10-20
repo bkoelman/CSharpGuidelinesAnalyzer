@@ -18,7 +18,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Member Design
 
 ### AV1130: Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class (MEDIUM)
-- [ ] This analyzer reports members whose signature returns a `class` or `struct` that implements `IEnumerable`.
+- [x] This analyzer reports members whose signature returns a `class` or `struct` that implements `IEnumerable`.
 
 ## Category: Miscellaneous Design
 
