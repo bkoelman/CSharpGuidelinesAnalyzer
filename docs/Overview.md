@@ -117,7 +117,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports static classes whose name does not end in "Extensions" -or- contain public or internal methods that do not have the `this` modifier on the first parameter.
 
 ### AV1755: Post-fix asynchronous methods with Async or TaskAsync (MEDIUM)
-- [ ] This analyzer reports `async` methods whose names do not end with "Async" or "TaskAsync".
+- [x] This analyzer reports `async` methods whose names do not end with "Async" or "TaskAsync".
 
 ## Category: Framework
 
