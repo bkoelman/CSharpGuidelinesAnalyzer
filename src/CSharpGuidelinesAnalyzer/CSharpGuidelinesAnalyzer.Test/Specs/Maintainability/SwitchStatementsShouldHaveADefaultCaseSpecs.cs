@@ -430,6 +430,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        public void When_switch_statement_is_invalid_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .AllowingCompileErrors()
+                .InDefaultClass(@"
+                    void M(bool b)
+                    {
+                        switch (b)
+                        {
+                            case true:
+                                throw new NotImplementedException();
+                            case true:
+                                throw new NotImplementedException();
+                        }
+                   }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new SwitchStatementsShouldHaveADefaultCaseAnalyzer();

@@ -51,6 +51,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         private void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)
         {
             var switchStatement = (ISwitchStatement) context.Operation;
+
+            if (switchStatement.IsInvalid)
+            {
+                return;
+            }
+
             var analysisContext = new SwitchAnalysisContext(switchStatement, context.Compilation, systemBoolean,
                 context.CancellationToken);
 
