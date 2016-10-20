@@ -18,7 +18,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -60,7 +59,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
