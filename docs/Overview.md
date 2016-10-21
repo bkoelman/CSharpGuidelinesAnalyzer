@@ -136,7 +136,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports missing XML documentation comments on internal types and members. The other scenarios (public and protected types and members) are already covered by the C# compiler.
 
 ### AV2310: Avoid inline comments (MEDIUM)
-- [ ] This analyzer reports single-line and multi-line comments inside method bodies.
+- [x] This analyzer reports single-line and multi-line comments inside method bodies.
 
 ### AV2318: Don't use comments for tracking work to be done later (LOW)
 - [ ] This analyzer reports comments that start with the word "TODO".
