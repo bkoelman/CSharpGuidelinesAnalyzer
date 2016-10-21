@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.MiscellaneousDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
-using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
@@ -781,11 +779,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new EvaluateQueriesBeforeReturningThemAnalyzer();
-        }
-
-        protected override CodeFixProvider CreateFixProvider()
-        {
-            throw new NotImplementedException();
         }
     }
 }

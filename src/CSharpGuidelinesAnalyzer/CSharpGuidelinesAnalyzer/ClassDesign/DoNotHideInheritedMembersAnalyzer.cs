@@ -41,7 +41,8 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
                 return;
             }
 
-            if (!context.Symbol.IsOverride && AnalysisUtilities.HidesBaseMember(context.Symbol, context.CancellationToken))
+            if (!context.Symbol.IsOverride &&
+                AnalysisUtilities.HidesBaseMember(context.Symbol, context.CancellationToken))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
                     context.Symbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));

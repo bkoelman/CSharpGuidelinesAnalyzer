@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
@@ -14,20 +12,16 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     internal static class TestHelpers
     {
         [NotNull]
-        public static DocumentWithSpans GetDocumentAndSpansFromMarkup([NotNull] string markupCode,
-            [NotNull] string languageName, [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references,
-            [NotNull] string fileName, [CanBeNull] int? warningLevel)
+        public static DocumentWithSpans GetDocumentAndSpansFromMarkup([NotNull] AnalyzerTestContext context)
         {
-            Guard.NotNull(markupCode, nameof(markupCode));
-            Guard.NotNull(languageName, nameof(languageName));
-            Guard.NotNull(references, nameof(references));
-            Guard.NotNull(fileName, nameof(fileName));
+            Guard.NotNull(context, nameof(context));
 
             string code;
             IList<TextSpan> spans;
-            GetCodeAndSpansFromMarkup(markupCode, out code, out spans);
+            GetCodeAndSpansFromMarkup(context.MarkupCode, out code, out spans);
 
-            Document document = GetDocument(code, languageName, references, fileName, warningLevel);
+            Document document = GetDocument(code, context.LanguageName, context.FileName, context.AssemblyName,
+                context.References, context.CompilerWarningLevel);
             return new DocumentWithSpans(document, spans);
         }
 
@@ -72,18 +66,19 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [NotNull]
         private static Document GetDocument([NotNull] string code, [NotNull] string languageName,
-            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName,
-            [CanBeNull] int? warningLevel)
+            [NotNull] string fileName, [NotNull] string assemblyName,
+            [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references,
+            [CanBeNull] int? compilerWarningLevel)
         {
             var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true);
 
-            if (warningLevel != null)
+            if (compilerWarningLevel != null)
             {
-                compilationOptions = compilationOptions.WithWarningLevel(warningLevel.Value);
+                compilationOptions = compilationOptions.WithWarningLevel(compilerWarningLevel.Value);
             }
 
             return new AdhocWorkspace()
-                .AddProject("TestProject", languageName)
+                .AddProject(assemblyName, languageName)
                 .WithCompilationOptions(compilationOptions)
                 .WithParseOptions(new CSharpParseOptions()
                     .WithFeatures(new[]
@@ -92,36 +87,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                     }))
                 .AddMetadataReferences(references)
                 .AddDocument(fileName, code);
-        }
-
-        [NotNull]
-        [ItemNotNull]
-        public static IList<string> RemoveMarkupFrom([NotNull] [ItemNotNull] IList<string> expected,
-            [NotNull] string language, bool reformat,
-            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName)
-        {
-            Guard.NotNull(expected, nameof(expected));
-            Guard.NotNull(language, nameof(language));
-            Guard.NotNull(references, nameof(references));
-            Guard.NotNull(fileName, nameof(fileName));
-
-            return expected.Select(text => RemoveMarkupFrom(text, language, reformat, references, fileName)).ToList();
-        }
-
-        [NotNull]
-        private static string RemoveMarkupFrom([NotNull] string expected, [NotNull] string language, bool reformat,
-            [NotNull] [ItemNotNull] ImmutableList<MetadataReference> references, [NotNull] string fileName)
-        {
-            Document document = GetDocumentAndSpansFromMarkup(expected, language, references, fileName, null).Document;
-            SyntaxNode syntaxRoot = document.GetSyntaxRootAsync().Result;
-
-            if (reformat)
-            {
-                SyntaxNode formattedSyntaxRoot = Formatter.Format(syntaxRoot, document.Project.Solution.Workspace);
-                return formattedSyntaxRoot.ToFullString();
-            }
-
-            return syntaxRoot.ToFullString();
         }
     }
 }
