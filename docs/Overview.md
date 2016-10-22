@@ -40,7 +40,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports usages of the negation operator with an argument that contains the word "No" in it.
 
 ### AV1505: Name assemblies after their contained namespace (LOW)
-- [ ] This analyzer reports types whose namespace does not start with the assembly name, unless the assembly name ends with ".Core".
+- [x] This analyzer reports namespaces and types that do not match with the assembly name, unless the assembly name ends with ".Core".
 
 ### AV1507: Limit the contents of a source code file to one type (LOW)
 - [ ] This analyzer reports when a file contains multiple non-nested types.
