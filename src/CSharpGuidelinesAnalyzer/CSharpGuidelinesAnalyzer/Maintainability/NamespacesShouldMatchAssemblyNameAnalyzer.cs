@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private static bool IsCoreAssembly([NotNull] string assemblyName)
         {
-            return assemblyName.EndsWith(".Core", StringComparison.Ordinal);
+            return assemblyName == "Core" || assemblyName.EndsWith(".Core", StringComparison.Ordinal);
         }
 
         private static bool IsTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol)
@@ -87,12 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             var type = (INamedTypeSymbol) context.Symbol;
 
             string assemblyName = type.ContainingAssembly.Name;
-            if (IsCoreAssembly(assemblyName))
-            {
-                return;
-            }
-
-            if (type.ContainingNamespace.IsGlobalNamespace)
+            if (type.ContainingNamespace.IsGlobalNamespace && !IsCoreAssembly(assemblyName))
             {
                 context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, assemblyName));
             }
@@ -102,6 +97,9 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         {
             [NotNull]
             private readonly string assemblyName;
+
+            [ItemNotNull]
+            private readonly ImmutableArray<string> assemblyNameParts;
 
             [NotNull]
             private readonly Action<Diagnostic> reportDiagnostic;
@@ -118,6 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 Guard.NotNull(assemblyName, nameof(assemblyName));
 
                 this.assemblyName = assemblyName;
+                assemblyNameParts = assemblyName.Split('.').ToImmutableArray();
 
                 this.reportDiagnostic = reportDiagnostic;
             }
@@ -126,14 +125,9 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             {
                 namespaceNames.Push(symbol.Name);
 
-                string currentNamespaceName = CurrentNamespaceName;
-
-                bool isNamespaceValid = currentNamespaceName.Length > assemblyName.Length
-                    ? currentNamespaceName.StartsWith(assemblyName, StringComparison.Ordinal)
-                    : assemblyName.StartsWith(currentNamespaceName, StringComparison.Ordinal);
-                if (!isNamespaceValid)
+                if (!IsCurrentNamespaceValid(false))
                 {
-                    reportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], currentNamespaceName,
+                    reportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
                         assemblyName));
                 }
 
@@ -150,13 +144,33 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 namespaceNames.Pop();
             }
 
+            private bool IsCurrentNamespaceValid(bool requireCompleteMatchWithAssemblyName)
+            {
+                string[] currentNamespaceParts = namespaceNames.Reverse().ToArray();
+
+                if (requireCompleteMatchWithAssemblyName && assemblyNameParts.Length > currentNamespaceParts.Length)
+                {
+                    return false;
+                }
+
+                int commonLength = Math.Min(currentNamespaceParts.Length, assemblyNameParts.Length);
+                for (int index = 0; index < commonLength; index++)
+                {
+                    if (currentNamespaceParts[index] != assemblyNameParts[index])
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
             {
-                string currentNamespaceName = CurrentNamespaceName;
-                if (!currentNamespaceName.StartsWith(assemblyName, StringComparison.Ordinal))
+                if (!IsCurrentNamespaceValid(true))
                 {
                     reportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
-                        currentNamespaceName, assemblyName));
+                        CurrentNamespaceName, assemblyName));
                 }
             }
         }
