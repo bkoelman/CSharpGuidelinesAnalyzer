@@ -22,12 +22,12 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
         [NotNull]
         private static readonly DiagnosticDescriptor SenderRule = new DiagnosticDescriptor(DiagnosticId, SenderTitle,
             SenderMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category));
+            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor ArgsRule = new DiagnosticDescriptor(DiagnosticId, ArgsTitle,
             ArgsMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
-            helpLinkUri: HelpLinkUris.GetForCategory(Category));
+            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
