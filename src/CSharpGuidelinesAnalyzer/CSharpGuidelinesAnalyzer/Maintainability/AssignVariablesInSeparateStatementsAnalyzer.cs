@@ -117,30 +117,10 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             private void RegisterAssignment([NotNull] IOperation operation)
             {
-                var local = operation as ILocalReferenceExpression;
-                if (local != null)
+                IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(operation);
+                if (identifierInfo != null)
                 {
-                    IdentifiersAssigned.Add(local.Local.Name);
-                }
-
-                var parameter = operation as IParameterReferenceExpression;
-                if (parameter != null)
-                {
-                    IdentifiersAssigned.Add(parameter.Parameter.Name);
-                }
-
-                var field = operation as IFieldReferenceExpression;
-                if (field != null)
-                {
-                    IdentifiersAssigned.Add(
-                        field.Field.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
-                }
-
-                var property = operation as IPropertyReferenceExpression;
-                if (property != null)
-                {
-                    IdentifiersAssigned.Add(
-                        property.Property.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                    IdentifiersAssigned.Add(identifierInfo.LongName);
                 }
             }
         }

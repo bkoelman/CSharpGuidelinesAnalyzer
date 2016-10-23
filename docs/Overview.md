@@ -37,7 +37,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports methods that consist of more than seven statements. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1502: Avoid conditions with double negatives (MEDIUM)
-- [ ] This analyzer reports usages of the negation operator with an argument that contains the word "No" in it.
+- [x] This analyzer reports usages of the logical not operator with an argument that contains the word "No" or "Not" in it. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1505: Name assemblies after their contained namespace (LOW)
 - [x] This analyzer reports namespaces and types that do not match with the assembly name, unless the assembly name ends with ".Core".

@@ -54,41 +54,11 @@ namespace CSharpGuidelinesAnalyzer.Framework
         {
             var assignment = (IAssignmentExpression) context.Operation;
 
-            string identifierName = TryGetNameForDynamicIdentifier(assignment.Target);
-            if (identifierName != null)
+            IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(assignment.Target);
+            if (identifierInfo != null && identifierInfo.Type.TypeKind == TypeKind.Dynamic)
             {
-                AnalyzeAssignedValue(assignment.Value, assignment.Syntax.GetLocation(), identifierName, context);
+                AnalyzeAssignedValue(assignment.Value, assignment.Syntax.GetLocation(), identifierInfo.Name, context);
             }
-        }
-
-        [CanBeNull]
-        private string TryGetNameForDynamicIdentifier([NotNull] IOperation operation)
-        {
-            var local = operation as ILocalReferenceExpression;
-            if (local != null)
-            {
-                return local.Local.Type.TypeKind == TypeKind.Dynamic ? local.Local.Name : null;
-            }
-
-            var parameter = operation as IParameterReferenceExpression;
-            if (parameter != null)
-            {
-                return parameter.Parameter.Type.TypeKind == TypeKind.Dynamic ? parameter.Parameter.Name : null;
-            }
-
-            var field = operation as IFieldReferenceExpression;
-            if (field != null)
-            {
-                return field.Field.Type.TypeKind == TypeKind.Dynamic ? field.Field.Name : null;
-            }
-
-            var property = operation as IPropertyReferenceExpression;
-            if (property != null)
-            {
-                return property.Property.Type.TypeKind == TypeKind.Dynamic ? property.Property.Name : null;
-            }
-
-            return null;
         }
 
         private void AnalyzeAssignedValue([CanBeNull] IOperation value, [NotNull] Location location,

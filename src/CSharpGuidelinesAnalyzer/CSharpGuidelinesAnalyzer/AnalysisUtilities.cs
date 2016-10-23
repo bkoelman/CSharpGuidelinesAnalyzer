@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer
 {
@@ -159,6 +160,52 @@ namespace CSharpGuidelinesAnalyzer
                 default:
                     return false;
             }
+        }
+
+        [CanBeNull]
+        public static IdentifierInfo TryGetIdentifierInfo([CanBeNull] IOperation identifier)
+        {
+            var local = identifier as ILocalReferenceExpression;
+            if (local != null)
+            {
+                return new IdentifierInfo(local.Local.Name,
+                    local.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat), local.Local.Type,
+                    "Variable");
+            }
+
+            var parameter = identifier as IParameterReferenceExpression;
+            if (parameter != null)
+            {
+                return new IdentifierInfo(parameter.Parameter.Name,
+                    /* CSharpShortErrorMessageFormat returns 'ref int', ie. without parameter name */
+                    parameter.Parameter.Name, parameter.Parameter.Type, parameter.Parameter.Kind.ToString());
+            }
+
+            var field = identifier as IFieldReferenceExpression;
+            if (field != null)
+            {
+                return new IdentifierInfo(field.Field.Name,
+                    field.Field.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat), field.Field.Type,
+                    field.Field.Kind.ToString());
+            }
+
+            var property = identifier as IPropertyReferenceExpression;
+            if (property != null)
+            {
+                return new IdentifierInfo(property.Property.Name,
+                    property.Property.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat),
+                    property.Property.Type, property.Property.Kind.ToString());
+            }
+
+            var method = identifier as IInvocationExpression;
+            if (method != null)
+            {
+                return new IdentifierInfo(method.TargetMethod.Name,
+                    method.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat),
+                    method.TargetMethod.ReturnType, method.TargetMethod.Kind.ToString());
+            }
+
+            return null;
         }
     }
 }
