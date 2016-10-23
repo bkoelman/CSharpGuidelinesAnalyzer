@@ -36,14 +36,16 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (!AnalysisUtilities.SupportsOperations(startContext.Compilation))
                 {
-                    INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
-                    if (systemBoolean != null)
-                    {
-                        startContext.RegisterOperationAction(c => AnalyzeSwitchStatement(c, systemBoolean),
-                            OperationKind.SwitchStatement);
-                    }
+                    return;
+                }
+
+                INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
+                if (systemBoolean != null)
+                {
+                    startContext.RegisterOperationAction(c => AnalyzeSwitchStatement(c, systemBoolean),
+                        OperationKind.SwitchStatement);
                 }
             });
         }
@@ -80,62 +82,33 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         [CanBeNull]
         private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
-            ITypeSymbol switchType = GetIdentifierTypeOrNull(analysisContext.SwitchStatement.Value);
-            if (switchType != null)
+            IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(analysisContext.SwitchStatement.Value);
+            if (identifierInfo != null)
             {
-                if (switchType.SpecialType == SpecialType.System_Boolean)
+                if (identifierInfo.Type.SpecialType == SpecialType.System_Boolean)
                 {
                     return IsBooleanSwitchComplete(analysisContext);
                 }
 
-                if (AnalysisUtilities.IsNullableBoolean(switchType))
+                if (AnalysisUtilities.IsNullableBoolean(identifierInfo.Type))
                 {
                     return IsNullableBooleanSwitchComplete(analysisContext);
                 }
 
-                if (switchType.BaseType != null && switchType.BaseType.SpecialType == SpecialType.System_Enum)
+                if (identifierInfo.Type.BaseType != null &&
+                    identifierInfo.Type.BaseType.SpecialType == SpecialType.System_Enum)
                 {
-                    var enumType = (INamedTypeSymbol) switchType;
+                    var enumType = (INamedTypeSymbol) identifierInfo.Type;
                     IEnumerable<IFieldSymbol> enumMembers = enumType.GetMembers().OfType<IFieldSymbol>();
                     return IsEnumSwitchComplete(analysisContext, enumMembers);
                 }
 
-                if (AnalysisUtilities.IsNullableEnum(switchType))
+                if (AnalysisUtilities.IsNullableEnum(identifierInfo.Type))
                 {
-                    ITypeSymbol enumType = ((INamedTypeSymbol) switchType).TypeArguments[0];
+                    ITypeSymbol enumType = ((INamedTypeSymbol) identifierInfo.Type).TypeArguments[0];
                     IEnumerable<IFieldSymbol> enumMembers = enumType.GetMembers().OfType<IFieldSymbol>();
                     return IsNullableEnumSwitchComplete(analysisContext, enumMembers);
                 }
-            }
-
-            return null;
-        }
-
-        [CanBeNull]
-        private ITypeSymbol GetIdentifierTypeOrNull([NotNull] IOperation operation)
-        {
-            var local = operation as ILocalReferenceExpression;
-            if (local != null)
-            {
-                return local.Local.Type;
-            }
-
-            var parameter = operation as IParameterReferenceExpression;
-            if (parameter != null)
-            {
-                return parameter.Parameter.Type;
-            }
-
-            var field = operation as IFieldReferenceExpression;
-            if (field != null)
-            {
-                return field.Field.Type;
-            }
-
-            var property = operation as IPropertyReferenceExpression;
-            if (property != null)
-            {
-                return property.Property.Type;
             }
 
             return null;

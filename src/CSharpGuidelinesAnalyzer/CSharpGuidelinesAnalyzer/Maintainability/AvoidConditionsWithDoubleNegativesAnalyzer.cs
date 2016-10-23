@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Maintainability
 {
@@ -10,8 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
     {
         public const string DiagnosticId = "AV1502";
 
-        private const string Title = "AV1502";
-        private const string MessageFormat = "AV1502";
+        private const string Title = "Logical not operator is applied on a member which has a negation in its name.";
+
+        private const string MessageFormat =
+            "Logical not operator is applied on {0} '{1}', which has a negation in its name.";
+
         private const string Description = "Avoid conditions with double negatives.";
         private const string Category = "Maintainability";
 
@@ -23,10 +27,39 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [ItemNotNull]
+        private static readonly ImmutableArray<string> NotWords = new[] { "No", "no", "Not", "not" }.ToImmutableArray();
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
-            //context.EnableConcurrentExecution();
-            //context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                {
+                    startContext.RegisterOperationAction(AnalyzeUnaryOperator, OperationKind.UnaryOperatorExpression);
+                }
+            });
+        }
+
+        private void AnalyzeUnaryOperator(OperationAnalysisContext context)
+        {
+            var unaryOperator = (IUnaryOperatorExpression) context.Operation;
+            if (unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot)
+            {
+                IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(unaryOperator.Operand);
+                if (identifierInfo != null)
+                {
+                    if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierInfo.Name, NotWords) != null)
+                    {
+                        string kind = identifierInfo.Kind.ToLowerInvariant();
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
+                            identifierInfo.Name));
+                    }
+                }
+            }
         }
     }
 }
