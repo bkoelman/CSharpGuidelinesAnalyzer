@@ -776,6 +776,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Select', which uses deferred execution.");
         }
 
+        [Fact]
+        public void When_enum_defines_field_with_explicit_value_it_must_not_crash()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    enum E
+                    {
+                        A = 1
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new EvaluateQueriesBeforeReturningThemAnalyzer();
