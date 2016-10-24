@@ -42,6 +42,11 @@ namespace CSharpGuidelinesAnalyzer.MemberDesign
         {
             var method = (IMethodSymbol) context.Symbol;
 
+            if (IsString(method.ReturnType))
+            {
+                return;
+            }
+
             if (IsArray(method.ReturnType) ||
                 (IsClassOrStruct(method.ReturnType) && TypeImplementsIEnumerable(method.ReturnType)))
             {
@@ -50,7 +55,12 @@ namespace CSharpGuidelinesAnalyzer.MemberDesign
             }
         }
 
-        private bool IsArray([NotNull] ITypeSymbol type)
+        private static bool IsString([NotNull] ITypeSymbol type)
+        {
+            return type.SpecialType == SpecialType.System_String;
+        }
+
+        private static bool IsArray([NotNull] ITypeSymbol type)
         {
             return type.TypeKind == TypeKind.Array;
         }
