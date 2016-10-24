@@ -57,24 +57,16 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         {
             var namespaceSymbol = (INamespaceSymbol) context.Symbol;
 
-            string assemblyName = namespaceSymbol.ContainingAssembly.Name;
-            if (IsCoreAssembly(assemblyName))
-            {
-                return;
-            }
-
             if (!IsTopLevelNamespace(namespaceSymbol))
             {
                 return;
             }
 
-            var visitor = new TypesInNamespaceVisitor(assemblyName, context.ReportDiagnostic);
-            visitor.Visit(namespaceSymbol);
-        }
+            string reportAssemblyName = namespaceSymbol.ContainingAssembly.Name;
+            string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
 
-        private static bool IsCoreAssembly([NotNull] string assemblyName)
-        {
-            return assemblyName == "Core" || assemblyName.EndsWith(".Core", StringComparison.Ordinal);
+            var visitor = new TypesInNamespaceVisitor(assemblyName, context.ReportDiagnostic, reportAssemblyName);
+            visitor.Visit(namespaceSymbol);
         }
 
         private static bool IsTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol)
@@ -82,21 +74,38 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             return namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
         }
 
+        [NotNull]
+        private static string GetAssemblyNameWithoutCore([NotNull] string assemblyName)
+        {
+            if (assemblyName == "Core")
+            {
+                return string.Empty;
+            }
+
+            if (assemblyName.EndsWith(".Core", StringComparison.Ordinal))
+            {
+                return assemblyName.Substring(0, assemblyName.Length - ".Core".Length);
+            }
+
+            return assemblyName;
+        }
+
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            string assemblyName = type.ContainingAssembly.Name;
-            if (type.ContainingNamespace.IsGlobalNamespace && !IsCoreAssembly(assemblyName))
+            if (type.ContainingNamespace.IsGlobalNamespace)
             {
-                context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, assemblyName));
+                context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name,
+                    type.ContainingAssembly.Name));
             }
         }
 
         private sealed class TypesInNamespaceVisitor : SymbolVisitor
         {
-            [NotNull]
-            private readonly string assemblyName;
+            [ItemNotNull]
+            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace =
+                new[] { "JetBrains", "Annotations" }.ToImmutableArray();
 
             [ItemNotNull]
             private readonly ImmutableArray<string> assemblyNameParts;
@@ -105,20 +114,26 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             private readonly Action<Diagnostic> reportDiagnostic;
 
             [NotNull]
+            private readonly string reportAssemblyName;
+
+            [NotNull]
             [ItemNotNull]
             private readonly Stack<string> namespaceNames = new Stack<string>();
 
             [NotNull]
             private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
 
-            public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] Action<Diagnostic> reportDiagnostic)
+            public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] Action<Diagnostic> reportDiagnostic,
+                [NotNull] string reportAssemblyName)
             {
                 Guard.NotNull(assemblyName, nameof(assemblyName));
+                Guard.NotNull(reportAssemblyName, nameof(reportAssemblyName));
 
-                this.assemblyName = assemblyName;
-                assemblyNameParts = assemblyName.Split('.').ToImmutableArray();
+                assemblyNameParts =
+                    assemblyName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
 
                 this.reportDiagnostic = reportDiagnostic;
+                this.reportAssemblyName = reportAssemblyName;
             }
 
             public override void VisitNamespace([NotNull] INamespaceSymbol symbol)
@@ -128,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 if (!IsCurrentNamespaceValid(false))
                 {
                     reportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
-                        assemblyName));
+                        reportAssemblyName));
                 }
 
                 foreach (INamedTypeSymbol typeMember in symbol.GetTypeMembers())
@@ -144,9 +159,23 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 namespaceNames.Pop();
             }
 
+            public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
+            {
+                if (!IsCurrentNamespaceValid(true))
+                {
+                    reportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
+                        CurrentNamespaceName, reportAssemblyName));
+                }
+            }
+
             private bool IsCurrentNamespaceValid(bool requireCompleteMatchWithAssemblyName)
             {
                 string[] currentNamespaceParts = namespaceNames.Reverse().ToArray();
+
+                if (IsCurrentNamespacePartOfJetBrainsAnnotations(currentNamespaceParts))
+                {
+                    return true;
+                }
 
                 if (requireCompleteMatchWithAssemblyName && assemblyNameParts.Length > currentNamespaceParts.Length)
                 {
@@ -165,13 +194,20 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return true;
             }
 
-            public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
+            private bool IsCurrentNamespacePartOfJetBrainsAnnotations(
+                [NotNull] [ItemNotNull] string[] currentNamespaceParts)
             {
-                if (!IsCurrentNamespaceValid(true))
+                if (currentNamespaceParts.Length == 1)
                 {
-                    reportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
-                        CurrentNamespaceName, assemblyName));
+                    return currentNamespaceParts[0] == JetBrainsAnnotationsNamespace[0];
                 }
+
+                if (currentNamespaceParts.Length == 2)
+                {
+                    return currentNamespaceParts.SequenceEqual(JetBrainsAnnotationsNamespace);
+                }
+
+                return false;
             }
         }
     }
