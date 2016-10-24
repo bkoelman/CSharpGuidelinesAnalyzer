@@ -122,6 +122,12 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
         private void AnalyzeMethod(OperationBlockAnalysisContext context)
         {
+            if (context.OwningSymbol is IFieldSymbol)
+            {
+                // Enum constant with explicitly assigned value.
+                return;
+            }
+
             var method = (IMethodSymbol) context.OwningSymbol;
             if (method.ReturnsVoid || !ReturnsEnumerable(method))
             {
