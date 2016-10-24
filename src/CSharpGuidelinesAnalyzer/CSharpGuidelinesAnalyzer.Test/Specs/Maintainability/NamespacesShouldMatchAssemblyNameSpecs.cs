@@ -245,21 +245,77 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_ends_with_Core_it_must_be_skipped()
+        public void When_type_is_defined_in_global_namespace_in_Core_assembly_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InAssemblyNamed("Core")
+                .InGlobalScope(@"
+                    public class [|C|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Type 'C' is declared in global namespace, which does not match with assembly name 'Core'.");
+        }
+
+        [Fact]
+        public void When_type_is_defined_in_nonglobal_namespace_in_Core_assembly_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InAssemblyNamed("Core")
+                .InGlobalScope(@"
+                    namespace Some
+                    {
+                        public class C
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_type_is_defined_in_global_namespace_in_assembly_name_ending_with_Core_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
                 .InAssemblyNamed("Company.Core")
                 .InGlobalScope(@"
-                    class Top
+                    public class [|C|]
                     {
                     }
+                ")
+                .Build();
 
-                    namespace Different
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Type 'C' is declared in global namespace, which does not match with assembly name 'Company.Core'.");
+        }
+
+        [Fact]
+        public void When_type_is_defined_in_namespace_above_Core_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InAssemblyNamed("Company.Core")
+                .InGlobalScope(@"
+                    namespace Company
                     {
-                        namespace Nested
+                        class Top
                         {
-                            class Deep
+                        }
+
+                        namespace Deeper
+                        {
+                            class C
                             {
                             }
                         }
@@ -272,21 +328,17 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_equals_Core_it_must_be_skipped()
+        public void When_namespace_is_JetBrains_Annotations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InAssemblyNamed("Core")
+                .InAssemblyNamed("Company.ProductName")
                 .InGlobalScope(@"
-                    class Top
+                    namespace JetBrains
                     {
-                    }
-
-                    namespace Different
-                    {
-                        namespace Nested
+                        namespace Annotations
                         {
-                            class Deep
+                            class C
                             {
                             }
                         }
@@ -296,6 +348,36 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_namespace_is_not_JetBrains_Annotations_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InAssemblyNamed("Company.ProductName")
+                .InGlobalScope(@"
+                    namespace [|WrongRoot|]
+                    {
+                        namespace [|JetBrains|]
+                        {
+                            namespace [|Annotations|]
+                            {
+                                class [|C|]
+                                {
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Namespace 'WrongRoot' does not match with assembly name 'Company.ProductName'.",
+                "Namespace 'WrongRoot.JetBrains' does not match with assembly name 'Company.ProductName'.",
+                "Namespace 'WrongRoot.JetBrains.Annotations' does not match with assembly name 'Company.ProductName'.",
+                "Type 'C' is declared in namespace 'WrongRoot.JetBrains.Annotations', which does not match with assembly name 'Company.ProductName'.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
