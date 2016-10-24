@@ -31,6 +31,26 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
+        public void When_method_returns_string_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        string M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
