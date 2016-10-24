@@ -23,5 +23,6 @@
     <file src="*.dll" target="analyzers\dotnet\cs"
       exclude="**\JetBrains.Annotations*.dll;**\Microsoft.CodeAnalysis.*;**\System.Collections.Immutable.*;**\System.Reflection.Metadata.*;**\System.Composition.*" />
     <file src="tools\*.ps1" target="tools\" />
+    <file src="build\**" target="build" />
   </files>
 </package>
