@@ -82,7 +82,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports methods that declare parameters of type `bool` or `bool?`.
 
 ### AV1568: Don't use parameters as temporary variables (LOW)
-- [ ] This analyzer reports parameters that are written to and are not declared as `ref` or `out`.
+- [x] This analyzer reports parameters that are written to and are not declared as `ref` or `out`.
 
 ## Category: Naming
 
