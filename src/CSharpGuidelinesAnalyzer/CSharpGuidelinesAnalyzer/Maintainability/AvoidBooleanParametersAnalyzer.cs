@@ -57,31 +57,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            if (IsInterfaceImplementation(parameter))
+            if (AnalysisUtilities.IsInterfaceImplementation(parameter))
             {
                 return;
             }
 
             context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
-        }
-
-        private bool IsInterfaceImplementation([NotNull] IParameterSymbol parameter)
-        {
-            ISymbol containingMember = parameter.ContainingSymbol;
-
-            foreach (INamedTypeSymbol iface in parameter.ContainingType.AllInterfaces)
-            {
-                foreach (ISymbol ifaceMember in iface.GetMembers())
-                {
-                    ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
-
-                    if (containingMember.Equals(implementer))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
     }
 }

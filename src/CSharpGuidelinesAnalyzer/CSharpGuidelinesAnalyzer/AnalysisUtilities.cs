@@ -37,13 +37,13 @@ namespace CSharpGuidelinesAnalyzer
                 syntaxContext.ReportDiagnostic, x => true, syntaxContext.CancellationToken);
         }
 
-        public static bool IsNullableBoolean([NotNull] ITypeSymbol typeSymbol)
+        public static bool IsNullableBoolean([NotNull] ITypeSymbol type)
         {
-            Guard.NotNull(typeSymbol, nameof(typeSymbol));
+            Guard.NotNull(type, nameof(type));
 
-            if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
             {
-                var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
+                var namedTypeSymbol = type as INamedTypeSymbol;
 
                 if (namedTypeSymbol?.TypeArguments[0].SpecialType == SpecialType.System_Boolean)
                 {
@@ -54,16 +54,16 @@ namespace CSharpGuidelinesAnalyzer
             return false;
         }
 
-        public static bool IsNullableEnum([NotNull] ITypeSymbol typeSymbol)
+        public static bool IsNullableEnum([NotNull] ITypeSymbol type)
         {
-            Guard.NotNull(typeSymbol, nameof(typeSymbol));
+            Guard.NotNull(type, nameof(type));
 
-            if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
             {
-                var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
-                ITypeSymbol type = namedTypeSymbol?.TypeArguments[0];
+                var namedTypeSymbol = type as INamedTypeSymbol;
+                ITypeSymbol innerType = namedTypeSymbol?.TypeArguments[0];
 
-                if (type?.BaseType != null && type.BaseType.SpecialType == SpecialType.System_Enum)
+                if (innerType?.BaseType != null && innerType.BaseType.SpecialType == SpecialType.System_Enum)
                 {
                     return true;
                 }
@@ -218,6 +218,46 @@ namespace CSharpGuidelinesAnalyzer
             }
 
             return null;
+        }
+
+        public static bool IsInterfaceImplementation([NotNull] IParameterSymbol parameter)
+        {
+            Guard.NotNull(parameter, nameof(parameter));
+
+            ISymbol containingMember = parameter.ContainingSymbol;
+
+            foreach (INamedTypeSymbol iface in parameter.ContainingType.AllInterfaces)
+            {
+                foreach (ISymbol ifaceMember in iface.GetMembers())
+                {
+                    ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+
+                    if (containingMember.Equals(implementer))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsInterfaceImplementation<TSymbol>([NotNull] TSymbol member) where TSymbol : ISymbol
+        {
+            foreach (INamedTypeSymbol iface in member.ContainingType.AllInterfaces)
+            {
+                foreach (TSymbol ifaceMember in iface.GetMembers().OfType<TSymbol>())
+                {
+                    ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+
+                    if (member.Equals(implementer))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
