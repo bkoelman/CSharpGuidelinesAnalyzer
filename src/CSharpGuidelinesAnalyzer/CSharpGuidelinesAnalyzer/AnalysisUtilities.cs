@@ -259,5 +259,43 @@ namespace CSharpGuidelinesAnalyzer
 
             return false;
         }
+
+        [CanBeNull]
+        public static SyntaxNode TryGetBodySyntaxForMethod([NotNull] IMethodSymbol method,
+            CancellationToken cancellationToken)
+        {
+            Guard.NotNull(method, nameof(method));
+
+            IEnumerable<SyntaxNode> methodSyntaxNodes =
+                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken));
+            foreach (MethodDeclarationSyntax methodSyntax in methodSyntaxNodes.OfType<MethodDeclarationSyntax>())
+            {
+                if (methodSyntax.Body != null)
+                {
+                    return methodSyntax.Body;
+                }
+
+                if (methodSyntax.ExpressionBody?.Expression != null)
+                {
+                    return methodSyntax.ExpressionBody.Expression;
+                }
+
+                if (method.PartialImplementationPart != null)
+                {
+                    return TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken);
+                }
+            }
+
+            foreach (ConstructorDeclarationSyntax constructorSyntax in
+                methodSyntaxNodes.OfType<ConstructorDeclarationSyntax>())
+            {
+                if (constructorSyntax.Body != null)
+                {
+                    return constructorSyntax.Body;
+                }
+            }
+
+            return null;
+        }
     }
 }

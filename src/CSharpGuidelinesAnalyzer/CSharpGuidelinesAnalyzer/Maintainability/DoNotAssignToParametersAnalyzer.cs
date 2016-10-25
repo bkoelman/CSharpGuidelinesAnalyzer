@@ -1,11 +1,7 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Maintainability
@@ -52,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            SyntaxNode body = TryGetBodySyntaxForMethod(method, context.CancellationToken);
+            SyntaxNode body = AnalysisUtilities.TryGetBodySyntaxForMethod(method, context.CancellationToken);
             if (body != null)
             {
                 SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
@@ -65,27 +61,6 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     }
                 }
             }
-        }
-
-        [CanBeNull]
-        private SyntaxNode TryGetBodySyntaxForMethod([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
-        {
-            IEnumerable<SyntaxNode> methodSyntaxNodes =
-                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken));
-            foreach (MethodDeclarationSyntax methodSyntax in methodSyntaxNodes.OfType<MethodDeclarationSyntax>())
-            {
-                if (methodSyntax.Body != null)
-                {
-                    return methodSyntax.Body;
-                }
-
-                if (methodSyntax.ExpressionBody?.Expression != null)
-                {
-                    return methodSyntax.ExpressionBody.Expression;
-                }
-            }
-
-            return null;
         }
     }
 }

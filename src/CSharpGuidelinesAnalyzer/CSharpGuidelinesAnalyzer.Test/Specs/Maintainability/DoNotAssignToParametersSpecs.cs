@@ -149,6 +149,87 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "The value of parameter 'p' is overwritten in its method body.");
         }
 
+        [Fact]
+        public void When_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public C(string p)
+                        {
+                            string s = p;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_parameter_is_written_to_in_constructor_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public C(string [|p|])
+                        {
+                            p += ""X"";
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_ref_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public C(ref string p)
+                        {
+                            p += ""X"";
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_out_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    class C
+                    {
+                        public C(ref string p)
+                        {
+                            p = ""X"";
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotAssignToParametersAnalyzer();
