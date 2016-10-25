@@ -6,6 +6,9 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ### AV1000: A class or interface should have a single purpose (HIGH)
 - [x] This analyzer reports types that have the word "And" in their name.
 
+### AV1008: Avoid static classes (LOW)
+- [x] This analyzer reports static classes with a name that does not end in "Extensions" and public/internal non-extension methods.
+
 ### AV1010: Don't hide inherited members with the new keyword (HIGH)
 - [x] This analyzer reports members that have the `new` modifier in their signature.
 
@@ -111,7 +114,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports unused lambda parameters whose names contain any characters other than underscores.
 
 ### AV1745: Group extension methods in a class suffixed with Extensions (LOW)
-- [ ] This analyzer reports static classes whose name does not end in "Extensions" -or- contain public or internal methods that do not have the `this` modifier on the first parameter.
+- [x] This analyzer reports extension method container classes with a name that does not end in "Extensions".
 
 ### AV1755: Post-fix asynchronous methods with Async or TaskAsync (MEDIUM)
 - [x] This analyzer reports `async` methods whose names do not end with "Async" or "TaskAsync".

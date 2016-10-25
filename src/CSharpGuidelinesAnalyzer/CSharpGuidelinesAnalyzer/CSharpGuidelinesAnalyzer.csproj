@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnalysisUtilities.cs" />
+    <Compile Include="ClassDesign\AvoidStaticClassesAnalyzer.cs" />
     <Compile Include="ClassDesign\DoNotExposeStatefulObjectsThroughStaticMembersAnalyzer.cs" />
     <Compile Include="ClassDesign\DoNotHideInheritedMembersAnalyzer.cs" />
     <Compile Include="ClassDesign\MembersShouldDoASingleThingAnalyzer.cs" />
