@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using JetBrains.Annotations;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+
+namespace CSharpGuidelinesAnalyzer.ClassDesign
+{
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public sealed class AvoidStaticClassesAnalyzer : DiagnosticAnalyzer
+    {
+        public const string DiagnosticId = "AV1008";
+
+        private const string Title = "Class should not be static";
+
+        private const string TypeMessageFormat =
+            "Class '{0}' should be non-static or its name should be suffixed with 'Extensions'.";
+
+        private const string MemberMessageFormat = "Class '{0}' contains {1} non-extension method '{2}'.";
+        private const string Description = "Avoid static classes.";
+        private const string Category = "Class Design";
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            TypeMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
+            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            MemberMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true,
+            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+            => ImmutableArray.Create(TypeRule, MemberRule);
+
+        public override void Initialize([NotNull] AnalysisContext context)
+        {
+            context.EnableConcurrentExecution();
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+
+            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+        }
+
+        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        {
+            var type = (INamedTypeSymbol) context.Symbol;
+
+            if (!type.IsStatic)
+            {
+                return;
+            }
+
+            if (!type.Name.EndsWith("Extensions", StringComparison.Ordinal))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(TypeRule, type.Locations[0], type.Name));
+                return;
+            }
+
+            IEnumerable<IMethodSymbol> visibleMethods =
+                type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal);
+
+            foreach (IMethodSymbol method in visibleMethods.Where(method => !method.IsExtensionMethod))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(MemberRule, method.Locations[0], type.Name,
+                    method.DeclaredAccessibility == Accessibility.Public ? "public" : "internal", method.Name));
+            }
+        }
+
+        private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
+        {
+            return method.DeclaredAccessibility == Accessibility.Public ||
+                method.DeclaredAccessibility == Accessibility.Internal;
+        }
+    }
+}

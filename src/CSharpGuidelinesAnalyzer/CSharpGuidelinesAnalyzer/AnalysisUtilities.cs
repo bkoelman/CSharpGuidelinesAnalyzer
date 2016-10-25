@@ -16,6 +16,8 @@ namespace CSharpGuidelinesAnalyzer
     {
         public static bool SupportsOperations([NotNull] Compilation compilation)
         {
+            Guard.NotNull(compilation, nameof(compilation));
+
             IReadOnlyDictionary<string, string> features = compilation.SyntaxTrees.FirstOrDefault()?.Options.Features;
             return features != null && features.ContainsKey("IOperation") && features["IOperation"] == "true";
         }
@@ -37,6 +39,8 @@ namespace CSharpGuidelinesAnalyzer
 
         public static bool IsNullableBoolean([NotNull] ITypeSymbol typeSymbol)
         {
+            Guard.NotNull(typeSymbol, nameof(typeSymbol));
+
             if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
             {
                 var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
@@ -52,6 +56,8 @@ namespace CSharpGuidelinesAnalyzer
 
         public static bool IsNullableEnum([NotNull] ITypeSymbol typeSymbol)
         {
+            Guard.NotNull(typeSymbol, nameof(typeSymbol));
+
             if (typeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
             {
                 var namedTypeSymbol = typeSymbol as INamedTypeSymbol;
@@ -70,6 +76,8 @@ namespace CSharpGuidelinesAnalyzer
         public static string GetFirstWordInSetFromIdentifier([NotNull] string identiferName,
             [ItemNotNull] ImmutableArray<string> wordsToFind)
         {
+            Guard.NotNull(identiferName, nameof(identiferName));
+
             List<string> wordsInText = ExtractWords(identiferName);
 
             foreach (string wordToFind in wordsToFind)
@@ -122,6 +130,8 @@ namespace CSharpGuidelinesAnalyzer
 
         public static bool HidesBaseMember([NotNull] ISymbol member, CancellationToken cancellationToken)
         {
+            Guard.NotNull(member, nameof(member));
+
             SyntaxNode syntax = member.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
 
             var method = syntax as MethodDeclarationSyntax;
@@ -142,6 +152,8 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public static ISymbol GetContainingMember([NotNull] ISymbol owningSymbol)
         {
+            Guard.NotNull(owningSymbol, nameof(owningSymbol));
+
             return IsPropertyOrEventAccessor(owningSymbol)
                 ? ((IMethodSymbol) owningSymbol).AssociatedSymbol
                 : owningSymbol;
