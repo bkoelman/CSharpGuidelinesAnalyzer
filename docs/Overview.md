@@ -87,7 +87,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Naming
 
 ### AV1704: Don't include numbers in variables, parameters and type members (LOW)
-- [ ] This analyzer reports when a digit occurs in a type, parameter or variable name.
+- [x] This analyzer reports when a digit occurs in a type, member, parameter or variable name. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1706: Don't use abbreviations (MEDIUM)
 - [ ] This analyzer reports single-letter variable names and identifiers that contain the words "Btn", "Ctrl" and "Frm".
