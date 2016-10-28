@@ -1,0 +1,186 @@
+using CSharpGuidelinesAnalyzer.MiscellaneousDesign;
+using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Xunit;
+
+namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
+{
+    public class RaiseEventsFromProtectedVirtualMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
+    {
+        protected override string DiagnosticId => RaiseEventsFromProtectedVirtualMethodsAnalyzer.DiagnosticId;
+
+        [Fact]
+        public void
+            When_event_invocation_method_is_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        protected virtual void OnValueChanged(EventArgs args)
+                        {
+                            ValueChanged?.Invoke(this, args);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_event_invocation_method_is_not_protected_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        private void [|OnValueChanged|](EventArgs args)
+                        {
+                            ValueChanged?.Invoke(this, args);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'OnValueChanged' raises event 'ValueChanged', so should be protected and virtual.");
+        }
+
+        [Fact]
+        public void When_event_invocation_method_is_not_virtual_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        protected void [|OnValueChanged|](EventArgs args)
+                        {
+                            var snapshot = ValueChanged;
+                            if (snapshot != null)
+                            {
+                                snapshot(this, args);
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'OnValueChanged' raises event 'ValueChanged', so should be protected and virtual.");
+        }
+
+        [Fact]
+        public void When_event_invocation_method_is_private_nonvirtual_in_sealed_class_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public sealed class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        private void OnValueChanged(EventArgs args)
+                        {
+                            ValueChanged?.Invoke(this, args);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_event_invocation_method_is_static_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public static event EventHandler ValueChanged;
+
+                        private static void OnValueChanged(EventArgs args)
+                        {
+                            ValueChanged?.Invoke(null, args);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_event_invocation_method_name_does_not_follow_pattern_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        protected virtual void [|RaiseEvent|](EventArgs args)
+                        {
+                            ValueChanged(this, args);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
+        }
+
+        [Fact]
+        public void When_event_invocation_method_name_has_extra_words_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        protected virtual void [|RaiseOnValueChanged|](EventArgs args)
+                        {
+                            EventHandler snapshot;
+                            snapshot = ValueChanged;
+
+                            if (snapshot != null)
+                            {
+                                snapshot(this, args);
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'RaiseOnValueChanged' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
+        }
+
+        protected override DiagnosticAnalyzer CreateAnalyzer()
+        {
+            return new RaiseEventsFromProtectedVirtualMethodsAnalyzer();
+        }
+    }
+}

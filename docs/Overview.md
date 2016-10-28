@@ -26,7 +26,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Miscellaneous Design
 
 ### AV1225: Use a protected virtual method to raise each event (MEDIUM)
-- [ ] This analyzer reports methods that invoke an event, which are non-protected or non-virtual or their name does not end with the word "On" followed by the event name.
+- [x] This analyzer reports methods that invoke an event, which are non-protected or non-virtual or their name does not end with the word "On" followed by the event name. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1235: Don't pass null as the sender argument when raising an event (HIGH)
 - [x] This analyzer reports when a non-static event is invoked with `null` for the "sender" parameter, or when an event is invoked with `null` for the "args" parameter. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).

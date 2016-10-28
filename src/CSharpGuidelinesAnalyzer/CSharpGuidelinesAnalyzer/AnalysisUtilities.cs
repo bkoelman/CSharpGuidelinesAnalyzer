@@ -261,13 +261,28 @@ namespace CSharpGuidelinesAnalyzer
         }
 
         [CanBeNull]
+        public static IOperation TryGetOperationBlockForMethod([NotNull] IMethodSymbol method,
+            [NotNull] Compilation compilation, CancellationToken cancellationToken)
+        {
+            SyntaxNode bodySyntax = TryGetBodySyntaxForMethod(method, cancellationToken);
+            if (bodySyntax != null)
+            {
+                SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
+                return model.GetOperation(bodySyntax);
+            }
+
+            return null;
+        }
+
+        [CanBeNull]
         public static SyntaxNode TryGetBodySyntaxForMethod([NotNull] IMethodSymbol method,
             CancellationToken cancellationToken)
         {
             Guard.NotNull(method, nameof(method));
 
-            IEnumerable<SyntaxNode> methodSyntaxNodes =
-                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken));
+            SyntaxNode[] methodSyntaxNodes =
+                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken))
+                    .ToArray();
             foreach (MethodDeclarationSyntax methodSyntax in methodSyntaxNodes.OfType<MethodDeclarationSyntax>())
             {
                 if (methodSyntax.Body != null)

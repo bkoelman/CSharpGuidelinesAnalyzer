@@ -170,7 +170,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [NotNull] IMethodSymbol methodToAnalyze, [NotNull] Compilation compilation,
             CancellationToken cancellationToken)
         {
-            IOperation operation = TryGetOperationBlockForMethod(methodToAnalyze, compilation, cancellationToken);
+            IOperation operation = AnalysisUtilities.TryGetOperationBlockForMethod(methodToAnalyze, compilation,
+                cancellationToken);
             if (operation != null)
             {
                 var walker = new MethodInvocationWalker(methodsToInvoke);
@@ -179,20 +180,6 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             }
 
             return false;
-        }
-
-        [CanBeNull]
-        private IOperation TryGetOperationBlockForMethod([NotNull] IMethodSymbol method,
-            [NotNull] Compilation compilation, CancellationToken cancellationToken)
-        {
-            SyntaxNode bodySyntax = AnalysisUtilities.TryGetBodySyntaxForMethod(method, cancellationToken);
-            if (bodySyntax != null)
-            {
-                SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-                return model.GetOperation(bodySyntax);
-            }
-
-            return null;
         }
 
         private sealed class MethodInvocationWalker : OperationWalker

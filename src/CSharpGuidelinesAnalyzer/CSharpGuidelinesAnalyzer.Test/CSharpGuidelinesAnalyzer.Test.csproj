@@ -175,7 +175,7 @@
     <Compile Include="Specs\MemberDesign\ReturnInterfacesToCollectionsSpecs.cs" />
     <Compile Include="Specs\MiscellaneousDesign\DoNotPassNullsOnEventInvocationSpecs.cs" />
     <Compile Include="Specs\MiscellaneousDesign\EvaluateQueriesBeforeReturningThemSpecs.cs" />
-    <Compile Include="Specs\MiscellaneousDesign\InvokeEventsFromProtectedVirtualMethodsSpecs.cs" />
+    <Compile Include="Specs\MiscellaneousDesign\RaiseEventsFromProtectedVirtualMethodsSpecs.cs" />
     <Compile Include="Specs\Naming\AvoidMisleadingNamesSpecs.cs" />
     <Compile Include="Specs\Naming\DoNotIncludeContainingTypeNameInMembersSpecs.cs" />
     <Compile Include="Specs\Naming\DoNotUseAbbreviationsInIdentifierNamesSpecs.cs" />
