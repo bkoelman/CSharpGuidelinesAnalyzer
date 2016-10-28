@@ -73,7 +73,7 @@
     <Compile Include="MemberDesign\ReturnInterfacesToCollectionsAnalyzer.cs" />
     <Compile Include="MiscellaneousDesign\DoNotPassNullsOnEventInvocationAnalyzer.cs" />
     <Compile Include="MiscellaneousDesign\EvaluateQueriesBeforeReturningThemAnalyzer.cs" />
-    <Compile Include="MiscellaneousDesign\InvokeEventsFromProtectedVirtualMethodsAnalyzer.cs" />
+    <Compile Include="MiscellaneousDesign\RaiseEventsFromProtectedVirtualMethodsAnalyzer.cs" />
     <Compile Include="Naming\AvoidMisleadingNamesAnalyzer.cs" />
     <Compile Include="Naming\DoNotIncludeContainingTypeNameInMembersAnalyzer.cs" />
     <Compile Include="Naming\DoNotUseAbbreviationsInIdentifierNamesAnalyzer.cs" />
