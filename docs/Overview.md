@@ -70,7 +70,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [ ] This analyzer reports `if-else-if` statements that do not end with an unconditional `else` clause.
 
 ### AV1551: Call the more overloaded method from other overloads (MEDIUM)
-- [ ] This analyzer reports when an overloaded method or constructor does not invoke the overload with the most parameters.
+- [x] This analyzer reports when the method overload with the most parameters is not declared virtual. For the other overloads, it reports if they do not delegate to another overload or when their parameter order is different. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1555: Avoid using named arguments (HIGH)
 - [x] This analyzer reports invocations with named arguments that are not of type `bool` or `bool?`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
