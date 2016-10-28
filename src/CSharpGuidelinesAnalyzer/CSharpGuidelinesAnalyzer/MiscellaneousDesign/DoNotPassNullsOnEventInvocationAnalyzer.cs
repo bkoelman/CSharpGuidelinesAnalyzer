@@ -125,10 +125,12 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             if (invocationExpression.ArgumentsInParameterOrder.Length == 2)
             {
                 IArgument argument = invocationExpression.ArgumentsInParameterOrder[1];
-
-                if (IsEventArgs(argument.Parameter.Type, systemEventArgs))
+                if (argument.Parameter != null)
                 {
-                    return argument;
+                    if (IsEventArgs(argument.Parameter.Type, systemEventArgs))
+                    {
+                        return argument;
+                    }
                 }
             }
 

@@ -793,6 +793,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        public void When_event_declaration_initializes_with_empty_delegate_it_must_not_crash()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler SomethingChanged = delegate { };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new EvaluateQueriesBeforeReturningThemAnalyzer();
