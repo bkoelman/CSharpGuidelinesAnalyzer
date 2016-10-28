@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly:
     AssemblyDescription("Reports diagnostics for C# coding guidelines that are not already covered by Resharper.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("open source")]
 [assembly: AssemblyProduct("CSharpGuidelinesAnalyzer")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Apache License, Version 2.0")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
