@@ -30,11 +30,32 @@ namespace CSharpGuidelinesAnalyzer.Naming
             new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field }.ToImmutableArray();
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsWhitelist = new[]
-        {
-            "Are", "Is", "Was", "Were", "Has", "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will",
-            "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did"
-        }.ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsWhitelist =
+            new[]
+            {
+                "Are",
+                "Is",
+                "Was",
+                "Were",
+                "Has",
+                "Have",
+                "Can",
+                "Could",
+                "Shall",
+                "Should",
+                "May",
+                "Might",
+                "Will",
+                "Need",
+                "Needs",
+                "Allow",
+                "Allows",
+                "Support",
+                "Supports",
+                "Do",
+                "Does",
+                "Did"
+            }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -61,15 +82,17 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 return;
             }
 
-            var type = GetMemberType(context.Symbol);
+            ITypeSymbol type = GetMemberType(context.Symbol);
             if (!IsBooleanOrNullableBoolean(type))
             {
                 return;
             }
 
-            if (NameRequiresReport(context.Symbol.Name) && !context.Symbol.IsOverride && !AnalysisUtilities.IsInterfaceImplementation(context.Symbol))
+            if (NameRequiresReport(context.Symbol.Name) && !context.Symbol.IsOverride &&
+                !AnalysisUtilities.IsInterfaceImplementation(context.Symbol))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
+                    LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
             }
         }
 
@@ -99,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol)context.Symbol;
+            var parameter = (IParameterSymbol) context.Symbol;
 
             if (!IsBooleanOrNullableBoolean(parameter.Type))
             {
@@ -109,13 +132,14 @@ namespace CSharpGuidelinesAnalyzer.Naming
             if (NameRequiresReport(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
                 !AnalysisUtilities.IsInterfaceImplementation(parameter))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind), parameter.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind),
+                    parameter.Name));
             }
         }
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration)context.Operation;
+            var declaration = (IVariableDeclaration) context.Operation;
 
             if (!IsBooleanOrNullableBoolean(declaration.Variable.Type))
             {
@@ -124,7 +148,8 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
             if (NameRequiresReport(declaration.Variable.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "variable", declaration.Variable.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "variable",
+                    declaration.Variable.Name));
             }
         }
 

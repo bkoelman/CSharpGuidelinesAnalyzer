@@ -8,7 +8,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
     public class DoNotUseAbbreviationsInIdentifierNamesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => DoNotUseAbbreviationsInIdentifierNamesAnalyzer.DiagnosticId;
-        
+
         [Fact]
         public void When_field_name_contains_no_abbreviation_it_must_be_skipped()
         {
@@ -206,7 +206,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source,
                 "Property 'P' should have a more descriptive name.");
         }
-        
+
         [Fact]
         public void When_event_name_contains_no_abbreviation_it_must_be_skipped()
         {
@@ -259,7 +259,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source,
                 "Event 'E' should have a more descriptive name.");
         }
-        
+
         [Fact]
         public void When_method_name_contains_no_abbreviation_it_must_be_skipped()
         {
@@ -318,7 +318,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source,
                 "Method 'M' should have a more descriptive name.");
         }
-        
+
         [Fact]
         public void When_inherited_method_name_contains_an_abbreviation_it_must_be_skipped()
         {
@@ -418,7 +418,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source,
                 "Method 'M' should have a more descriptive name.");
         }
-        
+
         [Fact]
         public void When_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
@@ -527,7 +527,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source,
                 "Parameter 'x' should have a more descriptive name.");
         }
-        
+
         [Fact]
         public void When_implemented_parameter_name_contains_an_abbreviation_it_must_be_skipped()
         {
@@ -577,7 +577,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source,
                 "Parameter 'x' should have a more descriptive name.");
         }
-        
+
         [Fact]
         public void When_variable_name_contains_no_abbreviation_it_must_be_skipped()
         {

@@ -72,13 +72,13 @@ namespace CSharpGuidelinesAnalyzer
             return false;
         }
 
-        public static bool StartsWithAnyWordOf([NotNull] string identiferName, [ItemNotNull] ImmutableArray<string> wordsToFind,
-            bool allowLowerCaseMatch)
+        public static bool StartsWithAnyWordOf([NotNull] string identiferName,
+            [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
         {
             Guard.NotNull(identiferName, nameof(identiferName));
 
             List<string> wordsInText = ExtractWords(identiferName);
-            var firstWordInText = wordsInText.First();
+            string firstWordInText = wordsInText.First();
 
             if (wordsToFind.Contains(firstWordInText))
             {
@@ -87,7 +87,8 @@ namespace CSharpGuidelinesAnalyzer
 
             if (allowLowerCaseMatch)
             {
-                var lowerCaseWordsToFind = wordsToFind.Select(w => w.ToLowerInvariant()).ToImmutableArray();
+                ImmutableArray<string> lowerCaseWordsToFind =
+                    wordsToFind.Select(w => w.ToLowerInvariant()).ToImmutableArray();
                 if (lowerCaseWordsToFind.Contains(firstWordInText.ToLowerInvariant()))
                 {
                     return true;
@@ -105,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer
 
             List<string> wordsInText = ExtractWords(identiferName);
 
-            var lowerCaseWordsInText = allowLowerCaseMatch
+            ImmutableArray<string> lowerCaseWordsInText = allowLowerCaseMatch
                 ? wordsInText.Select(w => w.ToLowerInvariant()).ToImmutableArray()
                 : ImmutableArray<string>.Empty;
 
@@ -122,7 +123,7 @@ namespace CSharpGuidelinesAnalyzer
                     {
                         return wordToFind;
                     }
-                }                
+                }
             }
 
             return null;

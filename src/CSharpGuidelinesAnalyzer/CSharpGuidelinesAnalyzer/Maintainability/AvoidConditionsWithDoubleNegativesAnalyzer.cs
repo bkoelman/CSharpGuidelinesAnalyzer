@@ -52,7 +52,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(unaryOperator.Operand);
                 if (identifierInfo != null)
                 {
-                    if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierInfo.Name, NegatingWords, true) != null)
+                    if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierInfo.Name, NegatingWords, true) !=
+                        null)
                     {
                         string kind = identifierInfo.Kind.ToLowerInvariant();
                         context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
