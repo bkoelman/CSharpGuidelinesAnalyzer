@@ -90,7 +90,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when a digit occurs in a type, member, parameter or variable name. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1706: Don't use abbreviations (MEDIUM)
-- [ ] This analyzer reports single-letter variable names and identifiers that contain the words "Btn", "Ctrl" and "Frm".
+- [x] This analyzer reports member, parameter and variable names that consist of a single-letter or contain any of the abbreviations "Btn", "Ctrl", "Frm", "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1708: Name types using nouns, noun phrases or adjective phrases (MEDIUM)
 - [x] This analyzer reports types that have any of the terms "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.

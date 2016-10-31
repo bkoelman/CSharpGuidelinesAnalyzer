@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer
 
         [CanBeNull]
         public static string GetFirstWordInSetFromIdentifier([NotNull] string identiferName,
-            [ItemNotNull] ImmutableArray<string> wordsToFind)
+            [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
         {
             Guard.NotNull(identiferName, nameof(identiferName));
 
@@ -82,7 +82,8 @@ namespace CSharpGuidelinesAnalyzer
 
             foreach (string wordToFind in wordsToFind)
             {
-                if (wordsInText.Contains(wordToFind))
+                if (wordsInText.Contains(wordToFind) || 
+                    (allowLowerCaseMatch && wordsInText.Contains(wordToFind.ToLowerInvariant())))
                 {
                     return wordToFind;
                 }

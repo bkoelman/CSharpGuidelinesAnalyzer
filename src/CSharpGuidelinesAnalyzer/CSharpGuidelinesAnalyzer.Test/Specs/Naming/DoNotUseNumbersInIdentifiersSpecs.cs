@@ -421,7 +421,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_parameter_name_contains_a_digit_it_must_be_reported()
+        public void When_inherited_parameter_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
@@ -446,7 +446,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_parameter_name_contains_a_digit_it_must_be_reported()
+        public void When_implemented_parameter_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
