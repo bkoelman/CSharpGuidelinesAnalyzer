@@ -105,7 +105,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1715: Properly name properties (MEDIUM)
-- [ ] This analyzer reports boolean variables, parameters and fields whose names do not start with the word "Is", "Has", "Allows", "Can", "Should", "Will", "Do" or "Supports".
+- [x] This analyzer reports boolean variables, parameters and fields whose names do not start with the word "Are", "Is", "Was", "Were", "Has", "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does" or "Did". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1738: Prefix an event handler with On (LOW)
 - [ ] This analyzer reports event handler assignments, in case the assigned method name is not suffixed with "On" followed by the name of the event.
