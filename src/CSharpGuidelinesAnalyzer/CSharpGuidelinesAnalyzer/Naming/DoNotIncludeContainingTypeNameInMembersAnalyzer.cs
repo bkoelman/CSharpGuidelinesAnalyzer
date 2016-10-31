@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> SymbolKinds =
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMember, SymbolKinds);
+            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)

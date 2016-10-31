@@ -28,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> NotWords = new[] { "No", "no", "Not", "not" }.ToImmutableArray();
+        private static readonly ImmutableArray<string> NegatingWords = new[] { "No", "Not" }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(unaryOperator.Operand);
                 if (identifierInfo != null)
                 {
-                    if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierInfo.Name, NotWords) != null)
+                    if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierInfo.Name, NegatingWords, true) != null)
                     {
                         string kind = identifierInfo.Kind.ToLowerInvariant();
                         context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,

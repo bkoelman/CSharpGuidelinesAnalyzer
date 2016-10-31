@@ -23,18 +23,18 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> SymbolKinds =
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And", "and" }.ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And" }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMember, SymbolKinds);
+            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
                 return;
             }
 
-            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(context.Symbol.Name, WordsBlacklist) != null)
+            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(context.Symbol.Name, WordsBlacklist, true) != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name));

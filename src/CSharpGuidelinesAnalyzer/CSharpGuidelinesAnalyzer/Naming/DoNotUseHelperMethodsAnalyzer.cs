@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            string word = AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist);
+            string word = AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist, false);
             if (word != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, word));

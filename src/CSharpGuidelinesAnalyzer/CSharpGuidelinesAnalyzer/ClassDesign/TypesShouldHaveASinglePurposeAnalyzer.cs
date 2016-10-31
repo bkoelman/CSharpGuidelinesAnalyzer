@@ -24,7 +24,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And", "and" }.ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And" }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -38,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist) != null)
+            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist, true) != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name));
             }
