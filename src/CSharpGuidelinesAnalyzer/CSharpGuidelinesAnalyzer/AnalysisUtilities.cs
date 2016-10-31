@@ -72,6 +72,31 @@ namespace CSharpGuidelinesAnalyzer
             return false;
         }
 
+        public static bool StartsWithAnyWordOf([NotNull] string identiferName, [ItemNotNull] ImmutableArray<string> wordsToFind,
+            bool allowLowerCaseMatch)
+        {
+            Guard.NotNull(identiferName, nameof(identiferName));
+
+            List<string> wordsInText = ExtractWords(identiferName);
+            var firstWordInText = wordsInText.First();
+
+            if (wordsToFind.Contains(firstWordInText))
+            {
+                return true;
+            }
+
+            if (allowLowerCaseMatch)
+            {
+                var lowerCaseWordsToFind = wordsToFind.Select(w => w.ToLowerInvariant()).ToImmutableArray();
+                if (lowerCaseWordsToFind.Contains(firstWordInText.ToLowerInvariant()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         [CanBeNull]
         public static string GetFirstWordInSetFromIdentifier([NotNull] string identiferName,
             [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
@@ -80,13 +105,24 @@ namespace CSharpGuidelinesAnalyzer
 
             List<string> wordsInText = ExtractWords(identiferName);
 
+            var lowerCaseWordsInText = allowLowerCaseMatch
+                ? wordsInText.Select(w => w.ToLowerInvariant()).ToImmutableArray()
+                : ImmutableArray<string>.Empty;
+
             foreach (string wordToFind in wordsToFind)
             {
-                if (wordsInText.Contains(wordToFind) || 
-                    (allowLowerCaseMatch && wordsInText.Contains(wordToFind.ToLowerInvariant())))
+                if (wordsInText.Contains(wordToFind))
                 {
                     return wordToFind;
                 }
+
+                if (allowLowerCaseMatch)
+                {
+                    if (lowerCaseWordsInText.Contains(wordToFind.ToLowerInvariant()))
+                    {
+                        return wordToFind;
+                    }
+                }                
             }
 
             return null;
@@ -245,6 +281,11 @@ namespace CSharpGuidelinesAnalyzer
 
         public static bool IsInterfaceImplementation<TSymbol>([NotNull] TSymbol member) where TSymbol : ISymbol
         {
+            if (member is IFieldSymbol)
+            {
+                return false;
+            }
+
             foreach (INamedTypeSymbol iface in member.ContainingType.AllInterfaces)
             {
                 foreach (TSymbol ifaceMember in iface.GetMembers().OfType<TSymbol>())
