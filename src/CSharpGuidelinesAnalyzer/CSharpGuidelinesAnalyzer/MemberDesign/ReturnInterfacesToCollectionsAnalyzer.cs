@@ -47,6 +47,12 @@ namespace CSharpGuidelinesAnalyzer.MemberDesign
                 return;
             }
 
+            if (method.IsOverride || AnalysisUtilities.IsInterfaceImplementation(method) ||
+                AnalysisUtilities.HidesBaseMember(method, context.CancellationToken))
+            {
+                return;
+            }
+
             if (IsArray(method.ReturnType) ||
                 (IsClassOrStruct(method.ReturnType) && TypeImplementsIEnumerable(method.ReturnType)))
             {

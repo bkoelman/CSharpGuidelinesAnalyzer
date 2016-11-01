@@ -77,7 +77,7 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(identiferName, nameof(identiferName));
 
-            List<string> wordsInText = ExtractWords(identiferName);
+            IList<string> wordsInText = ExtractWords(identiferName);
             string firstWordInText = wordsInText.First();
 
             if (wordsToFind.Contains(firstWordInText))
@@ -104,7 +104,7 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(identiferName, nameof(identiferName));
 
-            List<string> wordsInText = ExtractWords(identiferName);
+            IList<string> wordsInText = ExtractWords(identiferName);
 
             ImmutableArray<string> lowerCaseWordsInText = allowLowerCaseMatch
                 ? wordsInText.Select(w => w.ToLowerInvariant()).ToImmutableArray()
@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer
 
         [NotNull]
         [ItemNotNull]
-        private static List<string> ExtractWords([NotNull] string identifierName)
+        private static IList<string> ExtractWords([NotNull] string identifierName)
         {
             var words = new List<string>();
 
