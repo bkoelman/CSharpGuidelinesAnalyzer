@@ -27,6 +27,16 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
             new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
 
         [ItemNotNull]
+        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
+            new[]
+            {
+                "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
+                "Xunit.FactAttribute",
+                "NUnit.Framework.TestAttribute",
+                "MbUnit.Framework.TestAttribute"
+            }.ToImmutableArray();
+
+        [ItemNotNull]
         private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And" }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
@@ -44,11 +54,34 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
                 return;
             }
 
+            if (IsUnitTestMethod(context))
+            {
+                return;
+            }
+
             if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(context.Symbol.Name, WordsBlacklist, true) != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name));
             }
+        }
+
+        private static bool IsUnitTestMethod(SymbolAnalysisContext context)
+        {
+            var method = context.Symbol as IMethodSymbol;
+            return method != null && HasUnitTestAttribute(method);
+        }
+
+        private static bool HasUnitTestAttribute([NotNull] IMethodSymbol method)
+        {
+            foreach (AttributeData attribute in method.GetAttributes())
+            {
+                if (UnitTestFrameworkMethodAttributeNames.Contains(attribute.AttributeClass.ToString()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
