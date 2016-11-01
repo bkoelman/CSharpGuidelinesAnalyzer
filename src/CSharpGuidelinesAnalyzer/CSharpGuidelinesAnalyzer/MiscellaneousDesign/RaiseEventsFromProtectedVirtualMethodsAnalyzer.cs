@@ -24,13 +24,13 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
         [NotNull]
         private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ModifiersMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            ModifiersMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            NameMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
-            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            NameMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics

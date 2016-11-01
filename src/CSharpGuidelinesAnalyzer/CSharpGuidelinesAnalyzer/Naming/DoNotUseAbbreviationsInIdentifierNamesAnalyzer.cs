@@ -19,8 +19,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
-            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -126,7 +125,8 @@ namespace CSharpGuidelinesAnalyzer.Naming
         private bool NameRequiresReport([NotNull] string identifierName)
         {
             bool isSingleLetter = identifierName.Length == 1 && char.IsLetter(identifierName[0]);
-            bool isBlacklisted = AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierName, WordsBlacklist, true) != null;
+            bool isBlacklisted =
+                AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierName, WordsBlacklist, true) != null;
 
             return isSingleLetter || isBlacklisted;
         }

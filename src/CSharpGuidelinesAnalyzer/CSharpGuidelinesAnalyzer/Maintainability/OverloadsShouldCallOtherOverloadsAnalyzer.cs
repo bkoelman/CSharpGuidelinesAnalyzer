@@ -26,18 +26,18 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         [NotNull]
         private static readonly DiagnosticDescriptor InvokeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            InvokeMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            InvokeMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor MakeVirtualRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MakeVirtualMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            MakeVirtualMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            OrderMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
-            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            OrderMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics

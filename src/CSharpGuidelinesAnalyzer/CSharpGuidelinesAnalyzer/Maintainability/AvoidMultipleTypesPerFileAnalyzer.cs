@@ -21,8 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
-            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -37,17 +36,17 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private void AnalyzeSemanticModel(SemanticModelAnalysisContext context)
         {
-            var syntaxRoot = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
+            SyntaxNode syntaxRoot = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
-            TopLevelTypeSyntaxWalker walker = new TopLevelTypeSyntaxWalker();
+            var walker = new TopLevelTypeSyntaxWalker();
             walker.Visit(syntaxRoot);
 
             if (walker.TopLevelTypeDeclarations.Count > 1)
             {
-                foreach (var extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1))
+                foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1))
                 {
-                    var fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
-                    var symbol = context.SemanticModel.GetDeclaredSymbol(extraTypeSyntax, context.CancellationToken);
+                    string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
+                    ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(extraTypeSyntax, context.CancellationToken);
                     string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
 
                     context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName));

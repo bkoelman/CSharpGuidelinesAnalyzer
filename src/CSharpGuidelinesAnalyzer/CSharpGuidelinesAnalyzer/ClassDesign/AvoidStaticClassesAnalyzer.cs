@@ -24,13 +24,13 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
 
         [NotNull]
         private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TypeMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, description: Description,
-            helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            TypeMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MemberMessageFormat, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true,
-            description: Description, helpLinkUri: HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            MemberMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+            HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
