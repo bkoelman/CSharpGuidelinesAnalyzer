@@ -125,7 +125,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when the compiler warning level is lower than 4.
 
 ### AV2215: Properly fill the attributes of the AssemblyInfo.cs file (LOW)
-- [ ] This analyzer reports when the `AssemblyTitle`, `AssemblyDescription`, `AssemblyConfiguration`, `AssemblyCompany`, `AssemblyProduct`, `AssemblyCopyright`, `AssemblyTrademark`, `AssemblyCulture`, `AssemblyVersion` or `AssemblyFileVersion` is missing or invoked with an empty string.
+- [x] This analyzer reports when the `AssemblyTitle`, `AssemblyDescription`, `AssemblyConfiguration`, `AssemblyCompany`, `AssemblyProduct`, `AssemblyCopyright`, `AssemblyTrademark`, `AssemblyVersion` or `AssemblyFileVersion` is missing or invoked with an empty string.
 
 ### AV2230: Only use the dynamic keyword when talking to a dynamic object (HIGH)
 - [x] This analyzer reports when a member, parameter or variable that is declared as `dynamic` is assigned the result of an expression whose type is not `object` or `dynamic`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).

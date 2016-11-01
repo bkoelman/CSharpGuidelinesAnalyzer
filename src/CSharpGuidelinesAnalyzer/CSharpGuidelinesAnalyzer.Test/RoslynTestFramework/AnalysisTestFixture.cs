@@ -35,7 +35,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             ImmutableArray<Diagnostic> diagnostics =
                 GetDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,
                         context.DiagnosticsCaptureMode)
-                    .OrderBy(d => d.Location.SourceSpan)
                     .Where(d => d.Id == DiagnosticId)
                     .ToImmutableArray();
             ImmutableArray<TextSpan> spans = documentWithSpans.TextSpans.OrderBy(s => s).ToImmutableArray();
