@@ -61,7 +61,8 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 "Require",
                 "Requires",
                 "Return",
-                "Returns"
+                "Returns",
+                "Starts"
             }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)

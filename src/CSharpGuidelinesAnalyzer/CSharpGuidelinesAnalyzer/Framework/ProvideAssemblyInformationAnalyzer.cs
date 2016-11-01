@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
@@ -30,84 +31,95 @@ namespace CSharpGuidelinesAnalyzer.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                var types = new AttributeTypes(startContext.Compilation);
-                if (types.AssemblyAttributes.Any())
+                ConcurrentQueue<INamedTypeSymbol> assemblyAttributesToAnalyze =
+                    GetAssemblyAttributesToAnalyze(startContext.Compilation);
+
+                ImmutableArray<AttributeData> attributesInCompilation =
+                    startContext.Compilation.Assembly.GetAttributes();
+
+                if (assemblyAttributesToAnalyze.Any())
                 {
-                    startContext.RegisterSemanticModelAction(c => AnalyzeSemanticModel(c, types));
+                    startContext.RegisterSemanticModelAction(
+                        c => AnalyzeSemanticModel(c, assemblyAttributesToAnalyze, attributesInCompilation));
                 }
             });
         }
 
-        private void AnalyzeSemanticModel(SemanticModelAnalysisContext context, [NotNull] AttributeTypes types)
+        [NotNull]
+        [ItemNotNull]
+        private ConcurrentQueue<INamedTypeSymbol> GetAssemblyAttributesToAnalyze([NotNull] Compilation compilation)
         {
-            ImmutableArray<AttributeData> compilationAttributes =
-                context.SemanticModel.Compilation.Assembly.GetAttributes();
-
-            foreach (INamedTypeSymbol assemblyAttribute in types.AssemblyAttributes)
+            var attributes = new[]
             {
-                Location locationToReport = null;
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyTitleAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyDescriptionAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyConfigurationAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyCompanyAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyProductAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyCopyrightAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyTrademarkAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyVersionAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyFileVersionAttribute")
+            };
 
-                AttributeData compilationAttribute =
-                    compilationAttributes.FirstOrDefault(attr => assemblyAttribute.Equals(attr.AttributeClass));
-                if (compilationAttribute == null)
-                {
-                    locationToReport = Location.None;
-                }
-                else
-                {
-                    TypedConstant firstConstructorArgument = compilationAttribute.ConstructorArguments.FirstOrDefault();
-                    string firstStringArgument = firstConstructorArgument.Value as string;
+            return attributes.Any(attr => attr == null)
+                ? new ConcurrentQueue<INamedTypeSymbol>()
+                : new ConcurrentQueue<INamedTypeSymbol>(attributes);
+        }
 
-                    if (string.IsNullOrEmpty(firstStringArgument))
-                    {
-                        SyntaxNode syntaxNode =
-                            compilationAttribute.ApplicationSyntaxReference.GetSyntax(context.CancellationToken);
-                        locationToReport = syntaxNode != null ? syntaxNode.GetLocation() : Location.None;
-                    }
+        private void AnalyzeSemanticModel(SemanticModelAnalysisContext context,
+            [NotNull] [ItemNotNull] ConcurrentQueue<INamedTypeSymbol> assemblyAttributesToAnalyze,
+            [ItemNotNull] ImmutableArray<AttributeData> attributesInCompilation)
+        {
+            while (true)
+            {
+                INamedTypeSymbol assemblyAttributeToAnalyze;
+                if (!assemblyAttributesToAnalyze.TryDequeue(out assemblyAttributeToAnalyze))
+                {
+                    return;
                 }
 
-                if (locationToReport != null)
-                {
-                    ReportAt(locationToReport, assemblyAttribute, context);
-                }
+                AnalyzeAssemblyAttribute(assemblyAttributeToAnalyze, attributesInCompilation, context);
             }
         }
 
-        private void ReportAt([NotNull] Location location, [NotNull] INamedTypeSymbol assemblyAttribute,
+        private static void AnalyzeAssemblyAttribute([NotNull] INamedTypeSymbol assemblyAttributeToAnalyze,
+            [ItemNotNull] ImmutableArray<AttributeData> attributesInCompilation, SemanticModelAnalysisContext context)
+        {
+            AttributeData compilationAttribute =
+                attributesInCompilation.FirstOrDefault(attr => assemblyAttributeToAnalyze.Equals(attr.AttributeClass));
+
+            if (compilationAttribute == null)
+            {
+                ReportAt(Location.None, assemblyAttributeToAnalyze, context);
+            }
+            else
+            {
+                AnalyzeExistingAttribute(compilationAttribute, assemblyAttributeToAnalyze, context);
+            }
+        }
+
+        private static void AnalyzeExistingAttribute([NotNull] AttributeData attributeInCompilation,
+            [NotNull] INamedTypeSymbol assemblyAttributeToAnalyze, SemanticModelAnalysisContext context)
+        {
+            TypedConstant firstConstructorArgument = attributeInCompilation.ConstructorArguments.FirstOrDefault();
+            string firstStringArgument = firstConstructorArgument.Value as string;
+
+            if (string.IsNullOrEmpty(firstStringArgument))
+            {
+                SyntaxNode syntaxNode =
+                    attributeInCompilation.ApplicationSyntaxReference.GetSyntax(context.CancellationToken);
+                Location location = syntaxNode != null ? syntaxNode.GetLocation() : Location.None;
+
+                ReportAt(location, assemblyAttributeToAnalyze, context);
+            }
+        }
+
+        private static void ReportAt([NotNull] Location locationToReport, [NotNull] INamedTypeSymbol assemblyAttribute,
             SemanticModelAnalysisContext context)
         {
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location,
+            context.ReportDiagnostic(Diagnostic.Create(Rule, locationToReport,
                 assemblyAttribute.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)));
-        }
-
-        private sealed class AttributeTypes
-        {
-            [ItemNotNull]
-            public ImmutableArray<INamedTypeSymbol> AssemblyAttributes { get; }
-
-            public AttributeTypes([NotNull] Compilation compilation)
-            {
-                Guard.NotNull(compilation, nameof(compilation));
-
-                ImmutableArray<INamedTypeSymbol> attributes =
-                    new[]
-                        {
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyTitleAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyDescriptionAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyConfigurationAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyCompanyAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyProductAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyCopyrightAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyTrademarkAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyVersionAttribute"),
-                            compilation.GetTypeByMetadataName("System.Reflection.AssemblyFileVersionAttribute")
-                        }
-                        .ToImmutableArray();
-
-                AssemblyAttributes = attributes.Any(attr => attr == null)
-                    ? ImmutableArray<INamedTypeSymbol>.Empty
-                    : attributes;
-            }
         }
     }
 }

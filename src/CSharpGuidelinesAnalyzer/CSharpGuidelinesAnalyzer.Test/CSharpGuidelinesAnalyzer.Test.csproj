@@ -193,6 +193,7 @@
     <Compile Include="TestDataBuilders\MemberSourceCodeBuilder.cs" />
     <Compile Include="TestDataBuilders\SourceCodeBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDataBuilders\SourceCodeBuilderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
