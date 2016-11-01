@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using CSharpGuidelinesAnalyzer.Documentation;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -198,6 +199,54 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                         // ReSharper restore PossibleNullReferenceException
                         {
                         }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Debug).Namespace)
+                .InDefaultClass(@"
+                    void UnitTest()
+                    {
+                        // Arrange
+                        int x = 10;
+
+                        // Act
+                        x -= 1;
+
+                        // Assert
+                        Debug.Assert(x == 9);
+                        
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Debug).Namespace)
+                .InDefaultClass(@"
+                    void UnitTest()
+                    {
+                        // Arrange
+                        int x = 10;
+
+                        // Act and assert
+                        Debug.Assert(--x == 9);
                     }
                 ")
                 .Build();

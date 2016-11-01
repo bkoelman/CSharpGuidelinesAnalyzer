@@ -25,6 +25,10 @@ namespace CSharpGuidelinesAnalyzer.Documentation
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [ItemNotNull]
+        private static readonly ImmutableArray<string> ArrangeActAssertLines =
+            new[] { "// Arrange", "// Act", "// Assert", "// Act and assert" }.ToImmutableArray();
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -54,6 +58,11 @@ namespace CSharpGuidelinesAnalyzer.Documentation
                     continue;
                 }
 
+                if (IsArrangeActAssertUnitTestPattern(commentTrivia))
+                {
+                    continue;
+                }
+
                 context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
             }
         }
@@ -68,6 +77,12 @@ namespace CSharpGuidelinesAnalyzer.Documentation
         {
             string text = commentTrivia.ToString();
             return text.Contains("// ReSharper disable ") || text.Contains("// ReSharper restore ");
+        }
+
+        private bool IsArrangeActAssertUnitTestPattern(SyntaxTrivia commentTrivia)
+        {
+            string text = commentTrivia.ToString();
+            return ArrangeActAssertLines.Any(line => line.Equals(text));
         }
     }
 }
