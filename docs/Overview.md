@@ -99,7 +99,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports members whose name contains the name of their containing type.
 
 ### AV1711: Name members similarly to members of related .NET Framework classes (LOW)
-- [ ] This analyzer reports members that are named "AddItem", "Delete" or "NumberOfItems". The other scenarios are already covered by [CA1726](https://msdn.microsoft.com/en-us/library/ms182258.aspx).
+- [x] This analyzer reports members that are named "AddItem", "Delete" or "NumberOfItems". The other scenarios are already covered by [CA1726](https://msdn.microsoft.com/en-us/library/ms182258.aspx).
 
 ### AV1712: Avoid short names or names that can be mistaken for other names (HIGH)
 - [x] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
