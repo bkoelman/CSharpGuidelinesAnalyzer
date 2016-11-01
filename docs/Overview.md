@@ -46,7 +46,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports namespaces and types that do not match with the assembly name, unless the assembly name ends with ".Core".
 
 ### AV1507: Limit the contents of a source code file to one type (LOW)
-- [ ] This analyzer reports when a file contains multiple non-nested types.
+- [x] This analyzer reports when a file contains multiple non-nested types.
 
 ### AV1522: Assign each variable in a separate statement (HIGH)
 - [x] This analyzer reports when multiple properties, fields, parameters or variables are assigned in a single statement. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
