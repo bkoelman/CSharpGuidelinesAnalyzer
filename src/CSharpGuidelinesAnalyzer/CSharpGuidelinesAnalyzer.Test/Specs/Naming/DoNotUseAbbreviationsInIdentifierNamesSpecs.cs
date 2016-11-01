@@ -640,6 +640,26 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Variable 's' should have a more descriptive name.");
         }
 
+        [Fact]
+        public void When_variable_name_consists_of_single_underscore_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Method()
+                        {
+                            string _ = ""A"";
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+        
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseAbbreviationsInIdentifierNamesAnalyzer();

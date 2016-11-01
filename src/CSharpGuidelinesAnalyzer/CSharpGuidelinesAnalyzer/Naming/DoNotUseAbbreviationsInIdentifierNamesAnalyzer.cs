@@ -125,8 +125,10 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
         private bool NameRequiresReport([NotNull] string identifierName)
         {
-            return identifierName.Length == 1 ||
-                AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierName, WordsBlacklist, true) != null;
+            bool isSingleLetter = identifierName.Length == 1 && char.IsLetter(identifierName[0]);
+            bool isBlacklisted = AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierName, WordsBlacklist, true) != null;
+
+            return isSingleLetter || isBlacklisted;
         }
     }
 }
