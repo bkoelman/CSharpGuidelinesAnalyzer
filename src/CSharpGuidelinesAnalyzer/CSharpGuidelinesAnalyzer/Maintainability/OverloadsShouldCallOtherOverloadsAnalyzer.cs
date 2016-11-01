@@ -202,14 +202,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     {
                         if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
                         {
-                            foreach (IMethodSymbol ifaceMethod in methodToFind.ExplicitInterfaceImplementations)
-                            {
-                                if (operation.TargetMethod.Equals(ifaceMethod))
-                                {
-                                    Found = true;
-                                    break;
-                                }
-                            }
+                            ScanExplicitInterfaceInvocation(operation, methodToFind);
                         }
                         else
                         {
@@ -223,6 +216,19 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     if (!Found)
                     {
                         base.VisitInvocationExpression(operation);
+                    }
+                }
+            }
+
+            private void ScanExplicitInterfaceInvocation([NotNull] IInvocationExpression operation,
+                [NotNull] IMethodSymbol methodToFind)
+            {
+                foreach (IMethodSymbol ifaceMethod in methodToFind.ExplicitInterfaceImplementations)
+                {
+                    if (operation.TargetMethod.Equals(ifaceMethod))
+                    {
+                        Found = true;
+                        break;
                     }
                 }
             }

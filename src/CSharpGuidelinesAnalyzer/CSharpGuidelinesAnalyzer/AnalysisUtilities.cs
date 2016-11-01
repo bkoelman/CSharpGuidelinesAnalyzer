@@ -206,9 +206,13 @@ namespace CSharpGuidelinesAnalyzer
                 case MethodKind.PropertySet:
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
+                {
                     return true;
+                }
                 default:
+                {
                     return false;
+                }
             }
         }
 
@@ -264,6 +268,7 @@ namespace CSharpGuidelinesAnalyzer
 
             ISymbol containingMember = parameter.ContainingSymbol;
 
+#pragma warning disable AV1532 // Loop statement contains nested loop
             foreach (INamedTypeSymbol iface in parameter.ContainingType.AllInterfaces)
             {
                 foreach (ISymbol ifaceMember in iface.GetMembers())
@@ -276,6 +281,7 @@ namespace CSharpGuidelinesAnalyzer
                     }
                 }
             }
+#pragma warning restore AV1532 // Loop statement contains nested loop
 
             return false;
         }
@@ -287,6 +293,7 @@ namespace CSharpGuidelinesAnalyzer
                 return false;
             }
 
+#pragma warning disable AV1532 // Loop statement contains nested loop
             foreach (INamedTypeSymbol iface in member.ContainingType.AllInterfaces)
             {
                 foreach (TSymbol ifaceMember in iface.GetMembers().OfType<TSymbol>())
@@ -299,6 +306,7 @@ namespace CSharpGuidelinesAnalyzer
                     }
                 }
             }
+#pragma warning restore AV1532 // Loop statement contains nested loop
 
             return false;
         }
