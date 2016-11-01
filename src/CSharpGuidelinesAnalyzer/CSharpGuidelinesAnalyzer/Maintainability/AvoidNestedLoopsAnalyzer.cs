@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             var walker = new LoopBodyWalker();
             walker.Visit(loopStatement.Body);
 
-            if (walker.SeenLoopStatement)
+            if (walker.HasSeenLoopStatement)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, loopStatement.Syntax.GetLocation()));
             }
@@ -53,25 +53,25 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private sealed class LoopBodyWalker : OperationWalker
         {
-            public bool SeenLoopStatement { get; private set; }
+            public bool HasSeenLoopStatement { get; private set; }
 
             public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
             {
-                SeenLoopStatement = true;
+                HasSeenLoopStatement = true;
 
                 base.VisitWhileUntilLoopStatement(operation);
             }
 
             public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
             {
-                SeenLoopStatement = true;
+                HasSeenLoopStatement = true;
 
                 base.VisitForLoopStatement(operation);
             }
 
             public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
             {
-                SeenLoopStatement = true;
+                HasSeenLoopStatement = true;
 
                 base.VisitForEachLoopStatement(operation);
             }

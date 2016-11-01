@@ -10,13 +10,13 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [ItemNotNull]
         private readonly List<string> classes = new List<string>();
 
-        private bool generateNamespace;
+        private bool doGenerateNamespace;
 
         protected override string GetSourceCode()
         {
             var builder = new StringBuilder();
 
-            if (generateNamespace)
+            if (doGenerateNamespace)
             {
                 builder.AppendLine("namespace TestNamespace");
                 builder.AppendLine("{");
@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
                 index++;
             }
 
-            if (generateNamespace)
+            if (doGenerateNamespace)
             {
                 builder.AppendLine("}");
             }
@@ -48,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNull(classCode, nameof(classCode));
 
             classes.Add(classCode);
-            generateNamespace = false;
+            doGenerateNamespace = false;
             return this;
         }
     }

@@ -117,14 +117,14 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         [CanBeNull]
         private bool? IsBooleanSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
-            return TryHasCaseClausesFor(new[] { analysisContext.BooleanTrue, analysisContext.BooleanFalse },
+            return HasCaseClausesFor(new[] { analysisContext.BooleanTrue, analysisContext.BooleanFalse },
                 analysisContext);
         }
 
         [CanBeNull]
         private bool? IsNullableBooleanSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
-            return TryHasCaseClausesFor(new[] { analysisContext.BooleanTrue, analysisContext.BooleanFalse, null },
+            return HasCaseClausesFor(new[] { analysisContext.BooleanTrue, analysisContext.BooleanFalse, null },
                 analysisContext);
         }
 
@@ -132,7 +132,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         private bool? IsEnumSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
             [NotNull] [ItemNotNull] IEnumerable<IFieldSymbol> enumMembers)
         {
-            return TryHasCaseClausesFor(enumMembers.Cast<ISymbol>().ToArray(), analysisContext);
+            return HasCaseClausesFor(enumMembers.Cast<ISymbol>().ToArray(), analysisContext);
         }
 
         [CanBeNull]
@@ -140,11 +140,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [NotNull] [ItemNotNull] IEnumerable<IFieldSymbol> enumMembers)
         {
             ISymbol[] expectedValues = enumMembers.Concat(new ISymbol[] { null }).ToArray();
-            return TryHasCaseClausesFor(expectedValues, analysisContext);
+            return HasCaseClausesFor(expectedValues, analysisContext);
         }
 
         [CanBeNull]
-        private bool? TryHasCaseClausesFor([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
+        private bool? HasCaseClausesFor([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
             ICollection<ISymbol> caseClauseValues = TryGetSymbolsForCaseClauses(analysisContext);

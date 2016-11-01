@@ -54,7 +54,15 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 "Supports",
                 "Do",
                 "Does",
-                "Did"
+                "Did",
+                "Hide",
+                "Hides",
+                "Contain",
+                "Contains",
+                "Require",
+                "Requires",
+                "Return",
+                "Returns"
             }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)

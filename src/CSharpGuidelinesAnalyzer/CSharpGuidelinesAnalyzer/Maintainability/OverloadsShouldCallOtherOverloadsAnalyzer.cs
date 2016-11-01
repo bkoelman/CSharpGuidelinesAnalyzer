@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             {
                 var walker = new MethodInvocationWalker(methodsToInvoke);
                 walker.Visit(operation);
-                return walker.Found;
+                return walker.HasFoundInvocation;
             }
 
             return false;
@@ -188,7 +188,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [ItemNotNull]
             private readonly ImmutableArray<IMethodSymbol> methodsToFind;
 
-            public bool Found { get; private set; }
+            public bool HasFoundInvocation { get; private set; }
 
             public MethodInvocationWalker([ItemNotNull] ImmutableArray<IMethodSymbol> methodsToFind)
             {
@@ -197,7 +197,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             public override void VisitInvocationExpression([NotNull] IInvocationExpression operation)
             {
-                if (!Found)
+                if (!HasFoundInvocation)
                 {
                     foreach (IMethodSymbol methodToFind in methodsToFind)
                     {
@@ -209,12 +209,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                         {
                             if (methodsToFind.Any(method => method.Equals(operation.TargetMethod)))
                             {
-                                Found = true;
+                                HasFoundInvocation = true;
                             }
                         }
                     }
 
-                    if (!Found)
+                    if (!HasFoundInvocation)
                     {
                         base.VisitInvocationExpression(operation);
                     }
@@ -228,7 +228,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 {
                     if (operation.TargetMethod.Equals(ifaceMethod))
                     {
-                        Found = true;
+                        HasFoundInvocation = true;
                         break;
                     }
                 }
