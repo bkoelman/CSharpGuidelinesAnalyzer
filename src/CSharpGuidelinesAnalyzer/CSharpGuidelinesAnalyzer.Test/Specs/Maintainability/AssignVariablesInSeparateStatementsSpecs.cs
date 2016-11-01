@@ -252,6 +252,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_for_loop_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            for (int index = 0; index < 10; index++)
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_multiple_identifiers_are_assigned_in_a_foreach_loop_statement_it_must_be_reported()
         {
             // Arrange
@@ -283,6 +307,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_foreach_loop_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(int[] items)
+                        {
+                            foreach (var item in items)
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_multiple_identifiers_are_assigned_in_a_while_loop_statement_it_must_be_reported()
         {
             // Arrange
@@ -311,6 +359,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement.");
+        }
+
+        [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_while_loop_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            while (true)
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
@@ -346,6 +418,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            do
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                            while (true);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_multiple_identifiers_are_assigned_in_an_if_statement_it_must_be_reported()
         {
             // Arrange
@@ -377,6 +474,37 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_an_if_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        private int Property1 { get; set; }
+
+                        void M()
+                        {
+                            if (Property1 > 0)
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                            else
+                            {
+                                int local3 = 5;
+                                int local4 = 8;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_multiple_identifiers_are_assigned_in_a_switch_statement_it_must_be_reported()
         {
             // Arrange
@@ -405,6 +533,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement.");
+        }
+
+        [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_case_clause_of_a_switch_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(int value)
+                        {
+                            switch (value)
+                            {
+                                default:
+                                    int local1 = 5;
+                                    int local2 = 8;
+                                    break;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
@@ -498,6 +652,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lock_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        private object guard = new object();
+
+                        void M()
+                        {
+                            lock (guard)
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                        }
+                    }
+                    ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_multiple_identifiers_are_assigned_in_a_using_statement_it_must_be_reported()
         {
             // Arrange
@@ -526,6 +706,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement.");
+        }
+
+        [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_using_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        private IDisposable field1;
+
+                        void M()
+                        {
+                            using (var temp = field1)
+                            {
+                                int local1 = 5;
+                                int local2 = 8;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]

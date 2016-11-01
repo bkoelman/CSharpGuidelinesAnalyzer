@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -62,8 +63,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
+        [NotNull]
         [ItemNotNull]
-        private ImmutableArray<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
+        private ICollection<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
             TestValidationMode validationMode, bool diagnosticsMustBeInSourceTree)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(CreateAnalyzer());

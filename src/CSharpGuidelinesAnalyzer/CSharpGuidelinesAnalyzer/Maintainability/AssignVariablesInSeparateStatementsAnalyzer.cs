@@ -123,6 +123,55 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     IdentifiersAssigned.Add(identifierInfo.LongName);
                 }
             }
+
+            public override void VisitIfStatement([NotNull] IIfStatement operation)
+            {
+                Visit(operation.Condition);
+            }
+
+            public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
+            {
+                VisitArray(operation.Before);
+                Visit(operation.Condition);
+                VisitArray(operation.AtLoopBottom);
+            }
+
+            public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
+            {
+                Visit(operation.Collection);
+            }
+
+            public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
+            {
+                Visit(operation.Condition);
+            }
+
+            public override void VisitLockStatement([NotNull] ILockStatement operation)
+            {
+                Visit(operation.LockedObject);
+            }
+
+            public override void VisitUsingStatement([NotNull] IUsingStatement operation)
+            {
+                Visit(operation.Declaration);
+                Visit(operation.Value);
+            }
+
+            public override void VisitSwitchCase([NotNull] ISwitchCase operation)
+            {
+                VisitArray(operation.Clauses);
+            }
+
+            private void VisitArray([CanBeNull] [ItemNotNull] IEnumerable<IOperation> operations)
+            {
+                if (operations != null)
+                {
+                    foreach (IOperation operation in operations)
+                    {
+                        Visit(operation);
+                    }
+                }
+            }
         }
     }
 }
