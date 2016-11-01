@@ -141,6 +141,7 @@
     <Compile Include="ParsedSourceCode.cs" />
     <Compile Include="RoslynTestFramework\AnalysisTestFixture.cs" />
     <Compile Include="RoslynTestFramework\AnalyzerTestContext.cs" />
+    <Compile Include="RoslynTestFramework\DiagnosticsCaptureMode.cs" />
     <Compile Include="RoslynTestFramework\DocumentWithSpans.cs" />
     <Compile Include="RoslynTestFramework\TestHelpers.cs" />
     <Compile Include="RoslynTestFramework\TestValidationMode.cs" />

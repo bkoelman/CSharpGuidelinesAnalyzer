@@ -43,12 +43,13 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         public TestValidationMode ValidationMode { get; }
 
-        public bool DiagnosticsMustBeInSourceTree { get; }
+        public DiagnosticsCaptureMode DiagnosticsCaptureMode { get; }
 
         private AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName,
             [NotNull] string fileName, [NotNull] string assemblyName,
             [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references,
-            [CanBeNull] int? compilerWarningLevel, TestValidationMode validationMode, bool diagnosticsMustBeInSourceTree)
+            [CanBeNull] int? compilerWarningLevel, TestValidationMode validationMode,
+            DiagnosticsCaptureMode diagnosticsCaptureMode)
         {
             MarkupCode = markupCode;
             LanguageName = languageName;
@@ -57,13 +58,13 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             References = references;
             CompilerWarningLevel = compilerWarningLevel;
             ValidationMode = validationMode;
-            DiagnosticsMustBeInSourceTree = diagnosticsMustBeInSourceTree;
+            DiagnosticsCaptureMode = diagnosticsCaptureMode;
         }
 
         public AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName)
             : this(
                 markupCode, languageName, DefaultFileName, DefaultAssemblyName, DefaultReferences, null,
-                DefaultTestValidationMode, true)
+                DefaultTestValidationMode, DiagnosticsCaptureMode.RequireInSourceTree)
         {
             Guard.NotNull(markupCode, nameof(markupCode));
             Guard.NotNull(languageName, nameof(languageName));
@@ -75,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Guard.NotNull(markupCode, nameof(markupCode));
 
             return new AnalyzerTestContext(markupCode, LanguageName, FileName, AssemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsMustBeInSourceTree);
+                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
@@ -84,14 +85,14 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Guard.NotNull(fileName, nameof(fileName));
 
             return new AnalyzerTestContext(MarkupCode, LanguageName, fileName, AssemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsMustBeInSourceTree);
+                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext InAssemblyNamed([NotNull] string assemblyName)
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, assemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsMustBeInSourceTree);
+                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
@@ -102,28 +103,28 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             ImmutableList<MetadataReference> referenceList = ImmutableList.CreateRange(references);
 
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName,
-                referenceList.ToImmutableHashSet(), CompilerWarningLevel, ValidationMode, DiagnosticsMustBeInSourceTree);
+                referenceList.ToImmutableHashSet(), CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext CompileAtWarningLevel(int warningLevel)
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References, warningLevel,
-                ValidationMode, DiagnosticsMustBeInSourceTree);
+                ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext InValidationMode(TestValidationMode validationMode)
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References,
-                CompilerWarningLevel, validationMode, DiagnosticsMustBeInSourceTree);
+                CompilerWarningLevel, validationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext AllowingDiagnosticsOutsideSourceTree()
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References,
-                CompilerWarningLevel, ValidationMode, false);
+                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode.AllowOutsideSourceTree);
         }
     }
 }

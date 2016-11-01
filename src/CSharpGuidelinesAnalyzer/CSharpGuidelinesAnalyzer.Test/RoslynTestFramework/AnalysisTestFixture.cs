@@ -34,13 +34,13 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
             ImmutableArray<Diagnostic> diagnostics =
                 GetDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,
-                        context.DiagnosticsMustBeInSourceTree)
+                        context.DiagnosticsCaptureMode)
                     .OrderBy(d => d.Location.SourceSpan)
                     .Where(d => d.Id == DiagnosticId)
                     .ToImmutableArray();
             ImmutableArray<TextSpan> spans = documentWithSpans.TextSpans.OrderBy(s => s).ToImmutableArray();
 
-            if (context.DiagnosticsMustBeInSourceTree)
+            if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
             {
                 diagnostics.Should().HaveCount(spans.Length);
             }
@@ -51,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             {
                 Diagnostic diagnostic = diagnostics[index];
 
-                if (context.DiagnosticsMustBeInSourceTree)
+                if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
                 {
                     diagnostic.Location.IsInSource.Should().BeTrue();
 
@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         [ItemNotNull]
         private ICollection<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
-            TestValidationMode validationMode, bool diagnosticsMustBeInSourceTree)
+            TestValidationMode validationMode, DiagnosticsCaptureMode diagnosticsCaptureMode)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(CreateAnalyzer());
             Compilation compilation = document.Project.GetCompilationAsync().Result;
@@ -84,7 +84,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             foreach (Diagnostic analyzerDiagnostic in compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result)
             {
                 Location location = analyzerDiagnostic.Location;
-                if (!diagnosticsMustBeInSourceTree || (location.IsInSource && location.SourceTree == tree))
+                if (diagnosticsCaptureMode == DiagnosticsCaptureMode.AllowOutsideSourceTree ||
+                    (location.IsInSource && location.SourceTree == tree))
                 {
                     builder.Add(analyzerDiagnostic);
                 }
