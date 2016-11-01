@@ -168,6 +168,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        public void When_longest_method_overload_is_static_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            M(string.Empty);
+                        }
+
+                        static void M(string s)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_shorter_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange

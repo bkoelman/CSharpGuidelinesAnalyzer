@@ -42,28 +42,37 @@ namespace CSharpGuidelinesAnalyzer
             switch (category)
             {
                 case "Class Design":
+                {
                     return ClassDesign;
-
+                }
                 case "Documentation":
+                {
                     return Documentation;
-
+                }
                 case "Framework":
+                {
                     return Framework;
-
+                }
                 case "Maintainability":
+                {
                     return Maintainability;
-
+                }
                 case "Member Design":
+                {
                     return MemberDesign;
-
+                }
                 case "Miscellaneous Design":
+                {
                     return MiscellaneousDesign;
-
+                }
                 case "Naming":
+                {
                     return Naming;
-
+                }
                 default:
+                {
                     throw new NotSupportedException($"Internal error: Unknown analyzer category {category}.");
+                }
             }
         }
     }

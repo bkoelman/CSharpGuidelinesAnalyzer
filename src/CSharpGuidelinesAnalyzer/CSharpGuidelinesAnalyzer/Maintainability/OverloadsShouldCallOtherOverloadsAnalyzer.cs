@@ -138,8 +138,9 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private bool CanBeMadeVirtual([NotNull] IMethodSymbol method)
         {
-            return !method.ContainingType.IsSealed && method.ContainingType.TypeKind != TypeKind.Struct &&
-                !method.IsVirtual && !method.IsOverride && !method.ExplicitInterfaceImplementations.Any();
+            return !method.IsStatic && !method.ContainingType.IsSealed &&
+                method.ContainingType.TypeKind != TypeKind.Struct && !method.IsVirtual && !method.IsOverride &&
+                !method.ExplicitInterfaceImplementations.Any();
         }
 
         private void CompareParameterOrder([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
