@@ -14,6 +14,16 @@ namespace CSharpGuidelinesAnalyzer
 {
     public static class AnalysisUtilities
     {
+        [ItemNotNull]
+        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
+            new[]
+            {
+                "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
+                "Xunit.FactAttribute",
+                "NUnit.Framework.TestAttribute",
+                "MbUnit.Framework.TestAttribute"
+            }.ToImmutableArray();
+
         public static bool SupportsOperations([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
@@ -362,6 +372,24 @@ namespace CSharpGuidelinesAnalyzer
             }
 
             return null;
+        }
+
+        public static bool IsUnitTestMethod([CanBeNull] ISymbol symbol)
+        {
+            var method = symbol as IMethodSymbol;
+            return method != null && HasUnitTestAttribute(method);
+        }
+
+        private static bool HasUnitTestAttribute([NotNull] IMethodSymbol method)
+        {
+            foreach (AttributeData attribute in method.GetAttributes())
+            {
+                if (UnitTestFrameworkMethodAttributeNames.Contains(attribute.AttributeClass.ToString()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

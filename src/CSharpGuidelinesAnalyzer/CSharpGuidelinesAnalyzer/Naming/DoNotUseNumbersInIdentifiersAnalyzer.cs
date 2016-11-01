@@ -69,6 +69,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 return;
             }
 
+            if (AnalysisUtilities.IsUnitTestMethod(context.Symbol))
+            {
+                return;
+            }
+
             if (ContainsDigit(member.Name) && !member.IsOverride && !AnalysisUtilities.IsInterfaceImplementation(member))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.Kind, member.Name));

@@ -511,6 +511,134 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Variable 'str12' contains one or more digits in its name.");
         }
 
+        [Fact]
+        public void When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    namespace Microsoft.VisualStudio.TestTools.UnitTesting
+                    {
+                        public class TestMethodAttribute : Attribute
+                        {
+                        }
+                    }
+
+                    namespace App
+                    {
+                        using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+                        class UnitTests
+                        {
+                            [TestMethod]
+                            void When_running_10_times_it_must_work()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_XUnit_method_name_contains_a_digit_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    namespace Xunit
+                    {
+                        public class FactAttribute : Attribute
+                        {
+                        }
+                    }
+
+                    namespace App
+                    {
+                        using Xunit;
+
+                        class UnitTests
+                        {
+                            [Fact]
+                            void When_running_10_times_it_must_work()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_NUnit_method_name_contains_a_digit_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    namespace NUnit.Framework
+                    {
+                        public class TestAttribute : Attribute
+                        {
+                        }
+                    }
+
+                    namespace App
+                    {
+                        using NUnit.Framework;
+
+                        class UnitTests
+                        {
+                            [Test]
+                            void When_running_10_times_it_must_work()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_MbUnit_method_name_contains_a_digit_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    namespace MbUnit.Framework
+                    {
+                        public class TestAttribute : Attribute
+                        {
+                        }
+                    }
+
+                    namespace App
+                    {
+                        using MbUnit.Framework;
+
+                        class UnitTests
+                        {
+                            [Test]
+                            void When_running_10_times_it_must_work()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseNumbersInIdentifiersAnalyzer();
