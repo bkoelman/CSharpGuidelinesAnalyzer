@@ -108,7 +108,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports boolean variables, parameters and fields whose names do not start with words like "Is", "Has", "Can" etc. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1738: Prefix an event handler with On (LOW)
-- [ ] This analyzer reports event handler assignments, in case the assigned method name is not suffixed with "On" followed by the name of the event.
+- [x] This analyzer reports when the target method in an event handler assignment does not match the pattern "On" followed by target field name and the name of the event. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1739: Use an underscore for irrelevant lambda parameters (LOW)
 - [ ] This analyzer reports unused lambda parameters whose names contain any characters other than underscores.
