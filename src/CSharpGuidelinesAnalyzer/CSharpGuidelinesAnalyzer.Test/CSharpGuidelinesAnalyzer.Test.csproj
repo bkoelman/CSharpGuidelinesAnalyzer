@@ -150,7 +150,7 @@
     <Compile Include="Specs\ClassDesign\DoNotHideInheritedMembersSpecs.cs" />
     <Compile Include="Specs\ClassDesign\MembersShouldDoASingleThingSpecs.cs" />
     <Compile Include="Specs\ClassDesign\TypesShouldHaveASinglePurposeSpecs.cs" />
-    <Compile Include="Specs\Documentation\AvoidCodeCommentsWithToDosSpecs.cs" />
+    <Compile Include="Specs\Documentation\AvoidToDoCommentsSpecs.cs" />
     <Compile Include="Specs\Documentation\AvoidInlineCommentsSpecs.cs" />
     <Compile Include="Specs\Documentation\DocumentAllInternalMembersSpecs.cs" />
     <Compile Include="Specs\Framework\BuildWithTheHighestWarningLevelSpecs.cs" />

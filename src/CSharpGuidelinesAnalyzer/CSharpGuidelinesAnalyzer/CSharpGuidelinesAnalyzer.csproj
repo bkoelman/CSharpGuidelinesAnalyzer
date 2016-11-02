@@ -44,7 +44,7 @@
     <Compile Include="ClassDesign\DoNotHideInheritedMembersAnalyzer.cs" />
     <Compile Include="ClassDesign\MembersShouldDoASingleThingAnalyzer.cs" />
     <Compile Include="ClassDesign\TypesShouldHaveASinglePurposeAnalyzer.cs" />
-    <Compile Include="Documentation\AvoidCodeCommentsWithToDosAnalyzer.cs" />
+    <Compile Include="Documentation\AvoidToDoCommentsAnalyzer.cs" />
     <Compile Include="Documentation\AvoidInlineCommentsAnalyzer.cs" />
     <Compile Include="Documentation\DocumentAllInternalMembersAnalyzer.cs" />
     <Compile Include="Framework\BuildWithTheHighestWarningLevelAnalyzer.cs" />

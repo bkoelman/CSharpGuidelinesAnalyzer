@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Documentation
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidCodeCommentsWithToDosAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidToDoCommentsAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV2318";
 

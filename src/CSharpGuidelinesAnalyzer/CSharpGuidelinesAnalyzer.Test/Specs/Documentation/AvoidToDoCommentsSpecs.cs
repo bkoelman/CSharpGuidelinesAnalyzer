@@ -5,13 +5,13 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 {
-    public class AvoidCodeCommentsWithToDosSpecs : CSharpGuidelinesAnalysisTestFixture
+    public class AvoidToDoCommentsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => AvoidCodeCommentsWithToDosAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => AvoidToDoCommentsAnalyzer.DiagnosticId;
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new AvoidCodeCommentsWithToDosAnalyzer();
+            return new AvoidToDoCommentsAnalyzer();
         }
     }
 }
