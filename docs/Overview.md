@@ -142,4 +142,4 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports single-line and multi-line comments inside method bodies.
 
 ### AV2318: Don't use comments for tracking work to be done later (LOW)
-- [ ] This analyzer reports comments that start with the word "TODO".
+- [x] This analyzer reports comments that start with the word "TODO".
