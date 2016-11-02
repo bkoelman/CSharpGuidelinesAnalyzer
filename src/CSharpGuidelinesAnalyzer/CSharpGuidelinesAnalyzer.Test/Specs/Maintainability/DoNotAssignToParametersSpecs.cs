@@ -230,6 +230,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact(Skip = "http://source.roslyn.io/#Microsoft.CodeAnalysis.CSharp/FlowAnalysis/CSharpDataFlowAnalysis.cs")]
+        public void When_method_is_invoked_on_struct_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public void M()
+                        {
+                        }
+                    }
+
+                    class C
+                    {
+                        public C(S s)
+                        {
+                            s.M();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotAssignToParametersAnalyzer();
