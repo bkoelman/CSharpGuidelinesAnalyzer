@@ -230,7 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
-        [Fact(Skip = "http://source.roslyn.io/#Microsoft.CodeAnalysis.CSharp/FlowAnalysis/CSharpDataFlowAnalysis.cs")]
+        [Fact]
         public void When_method_is_invoked_on_struct_it_must_be_skipped()
         {
             // Arrange
@@ -255,6 +255,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact(Skip = "https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/85")]
+        public void When_struct_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                    }
+
+                    class C
+                    {
+                        public C(S [|s|])
+                        {
+                            s = new S();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 's' is overwritten in its method body.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

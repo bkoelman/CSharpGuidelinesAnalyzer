@@ -41,6 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
+            if (parameter.Type.TypeKind == TypeKind.Struct)
+            {
+                return;
+            }
+
             var method = parameter.ContainingSymbol as IMethodSymbol;
             if (method == null || method.IsAbstract)
             {
