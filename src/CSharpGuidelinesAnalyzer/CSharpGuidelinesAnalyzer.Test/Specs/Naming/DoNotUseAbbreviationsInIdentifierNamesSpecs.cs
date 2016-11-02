@@ -1,3 +1,4 @@
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -641,6 +642,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        public void When_variable_name_consists_of_single_letter_inside_lambda_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .WithReference(typeof (Enumerable).Assembly)
+                .Using(typeof (Enumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int[] Method(int[] items)
+                        {
+                            return items.Where(i => i > 5).ToArray();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_variable_name_consists_of_single_underscore_it_must_be_skipped()
         {
             // Arrange
@@ -659,7 +682,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
-        
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseAbbreviationsInIdentifierNamesAnalyzer();

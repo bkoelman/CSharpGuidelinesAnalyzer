@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 return;
             }
 
-            if (NameRequiresReport(context.Symbol.Name) && !context.Symbol.IsOverride &&
+            if (NameRequiresReport(context.Symbol.Name, false) && !context.Symbol.IsOverride &&
                 !AnalysisUtilities.IsInterfaceImplementation(context.Symbol))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
@@ -104,31 +104,39 @@ namespace CSharpGuidelinesAnalyzer.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (NameRequiresReport(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
+            bool isInLambdaExpression = IsInLambdaExpression(parameter);
+
+            if (NameRequiresReport(parameter.Name, isInLambdaExpression) && !parameter.ContainingSymbol.IsOverride &&
                 !AnalysisUtilities.IsInterfaceImplementation(parameter))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
         }
 
+        private static bool IsInLambdaExpression([NotNull] IParameterSymbol parameter)
+        {
+            var method = parameter.ContainingSymbol as IMethodSymbol;
+            return method != null && method.MethodKind == MethodKind.AnonymousFunction;
+        }
+
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
-            if (NameRequiresReport(declaration.Variable.Name))
+            if (NameRequiresReport(declaration.Variable.Name, false))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
                     declaration.Variable.Name));
             }
         }
 
-        private bool NameRequiresReport([NotNull] string identifierName)
+        private bool NameRequiresReport([NotNull] string identifierName, bool allowSingleLetter)
         {
             bool isSingleLetter = identifierName.Length == 1 && char.IsLetter(identifierName[0]);
             bool isBlacklisted =
                 AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierName, WordsBlacklist, true) != null;
 
-            return isSingleLetter || isBlacklisted;
+            return allowSingleLetter ? isBlacklisted : isSingleLetter || isBlacklisted;
         }
     }
 }
