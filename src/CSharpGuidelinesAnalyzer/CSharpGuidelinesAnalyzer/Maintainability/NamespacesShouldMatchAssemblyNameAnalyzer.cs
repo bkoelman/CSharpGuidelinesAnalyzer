@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -65,7 +66,10 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             string reportAssemblyName = namespaceSymbol.ContainingAssembly.Name;
             string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
 
-            var visitor = new TypesInNamespaceVisitor(assemblyName, context.ReportDiagnostic, reportAssemblyName);
+            context.CancellationToken.ThrowIfCancellationRequested();
+
+            var visitor = new TypesInNamespaceVisitor(assemblyName, context.ReportDiagnostic, reportAssemblyName,
+                context.CancellationToken);
             visitor.Visit(namespaceSymbol);
         }
 
@@ -116,6 +120,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [NotNull]
             private readonly string reportAssemblyName;
 
+            private readonly CancellationToken cancellationToken;
+
             [NotNull]
             [ItemNotNull]
             private readonly Stack<string> namespaceNames = new Stack<string>();
@@ -124,7 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
 
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] Action<Diagnostic> reportDiagnostic,
-                [NotNull] string reportAssemblyName)
+                [NotNull] string reportAssemblyName, CancellationToken cancellationToken)
             {
                 Guard.NotNull(assemblyName, nameof(assemblyName));
                 Guard.NotNull(reportAssemblyName, nameof(reportAssemblyName));
@@ -134,10 +140,13 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
                 this.reportDiagnostic = reportDiagnostic;
                 this.reportAssemblyName = reportAssemblyName;
+                this.cancellationToken = cancellationToken;
             }
 
             public override void VisitNamespace([NotNull] INamespaceSymbol symbol)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 namespaceNames.Push(symbol.Name);
 
                 if (!IsCurrentNamespaceValid(false))

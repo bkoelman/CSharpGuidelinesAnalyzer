@@ -32,12 +32,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             {
                 if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
                 {
-                    startContext.RegisterOperationBlockAction(AnalyzeOperationBlock);
+                    startContext.RegisterOperationBlockAction(AnalyzeCodeBlock);
                 }
             });
         }
 
-        private void AnalyzeOperationBlock(OperationBlockAnalysisContext context)
+        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
             var statementWalker = new StatementWalker();
 
@@ -45,6 +45,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             {
                 statementWalker.Visit(operation);
             }
+
+            context.CancellationToken.ThrowIfCancellationRequested();
 
             if (statementWalker.StatementCount > 7)
             {

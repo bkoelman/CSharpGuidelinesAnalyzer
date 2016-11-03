@@ -77,6 +77,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             foreach (IGrouping<string, IMethodSymbol> methodGroup in methodGroups)
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 AnalyzeMethodGroup(methodGroup.ToArray(), context);
             }
         }

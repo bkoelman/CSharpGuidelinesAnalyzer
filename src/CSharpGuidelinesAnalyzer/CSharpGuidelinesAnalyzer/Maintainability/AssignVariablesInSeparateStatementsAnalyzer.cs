@@ -60,6 +60,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             var statementWalker = new StatementWalker();
             statementWalker.Visit(context.Operation);
 
+            context.CancellationToken.ThrowIfCancellationRequested();
+
             if (statementWalker.IdentifiersAssigned.Count > 1)
             {
                 string identifiers = FormatIdentifierList(statementWalker.IdentifiersAssigned.ToList());

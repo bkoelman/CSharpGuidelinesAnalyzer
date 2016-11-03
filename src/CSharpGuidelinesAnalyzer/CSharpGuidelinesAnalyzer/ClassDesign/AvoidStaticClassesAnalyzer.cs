@@ -64,6 +64,8 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
 
             foreach (IMethodSymbol method in visibleMethods.Where(method => !method.IsExtensionMethod))
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 context.ReportDiagnostic(Diagnostic.Create(MemberRule, method.Locations[0], type.Name,
                     method.DeclaredAccessibility == Accessibility.Public ? "public" : "internal", method.Name));
             }

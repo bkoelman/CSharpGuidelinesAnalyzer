@@ -75,6 +75,8 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
                     }
                 }
 
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 IArgument argsArgument = GetArgsArgument(expression, systemEventArgs);
                 if (argsArgument != null && IsNullConstant(argsArgument.Value))
                 {

@@ -44,6 +44,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             var walker = new LoopBodyWalker();
             walker.Visit(loopStatement.Body);
 
+            context.CancellationToken.ThrowIfCancellationRequested();
+
             if (walker.HasSeenLoopStatement)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, loopStatement.Syntax.GetLocation()));

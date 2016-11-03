@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -115,12 +116,12 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             {
                 if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
                 {
-                    startContext.RegisterOperationBlockAction(AnalyzeMethod);
+                    startContext.RegisterOperationBlockAction(AnalyzeCodeBlock);
                 }
             });
         }
 
-        private void AnalyzeMethod(OperationBlockAnalysisContext context)
+        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
             var method = context.OwningSymbol as IMethodSymbol;
             if (method == null || method.ReturnsVoid || !ReturnsEnumerable(method))
@@ -133,6 +134,8 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             foreach (IReturnStatement returnStatement in
                 context.OperationBlocks.SelectMany(b => b.DescendantsAndSelf().OfType<IReturnStatement>()))
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 AnalyzeReturnStatement(returnStatement, context, variableEvaluationCache);
             }
         }
@@ -166,7 +169,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
             EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue, context.OperationBlocks,
-                variableEvaluationCache);
+                variableEvaluationCache, context.CancellationToken);
 
             if (result.IsConclusive && result.IsDeferred)
             {
@@ -177,12 +180,16 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
         [NotNull]
         private static EvaluationResult AnalyzeExpression([NotNull] IOperation expression,
             [ItemNotNull] ImmutableArray<IOperation> body,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache,
+            CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var local = expression as ILocalReferenceExpression;
             if (local != null)
             {
-                var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache);
+                var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache,
+                    cancellationToken);
                 assignmentWalker.VisitMethod();
 
                 return assignmentWalker.Result;
@@ -191,8 +198,10 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             var conditional = expression as IConditionalChoiceExpression;
             if (conditional != null)
             {
-                EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body, variableEvaluationCache);
-                EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body, variableEvaluationCache);
+                EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body, variableEvaluationCache,
+                    cancellationToken);
+                EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body, variableEvaluationCache,
+                    cancellationToken);
 
                 return EvaluationResult.Unify(trueResult, falseResult);
             }
@@ -379,8 +388,11 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             [NotNull]
             private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache;
 
+            private readonly CancellationToken cancellationToken;
+
             public VariableAssignmentWalker([NotNull] ILocalSymbol local, [ItemNotNull] ImmutableArray<IOperation> body,
-                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
+                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache,
+                CancellationToken cancellationToken)
             {
                 Guard.NotNull(local, nameof(local));
                 Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
@@ -388,6 +400,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
                 currentLocal = local;
                 this.body = body;
                 this.variableEvaluationCache = variableEvaluationCache;
+                this.cancellationToken = cancellationToken;
             }
 
             public void VisitMethod()
@@ -435,7 +448,8 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             {
                 Guard.NotNull(assignedValue, nameof(assignedValue));
 
-                EvaluationResult result = AnalyzeExpression(assignedValue, body, variableEvaluationCache);
+                EvaluationResult result = AnalyzeExpression(assignedValue, body, variableEvaluationCache,
+                    cancellationToken);
                 Result.CopyIfConclusiveFrom(result);
             }
         }

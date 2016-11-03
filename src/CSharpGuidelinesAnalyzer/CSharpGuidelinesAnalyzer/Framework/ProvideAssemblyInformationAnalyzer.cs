@@ -73,6 +73,8 @@ namespace CSharpGuidelinesAnalyzer.Framework
         {
             while (true)
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 INamedTypeSymbol assemblyAttributeToAnalyze;
                 if (!assemblyAttributesToAnalyze.TryDequeue(out assemblyAttributeToAnalyze))
                 {

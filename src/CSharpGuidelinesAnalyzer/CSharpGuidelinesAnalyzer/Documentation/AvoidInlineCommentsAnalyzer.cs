@@ -44,9 +44,10 @@ namespace CSharpGuidelinesAnalyzer.Documentation
                     .Where(IsComment)
                     .ToArray();
 
-            SyntaxTrivia[] allCommentTrivia = context.CodeBlock.DescendantTrivia().Where(IsComment).ToArray();
-            foreach (SyntaxTrivia commentTrivia in allCommentTrivia)
+            foreach (SyntaxTrivia commentTrivia in context.CodeBlock.DescendantTrivia().Where(IsComment))
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 if (outerCommentTrivia.Contains(commentTrivia))
                 {
                     continue;

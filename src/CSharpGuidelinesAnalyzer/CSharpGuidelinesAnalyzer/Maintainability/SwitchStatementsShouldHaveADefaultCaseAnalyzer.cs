@@ -58,13 +58,15 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            var analysisContext = new SwitchAnalysisContext(switchStatement, context.Compilation, systemBoolean,
-                context.CancellationToken);
-
             if (HasDefaultCase(switchStatement))
             {
                 return;
             }
+
+            context.CancellationToken.ThrowIfCancellationRequested();
+
+            var analysisContext = new SwitchAnalysisContext(switchStatement, context.Compilation, systemBoolean,
+                context.CancellationToken);
 
             if (IsSwitchComplete(analysisContext) == false)
             {
@@ -173,6 +175,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 analysisContext.SwitchStatement.Cases.SelectMany(@case => @case.Clauses.OfType<ISingleValueCaseClause>());
             foreach (ISingleValueCaseClause caseClause in caseClauses)
             {
+                analysisContext.CancellationToken.ThrowIfCancellationRequested();
+
                 var literalSyntax = caseClause.Value.Syntax as LiteralExpressionSyntax;
                 if (literalSyntax != null)
                 {
@@ -230,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [NotNull]
             private readonly Compilation compilation;
 
-            private readonly CancellationToken cancellationToken;
+            public CancellationToken CancellationToken { get; }
 
             [NotNull]
             public ISwitchStatement SwitchStatement { get; }
@@ -250,7 +254,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
                 SwitchStatement = switchStatement;
                 this.compilation = compilation;
-                this.cancellationToken = cancellationToken;
+                CancellationToken = cancellationToken;
 
                 BooleanTrue = systemBoolean.GetMembers("TrueString").Single();
                 BooleanFalse = systemBoolean.GetMembers("FalseString").Single();
@@ -262,7 +266,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 Guard.NotNull(memberSyntax, nameof(memberSyntax));
 
                 SemanticModel model = compilation.GetSemanticModel(memberSyntax.SyntaxTree);
-                return model.GetSymbolInfo(memberSyntax, cancellationToken).Symbol as IFieldSymbol;
+                return model.GetSymbolInfo(memberSyntax, CancellationToken).Symbol as IFieldSymbol;
             }
         }
     }

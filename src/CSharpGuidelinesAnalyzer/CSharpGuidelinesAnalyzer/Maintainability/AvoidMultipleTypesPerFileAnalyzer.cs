@@ -41,6 +41,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             var walker = new TopLevelTypeSyntaxWalker();
             walker.Visit(syntaxRoot);
 
+            context.CancellationToken.ThrowIfCancellationRequested();
+
             if (walker.TopLevelTypeDeclarations.Count > 1)
             {
                 foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1))
