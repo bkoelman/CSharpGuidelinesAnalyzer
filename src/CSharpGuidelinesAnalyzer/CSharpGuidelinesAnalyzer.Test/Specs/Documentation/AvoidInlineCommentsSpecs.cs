@@ -212,7 +212,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof(Debug).Namespace)
+                .Using(typeof (Debug).Namespace)
                 .InDefaultClass(@"
                     void UnitTest()
                     {
@@ -238,7 +238,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof(Debug).Namespace)
+                .Using(typeof (Debug).Namespace)
                 .InDefaultClass(@"
                     void UnitTest()
                     {

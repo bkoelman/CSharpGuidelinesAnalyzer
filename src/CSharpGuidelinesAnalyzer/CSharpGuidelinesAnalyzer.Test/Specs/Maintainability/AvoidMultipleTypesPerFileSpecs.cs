@@ -302,10 +302,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "File 'Example.cs' contains additional type 'N2.N3.D4'.");
         }
 
-
-
-
-
         [Fact]
         public void When_file_declares_multiple_toplevel_classes_it_must_be_reported()
         {

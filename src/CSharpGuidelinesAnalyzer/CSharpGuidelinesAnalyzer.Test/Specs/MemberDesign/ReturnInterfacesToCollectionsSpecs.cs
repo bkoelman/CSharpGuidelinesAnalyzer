@@ -140,7 +140,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(List<>).Namespace)
+                .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -167,7 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(List<>).Namespace)
+                .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public class B
                     {
@@ -197,7 +197,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(List<>).Namespace)
+                .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -224,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .Using(typeof(List<>).Namespace)
+                .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -245,7 +245,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             VerifyGuidelineDiagnostic(source,
                 "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type.");
         }
-
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
