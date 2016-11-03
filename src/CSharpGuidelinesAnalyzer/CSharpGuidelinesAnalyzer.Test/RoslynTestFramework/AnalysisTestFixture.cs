@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 diagnostics.Should().HaveCount(spans.Length);
             }
 
-            messages.Should().HaveCount(diagnostics.Length);
+            diagnostics.Should().HaveCount(messages.Length);
 
             for (int index = 0; index < diagnostics.Length; index++)
             {
