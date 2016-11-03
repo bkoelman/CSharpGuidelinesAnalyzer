@@ -67,7 +67,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1537: Finish every if-else-if statement with an else-part (MEDIUM)
-- [ ] This analyzer reports `if-else-if` statements that do not end with an unconditional `else` clause.
+- [x] This analyzer reports `if-else-if` statements that do not end with an unconditional `else` clause.
 
 ### AV1551: Call the more overloaded method from other overloads (MEDIUM)
 - [x] This analyzer reports when the method overload with the most parameters is not declared virtual. For the other overloads, it reports if they do not delegate to another overload or when their parameter order is different. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
