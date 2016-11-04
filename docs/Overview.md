@@ -15,9 +15,6 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ### AV1115: A method or property should do only one thing (HIGH)
 - [x] This analyzer reports members that have the word "And" in their name.
 
-### AV1125: Don't expose stateful objects through static members (MEDIUM)
-- [ ] This analyzer reports static property getters whose method body contains an execution path that returns a type that has non-static members.
-
 ## Category: Member Design
 
 ### AV1130: Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class (MEDIUM)
