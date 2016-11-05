@@ -13,7 +13,7 @@ Almost all analyzers are implemented, but work is still in progress. See [Overvi
 
 ## Get started
 
-* At the minimum, you need [Visual Studio](https://www.visualstudio.com/) 2015. About 50% of the rule analyzers depend on the `IOperation` API, which was introduced in Update 2. Without Update 2, those will remain silent. If you are using Update 3, you need to activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md) for all analyzers to work.
+* At the minimum, you need [Visual Studio](https://www.visualstudio.com/) 2015. About 50% of the rule analyzers [require Update 2 or later](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md). Without Update 2, those will remain silent. If you are using Update 3, you need to activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md) for all analyzers to work.
 
 * From the NuGet package manager console:
 
