@@ -1,8 +1,8 @@
 # IOperation support
 
-Some analyzers depend on the `IOperation` API, which was introduced in Visual Studio 2015 Update 2. This API is enabled by default in the next Visual Studio version, but users of Visual Studio 2015 will need to modify their project files.
+About 50% of the rule analyzers depend on the `IOperation` API, which was introduced in Visual Studio 2015 Update 2. The NuGet installer automatically activates this API in your project.
 
-To enable these analyzers to run, add the  `<Features>IOperation</Features>` property to the first property group in your .csproj file.
+If, for some reason, you want to activate this API yourself, add the  `<Features>IOperation</Features>` property to the first property group in your .csproj file.
 
 Example:
 ```
