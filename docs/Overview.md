@@ -23,21 +23,21 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Miscellaneous Design
 
 ### AV1225: Use a protected virtual method to raise each event (MEDIUM)
-- [x] This analyzer reports methods that invoke an event, which are non-protected or non-virtual or their name does not end with the word "On" followed by the event name. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports methods that invoke an event, which are non-protected or non-virtual or their name does not end with the word "On" followed by the event name. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1235: Don't pass null as the sender argument when raising an event (HIGH)
-- [x] This analyzer reports when a non-static event is invoked with `null` for the "sender" parameter, or when an event is invoked with `null` for the "args" parameter. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when a non-static event is invoked with `null` for the "sender" parameter, or when an event is invoked with `null` for the "args" parameter. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1250: Evaluate the result of a LINQ expression before returning it (HIGH)
-- [x] This analyzer reports when the result of a LINQ method that uses deferred execution is returned. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when the result of a LINQ method that uses deferred execution is returned. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ## Category: Maintainability
 
 ### AV1500: Methods should not exceed 7 statements (HIGH)
-- [x] This analyzer reports methods that consist of more than seven statements. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports methods that consist of more than seven statements. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1502: Avoid conditions with double negatives (MEDIUM)
-- [x] This analyzer reports usages of the logical not operator with an argument that contains the word "No" or "Not" in it. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports usages of the logical not operator with an argument that contains the word "No" or "Not" in it. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1505: Name assemblies after their contained namespace (LOW)
 - [x] This analyzer reports namespaces and types that do not match with the assembly name, unless the assembly name ends with ".Core".
@@ -46,31 +46,31 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when a file contains multiple non-nested types.
 
 ### AV1522: Assign each variable in a separate statement (HIGH)
-- [x] This analyzer reports when multiple properties, fields, parameters or variables are assigned in a single statement. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when multiple properties, fields, parameters or variables are assigned in a single statement. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1525: Don't make explicit comparisons to true or false (HIGH)
-- [x] This analyzer reports boolean comparisons with `true` or `false`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports boolean comparisons with `true` or `false`. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1530: Don't change a loop variable inside a for loop (MEDIUM)
 - [x] This analyzer reports when loop variables are assigned in the loop body.
 
 ### AV1532: Avoid nested loops (MEDIUM)
-- [x] This analyzer reports when `for`, `foreach`, `while` or `do-while` loops are nested. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when `for`, `foreach`, `while` or `do-while` loops are nested. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1535: Always add a block after keywords such as if, else, while, for, foreach and case (MEDIUM)
-- [x] This analyzer reports when a case statement does not have a block. The other scenarios are already covered by Resharper. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when a case statement does not have a block. The other scenarios are already covered by Resharper. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1536: Always add a default block after the last case in a switch statement (HIGH)
-- [x] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1537: Finish every if-else-if statement with an else-part (MEDIUM)
 - [x] This analyzer reports `if-else-if` statements that do not end with an unconditional `else` clause.
 
 ### AV1551: Call the more overloaded method from other overloads (MEDIUM)
-- [x] This analyzer reports when the method overload with the most parameters is not declared virtual. For the other overloads, it reports if they do not delegate to another overload or when their parameter order is different. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when the method overload with the most parameters is not declared virtual. For the other overloads, it reports if they do not delegate to another overload or when their parameter order is different. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1555: Avoid using named arguments (HIGH)
-- [x] This analyzer reports invocations with named arguments that are not of type `bool` or `bool?`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports invocations with named arguments that are not of type `bool` or `bool?`. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1561: Don't allow methods and constructors with more than three parameters (HIGH)
 - [x] This analyzer reports methods, indexers and delegates that declare more than three parameters.
@@ -84,10 +84,10 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Naming
 
 ### AV1704: Don't include numbers in variables, parameters and type members (LOW)
-- [x] This analyzer reports when a digit occurs in a type, member, parameter or variable name. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when a digit occurs in a type, member, parameter or variable name. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1706: Don't use abbreviations (MEDIUM)
-- [x] This analyzer reports member, parameter and variable names that consist of a single-letter or contain any of the abbreviations "Btn", "Ctrl", "Frm", "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports member, parameter and variable names that consist of a single-letter or contain any of the abbreviations "Btn", "Ctrl", "Frm", "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str". Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1708: Name types using nouns, noun phrases or adjective phrases (MEDIUM)
 - [x] This analyzer reports types that have any of the terms "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.
@@ -99,13 +99,13 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports members that are named "AddItem", "Delete" or "NumberOfItems". The other scenarios are already covered by [CA1726](https://msdn.microsoft.com/en-us/library/ms182258.aspx).
 
 ### AV1712: Avoid short names or names that can be mistaken for other names (HIGH)
-- [x] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl". Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl". Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1715: Properly name properties (MEDIUM)
-- [x] This analyzer reports boolean variables, parameters and fields whose names do not start with words like "Is", "Has", "Can" etc. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports boolean variables, parameters and fields whose names do not start with words like "Is", "Has", "Can" etc. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1738: Prefix an event handler with On (LOW)
-- [x] This analyzer reports when the target method in an event handler assignment does not match the pattern "On" followed by target field name and the name of the event. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when the target method in an event handler assignment does not match the pattern "On" followed by target field name and the name of the event. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1739: Use an underscore for irrelevant lambda parameters (LOW)
 - [ ] This analyzer reports unused lambda parameters whose names contain any characters other than underscores.
@@ -125,10 +125,10 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when the `AssemblyTitle`, `AssemblyDescription`, `AssemblyConfiguration`, `AssemblyCompany`, `AssemblyProduct`, `AssemblyCopyright`, `AssemblyTrademark`, `AssemblyVersion` or `AssemblyFileVersion` is missing or invoked with an empty string.
 
 ### AV2230: Only use the dynamic keyword when talking to a dynamic object (HIGH)
-- [x] This analyzer reports when a member, parameter or variable that is declared as `dynamic` is assigned the result of an expression whose type is not `object` or `dynamic`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports when a member, parameter or variable that is declared as `dynamic` is assigned the result of an expression whose type is not `object` or `dynamic`. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV2235: Favor async/await over the Task (HIGH)
-- [x] This analyzer reports invocations of `Task.ContinueWith`. Requires [IOperation support](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
+- [x] This analyzer reports invocations of `Task.ContinueWith`. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ## Category: Documentation
 
