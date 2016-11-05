@@ -5,7 +5,25 @@
 
 This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), which are not implemented here.
 
-**Note:** This is still a very preliminary version, but work is in progress. See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules and their status.
+![Analyzer in action](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/gh-pages/images/analyzer-in-action.png)
+
+## Project status
+
+Almost all analyzers are implemented, but work is still in progress. See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules and their status.
+
+## Get started
+
+* At the minimum, you need [Visual Studio](https://www.visualstudio.com/) 2015. About 50% of the rule analyzers depend on the `IOperation` API, which was introduced in Update 2. Without Update 2, those will remain silent. If you are using Update 3, you need to activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md) for all analyzers to work.
+
+* From the NuGet package manager console:
+
+  `Install-Package CSharpGuidelinesAnalyzer -Pre`
+
+* Rebuild your solution
+
+## Contribute!
+
+This analyzer pack still needs a lot of testing on various codebases. Some of the best ways to contribute are to try things out, file bugs, and join in design conversations.
 
 ## Trying out the latest build
 
@@ -18,5 +36,3 @@ After each commit, a new prerelease NuGet package is automatically published to 
 * Open the NuGet package manager console  (**Tools**, **NuGet Package Manager**, **Package Manager Console**)
     * Select **MyGet** as package source
     * Run command: `Install-Package CSharpGuidelinesAnalyzer -pre`
-
-![Analyzer in action](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/gh-pages/images/analyzer-in-action.png)
