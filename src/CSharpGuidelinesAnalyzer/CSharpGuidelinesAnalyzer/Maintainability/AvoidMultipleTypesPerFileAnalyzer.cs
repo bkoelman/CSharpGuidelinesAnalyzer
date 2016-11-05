@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private sealed class TopLevelTypeSyntaxWalker : SyntaxWalker
         {
-            private bool IsInType;
+            private bool isInType;
 
             [NotNull]
             [ItemNotNull]
@@ -78,15 +78,15 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             private void VisitTypeDeclaration([NotNull] SyntaxNode node)
             {
-                if (!IsInType)
+                if (!isInType)
                 {
                     TopLevelTypeDeclarations.Add(node);
 
-                    IsInType = true;
+                    isInType = true;
 
                     base.Visit(node);
 
-                    IsInType = false;
+                    isInType = false;
                 }
                 else
                 {

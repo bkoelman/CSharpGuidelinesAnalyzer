@@ -120,7 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [NotNull]
             private readonly string reportAssemblyName;
 
-            private readonly CancellationToken cancellationToken;
+            private CancellationToken cancellationToken;
 
             [NotNull]
             [ItemNotNull]
@@ -132,8 +132,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] Action<Diagnostic> reportDiagnostic,
                 [NotNull] string reportAssemblyName, CancellationToken cancellationToken)
             {
-                Guard.NotNull(assemblyName, nameof(assemblyName));
-                Guard.NotNull(reportAssemblyName, nameof(reportAssemblyName));
+                Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
+                Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
 
                 assemblyNameParts =
                     assemblyName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();

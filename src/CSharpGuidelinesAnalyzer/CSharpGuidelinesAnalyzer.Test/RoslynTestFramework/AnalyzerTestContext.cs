@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 DefaultTestValidationMode, DiagnosticsCaptureMode.RequireInSourceTree)
         {
             Guard.NotNull(markupCode, nameof(markupCode));
-            Guard.NotNull(languageName, nameof(languageName));
+            Guard.NotNullNorWhiteSpace(languageName, nameof(languageName));
         }
 
         [NotNull]
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         public AnalyzerTestContext InFileNamed([NotNull] string fileName)
         {
-            Guard.NotNull(fileName, nameof(fileName));
+            Guard.NotNullNorWhiteSpace(fileName, nameof(fileName));
 
             return new AnalyzerTestContext(MarkupCode, LanguageName, fileName, AssemblyName, References,
                 CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);

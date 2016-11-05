@@ -20,10 +20,10 @@ namespace CSharpGuidelinesAnalyzer
         public IdentifierInfo([NotNull] string name, [NotNull] string longName, [NotNull] ITypeSymbol type,
             [NotNull] string kind)
         {
-            Guard.NotNull(name, nameof(name));
-            Guard.NotNull(longName, nameof(longName));
+            Guard.NotNullNorWhiteSpace(name, nameof(name));
+            Guard.NotNullNorWhiteSpace(longName, nameof(longName));
             Guard.NotNull(type, nameof(type));
-            Guard.NotNull(kind, nameof(kind));
+            Guard.NotNullNorWhiteSpace(kind, nameof(kind));
 
             Name = name;
             LongName = longName;

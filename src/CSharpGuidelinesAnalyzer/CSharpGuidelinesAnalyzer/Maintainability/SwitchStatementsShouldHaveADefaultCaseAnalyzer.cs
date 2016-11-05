@@ -207,17 +207,14 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 }
 
                 var conversion = caseClause.Value as IConversionExpression;
-                if (conversion != null)
+                var memberSyntax = conversion?.Syntax as MemberAccessExpressionSyntax;
+                if (memberSyntax != null)
                 {
-                    var memberSyntax = conversion.Syntax as MemberAccessExpressionSyntax;
-                    if (memberSyntax != null)
+                    IFieldSymbol field = analysisContext.GetFieldOrNull(memberSyntax);
+                    if (field != null)
                     {
-                        IFieldSymbol field = analysisContext.GetFieldOrNull(memberSyntax);
-                        if (field != null)
-                        {
-                            caseClauseValues.Add(field);
-                            continue;
-                        }
+                        caseClauseValues.Add(field);
+                        continue;
                     }
                 }
 

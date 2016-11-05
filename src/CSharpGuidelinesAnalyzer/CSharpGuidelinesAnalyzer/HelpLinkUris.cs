@@ -29,8 +29,8 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public static string GetForCategory([NotNull] string category, [NotNull] string ruleId)
         {
-            Guard.NotNull(category, nameof(category));
-            Guard.NotNull(ruleId, nameof(ruleId));
+            Guard.NotNullNorWhiteSpace(category, nameof(category));
+            Guard.NotNullNorWhiteSpace(ruleId, nameof(ruleId));
 
             string categoryLink = GetLinkForCategory(category);
             return categoryLink + "#" + ruleId.ToLowerInvariant();

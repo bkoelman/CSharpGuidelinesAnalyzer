@@ -284,7 +284,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
             public void SetDeferred([NotNull] string operationName)
             {
-                Guard.NotNull(operationName, nameof(operationName));
+                Guard.NotNullNorWhiteSpace(operationName, nameof(operationName));
 
                 evaluationState = EvaluationState.Deferred;
                 deferredOperationNameOrNull = operationName;

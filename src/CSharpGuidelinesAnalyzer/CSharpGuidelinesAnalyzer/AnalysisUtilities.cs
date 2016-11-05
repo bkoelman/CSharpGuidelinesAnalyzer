@@ -85,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer
         public static bool StartsWithAnyWordOf([NotNull] string identiferName,
             [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
         {
-            Guard.NotNull(identiferName, nameof(identiferName));
+            Guard.NotNullNorWhiteSpace(identiferName, nameof(identiferName));
 
             IList<string> wordsInText = ExtractWords(identiferName);
             string firstWordInText = wordsInText.First();
@@ -112,7 +112,7 @@ namespace CSharpGuidelinesAnalyzer
         public static string GetFirstWordInSetFromIdentifier([NotNull] string identiferName,
             [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
         {
-            Guard.NotNull(identiferName, nameof(identiferName));
+            Guard.NotNullNorWhiteSpace(identiferName, nameof(identiferName));
 
             IList<string> wordsInText = ExtractWords(identiferName);
 
