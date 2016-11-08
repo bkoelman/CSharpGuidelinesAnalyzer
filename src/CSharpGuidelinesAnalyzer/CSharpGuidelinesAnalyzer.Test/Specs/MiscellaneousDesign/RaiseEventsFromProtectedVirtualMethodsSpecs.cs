@@ -178,6 +178,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 "Method 'RaiseOnValueChanged' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
         }
 
+        [Fact]
+        public void When_event_invocation_method_is_lambda_expression_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new ClassSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        private void M()
+                        {
+                            Action action = [|() => ValueChanged?.Invoke(this, EventArgs.Empty)|];
+                            action();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Event 'ValueChanged' should be raised from a regular method.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new RaiseEventsFromProtectedVirtualMethodsAnalyzer();
