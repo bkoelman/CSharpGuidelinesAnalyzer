@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Naming
 {
@@ -10,8 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
     {
         public const string DiagnosticId = "AV1739";
 
-        private const string Title = "AV1739";
-        private const string MessageFormat = "AV1739";
+        private const string Title = "Unused lambda parameter should be renamed to one or more underscores";
+
+        private const string MessageFormat =
+            "Unused lambda parameter '{0}' should be renamed to one or more underscores.";
+
         private const string Description = "Use an underscore for irrelevant lambda parameters.";
         private const string Category = "Naming";
 
@@ -24,8 +28,62 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
-            //context.EnableConcurrentExecution();
-            //context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                {
+                    startContext.RegisterOperationAction(AnalyzeLambdaExpression, OperationKind.LambdaExpression);
+                }
+            });
+        }
+
+        private void AnalyzeLambdaExpression(OperationAnalysisContext context)
+        {
+            var lambdaExpression = (ILambdaExpression) context.Operation;
+
+            foreach (IParameterSymbol parameter in lambdaExpression.Signature.Parameters)
+            {
+                if (!ConsistsOfUnderscoresOnly(parameter.Name))
+                {
+                    AnalyzeParameterUsage(parameter, lambdaExpression.Signature, context);
+                }
+            }
+        }
+
+        private bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
+        {
+            foreach (char ch in identifierName)
+            {
+                if (ch != '_')
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static void AnalyzeParameterUsage([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
+            OperationAnalysisContext context)
+        {
+            SyntaxNode body = AnalysisUtilities.TryGetBodySyntaxForMethod(method, context.CancellationToken);
+            if (body != null)
+            {
+                SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
+                DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
+                if (dataFlowAnalysis.Succeeded)
+                {
+                    if (!dataFlowAnalysis.ReadInside.Contains(parameter) &&
+                        !dataFlowAnalysis.WrittenInside.Contains(parameter) &&
+                        !dataFlowAnalysis.Captured.Contains(parameter))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                    }
+                }
+            }
         }
     }
 }
