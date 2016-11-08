@@ -44,14 +44,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        public void When_string_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
                     void M(string p)
                     {
-                        string s = p;
+                        string x = p;
                     }
                 ")
                 .Build();
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_written_to_in_method_body_it_must_be_reported()
+        public void When_string_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -69,6 +69,367 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     void M(string [|p|])
                     {
                         p += ""X"";
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_bool_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(bool p)
+                    {
+                        var x = p.ToString(null);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_bool_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(bool [|p|])
+                    {
+                        p = true;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_int_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int p)
+                    {
+                        var x = p.GetHashCode();
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_int_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int [|p|])
+                    {
+                        p += 5;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_unsigned_short_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(ushort p)
+                    {
+                        var x = p.GetHashCode();
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_unsigned_short_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(ushort [|p|])
+                    {
+                        p += 5;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_decimal_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(decimal p)
+                    {
+                        var x = p.ToString(null, null);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_decimal_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(decimal [|p|])
+                    {
+                        p += 5m;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_double_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(double p)
+                    {
+                        var x = p.ToString(null, null);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_double_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(double [|p|])
+                    {
+                        p += 5.0;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_DateTime_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(DateTime p)
+                    {
+                        var x = p.Year;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_DateTime_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(DateTime [|p|])
+                    {
+                        p = DateTime.UtcNow;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_nullable_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int? p)
+                    {
+                        var x = p.Value.ToString(null, null);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_nullable_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int? [|p|])
+                    {
+                        p += 5;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_enum_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public enum E
+                    {
+                        A, B
+                    }
+
+                    void M(E p)
+                    {
+                        var x = p.HasFlag(E.A);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_enum_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public enum E
+                    {
+                        A, B
+                    }
+
+                    void M(E [|p|])
+                    {
+                        p = E.B;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_struct_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public int Value { get; set; }
+                    }
+
+                    void M(S p)
+                    {
+                        var x = p.Value;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_struct_parameter_is_invoked_on_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public void M()
+                        {
+                        }
+                    }
+
+                    class C
+                    {
+                        public C(S s)
+                        {
+                            s.M();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact(Skip = "https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/85")]
+        public void When_struct_parameter_is_written_to_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                    }
+
+                    void M(S [|p|])
+                    {
+                        p = new S();
                     }
                 ")
                 .Build();
@@ -150,7 +511,58 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
+        public void When_parameter_is_read_from_in_lambda_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        N(p => 
+                        {
+                            Console.WriteLine(p);
+                            return true;
+                        });
+                    }
+
+                    void N(Func<string, bool> f)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_parameter_is_written_to_in_lambda_expression_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        N([|p|] => 
+                        {
+                            p = ""A"";
+                            return true;
+                        });
+                    }
+
+                    void N(Func<string, bool> f)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        public void When_string_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
@@ -170,7 +582,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_written_to_in_constructor_body_it_must_be_reported()
+        public void When_string_parameter_is_written_to_in_constructor_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new ClassSourceCodeBuilder()
@@ -228,57 +640,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        public void When_method_is_invoked_on_struct_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    public struct S
-                    {
-                        public void M()
-                        {
-                        }
-                    }
-
-                    class C
-                    {
-                        public C(S s)
-                        {
-                            s.M();
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact(Skip = "https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/85")]
-        public void When_struct_parameter_is_written_to_in_method_body_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    public struct S
-                    {
-                    }
-
-                    class C
-                    {
-                        public C(S [|s|])
-                        {
-                            s = new S();
-                        }
-                    }
-                ")
-                .Build();
-
-            VerifyGuidelineDiagnostic(source,
-                "The value of parameter 's' is overwritten in its method body.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

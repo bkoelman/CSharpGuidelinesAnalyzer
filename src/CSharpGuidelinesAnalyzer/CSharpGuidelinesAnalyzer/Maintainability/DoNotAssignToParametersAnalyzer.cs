@@ -23,6 +23,27 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        private static readonly ImmutableArray<SpecialType> IntegralValueTypes =
+            new[]
+            {
+                SpecialType.System_Boolean,
+                SpecialType.System_Char,
+                SpecialType.System_SByte,
+                SpecialType.System_Byte,
+                SpecialType.System_Int16,
+                SpecialType.System_UInt16,
+                SpecialType.System_Int32,
+                SpecialType.System_UInt32,
+                SpecialType.System_Int64,
+                SpecialType.System_UInt64,
+                SpecialType.System_Decimal,
+                SpecialType.System_Single,
+                SpecialType.System_Double,
+                SpecialType.System_IntPtr,
+                SpecialType.System_UIntPtr,
+                SpecialType.System_DateTime
+            }.ToImmutableArray();
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -41,7 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            if (parameter.Type.TypeKind == TypeKind.Struct)
+            if (parameter.Type.TypeKind == TypeKind.Struct && !IsIntegralType(parameter.Type))
             {
                 return;
             }
@@ -65,6 +86,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     }
                 }
             }
+        }
+
+        private bool IsIntegralType([NotNull] ITypeSymbol type)
+        {
+            return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T ||
+                IntegralValueTypes.Contains(type.SpecialType);
         }
     }
 }

@@ -341,29 +341,40 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(method, nameof(method));
 
-            SyntaxNode[] methodSyntaxNodes =
+            SyntaxNode[] syntaxNodes =
                 method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken))
                     .ToArray();
-            foreach (MethodDeclarationSyntax methodSyntax in methodSyntaxNodes.OfType<MethodDeclarationSyntax>())
+
+            foreach (SyntaxNode syntaxNode in syntaxNodes)
             {
-                if (methodSyntax.Body != null)
+                var methodSyntax = syntaxNode as MethodDeclarationSyntax;
+                if (methodSyntax != null)
                 {
-                    return methodSyntax.Body;
+                    if (methodSyntax.Body != null)
+                    {
+                        return methodSyntax.Body;
+                    }
+
+                    if (methodSyntax.ExpressionBody?.Expression != null)
+                    {
+                        return methodSyntax.ExpressionBody.Expression;
+                    }
+
+                    if (method.PartialImplementationPart != null)
+                    {
+                        return TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken);
+                    }
                 }
 
-                if (methodSyntax.ExpressionBody?.Expression != null)
+                var lambdaSyntax = syntaxNode as AnonymousFunctionExpressionSyntax;
+                if (lambdaSyntax != null && lambdaSyntax.Body != null)
                 {
-                    return methodSyntax.ExpressionBody.Expression;
-                }
-
-                if (method.PartialImplementationPart != null)
-                {
-                    return TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken);
+                    return lambdaSyntax.Body;
                 }
             }
 
             foreach (ConstructorDeclarationSyntax constructorSyntax in
-                methodSyntaxNodes.OfType<ConstructorDeclarationSyntax>())
+                syntaxNodes.OfType<ConstructorDeclarationSyntax>())
             {
                 if (constructorSyntax.Body != null)
                 {
