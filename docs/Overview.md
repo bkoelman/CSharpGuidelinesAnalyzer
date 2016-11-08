@@ -108,7 +108,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when the target method in an event handler assignment does not match the pattern "On" followed by target field name and the name of the event. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1739: Use an underscore for irrelevant lambda parameters (LOW)
-- [ ] This analyzer reports unused lambda parameters whose names contain any characters other than underscores.
+- [x] This analyzer reports unused lambda parameters whose names contain any characters other than underscores. Requires [Visual Studio 2015 Update 2](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md).
 
 ### AV1745: Group extension methods in a class suffixed with Extensions (LOW)
 - [x] This analyzer reports extension method container classes with a name that does not end in "Extensions".

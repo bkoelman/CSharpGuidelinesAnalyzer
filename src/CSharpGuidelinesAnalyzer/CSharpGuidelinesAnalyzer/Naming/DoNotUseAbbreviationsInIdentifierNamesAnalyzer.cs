@@ -116,7 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
         private static bool IsInLambdaExpression([NotNull] IParameterSymbol parameter)
         {
             var method = parameter.ContainingSymbol as IMethodSymbol;
-            return method != null && method.MethodKind == MethodKind.AnonymousFunction;
+            return method != null && method.MethodKind == MethodKind.LambdaMethod;
         }
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
