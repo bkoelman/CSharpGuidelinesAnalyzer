@@ -8,11 +8,18 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CSharpGuidelinesAnalyzer")]
 [assembly:
     AssemblyDescription("Reports diagnostics for C# coding guidelines that are not already covered by Resharper.")]
-[assembly: AssemblyConfiguration("")]
+
+#if DEBUG
+
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+
 [assembly: AssemblyCompany("open source")]
 [assembly: AssemblyProduct("CSharpGuidelinesAnalyzer")]
 [assembly: AssemblyCopyright("Apache License, Version 2.0")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("CSharpGuidelinesAnalyzer")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

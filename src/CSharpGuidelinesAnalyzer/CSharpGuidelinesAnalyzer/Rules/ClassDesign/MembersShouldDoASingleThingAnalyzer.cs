@@ -49,7 +49,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
                 return;
             }
 
-            if (context.Symbol.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, true) != null)
+            if (
+                context.Symbol.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) !=
+                null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name));

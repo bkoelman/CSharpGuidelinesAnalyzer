@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNull(source, nameof(source));
             Guard.NotNullNorWhiteSpace(codeNamespace, nameof(codeNamespace));
 
-            source._Using(codeNamespace);
+            source.NamespaceImports.Add(codeNamespace);
             return source;
         }
 

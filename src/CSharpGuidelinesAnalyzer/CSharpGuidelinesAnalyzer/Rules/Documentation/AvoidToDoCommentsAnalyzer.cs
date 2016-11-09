@@ -63,13 +63,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             private bool ContainsComments(SyntaxTrivia trivia)
             {
-                return PreprocessorHasComment(trivia) || IsSingleLineComment(trivia) || IsMultilineComment(trivia);
+                return DoesPreprocessorHaveComment(trivia) || IsSingleLineComment(trivia) || IsMultilineComment(trivia);
             }
 
             private void ReportTodoComments([NotNull] SourceText text, SyntaxTrivia trivia,
                 SyntaxTreeAnalysisContext context)
             {
-                if (PreprocessorHasComment(trivia))
+                if (DoesPreprocessorHaveComment(trivia))
                 {
                     string message = trivia.ToString();
 
@@ -114,10 +114,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 if ((message.Length > index + TodoCommentToken.Length) &&
                     SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]))
                 {
-                    // they wrote something like:
-                    //   todoboo
-                    // instead of:
-                    //   todo
                     return;
                 }
 
@@ -181,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 return message.Length;
             }
 
-            private bool PreprocessorHasComment(SyntaxTrivia trivia)
+            private bool DoesPreprocessorHaveComment(SyntaxTrivia trivia)
             {
                 return trivia.Kind() != SyntaxKind.RegionDirectiveTrivia &&
                     SyntaxFacts.IsPreprocessorDirective(trivia.Kind()) &&

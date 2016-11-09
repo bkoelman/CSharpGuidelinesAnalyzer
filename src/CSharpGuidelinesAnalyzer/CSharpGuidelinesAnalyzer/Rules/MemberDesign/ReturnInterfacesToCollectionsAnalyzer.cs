@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             }
 
             if (IsArray(method.ReturnType) ||
-                (IsClassOrStruct(method.ReturnType) && TypeImplementsIEnumerable(method.ReturnType)))
+                (IsClassOrStruct(method.ReturnType) && DoesTypeImplementIEnumerable(method.ReturnType)))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
                     method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             return type.TypeKind == TypeKind.Class || type.TypeKind == TypeKind.Struct;
         }
 
-        private static bool TypeImplementsIEnumerable([NotNull] ITypeSymbol type)
+        private static bool DoesTypeImplementIEnumerable([NotNull] ITypeSymbol type)
         {
             return type.AllInterfaces.Any(IsIEnumerable);
         }

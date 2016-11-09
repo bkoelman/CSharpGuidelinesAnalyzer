@@ -3,7 +3,8 @@ using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer
 {
-    public static class HelpLinkUris
+    /// <summary />
+    internal static class HelpLinkUris
     {
         private const string ClassDesign =
             "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1000_ClassDesignGuidelines.md";

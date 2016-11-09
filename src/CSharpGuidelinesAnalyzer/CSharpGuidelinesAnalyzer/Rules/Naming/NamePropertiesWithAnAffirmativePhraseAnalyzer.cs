@@ -63,7 +63,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 "Requires",
                 "Return",
                 "Returns",
-                "Starts"
+                "Starts",
+                "Consists",
+                "Targets"
             }.ToImmutableArray();
 
         public override void Initialize([NotNull] AnalysisContext context)
@@ -173,7 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private bool NameRequiresReport([NotNull] string identifierName)
         {
-            return !identifierName.StartsWithAnyWordOf(WordsWhitelist, true);
+            return !identifierName.StartsWithAnyWordOf(WordsWhitelist, TextMatchMode.AllowLowerCaseMatch);
         }
 
         [NotNull]

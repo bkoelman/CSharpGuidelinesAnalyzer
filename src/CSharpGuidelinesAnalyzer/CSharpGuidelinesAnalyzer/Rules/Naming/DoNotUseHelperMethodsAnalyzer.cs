@@ -7,7 +7,9 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
+#pragma warning disable AV1708 // Type name contains term that should be avoided
     public sealed class DoNotUseHelperMethodsAnalyzer : DiagnosticAnalyzer
+#pragma warning restore AV1708 // Type name contains term that should be avoided
     {
         public const string DiagnosticId = "AV1708";
 
@@ -40,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            string word = type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, false);
+            string word = type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.RequireExactMatch);
             if (word != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, word));

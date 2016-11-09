@@ -165,7 +165,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 }
 
                 var lambdaSyntax = syntaxNode as AnonymousFunctionExpressionSyntax;
-                if (lambdaSyntax != null && lambdaSyntax.Body != null)
+                if (lambdaSyntax?.Body != null)
                 {
                     return lambdaSyntax.Body;
                 }

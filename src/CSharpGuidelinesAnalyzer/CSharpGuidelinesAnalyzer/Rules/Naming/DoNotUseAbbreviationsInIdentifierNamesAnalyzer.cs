@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (NameRequiresReport(context.Symbol.Name, false) && !context.Symbol.IsOverride &&
+            if (DoesNameRequireReport(context.Symbol.Name, false) && !context.Symbol.IsOverride &&
                 !context.Symbol.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             bool isInLambdaExpression = IsInLambdaExpression(parameter);
 
-            if (NameRequiresReport(parameter.Name, isInLambdaExpression) && !parameter.ContainingSymbol.IsOverride &&
+            if (DoesNameRequireReport(parameter.Name, isInLambdaExpression) && !parameter.ContainingSymbol.IsOverride &&
                 !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
@@ -128,17 +128,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
-            if (NameRequiresReport(declaration.Variable.Name, false))
+            if (DoesNameRequireReport(declaration.Variable.Name, false))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
                     declaration.Variable.Name));
             }
         }
 
-        private bool NameRequiresReport([NotNull] string identifierName, bool allowSingleLetter)
+        private bool DoesNameRequireReport([NotNull] string identifierName, bool allowSingleLetter)
         {
             bool isSingleLetter = identifierName.Length == 1 && char.IsLetter(identifierName[0]);
-            bool isBlacklisted = identifierName.GetFirstWordInSetFromIdentifier(WordsBlacklist, true) != null;
+            bool isBlacklisted =
+                identifierName.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) !=
+                null;
 
             return allowSingleLetter ? isBlacklisted : isSingleLetter || isBlacklisted;
         }

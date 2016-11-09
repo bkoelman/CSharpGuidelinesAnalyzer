@@ -5,7 +5,9 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
+#pragma warning disable AV1708 // Type name contains term that should be avoided
     public class DoNotUseHelperMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
+#pragma warning restore AV1708 // Type name contains term that should be avoided
     {
         protected override string DiagnosticId => DoNotUseHelperMethodsAnalyzer.DiagnosticId;
 

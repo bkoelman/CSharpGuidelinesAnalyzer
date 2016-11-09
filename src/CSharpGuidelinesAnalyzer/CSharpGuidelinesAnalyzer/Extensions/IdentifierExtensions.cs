@@ -9,7 +9,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     public static class IdentifierExtensions
     {
         public static bool StartsWithAnyWordOf([NotNull] this string identiferName,
-            [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
+            [ItemNotNull] ImmutableArray<string> wordsToFind, TextMatchMode matchMode)
         {
             Guard.NotNullNorWhiteSpace(identiferName, nameof(identiferName));
 
@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 return true;
             }
 
-            if (allowLowerCaseMatch)
+            if (matchMode == TextMatchMode.AllowLowerCaseMatch)
             {
                 ImmutableArray<string> lowerCaseWordsToFind =
                     wordsToFind.Select(w => w.ToLowerInvariant()).ToImmutableArray();
@@ -36,13 +36,13 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         [CanBeNull]
         public static string GetFirstWordInSetFromIdentifier([NotNull] this string identiferName,
-            [ItemNotNull] ImmutableArray<string> wordsToFind, bool allowLowerCaseMatch)
+            [ItemNotNull] ImmutableArray<string> wordsToFind, TextMatchMode matchMode)
         {
             Guard.NotNullNorWhiteSpace(identiferName, nameof(identiferName));
 
             IList<string> wordsInText = ExtractWords(identiferName);
 
-            ImmutableArray<string> lowerCaseWordsInText = allowLowerCaseMatch
+            ImmutableArray<string> lowerCaseWordsInText = matchMode == TextMatchMode.AllowLowerCaseMatch
                 ? wordsInText.Select(w => w.ToLowerInvariant()).ToImmutableArray()
                 : ImmutableArray<string>.Empty;
 
@@ -53,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     return wordToFind;
                 }
 
-                if (allowLowerCaseMatch)
+                if (matchMode == TextMatchMode.AllowLowerCaseMatch)
                 {
                     if (lowerCaseWordsInText.Contains(wordToFind.ToLowerInvariant()))
                     {

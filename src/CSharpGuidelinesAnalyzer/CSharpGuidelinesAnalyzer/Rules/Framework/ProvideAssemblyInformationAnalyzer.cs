@@ -47,7 +47,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         [NotNull]
         [ItemNotNull]
+#pragma warning disable AV1130 // Return type in method signature should be a collection interface instead of a concrete type
         private ConcurrentQueue<INamedTypeSymbol> GetAssemblyAttributesToAnalyze([NotNull] Compilation compilation)
+#pragma warning restore AV1130 // Return type in method signature should be a collection interface instead of a concrete type
         {
             var attributes = new[]
             {

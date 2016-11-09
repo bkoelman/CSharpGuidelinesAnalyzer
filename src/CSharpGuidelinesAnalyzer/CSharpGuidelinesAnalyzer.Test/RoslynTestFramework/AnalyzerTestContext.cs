@@ -36,7 +36,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [NotNull]
         [ItemNotNull]
+#pragma warning disable AV1130 // Return type in method signature should be a collection interface instead of a concrete type
         public ImmutableHashSet<MetadataReference> References { get; }
+#pragma warning restore AV1130 // Return type in method signature should be a collection interface instead of a concrete type
 
         [CanBeNull]
         public int? CompilerWarningLevel { get; }

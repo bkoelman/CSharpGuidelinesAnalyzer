@@ -103,7 +103,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static void AnalyzeSymbol([NotNull] ISymbol symbol, SymbolAnalysisContext context)
         {
-            string documentationXml = symbol.GetDocumentationCommentXml(cancellationToken: context.CancellationToken);
+            string documentationXml = symbol.GetDocumentationCommentXml(null, false, context.CancellationToken);
             if (string.IsNullOrEmpty(documentationXml))
             {
                 context.ReportDiagnostic(Diagnostic.Create(MissingTypeOrMemberRule, symbol.Locations[0],
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
             [CanBeNull] string documentationXml, SymbolAnalysisContext context)
         {
-            HashSet<string> parameterNamesInDocumentation = TryParseDocumentationCommentXml(documentationXml);
+            ISet<string> parameterNamesInDocumentation = TryParseDocumentationCommentXml(documentationXml);
             if (parameterNamesInDocumentation == null)
             {
                 return;
@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         [CanBeNull]
         [ItemNotNull]
-        private static HashSet<string> TryParseDocumentationCommentXml([CanBeNull] string documentationXml)
+        private static ISet<string> TryParseDocumentationCommentXml([CanBeNull] string documentationXml)
         {
             if (string.IsNullOrEmpty(documentationXml))
             {

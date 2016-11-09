@@ -141,10 +141,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return ifElseStatement != null;
             }
 
-            private void AnalyzeIfElseIfConstruct([NotNull] IIfStatement ifStatement)
+            private void AnalyzeIfElseIfConstruct([NotNull] IIfStatement topIfStatement)
             {
-                Location topIfKeywordLocation = GetLocation(ifStatement);
+                Location topIfKeywordLocation = GetLocation(topIfStatement);
 
+                IIfStatement ifStatement = topIfStatement;
                 while (true)
                 {
                     context.CancellationToken.ThrowIfCancellationRequested();

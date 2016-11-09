@@ -27,10 +27,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            // If you are running VS2015 Update3, you need to turn on Full Solution Analysis (Tools, Options, Text Editor, 
-            // C#, Advanced, Enable full solution analysis) for this analyzer to work. See the bug discussion at: 
-            // https://github.com/dotnet/roslyn/issues/11750.
-
             context.RegisterCompilationAction(AnalyzeWarningLevel);
         }
 

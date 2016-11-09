@@ -9,23 +9,23 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
-    internal static class TestHelpers
+    internal class MarkupParser
     {
         [NotNull]
-        public static DocumentWithSpans GetDocumentAndSpansFromMarkup([NotNull] AnalyzerTestContext context)
+        public DocumentWithSpans GetDocumentWithSpansFromMarkup([NotNull] AnalyzerTestContext context)
         {
             Guard.NotNull(context, nameof(context));
 
             string code;
             IList<TextSpan> spans;
-            GetCodeAndSpansFromMarkup(context.MarkupCode, out code, out spans);
+            GetCodeWithSpansFromMarkup(context.MarkupCode, out code, out spans);
 
             Document document = GetDocument(code, context.LanguageName, context.FileName, context.AssemblyName,
                 context.References, context.CompilerWarningLevel);
             return new DocumentWithSpans(document, spans);
         }
 
-        private static void GetCodeAndSpansFromMarkup([NotNull] string markupCode, [NotNull] out string code,
+        private static void GetCodeWithSpansFromMarkup([NotNull] string markupCode, [NotNull] out string code,
             [NotNull] out IList<TextSpan> spans)
         {
             var codeBuilder = new StringBuilder();

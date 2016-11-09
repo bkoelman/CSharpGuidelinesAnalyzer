@@ -13,6 +13,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     public abstract class AnalysisTestFixture
     {
         [NotNull]
+        private static readonly MarkupParser MarkupParser = new MarkupParser();
+
+        [NotNull]
         protected abstract string DiagnosticId { get; }
 
         [NotNull]
@@ -30,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private void RunDiagnostics([NotNull] AnalyzerTestContext context,
             [NotNull] [ItemNotNull] params string[] messages)
         {
-            DocumentWithSpans documentWithSpans = TestHelpers.GetDocumentAndSpansFromMarkup(context);
+            DocumentWithSpans documentWithSpans = MarkupParser.GetDocumentWithSpansFromMarkup(context);
 
             ImmutableArray<Diagnostic> diagnostics =
                 GetDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,

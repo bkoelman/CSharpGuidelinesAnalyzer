@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
+    /// <summary />
     internal class DocumentWithSpans
     {
         [NotNull]

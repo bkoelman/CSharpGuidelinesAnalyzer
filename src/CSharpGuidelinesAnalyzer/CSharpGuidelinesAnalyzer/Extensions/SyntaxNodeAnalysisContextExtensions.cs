@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             Guard.NotNull(symbol, nameof(symbol));
 
             return new SymbolAnalysisContext(symbol, syntaxContext.SemanticModel.Compilation, syntaxContext.Options,
-                syntaxContext.ReportDiagnostic, x => true, syntaxContext.CancellationToken);
+                syntaxContext.ReportDiagnostic, _ => true, syntaxContext.CancellationToken);
         }
     }
 }

@@ -149,7 +149,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 namespaceNames.Push(symbol.Name);
 
-                if (!IsCurrentNamespaceValid(false))
+                if (!IsCurrentNamespaceValid(NamespaceMatchMode.RequirePartialMatchWithAssemblyName))
                 {
                     reportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
                         reportAssemblyName));
@@ -170,14 +170,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
             {
-                if (!IsCurrentNamespaceValid(true))
+                if (!IsCurrentNamespaceValid(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName))
                 {
                     reportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
                         CurrentNamespaceName, reportAssemblyName));
                 }
             }
 
-            private bool IsCurrentNamespaceValid(bool requireCompleteMatchWithAssemblyName)
+            private bool IsCurrentNamespaceValid(NamespaceMatchMode matchMode)
             {
                 string[] currentNamespaceParts = namespaceNames.Reverse().ToArray();
 
@@ -186,7 +186,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     return true;
                 }
 
-                if (requireCompleteMatchWithAssemblyName && assemblyNameParts.Length > currentNamespaceParts.Length)
+                if (matchMode == NamespaceMatchMode.RequireCompleteMatchWithAssemblyName &&
+                    assemblyNameParts.Length > currentNamespaceParts.Length)
                 {
                     return false;
                 }
@@ -217,6 +218,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
 
                 return false;
+            }
+
+            private enum NamespaceMatchMode
+            {
+                RequirePartialMatchWithAssemblyName,
+                RequireCompleteMatchWithAssemblyName
             }
         }
     }

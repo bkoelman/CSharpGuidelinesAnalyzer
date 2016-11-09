@@ -50,14 +50,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot)
             {
                 IdentifierInfo identifierInfo = unaryOperator.Operand.TryGetIdentifierInfo();
-                if (identifierInfo != null)
+                if (
+                    identifierInfo?.Name.GetFirstWordInSetFromIdentifier(NegatingWords,
+                        TextMatchMode.AllowLowerCaseMatch) != null)
                 {
-                    if (identifierInfo.Name.GetFirstWordInSetFromIdentifier(NegatingWords, true) != null)
-                    {
-                        string kind = identifierInfo.Kind.ToLowerInvariant();
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
-                            identifierInfo.Name));
-                    }
+                    string kind = identifierInfo.Kind.ToLowerInvariant();
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
+                        identifierInfo.Name));
                 }
             }
         }

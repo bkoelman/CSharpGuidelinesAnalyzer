@@ -6,12 +6,19 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("CSharpGuidelinesAnalyzer.Test")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyDescription("Unit tests for CSharpGuidelinesAnalyzer")]
+
+#if DEBUG
+
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+
+[assembly: AssemblyCompany("open source")]
 [assembly: AssemblyProduct("CSharpGuidelinesAnalyzer.Test")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Apache License, Version 2.0")]
+[assembly: AssemblyTrademark("CSharpGuidelinesAnalyzer.Test")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

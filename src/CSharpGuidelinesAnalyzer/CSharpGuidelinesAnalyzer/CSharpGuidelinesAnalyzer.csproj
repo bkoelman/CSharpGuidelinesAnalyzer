@@ -90,6 +90,7 @@
     <Compile Include="Rules\Naming\StaticClassesShouldOnlyContainExtensionMethodsAnalyzer.cs" />
     <Compile Include="Rules\Naming\UseFrameworkTerminologyInMemberNamesAnalyzer.cs" />
     <Compile Include="Rules\Naming\UseUnderscoresForUnusedLambdaParametersAnalyzer.cs" />
+    <Compile Include="TextMatchMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\LICENSE.txt">

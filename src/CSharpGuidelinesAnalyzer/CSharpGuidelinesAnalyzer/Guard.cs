@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer
@@ -17,19 +15,6 @@ namespace CSharpGuidelinesAnalyzer
             if (ReferenceEquals(value, null))
             {
                 throw new ArgumentNullException(name);
-            }
-        }
-
-        [AssertionMethod]
-        [ContractAnnotation("value: null => halt")]
-        public static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value,
-            [NotNull] [InvokerParameterName] string name)
-        {
-            NotNull(value, name);
-
-            if (!value.Any())
-            {
-                throw new ArgumentException(name + @" cannot be empty.", name);
             }
         }
 

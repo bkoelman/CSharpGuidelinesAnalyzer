@@ -26,9 +26,12 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
                 MetadataReference.CreateFromFile(typeof (Component).Assembly.Location)
             });
 
+        /// <summary>
+        /// Intended for internal use.
+        /// </summary>
         [NotNull]
         [ItemNotNull]
-        private readonly HashSet<string> namespaceImports = new HashSet<string> { "System" };
+        internal readonly HashSet<string> NamespaceImports = new HashSet<string> { "System" };
 
         [NotNull]
         public AnalyzerTestContext TestContext
@@ -66,9 +69,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         private void WriteNamespaceImports([NotNull] StringBuilder sourceBuilder)
         {
-            if (namespaceImports.Any())
+            if (NamespaceImports.Any())
             {
-                foreach (string namespaceImport in namespaceImports)
+                foreach (string namespaceImport in NamespaceImports)
                 {
                     sourceBuilder.AppendLine($"using {namespaceImport};");
                 }
@@ -79,10 +82,5 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         [NotNull]
         protected abstract string GetSourceCode();
-
-        internal void _Using([NotNull] string codeNamespace)
-        {
-            namespaceImports.Add(codeNamespace);
-        }
     }
 }
