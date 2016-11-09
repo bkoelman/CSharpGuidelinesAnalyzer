@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper.</description>
-    <releaseNotes>This pre-release contains various fixes and a few more analyzers.</releaseNotes>
+    <releaseNotes>This pre-release has implementations for all analyzers.</releaseNotes>
     <copyright>Apache License, Version 2.0</copyright>
     <language>en-us</language>
     <tags>csharp c# coding guidelines analyzer</tags>
