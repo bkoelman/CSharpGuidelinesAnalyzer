@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Maintainability
+namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NamespacesShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyzer

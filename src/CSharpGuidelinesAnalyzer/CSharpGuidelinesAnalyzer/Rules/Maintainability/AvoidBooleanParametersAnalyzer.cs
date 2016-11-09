@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Maintainability
+namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidBooleanParametersAnalyzer : DiagnosticAnalyzer

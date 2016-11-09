@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using CSharpGuidelinesAnalyzer.MemberDesign;
+using CSharpGuidelinesAnalyzer.Rules.MemberDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;

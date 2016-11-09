@@ -1,4 +1,4 @@
-﻿using CSharpGuidelinesAnalyzer.ClassDesign;
+﻿using CSharpGuidelinesAnalyzer.Rules.ClassDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;

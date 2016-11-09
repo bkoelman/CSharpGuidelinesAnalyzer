@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using CSharpGuidelinesAnalyzer.MiscellaneousDesign;
+using CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;

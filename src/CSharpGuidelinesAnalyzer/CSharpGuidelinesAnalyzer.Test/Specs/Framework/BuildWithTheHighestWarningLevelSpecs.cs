@@ -1,4 +1,4 @@
-using CSharpGuidelinesAnalyzer.Framework;
+using CSharpGuidelinesAnalyzer.Rules.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;

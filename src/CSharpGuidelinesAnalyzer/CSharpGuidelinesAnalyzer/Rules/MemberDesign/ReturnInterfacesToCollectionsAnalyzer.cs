@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.MemberDesign
+namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class ReturnInterfacesToCollectionsAnalyzer : DiagnosticAnalyzer

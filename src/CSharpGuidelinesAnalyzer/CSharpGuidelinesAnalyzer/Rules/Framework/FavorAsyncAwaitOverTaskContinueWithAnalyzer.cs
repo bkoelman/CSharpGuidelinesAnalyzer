@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
-namespace CSharpGuidelinesAnalyzer.Framework
+namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class FavorAsyncAwaitOverTaskContinueWithAnalyzer : DiagnosticAnalyzer

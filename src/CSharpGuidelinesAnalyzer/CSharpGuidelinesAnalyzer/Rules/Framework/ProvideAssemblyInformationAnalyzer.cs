@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Framework
+namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class ProvideAssemblyInformationAnalyzer : DiagnosticAnalyzer

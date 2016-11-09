@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
-namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
+namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotPassNullsOnEventInvocationAnalyzer : DiagnosticAnalyzer

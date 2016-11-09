@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.ClassDesign
+namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotHideInheritedMembersAnalyzer : DiagnosticAnalyzer

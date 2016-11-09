@@ -1,5 +1,5 @@
 using System;
-using CSharpGuidelinesAnalyzer.Naming;
+using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;

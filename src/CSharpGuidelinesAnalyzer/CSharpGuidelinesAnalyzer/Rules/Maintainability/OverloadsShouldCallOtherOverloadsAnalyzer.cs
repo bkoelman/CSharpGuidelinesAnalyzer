@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
-namespace CSharpGuidelinesAnalyzer.Maintainability
+namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class OverloadsShouldCallOtherOverloadsAnalyzer : DiagnosticAnalyzer

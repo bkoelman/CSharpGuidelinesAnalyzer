@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CSharpGuidelinesAnalyzer.Documentation
+namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidToDoCommentsAnalyzer : DiagnosticAnalyzer

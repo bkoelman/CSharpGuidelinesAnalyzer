@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Documentation
+namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidInlineCommentsAnalyzer : DiagnosticAnalyzer

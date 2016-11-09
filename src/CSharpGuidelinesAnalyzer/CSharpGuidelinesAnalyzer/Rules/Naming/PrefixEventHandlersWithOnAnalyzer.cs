@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
-namespace CSharpGuidelinesAnalyzer.Naming
+namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer

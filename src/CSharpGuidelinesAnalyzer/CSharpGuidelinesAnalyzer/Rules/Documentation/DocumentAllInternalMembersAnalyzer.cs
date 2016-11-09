@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Documentation
+namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DocumentAllInternalMembersAnalyzer : DiagnosticAnalyzer

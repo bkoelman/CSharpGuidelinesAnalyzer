@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Naming
+namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NameAsyncMethodsCorrectlyAnalyzer : DiagnosticAnalyzer
