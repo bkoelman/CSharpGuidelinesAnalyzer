@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -33,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeLambdaExpression, OperationKind.LambdaExpression);
                 }
@@ -74,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
         private static void AnalyzeParameterUsage([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
             OperationAnalysisContext context)
         {
-            SyntaxNode body = AnalysisUtilities.TryGetBodySyntaxForMethod(method, context.CancellationToken);
+            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (body != null)
             {
                 SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);

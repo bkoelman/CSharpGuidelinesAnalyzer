@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -41,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
                 return;
             }
 
-            if (AnalysisUtilities.IsPropertyOrEventAccessor(context.Symbol))
+            if (context.Symbol.IsPropertyOrEventAccessor())
             {
                 return;
             }

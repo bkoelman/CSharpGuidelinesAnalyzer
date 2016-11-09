@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Threading;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -50,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeInvocation, OperationKind.InvocationExpression);
                 }
@@ -99,8 +100,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             var local = operation as ILocalReferenceExpression;
             if (local != null && containingMethod != null)
             {
-                IOperation body = AnalysisUtilities.TryGetOperationBlockForMethod(containingMethod, compilation,
-                    cancellationToken);
+                IOperation body = containingMethod.TryGetOperationBlockForMethod(compilation, cancellationToken);
                 if (body != null)
                 {
                     var walker = new LocalAssignmentWalker(local.Local);

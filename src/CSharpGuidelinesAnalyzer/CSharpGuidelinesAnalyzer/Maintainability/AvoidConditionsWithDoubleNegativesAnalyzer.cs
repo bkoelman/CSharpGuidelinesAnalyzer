@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -36,7 +37,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeUnaryOperator, OperationKind.UnaryOperatorExpression);
                 }
@@ -48,11 +49,10 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             var unaryOperator = (IUnaryOperatorExpression) context.Operation;
             if (unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot)
             {
-                IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(unaryOperator.Operand);
+                IdentifierInfo identifierInfo = unaryOperator.Operand.TryGetIdentifierInfo();
                 if (identifierInfo != null)
                 {
-                    if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(identifierInfo.Name, NegatingWords, true) !=
-                        null)
+                    if (identifierInfo.Name.GetFirstWordInSetFromIdentifier(NegatingWords, true) != null)
                     {
                         string kind = identifierInfo.Kind.ToLowerInvariant();
                         context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,

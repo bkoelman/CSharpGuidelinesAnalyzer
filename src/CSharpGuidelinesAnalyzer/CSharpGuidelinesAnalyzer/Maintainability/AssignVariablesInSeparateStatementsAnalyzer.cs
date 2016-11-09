@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -48,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeStatement, statementKinds);
                 }
@@ -118,7 +119,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             private void RegisterAssignment([NotNull] IOperation operation)
             {
-                IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(operation);
+                IdentifierInfo identifierInfo = operation.TryGetIdentifierInfo();
                 if (identifierInfo != null)
                 {
                     IdentifiersAssigned.Add(identifierInfo.LongName);

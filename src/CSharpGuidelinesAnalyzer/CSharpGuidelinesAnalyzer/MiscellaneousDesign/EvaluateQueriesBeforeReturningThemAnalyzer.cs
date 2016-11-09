@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -114,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationBlockAction(AnalyzeCodeBlock);
                 }
@@ -222,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             OperationBlockAnalysisContext context)
         {
             Location location = returnStatement.Syntax.GetLocation();
-            ISymbol containingMember = AnalysisUtilities.GetContainingMember(context.OwningSymbol);
+            ISymbol containingMember = context.OwningSymbol.GetContainingMember();
             string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
             Diagnostic diagnostic = operationName == QueryOperationName

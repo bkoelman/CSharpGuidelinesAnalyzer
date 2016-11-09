@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -30,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationBlockAction(AnalyzeCodeBlock);
                 }
@@ -50,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             if (statementWalker.StatementCount > 7)
             {
-                ISymbol containingMember = AnalysisUtilities.GetContainingMember(context.OwningSymbol);
+                ISymbol containingMember = context.OwningSymbol.GetContainingMember();
 
                 string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                 Location location = containingMember.Locations[0];

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -71,12 +72,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
             context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(AnalysisUtilities.SyntaxToSymbolContext(c)),
-                SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeVariableDeclaration, OperationKind.VariableDeclaration);
                 }
@@ -85,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (AnalysisUtilities.IsPropertyOrEventAccessor(context.Symbol))
+            if (context.Symbol.IsPropertyOrEventAccessor())
             {
                 return;
             }
@@ -97,7 +97,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
             }
 
             if (NameRequiresReport(context.Symbol.Name) && !context.Symbol.IsOverride &&
-                !AnalysisUtilities.IsInterfaceImplementation(context.Symbol))
+                !context.Symbol.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
                     LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
@@ -143,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
             }
 
             if (NameRequiresReport(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
-                !AnalysisUtilities.IsInterfaceImplementation(parameter))
+                !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind),
                     parameter.Name));
@@ -168,12 +168,12 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
         private bool IsBooleanOrNullableBoolean([NotNull] ITypeSymbol type)
         {
-            return type.SpecialType == SpecialType.System_Boolean || AnalysisUtilities.IsNullableBoolean(type);
+            return type.SpecialType == SpecialType.System_Boolean || type.IsNullableBoolean();
         }
 
         private bool NameRequiresReport([NotNull] string identifierName)
         {
-            return !AnalysisUtilities.StartsWithAnyWordOf(identifierName, WordsWhitelist, true);
+            return !identifierName.StartsWithAnyWordOf(WordsWhitelist, true);
         }
 
         [NotNull]

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -37,12 +38,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
             context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
             context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(AnalysisUtilities.SyntaxToSymbolContext(c)),
-                SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeVariableDeclaration, OperationKind.VariableDeclaration);
                 }
@@ -63,17 +63,17 @@ namespace CSharpGuidelinesAnalyzer.Naming
         {
             ISymbol member = context.Symbol;
 
-            if (AnalysisUtilities.IsPropertyOrEventAccessor(member))
+            if (member.IsPropertyOrEventAccessor())
             {
                 return;
             }
 
-            if (AnalysisUtilities.IsUnitTestMethod(context.Symbol))
+            if (context.Symbol.IsUnitTestMethod())
             {
                 return;
             }
 
-            if (ContainsDigit(member.Name) && !member.IsOverride && !AnalysisUtilities.IsInterfaceImplementation(member))
+            if (ContainsDigit(member.Name) && !member.IsOverride && !member.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.Kind, member.Name));
             }
@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
             }
 
             if (ContainsDigit(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
-                !AnalysisUtilities.IsInterfaceImplementation(parameter))
+                !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }

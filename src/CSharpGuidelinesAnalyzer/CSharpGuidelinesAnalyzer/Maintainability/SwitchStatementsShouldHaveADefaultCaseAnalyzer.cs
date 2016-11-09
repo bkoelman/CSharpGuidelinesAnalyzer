@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -35,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (!AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (!startContext.Compilation.SupportsOperations())
                 {
                     return;
                 }
@@ -83,7 +84,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         [CanBeNull]
         private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
-            IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(analysisContext.SwitchStatement.Value);
+            IdentifierInfo identifierInfo = analysisContext.SwitchStatement.Value.TryGetIdentifierInfo();
             if (identifierInfo != null)
             {
                 if (identifierInfo.Type.SpecialType == SpecialType.System_Boolean)
@@ -91,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     return IsBooleanSwitchComplete(analysisContext);
                 }
 
-                if (AnalysisUtilities.IsNullableBoolean(identifierInfo.Type))
+                if (identifierInfo.Type.IsNullableBoolean())
                 {
                     return IsNullableBooleanSwitchComplete(analysisContext);
                 }
@@ -104,7 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                     return IsEnumSwitchComplete(analysisContext, enumMembers);
                 }
 
-                if (AnalysisUtilities.IsNullableEnum(identifierInfo.Type))
+                if (identifierInfo.Type.IsNullableEnum())
                 {
                     ITypeSymbol enumType = ((INamedTypeSymbol) identifierInfo.Type).TypeArguments[0];
                     IEnumerable<IFieldSymbol> enumMembers = enumType.GetMembers().OfType<IFieldSymbol>();

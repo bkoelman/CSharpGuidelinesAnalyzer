@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -50,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
                 }
@@ -85,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
         private static bool HasMethodBody([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
         {
-            return AnalysisUtilities.TryGetBodySyntaxForMethod(method, cancellationToken) != null;
+            return method.TryGetBodySyntaxForMethod(cancellationToken) != null;
         }
 
         private bool HasAtLeastTwoItems<T>([NotNull] [ItemCanBeNull] IEnumerable<T> source)
@@ -108,8 +109,8 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
                 foreach (IMethodSymbol overload in methodGroup.Where(method => !method.Equals(longestOverload)))
                 {
-                    if (!overload.IsOverride && !AnalysisUtilities.IsInterfaceImplementation(overload) &&
-                        !AnalysisUtilities.HidesBaseMember(overload, context.CancellationToken))
+                    if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
+                        !overload.HidesBaseMember(context.CancellationToken))
                     {
                         CompareParameterOrder(overload, longestOverload, context);
                     }
@@ -173,8 +174,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             [NotNull] IMethodSymbol methodToAnalyze, [NotNull] Compilation compilation,
             CancellationToken cancellationToken)
         {
-            IOperation operation = AnalysisUtilities.TryGetOperationBlockForMethod(methodToAnalyze, compilation,
-                cancellationToken);
+            IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(compilation, cancellationToken);
             if (operation != null)
             {
                 var walker = new MethodInvocationWalker(methodsToInvoke);

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -38,17 +39,17 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (AnalysisUtilities.IsPropertyOrEventAccessor(context.Symbol))
+            if (context.Symbol.IsPropertyOrEventAccessor())
             {
                 return;
             }
 
-            if (AnalysisUtilities.IsUnitTestMethod(context.Symbol))
+            if (context.Symbol.IsUnitTestMethod())
             {
                 return;
             }
 
-            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(context.Symbol.Name, WordsBlacklist, true) != null)
+            if (context.Symbol.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, true) != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name));

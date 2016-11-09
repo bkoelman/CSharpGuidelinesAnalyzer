@@ -38,7 +38,12 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnalysisUtilities.cs" />
+    <Compile Include="Extensions\CompilationExtensions.cs" />
+    <Compile Include="Extensions\IdentifierExtensions.cs" />
+    <Compile Include="Extensions\OperationExtensions.cs" />
+    <Compile Include="Extensions\SymbolExtensions.cs" />
+    <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
+    <Compile Include="Extensions\TypeSymbolExtensions.cs" />
     <Compile Include="ClassDesign\AvoidStaticClassesAnalyzer.cs" />
     <Compile Include="ClassDesign\DoNotHideInheritedMembersAnalyzer.cs" />
     <Compile Include="ClassDesign\MembersShouldDoASingleThingAnalyzer.cs" />

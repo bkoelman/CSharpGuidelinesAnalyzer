@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -40,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (!AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (!startContext.Compilation.SupportsOperations())
                 {
                     return;
                 }

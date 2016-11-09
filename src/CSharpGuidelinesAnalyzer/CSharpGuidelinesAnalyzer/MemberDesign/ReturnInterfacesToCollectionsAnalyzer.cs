@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -46,8 +47,8 @@ namespace CSharpGuidelinesAnalyzer.MemberDesign
                 return;
             }
 
-            if (method.IsOverride || AnalysisUtilities.IsInterfaceImplementation(method) ||
-                AnalysisUtilities.HidesBaseMember(method, context.CancellationToken))
+            if (method.IsOverride || method.IsInterfaceImplementation() ||
+                method.HidesBaseMember(context.CancellationToken))
             {
                 return;
             }

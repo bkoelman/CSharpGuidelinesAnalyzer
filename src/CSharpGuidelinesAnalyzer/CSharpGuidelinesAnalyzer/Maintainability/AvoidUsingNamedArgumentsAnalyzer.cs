@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -30,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeArgument, OperationKind.Argument);
                 }
@@ -49,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 }
 
                 if (argument.Parameter.Type.SpecialType != SpecialType.System_Boolean &&
-                    !AnalysisUtilities.IsNullableBoolean(argument.Parameter.Type))
+                    !argument.Parameter.Type.IsNullableBoolean())
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(),
                         argument.Parameter.Name, FormatSymbol(argument.Parameter.ContainingSymbol)));

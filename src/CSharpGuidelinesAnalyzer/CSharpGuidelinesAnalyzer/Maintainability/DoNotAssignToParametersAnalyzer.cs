@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -49,8 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(AnalysisUtilities.SyntaxToSymbolContext(c)),
-                SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
@@ -78,7 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            SyntaxNode body = AnalysisUtilities.TryGetBodySyntaxForMethod(method, context.CancellationToken);
+            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (body != null)
             {
                 SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);

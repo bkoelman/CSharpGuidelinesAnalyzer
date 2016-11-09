@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -37,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.ClassDesign
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            if (AnalysisUtilities.GetFirstWordInSetFromIdentifier(type.Name, WordsBlacklist, true) != null)
+            if (type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, true) != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name));
             }

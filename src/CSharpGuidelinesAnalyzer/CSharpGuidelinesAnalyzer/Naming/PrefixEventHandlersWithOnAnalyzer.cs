@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -31,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeEventAssignment, OperationKind.EventAssignmentExpression);
                 }
@@ -69,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
             if (!isEventLocal)
             {
-                IdentifierInfo info = AnalysisUtilities.TryGetIdentifierInfo(eventInstance);
+                IdentifierInfo info = eventInstance.TryGetIdentifierInfo();
                 if (info != null)
                 {
                     return MakeCamelCase(info.Name);

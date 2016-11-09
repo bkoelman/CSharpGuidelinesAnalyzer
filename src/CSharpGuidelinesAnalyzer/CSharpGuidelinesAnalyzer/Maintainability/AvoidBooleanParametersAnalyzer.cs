@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -28,8 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(AnalysisUtilities.SyntaxToSymbolContext(c)),
-                SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
@@ -41,8 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            if (parameter.Type.SpecialType == SpecialType.System_Boolean ||
-                AnalysisUtilities.IsNullableBoolean(parameter.Type))
+            if (parameter.Type.SpecialType == SpecialType.System_Boolean || parameter.Type.IsNullableBoolean())
             {
                 AnalyzeBooleanParameter(parameter, context);
             }
@@ -56,12 +55,12 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
                 return;
             }
 
-            if (AnalysisUtilities.HidesBaseMember(containingMember, context.CancellationToken))
+            if (containingMember.HidesBaseMember(context.CancellationToken))
             {
                 return;
             }
 
-            if (AnalysisUtilities.IsInterfaceImplementation(parameter))
+            if (parameter.IsInterfaceImplementation())
             {
                 return;
             }

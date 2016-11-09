@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -30,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (AnalysisUtilities.SupportsOperations(startContext.Compilation))
+                if (startContext.Compilation.SupportsOperations())
                 {
                     startContext.RegisterOperationAction(AnalyzeVariableDeclaration, OperationKind.VariableDeclaration);
                     startContext.RegisterOperationAction(AnalyzeAssignment, OperationKind.AssignmentExpression);
@@ -53,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Framework
         {
             var assignment = (IAssignmentExpression) context.Operation;
 
-            IdentifierInfo identifierInfo = AnalysisUtilities.TryGetIdentifierInfo(assignment.Target);
+            IdentifierInfo identifierInfo = assignment.Target.TryGetIdentifierInfo();
             if (identifierInfo != null && identifierInfo.Type.TypeKind == TypeKind.Dynamic)
             {
                 AnalyzeAssignedValue(assignment.Value, assignment.Syntax.GetLocation(), identifierInfo.Name, context);
