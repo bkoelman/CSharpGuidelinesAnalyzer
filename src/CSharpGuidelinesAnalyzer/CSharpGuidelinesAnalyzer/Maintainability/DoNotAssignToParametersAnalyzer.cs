@@ -57,6 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
+            if (parameter.Name.Length == 0)
+            {
+                return;
+            }
+
             if (parameter.RefKind != RefKind.None)
             {
                 return;

@@ -132,6 +132,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
+            if (parameter.Name.Length == 0)
+            {
+                return;
+            }
+
             if (!IsBooleanOrNullableBoolean(parameter.Type))
             {
                 return;

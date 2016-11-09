@@ -127,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.MiscellaneousDesign
             if (invocationExpression.ArgumentsInParameterOrder.Length == 2)
             {
                 IArgument argument = invocationExpression.ArgumentsInParameterOrder[1];
-                if (argument.Parameter != null)
+                if (argument.Parameter != null && argument.Parameter.Name.Length > 0)
                 {
                     if (IsEventArgs(argument.Parameter.Type, systemEventArgs))
                     {

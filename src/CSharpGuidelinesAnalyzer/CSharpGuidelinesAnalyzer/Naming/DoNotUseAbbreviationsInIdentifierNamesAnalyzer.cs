@@ -104,6 +104,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
+            if (parameter.Name.Length == 0)
+            {
+                return;
+            }
+
             bool isInLambdaExpression = IsInLambdaExpression(parameter);
 
             if (NameRequiresReport(parameter.Name, isInLambdaExpression) && !parameter.ContainingSymbol.IsOverride &&

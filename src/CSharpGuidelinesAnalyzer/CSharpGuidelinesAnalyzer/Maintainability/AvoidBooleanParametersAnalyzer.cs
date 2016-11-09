@@ -36,6 +36,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
+            if (parameter.Name.Length == 0)
+            {
+                return;
+            }
+
             if (parameter.Type.SpecialType == SpecialType.System_Boolean ||
                 AnalysisUtilities.IsNullableBoolean(parameter.Type))
             {

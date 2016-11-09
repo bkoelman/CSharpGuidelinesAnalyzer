@@ -43,6 +43,11 @@ namespace CSharpGuidelinesAnalyzer.Maintainability
 
             if (argument.ArgumentKind == ArgumentKind.Named)
             {
+                if (argument.Parameter.Name.Length == 0)
+                {
+                    return;
+                }
+
                 if (argument.Parameter.Type.SpecialType != SpecialType.System_Boolean &&
                     !AnalysisUtilities.IsNullableBoolean(argument.Parameter.Type))
                 {

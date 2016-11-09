@@ -46,6 +46,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
 
             foreach (IParameterSymbol parameter in lambdaExpression.Signature.Parameters)
             {
+                if (parameter.Name.Length == 0)
+                {
+                    continue;
+                }
+
                 if (!ConsistsOfUnderscoresOnly(parameter.Name))
                 {
                     AnalyzeParameterUsage(parameter, lambdaExpression.Signature, context);

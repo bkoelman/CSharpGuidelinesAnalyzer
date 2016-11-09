@@ -60,6 +60,11 @@ namespace CSharpGuidelinesAnalyzer.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
+            if (parameter.Name.Length == 0)
+            {
+                return;
+            }
+
             if (Blacklist.Contains(parameter.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
