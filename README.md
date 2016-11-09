@@ -9,7 +9,7 @@ This Visual Studio analyzer supports you in making your code comply with the C# 
 
 ## Project status
 
-Almost all analyzers are implemented, but work is still in progress. See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules and their status.
+All analyzers have been implemented, but testing and optimization work is still in progress. See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules and their status.
 
 ## Get started
 
