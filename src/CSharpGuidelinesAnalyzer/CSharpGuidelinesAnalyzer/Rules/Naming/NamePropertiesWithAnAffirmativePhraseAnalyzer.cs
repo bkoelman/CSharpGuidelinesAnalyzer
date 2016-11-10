@@ -92,15 +92,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
+            if (context.Symbol.IsOverride)
+            {
+                return;
+            }
+
             ITypeSymbol type = GetMemberType(context.Symbol);
             if (!IsBooleanOrNullableBoolean(type))
             {
                 return;
             }
 
-            if (DoesNameRequireReport(context.Symbol.Name) && !context.Symbol.IsOverride &&
-                !context.Symbol.IsInterfaceImplementation())
+            if (!IsWhitelisted(context.Symbol.Name))
             {
+                if (context.Symbol.IsInterfaceImplementation())
+                {
+                    return;
+                }
+
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
                     LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
             }
@@ -139,14 +148,23 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
+            if (parameter.ContainingSymbol.IsOverride)
+            {
+                return;
+            }
+
             if (!IsBooleanOrNullableBoolean(parameter.Type))
             {
                 return;
             }
 
-            if (DoesNameRequireReport(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
-                !parameter.IsInterfaceImplementation())
+            if (!IsWhitelisted(parameter.Name))
             {
+                if (parameter.IsInterfaceImplementation())
+                {
+                    return;
+                }
+
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind),
                     parameter.Name));
             }
@@ -161,7 +179,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (DoesNameRequireReport(declaration.Variable.Name))
+            if (!IsWhitelisted(declaration.Variable.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "variable",
                     declaration.Variable.Name));
@@ -173,9 +191,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return type.SpecialType == SpecialType.System_Boolean || type.IsNullableBoolean();
         }
 
-        private bool DoesNameRequireReport([NotNull] string identifierName)
+        private bool IsWhitelisted([NotNull] string identifierName)
         {
-            return !identifierName.StartsWithAnyWordOf(WordsWhitelist, TextMatchMode.AllowLowerCaseMatch);
+            return identifierName.StartsWithAnyWordOf(WordsWhitelist, TextMatchMode.AllowLowerCaseMatch);
         }
 
         [NotNull]

@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
+    /// <summary/>
     internal class MarkupParser
     {
         [NotNull]

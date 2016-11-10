@@ -92,9 +92,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (DoesNameRequireReport(context.Symbol.Name, false) && !context.Symbol.IsOverride &&
-                !context.Symbol.IsInterfaceImplementation())
+            if (context.Symbol.IsOverride)
             {
+                return;
+            }
+
+            if (IsBlacklisted(context.Symbol.Name) || IsSingleLetter(context.Symbol.Name))
+            {
+                if (context.Symbol.IsInterfaceImplementation())
+                {
+                    return;
+                }
+
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name));
             }
@@ -109,11 +118,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            bool isInLambdaExpression = IsInLambdaExpression(parameter);
-
-            if (DoesNameRequireReport(parameter.Name, isInLambdaExpression) && !parameter.ContainingSymbol.IsOverride &&
-                !parameter.IsInterfaceImplementation())
+            if (parameter.ContainingSymbol.IsOverride)
             {
+                return;
+            }
+
+            bool requiresReport = IsInLambdaExpression(parameter)
+                ? IsBlacklisted(parameter.Name)
+                : IsBlacklisted(parameter.Name) || IsSingleLetter(parameter.Name);
+
+            if (requiresReport)
+            {
+                if (parameter.IsInterfaceImplementation())
+                {
+                    return;
+                }
+
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
         }
@@ -128,21 +148,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
-            if (DoesNameRequireReport(declaration.Variable.Name, false))
+            if (IsBlacklisted(declaration.Variable.Name) || IsSingleLetter(declaration.Variable.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
                     declaration.Variable.Name));
             }
         }
 
-        private bool DoesNameRequireReport([NotNull] string identifierName, bool allowSingleLetter)
+        private static bool IsBlacklisted([NotNull] string identifierName)
         {
-            bool isSingleLetter = identifierName.Length == 1 && char.IsLetter(identifierName[0]);
-            bool isBlacklisted =
-                identifierName.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) !=
+            return identifierName.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) !=
                 null;
+        }
 
-            return allowSingleLetter ? isBlacklisted : isSingleLetter || isBlacklisted;
+        private static bool IsSingleLetter([NotNull] string identifierName)
+        {
+            return identifierName.Length == 1 && char.IsLetter(identifierName[0]);
         }
     }
 }
