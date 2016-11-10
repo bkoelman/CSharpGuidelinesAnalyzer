@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (NameRequiresReport(context.Symbol.Name) && !context.Symbol.IsOverride &&
+            if (DoesNameRequireReport(context.Symbol.Name) && !context.Symbol.IsOverride &&
                 !context.Symbol.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
@@ -144,7 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (NameRequiresReport(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
+            if (DoesNameRequireReport(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
                 !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind),
@@ -161,7 +161,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (NameRequiresReport(declaration.Variable.Name))
+            if (DoesNameRequireReport(declaration.Variable.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "variable",
                     declaration.Variable.Name));
@@ -173,7 +173,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return type.SpecialType == SpecialType.System_Boolean || type.IsNullableBoolean();
         }
 
-        private bool NameRequiresReport([NotNull] string identifierName)
+        private bool DoesNameRequireReport([NotNull] string identifierName)
         {
             return !identifierName.StartsWithAnyWordOf(WordsWhitelist, TextMatchMode.AllowLowerCaseMatch);
         }
