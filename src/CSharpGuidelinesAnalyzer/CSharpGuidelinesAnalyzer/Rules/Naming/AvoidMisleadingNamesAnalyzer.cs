@@ -50,6 +50,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var declaration = (IVariableDeclaration) context.Operation;
             ILocalSymbol variable = declaration.Variable;
 
+            if (variable.Name.Length == 0)
+            {
+                return;
+            }
+
             if (Blacklist.Contains(variable.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));

@@ -43,6 +43,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
+            if (declaration.Variable.Name.Length == 0)
+            {
+                return;
+            }
+
             if (declaration.Variable.Type.TypeKind == TypeKind.Dynamic)
             {
                 AnalyzeAssignedValue(declaration.InitialValue, declaration.Syntax.GetLocation(),

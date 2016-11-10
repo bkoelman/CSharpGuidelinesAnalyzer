@@ -174,6 +174,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
+            if (declaration.Variable.Name.Length == 0)
+            {
+                return;
+            }
+
             if (!IsBooleanOrNullableBoolean(declaration.Variable.Type))
             {
                 return;
