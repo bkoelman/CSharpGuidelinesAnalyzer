@@ -13,7 +13,7 @@ All analyzers have been implemented, but testing and optimization work is still 
 
 ## Get started
 
-* At the minimum, you need [Visual Studio](https://www.visualstudio.com/) 2015. About 50% of the rule analyzers [require Update 2 or later](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/IOperation.md). Without Update 2, those will remain silent. If you are using Update 3, you need to activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md) for all analyzers to work.
+* At the minimum, you need [Visual Studio 2015 with Update 2](https://www.visualstudio.com/). If you are using Update 3, it is recommended to [activate Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
 
 * From the NuGet package manager console:
 

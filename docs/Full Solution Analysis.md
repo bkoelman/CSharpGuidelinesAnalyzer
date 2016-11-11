@@ -1,9 +1,11 @@
 # Full Solution Analysis for Managed Code
 
-Visual Studio 2015 Update 3 introduced [Full Solution Analysis](https://msdn.microsoft.com/en-us/library/mt709421.aspx), which is disabled by default for C# projects.
+Visual Studio 2015 Update 2 introduced [Full Solution Analysis](https://msdn.microsoft.com/en-us/library/mt709421.aspx), which was enabled by default for C# projects. 
 
-This option was added to improve performance of Visual Studio. By default, live analysis only runs on the currently active file. Analysis on other files and project-wide analysis does not run. You need to rebuild your solution for all diagnostics to show up.
+To improve performance of Visual Studio, in Update 3 the default was changed to **disabled** for C# projects.
 
-If you want live feedback, it is recommended to enable Full Solution Analysis.
+When disabled, live analysis only runs on the currently active file. Analysis of other files and project-wide analysis does not run. You need to rebuild your solution for all diagnostics to show up.
 
-Note there is [some ongoing discussion](https://github.com/dotnet/roslyn/issues/11750) about this feature.
+If you are using Update 3 and want live feedback, it is recommended to enable Full Solution Analysis.
+
+Note there is [some ongoing discussion](https://github.com/dotnet/roslyn/issues/11750) about this.
