@@ -23,11 +23,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
+            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = new[] { "And" }.ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("And");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

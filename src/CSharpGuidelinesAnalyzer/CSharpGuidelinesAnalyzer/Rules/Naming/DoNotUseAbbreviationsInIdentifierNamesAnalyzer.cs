@@ -25,48 +25,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
+            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist =
-            new[]
-            {
-                "Btn",
-                "Ctrl",
-                "Frm",
-                "Chk",
-                "Cmb",
-                "Ctx",
-                "Dg",
-                "Pnl",
-                "Dlg",
-                "Lbl",
-                "Txt",
-                "Mnu",
-                "Prg",
-                "Rb",
-                "Cnt",
-                "Tv",
-                "Ddl",
-                "Fld",
-                "Lnk",
-                "Img",
-                "Lit",
-                "Vw",
-                "Gv",
-                "Dts",
-                "Rpt",
-                "Vld",
-                "Pwd",
-                "Ctl",
-                "Tm",
-                "Mgr",
-                "Flt",
-                "Len",
-                "Idx",
-                "Str"
-            }.ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Btn", "Ctrl", "Frm",
+            "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk",
+            "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

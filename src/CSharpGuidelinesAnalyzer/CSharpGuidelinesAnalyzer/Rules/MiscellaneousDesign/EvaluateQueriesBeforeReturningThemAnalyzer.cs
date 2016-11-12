@@ -43,67 +43,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             => ImmutableArray.Create(OperationRule, QueryRule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsDeferred =
-            new[]
-            {
-                "Aggregate",
-                "All",
-                "Any",
-                "Cast",
-                "Concat",
-                "Contains",
-                "DefaultIfEmpty",
-                "Except",
-                "GroupBy",
-                "GroupJoin",
-                "Intersect",
-                "Join",
-                "OfType",
-                "OrderBy",
-                "OrderByDescending",
-                "Range",
-                "Repeat",
-                "Reverse",
-                "Select",
-                "SelectMany",
-                "SequenceEqual",
-                "Skip",
-                "SkipWhile",
-                "Take",
-                "TakeWhile",
-                "ThenBy",
-                "ThenByDescending",
-                "Union",
-                "Where",
-                "Zip"
-            }.ToImmutableArray();
+        private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All",
+            "Any", "Cast", "Concat", "Contains", "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join",
+            "OfType", "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse", "Select", "SelectMany",
+            "SequenceEqual", "Skip", "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where",
+            "Zip");
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsImmediate =
-            new[]
-            {
-                "AsEnumerable",
-                "Average",
-                "Count",
-                "Distinct",
-                "ElementAt",
-                "ElementAtOrDefault",
-                "Empty",
-                "First",
-                "FirstOrDefault",
-                "Last",
-                "LastOrDefault",
-                "LongCount",
-                "Max",
-                "Min",
-                "Single",
-                "SingleOrDefault",
-                "Sum",
-                "ToArray",
-                "ToDictionary",
-                "ToList",
-                "ToLookup"
-            }.ToImmutableArray();
+        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("AsEnumerable",
+            "Average", "Count", "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault",
+            "Last", "LastOrDefault", "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray",
+            "ToDictionary", "ToList", "ToLookup");
 
         [NotNull]
         private const string QueryOperationName = "";

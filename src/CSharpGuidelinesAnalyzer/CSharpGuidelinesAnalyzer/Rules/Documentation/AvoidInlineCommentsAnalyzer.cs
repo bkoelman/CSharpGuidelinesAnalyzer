@@ -25,8 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> ArrangeActAssertLines =
-            new[] { "// Arrange", "// Act", "// Assert", "// Act and assert" }.ToImmutableArray();
+        private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange",
+            "// Act", "// Assert", "// Act and assert");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

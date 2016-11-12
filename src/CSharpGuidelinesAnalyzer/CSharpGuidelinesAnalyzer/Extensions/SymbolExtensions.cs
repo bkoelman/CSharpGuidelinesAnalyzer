@@ -12,13 +12,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     {
         [ItemNotNull]
         private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
-            new[]
-            {
-                "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
-                "Xunit.FactAttribute",
-                "NUnit.Framework.TestAttribute",
-                "MbUnit.Framework.TestAttribute"
-            }.ToImmutableArray();
+            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
+                "Xunit.FactAttribute", "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
 
         public static bool HidesBaseMember([NotNull] this ISymbol member, CancellationToken cancellationToken)
         {

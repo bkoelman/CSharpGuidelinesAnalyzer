@@ -9,9 +9,15 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
-    /// <summary/>
+    /// <summary />
     internal class MarkupParser
     {
+        [NotNull]
+        private static readonly KeyValuePair<string, string>[] OperationFeatures =
+        {
+            new KeyValuePair<string, string>("IOperation", "true")
+        };
+
         [NotNull]
         public DocumentWithSpans GetDocumentWithSpansFromMarkup([NotNull] AnalyzerTestContext context)
         {
@@ -82,10 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 .AddProject(assemblyName, languageName)
                 .WithCompilationOptions(compilationOptions)
                 .WithParseOptions(new CSharpParseOptions()
-                    .WithFeatures(new[]
-                    {
-                        new KeyValuePair<string, string>("IOperation", "true")
-                    }))
+                    .WithFeatures(OperationFeatures))
                 .AddMetadataReferences(references)
                 .AddDocument(fileName, code);
         }

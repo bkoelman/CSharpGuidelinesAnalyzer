@@ -48,8 +48,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
+            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [NotNull]
         [ItemNotNull]

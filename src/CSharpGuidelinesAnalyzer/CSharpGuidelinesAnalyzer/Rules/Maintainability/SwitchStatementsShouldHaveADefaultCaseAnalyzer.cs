@@ -29,6 +29,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        [ItemCanBeNull]
+        private static readonly ISymbol[] NullSymbolArray = { null };
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -101,7 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     identifierInfo.Type.BaseType.SpecialType == SpecialType.System_Enum)
                 {
                     var enumType = (INamedTypeSymbol) identifierInfo.Type;
-                    IEnumerable<IFieldSymbol> enumMembers = enumType.GetMembers().OfType<IFieldSymbol>();
+                    ISymbol[] enumMembers = enumType.GetMembers().OfType<IFieldSymbol>().Cast<ISymbol>().ToArray();
                     return IsEnumSwitchComplete(analysisContext, enumMembers);
                 }
 
@@ -119,29 +123,31 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [CanBeNull]
         private bool? IsBooleanSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
-            return HasCaseClausesFor(new[] { analysisContext.BooleanTrue, analysisContext.BooleanFalse },
-                analysisContext);
+            ImmutableArray<ISymbol> booleanTrueFalse = ImmutableArray.Create(analysisContext.BooleanTrue,
+                analysisContext.BooleanFalse);
+            return HasCaseClausesFor(booleanTrueFalse, analysisContext);
         }
 
         [CanBeNull]
         private bool? IsNullableBooleanSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
-            return HasCaseClausesFor(new[] { analysisContext.BooleanTrue, analysisContext.BooleanFalse, null },
-                analysisContext);
+            ImmutableArray<ISymbol> booleanTrueFalseNull = ImmutableArray.Create(analysisContext.BooleanTrue,
+                analysisContext.BooleanFalse, null);
+            return HasCaseClausesFor(booleanTrueFalseNull, analysisContext);
         }
 
         [CanBeNull]
         private bool? IsEnumSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
-            [NotNull] [ItemNotNull] IEnumerable<IFieldSymbol> enumMembers)
+            [NotNull] [ItemNotNull] ICollection<ISymbol> enumMembers)
         {
-            return HasCaseClausesFor(enumMembers.Cast<ISymbol>().ToArray(), analysisContext);
+            return HasCaseClausesFor(enumMembers, analysisContext);
         }
 
         [CanBeNull]
         private bool? IsNullableEnumSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
             [NotNull] [ItemNotNull] IEnumerable<IFieldSymbol> enumMembers)
         {
-            ISymbol[] expectedValues = enumMembers.Concat(new ISymbol[] { null }).ToArray();
+            ISymbol[] expectedValues = enumMembers.Concat(NullSymbolArray).ToArray();
             return HasCaseClausesFor(expectedValues, analysisContext);
         }
 

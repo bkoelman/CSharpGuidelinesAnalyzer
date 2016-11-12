@@ -109,7 +109,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             [ItemNotNull]
             private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace =
-                new[] { "JetBrains", "Annotations" }.ToImmutableArray();
+                ImmutableArray.Create("JetBrains", "Annotations");
 
             [ItemNotNull]
             private readonly ImmutableArray<string> assemblyNameParts;
@@ -129,6 +129,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull]
             private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
 
+            [NotNull]
+            private static readonly char[] DotSeparator = { '.' };
+
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] Action<Diagnostic> reportDiagnostic,
                 [NotNull] string reportAssemblyName, CancellationToken cancellationToken)
             {
@@ -136,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
 
                 assemblyNameParts =
-                    assemblyName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
+                    assemblyName.Split(DotSeparator, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
 
                 this.reportDiagnostic = reportDiagnostic;
                 this.reportAssemblyName = reportAssemblyName;

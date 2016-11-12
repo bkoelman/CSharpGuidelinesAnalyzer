@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("Debug")]
 #else
+
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
