@@ -25,25 +25,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         private static readonly ImmutableArray<SpecialType> IntegralValueTypes =
-            new[]
-            {
-                SpecialType.System_Boolean,
-                SpecialType.System_Char,
-                SpecialType.System_SByte,
-                SpecialType.System_Byte,
-                SpecialType.System_Int16,
-                SpecialType.System_UInt16,
-                SpecialType.System_Int32,
-                SpecialType.System_UInt32,
-                SpecialType.System_Int64,
-                SpecialType.System_UInt64,
-                SpecialType.System_Decimal,
-                SpecialType.System_Single,
-                SpecialType.System_Double,
-                SpecialType.System_IntPtr,
-                SpecialType.System_UIntPtr,
-                SpecialType.System_DateTime
-            }.ToImmutableArray();
+            ImmutableArray.Create(SpecialType.System_Boolean, SpecialType.System_Char, SpecialType.System_SByte,
+                SpecialType.System_Byte, SpecialType.System_Int16, SpecialType.System_UInt16, SpecialType.System_Int32,
+                SpecialType.System_UInt32, SpecialType.System_Int64, SpecialType.System_UInt64,
+                SpecialType.System_Decimal, SpecialType.System_Single, SpecialType.System_Double,
+                SpecialType.System_IntPtr, SpecialType.System_UIntPtr, SpecialType.System_DateTime);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

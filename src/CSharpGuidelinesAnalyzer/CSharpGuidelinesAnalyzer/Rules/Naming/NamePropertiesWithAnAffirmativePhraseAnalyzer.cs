@@ -26,47 +26,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field }.ToImmutableArray();
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
+            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsWhitelist =
-            new[]
-            {
-                "Are",
-                "Is",
-                "Was",
-                "Were",
-                "Has",
-                "Have",
-                "Can",
-                "Could",
-                "Shall",
-                "Should",
-                "May",
-                "Might",
-                "Will",
-                "Need",
-                "Needs",
-                "Allow",
-                "Allows",
-                "Support",
-                "Supports",
-                "Do",
-                "Does",
-                "Did",
-                "Hide",
-                "Hides",
-                "Contain",
-                "Contains",
-                "Require",
-                "Requires",
-                "Return",
-                "Returns",
-                "Starts",
-                "Consists",
-                "Targets"
-            }.ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Is", "Was", "Were",
+            "Has", "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows",
+            "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain", "Contains", "Require", "Requires",
+            "Return", "Returns", "Starts", "Consists", "Targets");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

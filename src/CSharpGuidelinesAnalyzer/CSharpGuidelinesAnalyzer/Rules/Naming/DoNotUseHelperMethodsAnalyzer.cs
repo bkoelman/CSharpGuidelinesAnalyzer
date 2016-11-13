@@ -26,9 +26,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist =
-            new[] { "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common", "Shared" }
-                .ToImmutableArray();
+        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Utility", "Utilities",
+            "Facility", "Facilities", "Helper", "Helpers", "Common", "Shared");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

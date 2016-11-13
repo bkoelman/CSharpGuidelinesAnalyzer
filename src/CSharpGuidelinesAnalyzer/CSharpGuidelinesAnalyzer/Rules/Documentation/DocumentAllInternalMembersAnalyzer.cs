@@ -48,8 +48,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            new[] { SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event }.ToImmutableArray();
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
+            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [NotNull]
         [ItemNotNull]
@@ -172,7 +172,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 XDocument document = XDocument.Parse(documentationXml);
 
-                foreach (XElement paramElement in document.Element("member")?.Elements("param") ?? new XElement[0])
+                foreach (XElement paramElement in
+                    document.Element("member")?.Elements("param") ?? ImmutableArray<XElement>.Empty)
                 {
                     XAttribute paramAttribute = paramElement.Attribute("name");
                     if (!string.IsNullOrEmpty(paramAttribute?.Value))
