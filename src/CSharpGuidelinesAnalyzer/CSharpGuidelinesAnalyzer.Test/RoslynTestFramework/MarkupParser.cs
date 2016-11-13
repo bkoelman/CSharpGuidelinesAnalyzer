@@ -13,10 +13,12 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     internal class MarkupParser
     {
         [NotNull]
-        private static readonly KeyValuePair<string, string>[] OperationFeatures =
-        {
-            new KeyValuePair<string, string>("IOperation", "true")
-        };
+        private static readonly CSharpCompilationOptions DefaultCompilationOptions =
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true);
+
+        [NotNull]
+        private static readonly CSharpParseOptions DefaultParseOptions =
+            new CSharpParseOptions().WithFeatures(new[] { new KeyValuePair<string, string>("IOperation", "true") });
 
         [NotNull]
         public DocumentWithSpans GetDocumentWithSpansFromMarkup([NotNull] AnalyzerTestContext context)
@@ -77,18 +79,14 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references,
             [CanBeNull] int? compilerWarningLevel)
         {
-            var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true);
-
-            if (compilerWarningLevel != null)
-            {
-                compilationOptions = compilationOptions.WithWarningLevel(compilerWarningLevel.Value);
-            }
+            CSharpCompilationOptions compilationOptions = compilerWarningLevel != null
+                ? DefaultCompilationOptions.WithWarningLevel(compilerWarningLevel.Value)
+                : DefaultCompilationOptions;
 
             return new AdhocWorkspace()
                 .AddProject(assemblyName, languageName)
                 .WithCompilationOptions(compilationOptions)
-                .WithParseOptions(new CSharpParseOptions()
-                    .WithFeatures(OperationFeatures))
+                .WithParseOptions(DefaultParseOptions)
                 .AddMetadataReferences(references)
                 .AddDocument(fileName, code);
         }
