@@ -35,11 +35,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var forStatementSyntax = (ForStatementSyntax) context.Node;
-            foreach (VariableDeclaratorSyntax variableDeclaratorSyntax in forStatementSyntax.Declaration.Variables)
-            {
-                ISymbol variableSymbol = context.SemanticModel.GetDeclaredSymbol(variableDeclaratorSyntax);
 
-                DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(forStatementSyntax.Statement);
+            if (forStatementSyntax.Declaration != null)
+            {
+                foreach (VariableDeclaratorSyntax variableDeclaratorSyntax in forStatementSyntax.Declaration.Variables)
+                {
+                    AnalyzeLoopVariable(context, variableDeclaratorSyntax, forStatementSyntax.Statement);
+                }
+            }
+        }
+
+        private static void AnalyzeLoopVariable(SyntaxNodeAnalysisContext context,
+            [NotNull] VariableDeclaratorSyntax variableDeclaratorSyntax, [NotNull] StatementSyntax statementSyntax)
+        {
+            ISymbol variableSymbol = context.SemanticModel.GetDeclaredSymbol(variableDeclaratorSyntax);
+
+            if (variableSymbol != null)
+            {
+                DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(statementSyntax);
                 if (dataFlowAnalysis.Succeeded)
                 {
                     if (dataFlowAnalysis.WrittenInside.Contains(variableSymbol))
