@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationBlockAction(AnalyzeCodeBlock);
+                    startContext.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
                 }
             });
         }

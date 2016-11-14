@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -68,8 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            var visitor = new TypesInNamespaceVisitor(assemblyName, context.ReportDiagnostic, reportAssemblyName,
-                context.CancellationToken);
+            var visitor = new TypesInNamespaceVisitor(assemblyName, reportAssemblyName, context);
             visitor.Visit(namespaceSymbol);
         }
 
@@ -115,12 +113,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private readonly ImmutableArray<string> assemblyNameParts;
 
             [NotNull]
-            private readonly Action<Diagnostic> reportDiagnostic;
-
-            [NotNull]
             private readonly string reportAssemblyName;
 
-            private CancellationToken cancellationToken;
+            private SymbolAnalysisContext context;
 
             [NotNull]
             [ItemNotNull]
@@ -132,8 +127,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull]
             private static readonly char[] DotSeparator = { '.' };
 
-            public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] Action<Diagnostic> reportDiagnostic,
-                [NotNull] string reportAssemblyName, CancellationToken cancellationToken)
+            public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName,
+                SymbolAnalysisContext context)
             {
                 Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
                 Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
@@ -141,20 +136,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 assemblyNameParts =
                     assemblyName.Split(DotSeparator, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
 
-                this.reportDiagnostic = reportDiagnostic;
                 this.reportAssemblyName = reportAssemblyName;
-                this.cancellationToken = cancellationToken;
+                this.context = context;
             }
 
             public override void VisitNamespace([NotNull] INamespaceSymbol symbol)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                context.CancellationToken.ThrowIfCancellationRequested();
 
                 namespaceNames.Push(symbol.Name);
 
                 if (!IsCurrentNamespaceValid(NamespaceMatchMode.RequirePartialMatchWithAssemblyName))
                 {
-                    reportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
+                    context.ReportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
                         reportAssemblyName));
                 }
 
@@ -175,7 +169,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (!IsCurrentNamespaceValid(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName))
                 {
-                    reportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
+                    context.ReportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
                         CurrentNamespaceName, reportAssemblyName));
                 }
             }

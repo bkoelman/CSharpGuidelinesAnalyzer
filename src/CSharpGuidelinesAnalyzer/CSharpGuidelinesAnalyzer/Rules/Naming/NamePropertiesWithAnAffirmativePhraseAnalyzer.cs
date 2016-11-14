@@ -47,7 +47,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeVariableDeclaration, OperationKind.VariableDeclaration);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
+                        OperationKind.VariableDeclaration);
                 }
             });
         }
@@ -140,11 +141,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration) context.Operation;
-
-            if (declaration.Variable.Name.Length == 0)
-            {
-                return;
-            }
 
             if (!IsBooleanOrNullableBoolean(declaration.Variable.Type))
             {

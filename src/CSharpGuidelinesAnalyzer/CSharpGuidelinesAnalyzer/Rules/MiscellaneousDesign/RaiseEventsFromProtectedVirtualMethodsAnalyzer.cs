@@ -53,7 +53,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeInvocation, OperationKind.InvocationExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation),
+                        OperationKind.InvocationExpression);
                 }
             });
         }

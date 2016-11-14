@@ -803,7 +803,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "'i' and 'j' are assigned in a single statement.");
         }
 
-
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AssignVariablesInSeparateStatementsAnalyzer();

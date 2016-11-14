@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationBlockAction(AnalyzeCodeBlock);
+                    startContext.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
                 }
             });
         }

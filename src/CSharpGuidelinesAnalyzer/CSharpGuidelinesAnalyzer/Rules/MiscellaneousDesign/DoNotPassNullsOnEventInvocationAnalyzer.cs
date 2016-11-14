@@ -49,7 +49,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
                 if (systemEventArgs != null)
                 {
-                    startContext.RegisterOperationAction(c => AnalyzeEventInvocation(c, systemEventArgs),
+                    startContext.RegisterOperationAction(
+                        c => c.SkipInvalid(_ => AnalyzeEventInvocation(c, systemEventArgs)),
                         OperationKind.InvocationExpression);
                 }
             });

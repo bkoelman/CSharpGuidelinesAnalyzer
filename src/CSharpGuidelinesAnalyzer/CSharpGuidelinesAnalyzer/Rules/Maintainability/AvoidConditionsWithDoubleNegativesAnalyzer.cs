@@ -39,7 +39,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeUnaryOperator, OperationKind.UnaryOperatorExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeUnaryOperator),
+                        OperationKind.UnaryOperatorExpression);
                 }
             });
         }
@@ -47,6 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeUnaryOperator(OperationAnalysisContext context)
         {
             var unaryOperator = (IUnaryOperatorExpression) context.Operation;
+
             if (unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot)
             {
                 IdentifierInfo identifierInfo = unaryOperator.Operand.TryGetIdentifierInfo();

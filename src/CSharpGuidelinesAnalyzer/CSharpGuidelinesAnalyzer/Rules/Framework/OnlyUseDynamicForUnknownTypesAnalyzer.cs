@@ -33,8 +33,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeVariableDeclaration, OperationKind.VariableDeclaration);
-                    startContext.RegisterOperationAction(AnalyzeAssignment, OperationKind.AssignmentExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
+                        OperationKind.VariableDeclaration);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment),
+                        OperationKind.AssignmentExpression);
                 }
             });
         }
@@ -42,11 +44,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration) context.Operation;
-
-            if (declaration.Variable.Name.Length == 0)
-            {
-                return;
-            }
 
             if (declaration.Variable.Type.TypeKind == TypeKind.Dynamic)
             {

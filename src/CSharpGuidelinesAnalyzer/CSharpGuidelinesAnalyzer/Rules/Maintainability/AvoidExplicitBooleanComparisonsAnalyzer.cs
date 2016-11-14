@@ -33,7 +33,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeExpression, OperationKind.BinaryOperatorExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeExpression),
+                        OperationKind.BinaryOperatorExpression);
                 }
             });
         }

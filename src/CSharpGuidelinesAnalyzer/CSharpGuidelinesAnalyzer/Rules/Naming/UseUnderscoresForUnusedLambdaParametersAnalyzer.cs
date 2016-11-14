@@ -36,7 +36,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeLambdaExpression, OperationKind.LambdaExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
+                        OperationKind.LambdaExpression);
                 }
             });
         }
@@ -47,11 +48,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             foreach (IParameterSymbol parameter in lambdaExpression.Signature.Parameters)
             {
-                if (parameter.Name.Length == 0)
-                {
-                    continue;
-                }
-
                 if (!ConsistsOfUnderscoresOnly(parameter.Name))
                 {
                     AnalyzeParameterUsage(parameter, lambdaExpression.Signature, context);

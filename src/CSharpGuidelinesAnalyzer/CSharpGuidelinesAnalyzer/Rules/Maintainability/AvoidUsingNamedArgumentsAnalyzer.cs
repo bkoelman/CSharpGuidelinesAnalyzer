@@ -33,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeArgument, OperationKind.Argument);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeArgument), OperationKind.Argument);
                 }
             });
         }
@@ -44,11 +44,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (argument.ArgumentKind == ArgumentKind.Named)
             {
-                if (argument.Parameter.Name.Length == 0)
-                {
-                    return;
-                }
-
                 if (argument.Parameter.Type.SpecialType != SpecialType.System_Boolean &&
                     !argument.Parameter.Type.IsNullableBoolean())
                 {

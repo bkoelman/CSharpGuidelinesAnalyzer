@@ -34,7 +34,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeEventAssignment, OperationKind.EventAssignmentExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeEventAssignment),
+                        OperationKind.EventAssignmentExpression);
                 }
             });
         }

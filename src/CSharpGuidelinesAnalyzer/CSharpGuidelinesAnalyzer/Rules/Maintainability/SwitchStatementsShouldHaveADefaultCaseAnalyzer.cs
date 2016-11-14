@@ -48,8 +48,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
                 if (systemBoolean != null)
                 {
-                    startContext.RegisterOperationAction(c => AnalyzeSwitchStatement(c, systemBoolean),
-                        OperationKind.SwitchStatement);
+                    startContext.RegisterOperationAction(
+                        c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)), OperationKind.SwitchStatement);
                 }
             });
         }
@@ -57,11 +57,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)
         {
             var switchStatement = (ISwitchStatement) context.Operation;
-
-            if (switchStatement.IsInvalid)
-            {
-                return;
-            }
 
             if (HasDefaultCase(switchStatement))
             {

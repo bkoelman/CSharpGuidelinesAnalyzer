@@ -37,7 +37,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeVariableDeclaration, OperationKind.VariableDeclaration);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
+                        OperationKind.VariableDeclaration);
                 }
             });
 
@@ -48,11 +49,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var declaration = (IVariableDeclaration) context.Operation;
             ILocalSymbol variable = declaration.Variable;
-
-            if (variable.Name.Length == 0)
-            {
-                return;
-            }
 
             if (Blacklist.Contains(variable.Name))
             {

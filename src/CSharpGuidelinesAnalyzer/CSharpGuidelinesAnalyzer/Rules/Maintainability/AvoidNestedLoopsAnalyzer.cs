@@ -33,7 +33,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeLoopStatement, OperationKind.LoopStatement);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLoopStatement),
+                        OperationKind.LoopStatement);
                 }
             });
         }

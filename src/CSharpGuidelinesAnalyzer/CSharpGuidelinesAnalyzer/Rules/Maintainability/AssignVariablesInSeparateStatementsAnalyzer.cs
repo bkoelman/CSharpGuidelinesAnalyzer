@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeStatement, statementKinds);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeStatement), statementKinds);
                 }
             });
         }

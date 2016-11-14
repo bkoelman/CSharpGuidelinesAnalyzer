@@ -45,7 +45,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 {
                     ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
 
-                    startContext.RegisterOperationAction(c => AnalyzeInvocation(taskType, continueWithMethodGroup, c),
+                    startContext.RegisterOperationAction(
+                        c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
                         OperationKind.InvocationExpression);
                 }
             });
@@ -55,6 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
         {
             var invocation = (IInvocationExpression) context.Operation;
+
             if (invocation.TargetMethod.ContainingType.Equals(taskType))
             {
                 IMethodSymbol targetMethodConstructed = invocation.TargetMethod.ConstructedFrom;

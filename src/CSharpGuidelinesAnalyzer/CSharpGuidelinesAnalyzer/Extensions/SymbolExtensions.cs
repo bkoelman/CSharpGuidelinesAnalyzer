@@ -122,7 +122,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             if (bodySyntax != null)
             {
                 SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-                return model.GetOperation(bodySyntax);
+                IOperation operation = model.GetOperation(bodySyntax);
+
+                if (!operation.IsInvalid)
+                {
+                    return operation;
+                }
             }
 
             return null;

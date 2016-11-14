@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(AnalyzeSwitchCase, OperationKind.SwitchCase);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeSwitchCase), OperationKind.SwitchCase);
                 }
             });
         }
@@ -44,11 +44,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeSwitchCase(OperationAnalysisContext context)
         {
             var switchCase = (ISwitchCase) context.Operation;
-
-            if (switchCase.IsInvalid)
-            {
-                return;
-            }
 
             if (switchCase.Body.Length > 0)
             {
