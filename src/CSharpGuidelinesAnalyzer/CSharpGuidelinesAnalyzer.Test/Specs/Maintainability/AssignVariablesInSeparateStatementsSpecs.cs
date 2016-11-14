@@ -255,17 +255,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_a_for_loop_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        for (int index = 0; index < 10; index++)
                         {
-                            for (int index = 0; index < 10; index++)
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
+                            int local1 = 5;
+                            int local2 = 8;
                         }
                     }
                 ")
@@ -310,17 +307,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_a_foreach_loop_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int[] items)
                     {
-                        void M(int[] items)
+                        foreach (var item in items)
                         {
-                            foreach (var item in items)
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
+                            int local1 = 5;
+                            int local2 = 8;
                         }
                     }
                 ")
@@ -365,17 +359,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_a_while_loop_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        while (true)
                         {
-                            while (true)
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
+                            int local1 = 5;
+                            int local2 = 8;
                         }
                     }
                 ")
@@ -421,19 +412,16 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        do
                         {
-                            do
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
-                            while (true);
+                            int local1 = 5;
+                            int local2 = 8;
                         }
+                        while (true);
                     }
                 ")
                 .Build();
@@ -477,24 +465,21 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_an_if_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private int Property1 { get; set; }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int Property1 { get; set; }
 
-                        void M()
+                    void M()
+                    {
+                        if (Property1 > 0)
                         {
-                            if (Property1 > 0)
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
-                            else
-                            {
-                                int local3 = 5;
-                                int local4 = 8;
-                            }
+                            int local1 = 5;
+                            int local2 = 8;
+                        }
+                        else
+                        {
+                            int local3 = 5;
+                            int local4 = 8;
                         }
                     }
                 ")
@@ -539,19 +524,16 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_case_clause_of_a_switch_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int value)
                     {
-                        void M(int value)
+                        switch (value)
                         {
-                            switch (value)
-                            {
-                                default:
-                                    int local1 = 5;
-                                    int local2 = 8;
-                                    break;
-                            }
+                            default:
+                                int local1 = 5;
+                                int local2 = 8;
+                                break;
                         }
                     }
                 ")
@@ -655,19 +637,16 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lock_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private object guard = new object();
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private object guard = new object();
 
-                        void M()
+                    void M()
+                    {
+                        lock (guard)
                         {
-                            lock (guard)
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
+                            int local1 = 5;
+                            int local2 = 8;
                         }
                     }
                     ")
@@ -712,19 +691,16 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_the_body_of_a_using_statement_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private IDisposable field1;
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private IDisposable field1;
 
-                        void M()
+                    void M()
+                    {
+                        using (var temp = field1)
                         {
-                            using (var temp = field1)
-                            {
-                                int local1 = 5;
-                                int local2 = 8;
-                            }
+                            int local1 = 5;
+                            int local2 = 8;
                         }
                     }
                 ")
@@ -762,6 +738,71 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source,
                 "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement.");
         }
+
+        [Fact]
+        public void When_lambda_block_containing_assignment_is_assigned_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        Action action = () =>
+                        {
+                            int x = 5;
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lambda_block_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        Action action = () =>
+                        {
+                            int i;
+                            int j;
+                            [|i = j = 5;|]
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'i' and 'j' are assigned in a single statement.");
+        }
+
+        [Fact]
+        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lambda_expression_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        int i;
+                        int j;
+
+                        Action action = () => [|i = j = 5|];
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'i' and 'j' are assigned in a single statement.");
+        }
+
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {

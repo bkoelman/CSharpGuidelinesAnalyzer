@@ -101,6 +101,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 base.VisitVariableDeclaration(operation);
             }
 
+            public override void VisitLambdaExpression([NotNull] ILambdaExpression operation)
+            {
+            }
+
             public override void VisitAssignmentExpression([NotNull] IAssignmentExpression operation)
             {
                 RegisterAssignment(operation.Target);
