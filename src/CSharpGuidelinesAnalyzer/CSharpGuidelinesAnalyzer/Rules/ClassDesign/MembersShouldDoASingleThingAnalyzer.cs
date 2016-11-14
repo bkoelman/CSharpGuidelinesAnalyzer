@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string Title = "Member contains the word 'and'";
         private const string MessageFormat = "{0} '{1}' contains the word 'and'.";
         private const string Description = "A method or property should do only one thing.";
-        private const string Category = "Class Design";
+        private const string Category = "Member Design";
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
