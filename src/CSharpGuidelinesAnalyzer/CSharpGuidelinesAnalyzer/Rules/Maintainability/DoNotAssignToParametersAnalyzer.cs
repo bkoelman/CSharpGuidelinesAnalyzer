@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -39,52 +37,59 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
+            context.RegisterSyntaxNodeAction(AnalyzeSyntax, SyntaxKind.MethodDeclaration,
+                SyntaxKind.ConstructorDeclaration, SyntaxKind.OperatorDeclaration,
+                SyntaxKind.ConversionOperatorDeclaration, SyntaxKind.GetAccessorDeclaration,
+                SyntaxKind.SetAccessorDeclaration, SyntaxKind.AddAccessorDeclaration,
+                SyntaxKind.RemoveAccessorDeclaration, SyntaxKind.ParenthesizedLambdaExpression,
+                SyntaxKind.SimpleLambdaExpression, SyntaxKind.AnonymousMethodExpression, SyntaxKind.LetClause,
+                SyntaxKind.WhereClause, SyntaxKind.AscendingOrdering, SyntaxKind.DescendingOrdering,
+                SyntaxKind.JoinClause, SyntaxKind.GroupClause, SyntaxKind.SelectClause, SyntaxKind.FromClause);
+        }
 
-            context.RegisterCompilationStartAction(startContext =>
+        private void AnalyzeSyntax(SyntaxNodeAnalysisContext context)
+        {
+            IMethodSymbol method = TryGetMethod(context.Node, context.SemanticModel);
+
+            if (method != null)
             {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationBlockAction(
-                        c => c.SkipInvalid(_ => AnalyzeCodeBlock(c, startContext.Compilation)));
-                }
-            });
+                AnalyzeMethod(context, method);
+            }
         }
 
-        private void AnalyzeMethod(SymbolAnalysisContext context)
+        [CanBeNull]
+        private IMethodSymbol TryGetMethod([NotNull] SyntaxNode syntax, [NotNull] SemanticModel semanticModel)
         {
-            var method = (IMethodSymbol) context.Symbol;
-
-            MethodAnalysisContext methodContext = MethodAnalysisContext.FromSymbolAnalysisContext(context, method);
-            AnalyzeParametersInMethod(methodContext);
+            return semanticModel.GetDeclaredSymbol(syntax) as IMethodSymbol ??
+                semanticModel.GetSymbolInfo(syntax).Symbol as IMethodSymbol;
         }
 
-        private static void AnalyzeParametersInMethod(MethodAnalysisContext context)
+        private static void AnalyzeMethod(SyntaxNodeAnalysisContext context, [NotNull] IMethodSymbol method)
         {
-            if (context.Method.IsAbstract || !context.Method.Parameters.Any())
+            if (method.IsAbstract || !method.Parameters.Any())
             {
                 return;
             }
 
-            SyntaxNode body = context.Method.TryGetBodySyntaxForMethod(context.CancellationToken);
+            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (body != null)
             {
                 SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
                 DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
                 if (dataFlowAnalysis.Succeeded)
                 {
-                    foreach (IParameterSymbol parameter in context.Method.Parameters)
+                    foreach (IParameterSymbol parameter in method.Parameters)
                     {
                         context.CancellationToken.ThrowIfCancellationRequested();
 
-                        AnalyzeParameterInMethod(parameter, dataFlowAnalysis, context);
+                        AnalyzeParameter(parameter, dataFlowAnalysis, context);
                     }
                 }
             }
         }
 
-        private static void AnalyzeParameterInMethod([NotNull] IParameterSymbol parameter,
-            [NotNull] DataFlowAnalysis dataFlowAnalysis, MethodAnalysisContext context)
+        private static void AnalyzeParameter([NotNull] IParameterSymbol parameter,
+            [NotNull] DataFlowAnalysis dataFlowAnalysis, SyntaxNodeAnalysisContext context)
         {
             if (parameter.Name.Length == 0)
             {
@@ -111,98 +116,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T ||
                 IntegralValueTypes.Contains(type.SpecialType);
-        }
-
-        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] Compilation compilation)
-        {
-            var walker = new OperationBlockWalker(context, compilation);
-
-            foreach (IOperation operation in context.OperationBlocks)
-            {
-                walker.Visit(operation);
-            }
-        }
-
-        private sealed class OperationBlockWalker : OperationWalker
-        {
-            private readonly OperationBlockAnalysisContext context;
-
-            [NotNull]
-            private readonly Compilation compilation;
-
-            public OperationBlockWalker(OperationBlockAnalysisContext context, [NotNull] Compilation compilation)
-            {
-                Guard.NotNull(compilation, nameof(compilation));
-
-                this.context = context;
-                this.compilation = compilation;
-            }
-
-            public override void VisitLambdaExpression([NotNull] ILambdaExpression operation)
-            {
-                AnalyzeLambdaExpression(operation);
-
-                base.VisitLambdaExpression(operation);
-            }
-
-            private void AnalyzeLambdaExpression([NotNull] ILambdaExpression operation)
-            {
-                MethodAnalysisContext methodContext = MethodAnalysisContext.FromOperationBlockAnalysisContext(context,
-                    operation.Signature, compilation);
-
-                AnalyzeParametersInMethod(methodContext);
-            }
-        }
-
-        private struct MethodAnalysisContext
-        {
-            [NotNull]
-            private readonly Action<Diagnostic> reportDiagnostic;
-
-            [NotNull]
-            public IMethodSymbol Method { get; }
-
-            [NotNull]
-            public Compilation Compilation { get; }
-
-            public CancellationToken CancellationToken { get; }
-
-            public MethodAnalysisContext([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
-                CancellationToken cancellationToken, [NotNull] Action<Diagnostic> reportDiagnostic)
-            {
-                Guard.NotNull(method, nameof(method));
-                Guard.NotNull(compilation, nameof(compilation));
-                Guard.NotNull(reportDiagnostic, nameof(reportDiagnostic));
-
-                Method = method;
-                Compilation = compilation;
-                CancellationToken = cancellationToken;
-                this.reportDiagnostic = reportDiagnostic;
-            }
-
-            public void ReportDiagnostic([NotNull] Diagnostic diagnostic)
-            {
-                reportDiagnostic(diagnostic);
-            }
-
-            public static MethodAnalysisContext FromSymbolAnalysisContext(SymbolAnalysisContext context,
-                [NotNull] IMethodSymbol method)
-            {
-                Guard.NotNull(method, nameof(method));
-
-                return new MethodAnalysisContext(method, context.Compilation, context.CancellationToken,
-                    context.ReportDiagnostic);
-            }
-
-            public static MethodAnalysisContext FromOperationBlockAnalysisContext(OperationBlockAnalysisContext context,
-                [NotNull] IMethodSymbol method, [NotNull] Compilation compilation)
-            {
-                Guard.NotNull(method, nameof(method));
-                Guard.NotNull(compilation, nameof(compilation));
-
-                return new MethodAnalysisContext(method, compilation, context.CancellationToken,
-                    context.ReportDiagnostic);
-            }
         }
     }
 }
