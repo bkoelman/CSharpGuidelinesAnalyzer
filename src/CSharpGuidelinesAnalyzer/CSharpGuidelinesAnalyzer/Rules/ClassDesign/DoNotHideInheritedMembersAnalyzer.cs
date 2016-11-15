@@ -29,16 +29,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.ReportDiagnostics);
 
             context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
         }
+
+        // TEST comment
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (context.Symbol.IsPropertyOrEventAccessor())
             {
-                return;
+                //return;
             }
 
             if (!context.Symbol.IsOverride && context.Symbol.HidesBaseMember(context.CancellationToken))
