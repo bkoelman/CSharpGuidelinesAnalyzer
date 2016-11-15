@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -36,13 +39,53 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
+            context.RegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (startContext.Compilation.SupportsOperations())
+                {
+                    startContext.RegisterOperationBlockAction(
+                        c => c.SkipInvalid(_ => AnalyzeCodeBlock(c, startContext.Compilation)));
+                }
+            });
         }
 
-        private void AnalyzeParameter(SymbolAnalysisContext context)
+        private void AnalyzeMethod(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            var method = (IMethodSymbol) context.Symbol;
 
+            MethodAnalysisContext methodContext = MethodAnalysisContext.FromSymbolAnalysisContext(context, method);
+            AnalyzeParametersInMethod(methodContext);
+        }
+
+        private static void AnalyzeParametersInMethod(MethodAnalysisContext context)
+        {
+            if (context.Method.IsAbstract || !context.Method.Parameters.Any())
+            {
+                return;
+            }
+
+            SyntaxNode body = context.Method.TryGetBodySyntaxForMethod(context.CancellationToken);
+            if (body != null)
+            {
+                SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
+                DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
+                if (dataFlowAnalysis.Succeeded)
+                {
+                    foreach (IParameterSymbol parameter in context.Method.Parameters)
+                    {
+                        context.CancellationToken.ThrowIfCancellationRequested();
+
+                        AnalyzeParameterInMethod(parameter, dataFlowAnalysis, context);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeParameterInMethod([NotNull] IParameterSymbol parameter,
+            [NotNull] DataFlowAnalysis dataFlowAnalysis, MethodAnalysisContext context)
+        {
             if (parameter.Name.Length == 0)
             {
                 return;
@@ -58,31 +101,108 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            var method = parameter.ContainingSymbol as IMethodSymbol;
-            if (method == null || method.IsAbstract)
+            if (dataFlowAnalysis.WrittenInside.Contains(parameter))
             {
-                return;
-            }
-
-            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
-            if (body != null)
-            {
-                SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
-                DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
-                if (dataFlowAnalysis.Succeeded)
-                {
-                    if (dataFlowAnalysis.WrittenInside.Contains(parameter))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
-                    }
-                }
+                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
             }
         }
 
-        private bool IsIntegralType([NotNull] ITypeSymbol type)
+        private static bool IsIntegralType([NotNull] ITypeSymbol type)
         {
             return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T ||
                 IntegralValueTypes.Contains(type.SpecialType);
+        }
+
+        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] Compilation compilation)
+        {
+            var walker = new OperationBlockWalker(context, compilation);
+
+            foreach (IOperation operation in context.OperationBlocks)
+            {
+                walker.Visit(operation);
+            }
+        }
+
+        private sealed class OperationBlockWalker : OperationWalker
+        {
+            private readonly OperationBlockAnalysisContext context;
+
+            [NotNull]
+            private readonly Compilation compilation;
+
+            public OperationBlockWalker(OperationBlockAnalysisContext context, [NotNull] Compilation compilation)
+            {
+                Guard.NotNull(compilation, nameof(compilation));
+
+                this.context = context;
+                this.compilation = compilation;
+            }
+
+            public override void VisitLambdaExpression([NotNull] ILambdaExpression operation)
+            {
+                AnalyzeLambdaExpression(operation);
+
+                base.VisitLambdaExpression(operation);
+            }
+
+            private void AnalyzeLambdaExpression([NotNull] ILambdaExpression operation)
+            {
+                MethodAnalysisContext methodContext = MethodAnalysisContext.FromOperationBlockAnalysisContext(context,
+                    operation.Signature, compilation);
+
+                AnalyzeParametersInMethod(methodContext);
+            }
+        }
+
+        private struct MethodAnalysisContext
+        {
+            [NotNull]
+            private readonly Action<Diagnostic> reportDiagnostic;
+
+            [NotNull]
+            public IMethodSymbol Method { get; }
+
+            [NotNull]
+            public Compilation Compilation { get; }
+
+            public CancellationToken CancellationToken { get; }
+
+            public MethodAnalysisContext([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
+                CancellationToken cancellationToken, [NotNull] Action<Diagnostic> reportDiagnostic)
+            {
+                Guard.NotNull(method, nameof(method));
+                Guard.NotNull(compilation, nameof(compilation));
+                Guard.NotNull(reportDiagnostic, nameof(reportDiagnostic));
+
+                Method = method;
+                Compilation = compilation;
+                CancellationToken = cancellationToken;
+                this.reportDiagnostic = reportDiagnostic;
+            }
+
+            public void ReportDiagnostic([NotNull] Diagnostic diagnostic)
+            {
+                reportDiagnostic(diagnostic);
+            }
+
+            public static MethodAnalysisContext FromSymbolAnalysisContext(SymbolAnalysisContext context,
+                [NotNull] IMethodSymbol method)
+            {
+                Guard.NotNull(method, nameof(method));
+
+                return new MethodAnalysisContext(method, context.Compilation, context.CancellationToken,
+                    context.ReportDiagnostic);
+            }
+
+            public static MethodAnalysisContext FromOperationBlockAnalysisContext(OperationBlockAnalysisContext context,
+                [NotNull] IMethodSymbol method, [NotNull] Compilation compilation)
+            {
+                Guard.NotNull(method, nameof(method));
+                Guard.NotNull(compilation, nameof(compilation));
+
+                return new MethodAnalysisContext(method, compilation, context.CancellationToken,
+                    context.ReportDiagnostic);
+            }
         }
     }
 }
