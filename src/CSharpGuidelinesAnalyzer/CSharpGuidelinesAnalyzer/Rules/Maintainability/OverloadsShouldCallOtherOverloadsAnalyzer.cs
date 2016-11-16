@@ -62,6 +62,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                return;
+            }
+
             if (type.TypeKind != TypeKind.Class && type.TypeKind != TypeKind.Struct)
             {
                 return;

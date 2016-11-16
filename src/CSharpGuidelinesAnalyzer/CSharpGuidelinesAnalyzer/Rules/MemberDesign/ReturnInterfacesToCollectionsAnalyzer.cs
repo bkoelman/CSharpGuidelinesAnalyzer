@@ -42,6 +42,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         {
             var method = (IMethodSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(method.Name))
+            {
+                return;
+            }
+
             if (IsString(method.ReturnType))
             {
                 return;

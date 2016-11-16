@@ -6,7 +6,9 @@ namespace CSharpGuidelinesAnalyzer
     /// <summary>
     /// Member precondition checks.
     /// </summary>
+#pragma warning disable AV1008 // Class should not be static
     public static class Guard
+#pragma warning restore AV1008 // Class should not be static
     {
         [AssertionMethod]
         [ContractAnnotation("value: null => halt")]

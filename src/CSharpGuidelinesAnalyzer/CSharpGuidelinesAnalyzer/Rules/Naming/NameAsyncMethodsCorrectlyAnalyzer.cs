@@ -35,6 +35,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var method = (IMethodSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(method.Name))
+            {
+                return;
+            }
+
             if (method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],

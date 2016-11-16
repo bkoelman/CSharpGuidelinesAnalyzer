@@ -41,6 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                return;
+            }
+
             string word = type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.RequireExactMatch);
             if (word != null)
             {

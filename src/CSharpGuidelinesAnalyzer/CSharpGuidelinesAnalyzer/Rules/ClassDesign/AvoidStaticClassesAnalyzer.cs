@@ -48,6 +48,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                return;
+            }
+
             if (!type.IsStatic)
             {
                 return;

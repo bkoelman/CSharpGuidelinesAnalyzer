@@ -4,7 +4,9 @@ using JetBrains.Annotations;
 namespace CSharpGuidelinesAnalyzer
 {
     /// <summary />
+#pragma warning disable AV1008 // Class should not be static
     internal static class HelpLinkUris
+#pragma warning restore AV1008 // Class should not be static
     {
         private const string ClassDesign =
             "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1000_ClassDesignGuidelines.md";

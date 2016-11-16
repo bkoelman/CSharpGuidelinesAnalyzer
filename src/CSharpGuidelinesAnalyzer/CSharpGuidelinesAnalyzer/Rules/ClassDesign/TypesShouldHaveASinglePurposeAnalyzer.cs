@@ -38,6 +38,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                return;
+            }
+
             if (type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name));

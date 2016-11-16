@@ -57,6 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var namespaceSymbol = (INamespaceSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(namespaceSymbol.Name))
+            {
+                return;
+            }
+
             if (!IsTopLevelNamespace(namespaceSymbol))
             {
                 return;
@@ -95,6 +100,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
+
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                return;
+            }
 
             if (type.ContainingNamespace.IsGlobalNamespace)
             {

@@ -54,6 +54,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                return;
+            }
+
             if (ContainsDigit(type.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind, type.Name));
@@ -84,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.Name.Length == 0)
+            if (string.IsNullOrEmpty(parameter.Name))
             {
                 return;
             }

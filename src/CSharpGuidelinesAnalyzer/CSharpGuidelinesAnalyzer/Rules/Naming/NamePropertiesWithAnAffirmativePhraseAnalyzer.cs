@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.Name.Length == 0)
+            if (string.IsNullOrEmpty(parameter.Name))
             {
                 return;
             }
