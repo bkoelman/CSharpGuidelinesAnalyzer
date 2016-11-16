@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -36,13 +37,60 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(AnalyzeSyntax, SyntaxKind.MethodDeclaration,
+                SyntaxKind.ConstructorDeclaration, SyntaxKind.OperatorDeclaration,
+                SyntaxKind.ConversionOperatorDeclaration, SyntaxKind.GetAccessorDeclaration,
+                SyntaxKind.SetAccessorDeclaration, SyntaxKind.AddAccessorDeclaration,
+                SyntaxKind.RemoveAccessorDeclaration, SyntaxKind.ParenthesizedLambdaExpression,
+                SyntaxKind.SimpleLambdaExpression, SyntaxKind.AnonymousMethodExpression, SyntaxKind.LetClause,
+                SyntaxKind.WhereClause, SyntaxKind.AscendingOrdering, SyntaxKind.DescendingOrdering,
+                SyntaxKind.JoinClause, SyntaxKind.GroupClause, SyntaxKind.SelectClause, SyntaxKind.FromClause);
         }
 
-        private void AnalyzeParameter(SymbolAnalysisContext context)
+        private void AnalyzeSyntax(SyntaxNodeAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            IMethodSymbol method = TryGetMethod(context.Node, context.SemanticModel);
 
+            if (method != null)
+            {
+                AnalyzeMethod(context, method);
+            }
+        }
+
+        [CanBeNull]
+        private IMethodSymbol TryGetMethod([NotNull] SyntaxNode syntax, [NotNull] SemanticModel semanticModel)
+        {
+            return semanticModel.GetDeclaredSymbol(syntax) as IMethodSymbol ??
+                semanticModel.GetSymbolInfo(syntax).Symbol as IMethodSymbol;
+        }
+
+        private static void AnalyzeMethod(SyntaxNodeAnalysisContext context, [NotNull] IMethodSymbol method)
+        {
+            if (method.IsAbstract || !method.Parameters.Any())
+            {
+                return;
+            }
+
+            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
+            if (body != null)
+            {
+                SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
+                DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
+                if (dataFlowAnalysis.Succeeded)
+                {
+                    foreach (IParameterSymbol parameter in method.Parameters)
+                    {
+                        context.CancellationToken.ThrowIfCancellationRequested();
+
+                        AnalyzeParameter(parameter, dataFlowAnalysis, context);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeParameter([NotNull] IParameterSymbol parameter,
+            [NotNull] DataFlowAnalysis dataFlowAnalysis, SyntaxNodeAnalysisContext context)
+        {
             if (parameter.Name.Length == 0)
             {
                 return;
@@ -58,28 +106,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            var method = parameter.ContainingSymbol as IMethodSymbol;
-            if (method == null || method.IsAbstract)
+            if (dataFlowAnalysis.WrittenInside.Contains(parameter))
             {
-                return;
-            }
-
-            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
-            if (body != null)
-            {
-                SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
-                DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
-                if (dataFlowAnalysis.Succeeded)
-                {
-                    if (dataFlowAnalysis.WrittenInside.Contains(parameter))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
-                    }
-                }
+                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
             }
         }
 
-        private bool IsIntegralType([NotNull] ITypeSymbol type)
+        private static bool IsIntegralType([NotNull] ITypeSymbol type)
         {
             return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T ||
                 IntegralValueTypes.Contains(type.SpecialType);
