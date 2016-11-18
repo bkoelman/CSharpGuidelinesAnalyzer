@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AvoidMembersWithMoreThanThreeParametersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidMembersWithMoreThanThreeParametersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidMembersWithMoreThanThreeParametersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_contains_three_parameters_it_must_be_skipped()
+        internal void When_method_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_four_parameters_it_must_be_reported()
+        internal void When_method_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
+        internal void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -62,7 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_instance_constructor_contains_four_parameters_it_must_be_reported()
+        internal void When_instance_constructor_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_contains_three_parameters_it_must_be_skipped()
+        internal void When_indexer_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_contains_four_parameters_it_must_be_reported()
+        internal void When_indexer_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_delegate_contains_three_parameters_it_must_be_skipped()
+        internal void When_delegate_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_delegate_contains_four_parameters_it_must_be_reported()
+        internal void When_delegate_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

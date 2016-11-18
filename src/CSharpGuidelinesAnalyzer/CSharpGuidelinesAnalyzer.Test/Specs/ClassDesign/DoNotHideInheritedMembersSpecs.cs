@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 {
-    public class DoNotHideInheritedMembersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotHideInheritedMembersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => DoNotHideInheritedMembersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_base_property_is_overridden_it_must_be_skipped()
+        internal void When_base_property_is_overridden_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_base_property_is_hidden_it_must_be_reported()
+        internal void When_base_property_is_hidden_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -95,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_base_method_is_overridden_it_must_be_skipped()
+        internal void When_base_method_is_overridden_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_base_method_is_hidden_it_must_be_reported()
+        internal void When_base_method_is_hidden_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -148,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_base_event_is_overridden_it_must_be_skipped()
+        internal void When_base_event_is_overridden_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -190,7 +190,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_base_event_is_hidden_it_must_be_reported()
+        internal void When_base_event_is_hidden_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -233,7 +233,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_default_base_event_is_hidden_it_must_be_reported()
+        internal void When_default_base_event_is_hidden_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class NamespacesShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class NamespacesShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => NamespacesShouldMatchAssemblyNameAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_assembly_name_matches_with_namespace_name_it_must_be_skipped()
+        internal void When_assembly_name_matches_with_namespace_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_does_not_match_with_namespace_name_it_must_be_reported()
+        internal void When_assembly_name_does_not_match_with_namespace_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_starts_with_namespace_name_but_does_not_match_it_must_be_reported()
+        internal void When_assembly_name_starts_with_namespace_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -86,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_namespace_name_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
+        internal void When_namespace_name_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_matches_with_namespace_of_type_it_must_be_skipped()
+        internal void When_assembly_name_matches_with_namespace_of_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -140,7 +140,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_does_not_match_with_namespace_of_type_it_must_be_reported()
+        internal void When_assembly_name_does_not_match_with_namespace_of_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_assembly_name_starts_with_namespace_of_type_but_does_not_match_it_must_be_reported()
+        internal void When_assembly_name_starts_with_namespace_of_type_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -202,7 +202,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_namespace_of_type_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
+        internal void When_namespace_of_type_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -227,7 +227,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_type_is_defined_in_global_namespace_it_must_be_reported()
+        internal void When_type_is_defined_in_global_namespace_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -245,7 +245,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_type_is_defined_in_global_namespace_in_Core_assembly_it_must_be_reported()
+        internal void When_type_is_defined_in_global_namespace_in_Core_assembly_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -263,7 +263,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_type_is_defined_in_nonglobal_namespace_in_Core_assembly_it_must_be_skipped()
+        internal void When_type_is_defined_in_nonglobal_namespace_in_Core_assembly_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -283,7 +283,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_type_is_defined_in_global_namespace_in_assembly_name_ending_with_Core_it_must_be_reported()
+        internal void When_type_is_defined_in_global_namespace_in_assembly_name_ending_with_Core_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -301,7 +301,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_type_is_defined_in_namespace_above_Core_it_must_be_skipped()
+        internal void When_type_is_defined_in_namespace_above_Core_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -328,7 +328,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_namespace_is_JetBrains_Annotations_it_must_be_skipped()
+        internal void When_namespace_is_JetBrains_Annotations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -351,7 +351,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_namespace_is_not_JetBrains_Annotations_it_must_be_reported()
+        internal void When_namespace_is_not_JetBrains_Annotations_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

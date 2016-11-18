@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 {
-    public class AvoidStaticClassesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidStaticClassesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidStaticClassesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_class_is_not_static_it_must_be_skipped()
+        internal void When_class_is_not_static_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
+        internal void When_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_static_class_has_no_extension_methods_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal void When_static_class_has_no_extension_methods_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -59,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_static_class_has_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal void When_static_class_has_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_static_class_has_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal void When_static_class_has_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -105,7 +105,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_static_class_has_public_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal void When_static_class_has_public_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -125,7 +126,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_static_class_has_internal_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported
+        internal void
+            When_static_class_has_internal_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported
             ()
         {
             // Arrange

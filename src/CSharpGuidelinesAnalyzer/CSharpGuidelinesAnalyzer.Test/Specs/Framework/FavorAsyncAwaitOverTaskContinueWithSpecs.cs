@@ -7,12 +7,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
-    public class FavorAsyncAwaitOverTaskContinueWithSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class FavorAsyncAwaitOverTaskContinueWithSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => FavorAsyncAwaitOverTaskContinueWithAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
+        internal void When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -37,7 +37,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
+        internal void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -64,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_method_contains_invocation_of_TaskContinueWith_in_alternate_namespace_it_must_be_skipped()
+        internal void When_method_contains_invocation_of_TaskContinueWith_in_alternate_namespace_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

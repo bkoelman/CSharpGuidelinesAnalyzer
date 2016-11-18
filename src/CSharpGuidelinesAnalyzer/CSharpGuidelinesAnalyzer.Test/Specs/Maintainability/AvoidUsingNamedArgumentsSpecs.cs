@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AvoidUsingNamedArgumentsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidUsingNamedArgumentsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidUsingNamedArgumentsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_using_a_named_argument_of_string_type_it_must_be_reported()
+        internal void When_using_a_named_argument_of_string_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_using_a_named_argument_of_boolean_type_it_must_be_skipped()
+        internal void When_using_a_named_argument_of_boolean_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -53,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_using_a_named_argument_of_nullable_boolean_type_it_must_be_skipped()
+        internal void When_using_a_named_argument_of_nullable_boolean_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

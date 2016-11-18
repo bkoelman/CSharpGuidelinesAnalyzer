@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class UseFrameworkTerminologyInMemberNamesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class UseFrameworkTerminologyInMemberNamesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => UseFrameworkTerminologyInMemberNamesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_is_named_AddItem_it_must_be_reported()
+        internal void When_method_is_named_AddItem_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_is_named_Delete_it_must_be_reported()
+        internal void When_method_is_named_Delete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_is_named_NumberOfItems_it_must_be_reported()
+        internal void When_property_is_named_NumberOfItems_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

@@ -6,12 +6,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class NameAsyncMethodsCorrectlySpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class NameAsyncMethodsCorrectlySpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => NameAsyncMethodsCorrectlyAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_async_method_name_ends_with_Async_it_must_be_skipped()
+        internal void When_async_method_name_ends_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_async_method_name_ends_with_TaskAsync_it_must_be_skipped()
+        internal void When_async_method_name_ends_with_TaskAsync_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -47,7 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_async_method_name_does_not_end_with_Async_it_must_be_reported()
+        internal void When_async_method_name_does_not_end_with_Async_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_regular_method_name_does_not_end_with_Async_it_must_be_skipped()
+        internal void When_regular_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

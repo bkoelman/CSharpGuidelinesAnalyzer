@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 {
-    public class AvoidToDoCommentsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidToDoCommentsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidToDoCommentsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_source_contains_single_line_todo_comment_with_colon_it_must_be_reported()
+        internal void When_source_contains_single_line_todo_comment_with_colon_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -25,7 +25,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_todo_comment_with_space_it_must_be_reported()
+        internal void When_source_contains_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_todo_comment_with_underscore_it_must_be_skipped()
+        internal void When_source_contains_single_line_todo_comment_with_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_todo_comment_with_number_it_must_be_skipped()
+        internal void When_source_contains_single_line_todo_comment_with_number_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_todo_comment_with_quotes_it_must_be_skipped()
+        internal void When_source_contains_single_line_todo_comment_with_quotes_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_comment_with_todo_in_the_middle_it_must_be_skipped()
+        internal void When_source_contains_single_line_comment_with_todo_in_the_middle_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_documentation_comment_with_space_it_must_be_reported()
+        internal void When_source_contains_documentation_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -145,7 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_region_directive_with_single_line_todo_comment_with_space_it_must_be_skipped()
+        internal void When_source_contains_region_directive_with_single_line_todo_comment_with_space_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_todo_comment_with_trailing_spaces_it_must_be_reported()
+        internal void When_source_contains_single_line_todo_comment_with_trailing_spaces_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -190,7 +190,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_multi_line_todo_comment_on_single_line_it_must_be_reported()
+        internal void When_source_contains_multi_line_todo_comment_on_single_line_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -205,7 +205,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_multi_line_documentation_comment_on_single_line_it_must_be_reported()
+        internal void When_source_contains_multi_line_documentation_comment_on_single_line_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -220,7 +220,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_multi_line_todo_comment_on_multiple_lines_it_must_be_reported()
+        internal void When_source_contains_multi_line_todo_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -243,7 +243,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_multi_line_documentation_comment_on_multiple_lines_it_must_be_reported()
+        internal void When_source_contains_multi_line_documentation_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -266,7 +266,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_source_contains_single_line_documentation_comment_on_multiple_lines_it_must_be_reported()
+        internal void When_source_contains_single_line_documentation_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AvoidBooleanParametersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidBooleanParametersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidBooleanParametersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_parameter_type_is_bool_it_must_be_reported()
+        internal void When_method_parameter_type_is_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_nullable_bool_it_must_be_reported()
+        internal void When_method_parameter_type_is_nullable_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_string_must_be_skipped()
+        internal void When_method_parameter_type_is_string_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -60,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_property_is_bool_it_must_be_skipped()
+        internal void When_property_is_bool_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_property_is_nullable_bool_it_must_be_skipped()
+        internal void When_property_is_nullable_bool_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -88,7 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_bool_it_must_be_reported()
+        internal void When_indexer_parameter_type_is_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_it_must_be_reported()
+        internal void When_indexer_parameter_type_is_nullable_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -126,7 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_bool_in_overridden_method_it_must_be_skipped()
+        internal void When_method_parameter_type_is_bool_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -153,7 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_nullable_bool_in_overridden_method_it_must_be_skipped()
+        internal void When_method_parameter_type_is_nullable_bool_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_bool_in_hidden_method_it_must_be_skipped()
+        internal void When_method_parameter_type_is_bool_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -207,7 +207,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_nullable_bool_in_hidden_method_it_must_be_skipped()
+        internal void When_method_parameter_type_is_nullable_bool_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -234,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_bool_in_overridden_indexer_it_must_be_skipped()
+        internal void When_indexer_parameter_type_is_bool_in_overridden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -264,7 +264,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_in_overridden_indexer_it_must_be_skipped()
+        internal void When_indexer_parameter_type_is_nullable_bool_in_overridden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -294,7 +294,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_bool_in_hidden_indexer_it_must_be_skipped()
+        internal void When_indexer_parameter_type_is_bool_in_hidden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -325,7 +325,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_in_hidden_indexer_it_must_be_skipped()
+        internal void When_indexer_parameter_type_is_nullable_bool_in_hidden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -356,7 +356,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal void When_method_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -381,7 +381,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal void
+            When_method_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -406,7 +407,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal void When_method_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -431,7 +432,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal void
+            When_method_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -456,7 +458,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal void When_indexer_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -486,7 +488,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped
+        internal void
+            When_indexer_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped
             ()
         {
             // Arrange
@@ -517,7 +520,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal void When_indexer_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -547,7 +550,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_indexer_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped
+        internal void
+            When_indexer_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped
             ()
         {
             // Arrange

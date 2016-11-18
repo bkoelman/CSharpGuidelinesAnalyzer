@@ -6,12 +6,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
-    public class OnlyUseDynamicForUnknownTypesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class OnlyUseDynamicForUnknownTypesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => OnlyUseDynamicForUnknownTypesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_declared_variable_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_declared_variable_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_declared_variable_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
+        internal void When_declared_variable_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -85,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_variable_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_variable_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -104,7 +104,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_variable_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
+        internal void When_variable_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_variable_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
+        internal void When_variable_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -141,7 +141,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_variable_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
+        internal void When_variable_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_parameter_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_parameter_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_parameter_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
+        internal void When_parameter_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -201,7 +201,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_parameter_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
+        internal void When_parameter_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -223,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_parameter_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
+        internal void When_parameter_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -244,7 +244,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_field_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_field_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -267,7 +267,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_field_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
+        internal void When_field_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -290,7 +290,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_field_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
+        internal void When_field_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -314,7 +314,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_field_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
+        internal void When_field_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -337,7 +337,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_property_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_property_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -360,7 +360,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_property_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
+        internal void When_property_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -383,7 +383,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_property_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
+        internal void When_property_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -407,7 +407,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_property_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
+        internal void When_property_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

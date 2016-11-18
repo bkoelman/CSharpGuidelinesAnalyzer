@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => PrefixEventHandlersWithOnAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_event_is_bound_to_an_anonymous_method_it_must_be_skipped()
+        internal void When_event_is_bound_to_an_anonymous_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -38,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_is_bound_to_a_lambda_body_it_must_be_skipped()
+        internal void When_event_is_bound_to_a_lambda_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_is_bound_to_a_lambda_expression_it_must_be_skipped()
+        internal void When_event_is_bound_to_a_lambda_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_is_unbound_from_a_misnamed_method_it_must_be_skipped()
+        internal void When_event_is_unbound_from_a_misnamed_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_remote_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        internal void When_remote_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -153,7 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_remote_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
+        internal void When_remote_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -217,7 +217,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_local_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        internal void When_local_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -243,7 +243,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_local_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
+        internal void When_local_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
-    public class BuildWithTheHighestWarningLevelSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class BuildWithTheHighestWarningLevelSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => BuildWithTheHighestWarningLevelAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_warning_level_is_set_to_four_it_must_be_skipped()
+        internal void When_warning_level_is_set_to_four_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_warning_level_is_set_to_three_it_must_be_reported()
+        internal void When_warning_level_is_set_to_three_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -37,7 +37,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_warning_level_is_set_to_two_it_must_be_reported()
+        internal void When_warning_level_is_set_to_two_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -51,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_warning_level_is_set_to_one_it_must_be_reported()
+        internal void When_warning_level_is_set_to_one_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

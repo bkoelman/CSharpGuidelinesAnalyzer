@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class DoNotAssignToParametersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotAssignToParametersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => DoNotAssignToParametersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_is_abstract_it_must_be_skipped()
+        internal void When_method_is_abstract_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_is_partial_it_must_be_skipped()
+        internal void When_method_is_partial_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_string_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_string_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_string_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_string_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_bool_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_bool_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_bool_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_bool_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_int_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_int_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_int_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_int_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -149,7 +149,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_unsigned_short_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_unsigned_short_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -166,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_unsigned_short_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_unsigned_short_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -184,7 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_decimal_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_decimal_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -201,7 +201,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_decimal_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_decimal_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -219,7 +219,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_double_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_double_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -236,7 +236,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_double_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_double_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -254,7 +254,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_DateTime_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_DateTime_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -271,7 +271,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_DateTime_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_DateTime_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -289,7 +289,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_nullable_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_nullable_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -306,7 +306,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_nullable_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_nullable_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -324,7 +324,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_enum_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_enum_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -346,7 +346,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_enum_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_enum_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -369,7 +369,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_struct_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal void When_struct_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -391,7 +391,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_struct_parameter_is_invoked_on_in_method_body_it_must_be_skipped()
+        internal void When_struct_parameter_is_invoked_on_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -440,7 +440,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_ref_parameter_is_written_to_in_method_body_it_must_be_skipped()
+        internal void When_ref_parameter_is_written_to_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -457,7 +457,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_out_parameter_is_written_to_in_method_body_it_must_be_skipped()
+        internal void When_out_parameter_is_written_to_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -474,7 +474,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_read_from_in_method_expression_body_it_must_be_skipped()
+        internal void When_parameter_is_read_from_in_method_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -492,7 +492,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_written_to_in_method_expression_body_it_must_be_reported()
+        internal void When_parameter_is_written_to_in_method_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -511,7 +511,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_read_from_in_lambda_expression_it_must_be_skipped()
+        internal void When_parameter_is_read_from_in_lambda_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -536,7 +536,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_parameter_is_written_to_in_lambda_expression_it_must_be_reported()
+        internal void When_parameter_is_written_to_in_lambda_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -562,7 +562,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_string_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
+        internal void When_string_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -582,7 +582,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_string_parameter_is_written_to_in_constructor_body_it_must_be_reported()
+        internal void When_string_parameter_is_written_to_in_constructor_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -603,7 +603,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_ref_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
+        internal void When_ref_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -623,7 +623,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_out_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
+        internal void When_out_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

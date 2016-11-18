@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidNestedLoopsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_contains_single_for_loop_it_must_be_skipped()
+        internal void When_method_contains_single_for_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_nested_for_loop_it_must_be_reported()
+        internal void When_method_contains_nested_for_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_single_foreach_loop_it_must_be_skipped()
+        internal void When_method_contains_single_foreach_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -71,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_nested_foreach_loop_it_must_be_reported()
+        internal void When_method_contains_nested_foreach_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -94,7 +94,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_single_while_loop_it_must_be_skipped()
+        internal void When_method_contains_single_while_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -113,7 +113,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_nested_while_loop_it_must_be_reported()
+        internal void When_method_contains_nested_while_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_single_do_while_loop_it_must_be_skipped()
+        internal void When_method_contains_single_do_while_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -156,7 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_method_contains_nested_do_while_loop_it_must_be_reported()
+        internal void When_method_contains_nested_do_while_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

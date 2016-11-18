@@ -8,12 +8,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 {
-    public class EvaluateQueriesBeforeReturningThemSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class EvaluateQueriesBeforeReturningThemSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => EvaluateQueriesBeforeReturningThemAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_return_type_is_void_it_must_be_skipped()
+        internal void When_method_return_type_is_void_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_return_type_is_int_it_must_be_skipped()
+        internal void When_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -47,7 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_return_type_is_generic_List_it_must_be_skipped()
+        internal void When_method_return_type_is_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_null_it_must_be_skipped()
+        internal void When_method_returns_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_default_it_must_be_skipped()
+        internal void When_method_returns_default_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_Where_call_it_must_be_reported()
+        internal void When_method_returns_the_result_of_Where_call_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_First_after_Where_call_it_must_be_skipped()
+        internal void When_method_returns_the_result_of_First_after_Where_call_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_variable_that_contains_the_result_of_Where_call_it_must_be_reported()
+        internal void When_method_returns_variable_that_contains_the_result_of_Where_call_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -236,7 +236,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_variable_that_contains_the_result_of_ToList_after_Where_call_it_must_be_skipped()
+        internal void
+            When_method_returns_variable_that_contains_the_result_of_ToList_after_Where_call_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -260,7 +261,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_variable_that_eventually_contains_the_result_of_Where_call_it_must_be_reported()
+        internal void When_method_returns_variable_that_eventually_contains_the_result_of_Where_call_it_must_be_reported
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -314,7 +316,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_variable_that_eventually_contains_the_result_of_Select_call_it_must_be_reported()
+        internal void
+            When_method_returns_variable_that_eventually_contains_the_result_of_Select_call_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -344,7 +347,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_a_query_expression_it_must_be_reported()
+        internal void When_method_returns_the_result_of_a_query_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -371,7 +374,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_a_query_expression_with_redundant_braces_it_must_be_reported()
+        internal void When_method_returns_the_result_of_a_query_expression_with_redundant_braces_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -398,7 +401,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_ToArray_after_a_query_expression_it_must_be_skipped()
+        internal void When_method_returns_the_result_of_ToArray_after_a_query_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -425,7 +428,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_variable_that_contains_the_result_of_a_query_expression_it_must_be_reported()
+        internal void When_method_returns_variable_that_contains_the_result_of_a_query_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -484,7 +487,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_null_conditional_access_operator_it_must_be_reported()
+        internal void When_method_returns_the_result_of_null_conditional_access_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -510,7 +513,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_the_result_of_null_coalescing_operator_it_must_be_reported()
+        internal void When_method_returns_the_result_of_null_coalescing_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -534,7 +537,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_new_array_it_must_be_skipped()
+        internal void When_method_returns_new_array_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -555,7 +558,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_variable_assignment_to_result_of_Skip_it_must_be_reported()
+        internal void When_method_returns_variable_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -584,7 +587,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_parameter_assignment_to_result_of_Skip_it_must_be_reported()
+        internal void When_method_returns_parameter_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -611,7 +614,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_field_assignment_to_result_of_Skip_it_must_be_reported()
+        internal void When_method_returns_field_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -640,7 +643,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_property_assignment_to_result_of_Skip_it_must_be_reported()
+        internal void When_method_returns_property_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -669,7 +672,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_returns_cast_to_result_of_Skip_it_must_be_reported()
+        internal void When_method_returns_cast_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -693,7 +696,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_yield_returns_a_value_it_must_be_skipped()
+        internal void When_method_yield_returns_a_value_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -714,7 +717,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_yield_returns_a_deferred_sequence_it_must_be_reported()
+        internal void When_method_yield_returns_a_deferred_sequence_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -738,7 +741,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_method_contains_multiple_returns_it_should_profit_from_cache_hits()
+        internal void When_method_contains_multiple_returns_it_should_profit_from_cache_hits()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -777,7 +780,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_enum_defines_field_with_explicit_value_it_must_not_crash()
+        internal void When_enum_defines_field_with_explicit_value_it_must_not_crash()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -794,7 +797,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_declaration_initializes_with_empty_delegate_it_must_not_crash()
+        internal void When_event_declaration_initializes_with_empty_delegate_it_must_not_crash()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

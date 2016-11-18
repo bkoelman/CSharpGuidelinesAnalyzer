@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class UseUnderscoresForUnusedLambdaParametersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class UseUnderscoresForUnusedLambdaParametersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => UseUnderscoresForUnusedLambdaParametersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_lamda_parameter_is_unused_in_body_it_must_be_reported()
+        internal void When_lamda_parameter_is_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_lamda_parameters_are_unused_in_body_it_must_be_reported()
+        internal void When_lamda_parameters_are_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_unused_lamda_parameter_is_named_underscore_it_must_be_skipped()
+        internal void When_unused_lamda_parameter_is_named_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_unused_lamda_parameters_are_named_with_underscores_it_must_be_skipped()
+        internal void When_unused_lamda_parameters_are_named_with_underscores_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -100,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_lamda_parameter_is_read_from_in_body_it_must_be_skipped()
+        internal void When_lamda_parameter_is_read_from_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_lamda_parameter_is_written_to_in_body_it_must_be_skipped()
+        internal void When_lamda_parameter_is_written_to_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -146,7 +146,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_lamda_parameter_is_captured_in_body_it_must_be_skipped()
+        internal void When_lamda_parameter_is_captured_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

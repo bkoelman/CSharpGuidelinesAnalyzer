@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class CaseClausesInSwitchStatementsShouldHaveBracesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class CaseClausesInSwitchStatementsShouldHaveBracesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => CaseClausesInSwitchStatementsShouldHaveBracesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_case_clause_contains_block_it_must_be_skipped()
+        internal void When_case_clause_contains_block_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_case_clause_contains_no_block_it_must_be_reported()
+        internal void When_case_clause_contains_no_block_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_case_clause_is_invalid_it_must_be_skipped()
+        internal void When_case_clause_is_invalid_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AvoidExplicitBooleanComparisonsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidExplicitBooleanComparisonsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidExplicitBooleanComparisonsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_testing_boolean_for_equality_with_true_it_must_be_reported()
+        internal void When_testing_boolean_for_equality_with_true_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_testing_boolean_for_inequality_with_true_it_must_be_reported()
+        internal void When_testing_boolean_for_inequality_with_true_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -60,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_testing_boolean_for_equality_with_false_it_must_be_reported()
+        internal void When_testing_boolean_for_equality_with_false_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -85,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_testing_boolean_for_inequality_with_false_it_must_be_reported()
+        internal void When_testing_boolean_for_inequality_with_false_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -110,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_testing_nullable_boolean_it_must_be_skipped()
+        internal void When_testing_nullable_boolean_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

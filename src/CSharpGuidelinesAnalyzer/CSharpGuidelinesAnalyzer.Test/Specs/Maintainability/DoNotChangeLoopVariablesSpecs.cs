@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class DoNotChangeLoopVariablesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotChangeLoopVariablesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => DoNotChangeLoopVariablesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_for_loop_declares_no_variables_it_must_be_skipped()
+        internal void When_for_loop_declares_no_variables_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_for_loop_assigns_variable_that_is_declared_outside_loop_it_must_be_skipped()
+        internal void When_for_loop_assigns_variable_that_is_declared_outside_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_for_loop_variable_is_not_written_to_in_body_it_must_be_skipped()
+        internal void When_for_loop_variable_is_not_written_to_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_for_loop_variable_is_written_to_in_body_it_must_be_reported()
+        internal void When_for_loop_variable_is_written_to_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -93,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_for_loop_variable_is_passed_by_ref_in_body_it_must_be_reported()
+        internal void When_for_loop_variable_is_passed_by_ref_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_for_loop_declares_multiple_variables_they_must_be_reported()
+        internal void When_for_loop_declares_multiple_variables_they_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -137,7 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_for_loop_variable_shadows_field_it_must_be_skipped()
+        internal void When_for_loop_variable_shadows_field_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

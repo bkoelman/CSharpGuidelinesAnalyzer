@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class AvoidMisleadingNamesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidMisleadingNamesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidMisleadingNamesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_variable_is_named_b001_it_must_be_reported()
+        internal void When_variable_is_named_b001_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_is_named_b001_it_must_be_reported()
+        internal void When_parameter_is_named_b001_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -47,7 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_is_named_lo_it_must_be_reported()
+        internal void When_variable_is_named_lo_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_is_named_lo_it_must_be_reported()
+        internal void When_parameter_is_named_lo_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_is_named_I1_it_must_be_reported()
+        internal void When_variable_is_named_I1_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -100,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_is_named_I1_it_must_be_reported()
+        internal void When_parameter_is_named_I1_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_is_named_lOl_it_must_be_reported()
+        internal void When_variable_is_named_lOl_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -135,7 +135,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_is_named_lOl_it_must_be_reported()
+        internal void When_parameter_is_named_lOl_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

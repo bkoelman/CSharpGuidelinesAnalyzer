@@ -6,13 +6,13 @@ using Xunit;
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
 #pragma warning disable AV1708 // Type name contains term that should be avoided
-    public class DoNotUseHelperMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotUseHelperMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
 #pragma warning restore AV1708 // Type name contains term that should be avoided
     {
         protected override string DiagnosticId => DoNotUseHelperMethodsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_class_name_is_Helpers_it_must_be_reported()
+        internal void When_class_name_is_Helpers_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_class_name_contains_the_word_Utility_it_must_be_reported()
+        internal void When_class_name_contains_the_word_Utility_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_struct_name_contains_the_word_Helpers_it_must_be_reported()
+        internal void When_struct_name_contains_the_word_Helpers_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -63,7 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_enum_name_contains_the_word_Common_it_must_be_reported()
+        internal void When_enum_name_contains_the_word_Common_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -80,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_class_name_contains_the_word_ShareDocument_it_must_be_skipped()
+        internal void When_class_name_contains_the_word_ShareDocument_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_struct_name_contains_the_word_UncommonStory_it_must_be_skipped()
+        internal void When_struct_name_contains_the_word_UncommonStory_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

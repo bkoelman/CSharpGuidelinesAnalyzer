@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class DoNotUseNumbersInIdentifiersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotUseNumbersInIdentifiersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => DoNotUseNumbersInIdentifiersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_class_name_contains_no_digits_it_must_be_skipped()
+        internal void When_class_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_class_name_contains_a_digit_it_must_be_reported()
+        internal void When_class_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_struct_name_contains_no_digits_it_must_be_skipped()
+        internal void When_struct_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -59,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_struct_name_contains_a_digit_it_must_be_reported()
+        internal void When_struct_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_enum_name_contains_no_digits_it_must_be_skipped()
+        internal void When_enum_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_enum_name_contains_a_digit_it_must_be_reported()
+        internal void When_enum_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -109,7 +109,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_interface_name_contains_no_digits_it_must_be_skipped()
+        internal void When_interface_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_interface_name_contains_a_digit_it_must_be_reported()
+        internal void When_interface_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -142,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_name_contains_no_digits_it_must_be_skipped()
+        internal void When_field_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_name_contains_a_digit_it_must_be_reported()
+        internal void When_field_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_name_contains_no_digits_it_must_be_skipped()
+        internal void When_property_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -194,7 +194,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_name_contains_a_digit_it_must_be_reported()
+        internal void When_property_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -212,7 +212,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_property_name_contains_a_digit_it_must_be_skipped()
+        internal void When_inherited_property_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -235,7 +235,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_property_name_contains_a_digit_it_must_be_skipped()
+        internal void When_implemented_property_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -258,7 +258,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_name_contains_no_digits_it_must_be_skipped()
+        internal void When_event_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -275,7 +275,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_name_contains_a_digit_it_must_be_reported()
+        internal void When_event_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -293,7 +293,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_name_contains_no_digits_it_must_be_skipped()
+        internal void When_method_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -312,7 +312,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_name_contains_a_digit_it_must_be_reported()
+        internal void When_method_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -332,7 +332,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_method_name_contains_a_digit_it_must_be_skipped()
+        internal void When_inherited_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -357,7 +357,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_method_name_contains_a_digit_it_must_be_skipped()
+        internal void When_implemented_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -382,7 +382,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_name_contains_no_digits_it_must_be_skipped()
+        internal void When_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -401,7 +401,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_name_contains_a_digit_it_must_be_reported()
+        internal void When_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -421,7 +421,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_parameter_name_contains_a_digit_it_must_be_skipped()
+        internal void When_inherited_parameter_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -446,7 +446,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_parameter_name_contains_a_digit_it_must_be_skipped()
+        internal void When_implemented_parameter_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -471,7 +471,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_name_contains_no_digits_it_must_be_skipped()
+        internal void When_variable_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -491,7 +491,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_name_contains_a_digit_it_must_be_reported()
+        internal void When_variable_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -512,7 +512,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
+        internal void When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -544,7 +544,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_XUnit_method_name_contains_a_digit_it_must_be_skipped()
+        internal void When_XUnit_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -576,7 +576,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_NUnit_method_name_contains_a_digit_it_must_be_skipped()
+        internal void When_NUnit_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -608,7 +608,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_MbUnit_method_name_contains_a_digit_it_must_be_skipped()
+        internal void When_MbUnit_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

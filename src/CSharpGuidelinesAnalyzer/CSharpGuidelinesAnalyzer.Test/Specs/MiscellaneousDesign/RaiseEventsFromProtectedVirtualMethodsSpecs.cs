@@ -5,7 +5,7 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 {
-    public class RaiseEventsFromProtectedVirtualMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class RaiseEventsFromProtectedVirtualMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => RaiseEventsFromProtectedVirtualMethodsAnalyzer.DiagnosticId;
 
@@ -33,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_is_not_protected_it_must_be_reported()
+        internal void When_event_invocation_method_is_not_protected_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -56,7 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_is_not_virtual_it_must_be_reported()
+        internal void When_event_invocation_method_is_not_virtual_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_is_private_nonvirtual_in_sealed_class_it_must_be_skipped()
+        internal void When_event_invocation_method_is_private_nonvirtual_in_sealed_class_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -105,7 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_is_static_it_must_be_skipped()
+        internal void When_event_invocation_method_is_static_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -127,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_name_does_not_follow_pattern_it_must_be_reported()
+        internal void When_event_invocation_method_name_does_not_follow_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -150,7 +150,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_name_has_extra_words_it_must_be_reported()
+        internal void When_event_invocation_method_name_has_extra_words_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -179,7 +179,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void When_event_invocation_method_is_lambda_expression_it_must_be_reported()
+        internal void When_event_invocation_method_is_lambda_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

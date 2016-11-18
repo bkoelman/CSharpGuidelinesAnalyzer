@@ -6,12 +6,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 {
-    public class AvoidInlineCommentsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidInlineCommentsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidInlineCommentsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_body_contains_single_line_comment_it_must_be_reported()
+        internal void When_method_body_contains_single_line_comment_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_multi_line_comment_it_must_be_reported()
+        internal void When_method_body_contains_multi_line_comment_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_contains_documentation_comment_it_must_be_skipped()
+        internal void When_method_contains_documentation_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_preprocessor_directive_it_must_be_skipped()
+        internal void When_method_body_contains_preprocessor_directive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -87,7 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_region_it_must_be_skipped()
+        internal void When_method_body_contains_region_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -106,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_pragma_it_must_be_skipped()
+        internal void When_method_body_contains_pragma_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_property_getter_contains_multiple_comments_they_must_be_reported()
+        internal void When_property_getter_contains_multiple_comments_they_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -151,7 +151,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_contains_leading_comment_it_must_be_skipped()
+        internal void When_method_contains_leading_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -168,7 +168,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_contains_trailing_comment_it_must_be_skipped()
+        internal void When_method_contains_trailing_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -185,7 +185,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_Resharper_inspections_it_must_be_skipped()
+        internal void When_method_body_contains_Resharper_inspections_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        internal void When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -234,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        internal void When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

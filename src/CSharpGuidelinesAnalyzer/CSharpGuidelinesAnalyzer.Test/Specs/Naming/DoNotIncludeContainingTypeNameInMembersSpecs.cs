@@ -6,12 +6,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class DoNotIncludeContainingTypeNameInMembersSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotIncludeContainingTypeNameInMembersSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => DoNotIncludeContainingTypeNameInMembersAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_name_contains_class_name_it_must_be_reported()
+        internal void When_method_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_name_does_not_contain_class_name_it_must_be_skipped()
+        internal void When_method_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -50,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_type_name_consists_of_a_single_letter_it_must_be_skipped()
+        internal void When_type_name_consists_of_a_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_name_contains_struct_name_it_must_be_reported()
+        internal void When_field_name_contains_struct_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -87,7 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_name_does_not_contain_struct_name_it_must_be_skipped()
+        internal void When_field_name_does_not_contain_struct_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -104,7 +104,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_name_contains_class_name_it_must_be_reported()
+        internal void When_property_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_name_does_not_contain_class_name_it_must_be_skipped()
+        internal void When_property_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -139,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_name_contains_class_name_it_must_be_reported()
+        internal void When_event_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -167,7 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_event_name_does_not_contain_class_name_it_must_be_skipped()
+        internal void When_event_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -195,7 +195,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_enum_member_contains_enum_name_it_must_be_reported()
+        internal void When_enum_member_contains_enum_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -213,7 +213,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_enum_member_does_not_contain_enum_name_it_must_be_skipped()
+        internal void When_enum_member_does_not_contain_enum_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -230,7 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_class_contains_constructor_it_must_be_skipped()
+        internal void When_class_contains_constructor_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -249,7 +249,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_class_contains_static_constructor_it_must_be_skipped()
+        internal void When_class_contains_static_constructor_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -268,7 +268,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_class_contains_static_destructor_it_must_be_skipped()
+        internal void When_class_contains_static_destructor_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

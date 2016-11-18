@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 {
-    public class MembersShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class MembersShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => MembersShouldDoASingleThingAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_property_name_contains_the_word_And_it_must_be_reported()
+        internal void When_property_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -28,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_method_name_contains_the_word_And_it_must_be_reported()
+        internal void When_method_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -48,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_field_name_contains_the_word_And_it_must_be_reported()
+        internal void When_field_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_event_name_contains_the_word_And_it_must_be_reported()
+        internal void When_event_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -94,7 +94,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_method_name_contains_the_word_and_with_underscores_it_must_be_reported()
+        internal void When_method_name_contains_the_word_and_with_underscores_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_method_name_contains_the_word_and_with_digits_it_must_be_reported()
+        internal void When_method_name_contains_the_word_and_with_digits_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -134,7 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_method_name_contains_the_word_Land_it_must_be_skipped()
+        internal void When_method_name_contains_the_word_Land_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -153,7 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_method_name_contains_the_word_Andy_it_must_be_skipped()
+        internal void When_method_name_contains_the_word_Andy_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -172,7 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_MSTest_method_name_contains_the_word_And_it_must_be_skipped()
+        internal void When_MSTest_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -204,7 +204,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_XUnit_method_name_contains_the_word_And_it_must_be_skipped()
+        internal void When_XUnit_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -236,7 +236,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_NUnit_method_name_contains_the_word_And_it_must_be_skipped()
+        internal void When_NUnit_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -268,7 +268,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_MbUnit_method_name_contains_the_word_And_it_must_be_skipped()
+        internal void When_MbUnit_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

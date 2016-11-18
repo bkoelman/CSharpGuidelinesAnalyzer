@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public class NamePropertiesWithAnAffirmativePhraseSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class NamePropertiesWithAnAffirmativePhraseSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => NamePropertiesWithAnAffirmativePhraseAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_field_type_is_int_it_must_be_skipped()
+        internal void When_field_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_field_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_field_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -62,7 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_field_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_field_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_field_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -97,7 +97,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_type_is_int_it_must_be_skipped()
+        internal void When_property_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_property_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -149,7 +149,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_property_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -166,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -184,7 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -207,7 +207,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+        internal void
+            When_inherited_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
             ()
         {
             // Arrange
@@ -231,7 +232,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -278,7 +279,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_return_type_is_int_it_must_be_skipped()
+        internal void When_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -298,7 +299,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_return_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_method_return_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -318,7 +319,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -339,7 +340,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_return_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_method_return_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -359,7 +360,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -380,7 +381,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -433,7 +434,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -486,7 +488,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_type_is_int_it_must_be_skipped()
+        internal void When_parameter_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -505,7 +507,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_parameter_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -524,7 +526,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -544,7 +546,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_parameter_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -563,7 +565,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -583,7 +585,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -634,7 +636,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -685,7 +687,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_type_is_int_it_must_be_skipped()
+        internal void When_variable_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -702,7 +704,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_variable_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -719,7 +721,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_variable_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -737,7 +739,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_variable_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -754,7 +756,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void When_variable_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_variable_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

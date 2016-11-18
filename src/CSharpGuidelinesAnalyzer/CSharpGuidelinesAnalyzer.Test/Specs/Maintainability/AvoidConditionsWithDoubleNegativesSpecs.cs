@@ -7,12 +7,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AvoidConditionsWithDoubleNegativesSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AvoidConditionsWithDoubleNegativesSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidConditionsWithDoubleNegativesAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_method_with_Not_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_method_with_Not_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_method_with_No_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_method_with_No_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_chained_method_with_No_in_its_name_it_must_be_skipped()
+        internal void When_logical_not_operator_is_applied_on_a_chained_method_with_No_in_its_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_normal_method_it_must_be_skipped()
+        internal void When_logical_not_operator_is_applied_on_a_normal_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -127,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_property_with_Not_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_property_with_Not_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -152,7 +152,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_property_with_No_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_property_with_No_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_normal_property_it_must_be_skipped()
+        internal void When_logical_not_operator_is_applied_on_a_normal_property_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -203,7 +203,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_field_with_Not_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_field_with_Not_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -228,7 +228,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_field_with_No_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_field_with_No_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -253,7 +253,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_normal_field_it_must_be_skipped()
+        internal void When_logical_not_operator_is_applied_on_a_normal_field_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -277,7 +277,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_parameter_with_Not_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_parameter_with_Not_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -300,7 +300,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_parameter_with_No_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_parameter_with_No_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -323,7 +323,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_normal_parameter_it_must_be_skipped()
+        internal void When_logical_not_operator_is_applied_on_a_normal_parameter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -345,7 +345,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_variable_with_Not_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_variable_with_Not_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -370,7 +370,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_variable_with_No_in_its_name_it_must_be_reported()
+        internal void When_logical_not_operator_is_applied_on_a_variable_with_No_in_its_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -395,7 +395,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_logical_not_operator_is_applied_on_a_normal_variable_it_must_be_skipped()
+        internal void When_logical_not_operator_is_applied_on_a_normal_variable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

@@ -7,12 +7,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 {
-    public class ReturnInterfacesToCollectionsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class ReturnInterfacesToCollectionsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => ReturnInterfacesToCollectionsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_method_returns_void_it_must_be_skipped()
+        internal void When_method_returns_void_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_method_returns_string_it_must_be_skipped()
+        internal void When_method_returns_string_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -51,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_method_returns_generic_List_it_must_be_reported()
+        internal void When_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -73,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_method_returns_array_it_must_be_reported()
+        internal void When_method_returns_array_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -94,7 +94,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_method_returns_generic_ICollection_it_must_be_skipped()
+        internal void When_method_returns_generic_ICollection_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_method_returns_IEnumerable_it_must_be_skipped()
+        internal void When_method_returns_IEnumerable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_inherited_method_returns_generic_List_it_must_be_skipped()
+        internal void When_inherited_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -163,7 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_hidden_method_returns_generic_List_it_must_be_skipped()
+        internal void When_hidden_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -193,7 +193,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_implicitly_implemented_method_returns_generic_List_it_must_be_skipped()
+        internal void When_implicitly_implemented_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -220,7 +220,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        public void When_explicitly_implemented_method_returns_generic_List_it_must_be_skipped()
+        internal void When_explicitly_implemented_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

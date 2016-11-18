@@ -6,12 +6,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class AssignVariablesInSeparateStatementsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class AssignVariablesInSeparateStatementsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AssignVariablesInSeparateStatementsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_two_variables_are_declared_in_separate_statements_it_must_be_skipped()
+        internal void When_two_variables_are_declared_in_separate_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_two_variables_are_declared_in_a_single_statement_it_must_be_skipped()
+        internal void When_two_variables_are_declared_in_a_single_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_two_variables_are_assigned_in_separate_statements_it_must_be_skipped()
+        internal void When_two_variables_are_assigned_in_separate_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_two_variables_are_declared_and_assigned_in_separate_statements_it_must_be_skipped()
+        internal void When_two_variables_are_declared_and_assigned_in_separate_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_two_variables_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal void When_two_variables_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -103,7 +103,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_two_variables_are_assigned_multiple_times_in_a_single_statement_it_must_be_reported()
+        internal void When_two_variables_are_assigned_multiple_times_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -123,7 +123,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_two_variables_are_declared_and_assigned_in_a_single_statement_it_must_be_reported()
+        internal void When_two_variables_are_declared_and_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -142,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_three_variables_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal void When_three_variables_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -163,7 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -192,7 +192,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_declared_and_assigned_it_must_be_reported()
+        internal void When_multiple_identifiers_are_declared_and_assigned_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -221,7 +221,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_for_loop_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -252,7 +252,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_for_loop_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_for_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -273,7 +273,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_foreach_loop_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_foreach_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -304,7 +304,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_foreach_loop_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_foreach_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -325,7 +325,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_while_loop_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_while_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -356,7 +356,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_while_loop_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_while_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -377,7 +377,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_do_while_loop_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_do_while_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -409,7 +409,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -431,7 +432,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_an_if_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_an_if_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -462,7 +463,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_an_if_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_an_if_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -490,7 +491,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_switch_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_switch_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -521,7 +522,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_case_clause_of_a_switch_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_case_clause_of_a_switch_statement_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -544,7 +546,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_return_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_return_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -573,7 +575,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_yield_return_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_yield_return_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -603,7 +605,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_lock_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_lock_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -634,7 +636,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lock_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_lock_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -657,7 +659,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_using_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_using_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -688,7 +690,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_using_statement_it_must_be_skipped()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_using_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -711,7 +713,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_a_throw_statement_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_a_throw_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -740,7 +742,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_lambda_block_containing_assignment_is_assigned_it_must_be_skipped()
+        internal void When_lambda_block_containing_assignment_is_assigned_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -760,7 +762,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lambda_block_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_lambda_block_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -783,7 +785,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_multiple_identifiers_are_assigned_in_the_body_of_a_lambda_expression_it_must_be_reported()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_lambda_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

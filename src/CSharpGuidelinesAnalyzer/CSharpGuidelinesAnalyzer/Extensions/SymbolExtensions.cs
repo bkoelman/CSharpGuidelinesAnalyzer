@@ -36,7 +36,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(symbol, nameof(symbol));
 
-            return symbol.DeclaringSyntaxReferences[0].SyntaxTree.Options.DocumentationMode == DocumentationMode.Diagnose;
+            SyntaxReference reference = symbol.DeclaringSyntaxReferences.First();
+            return reference.SyntaxTree.Options.DocumentationMode == DocumentationMode.Diagnose;
         }
 
         private static bool ContainsNewModifier([CanBeNull] SyntaxTokenList? modifiers)

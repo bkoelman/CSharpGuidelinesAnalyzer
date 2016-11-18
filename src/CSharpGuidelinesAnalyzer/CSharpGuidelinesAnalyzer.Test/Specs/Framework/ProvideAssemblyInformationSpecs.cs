@@ -6,12 +6,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
-    public class ProvideAssemblyInformationSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class ProvideAssemblyInformationSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => ProvideAssemblyInformationAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_assembly_has_all_attributes_filled_it_must_be_skipped()
+        internal void When_assembly_has_all_attributes_filled_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_assembly_has_all_attributes_empty_it_must_be_reported()
+        internal void When_assembly_has_all_attributes_empty_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void When_assembly_has_no_attributes_it_must_be_reported()
+        internal void When_assembly_has_no_attributes_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

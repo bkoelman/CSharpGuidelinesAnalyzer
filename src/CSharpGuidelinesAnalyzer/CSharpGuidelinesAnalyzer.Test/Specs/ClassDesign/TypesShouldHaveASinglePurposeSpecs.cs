@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 {
-    public class TypesShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class TypesShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => TypesShouldHaveASinglePurposeAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_class_name_contains_the_word_And_it_must_be_reported()
+        internal void When_class_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -27,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_struct_name_contains_the_word_and_it_must_be_reported()
+        internal void When_struct_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_enum_name_contains_the_word_and_it_must_be_reported()
+        internal void When_enum_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_class_name_contains_the_word_Land_it_must_be_skipped()
+        internal void When_class_name_contains_the_word_Land_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -77,7 +77,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        public void When_struct_name_contains_the_word_Andy_it_must_be_skipped()
+        internal void When_struct_name_contains_the_word_Andy_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

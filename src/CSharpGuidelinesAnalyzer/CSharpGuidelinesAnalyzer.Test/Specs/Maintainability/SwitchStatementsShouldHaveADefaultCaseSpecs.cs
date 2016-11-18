@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 {
-    public class SwitchStatementsShouldHaveADefaultCaseSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class SwitchStatementsShouldHaveADefaultCaseSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => SwitchStatementsShouldHaveADefaultCaseAnalyzer.DiagnosticId;
 
         [Fact]
-        public void When_switch_statement_type_is_bool_and_contains_a_default_case_it_must_be_skipped()
+        internal void When_switch_statement_type_is_bool_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_bool_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_bool_and_is_complete_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_bool_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_bool_and_is_incomplete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_bool_and_contains_a_default_case_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_bool_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -97,7 +97,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_bool_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_bool_and_is_complete_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_bool_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_nullable_bool_and_is_incomplete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -144,7 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_flags_enum_and_is_incomplete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_flags_enum_and_is_incomplete_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -168,7 +168,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_enum_and_contains_a_default_case_it_must_be_skipped()
+        internal void When_switch_statement_type_is_enum_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -191,7 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_enum_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_enum_and_is_complete_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -217,7 +217,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_enum_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_enum_and_is_incomplete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -242,7 +242,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_enum_and_contains_a_default_case_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_enum_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -265,7 +265,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_enum_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_enum_and_is_complete_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -292,7 +292,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_enum_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_nullable_enum_and_is_incomplete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -318,7 +318,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_nullable_byte_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_byte_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -339,7 +339,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_char_it_must_be_skipped()
+        internal void When_switch_statement_type_is_char_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -360,7 +360,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_int_it_must_be_skipped()
+        internal void When_switch_statement_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -381,7 +381,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_type_is_string_it_must_be_skipped()
+        internal void When_switch_statement_type_is_string_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -402,7 +402,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_contains_a_nonconstant_case_expression_it_must_be_skipped()
+        internal void When_switch_statement_contains_a_nonconstant_case_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -429,7 +429,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void When_switch_statement_is_invalid_it_must_be_skipped()
+        internal void When_switch_statement_is_invalid_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
