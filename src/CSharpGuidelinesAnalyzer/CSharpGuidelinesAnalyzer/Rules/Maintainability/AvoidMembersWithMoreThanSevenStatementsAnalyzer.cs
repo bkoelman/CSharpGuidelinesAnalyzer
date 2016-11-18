@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
@@ -79,6 +80,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 StatementCount++;
                 base.VisitExpressionStatement(operation);
+            }
+
+            public override void VisitLambdaExpression([NotNull] ILambdaExpression operation)
+            {
+                if (!IsBodyCompilerGenerated(operation))
+                {
+                    Visit(operation.Body);
+                }
+            }
+
+            private static bool IsBodyCompilerGenerated([NotNull] ILambdaExpression operation)
+            {
+                // Workaround for https://github.com/dotnet/roslyn/issues/10214
+                var lambdaExpressionSyntax = operation.Syntax as LambdaExpressionSyntax;
+                var expressionSyntax = lambdaExpressionSyntax?.Body as ExpressionSyntax;
+                return expressionSyntax != null;
             }
 
             public override void VisitFixedStatement([NotNull] IFixedStatement operation)

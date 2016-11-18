@@ -1182,6 +1182,61 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        public void When_method_contains_six_statements_and_an_invocation_with_lambda_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public abstract class C
+                    {
+                        public void M()
+                        {
+                            ; ; ; ; ; ;
+
+                            Other(() => Empty());
+                        }
+
+                        protected abstract void Other(Action action);
+                        protected abstract void Empty();
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        public void
+            When_method_contains_six_statements_and_an_invocation_with_lambda_statement_block_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public abstract class C
+                    {
+                        public void [|M|]()
+                        {
+                            ; ; ; ; ; ;
+
+                            Other(() =>
+                            {
+                                Empty();
+                            });
+                        }
+
+                        protected abstract void Other(Action action);
+                        protected abstract void Empty();
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains more than seven statements.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AvoidMembersWithMoreThanSevenStatementsAnalyzer();
