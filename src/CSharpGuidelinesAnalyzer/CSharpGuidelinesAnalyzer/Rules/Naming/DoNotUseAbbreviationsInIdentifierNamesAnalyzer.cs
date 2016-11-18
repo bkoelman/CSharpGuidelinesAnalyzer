@@ -53,25 +53,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor())
-            {
-                return;
-            }
-
-            if (context.Symbol.IsOverride)
+            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsOverride)
             {
                 return;
             }
 
             if (IsBlacklisted(context.Symbol.Name) || IsSingleLetter(context.Symbol.Name))
             {
-                if (context.Symbol.IsInterfaceImplementation())
+                if (!context.Symbol.IsInterfaceImplementation())
                 {
-                    return;
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
+                        context.Symbol.Name));
                 }
-
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
-                    context.Symbol.Name));
             }
         }
 
@@ -79,12 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (string.IsNullOrEmpty(parameter.Name))
-            {
-                return;
-            }
-
-            if (parameter.ContainingSymbol.IsOverride)
+            if (string.IsNullOrEmpty(parameter.Name) || parameter.ContainingSymbol.IsOverride)
             {
                 return;
             }
@@ -95,12 +83,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (requiresReport)
             {
-                if (parameter.IsInterfaceImplementation())
+                if (!parameter.IsInterfaceImplementation())
                 {
-                    return;
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind,
+                        parameter.Name));
                 }
-
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
         }
 

@@ -42,27 +42,36 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
             var statementWalker = new StatementWalker();
-
-            foreach (IOperation operation in context.OperationBlocks)
-            {
-                statementWalker.Visit(operation);
-            }
+            statementWalker.VisitBlocks(context.OperationBlocks);
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
             if (statementWalker.StatementCount > 7)
             {
-                ISymbol containingMember = context.OwningSymbol.GetContainingMember();
-
-                string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-                Location location = containingMember.Locations[0];
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName));
+                ReportMember(context);
             }
+        }
+
+        private static void ReportMember(OperationBlockAnalysisContext context)
+        {
+            ISymbol containingMember = context.OwningSymbol.GetContainingMember();
+
+            string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = containingMember.Locations[0];
+            context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName));
         }
 
         private sealed class StatementWalker : OperationWalker
         {
             public int StatementCount { get; private set; }
+
+            public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
+            {
+                foreach (IOperation block in blocks)
+                {
+                    Visit(block);
+                }
+            }
 
             public override void VisitBranchStatement([NotNull] IBranchStatement operation)
             {

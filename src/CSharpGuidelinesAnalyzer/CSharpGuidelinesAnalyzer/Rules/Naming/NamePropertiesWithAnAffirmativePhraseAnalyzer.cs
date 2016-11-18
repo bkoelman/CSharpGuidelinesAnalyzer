@@ -55,12 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor())
-            {
-                return;
-            }
-
-            if (context.Symbol.IsOverride)
+            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsOverride)
             {
                 return;
             }
@@ -71,13 +66,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (!IsWhitelisted(context.Symbol.Name))
+            if (!IsWhitelisted(context.Symbol.Name) && !context.Symbol.IsInterfaceImplementation())
             {
-                if (context.Symbol.IsInterfaceImplementation())
-                {
-                    return;
-                }
-
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
                     LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
             }
@@ -87,52 +77,31 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private ITypeSymbol GetMemberType([NotNull] ISymbol symbol)
         {
             var property = symbol as IPropertySymbol;
-            if (property != null)
-            {
-                return property.Type;
-            }
-
             var method = symbol as IMethodSymbol;
-            if (method != null)
-            {
-                return method.ReturnType;
-            }
-
             var field = symbol as IFieldSymbol;
-            if (field != null)
+
+            ITypeSymbol result = property?.Type ?? method?.ReturnType ?? field?.Type;
+
+            if (result == null)
             {
-                return field.Type;
+                throw new InvalidOperationException($"Unexpected type '{symbol.GetType()}'.");
             }
 
-            throw new InvalidOperationException($"Unexpected type '{symbol.GetType()}'.");
+            return result;
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (string.IsNullOrEmpty(parameter.Name))
+            if (string.IsNullOrEmpty(parameter.Name) || parameter.ContainingSymbol.IsOverride ||
+                !IsBooleanOrNullableBoolean(parameter.Type))
             {
                 return;
             }
 
-            if (parameter.ContainingSymbol.IsOverride)
+            if (!IsWhitelisted(parameter.Name) && !parameter.IsInterfaceImplementation())
             {
-                return;
-            }
-
-            if (!IsBooleanOrNullableBoolean(parameter.Type))
-            {
-                return;
-            }
-
-            if (!IsWhitelisted(parameter.Name))
-            {
-                if (parameter.IsInterfaceImplementation())
-                {
-                    return;
-                }
-
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind),
                     parameter.Name));
             }
