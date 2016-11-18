@@ -60,10 +60,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
                 return;
             }
 
-            IEnumerable<IMethodSymbol> visibleMethods =
+            AnalyzeAccessibleMethods(type, context);
+        }
+
+        private static void AnalyzeAccessibleMethods([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
+        {
+            IEnumerable<IMethodSymbol> accessibleMethods =
                 type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal);
 
-            foreach (IMethodSymbol method in visibleMethods.Where(method => !method.IsExtensionMethod))
+            foreach (IMethodSymbol method in accessibleMethods.Where(method => !method.IsExtensionMethod))
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 

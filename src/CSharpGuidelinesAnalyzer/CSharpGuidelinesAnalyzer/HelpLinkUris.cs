@@ -39,6 +39,7 @@ namespace CSharpGuidelinesAnalyzer
             return categoryLink + "#" + ruleId.ToLowerInvariant();
         }
 
+#pragma warning disable AV1500 // Member contains more than seven statements
         [NotNull]
         private static string GetLinkForCategory([NotNull] string category)
         {
@@ -78,5 +79,6 @@ namespace CSharpGuidelinesAnalyzer
                 }
             }
         }
+#pragma warning restore AV1500 // Member contains more than seven statements
     }
 }

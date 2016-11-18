@@ -44,26 +44,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     .Where(IsComment)
                     .ToArray();
 
+            AnalyzeCommentTrivia(outerCommentTrivia, context);
+        }
+
+        private void AnalyzeCommentTrivia([NotNull] SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
+        {
             foreach (SyntaxTrivia commentTrivia in context.CodeBlock.DescendantTrivia().Where(IsComment))
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                if (outerCommentTrivia.Contains(commentTrivia))
+                if (!outerCommentTrivia.Contains(commentTrivia) && !IsResharperSuppression(commentTrivia) &&
+                    !IsArrangeActAssertUnitTestPattern(commentTrivia))
                 {
-                    continue;
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
                 }
-
-                if (IsResharperSuppression(commentTrivia))
-                {
-                    continue;
-                }
-
-                if (IsArrangeActAssertUnitTestPattern(commentTrivia))
-                {
-                    continue;
-                }
-
-                context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
             }
         }
 

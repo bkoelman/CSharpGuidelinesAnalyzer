@@ -69,20 +69,23 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             for (int index = 0; index < variableNames.Count - 1; index++)
             {
-                string variableName = variableNames[index];
-
-                if (messageBuilder.Length > 0)
-                {
-                    messageBuilder.Append(", ");
-                }
-
-                messageBuilder.Append("'" + variableName + "'");
+                AppendVariableName(variableNames[index], messageBuilder);
             }
 
             messageBuilder.Append(" and '");
             messageBuilder.Append(variableNames[variableNames.Count - 1] + "'");
 
             return messageBuilder.ToString();
+        }
+
+        private static void AppendVariableName([NotNull] string variableName, [NotNull] StringBuilder messageBuilder)
+        {
+            if (messageBuilder.Length > 0)
+            {
+                messageBuilder.Append(", ");
+            }
+
+            messageBuilder.Append("'" + variableName + "'");
         }
 
         private sealed class StatementWalker : OperationWalker
