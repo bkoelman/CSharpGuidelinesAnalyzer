@@ -10,10 +10,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         protected override string DiagnosticId => DocumentAllInternalMembersAnalyzer.DiagnosticId;
 
         [Fact]
+        public void When_documentation_comments_are_disabled_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        internal class C
+                        {
+                            internal void M(DateTime p)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         public void When_undocumented_type_is_not_internal_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -44,6 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -68,6 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -92,6 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -116,6 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -140,6 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -161,6 +189,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -182,6 +211,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -202,6 +232,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -222,6 +253,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -240,6 +272,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -258,6 +291,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -278,6 +312,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -299,6 +334,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -320,6 +356,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -343,6 +380,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -365,6 +403,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -388,6 +427,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -411,6 +451,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -436,6 +477,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -456,6 +498,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -477,6 +520,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -498,6 +542,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -521,6 +566,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -541,6 +587,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -562,6 +609,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -583,6 +631,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -606,6 +655,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -628,6 +678,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -652,6 +703,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -676,6 +728,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -701,6 +754,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -725,6 +779,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
                 .InGlobalScope(@"
                     namespace N.M
                     {
