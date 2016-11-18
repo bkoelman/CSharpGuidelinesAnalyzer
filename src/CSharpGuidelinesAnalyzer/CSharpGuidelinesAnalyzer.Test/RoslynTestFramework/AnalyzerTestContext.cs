@@ -47,6 +47,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         public DiagnosticsCaptureMode DiagnosticsCaptureMode { get; }
 
+#pragma warning disable AV1561 // Method or constructor contains more than three parameters
+#pragma warning disable AV1500 // Member contains more than seven statements
         private AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName,
             [NotNull] string fileName, [NotNull] string assemblyName,
             [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references,
@@ -62,6 +64,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             ValidationMode = validationMode;
             DiagnosticsCaptureMode = diagnosticsCaptureMode;
         }
+#pragma warning restore AV1500 // Member contains more than seven statements
+#pragma warning restore AV1561 // Method or constructor contains more than three parameters
 
         public AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName)
             : this(

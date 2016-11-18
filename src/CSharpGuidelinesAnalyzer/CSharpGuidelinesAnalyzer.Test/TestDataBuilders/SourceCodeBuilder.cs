@@ -21,11 +21,17 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         private static readonly ImmutableHashSet<MetadataReference> DefaultReferences =
             ImmutableHashSet.Create(new MetadataReference[]
             {
-                /* mscorlib.dll */
-                MetadataReference.CreateFromFile(typeof (object).Assembly.Location),
-                /* System.dll */
-                MetadataReference.CreateFromFile(typeof (Component).Assembly.Location)
+                MsCorLibAssembly,
+                SystemAssembly
             });
+
+        [NotNull]
+        private static PortableExecutableReference SystemAssembly
+            => MetadataReference.CreateFromFile(typeof (Component).Assembly.Location);
+
+        [NotNull]
+        private static PortableExecutableReference MsCorLibAssembly
+            => MetadataReference.CreateFromFile(typeof (object).Assembly.Location);
 
         /// <summary>
         /// Intended for internal use.
