@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         {
             DocumentWithSpans documentWithSpans = MarkupParser.GetDocumentWithSpansFromMarkup(context);
 
-            ImmutableArray<Diagnostic> diagnostics = GetSortedAnalyzerDiagnostics(context, documentWithSpans);
+            IList<Diagnostic> diagnostics = GetSortedAnalyzerDiagnostics(context, documentWithSpans);
             ImmutableArray<TextSpan> spans = documentWithSpans.TextSpans.OrderBy(s => s).ToImmutableArray();
 
             if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
             diagnostics.Should().HaveCount(messages.Length);
 
-            for (int index = 0; index < diagnostics.Length; index++)
+            for (int index = 0; index < diagnostics.Count; index++)
             {
                 Diagnostic diagnostic = diagnostics[index];
 
@@ -61,8 +61,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
+        [NotNull]
         [ItemNotNull]
-        private ImmutableArray<Diagnostic> GetSortedAnalyzerDiagnostics([NotNull] AnalyzerTestContext context,
+        private IList<Diagnostic> GetSortedAnalyzerDiagnostics([NotNull] AnalyzerTestContext context,
             [NotNull] DocumentWithSpans documentWithSpans)
         {
             IEnumerable<Diagnostic> diagnostics =
