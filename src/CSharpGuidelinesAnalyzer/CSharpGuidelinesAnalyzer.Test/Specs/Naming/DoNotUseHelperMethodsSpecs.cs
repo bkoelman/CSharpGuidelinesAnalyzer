@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_class_name_is_Helpers_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class [|Helpers|]
                     {
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_class_name_contains_the_word_Utility_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class [|StringUtility|]
                     {
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_struct_name_contains_the_word_Helpers_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct [|WebHelpers|]
                     {
@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_enum_name_contains_the_word_Common_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum [|CommonState|]
                     {
@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_class_name_contains_the_word_ShareDocument_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class ShareDocument
                     {
@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_struct_name_contains_the_word_UncommonStory_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct UncommonStory
                     {

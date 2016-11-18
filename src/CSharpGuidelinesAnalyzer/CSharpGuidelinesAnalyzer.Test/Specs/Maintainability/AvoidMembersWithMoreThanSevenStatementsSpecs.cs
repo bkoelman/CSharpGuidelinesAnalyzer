@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_empty_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -38,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_empty_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_declaration_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_declaration_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_expression_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -146,7 +146,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_expression_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -175,7 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_for_loop_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -207,7 +207,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_for_loop_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -237,7 +237,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_foreach_loop_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -269,7 +269,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_foreach_loop_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -299,7 +299,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_while_loop_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -329,7 +329,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_while_loop_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -357,7 +357,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_do_while_loop_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -410,7 +410,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_do_while_loop_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -458,7 +458,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_if_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -528,7 +528,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_if_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -590,7 +590,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_switch_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -635,7 +635,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_switch_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -676,7 +676,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_try_throw_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -724,7 +724,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_try_throw_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -770,7 +770,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_using_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -805,7 +805,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_using_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -838,7 +838,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_property_getter_contains_eight_return_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -871,7 +871,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_return_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -902,7 +902,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_yield_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -931,7 +931,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_yield_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -958,7 +958,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_lock_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -1004,7 +1004,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_lock_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -1046,7 +1046,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_fixed_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -1091,7 +1091,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_fixed_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -1132,7 +1132,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_eight_goto_and_label_statements_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -1160,7 +1160,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_contains_seven_goto_and_label_statements_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {

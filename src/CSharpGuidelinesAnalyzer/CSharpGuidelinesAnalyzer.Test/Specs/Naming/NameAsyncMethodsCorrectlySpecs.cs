@@ -50,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_async_method_name_does_not_end_with_Async_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_regular_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     class C

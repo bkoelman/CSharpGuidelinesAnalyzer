@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_argument_is_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_named_sender_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -86,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_argument_is_null_in_static_event_invocation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -108,7 +108,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_argument_is_null_in_method_invocation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -133,7 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_parameter_is_missing_in_event_type_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -157,7 +157,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_argument_is_null_in_null_conditional_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_sender_argument_is_null_in_null_conditional_static_event_invocation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -202,7 +202,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_both_arguments_are_provided_in_event_invocation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -224,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_is_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -247,7 +247,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -272,7 +272,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_named_second_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -297,7 +297,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_is_null_in_static_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -320,7 +320,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_is_null_in_method_invocation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -345,7 +345,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_of_derived_type_is_null_in_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class OtherEventArgs : EventArgs
                     {
@@ -374,7 +374,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_parameter_has_wrong_type_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -398,7 +398,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_is_null_in_null_conditional_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -421,7 +421,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_second_argument_is_null_in_null_conditional_static_event_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {

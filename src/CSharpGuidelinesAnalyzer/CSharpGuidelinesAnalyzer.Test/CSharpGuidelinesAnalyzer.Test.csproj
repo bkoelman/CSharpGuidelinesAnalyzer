@@ -187,7 +187,7 @@
     <Compile Include="Specs\Naming\StaticClassesShouldOnlyContainExtensionMethodsSpecs.cs" />
     <Compile Include="Specs\Naming\UseFrameworkTerminologyInMemberNamesSpecs.cs" />
     <Compile Include="Specs\Naming\UseUnderscoresForUnusedLambdaParametersSpecs.cs" />
-    <Compile Include="TestDataBuilders\ClassSourceCodeBuilder.cs" />
+    <Compile Include="TestDataBuilders\TypeSourceCodeBuilder.cs" />
     <Compile Include="TestDataBuilders\ITestDataBuilder.cs" />
     <Compile Include="TestDataBuilders\MemberSourceCodeBuilder.cs" />
     <Compile Include="TestDataBuilders\SourceCodeBuilder.cs" />

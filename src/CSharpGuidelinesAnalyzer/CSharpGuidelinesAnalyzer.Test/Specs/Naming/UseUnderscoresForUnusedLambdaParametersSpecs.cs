@@ -149,7 +149,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_lamda_parameter_is_captured_in_body_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {

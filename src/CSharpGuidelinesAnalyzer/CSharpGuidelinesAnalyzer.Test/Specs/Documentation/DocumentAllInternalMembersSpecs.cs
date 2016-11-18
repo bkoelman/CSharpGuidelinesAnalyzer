@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_undocumented_type_is_not_internal_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_class_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_class_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_struct_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_struct_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -139,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_enum_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -160,7 +160,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_enum_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -181,7 +181,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_interface_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -201,7 +201,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_interface_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -221,7 +221,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_delegate_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -239,7 +239,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_delegate_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -257,7 +257,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_public_property_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -277,7 +277,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_property_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -298,7 +298,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_property_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -319,7 +319,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_property_in_private_class_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -342,7 +342,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_public_method_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -364,7 +364,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_method_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -387,7 +387,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_method_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -410,7 +410,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_method_in_private_class_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -435,7 +435,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_public_field_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -455,7 +455,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_field_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -476,7 +476,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_field_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -497,7 +497,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_field_in_private_class_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -520,7 +520,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_public_event_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -540,7 +540,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_event_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -561,7 +561,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_event_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -582,7 +582,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_event_in_private_class_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -605,7 +605,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_parameter_in_public_method_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -627,7 +627,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_parameter_in_internal_method_is_undocumented_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -651,7 +651,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_parameter_in_internal_method_is_documented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -675,7 +675,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_parameter_in_internal_method_in_private_class_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -700,7 +700,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_parameter_in_lambda_expression_is_undocumented_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {
@@ -724,7 +724,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_internal_method_has_documentation_for_missing_parameter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N.M
                     {

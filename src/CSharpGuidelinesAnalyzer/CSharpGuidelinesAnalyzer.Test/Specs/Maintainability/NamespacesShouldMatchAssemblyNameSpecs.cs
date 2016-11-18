@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_assembly_name_matches_with_namespace_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope.Example")
                 .InGlobalScope(@"
                     namespace Some
@@ -39,7 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_assembly_name_does_not_match_with_namespace_name_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope.Example")
                 .InGlobalScope(@"
                     namespace Some
@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_assembly_name_starts_with_namespace_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope.Example")
                 .InGlobalScope(@"
                     namespace Some
@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_namespace_name_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope2.Example")
                 .InGlobalScope(@"
                     namespace Some
@@ -110,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_assembly_name_matches_with_namespace_of_type_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope.Example")
                 .InGlobalScope(@"
                     namespace Some
@@ -143,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_assembly_name_does_not_match_with_namespace_of_type_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope.Example")
                 .InGlobalScope(@"
                     namespace Some
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_assembly_name_starts_with_namespace_of_type_but_does_not_match_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope2")
                 .InGlobalScope(@"
                     namespace Some
@@ -205,7 +205,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_namespace_of_type_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope")
                 .InGlobalScope(@"
                     namespace Some
@@ -230,7 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_defined_in_global_namespace_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Some.Scope.Example")
                 .InGlobalScope(@"
                     public class [|C|]
@@ -248,7 +248,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_defined_in_global_namespace_in_Core_assembly_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Core")
                 .InGlobalScope(@"
                     public class [|C|]
@@ -266,7 +266,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_defined_in_nonglobal_namespace_in_Core_assembly_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Core")
                 .InGlobalScope(@"
                     namespace Some
@@ -286,7 +286,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_defined_in_global_namespace_in_assembly_name_ending_with_Core_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Company.Core")
                 .InGlobalScope(@"
                     public class [|C|]
@@ -304,7 +304,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_defined_in_namespace_above_Core_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Company.Core")
                 .InGlobalScope(@"
                     namespace Company
@@ -331,7 +331,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_namespace_is_JetBrains_Annotations_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Company.ProductName")
                 .InGlobalScope(@"
                     namespace JetBrains
@@ -354,7 +354,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_namespace_is_not_JetBrains_Annotations_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InAssemblyNamed("Company.ProductName")
                 .InGlobalScope(@"
                     namespace [|WrongRoot|]

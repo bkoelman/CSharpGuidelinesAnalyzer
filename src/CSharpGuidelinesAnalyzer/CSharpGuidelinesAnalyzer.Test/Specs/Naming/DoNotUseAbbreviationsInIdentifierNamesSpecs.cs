@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -84,7 +84,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -102,7 +102,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -120,7 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_property_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -143,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_property_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -166,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_property_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -189,7 +189,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_property_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -212,7 +212,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -229,7 +229,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -247,7 +247,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -265,7 +265,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -284,7 +284,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -304,7 +304,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -324,7 +324,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_method_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -349,7 +349,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_method_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -374,7 +374,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_method_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -399,7 +399,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_method_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -424,7 +424,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -443,7 +443,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -463,7 +463,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -483,7 +483,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_parameter_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -508,7 +508,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_parameter_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -533,7 +533,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_parameter_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -558,7 +558,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_parameter_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -583,7 +583,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_variable_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -603,7 +603,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_variable_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -624,7 +624,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_variable_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -645,7 +645,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_variable_name_consists_of_single_letter_inside_lambda_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (Enumerable).Assembly)
                 .Using(typeof (Enumerable).Namespace)
                 .InGlobalScope(@"
@@ -667,7 +667,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_variable_name_consists_of_single_underscore_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {

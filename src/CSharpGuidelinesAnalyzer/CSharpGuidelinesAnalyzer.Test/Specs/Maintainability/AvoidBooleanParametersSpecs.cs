@@ -129,7 +129,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_bool_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -156,7 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_nullable_bool_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -183,7 +183,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_bool_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -210,7 +210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_nullable_bool_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -237,7 +237,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_indexer_parameter_type_is_bool_in_overridden_indexer_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class C
                     {
@@ -267,7 +267,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_indexer_parameter_type_is_nullable_bool_in_overridden_indexer_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class C
                     {
@@ -297,7 +297,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_indexer_parameter_type_is_bool_in_hidden_indexer_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -328,7 +328,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_indexer_parameter_type_is_nullable_bool_in_hidden_indexer_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -359,7 +359,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -384,7 +384,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -409,7 +409,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -434,7 +434,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -459,7 +459,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_indexer_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -490,7 +490,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             ()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -520,7 +520,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_indexer_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -551,7 +551,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             ()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {

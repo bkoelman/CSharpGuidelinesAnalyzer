@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
             When_event_invocation_method_is_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_is_not_protected_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -59,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_is_not_virtual_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -86,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_is_private_nonvirtual_in_sealed_class_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public sealed class C
                     {
@@ -108,7 +108,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_is_static_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -130,7 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_name_does_not_follow_pattern_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -153,7 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_name_has_extra_words_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -182,7 +182,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         public void When_event_invocation_method_is_lambda_expression_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {

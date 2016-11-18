@@ -162,7 +162,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_parameter_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -183,7 +183,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_parameter_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -204,7 +204,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_parameter_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -226,7 +226,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_parameter_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -247,7 +247,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_field_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -270,7 +270,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_field_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -293,7 +293,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_field_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -317,7 +317,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_field_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -340,7 +340,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_property_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -363,7 +363,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_property_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -386,7 +386,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_property_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
@@ -410,7 +410,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_property_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C

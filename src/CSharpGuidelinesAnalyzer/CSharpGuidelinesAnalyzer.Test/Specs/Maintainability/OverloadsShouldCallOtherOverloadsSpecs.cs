@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_enum_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum E
                     {                        
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_type_is_interface_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     interface I
                     { 
@@ -48,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_differently_named_methods_exist_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -71,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_no_single_longest_method_overload_exists_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_longest_method_overload_is_not_virtual_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -123,7 +123,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_longest_method_overload_is_not_virtual_in_struct_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct C
                     {
@@ -147,7 +147,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_longest_method_overload_is_not_virtual_in_sealed_class_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     sealed class C
                     {
@@ -171,7 +171,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_longest_method_overload_is_static_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -195,7 +195,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -219,7 +219,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -243,7 +243,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_method_overload_invokes_itself_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -268,7 +268,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_method_overload_is_abstract_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -289,7 +289,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_expression_bodied_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -309,7 +309,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_expression_bodied_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -328,7 +328,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_expression_bodied_method_overload_invokes_itself_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct C
                     {
@@ -348,7 +348,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_partial_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     partial class C
                     {
@@ -377,7 +377,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_partial_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     partial class C
                     {
@@ -405,7 +405,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_partial_method_implementation_is_missing_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     partial class C
                     {
@@ -426,7 +426,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_shorter_constructor_overload_does_not_invoke_another_overload_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -449,7 +449,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_overloads_is_consistent_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -483,7 +483,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_overloads_is_consistent_with_extra_parameter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -507,7 +507,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_overloads_is_not_consistent_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -542,7 +542,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_overridden_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -584,7 +584,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_hidden_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -642,7 +642,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_implicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -684,7 +684,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_parameter_order_in_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -730,7 +730,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             When_parameter_order_in_generic_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I<T>
                     {

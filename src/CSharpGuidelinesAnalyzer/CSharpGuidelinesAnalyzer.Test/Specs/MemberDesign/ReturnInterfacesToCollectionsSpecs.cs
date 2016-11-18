@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_method_returns_void_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_method_returns_string_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_method_returns_array_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -97,7 +97,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_method_returns_generic_ICollection_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (ICollection<>).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -118,7 +118,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_method_returns_IEnumerable_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -139,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_inherited_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public abstract class B
@@ -166,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_hidden_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public class B
@@ -196,7 +196,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_implicitly_implemented_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public interface I
@@ -223,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         public void When_explicitly_implemented_method_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (List<>).Namespace)
                 .InGlobalScope(@"
                     public interface I

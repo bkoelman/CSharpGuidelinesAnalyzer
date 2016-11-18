@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_a_single_class_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N1.N2
                     {
@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_multiple_classes_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InFileNamed("Example.cs")
                 .InGlobalScope(@"
                     namespace N1
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_a_single_struct_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N1.N2
                     {
@@ -101,7 +101,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_multiple_structs_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InFileNamed("Example.cs")
                 .InGlobalScope(@"
                     namespace N1
@@ -145,7 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_a_single_enum_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N1.N2
                     {
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_multiple_enums_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InFileNamed("Example.cs")
                 .InGlobalScope(@"
                     namespace N1
@@ -202,7 +202,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_a_single_interface_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N1.N2
                     {
@@ -221,7 +221,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_multiple_interfaces_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InFileNamed("Example.cs")
                 .InGlobalScope(@"
                     namespace N1
@@ -259,7 +259,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_a_single_delegate_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     namespace N1.N2
                     {
@@ -276,7 +276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_multiple_delegates_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InFileNamed("Example.cs")
                 .InGlobalScope(@"
                     namespace N1
@@ -306,7 +306,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_file_declares_multiple_toplevel_classes_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InFileNamed("Example.cs")
                 .InGlobalScope(@"
                     namespace N1

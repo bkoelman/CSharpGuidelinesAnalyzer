@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_type_is_int_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -47,7 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -100,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_type_is_int_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -134,7 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -152,7 +152,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -169,7 +169,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -187,7 +187,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -211,7 +211,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -234,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -258,7 +258,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             When_implemented_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -281,7 +281,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -301,7 +301,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_return_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -321,7 +321,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -342,7 +342,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_return_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -362,7 +362,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -383,7 +383,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -410,7 +410,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             When_inherited_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -436,7 +436,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -463,7 +463,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             When_implemented_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -489,7 +489,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_type_is_int_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -508,7 +508,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -527,7 +527,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -547,7 +547,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -566,7 +566,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -586,7 +586,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -612,7 +612,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             When_inherited_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -637,7 +637,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -663,7 +663,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             When_implemented_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public interface I
                     {

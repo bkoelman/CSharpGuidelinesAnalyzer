@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_is_bound_to_an_anonymous_method_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class X
                     {
@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_is_bound_to_a_lambda_body_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class X
                     {
@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_is_bound_to_a_lambda_expression_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class X
                     {
@@ -95,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_is_unbound_from_a_misnamed_method_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class X
                     {
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_remote_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class Coordinate
                     {
@@ -156,7 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_remote_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class Coordinate
                     {
@@ -189,7 +189,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             When_remote_event_is_bound_to_a_method_on_a_field_named_underscore_and_matches_pattern_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class Coordinate
                     {
@@ -220,7 +220,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_local_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {
@@ -246,7 +246,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_local_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public class C
                     {

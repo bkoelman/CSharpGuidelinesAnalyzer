@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_is_abstract_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public abstract class C
                     {
@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_method_is_partial_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     partial class C
                     {
@@ -565,7 +565,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_string_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -585,7 +585,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_string_parameter_is_written_to_in_constructor_body_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -606,7 +606,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_ref_parameter_is_written_to_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {

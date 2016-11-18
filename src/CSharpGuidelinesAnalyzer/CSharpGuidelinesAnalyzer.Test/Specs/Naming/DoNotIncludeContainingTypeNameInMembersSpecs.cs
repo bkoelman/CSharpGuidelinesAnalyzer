@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Employee
                     {
@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_method_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Employee
                     {
@@ -53,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_type_name_consists_of_a_single_letter_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_name_contains_struct_name_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct Customer
                     {
@@ -90,7 +90,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_field_name_does_not_contain_struct_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct Customer
                     {
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Order
                     {
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_property_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Order
                     {
@@ -142,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Registration
                     {
@@ -170,7 +170,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_event_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     class Registration
@@ -198,7 +198,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_enum_member_contains_enum_name_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum WindowState
                     {
@@ -216,7 +216,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_enum_member_does_not_contain_enum_name_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum WindowState
                     {
@@ -233,7 +233,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_class_contains_constructor_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Employee
                     {
@@ -252,7 +252,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_class_contains_static_constructor_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Employee
                     {
@@ -271,7 +271,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         public void When_class_contains_static_destructor_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Employee
                     {

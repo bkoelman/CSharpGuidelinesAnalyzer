@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_warning_level_is_set_to_four_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(4)
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_warning_level_is_set_to_three_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(3)
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_warning_level_is_set_to_two_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(2)
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_warning_level_is_set_to_one_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(1)
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();

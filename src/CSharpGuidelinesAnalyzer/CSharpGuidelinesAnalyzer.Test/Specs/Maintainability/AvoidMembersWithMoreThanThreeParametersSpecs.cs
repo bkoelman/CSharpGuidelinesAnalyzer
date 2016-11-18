@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_instance_constructor_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
@@ -120,7 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_delegate_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public delegate void D(int first, string second, double third);
                 ")
@@ -134,7 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_delegate_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     public delegate void [|D|](int first, string second, double third, object fourth);
                 ")

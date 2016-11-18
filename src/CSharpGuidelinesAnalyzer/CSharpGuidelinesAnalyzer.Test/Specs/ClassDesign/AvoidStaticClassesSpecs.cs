@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_class_is_not_static_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {                        
@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class [|C|]
                     {                        
@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_static_class_has_no_extension_methods_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class SomeExtensions
                     {                        
@@ -62,7 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_static_class_has_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class SomeExtensions
                     {
@@ -85,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_static_class_has_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class SomeExtensions
                     {
@@ -108,7 +108,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_static_class_has_public_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class SomeExtensions
                     {
@@ -129,7 +129,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             ()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class SomeExtensions
                     {

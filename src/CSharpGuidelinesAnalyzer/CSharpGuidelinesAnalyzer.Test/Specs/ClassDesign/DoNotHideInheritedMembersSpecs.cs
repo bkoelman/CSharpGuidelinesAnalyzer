@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_base_property_is_overridden_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {
@@ -55,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_base_property_is_hidden_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_base_method_is_overridden_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {
@@ -124,7 +124,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_base_method_is_hidden_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {
@@ -151,7 +151,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_base_event_is_overridden_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {
@@ -193,7 +193,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_base_event_is_hidden_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {
@@ -236,7 +236,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_default_base_event_is_hidden_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class B
                     {

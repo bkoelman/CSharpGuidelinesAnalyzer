@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_assembly_has_all_attributes_filled_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (AssemblyTitleAttribute).Assembly)
                 .Using(typeof (AssemblyTitleAttribute).Namespace)
                 .InGlobalScope(@"
@@ -38,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_assembly_has_all_attributes_empty_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (AssemblyTitleAttribute).Assembly)
                 .Using(typeof (AssemblyTitleAttribute).Namespace)
                 .AllowingDiagnosticsOutsideSourceTree()
@@ -70,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_assembly_has_no_attributes_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithReference(typeof (AssemblyTitleAttribute).Assembly)
                 .Using(typeof (AssemblyTitleAttribute).Namespace)
                 .AllowingDiagnosticsOutsideSourceTree()

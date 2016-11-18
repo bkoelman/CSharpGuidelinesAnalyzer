@@ -166,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -195,7 +195,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_declared_and_assigned_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -224,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -276,7 +276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_foreach_loop_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -328,7 +328,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_while_loop_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -380,7 +380,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_do_while_loop_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -434,7 +434,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_an_if_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -493,7 +493,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_switch_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -547,7 +547,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_return_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -576,7 +576,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_yield_return_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     abstract class C
@@ -606,7 +606,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_lock_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -660,7 +660,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_using_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {
@@ -714,7 +714,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         public void When_multiple_identifiers_are_assigned_in_a_throw_statement_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     abstract class C
                     {

@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     namespace N
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (Task).Namespace)
                 .InGlobalScope(@"
                     using static System.Threading.Tasks.Task;
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         public void When_method_contains_invocation_of_TaskContinueWith_in_alternate_namespace_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof (NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     namespace N

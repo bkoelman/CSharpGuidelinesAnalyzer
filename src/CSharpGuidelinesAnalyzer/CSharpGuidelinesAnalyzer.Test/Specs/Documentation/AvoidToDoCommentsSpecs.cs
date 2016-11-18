@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_todo_comment_with_colon_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     // [|TODO:test|]
                 ")
@@ -28,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     // [|TODO test|]
                 ")
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_todo_comment_with_underscore_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     // TODO_test
                 ")
@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_todo_comment_with_number_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     // TODO1 test
                 ")
@@ -71,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_todo_comment_with_quotes_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     // ""TODO test""
                 ")
@@ -85,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_comment_with_todo_in_the_middle_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     // Hello TODO test
                 ")
@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_documentation_comment_with_space_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     ///    [|TODO test|]
                 ")
@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
             When_source_contains_preprocessor_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     #if DEBUG // [|TODO test|]
                     #endif
@@ -132,7 +132,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
             When_source_contains_preprocessor_directive_with_documentation_comment_with_space_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     #if DEBUG ///    [|TODO test|]
                     #endif
@@ -148,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_region_directive_with_single_line_todo_comment_with_space_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     #region // TODO test
                     #endregion
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
             When_source_contains_end_region_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     #region
                     #endregion // [|TODO test|]
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_todo_comment_with_trailing_spaces_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"// [|TODO test                        |]")
                 .Build();
 
@@ -193,7 +193,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_multi_line_todo_comment_on_single_line_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     /* [|TODO: hello    |]*/
                 ")
@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_multi_line_documentation_comment_on_single_line_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     /** [|TODO: hello    |]*/
                 ")
@@ -223,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_multi_line_todo_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     /* [|TODO: hello    |]
                             [|TODO: hello    |]
@@ -246,7 +246,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_multi_line_documentation_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     /** [|TODO: hello    |]
                             [|TODO: hello    |]
@@ -269,7 +269,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         public void When_source_contains_single_line_documentation_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     /// <summary>
                     /// [|TODO : test       |]

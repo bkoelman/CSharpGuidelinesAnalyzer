@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_class_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class [|CustomerAndOrder|]
                     {
@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_struct_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct [|customer_and_order|]
                     {
@@ -47,7 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_enum_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum [|Match1And2|]
                     {
@@ -64,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_class_name_contains_the_word_Land_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class TheBigLand
                     {
@@ -80,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         public void When_struct_name_contains_the_word_Andy_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new ClassSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct AndyWithJohn
                     {

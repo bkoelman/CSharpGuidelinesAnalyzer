@@ -14,9 +14,22 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         protected override string GetSourceCode()
         {
             var builder = new StringBuilder();
+
+            AppendClassStart(builder);
+            AppendClassMembers(builder);
+            AppendClassEnd(builder);
+
+            return builder.ToString();
+        }
+
+        private static void AppendClassStart([NotNull] StringBuilder builder)
+        {
             builder.AppendLine("public class Test");
             builder.AppendLine("{");
+        }
 
+        private void AppendClassMembers([NotNull] StringBuilder builder)
+        {
             int index = 0;
             foreach (string member in members)
             {
@@ -28,9 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
                 builder.AppendLine(member.Trim());
                 index++;
             }
+        }
 
+        private static void AppendClassEnd([NotNull] StringBuilder builder)
+        {
             builder.AppendLine("}");
-            return builder.ToString();
         }
 
         [NotNull]
