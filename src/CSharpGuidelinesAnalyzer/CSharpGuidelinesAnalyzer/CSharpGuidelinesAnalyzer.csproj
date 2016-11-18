@@ -44,7 +44,9 @@
     <Compile Include="Extensions\OperationExtensions.cs" />
     <Compile Include="Extensions\SymbolExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
+    <Compile Include="TextCollection.cs" />
     <Compile Include="Extensions\TypeSymbolExtensions.cs" />
+    <Compile Include="WordsInIdentifierExtractor.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="HelpLinkUris.cs" />
     <Compile Include="IdentifierInfo.cs" />
