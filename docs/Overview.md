@@ -133,7 +133,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ## Category: Documentation
 
 ### [AV2305](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/2300_DocumentationGuidelines.md#av2305): Document all public, protected and internal types and members (MEDIUM)
-- [x] This analyzer reports missing XML documentation comments on internal types, members and parameters. The other scenarios (public and protected types and members) are already covered by the C# compiler.
+- [x] This analyzer reports missing XML documentation comments on internal types, members and parameters when compiling with documentation comments enabled. The other scenarios (public and protected types and members) are already covered by the C# compiler.
 
 ### [AV2310](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/2300_DocumentationGuidelines.md#av2310): Avoid inline comments (MEDIUM)
 - [x] This analyzer reports single-line and multi-line comments inside method bodies.

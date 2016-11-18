@@ -32,6 +32,13 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return ContainsNewModifier(method?.Modifiers ?? propertyEventIndexer?.Modifiers ?? eventField?.Modifiers);
         }
 
+        public static bool AreDocumentationCommentsReported([NotNull] this ISymbol symbol)
+        {
+            Guard.NotNull(symbol, nameof(symbol));
+
+            return symbol.DeclaringSyntaxReferences[0].SyntaxTree.Options.DocumentationMode == DocumentationMode.Diagnose;
+        }
+
         private static bool ContainsNewModifier([CanBeNull] SyntaxTokenList? modifiers)
         {
             return modifiers != null && modifiers.Value.Any(m => m.Kind() == SyntaxKind.NewKeyword);

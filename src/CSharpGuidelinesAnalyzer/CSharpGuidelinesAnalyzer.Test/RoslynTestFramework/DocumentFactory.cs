@@ -27,16 +27,26 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             var parser = new MarkupParser(context.MarkupCode);
             CodeWithSpans codeWithSpans = parser.Parse();
 
+            CSharpParseOptions parseOptions = GetParseOptions(context.DocumentationMode);
             CSharpCompilationOptions compilationOptions = GetCompilationOptions(context.CompilerWarningLevel);
 
             Document document = new AdhocWorkspace()
                 .AddProject(context.AssemblyName, context.LanguageName)
+                .WithParseOptions(parseOptions)
                 .WithCompilationOptions(compilationOptions)
-                .WithParseOptions(DefaultParseOptions)
                 .AddMetadataReferences(context.References)
                 .AddDocument(context.FileName, codeWithSpans.Code);
 
             return new DocumentWithSpans(document, codeWithSpans.Spans);
+        }
+
+        [NotNull]
+        private CSharpParseOptions GetParseOptions(DocumentationMode documentationMode)
+        {
+            // Bug workaround: Setting DocumentationMode to a non-default value resets Features.
+            IReadOnlyDictionary<string, string> features = DefaultParseOptions.Features;
+            CSharpParseOptions optionsWithLostFeatures = DefaultParseOptions.WithDocumentationMode(documentationMode);
+            return optionsWithLostFeatures.WithFeatures(features);
         }
 
         [NotNull]

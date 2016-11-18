@@ -11,6 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     {
         private const string DefaultFileName = "TestDocument";
         private const string DefaultAssemblyName = "TestProject";
+        private const DocumentationMode DefaultDocumentationMode = DocumentationMode.None;
         private const TestValidationMode DefaultTestValidationMode = TestValidationMode.AllowCompileWarnings;
 
         [NotNull]
@@ -40,6 +41,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         public ImmutableHashSet<MetadataReference> References { get; }
 #pragma warning restore AV1130 // Return type in method signature should be a collection interface instead of a concrete type
 
+        public DocumentationMode DocumentationMode { get; }
+
         [CanBeNull]
         public int? CompilerWarningLevel { get; }
 
@@ -51,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 #pragma warning disable AV1500 // Member contains more than seven statements
         private AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName,
             [NotNull] string fileName, [NotNull] string assemblyName,
-            [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references,
+            [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references, DocumentationMode documentationMode,
             [CanBeNull] int? compilerWarningLevel, TestValidationMode validationMode,
             DiagnosticsCaptureMode diagnosticsCaptureMode)
         {
@@ -60,6 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             FileName = fileName;
             AssemblyName = assemblyName;
             References = references;
+            DocumentationMode = documentationMode;
             CompilerWarningLevel = compilerWarningLevel;
             ValidationMode = validationMode;
             DiagnosticsCaptureMode = diagnosticsCaptureMode;
@@ -69,8 +73,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         public AnalyzerTestContext([NotNull] string markupCode, [NotNull] string languageName)
             : this(
-                markupCode, languageName, DefaultFileName, DefaultAssemblyName, DefaultReferences, null,
-                DefaultTestValidationMode, DiagnosticsCaptureMode.RequireInSourceTree)
+                markupCode, languageName, DefaultFileName, DefaultAssemblyName, DefaultReferences,
+                DefaultDocumentationMode, null, DefaultTestValidationMode, DiagnosticsCaptureMode.RequireInSourceTree)
         {
             Guard.NotNull(markupCode, nameof(markupCode));
             Guard.NotNullNorWhiteSpace(languageName, nameof(languageName));
@@ -82,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Guard.NotNull(markupCode, nameof(markupCode));
 
             return new AnalyzerTestContext(markupCode, LanguageName, FileName, AssemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
+                DocumentationMode, CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
@@ -91,14 +95,14 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Guard.NotNullNorWhiteSpace(fileName, nameof(fileName));
 
             return new AnalyzerTestContext(MarkupCode, LanguageName, fileName, AssemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
+                DocumentationMode, CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext InAssemblyNamed([NotNull] string assemblyName)
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, assemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
+                DocumentationMode, CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
@@ -109,28 +113,36 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             ImmutableList<MetadataReference> referenceList = ImmutableList.CreateRange(references);
 
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName,
-                referenceList.ToImmutableHashSet(), CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
+                referenceList.ToImmutableHashSet(), DocumentationMode, CompilerWarningLevel, ValidationMode,
+                DiagnosticsCaptureMode);
+        }
+
+        [NotNull]
+        public AnalyzerTestContext WithDocumentationMode(DocumentationMode mode)
+        {
+            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References, mode,
+                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext CompileAtWarningLevel(int warningLevel)
         {
-            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References, warningLevel,
-                ValidationMode, DiagnosticsCaptureMode);
+            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References,
+                DocumentationMode, warningLevel, ValidationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext InValidationMode(TestValidationMode validationMode)
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References,
-                CompilerWarningLevel, validationMode, DiagnosticsCaptureMode);
+                DocumentationMode, CompilerWarningLevel, validationMode, DiagnosticsCaptureMode);
         }
 
         [NotNull]
         public AnalyzerTestContext AllowingDiagnosticsOutsideSourceTree()
         {
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References,
-                CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode.AllowOutsideSourceTree);
+                DocumentationMode, CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode.AllowOutsideSourceTree);
         }
     }
 }

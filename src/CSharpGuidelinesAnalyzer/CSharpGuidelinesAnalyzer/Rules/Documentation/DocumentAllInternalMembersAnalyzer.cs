@@ -66,7 +66,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            if (context.Symbol.DeclaredAccessibility == Accessibility.Internal)
+            if (context.Symbol.AreDocumentationCommentsReported() &&
+                context.Symbol.DeclaredAccessibility == Accessibility.Internal)
             {
                 AnalyzeSymbol(context.Symbol, context);
             }
@@ -74,12 +75,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor())
-            {
-                return;
-            }
-
-            if (context.Symbol.DeclaredAccessibility == Accessibility.Internal && IsAccessibleFromRoot(context.Symbol))
+            if (context.Symbol.AreDocumentationCommentsReported() && !context.Symbol.IsPropertyOrEventAccessor() &&
+                context.Symbol.DeclaredAccessibility == Accessibility.Internal && IsAccessibleFromRoot(context.Symbol))
             {
                 AnalyzeSymbol(context.Symbol, context);
             }
