@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
             {
                 StatementCount++;
-                base.VisitForLoopStatement(operation);
+                Visit(operation.Body);
             }
 
             public override void VisitIfStatement([NotNull] IIfStatement operation)

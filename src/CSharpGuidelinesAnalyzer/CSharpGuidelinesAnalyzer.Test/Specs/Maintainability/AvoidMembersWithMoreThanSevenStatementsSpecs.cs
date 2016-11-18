@@ -181,15 +181,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         void [|M|]()
                         {
-                            for ( ; ; )
-                                for ( ; ; )
-                                    for ( ; ; )
-                                        for ( ; ; )
+                            for (int a = 0; a < 1000; a++)
+                                for (int b = 0; b < 1000; b++)
+                                    for (int c = 0; c < 1000; c++)
+                                        for (int d = 0; d < 1000; d++)
                                         {
-                                            for ( ; ; )
-                                                for ( ; ; )
-                                                    for ( ; ; )
-                                                        for ( ; ; )
+                                            for (int e = 0; e < 1000; e++)
+                                                for (int f = 0; f < 1000; f++)
+                                                    for (int g = 0; g < 1000; g++)
+                                                        for (int h = 0; h < 1000; h++)
                                                         {
                                                         }
                                         }
@@ -213,14 +213,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         void M()
                         {
-                            for ( ; ; )
-                                for ( ; ; )
-                                    for ( ; ; )
-                                        for ( ; ; )
+                            for (int a = 0; a < 1000; a++)
+                                for (int b = 0; b < 1000; b++)
+                                    for (int c = 0; c < 1000; c++)
+                                        for (int d = 0; d < 1000; d++)
                                         {
-                                            for ( ; ; )
-                                                for ( ; ; )
-                                                    for ( ; ; )
+                                            for (int e = 0; e < 1000; e++)
+                                                for (int f = 0; f < 1000; f++)
+                                                    for (int g = 0; g < 1000; g++)
                                                     {
                                                     }
                                         }
