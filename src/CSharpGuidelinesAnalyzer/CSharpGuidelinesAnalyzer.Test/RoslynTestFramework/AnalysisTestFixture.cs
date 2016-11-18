@@ -33,32 +33,22 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private void RunDiagnostics([NotNull] AnalyzerTestContext context,
             [NotNull] [ItemNotNull] params string[] messages)
         {
+            AnalysisResult result = GetAnalysisResult(context, messages);
+
+            VerifyDiagnosticCount(result, context.DiagnosticsCaptureMode);
+            VerifyDignostics(result, context);
+        }
+
+        [NotNull]
+        private AnalysisResult GetAnalysisResult([NotNull] AnalyzerTestContext context,
+            [NotNull] [ItemNotNull] string[] messages)
+        {
             DocumentWithSpans documentWithSpans = MarkupParser.GetDocumentWithSpansFromMarkup(context);
 
             IList<Diagnostic> diagnostics = GetSortedAnalyzerDiagnostics(context, documentWithSpans);
             ImmutableArray<TextSpan> spans = documentWithSpans.TextSpans.OrderBy(s => s).ToImmutableArray();
 
-            if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
-            {
-                diagnostics.Should().HaveCount(spans.Length);
-            }
-
-            diagnostics.Should().HaveCount(messages.Length);
-
-            for (int index = 0; index < diagnostics.Count; index++)
-            {
-                Diagnostic diagnostic = diagnostics[index];
-
-                if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
-                {
-                    diagnostic.Location.IsInSource.Should().BeTrue();
-
-                    TextSpan span = spans[index];
-                    diagnostic.Location.SourceSpan.Should().Be(span);
-                }
-
-                diagnostic.GetMessage().Should().Be(messages[index]);
-            }
+            return new AnalysisResult(diagnostics, spans, messages);
         }
 
         [NotNull]
@@ -67,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             [NotNull] DocumentWithSpans documentWithSpans)
         {
             IEnumerable<Diagnostic> diagnostics =
-                GetDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,
+                EnumerateDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,
                         context.DiagnosticsCaptureMode)
                     .Where(d => d.Id == DiagnosticId);
 
@@ -81,12 +71,22 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [NotNull]
         [ItemNotNull]
-        private ICollection<Diagnostic> GetDiagnosticsForDocument([NotNull] Document document,
+        private IEnumerable<Diagnostic> EnumerateDiagnosticsForDocument([NotNull] Document document,
             TestValidationMode validationMode, DiagnosticsCaptureMode diagnosticsCaptureMode)
+        {
+            CompilationWithAnalyzers compilationWithAnalyzers = GetCompilationWithAnalyzers(document, validationMode);
+
+            SyntaxTree tree = document.GetSyntaxTreeAsync().Result;
+
+            return EnumerateAnalyzerDiagnostics(compilationWithAnalyzers, tree, diagnosticsCaptureMode);
+        }
+
+        [NotNull]
+        private CompilationWithAnalyzers GetCompilationWithAnalyzers([NotNull] Document document,
+            TestValidationMode validationMode)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(CreateAnalyzer());
             Compilation compilation = document.Project.GetCompilationAsync().Result;
-            CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(analyzers);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(CancellationToken.None);
             if (validationMode != TestValidationMode.AllowCompileErrors)
@@ -94,26 +94,89 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 ValidateCompileErrors(compilerDiagnostics);
             }
 
-            SyntaxTree tree = document.GetSyntaxTreeAsync().Result;
-
-            ImmutableArray<Diagnostic>.Builder builder = ImmutableArray.CreateBuilder<Diagnostic>();
-            foreach (Diagnostic analyzerDiagnostic in compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result)
-            {
-                Location location = analyzerDiagnostic.Location;
-                if (diagnosticsCaptureMode == DiagnosticsCaptureMode.AllowOutsideSourceTree ||
-                    (location.IsInSource && location.SourceTree == tree))
-                {
-                    builder.Add(analyzerDiagnostic);
-                }
-            }
-
-            return builder.ToImmutable();
+            return compilation.WithAnalyzers(analyzers);
         }
 
         private void ValidateCompileErrors([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)
         {
             bool hasErrors = compilerDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error);
             hasErrors.Should().BeFalse("test should have no compile errors");
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<Diagnostic> EnumerateAnalyzerDiagnostics(
+            [NotNull] CompilationWithAnalyzers compilationWithAnalyzers, [NotNull] SyntaxTree tree,
+            DiagnosticsCaptureMode diagnosticsCaptureMode)
+        {
+            foreach (Diagnostic analyzerDiagnostic in compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result)
+            {
+                Location location = analyzerDiagnostic.Location;
+
+                if (diagnosticsCaptureMode == DiagnosticsCaptureMode.AllowOutsideSourceTree ||
+                    (location.IsInSource && location.SourceTree == tree))
+                {
+                    yield return analyzerDiagnostic;
+                }
+            }
+        }
+
+        private static void VerifyDiagnosticCount([NotNull] AnalysisResult result,
+            DiagnosticsCaptureMode captureMode)
+        {
+            if (captureMode == DiagnosticsCaptureMode.RequireInSourceTree)
+            {
+                result.Diagnostics.Should().HaveCount(result.Spans.Count);
+            }
+
+            result.Diagnostics.Should().HaveCount(result.Messages.Count);
+        }
+
+        private static void VerifyDignostics([NotNull] AnalysisResult result, [NotNull] AnalyzerTestContext context)
+        {
+            for (int index = 0; index < result.Diagnostics.Count; index++)
+            {
+                Diagnostic diagnostic = result.Diagnostics[index];
+
+                if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
+                {
+                    VerifyDiagnosticLocation(diagnostic, result.Spans[index]);
+                }
+
+                diagnostic.GetMessage().Should().Be(result.Messages[index]);
+            }
+        }
+
+        private static void VerifyDiagnosticLocation([NotNull] Diagnostic diagnostic, TextSpan span)
+        {
+            diagnostic.Location.IsInSource.Should().BeTrue();
+            diagnostic.Location.SourceSpan.Should().Be(span);
+        }
+
+        private sealed class AnalysisResult
+        {
+            [NotNull]
+            [ItemNotNull]
+            public IList<Diagnostic> Diagnostics { get; }
+
+            [NotNull]
+            public IList<TextSpan> Spans { get; }
+
+            [NotNull]
+            [ItemNotNull]
+            public IList<string> Messages { get; }
+
+            public AnalysisResult([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics,
+                [NotNull] IList<TextSpan> spans, [NotNull] [ItemNotNull] IList<string> messages)
+            {
+                Guard.NotNull(diagnostics, nameof(diagnostics));
+                Guard.NotNull(spans, nameof(spans));
+                Guard.NotNull(messages, nameof(messages));
+
+                Diagnostics = diagnostics;
+                Spans = spans;
+                Messages = messages;
+            }
         }
     }
 }
