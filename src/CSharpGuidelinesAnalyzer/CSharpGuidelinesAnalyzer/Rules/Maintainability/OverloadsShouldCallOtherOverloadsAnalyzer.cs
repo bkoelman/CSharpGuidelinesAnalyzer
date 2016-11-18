@@ -53,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+                    startContext.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
                 }
             });
         }
@@ -61,11 +61,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(type.Name))
-            {
-                return;
-            }
 
             if (type.TypeKind != TypeKind.Class && type.TypeKind != TypeKind.Struct)
             {

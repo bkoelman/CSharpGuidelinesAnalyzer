@@ -9,7 +9,8 @@ using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
-    public abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
+    /// <summary />
+    internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         [NotNull]
         private AnalyzerTestContext testContext = new AnalyzerTestContext(string.Empty, LanguageNames.CSharp)

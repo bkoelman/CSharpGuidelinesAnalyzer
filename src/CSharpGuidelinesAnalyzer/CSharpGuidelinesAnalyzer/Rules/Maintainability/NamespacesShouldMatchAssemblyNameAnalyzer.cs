@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -49,18 +50,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeNamespace, SymbolKind.Namespace);
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamespace), SymbolKind.Namespace);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
         }
 
         private void AnalyzeNamespace(SymbolAnalysisContext context)
         {
             var namespaceSymbol = (INamespaceSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(namespaceSymbol.Name))
-            {
-                return;
-            }
 
             if (!IsTopLevelNamespace(namespaceSymbol))
             {
@@ -100,11 +96,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(type.Name))
-            {
-                return;
-            }
 
             if (type.ContainingNamespace.IsGlobalNamespace)
             {

@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 }
             });
 
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
         }
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)

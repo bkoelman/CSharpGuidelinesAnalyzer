@@ -6,7 +6,8 @@ using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
 {
-    public static class IdentifierExtensions
+    /// <summary />
+    internal static class IdentifierExtensions
     {
         public static bool StartsWithAnyWordOf([NotNull] this string identiferName,
             [ItemNotNull] ImmutableArray<string> wordsToFind, TextMatchMode matchMode)
@@ -74,8 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             var builder = new StringBuilder();
             foreach (char ch in identifierName)
             {
-                if (char.IsUpper(ch) || char.IsWhiteSpace(ch) || char.IsPunctuation(ch) || char.IsDigit(ch) ||
-                    char.IsSymbol(ch))
+                if (IsStartOfNextWord(ch))
                 {
                     FlushBuilder(words, builder);
 
@@ -91,6 +91,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             FlushBuilder(words, builder);
 
             return words;
+        }
+
+        private static bool IsStartOfNextWord(char ch)
+        {
+            return char.IsUpper(ch) || char.IsWhiteSpace(ch) || char.IsPunctuation(ch) || char.IsDigit(ch) ||
+                char.IsSymbol(ch);
         }
 
         private static void FlushBuilder([NotNull] [ItemNotNull] List<string> words, [NotNull] StringBuilder builder)

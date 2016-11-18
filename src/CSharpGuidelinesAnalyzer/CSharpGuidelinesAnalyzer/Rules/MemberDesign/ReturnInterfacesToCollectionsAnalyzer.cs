@@ -35,17 +35,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
         }
 
         private void AnalyzeMethod(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(method.Name))
-            {
-                return;
-            }
 
             if (IsString(method.ReturnType))
             {

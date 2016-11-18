@@ -5,7 +5,8 @@ using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
-    public static class SourceCodeBuilderExtensions
+    /// <summary />
+    internal static class SourceCodeBuilderExtensions
     {
         [NotNull]
         public static TBuilder Using<TBuilder>([NotNull] this TBuilder source, [CanBeNull] string codeNamespace)

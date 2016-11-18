@@ -5,7 +5,8 @@ using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
 {
-    public static class CompilationExtensions
+    /// <summary />
+    internal static class CompilationExtensions
     {
         public static bool SupportsOperations([NotNull] this Compilation compilation)
         {

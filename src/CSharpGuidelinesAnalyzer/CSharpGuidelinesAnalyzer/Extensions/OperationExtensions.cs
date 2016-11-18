@@ -4,7 +4,8 @@ using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
 {
-    public static class OperationExtensions
+    /// <summary />
+    internal static class OperationExtensions
     {
         [CanBeNull]
         public static IdentifierInfo TryGetIdentifierInfo([CanBeNull] this IOperation identifier)

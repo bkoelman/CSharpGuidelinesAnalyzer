@@ -3,7 +3,8 @@ using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
 {
-    public static class TypeSymbolExtensions
+    /// <summary />
+    internal static class TypeSymbolExtensions
     {
         public static bool IsNullableBoolean([NotNull] this ITypeSymbol type)
         {

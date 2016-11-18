@@ -52,15 +52,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot)
             {
                 IdentifierInfo identifierInfo = unaryOperator.Operand.TryGetIdentifierInfo();
-                if (
-                    identifierInfo?.Name.GetFirstWordInSetFromIdentifier(NegatingWords,
-                        TextMatchMode.AllowLowerCaseMatch) != null)
+                if (identifierInfo != null && ContainsNegatingWord(identifierInfo))
                 {
                     string kind = identifierInfo.Kind.ToLowerInvariant();
                     context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
                         identifierInfo.Name));
                 }
             }
+        }
+
+        private static bool ContainsNegatingWord([NotNull] IdentifierInfo info)
+        {
+            return info.Name.GetFirstWordInSetFromIdentifier(NegatingWords, TextMatchMode.AllowLowerCaseMatch) != null;
         }
     }
 }

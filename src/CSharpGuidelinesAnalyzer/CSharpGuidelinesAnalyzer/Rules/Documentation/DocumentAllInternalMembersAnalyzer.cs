@@ -60,8 +60,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
-            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
         }
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)

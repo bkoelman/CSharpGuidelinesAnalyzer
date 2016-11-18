@@ -4,7 +4,8 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
 {
-    public static class SyntaxNodeAnalysisContextExtensions
+    /// <summary />
+    internal static class SyntaxNodeAnalysisContextExtensions
     {
         public static SymbolAnalysisContext ToSymbolContext(this SyntaxNodeAnalysisContext syntaxContext)
         {

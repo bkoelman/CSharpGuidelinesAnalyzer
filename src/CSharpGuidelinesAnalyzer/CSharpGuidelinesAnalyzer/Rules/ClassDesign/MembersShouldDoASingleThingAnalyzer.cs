@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
@@ -49,13 +49,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
                 return;
             }
 
-            if (
-                context.Symbol.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) !=
-                null)
+            if (ContainsBlacklistedWord(context.Symbol.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name));
             }
+        }
+
+        private static bool ContainsBlacklistedWord([NotNull] string name)
+        {
+            return name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) != null;
         }
     }
 }

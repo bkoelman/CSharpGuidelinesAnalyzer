@@ -38,8 +38,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
 
             context.RegisterCompilationStartAction(startContext =>
             {
@@ -121,15 +121,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private static bool IsBlacklisted([NotNull] string identifierName)
+        private static bool IsBlacklisted([NotNull] string name)
         {
-            return identifierName.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) !=
-                null;
+            return name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) != null;
         }
 
-        private static bool IsSingleLetter([NotNull] string identifierName)
+        private static bool IsSingleLetter([NotNull] string name)
         {
-            return identifierName.Length == 1 && char.IsLetter(identifierName[0]);
+            return name.Length == 1 && char.IsLetter(name[0]);
         }
     }
 }

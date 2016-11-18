@@ -36,9 +36,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
-            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(c => AnalyzeParameter(c.ToSymbolContext()), SyntaxKind.Parameter);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
 
             context.RegisterCompilationStartAction(startContext =>
             {
@@ -53,11 +53,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(type.Name))
-            {
-                return;
-            }
 
             if (ContainsDigit(type.Name))
             {

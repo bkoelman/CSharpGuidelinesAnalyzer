@@ -4,7 +4,8 @@ using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
-    public class MemberSourceCodeBuilder : SourceCodeBuilder
+    /// <summary />
+    internal sealed class MemberSourceCodeBuilder : SourceCodeBuilder
     {
         [NotNull]
         [ItemNotNull]

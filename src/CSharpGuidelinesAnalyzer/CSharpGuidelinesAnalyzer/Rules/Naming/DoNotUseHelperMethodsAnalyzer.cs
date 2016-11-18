@@ -34,17 +34,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
         }
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(type.Name))
-            {
-                return;
-            }
 
             string word = type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.RequireExactMatch);
             if (word != null)

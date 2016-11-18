@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -27,19 +28,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeProperty, SymbolKind.Property);
-            context.RegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeProperty), SymbolKind.Property);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
         }
 
         private void AnalyzeProperty(SymbolAnalysisContext context)
         {
             var property = (IPropertySymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(property.Name))
-            {
-                return;
-            }
 
             if (property.IsIndexer && property.Parameters.Length > 3)
             {
@@ -50,11 +46,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeMethod(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(method.Name))
-            {
-                return;
-            }
 
             if (!IsPropertyAccessor(method) && method.Parameters.Length > 3)
             {
@@ -79,11 +70,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol) context.Symbol;
-
-            if (string.IsNullOrEmpty(type.Name))
-            {
-                return;
-            }
 
             if (IsDelegate(type) && type.DelegateInvokeMethod?.Parameters.Length > 3)
             {

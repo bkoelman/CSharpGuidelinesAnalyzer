@@ -38,7 +38,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Extensions\OperationAnalysisContextExtensions.cs" />
+    <Compile Include="Extensions\AnalysisContextExtensions.cs" />
     <Compile Include="Extensions\CompilationExtensions.cs" />
     <Compile Include="Extensions\IdentifierExtensions.cs" />
     <Compile Include="Extensions\OperationExtensions.cs" />

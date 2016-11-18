@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)

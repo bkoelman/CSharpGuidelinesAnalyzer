@@ -8,7 +8,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
 {
-    public static class SymbolExtensions
+    /// <summary />
+    internal static class SymbolExtensions
     {
         [ItemNotNull]
         private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
