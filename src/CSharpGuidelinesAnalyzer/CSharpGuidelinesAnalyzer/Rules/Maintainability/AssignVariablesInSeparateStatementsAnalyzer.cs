@@ -57,9 +57,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (statementWalker.IdentifiersAssigned.Count > 1)
             {
                 string identifiers = FormatIdentifierList(statementWalker.IdentifiersAssigned.ToList());
-                Location location = context.Operation.Syntax.GetLocation();
+                Location location = GetLocation(context.Operation);
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location, identifiers));
             }
+        }
+
+        [NotNull]
+        private static Location GetLocation([NotNull] IOperation operation)
+        {
+            return operation.GetLocationForKeyword() ?? operation.Syntax.GetLocation();
         }
 
         [NotNull]

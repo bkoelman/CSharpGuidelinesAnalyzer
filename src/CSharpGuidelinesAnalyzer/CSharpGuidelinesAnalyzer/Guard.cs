@@ -28,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer
 
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException(name + @" cannot be empty or contain only whitespace.", name);
+                throw new ArgumentException($"'{name}' cannot be empty or contain only whitespace.", name);
             }
         }
     }

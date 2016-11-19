@@ -43,9 +43,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         switch (s)
                         {
-                            [|case ""A"":
-                            case ""B"":
-                                break;|]
+                            case ""A"":
+                            [|case|] ""B"":
+                                break;
                         }
                     }
                 ")

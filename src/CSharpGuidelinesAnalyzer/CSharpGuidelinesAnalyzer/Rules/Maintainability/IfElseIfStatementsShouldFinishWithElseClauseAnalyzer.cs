@@ -4,7 +4,6 @@ using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
@@ -50,12 +49,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             analyzer.Analyze();
         }
 
-        [NotNull]
-        private static Location GetLocation([NotNull] IIfStatement ifStatement)
-        {
-            return ((IfStatementSyntax) ifStatement.Syntax).IfKeyword.GetLocation();
-        }
-
         private sealed class IfStatementCollector : OperationWalker
         {
             [NotNull]
@@ -72,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitIfStatement([NotNull] IIfStatement operation)
             {
-                Location location = GetLocation(operation);
+                Location location = operation.GetLocationForKeyword();
                 CollectedStatements.Add(location, operation);
 
                 base.VisitIfStatement(operation);
@@ -143,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private void AnalyzeIfElseIfConstruct([NotNull] IIfStatement topIfStatement)
             {
-                Location topIfKeywordLocation = GetLocation(topIfStatement);
+                Location topIfKeywordLocation = topIfStatement.GetLocationForKeyword();
 
                 IIfStatement ifStatement = topIfStatement;
                 while (true)
@@ -180,7 +173,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private void Remove([NotNull] IIfStatement ifStatementToRemove,
                 [NotNull] IDictionary<Location, IIfStatement> ifStatements)
             {
-                Location location = GetLocation(ifStatementToRemove);
+                Location location = ifStatementToRemove.GetLocationForKeyword();
                 ifStatements.Remove(location);
             }
         }

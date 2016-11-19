@@ -38,6 +38,7 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ExceptionFactory.cs" />
     <Compile Include="Extensions\AnalysisContextExtensions.cs" />
     <Compile Include="Extensions\CompilationExtensions.cs" />
     <Compile Include="Extensions\IdentifierExtensions.cs" />

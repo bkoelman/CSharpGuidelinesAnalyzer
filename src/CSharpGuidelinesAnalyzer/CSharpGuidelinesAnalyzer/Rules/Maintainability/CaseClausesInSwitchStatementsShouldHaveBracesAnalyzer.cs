@@ -1,7 +1,9 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
@@ -50,9 +52,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 var block = switchCase.Body[0] as IBlockStatement;
                 if (block == null)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, switchCase.Syntax.GetLocation()));
+                    ReportAtLastClause(switchCase, context);
                 }
             }
+        }
+
+        private static void ReportAtLastClause([NotNull] ISwitchCase switchCase, OperationAnalysisContext context)
+        {
+            ICaseClause lastClause = switchCase.Clauses.Last();
+            var labelSyntax = (CaseSwitchLabelSyntax) lastClause.Syntax;
+
+            context.ReportDiagnostic(Diagnostic.Create(Rule, labelSyntax.Keyword.GetLocation()));
         }
     }
 }

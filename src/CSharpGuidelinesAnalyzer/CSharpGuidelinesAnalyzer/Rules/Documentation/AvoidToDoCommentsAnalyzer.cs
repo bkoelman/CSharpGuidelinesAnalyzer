@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                throw new Exception("This program location is thought to be unreachable.");
+                throw ExceptionFactory.Unreachable();
             }
 
             private void ReportTodoCommentInfoFromSingleLine([NotNull] string message, int start,

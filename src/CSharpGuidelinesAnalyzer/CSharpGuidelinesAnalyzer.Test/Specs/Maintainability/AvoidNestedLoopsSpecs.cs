@@ -36,18 +36,22 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M()
                     {
-                        [|for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < 10; i++)
                         {
-                            for (int j = 0; j < 10; j++)
+                            [|for|] (int j = 0; j < 10; j++)
                             {
+                                [|for|] (int k = 0; k < 10; k++)
+                                {
+                                }
                             }
-                        }|]
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Loop statement contains nested loop.",
                 "Loop statement contains nested loop.");
         }
 
@@ -78,18 +82,22 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M()
                     {
-                        [|foreach (var outer in new int[0])
+                        foreach (var outer in new int[0])
                         {
-                            foreach (var inner in new int[0])
+                            [|foreach|] (var inner in new int[0])
                             {
+                                [|foreach|] (var nestedInner in new int[0])
+                                {
+                                }
                             }
-                        }|]
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Loop statement contains nested loop.",
                 "Loop statement contains nested loop.");
         }
 
@@ -120,18 +128,22 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M()
                     {
-                        [|while (true)
+                        while (true)
                         {
-                            while (true)
+                            [|while|] (true)
                             {
+                                [|while|] (true)
+                                {
+                                }
                             }
-                        }|]
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Loop statement contains nested loop.",
                 "Loop statement contains nested loop.");
         }
 
@@ -163,20 +175,25 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M()
                     {
-                        [|do
+                        do
                         {
-                            do
+                            [|do|]
                             {
+                                [|do|]
+                                {
+                                }
+                                while (true);
                             }
                             while (true);
                         }
-                        while (true);|]
+                        while (true);
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Loop statement contains nested loop.",
                 "Loop statement contains nested loop.");
         }
 

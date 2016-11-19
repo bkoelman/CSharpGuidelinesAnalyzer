@@ -48,35 +48,30 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            if (walker.HasSeenLoopStatement)
+            if (walker.LoopStatementLocation != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, loopStatement.Syntax.GetLocation()));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, walker.LoopStatementLocation));
             }
         }
 
         private sealed class LoopBodyWalker : OperationWalker
         {
-            public bool HasSeenLoopStatement { get; private set; }
+            [CanBeNull]
+            public Location LoopStatementLocation { get; private set; }
 
             public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
             {
-                HasSeenLoopStatement = true;
-
-                base.VisitWhileUntilLoopStatement(operation);
+                LoopStatementLocation = operation.GetLocationForKeyword();
             }
 
             public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
             {
-                HasSeenLoopStatement = true;
-
-                base.VisitForLoopStatement(operation);
+                LoopStatementLocation = operation.GetLocationForKeyword();
             }
 
             public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
             {
-                HasSeenLoopStatement = true;
-
-                base.VisitForEachLoopStatement(operation);
+                LoopStatementLocation = operation.GetLocationForKeyword();
             }
         }
     }

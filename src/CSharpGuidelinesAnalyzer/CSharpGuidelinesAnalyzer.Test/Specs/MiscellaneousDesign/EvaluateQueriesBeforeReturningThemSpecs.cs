@@ -124,7 +124,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable M(IList<int> source)
                         {
-                            [|return source.Where(x => true);|]
+                            [|return|] source.Where(x => true);
                         }
                     }
                 ")
@@ -172,7 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         IEnumerable<int> M(IList<int> source)
                         {
                             var result = source.Where(x => true);
-                            [|return result;|]
+                            [|return|] result;
                         }
                     }
                 ")
@@ -198,7 +198,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         IEnumerable<int> M(IList<int> source, bool condition)
                         {
                             var result = source.Where(x => true);
-                            [|return condition ? result : null;|]
+                            [|return|] condition ? result : null;
                         }
                     }
                 ")
@@ -224,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<int> M(IList<int> source, bool condition)
                         {
-                            [|return (condition ? (source.Where(x => true)) : (null));|]
+                            [|return|] (condition ? (source.Where(x => true)) : (null));
                         }
                     }
                 ")
@@ -276,7 +276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         {
                             IEnumerable<int> result = Enumerable.Empty<int>();
                             result = source.Where(x => true);
-                            [|return result;|]
+                            [|return|] result;
                         }
                     }
                 ")
@@ -335,7 +335,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                             var result2 = result1;
 
                             var result3 = result2;
-                            [|return result3;|]
+                            [|return|] result3;
                         }
                     }
                 ")
@@ -359,10 +359,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<int> M(IList<int> source)
                         {
-                            [|return
+                            [|return|]
                                 from item in Enumerable.Empty<int>()
                                 where item != 2
-                                select item;|]
+                                select item;
                         }
                     }
                 ")
@@ -386,10 +386,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<int> M(IList<int> source)
                         {
-                            [|return ((
+                            [|return|] ((
                                 from item in Enumerable.Empty<int>()
                                 where item != 2
-                                select item));|]
+                                select item));
                         }
                     }
                 ")
@@ -445,7 +445,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                                 where item != 2
                                 select item;
 
-                            [|return (result);|]
+                            [|return|] (result);
                         }
                     }
                 ")
@@ -501,7 +501,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         {
                             var result = source.ToArray();
 
-                            [|return result?.Select(x => x);|]
+                            [|return|] result?.Select(x => x);
                         }
                     }
                 ")
@@ -525,7 +525,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<int> M(IList<int> source)
                         {
-                            [|return source ?? new int[0].Select(x => x);|]
+                            [|return|] source ?? new int[0].Select(x => x);
                         }
                     }
                 ")
@@ -572,10 +572,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         {
                             IEnumerable<int> temp;
 
-                            [|return temp = new List<int>
+                            [|return|] temp = new List<int>
                             {
                                 1, 2, 3, 4, 5
-                            }.Skip(2);|]
+                            }.Skip(2);
                         }
                     }
                 ")
@@ -599,10 +599,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<int> M(ref IEnumerable<int> source)
                         {
-                            [|return source = new List<int>
+                            [|return|] source = new List<int>
                             {
                                 1, 2, 3, 4, 5
-                            }.Skip(2);|]
+                            }.Skip(2);
                         }
                     }
                 ")
@@ -628,10 +628,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
                         IEnumerable<int> M()
                         {
-                            [|return f = new List<int>
+                            [|return|] f = new List<int>
                             {
                                 1, 2, 3, 4, 5
-                            }.Skip(2);|]
+                            }.Skip(2);
                         }
                     }
                 ")
@@ -657,10 +657,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
                         IEnumerable<int> M()
                         {
-                            [|return P = new List<int>
+                            [|return|] P = new List<int>
                             {
                                 1, 2, 3, 4, 5
-                            }.Skip(2);|]
+                            }.Skip(2);
                         }
                     }
                 ")
@@ -684,7 +684,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<int> M(IEnumerable<int> source)
                         {
-                            [|return (IList<int>)source.Skip(2);|]
+                            [|return|] (IList<int>)source.Skip(2);
                         }
                     }
                 ")
@@ -729,7 +729,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         IEnumerable<IEnumerable<int>> M(IEnumerable<int> source)
                         {
-                            [|yield return source.Skip(2);|]
+                            [|yield return|] source.Skip(2);
                         }
                     }
                 ")
@@ -762,11 +762,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
                             if (flag)
                             {
-                                [|return result2;|]
+                                [|return|] result2;
                             }
                             else
                             {
-                                [|return result3;|]
+                                [|return|] result3;
                             }
                         }
                     }

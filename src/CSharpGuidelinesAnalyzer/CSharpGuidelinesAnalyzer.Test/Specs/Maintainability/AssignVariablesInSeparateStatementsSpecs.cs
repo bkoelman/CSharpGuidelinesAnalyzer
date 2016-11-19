@@ -238,9 +238,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|for (local1 = 1, field1 = 2, Property1 = 3, this[0] = 4; true; parameter1 = 5)
+                            [|for|] (local1 = 1, field1 = 2, Property1 = 3, this[0] = 4; true; parameter1 = 5)
                             {
-                            }|]
+                            }
                         }
                     }
                 ")
@@ -290,9 +290,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|foreach (var itr in new int[local1 = field1 = Property1 = this[0] = parameter1 = 5])
+                            [|foreach|] (var itr in new int[local1 = field1 = Property1 = this[0] = parameter1 = 5])
                             {
-                            }|]
+                            }
                         }
                     }
                 ")
@@ -342,9 +342,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|while ((local1 = field1 = Property1 = this[0] = parameter1 = 5) > 0)
+                            [|while|] ((local1 = field1 = Property1 = this[0] = parameter1 = 5) > 0)
                             {
-                            }|]
+                            }
                         }
                     }
                 ")
@@ -394,10 +394,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|do
+                            [|do|]
                             {
                             }
-                            while ((local1 = field1 = Property1 = this[0] = parameter1 = 5) > 0);|]
+                            while ((local1 = field1 = Property1 = this[0] = parameter1 = 5) > 0);
                         }
                     }
                 ")
@@ -449,9 +449,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|if ((local1 = field1 = Property1 = this[0] = parameter1 = 5) > 0)
+                            [|if|] ((local1 = field1 = Property1 = this[0] = parameter1 = 5) > 0)
                             {
-                            }|]
+                            }
                         }
                     }
                 ")
@@ -508,9 +508,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|switch (local1 = field1 = Property1 = this[0] = parameter1 = 4)
+                            [|switch|] (local1 = field1 = Property1 = this[0] = parameter1 = 4)
                             {
-                            }|]
+                            }
                         }
                     }
                 ")
@@ -563,7 +563,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|return (local1 = field1 = Property1 = this[0] = parameter1 = 4);|]
+                            [|return|] (local1 = field1 = Property1 = this[0] = parameter1 = 4);
                         }
                     }
                 ")
@@ -593,7 +593,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             int local1;
 
-                            [|yield return (local1 = field1 = Property1 = this[0] = 4);|]
+                            [|yield return|] (local1 = field1 = Property1 = this[0] = 4);
                         }
                     }
                 ")
@@ -622,9 +622,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             object local1;
 
-                            [|lock (local1 = field1 = Property1 = this[0] = parameter1 = new object())
+                            [|lock|] (local1 = field1 = Property1 = this[0] = parameter1 = new object())
                             {
-                            }|]
+                            }
                         }
                     }
                     ")
@@ -676,9 +676,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             IDisposable local1;
 
-                            [|using (local1 = field1 = Property1 = this[0] = parameter1 = null)
+                            [|using|] (local1 = field1 = Property1 = this[0] = parameter1 = null)
                             {
-                            }|]
+                            }
                         }
                     }
                 ")
@@ -730,7 +730,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             Exception local1;
 
-                            [|throw local1 = field1 = Property1 = this[0] = parameter1 = new Exception();|]
+                            [|throw|] local1 = field1 = Property1 = this[0] = parameter1 = new Exception();
                         }
                     }
                 ")

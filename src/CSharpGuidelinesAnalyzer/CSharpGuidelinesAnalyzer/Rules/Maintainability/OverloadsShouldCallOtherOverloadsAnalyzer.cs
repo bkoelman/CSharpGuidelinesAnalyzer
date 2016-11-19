@@ -223,8 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
             }
 
-            private void ScanInvocation([NotNull] IInvocationExpression operation,
-                [NotNull] IMethodSymbol methodToFind)
+            private void ScanInvocation([NotNull] IInvocationExpression operation, [NotNull] IMethodSymbol methodToFind)
             {
                 if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
                 {

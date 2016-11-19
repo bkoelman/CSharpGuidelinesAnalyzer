@@ -172,7 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private void ReportDiagnosticAt([NotNull] IReturnStatement returnStatement, [NotNull] string operationName,
             OperationBlockAnalysisContext context)
         {
-            Location location = returnStatement.Syntax.GetLocation();
+            Location location = returnStatement.GetLocationForKeyword();
             ISymbol containingMember = context.OwningSymbol.GetContainingMember();
             string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
