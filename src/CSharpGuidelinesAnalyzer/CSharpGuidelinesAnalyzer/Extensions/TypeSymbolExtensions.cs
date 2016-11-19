@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return false;
         }
 
-        public static bool IsNullableEnum([NotNull] this ITypeSymbol type)
+        public static bool IsNullableEnumeration([NotNull] this ITypeSymbol type)
         {
             Guard.NotNull(type, nameof(type));
 

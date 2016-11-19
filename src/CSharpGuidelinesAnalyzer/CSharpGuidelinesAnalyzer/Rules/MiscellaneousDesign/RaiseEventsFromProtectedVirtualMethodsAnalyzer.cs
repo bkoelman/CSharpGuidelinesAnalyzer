@@ -71,8 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationExpression invocation)
         {
-            IEventSymbol evnt = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol,
-                context.Compilation, context.CancellationToken);
+            IEventSymbol evnt = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
             if (evnt != null)
             {
                 IMethodSymbol containingMethod = TryGetContainingMethod(invocation, context);
@@ -82,32 +81,57 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         [CanBeNull]
         private IEventSymbol TryGetEvent([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
-            [NotNull] Compilation compilation, CancellationToken cancellationToken)
+            OperationAnalysisContext context)
+        {
+            return TryGetEventForInvocation(operation) ??
+                TryGetEventForNullConditionalAccessInvocation(operation, context.Compilation, context.CancellationToken) ??
+                TryGetEventForLocalCopy(operation, containingMethod, context);
+        }
+
+        [CanBeNull]
+        private IEventSymbol TryGetEventForInvocation([NotNull] IOperation operation)
         {
             var eventReference = operation as IEventReferenceExpression;
-            if (eventReference != null)
-            {
-                return eventReference.Event;
-            }
+            return eventReference?.Event;
+        }
 
+        [CanBeNull]
+        private IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation,
+            [NotNull] Compilation compilation, CancellationToken cancellationToken)
+        {
             var conditionalAccess = operation as IConditionalAccessInstanceExpression;
             if (conditionalAccess != null)
             {
                 SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
-                var eventSymbol = model.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
-                return eventSymbol;
+                return model.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
             }
 
+            return null;
+        }
+
+        [CanBeNull]
+        private IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation,
+            [CanBeNull] IMethodSymbol containingMethod, OperationAnalysisContext context)
+        {
             var local = operation as ILocalReferenceExpression;
-            if (local != null && containingMethod != null)
+
+            return local != null && containingMethod != null
+                ? TryGetEventFromMethodStatements(containingMethod, local.Local, context)
+                : null;
+        }
+
+        [CanBeNull]
+        private IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod,
+            [NotNull] ILocalSymbol local, OperationAnalysisContext context)
+        {
+            IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation,
+                context.CancellationToken);
+            if (body != null)
             {
-                IOperation body = containingMethod.TryGetOperationBlockForMethod(compilation, cancellationToken);
-                if (body != null)
-                {
-                    var walker = new LocalAssignmentWalker(local.Local);
-                    walker.Visit(body);
-                    return walker.Event;
-                }
+                var walker = new LocalAssignmentWalker(local);
+                walker.Visit(body);
+
+                return walker.Event;
             }
 
             return null;

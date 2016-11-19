@@ -58,11 +58,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var namespaceSymbol = (INamespaceSymbol) context.Symbol;
 
-            if (!IsTopLevelNamespace(namespaceSymbol))
+            if (IsTopLevelNamespace(namespaceSymbol))
             {
-                return;
+                AnalyzeTopLevelNamespace(namespaceSymbol, context);
             }
+        }
 
+        private static bool IsTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol)
+        {
+            return namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
+        }
+
+        private static void AnalyzeTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol,
+            SymbolAnalysisContext context)
+        {
             string reportAssemblyName = namespaceSymbol.ContainingAssembly.Name;
             string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
 
@@ -70,11 +79,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             var visitor = new TypesInNamespaceVisitor(assemblyName, reportAssemblyName, context);
             visitor.Visit(namespaceSymbol);
-        }
-
-        private static bool IsTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol)
-        {
-            return namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
         }
 
         [NotNull]
@@ -147,35 +151,40 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 namespaceNames.Push(symbol.Name);
 
-                if (!IsCurrentNamespaceValid(NamespaceMatchMode.RequirePartialMatchWithAssemblyName))
+                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequirePartialMatchWithAssemblyName))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
                         reportAssemblyName));
                 }
 
-                foreach (INamedTypeSymbol typeMember in symbol.GetTypeMembers())
-                {
-                    VisitNamedType(typeMember);
-                }
-
-                foreach (INamespaceSymbol namespaceMember in symbol.GetNamespaceMembers())
-                {
-                    VisitNamespace(namespaceMember);
-                }
+                VisitChildren(symbol);
 
                 namespaceNames.Pop();
             }
 
+            private void VisitChildren([NotNull] INamespaceSymbol namespaceSymbol)
+            {
+                foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
+                {
+                    VisitNamedType(typeMember);
+                }
+
+                foreach (INamespaceSymbol namespaceMember in namespaceSymbol.GetNamespaceMembers())
+                {
+                    VisitNamespace(namespaceMember);
+                }
+            }
+
             public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
             {
-                if (!IsCurrentNamespaceValid(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName))
+                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
                         CurrentNamespaceName, reportAssemblyName));
                 }
             }
 
-            private bool IsCurrentNamespaceValid(NamespaceMatchMode matchMode)
+            private bool IsCurrentNamespaceAllowed(NamespaceMatchMode matchMode)
             {
                 string[] currentNamespaceParts = namespaceNames.Reverse().ToArray();
 
@@ -184,19 +193,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     return true;
                 }
 
-                if (matchMode == NamespaceMatchMode.RequireCompleteMatchWithAssemblyName &&
-                    assemblyNameParts.Length > currentNamespaceParts.Length)
+                bool? isMatchOnParts = IsMatchOnNamespaceParts(currentNamespaceParts, matchMode);
+                if (isMatchOnParts != null)
                 {
-                    return false;
-                }
-
-                int commonLength = Math.Min(currentNamespaceParts.Length, assemblyNameParts.Length);
-                for (int index = 0; index < commonLength; index++)
-                {
-                    if (currentNamespaceParts[index] != assemblyNameParts[index])
-                    {
-                        return false;
-                    }
+                    return isMatchOnParts.Value;
                 }
 
                 return true;
@@ -216,6 +216,28 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
 
                 return false;
+            }
+
+            [CanBeNull]
+            private bool? IsMatchOnNamespaceParts([NotNull] [ItemNotNull] string[] currentNamespaceParts,
+                NamespaceMatchMode matchMode)
+            {
+                if (matchMode == NamespaceMatchMode.RequireCompleteMatchWithAssemblyName &&
+                    assemblyNameParts.Length > currentNamespaceParts.Length)
+                {
+                    return false;
+                }
+
+                int commonLength = Math.Min(currentNamespaceParts.Length, assemblyNameParts.Length);
+                for (int index = 0; index < commonLength; index++)
+                {
+                    if (currentNamespaceParts[index] != assemblyNameParts[index])
+                    {
+                        return false;
+                    }
+                }
+
+                return null;
             }
 
             private enum NamespaceMatchMode

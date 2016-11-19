@@ -52,15 +52,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var binding = assignment.HandlerValue as IMethodBindingExpression;
             if (binding?.Method != null)
             {
-                string eventTargetName = GetEventTargetName(assignment.EventInstance);
-                string handlerNameExpected = "On" + eventTargetName + assignment.Event.Name;
+                AnalyzeEventAssignmentMethod(binding, assignment, context);
+            }
+        }
 
-                string handlerNameActual = binding.Method.Name;
-                if (handlerNameActual != handlerNameExpected)
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), handlerNameActual,
-                        assignment.Event.Name, handlerNameExpected));
-                }
+        private static void AnalyzeEventAssignmentMethod([NotNull] IMethodBindingExpression binding,
+            [NotNull] IEventAssignmentExpression assignment, OperationAnalysisContext context)
+        {
+            string eventTargetName = GetEventTargetName(assignment.EventInstance);
+            string handlerNameExpected = "On" + eventTargetName + assignment.Event.Name;
+
+            string handlerNameActual = binding.Method.Name;
+            if (handlerNameActual != handlerNameExpected)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), handlerNameActual,
+                    assignment.Event.Name, handlerNameExpected));
             }
         }
 

@@ -43,12 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.RefKind != RefKind.None)
-            {
-                return;
-            }
-
-            if (parameter.Type.TypeKind == TypeKind.Struct && !IsIntegralType(parameter.Type))
+            if (parameter.RefKind != RefKind.None || IsNonIntegralStruct(parameter))
             {
                 return;
             }
@@ -59,6 +54,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
+            AnalyzeParameterUsageInMethod(parameter, method, context);
+        }
+
+        private static void AnalyzeParameterUsageInMethod([NotNull] IParameterSymbol parameter,
+            [NotNull] IMethodSymbol method, SymbolAnalysisContext context)
+        {
             SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (body != null)
             {
@@ -72,6 +73,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     }
                 }
             }
+        }
+
+        private bool IsNonIntegralStruct([NotNull] IParameterSymbol parameter)
+        {
+            return parameter.Type.TypeKind == TypeKind.Struct && !IsIntegralType(parameter.Type);
         }
 
         private bool IsIntegralType([NotNull] ITypeSymbol type)

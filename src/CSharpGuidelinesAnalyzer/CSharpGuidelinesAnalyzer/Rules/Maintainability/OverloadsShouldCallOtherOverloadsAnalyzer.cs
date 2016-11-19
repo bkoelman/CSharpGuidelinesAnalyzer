@@ -107,24 +107,30 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
                 }
 
-                foreach (IMethodSymbol overload in methodGroup.Where(method => !method.Equals(longestOverload)))
+                AnalyzeOverloads(methodGroup, longestOverload, context);
+            }
+        }
+
+        private void AnalyzeOverloads([NotNull] [ItemNotNull] ICollection<IMethodSymbol> methodGroup,
+            [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
+        {
+            foreach (IMethodSymbol overload in methodGroup.Where(method => !method.Equals(longestOverload)))
+            {
+                if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
+                    !overload.HidesBaseMember(context.CancellationToken))
                 {
-                    if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
-                        !overload.HidesBaseMember(context.CancellationToken))
-                    {
-                        CompareParameterOrder(overload, longestOverload, context);
-                    }
+                    CompareOrderOfParameters(overload, longestOverload, context);
+                }
 
-                    ImmutableArray<IMethodSymbol> otherOverloads =
-                        methodGroup.Where(m => !m.Equals(overload)).ToImmutableArray();
+                ImmutableArray<IMethodSymbol> otherOverloads =
+                    methodGroup.Where(m => !m.Equals(overload)).ToImmutableArray();
 
-                    if (!HasInvocationToAnyOf(otherOverloads, overload, context.Compilation, context.CancellationToken))
-                    {
-                        IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
+                if (!HasInvocationToAnyOf(otherOverloads, overload, context))
+                {
+                    IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
 
-                        context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
-                            methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
-                    }
+                    context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
+                        methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
                 }
             }
         }
@@ -146,12 +152,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 !method.ExplicitInterfaceImplementations.Any();
         }
 
-        private void CompareParameterOrder([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
+        private void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
             SymbolAnalysisContext context)
         {
-            bool hasMismatch = false;
             List<IParameterSymbol> parametersInlongestOverload = longestOverload.Parameters.ToList();
 
+            if (!AreParametersDeclaredInSameOrder(method, parametersInlongestOverload))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(OrderRule, method.Locations[0],
+                    method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+            }
+        }
+
+        private static bool AreParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
+            [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInlongestOverload)
+        {
             for (int parameterIndex = 0; parameterIndex < method.Parameters.Length; parameterIndex++)
             {
                 string parameterName = method.Parameters[parameterIndex].Name;
@@ -159,22 +174,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 int indexInLongestOverload = parametersInlongestOverload.FindIndex(p => p.Name == parameterName);
                 if (indexInLongestOverload != -1 && indexInLongestOverload != parameterIndex)
                 {
-                    hasMismatch = true;
+                    return false;
                 }
             }
-
-            if (hasMismatch)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(OrderRule, method.Locations[0],
-                    method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
-            }
+            return true;
         }
 
         private bool HasInvocationToAnyOf([ItemNotNull] ImmutableArray<IMethodSymbol> methodsToInvoke,
-            [NotNull] IMethodSymbol methodToAnalyze, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
+            [NotNull] IMethodSymbol methodToAnalyze, SymbolAnalysisContext context)
         {
-            IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(compilation, cancellationToken);
+            IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation,
+                context.CancellationToken);
             if (operation != null)
             {
                 var walker = new MethodInvocationWalker(methodsToInvoke);
@@ -203,22 +213,28 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     foreach (IMethodSymbol methodToFind in methodsToFind)
                     {
-                        if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
-                        {
-                            ScanExplicitInterfaceInvocation(operation, methodToFind);
-                        }
-                        else
-                        {
-                            if (methodsToFind.Any(method => method.Equals(operation.TargetMethod)))
-                            {
-                                HasFoundInvocation = true;
-                            }
-                        }
+                        ScanInvocation(operation, methodToFind);
                     }
 
                     if (!HasFoundInvocation)
                     {
                         base.VisitInvocationExpression(operation);
+                    }
+                }
+            }
+
+            private void ScanInvocation([NotNull] IInvocationExpression operation,
+                [NotNull] IMethodSymbol methodToFind)
+            {
+                if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
+                {
+                    ScanExplicitInterfaceInvocation(operation, methodToFind);
+                }
+                else
+                {
+                    if (methodsToFind.Any(method => method.Equals(operation.TargetMethod)))
+                    {
+                        HasFoundInvocation = true;
                     }
                 }
             }

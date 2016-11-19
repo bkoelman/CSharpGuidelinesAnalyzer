@@ -40,16 +40,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (!startContext.Compilation.SupportsOperations())
+                if (startContext.Compilation.SupportsOperations())
                 {
-                    return;
-                }
-
-                INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
-                if (systemBoolean != null)
-                {
-                    startContext.RegisterOperationAction(
-                        c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)), OperationKind.SwitchStatement);
+                    INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
+                    if (systemBoolean != null)
+                    {
+                        startContext.RegisterOperationAction(
+                            c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),
+                            OperationKind.SwitchStatement);
+                    }
                 }
             });
         }
@@ -65,8 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            var analysisContext = new SwitchAnalysisContext(switchStatement, context.Compilation, systemBoolean,
-                context.CancellationToken);
+            var analysisContext = new SwitchAnalysisContext(switchStatement, systemBoolean, context);
 
             if (IsSwitchComplete(analysisContext) == false)
             {
@@ -84,66 +82,59 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
         {
             IdentifierInfo identifierInfo = analysisContext.SwitchStatement.Value.TryGetIdentifierInfo();
-            if (identifierInfo != null)
+
+            return identifierInfo != null ? IsSwitchComplete(analysisContext, identifierInfo) : null;
+        }
+
+        [CanBeNull]
+        private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
+            [NotNull] IdentifierInfo identifierInfo)
+        {
+            return IsSwitchCompleteForBooleanTypes(identifierInfo, analysisContext) ??
+                IsSwitchCompleteForEnumerationTypes(identifierInfo, analysisContext);
+        }
+
+        [CanBeNull]
+        private bool? IsSwitchCompleteForBooleanTypes([NotNull] IdentifierInfo identifierInfo,
+            [NotNull] SwitchAnalysisContext analysisContext)
+        {
+            bool isBoolean = identifierInfo.Type.SpecialType == SpecialType.System_Boolean;
+            bool isNullableBoolean = identifierInfo.Type.IsNullableBoolean();
+
+            if (isBoolean || isNullableBoolean)
             {
-                if (identifierInfo.Type.SpecialType == SpecialType.System_Boolean)
-                {
-                    return IsBooleanSwitchComplete(analysisContext);
-                }
+                ImmutableArray<ISymbol> possibleValues = isBoolean
+                    ? ImmutableArray.Create(analysisContext.BooleanTrue, analysisContext.BooleanFalse)
+                    : ImmutableArray.Create(analysisContext.BooleanTrue, analysisContext.BooleanFalse, null);
 
-                if (identifierInfo.Type.IsNullableBoolean())
-                {
-                    return IsNullableBooleanSwitchComplete(analysisContext);
-                }
-
-                if (identifierInfo.Type.BaseType != null &&
-                    identifierInfo.Type.BaseType.SpecialType == SpecialType.System_Enum)
-                {
-                    var enumType = (INamedTypeSymbol) identifierInfo.Type;
-                    ISymbol[] enumMembers = enumType.GetMembers().OfType<IFieldSymbol>().Cast<ISymbol>().ToArray();
-                    return IsEnumSwitchComplete(analysisContext, enumMembers);
-                }
-
-                if (identifierInfo.Type.IsNullableEnum())
-                {
-                    ITypeSymbol enumType = ((INamedTypeSymbol) identifierInfo.Type).TypeArguments[0];
-                    IEnumerable<IFieldSymbol> enumMembers = enumType.GetMembers().OfType<IFieldSymbol>();
-                    return IsNullableEnumSwitchComplete(analysisContext, enumMembers);
-                }
+                return HasCaseClausesFor(possibleValues, analysisContext);
             }
 
             return null;
         }
 
         [CanBeNull]
-        private bool? IsBooleanSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
+        private bool? IsSwitchCompleteForEnumerationTypes([NotNull] IdentifierInfo identifierInfo,
+            [NotNull] SwitchAnalysisContext analysisContext)
         {
-            ImmutableArray<ISymbol> booleanTrueFalse = ImmutableArray.Create(analysisContext.BooleanTrue,
-                analysisContext.BooleanFalse);
-            return HasCaseClausesFor(booleanTrueFalse, analysisContext);
-        }
+            bool isEnumeration = identifierInfo.Type.BaseType != null &&
+                identifierInfo.Type.BaseType.SpecialType == SpecialType.System_Enum;
+            bool isNullableEnumeration = identifierInfo.Type.IsNullableEnumeration();
 
-        [CanBeNull]
-        private bool? IsNullableBooleanSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
-        {
-            ImmutableArray<ISymbol> booleanTrueFalseNull = ImmutableArray.Create(analysisContext.BooleanTrue,
-                analysisContext.BooleanFalse, null);
-            return HasCaseClausesFor(booleanTrueFalseNull, analysisContext);
-        }
+            if (isEnumeration || isNullableEnumeration)
+            {
+                ITypeSymbol enumType = isEnumeration
+                    ? (INamedTypeSymbol) identifierInfo.Type
+                    : ((INamedTypeSymbol) identifierInfo.Type).TypeArguments[0];
 
-        [CanBeNull]
-        private bool? IsEnumSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
-            [NotNull] [ItemNotNull] ICollection<ISymbol> enumMembers)
-        {
-            return HasCaseClausesFor(enumMembers, analysisContext);
-        }
+                ISymbol[] possibleValues = isEnumeration
+                    ? enumType.GetMembers().OfType<IFieldSymbol>().Cast<ISymbol>().ToArray()
+                    : enumType.GetMembers().OfType<IFieldSymbol>().Concat(NullSymbolArray).ToArray();
 
-        [CanBeNull]
-        private bool? IsNullableEnumSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
-            [NotNull] [ItemNotNull] IEnumerable<IFieldSymbol> enumMembers)
-        {
-            ISymbol[] expectedValues = enumMembers.Concat(NullSymbolArray).ToArray();
-            return HasCaseClausesFor(expectedValues, analysisContext);
+                return HasCaseClausesFor(possibleValues, analysisContext);
+            }
+
+            return null;
         }
 
         [CanBeNull]
@@ -244,16 +235,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull]
             public ISymbol BooleanFalse { get; }
 
-            public SwitchAnalysisContext([NotNull] ISwitchStatement switchStatement, [NotNull] Compilation compilation,
-                [NotNull] INamedTypeSymbol systemBoolean, CancellationToken cancellationToken)
+            public SwitchAnalysisContext([NotNull] ISwitchStatement switchStatement,
+                [NotNull] INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
             {
                 Guard.NotNull(switchStatement, nameof(switchStatement));
-                Guard.NotNull(compilation, nameof(compilation));
                 Guard.NotNull(systemBoolean, nameof(systemBoolean));
 
                 SwitchStatement = switchStatement;
-                this.compilation = compilation;
-                CancellationToken = cancellationToken;
+                compilation = context.Compilation;
+                CancellationToken = context.CancellationToken;
 
                 BooleanTrue = systemBoolean.GetMembers("TrueString").Single();
                 BooleanFalse = systemBoolean.GetMembers("FalseString").Single();

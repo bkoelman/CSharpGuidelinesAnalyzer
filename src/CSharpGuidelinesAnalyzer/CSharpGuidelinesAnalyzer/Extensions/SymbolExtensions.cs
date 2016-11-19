@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
@@ -148,36 +149,71 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken))
                     .ToArray();
 
+            return TryGetBodyForMethodSyntaxNodes(method, syntaxNodes, cancellationToken) ??
+                TryGetBodyForConstructorSyntaxNodes(syntaxNodes);
+        }
+
+        [CanBeNull]
+        private static SyntaxNode TryGetBodyForMethodSyntaxNodes([NotNull] IMethodSymbol method,
+            [NotNull] [ItemNotNull] IEnumerable<SyntaxNode> syntaxNodes, CancellationToken cancellationToken)
+        {
             foreach (SyntaxNode syntaxNode in syntaxNodes)
             {
-                var methodSyntax = syntaxNode as MethodDeclarationSyntax;
-                if (methodSyntax != null)
+                SyntaxNode bodySyntax = TryGetBodyForMethodSyntax(syntaxNode, method, cancellationToken) ??
+                    TryGetBodyForAnonymousFunctionSyntax(syntaxNode);
+
+                if (bodySyntax != null)
                 {
-                    if (methodSyntax.Body != null)
-                    {
-                        return methodSyntax.Body;
-                    }
-
-                    if (methodSyntax.ExpressionBody?.Expression != null)
-                    {
-                        return methodSyntax.ExpressionBody.Expression;
-                    }
-
-                    if (method.PartialImplementationPart != null)
-                    {
-                        return TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken);
-                    }
-                }
-
-                var lambdaSyntax = syntaxNode as AnonymousFunctionExpressionSyntax;
-                if (lambdaSyntax?.Body != null)
-                {
-                    return lambdaSyntax.Body;
+                    return bodySyntax;
                 }
             }
 
-            foreach (ConstructorDeclarationSyntax constructorSyntax in
-                syntaxNodes.OfType<ConstructorDeclarationSyntax>())
+            return null;
+        }
+
+        [CanBeNull]
+        private static SyntaxNode TryGetBodyForMethodSyntax([CanBeNull] SyntaxNode syntaxNode,
+            [NotNull] IMethodSymbol method, CancellationToken cancellationToken)
+        {
+            var methodSyntax = syntaxNode as MethodDeclarationSyntax;
+            if (methodSyntax != null)
+            {
+                return TryGetBodyForMethodBlockOrArrowExpressionSyntax(methodSyntax) ??
+                    TryGetBodyForPartialMethodSyntax(method, cancellationToken);
+            }
+
+            return null;
+        }
+
+        [CanBeNull]
+        private static SyntaxNode TryGetBodyForMethodBlockOrArrowExpressionSyntax(
+            [NotNull] MethodDeclarationSyntax methodSyntax)
+        {
+            return (SyntaxNode) methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
+        }
+
+        [CanBeNull]
+        private static SyntaxNode TryGetBodyForPartialMethodSyntax([NotNull] IMethodSymbol method,
+            CancellationToken cancellationToken)
+        {
+            return method.PartialImplementationPart != null
+                ? TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken)
+                : null;
+        }
+
+        [CanBeNull]
+        private static SyntaxNode TryGetBodyForAnonymousFunctionSyntax([NotNull] SyntaxNode syntaxNode)
+        {
+            var lambdaSyntax = syntaxNode as AnonymousFunctionExpressionSyntax;
+            return lambdaSyntax?.Body;
+        }
+
+        [CanBeNull]
+        private static SyntaxNode TryGetBodyForConstructorSyntaxNodes(
+            [NotNull] [ItemNotNull] IEnumerable<SyntaxNode> syntaxNodes)
+        {
+            foreach (
+                ConstructorDeclarationSyntax constructorSyntax in syntaxNodes.OfType<ConstructorDeclarationSyntax>())
             {
                 if (constructorSyntax.Body != null)
                 {
