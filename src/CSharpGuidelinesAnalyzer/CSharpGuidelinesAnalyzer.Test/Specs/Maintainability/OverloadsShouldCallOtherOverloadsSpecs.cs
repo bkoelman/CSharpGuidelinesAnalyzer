@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum E
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     interface I
-                    { 
+                    {
                         void M();
 
                         void M(string s);

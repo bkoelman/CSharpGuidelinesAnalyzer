@@ -21,8 +21,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         void [|M|]()
                         {
                             ; ;
-                            ; ; 
-                            ; ; 
+                            ; ;
+                            ; ;
                             ; ;
                         }
                     }
@@ -45,8 +45,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         void M()
                         {
                             ; ;
-                            ; ; 
-                            ; ; 
+                            ; ;
+                            ; ;
                             ;
                         }
                     }

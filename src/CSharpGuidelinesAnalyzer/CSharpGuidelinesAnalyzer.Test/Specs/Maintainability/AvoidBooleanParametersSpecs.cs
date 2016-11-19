@@ -68,9 +68,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     public bool B
                     {
                         get { throw new NotImplementedException(); }
-                        set 
-                        { 
-                            value = true; 
+                        set
+                        {
+                            value = true;
                         }
                     }
                 ")
@@ -89,9 +89,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     public bool? B
                     {
                         get { throw new NotImplementedException(); }
-                        set 
-                        { 
-                            value = true; 
+                        set
+                        {
+                            value = true;
                         }
                     }
                 ")
@@ -255,9 +255,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public abstract class C
                     {
-                        public abstract int this[bool [|b|]] 
-                        { 
-                            get; set; 
+                        public abstract int this[bool [|b|]]
+                        {
+                            get; set;
                         }
                     }
 
@@ -285,9 +285,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public abstract class C
                     {
-                        public abstract int this[bool? [|b|]] 
-                        { 
-                            get; set; 
+                        public abstract int this[bool? [|b|]]
+                        {
+                            get; set;
                         }
                     }
 
@@ -315,8 +315,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public class C
                     {
-                        public virtual int this[bool [|b|]] 
-                        { 
+                        public virtual int this[bool [|b|]]
+                        {
                             get { throw new NotImplementedException(); }
                             set { throw new NotImplementedException(); }
                         }
@@ -346,8 +346,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public class C
                     {
-                        public virtual int this[bool? [|b|]] 
-                        { 
+                        public virtual int this[bool? [|b|]]
+                        {
                             get { throw new NotImplementedException(); }
                             set { throw new NotImplementedException(); }
                         }
@@ -480,9 +480,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public interface I
                     {
-                        int this[bool [|b|]] 
-                        { 
-                            get; set; 
+                        int this[bool [|b|]]
+                        {
+                            get; set;
                         }
                     }
 
@@ -512,9 +512,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public interface I
                     {
-                        int this[bool? [|b|]] 
-                        { 
-                            get; set; 
+                        int this[bool? [|b|]]
+                        {
+                            get; set;
                         }
                     }
 
@@ -543,9 +543,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public interface I
                     {
-                        int this[bool [|b|]] 
-                        { 
-                            get; set; 
+                        int this[bool [|b|]]
+                        {
+                            get; set;
                         }
                     }
 
@@ -575,9 +575,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     public interface I
                     {
-                        int this[bool? [|b|]] 
-                        { 
-                            get; set; 
+                        int this[bool? [|b|]]
+                        {
+                            get; set;
                         }
                     }
 

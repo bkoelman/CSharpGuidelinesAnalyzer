@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class [|C|]
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     static class SomeExtensions
-                    {                        
+                    {
                     }
                 ")
                 .Build();

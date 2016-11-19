@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class NoDigits
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class [|C5|]
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct NoDigits
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     struct [|S22|]
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum NoDigits
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     enum [|E3|]
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     interface INoDigits
-                    {                        
+                    {
                     }
                 ")
                 .Build();
@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     interface [|I9|]
-                    {                        
+                    {
                     }
                 ")
                 .Build();

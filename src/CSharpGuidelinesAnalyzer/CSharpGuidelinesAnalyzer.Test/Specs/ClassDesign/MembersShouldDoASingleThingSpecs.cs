@@ -75,13 +75,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                     {
                         public event EventHandler [|CustomerAndOrderSaved|]
                         {
-                            add 
-                            { 
-                                throw new NotImplementedException(); 
+                            add
+                            {
+                                throw new NotImplementedException();
                             }
-                            remove 
-                            { 
-                                throw new NotImplementedException(); 
+                            remove
+                            {
+                                throw new NotImplementedException();
                             }
                         }
                     }

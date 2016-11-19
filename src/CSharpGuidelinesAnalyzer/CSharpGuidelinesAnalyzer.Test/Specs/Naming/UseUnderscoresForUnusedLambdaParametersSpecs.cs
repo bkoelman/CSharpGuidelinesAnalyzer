@@ -39,7 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .InDefaultClass(@"
                     void M()
                     {
-                        N(([|x|], [|y|]) => 
+                        N(([|x|], [|y|]) =>
                         {
                             throw new NotImplementedException();
                         });
@@ -128,7 +128,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .InDefaultClass(@"
                     void M()
                     {
-                        N(x => 
+                        N(x =>
                         {
                             x = 5;
                             return true;
@@ -155,7 +155,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                     {
                         void M()
                         {
-                            N(x => 
+                            N(x =>
                             {
                                 N(_ => x > 5);
                                 return true;

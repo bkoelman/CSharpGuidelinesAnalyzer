@@ -518,7 +518,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M()
                     {
-                        N(p => 
+                        N(p =>
                         {
                             Console.WriteLine(p);
                             return true;
@@ -543,7 +543,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M()
                     {
-                        N([|p|] => 
+                        N([|p|] =>
                         {
                             p = ""A"";
                             return true;

@@ -224,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
                         // Assert
                         Debug.Assert(x == 9);
-                        
+
                     }
                 ")
                 .Build();

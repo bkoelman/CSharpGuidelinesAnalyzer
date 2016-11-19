@@ -148,13 +148,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                     {
                         event EventHandler [|RegistrationCompleted|]
                         {
-                            add 
-                            { 
-                                throw new NotImplementedException(); 
+                            add
+                            {
+                                throw new NotImplementedException();
                             }
-                            remove 
-                            { 
-                                throw new NotImplementedException(); 
+                            remove
+                            {
+                                throw new NotImplementedException();
                             }
                         }
                     }
@@ -177,13 +177,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                     {
                         event EventHandler Completed
                         {
-                            add 
-                            { 
-                                throw new NotImplementedException(); 
+                            add
+                            {
+                                throw new NotImplementedException();
                             }
-                            remove 
-                            { 
-                                throw new NotImplementedException(); 
+                            remove
+                            {
+                                throw new NotImplementedException();
                             }
                         }
                     }
