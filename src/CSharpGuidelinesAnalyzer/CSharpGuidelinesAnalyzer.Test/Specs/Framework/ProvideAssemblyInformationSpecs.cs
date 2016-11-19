@@ -26,7 +26,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                     [assembly: AssemblyCopyright(""XXX"")]
                     [assembly: AssemblyTrademark(""XXX"")]
                     [assembly: AssemblyVersion(""1.2.3.4"")]
-                    [assembly: AssemblyFileVersion(""1.2.3.4"")]
                 ")
                 .Build();
 
@@ -62,8 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 "Assembly-level attribute 'System.Reflection.AssemblyProductAttribute' is missing or empty.",
                 "Assembly-level attribute 'System.Reflection.AssemblyCopyrightAttribute' is missing or empty.",
                 "Assembly-level attribute 'System.Reflection.AssemblyTrademarkAttribute' is missing or empty.",
-                "Assembly-level attribute 'System.Reflection.AssemblyVersionAttribute' is missing or empty.",
-                "Assembly-level attribute 'System.Reflection.AssemblyFileVersionAttribute' is missing or empty.");
+                "Assembly-level attribute 'System.Reflection.AssemblyVersionAttribute' is missing or empty.");
         }
 
         [Fact]
@@ -85,8 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 "Assembly-level attribute 'System.Reflection.AssemblyProductAttribute' is missing or empty.",
                 "Assembly-level attribute 'System.Reflection.AssemblyCopyrightAttribute' is missing or empty.",
                 "Assembly-level attribute 'System.Reflection.AssemblyTrademarkAttribute' is missing or empty.",
-                "Assembly-level attribute 'System.Reflection.AssemblyVersionAttribute' is missing or empty.",
-                "Assembly-level attribute 'System.Reflection.AssemblyFileVersionAttribute' is missing or empty.");
+                "Assembly-level attribute 'System.Reflection.AssemblyVersionAttribute' is missing or empty.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

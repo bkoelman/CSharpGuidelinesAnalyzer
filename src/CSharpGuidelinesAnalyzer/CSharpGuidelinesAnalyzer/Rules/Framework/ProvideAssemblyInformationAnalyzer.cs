@@ -59,8 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                     compilation.GetTypeByMetadataName("System.Reflection.AssemblyProductAttribute"),
                     compilation.GetTypeByMetadataName("System.Reflection.AssemblyCopyrightAttribute"),
                     compilation.GetTypeByMetadataName("System.Reflection.AssemblyTrademarkAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyVersionAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyFileVersionAttribute"));
+                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyVersionAttribute"));
 
             return attributes.Any(attr => attr == null)
                 ? new ConcurrentQueue<INamedTypeSymbol>()
