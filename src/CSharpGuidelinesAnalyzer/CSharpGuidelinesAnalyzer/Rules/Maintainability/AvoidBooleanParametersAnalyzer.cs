@@ -36,10 +36,37 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.Type.SpecialType == SpecialType.System_Boolean || parameter.Type.IsNullableBoolean())
+            if (IsParameterAccessible(parameter))
             {
-                AnalyzeBooleanParameter(parameter, context);
+                if (parameter.Type.SpecialType == SpecialType.System_Boolean || parameter.Type.IsNullableBoolean())
+                {
+                    AnalyzeBooleanParameter(parameter, context);
+                }
             }
+        }
+
+        private static bool IsParameterAccessible([NotNull] IParameterSymbol parameter)
+        {
+            ISymbol containingMember = parameter.ContainingSymbol;
+
+            return containingMember.DeclaredAccessibility != Accessibility.Private &&
+                IsSymbolAccessibleFromRoot(containingMember);
+        }
+
+        private static bool IsSymbolAccessibleFromRoot([CanBeNull] ISymbol symbol)
+        {
+            ISymbol container = symbol;
+            while (container != null)
+            {
+                if (container.DeclaredAccessibility == Accessibility.Private)
+                {
+                    return false;
+                }
+
+                container = container.ContainingType;
+            }
+
+            return true;
         }
 
         private void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
