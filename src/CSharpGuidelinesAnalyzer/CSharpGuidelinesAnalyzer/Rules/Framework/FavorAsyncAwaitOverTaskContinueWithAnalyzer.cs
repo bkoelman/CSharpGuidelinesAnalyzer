@@ -35,21 +35,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (!startContext.Compilation.SupportsOperations())
+                if (startContext.Compilation.SupportsOperations())
                 {
-                    return;
-                }
-
-                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-                if (taskType != null)
-                {
-                    ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
-
-                    startContext.RegisterOperationAction(
-                        c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
-                        OperationKind.InvocationExpression);
+                    AnalyzeCompilation(startContext);
                 }
             });
+        }
+
+        private void AnalyzeCompilation([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+            if (taskType != null)
+            {
+                ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
+
+                startContext.RegisterOperationAction(
+                    c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
+                    OperationKind.InvocationExpression);
+            }
         }
 
         private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType,

@@ -66,23 +66,32 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            if (context.Symbol.AreDocumentationCommentsReported() &&
-                context.Symbol.DeclaredAccessibility == Accessibility.Internal)
+            if (context.Symbol.AreDocumentationCommentsReported() && IsTypeAccessible(context.Symbol))
             {
                 AnalyzeSymbol(context.Symbol, context);
             }
+        }
+
+        private static bool IsTypeAccessible([NotNull] ISymbol symbol)
+        {
+            return symbol.DeclaredAccessibility == Accessibility.Internal;
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (context.Symbol.AreDocumentationCommentsReported() && !context.Symbol.IsPropertyOrEventAccessor() &&
-                context.Symbol.DeclaredAccessibility == Accessibility.Internal && IsAccessibleFromRoot(context.Symbol))
+                IsMemberAccessible(context.Symbol))
             {
                 AnalyzeSymbol(context.Symbol, context);
             }
         }
 
-        private static bool IsAccessibleFromRoot([CanBeNull] ISymbol symbol)
+        private static bool IsMemberAccessible([NotNull] ISymbol symbol)
+        {
+            return symbol.DeclaredAccessibility == Accessibility.Internal && IsSymbolAccessibleFromRoot(symbol);
+        }
+
+        private static bool IsSymbolAccessibleFromRoot([CanBeNull] ISymbol symbol)
         {
             ISymbol container = symbol;
             while (container != null)
@@ -119,32 +128,78 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
             [CanBeNull] string documentationXml, SymbolAnalysisContext context)
         {
-            ISet<string> parameterNamesInDocumentation = TryParseDocumentationCommentXml(documentationXml);
-            if (parameterNamesInDocumentation == null)
+            ISet<string> parameterNamesInDocumentation = string.IsNullOrEmpty(documentationXml)
+                ? EmptyHashSet
+                : TryParseDocumentationCommentXml(documentationXml);
+
+            if (parameterNamesInDocumentation != null)
             {
-                return;
+                AnalyzeMissingParameters(parameters, parameterNamesInDocumentation, context);
+                AnalyzeExtraParameters(parameterNamesInDocumentation, context);
+            }
+        }
+
+        [CanBeNull]
+        [ItemNotNull]
+        private static ISet<string> TryParseDocumentationCommentXml([NotNull] string documentationXml)
+        {
+            try
+            {
+                XDocument document = XDocument.Parse(documentationXml);
+
+                return GetParameterNamesFromXml(document);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private static ISet<string> GetParameterNamesFromXml([NotNull] XDocument document)
+        {
+            var parameterNames = new HashSet<string>();
+
+            foreach (XElement paramElement in
+                document.Element("member")?.Elements("param") ?? ImmutableArray<XElement>.Empty)
+            {
+                XAttribute paramAttribute = paramElement.Attribute("name");
+
+                if (!string.IsNullOrEmpty(paramAttribute?.Value))
+                {
+                    parameterNames.Add(paramAttribute.Value);
+                }
             }
 
+            return parameterNames;
+        }
+
+        private static void AnalyzeMissingParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
+            [NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
+        {
             foreach (IParameterSymbol parameter in parameters)
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                if (parameter.Name.Length == 0)
+                if (!string.IsNullOrEmpty(parameter.Name))
                 {
-                    continue;
-                }
-
-                if (!parameterNamesInDocumentation.Contains(parameter.Name))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0],
-                        parameter.Name));
-                }
-                else
-                {
-                    parameterNamesInDocumentation.Remove(parameter.Name);
+                    if (!parameterNamesInDocumentation.Contains(parameter.Name))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0],
+                            parameter.Name));
+                    }
+                    else
+                    {
+                        parameterNamesInDocumentation.Remove(parameter.Name);
+                    }
                 }
             }
+        }
 
+        private static void AnalyzeExtraParameters([NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation,
+            SymbolAnalysisContext context)
+        {
             foreach (string parameterNameInDocumentation in parameterNamesInDocumentation)
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
@@ -152,39 +207,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 context.ReportDiagnostic(Diagnostic.Create(ExtraParameterRule, context.Symbol.Locations[0],
                     parameterNameInDocumentation));
             }
-        }
-
-        [CanBeNull]
-        [ItemNotNull]
-        private static ISet<string> TryParseDocumentationCommentXml([CanBeNull] string documentationXml)
-        {
-            if (string.IsNullOrEmpty(documentationXml))
-            {
-                return EmptyHashSet;
-            }
-
-            var parameterNames = new HashSet<string>();
-
-            try
-            {
-                XDocument document = XDocument.Parse(documentationXml);
-
-                foreach (XElement paramElement in
-                    document.Element("member")?.Elements("param") ?? ImmutableArray<XElement>.Empty)
-                {
-                    XAttribute paramAttribute = paramElement.Attribute("name");
-                    if (!string.IsNullOrEmpty(paramAttribute?.Value))
-                    {
-                        parameterNames.Add(paramAttribute.Value);
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
-            return parameterNames;
         }
     }
 }

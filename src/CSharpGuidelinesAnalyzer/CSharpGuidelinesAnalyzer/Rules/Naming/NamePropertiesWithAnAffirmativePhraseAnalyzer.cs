@@ -94,8 +94,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (string.IsNullOrEmpty(parameter.Name) || parameter.ContainingSymbol.IsOverride ||
-                !IsBooleanOrNullableBoolean(parameter.Type))
+            if (parameter.ContainingSymbol.IsOverride || !IsBooleanOrNullableBoolean(parameter.Type))
             {
                 return;
             }

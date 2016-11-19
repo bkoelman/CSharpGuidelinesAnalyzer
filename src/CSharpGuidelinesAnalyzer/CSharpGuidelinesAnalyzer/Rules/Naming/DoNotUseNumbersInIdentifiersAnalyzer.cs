@@ -84,11 +84,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (string.IsNullOrEmpty(parameter.Name))
-            {
-                return;
-            }
-
             if (ContainsDigit(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
                 !parameter.IsInterfaceImplementation())
             {

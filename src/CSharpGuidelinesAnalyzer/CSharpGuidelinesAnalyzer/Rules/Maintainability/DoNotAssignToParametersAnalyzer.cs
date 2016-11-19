@@ -43,11 +43,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (string.IsNullOrEmpty(parameter.Name))
-            {
-                return;
-            }
-
             if (parameter.RefKind != RefKind.None)
             {
                 return;

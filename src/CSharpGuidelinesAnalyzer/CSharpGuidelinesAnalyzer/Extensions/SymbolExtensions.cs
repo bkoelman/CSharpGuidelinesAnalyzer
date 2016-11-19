@@ -78,8 +78,6 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(parameter, nameof(parameter));
 
-            ISymbol containingMember = parameter.ContainingSymbol;
-
 #pragma warning disable AV1532 // Loop statement contains nested loop
             foreach (INamedTypeSymbol iface in parameter.ContainingType.AllInterfaces)
             {
@@ -87,7 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 {
                     ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
 
-                    if (containingMember.Equals(implementer))
+                    if (parameter.ContainingSymbol.Equals(implementer))
                     {
                         return true;
                     }
@@ -100,25 +98,23 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static bool IsInterfaceImplementation<TSymbol>([NotNull] this TSymbol member) where TSymbol : ISymbol
         {
-            if (member is IFieldSymbol)
+            if (!(member is IFieldSymbol))
             {
-                return false;
-            }
-
 #pragma warning disable AV1532 // Loop statement contains nested loop
-            foreach (INamedTypeSymbol iface in member.ContainingType.AllInterfaces)
-            {
-                foreach (TSymbol ifaceMember in iface.GetMembers().OfType<TSymbol>())
+                foreach (INamedTypeSymbol iface in member.ContainingType.AllInterfaces)
                 {
-                    ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
-
-                    if (member.Equals(implementer))
+                    foreach (TSymbol ifaceMember in iface.GetMembers().OfType<TSymbol>())
                     {
-                        return true;
+                        ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+
+                        if (member.Equals(implementer))
+                        {
+                            return true;
+                        }
                     }
                 }
-            }
 #pragma warning restore AV1532 // Loop statement contains nested loop
+            }
 
             return false;
         }

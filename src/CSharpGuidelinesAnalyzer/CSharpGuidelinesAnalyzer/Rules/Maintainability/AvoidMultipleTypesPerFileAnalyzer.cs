@@ -43,6 +43,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
+            ReportWalkerResult(walker, context);
+        }
+
+        private static void ReportWalkerResult([NotNull] TopLevelTypeSyntaxWalker walker,
+            SemanticModelAnalysisContext context)
+        {
             if (walker.TopLevelTypeDeclarations.Count > 1)
             {
                 foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1))

@@ -36,11 +36,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (string.IsNullOrEmpty(parameter.Name))
-            {
-                return;
-            }
-
             if (parameter.Type.SpecialType == SpecialType.System_Boolean || parameter.Type.IsNullableBoolean())
             {
                 AnalyzeBooleanParameter(parameter, context);
@@ -50,22 +45,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
         {
             ISymbol containingMember = parameter.ContainingSymbol;
-            if (containingMember.IsOverride)
-            {
-                return;
-            }
 
-            if (containingMember.HidesBaseMember(context.CancellationToken))
+            if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) &&
+                !parameter.IsInterfaceImplementation())
             {
-                return;
+                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
             }
-
-            if (parameter.IsInterfaceImplementation())
-            {
-                return;
-            }
-
-            context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
         }
     }
 }
