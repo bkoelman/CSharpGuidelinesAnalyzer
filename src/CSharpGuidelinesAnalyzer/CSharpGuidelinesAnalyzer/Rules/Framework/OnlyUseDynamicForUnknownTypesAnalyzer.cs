@@ -47,8 +47,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (declaration.Variable.Type.TypeKind == TypeKind.Dynamic)
             {
-                AnalyzeAssignedValue(declaration.InitialValue, declaration.Syntax.GetLocation(),
-                    declaration.Variable.Name, context);
+                if (RequiresReport(declaration.InitialValue))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(),
+                        declaration.Variable.Name));
+                }
             }
         }
 
@@ -59,23 +62,29 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             IdentifierInfo identifierInfo = assignment.Target.TryGetIdentifierInfo();
             if (identifierInfo != null && identifierInfo.Type.TypeKind == TypeKind.Dynamic)
             {
-                AnalyzeAssignedValue(assignment.Value, assignment.Syntax.GetLocation(), identifierInfo.Name, context);
+                if (RequiresReport(assignment.Value))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, assignment.Syntax.GetLocation(),
+                        identifierInfo.Name));
+                }
             }
         }
 
-        private void AnalyzeAssignedValue([CanBeNull] IOperation value, [NotNull] Location location,
-            [NotNull] string identifierName, OperationAnalysisContext context)
+        private bool RequiresReport([CanBeNull] IOperation value)
         {
             var conversion = value as IConversionExpression;
             if (conversion != null && !conversion.IsExplicit)
             {
                 ITypeSymbol sourceType = conversion.Operand.Type;
+
                 if (sourceType != null && sourceType.TypeKind != TypeKind.Error &&
                     sourceType.TypeKind != TypeKind.Dynamic && sourceType.SpecialType != SpecialType.System_Object)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, location, identifierName));
+                    return true;
                 }
             }
+
+            return false;
         }
     }
 }

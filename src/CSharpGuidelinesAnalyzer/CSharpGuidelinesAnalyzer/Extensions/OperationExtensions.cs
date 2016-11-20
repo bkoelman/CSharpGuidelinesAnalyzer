@@ -153,14 +153,20 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 var yieldSyntax = operation.Syntax as YieldStatementSyntax;
                 if (yieldSyntax != null)
                 {
-                    int start = yieldSyntax.YieldKeyword.GetLocation().SourceSpan.Start;
-                    int end = yieldSyntax.ReturnOrBreakKeyword.GetLocation().SourceSpan.End;
-                    TextSpan sourceSpan = TextSpan.FromBounds(start, end);
-
-                    return Location.Create(yieldSyntax.SyntaxTree, sourceSpan);
+                    return GetLocationForYieldStatement(yieldSyntax);
                 }
 
                 throw ExceptionFactory.Unreachable();
+            }
+
+            [NotNull]
+            private static Location GetLocationForYieldStatement([NotNull] YieldStatementSyntax yieldSyntax)
+            {
+                int start = yieldSyntax.YieldKeyword.GetLocation().SourceSpan.Start;
+                int end = yieldSyntax.ReturnOrBreakKeyword.GetLocation().SourceSpan.End;
+                TextSpan sourceSpan = TextSpan.FromBounds(start, end);
+
+                return Location.Create(yieldSyntax.SyntaxTree, sourceSpan);
             }
 
             [NotNull]

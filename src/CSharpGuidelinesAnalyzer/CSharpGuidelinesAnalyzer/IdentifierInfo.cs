@@ -17,6 +17,8 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public string Kind { get; }
 
+#pragma warning disable AV1561 // Method or constructor contains more than three parameters
+#pragma warning disable AV1500 // Member contains more than seven statements
         public IdentifierInfo([NotNull] string name, [NotNull] string longName, [NotNull] ITypeSymbol type,
             [NotNull] string kind)
         {
@@ -30,5 +32,7 @@ namespace CSharpGuidelinesAnalyzer
             Type = type;
             Kind = kind;
         }
+#pragma warning restore AV1500 // Member contains more than seven statements
+#pragma warning restore AV1561 // Method or constructor contains more than three parameters
     }
 }
