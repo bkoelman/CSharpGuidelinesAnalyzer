@@ -63,13 +63,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             private bool ContainsComments(SyntaxTrivia trivia)
             {
-                return DoesPreprocessorHaveComment(trivia) || IsSingleLineComment(trivia) || IsMultilineComment(trivia);
+                return PreprocessorHasComment(trivia) || IsSingleLineComment(trivia) || IsMultilineComment(trivia);
             }
 
             private void ReportTodoComments([NotNull] SourceText text, SyntaxTrivia trivia,
                 SyntaxTreeAnalysisContext context)
             {
-                if (DoesPreprocessorHaveComment(trivia))
+                if (PreprocessorHasComment(trivia))
                 {
                     string message = trivia.ToString();
 
@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 return message.Length;
             }
 
-            private bool DoesPreprocessorHaveComment(SyntaxTrivia trivia)
+            private bool PreprocessorHasComment(SyntaxTrivia trivia)
             {
                 return trivia.Kind() != SyntaxKind.RegionDirectiveTrivia &&
                     SyntaxFacts.IsPreprocessorDirective(trivia.Kind()) &&
