@@ -56,14 +56,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     string kind = identifierInfo.Kind.ToLowerInvariant();
                     context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
-                        identifierInfo.Name));
+                        identifierInfo.Name.ShortName));
                 }
             }
         }
 
         private static bool ContainsNegatingWord([NotNull] IdentifierInfo info)
         {
-            return info.Name.GetFirstWordInSetFromIdentifier(NegatingWords, TextMatchMode.AllowLowerCaseMatch) != null;
+            string name = info.Name.ShortName;
+            return name.GetFirstWordInSetFromIdentifier(NegatingWords, TextMatchMode.AllowLowerCaseMatch) != null;
         }
     }
 }

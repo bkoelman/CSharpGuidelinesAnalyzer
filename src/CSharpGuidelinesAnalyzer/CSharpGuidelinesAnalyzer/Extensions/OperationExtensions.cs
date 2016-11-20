@@ -22,18 +22,19 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             public override IdentifierInfo VisitLocalReferenceExpression([NotNull] ILocalReferenceExpression operation,
                 [CanBeNull] object argument)
             {
-                return new IdentifierInfo(operation.Local.Name,
-                    operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat),
-                    operation.Local.Type, "Variable");
+                var name = new IdentifierName(operation.Local.Name,
+                    operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                return new IdentifierInfo(name, operation.Local.Type, "Variable");
             }
 
             [NotNull]
             public override IdentifierInfo VisitParameterReferenceExpression(
                 [NotNull] IParameterReferenceExpression operation, [CanBeNull] object argument)
             {
-                return new IdentifierInfo(operation.Parameter.Name,
+                var name = new IdentifierName(operation.Parameter.Name,
                     /* CSharpShortErrorMessageFormat returns 'ref int', ie. without parameter name */
-                    operation.Parameter.Name, operation.Parameter.Type, operation.Parameter.Kind.ToString());
+                    operation.Parameter.Name);
+                return new IdentifierInfo(name, operation.Parameter.Type, operation.Parameter.Kind.ToString());
             }
 
             [NotNull]
@@ -68,18 +69,19 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             private IdentifierInfo CreateForMemberReferenceExpression([NotNull] IMemberReferenceExpression operation,
                 [NotNull] ITypeSymbol memberType)
             {
-                return new IdentifierInfo(operation.Member.Name,
-                    operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat), memberType,
-                    operation.Member.Kind.ToString());
+                var name = new IdentifierName(operation.Member.Name,
+                    operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                return new IdentifierInfo(name, memberType, operation.Member.Kind.ToString());
             }
 
             [NotNull]
             public override IdentifierInfo VisitInvocationExpression([NotNull] IInvocationExpression operation,
                 [CanBeNull] object argument)
             {
-                return new IdentifierInfo(operation.TargetMethod.Name,
-                    operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat),
-                    operation.TargetMethod.ReturnType, operation.TargetMethod.Kind.ToString());
+                var name = new IdentifierName(operation.TargetMethod.Name,
+                    operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                return new IdentifierInfo(name, operation.TargetMethod.ReturnType,
+                    operation.TargetMethod.Kind.ToString());
             }
         }
 

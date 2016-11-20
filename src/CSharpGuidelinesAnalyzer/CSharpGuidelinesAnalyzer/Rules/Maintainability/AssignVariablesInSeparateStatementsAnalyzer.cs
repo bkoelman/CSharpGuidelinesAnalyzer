@@ -126,7 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 IdentifierInfo identifierInfo = operation.TryGetIdentifierInfo();
                 if (identifierInfo != null)
                 {
-                    IdentifiersAssigned.Add(identifierInfo.LongName);
+                    IdentifiersAssigned.Add(identifierInfo.Name.LongName);
                 }
             }
 

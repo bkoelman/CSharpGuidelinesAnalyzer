@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.VisualBasic;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
@@ -12,12 +13,26 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     internal class DocumentFactory
     {
         [NotNull]
-        private static readonly CSharpCompilationOptions DefaultCompilationOptions =
+        private static readonly CSharpCompilationOptions DefaultCSharpCompilationOptions =
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true);
 
         [NotNull]
-        private static readonly CSharpParseOptions DefaultParseOptions =
-            new CSharpParseOptions().WithFeatures(new[] { new KeyValuePair<string, string>("IOperation", "true") });
+        private static readonly VisualBasicCompilationOptions DefaultBasicCompilationOptions =
+            new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+
+        [NotNull]
+        private static readonly IEnumerable<KeyValuePair<string, string>> OperationFeatures = new[]
+        {
+            new KeyValuePair<string, string>("IOperation", "true")
+        };
+
+        [NotNull]
+        private static readonly CSharpParseOptions DefaultCSharpParseOptions =
+            new CSharpParseOptions().WithFeatures(OperationFeatures);
+
+        [NotNull]
+        private static readonly VisualBasicParseOptions DefaultBasicParseOptions =
+            new VisualBasicParseOptions().WithFeatures(OperationFeatures);
 
         [NotNull]
         public DocumentWithSpans GetDocumentWithSpansFromMarkup([NotNull] AnalyzerTestContext context)
@@ -27,8 +42,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             var parser = new MarkupParser(context.MarkupCode);
             CodeWithSpans codeWithSpans = parser.Parse();
 
-            CSharpParseOptions parseOptions = GetParseOptions(context.DocumentationMode);
-            CSharpCompilationOptions compilationOptions = GetCompilationOptions(context.CompilerWarningLevel);
+            ParseOptions parseOptions = GetParseOptions(context.DocumentationMode, context.LanguageName);
+            CompilationOptions compilationOptions = GetCompilationOptions(context.CompilerWarningLevel,
+                context.LanguageName);
 
             Document document = new AdhocWorkspace()
                 .AddProject(context.AssemblyName, context.LanguageName)
@@ -41,20 +57,29 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
         [NotNull]
-        private CSharpParseOptions GetParseOptions(DocumentationMode documentationMode)
+        private ParseOptions GetParseOptions(DocumentationMode documentationMode, [NotNull] string languageName)
         {
             // Bug workaround: Setting DocumentationMode to a non-default value resets Features.
-            IReadOnlyDictionary<string, string> features = DefaultParseOptions.Features;
-            CSharpParseOptions optionsWithLostFeatures = DefaultParseOptions.WithDocumentationMode(documentationMode);
-            return optionsWithLostFeatures.WithFeatures(features);
+
+            ParseOptions optionsWithLostFeatures = languageName == LanguageNames.VisualBasic
+                ? (ParseOptions) DefaultBasicParseOptions.WithDocumentationMode(documentationMode)
+                : DefaultCSharpParseOptions.WithDocumentationMode(documentationMode);
+
+            return optionsWithLostFeatures.WithFeatures(OperationFeatures);
         }
 
         [NotNull]
-        private static CSharpCompilationOptions GetCompilationOptions([CanBeNull] int? compilerWarningLevel)
+        private static CompilationOptions GetCompilationOptions([CanBeNull] int? compilerWarningLevel,
+            [NotNull] string languageName)
         {
+            if (languageName == LanguageNames.VisualBasic)
+            {
+                return DefaultBasicCompilationOptions;
+            }
+
             return compilerWarningLevel != null
-                ? DefaultCompilationOptions.WithWarningLevel(compilerWarningLevel.Value)
-                : DefaultCompilationOptions;
+                ? DefaultCSharpCompilationOptions.WithWarningLevel(compilerWarningLevel.Value)
+                : DefaultCSharpCompilationOptions;
         }
 
         private struct CodeWithSpans

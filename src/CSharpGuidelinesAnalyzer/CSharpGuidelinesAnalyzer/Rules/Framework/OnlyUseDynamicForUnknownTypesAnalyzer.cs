@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 if (RequiresReport(assignment.Value))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, assignment.Syntax.GetLocation(),
-                        identifierInfo.Name));
+                        identifierInfo.Name.ShortName));
                 }
             }
         }

@@ -80,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 IdentifierInfo info = eventInstance.TryGetIdentifierInfo();
                 if (info != null)
                 {
-                    return MakeCamelCase(info.Name);
+                    return MakeCamelCase(info.Name.ShortName);
                 }
             }
 
