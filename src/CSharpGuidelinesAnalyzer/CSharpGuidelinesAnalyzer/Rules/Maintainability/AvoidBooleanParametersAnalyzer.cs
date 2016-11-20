@@ -50,23 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             ISymbol containingMember = parameter.ContainingSymbol;
 
             return containingMember.DeclaredAccessibility != Accessibility.Private &&
-                IsSymbolAccessibleFromRoot(containingMember);
-        }
-
-        private static bool IsSymbolAccessibleFromRoot([CanBeNull] ISymbol symbol)
-        {
-            ISymbol container = symbol;
-            while (container != null)
-            {
-                if (container.DeclaredAccessibility == Accessibility.Private)
-                {
-                    return false;
-                }
-
-                container = container.ContainingType;
-            }
-
-            return true;
+                containingMember.IsSymbolAccessibleFromRoot();
         }
 
         private void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)

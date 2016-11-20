@@ -88,23 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static bool IsMemberAccessible([NotNull] ISymbol symbol)
         {
-            return symbol.DeclaredAccessibility == Accessibility.Internal && IsSymbolAccessibleFromRoot(symbol);
-        }
-
-        private static bool IsSymbolAccessibleFromRoot([CanBeNull] ISymbol symbol)
-        {
-            ISymbol container = symbol;
-            while (container != null)
-            {
-                if (container.DeclaredAccessibility == Accessibility.Private)
-                {
-                    return false;
-                }
-
-                container = container.ContainingType;
-            }
-
-            return true;
+            return symbol.DeclaredAccessibility == Accessibility.Internal && symbol.IsSymbolAccessibleFromRoot();
         }
 
         private static void AnalyzeSymbol([NotNull] ISymbol symbol, SymbolAnalysisContext context)

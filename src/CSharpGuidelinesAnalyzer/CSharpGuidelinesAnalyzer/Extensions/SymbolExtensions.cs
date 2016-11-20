@@ -241,5 +241,21 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
             return false;
         }
+
+        public static bool IsSymbolAccessibleFromRoot([CanBeNull] this ISymbol symbol)
+        {
+            ISymbol container = symbol;
+            while (container != null)
+            {
+                if (container.DeclaredAccessibility == Accessibility.Private)
+                {
+                    return false;
+                }
+
+                container = container.ContainingType;
+            }
+
+            return true;
+        }
     }
 }

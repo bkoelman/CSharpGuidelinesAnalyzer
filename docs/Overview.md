@@ -73,7 +73,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports methods, indexers and delegates that declare more than three parameters.
 
 ### [AV1564](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1564): Avoid methods that take a bool flag (HIGH)
-- [x] This analyzer reports methods that declare parameters of type `bool` or `bool?`.
+- [x] This analyzer reports public and internal methods that declare parameters of type `bool` or `bool?`.
 
 ### [AV1568](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1568): Don't use parameters as temporary variables (LOW)
 - [x] This analyzer reports parameters that are written to and are not declared as `ref` or `out`.
@@ -99,7 +99,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports variables and parameters that are named "b001", "lo", "I1" or "lOl".
 
 ### [AV1715](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md#av1715): Properly name properties (MEDIUM)
-- [x] This analyzer reports boolean variables, parameters and fields whose names do not start with words like "Is", "Has", "Can" etc.
+- [x] This analyzer reports public and internal boolean parameters and members whose names do not start with words like "Is", "Has", "Can" etc.
 
 ### [AV1738](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md#av1738): Prefix an event handler with On (LOW)
 - [x] This analyzer reports when the target method in an event handler assignment does not match the pattern "On" followed by target field name and the name of the event.

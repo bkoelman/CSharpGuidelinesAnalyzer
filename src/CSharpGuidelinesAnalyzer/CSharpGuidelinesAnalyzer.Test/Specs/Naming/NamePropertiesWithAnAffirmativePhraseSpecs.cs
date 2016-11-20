@@ -10,14 +10,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => NamePropertiesWithAnAffirmativePhraseAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_field_type_is_int_it_must_be_skipped()
+        internal void When_public_field_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        private int some;
+                        public int some;
                     }
                 ")
                 .Build();
@@ -27,14 +27,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_field_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_field_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        private bool isVisible;
+                        public bool isVisible;
                     }
                 ")
                 .Build();
@@ -44,14 +44,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_field_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_public_field_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        private bool [|thisIsVisible|];
+                        public bool [|thisIsVisible|];
                     }
                 ")
                 .Build();
@@ -62,14 +62,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_field_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_field_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        private bool? isVisible;
+                        public bool? isVisible;
                     }
                 ")
                 .Build();
@@ -79,14 +79,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_field_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_public_field_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        private bool? [|thisIsVisible|];
+                        public bool? [|thisIsVisible|];
                     }
                 ")
                 .Build();
@@ -97,12 +97,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_property_type_is_int_it_must_be_skipped()
+        internal void When_public_property_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public int Some { get; set; }
                     }
@@ -114,12 +114,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_property_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_property_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool IsVisible { get; set; }
                     }
@@ -131,12 +131,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_public_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool [|ThisIsVisible|] { get; set; }
                     }
@@ -149,12 +149,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_property_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_property_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool? IsVisible { get; set; }
                     }
@@ -166,12 +166,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_public_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool? [|ThisIsVisible|] { get; set; }
                     }
@@ -184,7 +185,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -208,7 +210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         [Fact]
         internal void
-            When_inherited_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            When_public_inherited_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
             ()
         {
             // Arrange
@@ -232,7 +234,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void
+            When_public_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -256,7 +259,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         [Fact]
         public void
-            When_implemented_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_implemented_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -279,12 +283,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_method_return_type_is_int_it_must_be_skipped()
+        internal void When_public_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public int Some()
                         {
@@ -299,12 +303,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_method_return_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_method_return_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool IsVisible()
                         {
@@ -319,12 +323,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_public_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool [|ThisIsVisible|]()
                         {
@@ -340,12 +344,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_method_return_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_method_return_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool? IsVisible()
                         {
@@ -360,12 +364,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void
+            When_public_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public bool? [|ThisIsVisible|]()
                         {
@@ -381,7 +386,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void
+            When_public_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -408,7 +414,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         [Fact]
         public void
-            When_inherited_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_inherited_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -434,7 +441,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+        internal void
+            When_public_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
             ()
         {
             // Arrange
@@ -462,7 +470,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         [Fact]
         public void
-            When_implemented_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_implemented_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -488,12 +497,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_type_is_int_it_must_be_skipped()
+        internal void When_public_parameter_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public void M(int other)
                         {
@@ -507,12 +516,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_parameter_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public void M(bool isVisible)
                         {
@@ -526,12 +535,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void When_public_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public void M(bool [|thisIsVisible|])
                         {
@@ -546,12 +555,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void When_public_parameter_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public void M(bool? isVisible)
                         {
@@ -565,12 +574,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void
+            When_public_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
                         public void M(bool? [|thisIsVisible|])
                         {
@@ -585,7 +595,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void
+            When_public_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -611,7 +622,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         [Fact]
         public void
-            When_inherited_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_inherited_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -636,7 +648,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void
+            When_public_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -662,7 +675,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         [Fact]
         public void
-            When_implemented_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_implemented_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped
+            ()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -687,66 +701,160 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_variable_type_is_int_it_must_be_skipped()
+        internal void
+            When_field_type_is_bool_and_name_does_not_start_with_a_verb_in_public_class_hierarchy_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
                     {
-                        int some = 3;
-                    }
-                ")
-                .Build();
+                        public class D
+                        {
+                            public bool [|thisIsVisible1|];
 
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
+                            protected bool [|thisIsVisible2|];
 
-        [Fact]
-        internal void When_variable_type_is_bool_and_name_starts_with_a_verb_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
-                    {
-                        bool isVisible;
-                    }
-                ")
-                .Build();
+                            internal bool [|thisIsVisible3|];
 
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
+                            protected internal bool [|thisIsVisible4|];
 
-        [Fact]
-        internal void When_variable_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
-                    {
-                        bool [|thisIsVisible|];
+                            private bool thisIsVisible5;
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean variable 'thisIsVisible' should start with a verb.");
+                "The name of boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of boolean field 'thisIsVisible4' should start with a verb.");
         }
 
         [Fact]
-        internal void When_variable_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
+        internal void
+            When_field_type_is_bool_and_name_does_not_start_with_a_verb_in_protected_class_hierarchy_it_must_be_reported
+            ()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
                     {
-                        bool? isVisible;
+                        protected class D
+                        {
+                            public bool [|thisIsVisible1|];
+
+                            protected bool [|thisIsVisible2|];
+
+                            internal bool [|thisIsVisible3|];
+
+                            protected internal bool [|thisIsVisible4|];
+
+                            private bool thisIsVisible5;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The name of boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_field_type_is_bool_and_name_does_not_start_with_a_verb_in_internal_class_hierarchy_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    internal class C
+                    {
+                        internal class D
+                        {
+                            public bool [|thisIsVisible1|];
+
+                            protected bool [|thisIsVisible2|];
+
+                            internal bool [|thisIsVisible3|];
+
+                            protected internal bool [|thisIsVisible4|];
+
+                            private bool thisIsVisible5;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The name of boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_field_type_is_bool_and_name_does_not_start_with_a_verb_in_protected_internal_class_hierarchy_it_must_be_reported
+            ()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    internal class C
+                    {
+                        protected internal class D
+                        {
+                            public bool [|thisIsVisible1|];
+
+                            protected bool [|thisIsVisible2|];
+
+                            internal bool [|thisIsVisible3|];
+
+                            protected internal bool [|thisIsVisible4|];
+
+                            private bool thisIsVisible5;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The name of boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_field_type_is_bool_and_name_does_not_start_with_a_verb_in_private_class_hierarchy_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        private class D
+                        {
+                            public bool thisIsVisible1;
+
+                            protected bool thisIsVisible2;
+
+                            internal bool thisIsVisible3;
+
+                            protected internal bool thisIsVisible4;
+
+                            private bool thisIsVisible5;
+                        }
                     }
                 ")
                 .Build();
@@ -756,21 +864,219 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_variable_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
+        internal void
+            When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_in_public_class_hierarchy_it_must_be_reported
+            ()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
                     {
-                        bool? [|thisIsVisible|];
+                        public class D
+                        {
+                            public void M1(bool [|thisIsVisible1|])
+                            {
+                            }
+
+                            protected void M2(bool [|thisIsVisible2|])
+                            {
+                            }
+
+                            internal void M3(bool [|thisIsVisible3|])
+                            {
+                            }
+
+                            protected internal void M4(bool [|thisIsVisible4|])
+                            {
+                            }
+
+                            private void M5(bool thisIsVisible5)
+                            {
+                            }
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean variable 'thisIsVisible' should start with a verb.");
+                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_in_protected_class_hierarchy_it_must_be_reported
+            ()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        protected class D
+                        {
+                            public void M1(bool [|thisIsVisible1|])
+                            {
+                            }
+
+                            protected void M2(bool [|thisIsVisible2|])
+                            {
+                            }
+
+                            internal void M3(bool [|thisIsVisible3|])
+                            {
+                            }
+
+                            protected internal void M4(bool [|thisIsVisible4|])
+                            {
+                            }
+
+                            private void M5(bool thisIsVisible5)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_in_internal_class_hierarchy_it_must_be_reported
+            ()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    internal class C
+                    {
+                        internal class D
+                        {
+                            public void M1(bool [|thisIsVisible1|])
+                            {
+                            }
+
+                            protected void M2(bool [|thisIsVisible2|])
+                            {
+                            }
+
+                            internal void M3(bool [|thisIsVisible3|])
+                            {
+                            }
+
+                            protected internal void M4(bool [|thisIsVisible4|])
+                            {
+                            }
+
+                            private void M5(bool thisIsVisible5)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_in_protected_internal_class_hierarchy_it_must_be_reported
+            ()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    internal class C
+                    {
+                        protected internal class D
+                        {
+                            public void M1(bool [|thisIsVisible1|])
+                            {
+                            }
+
+                            protected void M2(bool [|thisIsVisible2|])
+                            {
+                            }
+
+                            internal void M3(bool [|thisIsVisible3|])
+                            {
+                            }
+
+                            protected internal void M4(bool [|thisIsVisible4|])
+                            {
+                            }
+
+                            private void M5(bool thisIsVisible5)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+        }
+
+        [Fact]
+        internal void
+            When_parameter_type_is_bool_and_name_does_not_start_with_a_verb_in_private_class_hierarchy_it_must_be_skipped
+            ()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        private class D
+                        {
+                            public void M1(bool thisIsVisible1)
+                            {
+                            }
+
+                            protected void M2(bool thisIsVisible2)
+                            {
+                            }
+
+                            internal void M3(bool thisIsVisible3)
+                            {
+                            }
+
+                            protected internal void M4(bool thisIsVisible4)
+                            {
+                            }
+
+                            private void M5(bool thisIsVisible5)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

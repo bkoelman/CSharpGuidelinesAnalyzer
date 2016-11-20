@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -42,20 +41,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
-
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
-                        OperationKind.VariableDeclaration);
-                }
-            });
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsOverride)
+            if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() ||
+                context.Symbol.IsOverride)
             {
                 return;
             }
@@ -71,6 +62,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
                     LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
             }
+        }
+
+        private static bool IsMemberAccessible([NotNull] ISymbol symbol)
+        {
+            return symbol.DeclaredAccessibility != Accessibility.Private && symbol.IsSymbolAccessibleFromRoot();
         }
 
         [NotNull]
@@ -94,7 +90,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (parameter.ContainingSymbol.IsOverride || !IsBooleanOrNullableBoolean(parameter.Type))
+            if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride ||
+                !IsBooleanOrNullableBoolean(parameter.Type))
             {
                 return;
             }
@@ -106,20 +103,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
+        private static bool IsParameterAccessible([NotNull] IParameterSymbol parameter)
         {
-            var declaration = (IVariableDeclaration) context.Operation;
+            ISymbol containingMember = parameter.ContainingSymbol;
 
-            if (!IsBooleanOrNullableBoolean(declaration.Variable.Type))
-            {
-                return;
-            }
-
-            if (!IsWhitelisted(declaration.Variable.Name))
-            {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "variable",
-                    declaration.Variable.Name));
-            }
+            return containingMember.DeclaredAccessibility != Accessibility.Private &&
+                containingMember.IsSymbolAccessibleFromRoot();
         }
 
         private bool IsBooleanOrNullableBoolean([NotNull] ITypeSymbol type)
