@@ -14,7 +14,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public const string DiagnosticId = "AV1500";
 
         private const string Title = "Member contains more than seven statements";
-        private const string MessageFormat = "{0} '{1}' contains more than seven statements.";
+
+        private const string MessageFormat =
+            "{0} '{1}' contains {2} statements, which exceeds the maximum of seven statements.";
+
         private const string Description = "Methods should not exceed 7 statements.";
         private const string Category = "Maintainability";
 
@@ -48,17 +51,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (statementWalker.StatementCount > 7)
             {
-                ReportMember(context);
+                ReportMember(context, statementWalker.StatementCount);
             }
         }
 
-        private static void ReportMember(OperationBlockAnalysisContext context)
+        private static void ReportMember(OperationBlockAnalysisContext context, int statementCount)
         {
             ISymbol containingMember = context.OwningSymbol.GetContainingMember();
 
             string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             Location location = containingMember.Locations[0];
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName));
+            context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName, statementCount));
         }
 
         private sealed class StatementWalker : OperationWalker

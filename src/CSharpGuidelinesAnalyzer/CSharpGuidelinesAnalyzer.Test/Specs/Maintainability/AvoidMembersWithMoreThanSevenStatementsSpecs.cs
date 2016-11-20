@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -200,7 +200,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -262,7 +262,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -322,7 +322,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -403,7 +403,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -521,7 +521,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -628,7 +628,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(int)' contains more than seven statements.");
+                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -717,7 +717,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -798,7 +798,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -864,7 +864,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'C.P' contains more than seven statements.");
+                "Property 'C.P' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -924,7 +924,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -997,7 +997,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -1084,7 +1084,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -1153,7 +1153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         [Fact]
@@ -1234,7 +1234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains more than seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
