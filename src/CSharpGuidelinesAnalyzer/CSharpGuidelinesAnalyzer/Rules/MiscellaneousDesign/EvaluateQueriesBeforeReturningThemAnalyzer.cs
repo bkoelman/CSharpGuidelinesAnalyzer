@@ -96,10 +96,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             OperationBlockAnalysisContext context,
             [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
-            if (!ReturnsConstant(returnStatement))
+            if (!ReturnsConstant(returnStatement) && !IsYieldBreak(returnStatement))
             {
                 AnalyzeReturnValue(returnStatement, context, variableEvaluationCache);
             }
+        }
+
+        private bool IsYieldBreak([NotNull] IReturnStatement returnStatement)
+        {
+            return returnStatement.ReturnedValue == null;
         }
 
         private static bool ReturnsConstant([NotNull] IReturnStatement returnStatement)
@@ -126,6 +131,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache,
             CancellationToken cancellationToken)
         {
+            Guard.NotNull(expression, nameof(expression));
+            Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
+
             cancellationToken.ThrowIfCancellationRequested();
 
             var local = expression as ILocalReferenceExpression;

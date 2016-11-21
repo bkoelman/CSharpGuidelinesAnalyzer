@@ -813,6 +813,27 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_iterator_breaks_it_must_not_crash()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof (IEnumerable).Namespace)
+                .InDefaultClass(@"
+                    class C
+                    {
+                        private IEnumerable M()
+                        {
+                            yield break;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new EvaluateQueriesBeforeReturningThemAnalyzer();
