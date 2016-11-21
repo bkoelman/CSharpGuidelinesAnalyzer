@@ -34,6 +34,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_default_case_clause_contains_block_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(string s)
+                    {
+                        switch (s)
+                        {
+                            default:
+                            {
+                                break;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_case_clause_contains_no_block_it_must_be_reported()
         {
             // Arrange
@@ -45,6 +68,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             case ""A"":
                             [|case|] ""B"":
+                                break;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing block in case statement.");
+        }
+
+        [Fact]
+        internal void When_default_case_clause_contains_no_block_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(string s)
+                    {
+                        switch (s)
+                        {
+                            [|default|]:
                                 break;
                         }
                     }

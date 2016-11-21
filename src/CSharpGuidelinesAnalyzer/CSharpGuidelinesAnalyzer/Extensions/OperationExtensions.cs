@@ -208,6 +208,14 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 var syntax = (ThrowStatementSyntax) operation.Syntax;
                 return syntax.ThrowKeyword.GetLocation();
             }
+
+            [NotNull]
+            public override Location VisitSingleValueCaseClause([NotNull] ISingleValueCaseClause operation,
+                [CanBeNull] object argument)
+            {
+                var syntax = (SwitchLabelSyntax) operation.Syntax;
+                return syntax.Keyword.GetLocation();
+            }
         }
     }
 }
