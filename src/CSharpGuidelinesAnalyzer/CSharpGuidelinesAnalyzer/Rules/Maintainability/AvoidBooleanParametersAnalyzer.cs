@@ -36,12 +36,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol) context.Symbol;
 
-            if (IsParameterAccessible(parameter))
+            if (IsParameterAccessible(parameter) && parameter.Type.IsBooleanOrNullableBoolean())
             {
-                if (parameter.Type.SpecialType == SpecialType.System_Boolean || parameter.Type.IsNullableBoolean())
-                {
-                    AnalyzeBooleanParameter(parameter, context);
-                }
+                AnalyzeBooleanParameter(parameter, context);
             }
         }
 

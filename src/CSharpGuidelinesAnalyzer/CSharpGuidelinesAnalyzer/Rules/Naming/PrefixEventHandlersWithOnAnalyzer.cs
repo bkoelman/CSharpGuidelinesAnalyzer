@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 IdentifierInfo info = eventInstance.TryGetIdentifierInfo();
                 if (info != null)
                 {
-                    return MakeCamelCase(info.Name.ShortName);
+                    return MakeCamelCaseWithoutUnderscorePrefix(info.Name.ShortName);
                 }
             }
 
@@ -82,17 +82,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         [NotNull]
-        private static string MakeCamelCase([NotNull] string identifierName)
+        private static string MakeCamelCaseWithoutUnderscorePrefix([NotNull] string identifierName)
         {
-            string noUnderscorePrefix = identifierName.StartsWith("_", StringComparison.Ordinal)
+            string noUnderscorePrefix = RemoveUnderscorePrefix(identifierName);
+            return ToCamelCase(noUnderscorePrefix);
+        }
+
+        [NotNull]
+        private static string RemoveUnderscorePrefix([NotNull] string identifierName)
+        {
+            return identifierName.StartsWith("_", StringComparison.Ordinal)
                 ? identifierName.Substring(1)
                 : identifierName;
+        }
 
-            string camelCased = noUnderscorePrefix.Length > 0 && char.IsLower(noUnderscorePrefix[0])
-                ? char.ToUpper(noUnderscorePrefix[0]) + noUnderscorePrefix.Substring(1)
-                : noUnderscorePrefix;
-
-            return camelCased;
+        [NotNull]
+        private static string ToCamelCase([NotNull] string identifierName)
+        {
+            return identifierName.Length > 0 && char.IsLower(identifierName[0])
+                ? char.ToUpper(identifierName[0]) + identifierName.Substring(1)
+                : identifierName;
         }
     }
 }

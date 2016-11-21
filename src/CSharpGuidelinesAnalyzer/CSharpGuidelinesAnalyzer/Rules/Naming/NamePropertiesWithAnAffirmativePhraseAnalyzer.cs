@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
 
             ITypeSymbol type = GetMemberType(context.Symbol);
-            if (!IsBooleanOrNullableBoolean(type))
+            if (!type.IsBooleanOrNullableBoolean())
             {
                 return;
             }
@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var parameter = (IParameterSymbol) context.Symbol;
 
             if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride ||
-                !IsBooleanOrNullableBoolean(parameter.Type))
+                !parameter.Type.IsBooleanOrNullableBoolean())
             {
                 return;
             }
@@ -109,11 +109,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             return containingMember.DeclaredAccessibility != Accessibility.Private &&
                 containingMember.IsSymbolAccessibleFromRoot();
-        }
-
-        private bool IsBooleanOrNullableBoolean([NotNull] ITypeSymbol type)
-        {
-            return type.SpecialType == SpecialType.System_Boolean || type.IsNullableBoolean();
         }
 
         private bool IsWhitelisted([NotNull] string identifierName)

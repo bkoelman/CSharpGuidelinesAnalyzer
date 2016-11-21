@@ -96,12 +96,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             OperationBlockAnalysisContext context,
             [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
-            if (ReturnsConstant(returnStatement))
+            if (!ReturnsConstant(returnStatement))
             {
-                return;
+                AnalyzeReturnValue(returnStatement, context, variableEvaluationCache);
             }
-
-            AnalyzeReturnValue(returnStatement, context, variableEvaluationCache);
         }
 
         private static bool ReturnsConstant([NotNull] IReturnStatement returnStatement)

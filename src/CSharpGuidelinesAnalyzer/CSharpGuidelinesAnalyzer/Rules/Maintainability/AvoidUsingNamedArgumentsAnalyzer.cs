@@ -36,14 +36,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var argument = (IArgument) context.Operation;
 
-            if (argument.ArgumentKind == ArgumentKind.Named)
+            if (argument.ArgumentKind == ArgumentKind.Named && !argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {
-                if (argument.Parameter.Type.SpecialType != SpecialType.System_Boolean &&
-                    !argument.Parameter.Type.IsNullableBoolean())
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(),
-                        argument.Parameter.Name, FormatSymbol(argument.Parameter.ContainingSymbol)));
-                }
+                context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(), argument.Parameter.Name,
+                    FormatSymbol(argument.Parameter.ContainingSymbol)));
             }
         }
 

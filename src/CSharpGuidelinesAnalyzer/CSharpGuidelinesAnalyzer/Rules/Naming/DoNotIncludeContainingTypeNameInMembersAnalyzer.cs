@@ -37,12 +37,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             string typeName = context.Symbol.ContainingType.Name;
-            if (typeName.Length < 2)
-            {
-                return;
-            }
 
-            if (context.Symbol.IsPropertyOrEventAccessor())
+            if (typeName.Length < 2 || context.Symbol.IsPropertyOrEventAccessor())
             {
                 return;
             }

@@ -74,14 +74,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private bool? IsStaticEvent([NotNull] IOperation operation, [NotNull] Compilation compilation)
+        private static bool? IsStaticEvent([NotNull] IOperation operation, [NotNull] Compilation compilation)
         {
             return IsStaticEventInvocation(operation) ??
                 IsStaticEventInvocationUsingNullConditionalAccessOperator(operation, compilation);
         }
 
         [CanBeNull]
-        private bool? IsStaticEventInvocation([NotNull] IOperation operation)
+        private static bool? IsStaticEventInvocation([NotNull] IOperation operation)
         {
             var eventReference = operation as IEventReferenceExpression;
             if (eventReference != null)
@@ -93,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation,
+        private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation,
             [NotNull] Compilation compilation)
         {
             var conditionalAccess = operation as IConditionalAccessInstanceExpression;
@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return null;
         }
 
-        private bool IsEventArgs([CanBeNull] ITypeSymbol type, [NotNull] INamedTypeSymbol systemEventArgs)
+        private static bool IsEventArgs([CanBeNull] ITypeSymbol type, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             ITypeSymbol nextType = type;
             while (nextType != null)
@@ -175,7 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return false;
         }
 
-        private bool IsNullConstant([NotNull] IOperation operation)
+        private static bool IsNullConstant([NotNull] IOperation operation)
         {
             return operation.ConstantValue.HasValue && operation.ConstantValue.Value == null;
         }

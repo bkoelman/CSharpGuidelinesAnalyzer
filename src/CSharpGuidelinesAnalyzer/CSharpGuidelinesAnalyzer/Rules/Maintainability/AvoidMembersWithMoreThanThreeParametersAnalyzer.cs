@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -10,6 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class AvoidMembersWithMoreThanThreeParametersAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1561";
+        private const int MaxParameterLength = 3;
 
         private const string Title = "Method or constructor contains more than three parameters";
         private const string MessageFormat = "{0} contains more than three parameters.";
@@ -37,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var property = (IPropertySymbol) context.Symbol;
 
-            if (property.IsIndexer && property.Parameters.Length > 3)
+            if (property.IsIndexer && ExceedsMaximumLength(property.Parameters))
             {
                 ReportDiagnostic(context, property, "Indexer");
             }
@@ -47,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var method = (IMethodSymbol) context.Symbol;
 
-            if (!IsPropertyAccessor(method) && method.Parameters.Length > 3)
+            if (!method.IsPropertyOrEventAccessor() && ExceedsMaximumLength(method.Parameters))
             {
                 string name = IsConstructor(method)
                     ? "Constructor for '" + method.ContainingType.Name + "'"
@@ -55,11 +58,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 ReportDiagnostic(context, method, name);
             }
-        }
-
-        private static bool IsPropertyAccessor([NotNull] IMethodSymbol method)
-        {
-            return method.MethodKind == MethodKind.PropertyGet || method.MethodKind == MethodKind.PropertySet;
         }
 
         private static bool IsConstructor([NotNull] IMethodSymbol method)
@@ -71,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            if (IsDelegate(type) && type.DelegateInvokeMethod?.Parameters.Length > 3)
+            if (IsDelegate(type) && ExceedsMaximumLength(type.DelegateInvokeMethod?.Parameters))
             {
                 ReportDiagnostic(context, type, "Delegate '" + type.Name + "'");
             }
@@ -80,6 +78,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static bool IsDelegate([NotNull] INamedTypeSymbol type)
         {
             return type.TypeKind == TypeKind.Delegate;
+        }
+
+        private static bool ExceedsMaximumLength([CanBeNull] [ItemNotNull] IEnumerable<IParameterSymbol> parameters)
+        {
+            return parameters != null && parameters.Count() > MaxParameterLength;
         }
 
         private static void ReportDiagnostic(SymbolAnalysisContext context, [NotNull] ISymbol symbol,

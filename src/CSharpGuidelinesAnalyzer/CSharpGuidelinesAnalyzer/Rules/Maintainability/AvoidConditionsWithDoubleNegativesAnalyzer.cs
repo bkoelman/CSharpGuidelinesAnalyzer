@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var unaryOperator = (IUnaryOperatorExpression) context.Operation;
 
-            if (unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot)
+            if (IsOperatorNot(unaryOperator))
             {
                 IdentifierInfo identifierInfo = unaryOperator.Operand.TryGetIdentifierInfo();
                 if (identifierInfo != null && ContainsNegatingWord(identifierInfo))
@@ -53,6 +53,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         identifierInfo.Name.ShortName));
                 }
             }
+        }
+
+        private static bool IsOperatorNot([NotNull] IUnaryOperatorExpression unaryOperator)
+        {
+            return unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot;
         }
 
         private static bool ContainsNegatingWord([NotNull] IdentifierInfo info)

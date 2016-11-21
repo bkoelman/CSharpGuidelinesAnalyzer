@@ -40,16 +40,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (expression.BinaryOperationKind == BinaryOperationKind.BooleanEquals ||
                 expression.BinaryOperationKind == BinaryOperationKind.BooleanNotEquals)
             {
-                if (expression.LeftOperand.Kind == OperationKind.LiteralExpression)
+                if (IsLiteralExpression(expression.LeftOperand))
                 {
                     AnalyzeOperand(expression.LeftOperand, context);
                 }
 
-                if (expression.RightOperand.Kind == OperationKind.LiteralExpression)
+                if (IsLiteralExpression(expression.RightOperand))
                 {
                     AnalyzeOperand(expression.RightOperand, context);
                 }
             }
+        }
+
+        private static bool IsLiteralExpression([NotNull] IOperation operand)
+        {
+            return operand.Kind == OperationKind.LiteralExpression;
         }
 
         private void AnalyzeOperand([NotNull] IOperation operand, OperationAnalysisContext context)

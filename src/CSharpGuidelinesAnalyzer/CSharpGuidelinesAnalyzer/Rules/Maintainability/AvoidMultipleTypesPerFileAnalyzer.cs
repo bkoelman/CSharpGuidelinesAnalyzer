@@ -53,13 +53,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1))
                 {
-                    string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
-                    ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(extraTypeSyntax, context.CancellationToken);
-                    string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
-
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName));
+                    ReportType(context, extraTypeSyntax);
                 }
             }
+        }
+
+        private static void ReportType(SemanticModelAnalysisContext context, [NotNull] SyntaxNode typeSyntax)
+        {
+            string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
+            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(typeSyntax, context.CancellationToken);
+            string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+
+            context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName));
         }
 
         private sealed class TopLevelTypeSyntaxWalker : SyntaxWalker

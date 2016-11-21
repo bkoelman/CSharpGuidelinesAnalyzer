@@ -58,12 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             ISymbol member = context.Symbol;
 
-            if (member.IsPropertyOrEventAccessor())
-            {
-                return;
-            }
-
-            if (context.Symbol.IsUnitTestMethod())
+            if (member.IsPropertyOrEventAccessor() || context.Symbol.IsUnitTestMethod())
             {
                 return;
             }

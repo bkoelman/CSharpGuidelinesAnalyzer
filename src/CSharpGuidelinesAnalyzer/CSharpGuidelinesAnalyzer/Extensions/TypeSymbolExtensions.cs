@@ -6,7 +6,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     /// <summary />
     internal static class TypeSymbolExtensions
     {
-        public static bool IsNullableBoolean([NotNull] this ITypeSymbol type)
+        public static bool IsBooleanOrNullableBoolean([NotNull] this ITypeSymbol type)
+        {
+            return type.SpecialType == SpecialType.System_Boolean || IsNullableBoolean(type);
+        }
+
+        private static bool IsNullableBoolean([NotNull] ITypeSymbol type)
         {
             Guard.NotNull(type, nameof(type));
 

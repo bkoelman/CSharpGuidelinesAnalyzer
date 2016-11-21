@@ -53,14 +53,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return false;
             }
 
-            IMethodSymbol[] visibleMethods =
+            IMethodSymbol[] accessibleMethods =
                 type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal).ToArray();
-            if (visibleMethods.Any(method => !method.IsExtensionMethod))
+            if (accessibleMethods.Any(method => !method.IsExtensionMethod))
             {
                 return false;
             }
 
-            return visibleMethods.Any();
+            return accessibleMethods.Any();
         }
 
         private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
