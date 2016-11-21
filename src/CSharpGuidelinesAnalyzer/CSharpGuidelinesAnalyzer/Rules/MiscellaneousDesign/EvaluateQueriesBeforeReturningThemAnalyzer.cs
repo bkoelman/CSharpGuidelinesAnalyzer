@@ -63,13 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
-                }
-            });
+            context.RegisterConditionalOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
         }
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)

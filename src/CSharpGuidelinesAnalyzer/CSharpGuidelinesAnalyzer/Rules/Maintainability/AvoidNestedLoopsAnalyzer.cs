@@ -29,14 +29,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLoopStatement),
-                        OperationKind.LoopStatement);
-                }
-            });
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLoopStatement),
+                OperationKind.LoopStatement);
         }
 
         private void AnalyzeLoopStatement(OperationAnalysisContext context)

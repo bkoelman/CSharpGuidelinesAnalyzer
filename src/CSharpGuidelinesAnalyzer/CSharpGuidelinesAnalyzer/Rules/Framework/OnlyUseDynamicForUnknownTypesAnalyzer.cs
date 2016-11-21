@@ -35,6 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 {
                     startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
                         OperationKind.VariableDeclaration);
+
                     startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment),
                         OperationKind.AssignmentExpression);
                 }
@@ -45,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
-            if (declaration.Variable.Type.TypeKind == TypeKind.Dynamic)
+            if (IsDynamicType(declaration.Variable.Type))
             {
                 if (RequiresReport(declaration.InitialValue))
                 {
@@ -55,12 +56,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
         }
 
+        private static bool IsDynamicType([NotNull] ITypeSymbol type)
+        {
+            return type.TypeKind == TypeKind.Dynamic;
+        }
+
         private void AnalyzeAssignment(OperationAnalysisContext context)
         {
             var assignment = (IAssignmentExpression) context.Operation;
 
             IdentifierInfo identifierInfo = assignment.Target.TryGetIdentifierInfo();
-            if (identifierInfo != null && identifierInfo.Type.TypeKind == TypeKind.Dynamic)
+            if (identifierInfo != null && IsDynamicType(identifierInfo.Type))
             {
                 if (RequiresReport(assignment.Value))
                 {
@@ -77,8 +83,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 ITypeSymbol sourceType = conversion.Operand.Type;
 
-                if (sourceType != null && sourceType.TypeKind != TypeKind.Error &&
-                    sourceType.TypeKind != TypeKind.Dynamic && sourceType.SpecialType != SpecialType.System_Object)
+                if (sourceType != null && !IsDynamicType(sourceType) &&
+                    sourceType.SpecialType != SpecialType.System_Object)
                 {
                     return true;
                 }

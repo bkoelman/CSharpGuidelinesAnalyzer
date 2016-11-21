@@ -34,13 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeSwitchCase), OperationKind.SwitchCase);
-                }
-            });
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeSwitchCase), OperationKind.SwitchCase);
         }
 
         private void AnalyzeSwitchCase(OperationAnalysisContext context)

@@ -49,14 +49,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation),
-                        OperationKind.InvocationExpression);
-                }
-            });
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeInvocation),
+                OperationKind.InvocationExpression);
         }
 
         private void AnalyzeInvocation(OperationAnalysisContext context)

@@ -2,7 +2,7 @@
 
 namespace CSharpGuidelinesAnalyzer
 {
-    public struct IdentifierName
+    internal struct IdentifierName
     {
         [NotNull]
         public string ShortName { get; }
@@ -12,8 +12,8 @@ namespace CSharpGuidelinesAnalyzer
 
         public IdentifierName([NotNull] string shortName, [NotNull] string longName)
         {
-            Guard.NotNull(shortName, nameof(shortName));
-            Guard.NotNull(longName, nameof(longName));
+            Guard.NotNullNorWhiteSpace(shortName, nameof(shortName));
+            Guard.NotNullNorWhiteSpace(longName, nameof(longName));
 
             ShortName = shortName;
             LongName = longName;

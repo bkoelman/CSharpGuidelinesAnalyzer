@@ -179,21 +179,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             private bool PreprocessorHasComment(SyntaxTrivia trivia)
             {
-                return trivia.Kind() != SyntaxKind.RegionDirectiveTrivia &&
-                    SyntaxFacts.IsPreprocessorDirective(trivia.Kind()) &&
+                SyntaxKind kind = trivia.Kind();
+
+                return kind != SyntaxKind.RegionDirectiveTrivia && SyntaxFacts.IsPreprocessorDirective(kind) &&
                     trivia.ToString().IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0;
             }
 
             private bool IsSingleLineComment(SyntaxTrivia trivia)
             {
-                return trivia.Kind() == SyntaxKind.SingleLineCommentTrivia ||
-                    trivia.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia;
+                SyntaxKind kind = trivia.Kind();
+
+                return kind == SyntaxKind.SingleLineCommentTrivia ||
+                    kind == SyntaxKind.SingleLineDocumentationCommentTrivia;
             }
 
             private bool IsMultilineComment(SyntaxTrivia trivia)
             {
-                return trivia.Kind() == SyntaxKind.MultiLineCommentTrivia ||
-                    trivia.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia;
+                SyntaxKind kind = trivia.Kind();
+
+                return kind == SyntaxKind.MultiLineCommentTrivia ||
+                    kind == SyntaxKind.MultiLineDocumentationCommentTrivia;
             }
         }
     }

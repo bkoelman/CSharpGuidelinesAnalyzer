@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     /// <summary />
-    internal class DocumentWithSpans
+    internal sealed class DocumentWithSpans
     {
         [NotNull]
         public Document Document { get; }

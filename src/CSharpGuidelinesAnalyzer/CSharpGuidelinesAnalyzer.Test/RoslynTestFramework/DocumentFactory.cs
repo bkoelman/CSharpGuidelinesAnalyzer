@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.VisualBasic;
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     /// <summary />
-    internal class DocumentFactory
+    internal sealed class DocumentFactory
     {
         [NotNull]
         private static readonly CSharpCompilationOptions DefaultCSharpCompilationOptions =

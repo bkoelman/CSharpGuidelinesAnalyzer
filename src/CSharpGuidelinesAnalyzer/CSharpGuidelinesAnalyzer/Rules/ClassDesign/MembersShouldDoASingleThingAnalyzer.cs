@@ -39,12 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor())
-            {
-                return;
-            }
-
-            if (context.Symbol.IsUnitTestMethod())
+            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsUnitTestMethod())
             {
                 return;
             }

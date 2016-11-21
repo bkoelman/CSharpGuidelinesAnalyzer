@@ -63,8 +63,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static bool IsComment(SyntaxTrivia trivia)
         {
-            return trivia.Kind() == SyntaxKind.SingleLineCommentTrivia ||
-                trivia.Kind() == SyntaxKind.MultiLineCommentTrivia;
+            SyntaxKind kind = trivia.Kind();
+            return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.MultiLineCommentTrivia;
         }
 
         private bool IsResharperSuppression(SyntaxTrivia commentTrivia)

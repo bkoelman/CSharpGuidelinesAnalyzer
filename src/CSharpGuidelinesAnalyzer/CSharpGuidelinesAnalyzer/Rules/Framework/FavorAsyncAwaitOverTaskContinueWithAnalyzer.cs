@@ -37,12 +37,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    AnalyzeCompilation(startContext);
+                    RegisterAnalyzeCompilation(startContext);
                 }
             });
         }
 
-        private void AnalyzeCompilation([NotNull] CompilationStartAnalysisContext startContext)
+        private void RegisterAnalyzeCompilation([NotNull] CompilationStartAnalysisContext startContext)
         {
             INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
             if (taskType != null)

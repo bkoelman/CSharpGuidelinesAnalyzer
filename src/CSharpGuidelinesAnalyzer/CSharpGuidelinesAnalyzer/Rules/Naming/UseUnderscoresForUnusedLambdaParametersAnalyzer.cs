@@ -32,14 +32,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
-                        OperationKind.LambdaExpression);
-                }
-            });
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
+                OperationKind.LambdaExpression);
         }
 
         private void AnalyzeLambdaExpression(OperationAnalysisContext context)

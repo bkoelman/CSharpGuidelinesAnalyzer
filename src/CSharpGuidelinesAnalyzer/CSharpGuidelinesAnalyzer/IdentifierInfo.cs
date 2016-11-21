@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer
 {
-    public sealed class IdentifierInfo
+    internal sealed class IdentifierInfo
     {
         public IdentifierName Name { get; }
 

@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         private static bool ContainsNewModifier([CanBeNull] SyntaxTokenList? modifiers)
         {
-            return modifiers != null && modifiers.Value.Any(m => m.Kind() == SyntaxKind.NewKeyword);
+            return modifiers != null && modifiers.Value.Any(m => m.IsKind(SyntaxKind.NewKeyword));
         }
 
         [NotNull]

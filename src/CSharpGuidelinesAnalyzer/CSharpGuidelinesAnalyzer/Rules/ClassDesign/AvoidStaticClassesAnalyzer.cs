@@ -57,10 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             if (!type.Name.EndsWith("Extensions", StringComparison.Ordinal))
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeRule, type.Locations[0], type.Name));
-                return;
             }
-
-            AnalyzeAccessibleMethods(type, context);
+            else
+            {
+                AnalyzeAccessibleMethods(type, context);
+            }
         }
 
         private static void AnalyzeAccessibleMethods([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
