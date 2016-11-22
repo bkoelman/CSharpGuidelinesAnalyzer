@@ -344,6 +344,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_public_operator_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public struct C
+                    {
+                        public static bool operator ==(C left, C right)
+                        {
+                            throw new NotImplementedException();
+                        }
+
+                        public static bool operator !=(C left, C right)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_public_method_return_type_is_nullable_bool_and_name_starts_with_a_verb_it_must_be_skipped()
         {
             // Arrange

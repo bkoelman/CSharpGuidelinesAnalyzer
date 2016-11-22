@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() ||
-                context.Symbol.IsOverride)
+                IsOperator(context.Symbol) || context.Symbol.IsOverride)
             {
                 return;
             }
@@ -62,6 +62,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
                     LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
             }
+        }
+
+        private bool IsOperator([NotNull] ISymbol symbol)
+        {
+            var method = symbol as IMethodSymbol;
+
+            MethodKind? kind = method?.MethodKind;
+            return kind == MethodKind.UserDefinedOperator || kind == MethodKind.BuiltinOperator;
         }
 
         private static bool IsMemberAccessible([NotNull] ISymbol symbol)
