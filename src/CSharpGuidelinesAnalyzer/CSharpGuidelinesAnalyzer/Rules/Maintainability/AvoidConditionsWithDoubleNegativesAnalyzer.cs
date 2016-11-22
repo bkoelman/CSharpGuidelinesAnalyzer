@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -28,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("No", "Not");
+        private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("no", "not");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -62,8 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool ContainsNegatingWord([NotNull] IdentifierInfo info)
         {
-            string name = info.Name.ShortName;
-            return name.GetFirstWordInSetFromIdentifier(NegatingWords, TextMatchMode.AllowLowerCaseMatch) != null;
+            return info.Name.ShortName.GetWordsInList(NegatingWords).Any();
         }
     }
 }

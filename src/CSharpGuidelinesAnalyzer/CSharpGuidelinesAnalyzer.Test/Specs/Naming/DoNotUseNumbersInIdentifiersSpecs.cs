@@ -639,6 +639,65 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_method_name_contains_only_whitelisted_words_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Int16SaveInt32Or3DIntoInt64()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_name_contains_whitelisted_words_and_digits_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|ConvertDigit9IntoInt32|]()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'ConvertDigit9IntoInt32' contains one or more digits in its name.");
+        }
+
+        [Fact]
+        internal void When_method_name_contains_part_of_whitelisted_word_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|GetMatrix3Demo|]()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'GetMatrix3Demo' contains one or more digits in its name.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseNumbersInIdentifiersAnalyzer();

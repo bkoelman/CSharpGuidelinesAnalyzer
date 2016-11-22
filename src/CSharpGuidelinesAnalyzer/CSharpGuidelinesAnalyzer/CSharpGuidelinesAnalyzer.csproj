@@ -46,9 +46,7 @@
     <Compile Include="Extensions\SymbolExtensions.cs" />
     <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
     <Compile Include="IdentifierName.cs" />
-    <Compile Include="TextCollection.cs" />
     <Compile Include="Extensions\TypeSymbolExtensions.cs" />
-    <Compile Include="WordsInIdentifierExtractor.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="HelpLinkUris.cs" />
     <Compile Include="IdentifierInfo.cs" />
@@ -94,7 +92,9 @@
     <Compile Include="Rules\Naming\StaticClassesShouldOnlyContainExtensionMethodsAnalyzer.cs" />
     <Compile Include="Rules\Naming\UseFrameworkTerminologyInMemberNamesAnalyzer.cs" />
     <Compile Include="Rules\Naming\UseUnderscoresForUnusedLambdaParametersAnalyzer.cs" />
-    <Compile Include="TextMatchMode.cs" />
+    <Compile Include="WordsTokenizer.cs" />
+    <Compile Include="WordToken.cs" />
+    <Compile Include="WordTokenKind.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\LICENSE.txt">

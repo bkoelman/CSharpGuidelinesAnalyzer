@@ -126,10 +126,10 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         {
             if (captureMode == DiagnosticsCaptureMode.RequireInSourceTree)
             {
-                result.Diagnostics.Should().HaveCount(result.Spans.Count);
+                result.Diagnostics.Should().HaveSameCount(result.Spans);
             }
 
-            result.Diagnostics.Should().HaveCount(result.Messages.Count);
+            result.Diagnostics.Should().HaveSameCount(result.Messages);
         }
 
         private static void VerifyDignostics([NotNull] AnalysisResult result, [NotNull] AnalyzerTestContext context)

@@ -145,6 +145,7 @@
     <Compile Include="RoslynTestFramework\DocumentWithSpans.cs" />
     <Compile Include="RoslynTestFramework\DocumentFactory.cs" />
     <Compile Include="RoslynTestFramework\TestValidationMode.cs" />
+    <Compile Include="Specs\WordsTokenizerSpecs.cs" />
     <Compile Include="Specs\ClassDesign\AvoidStaticClassesSpecs.cs" />
     <Compile Include="Specs\ClassDesign\DoNotHideInheritedMembersSpecs.cs" />
     <Compile Include="Specs\ClassDesign\MembersShouldDoASingleThingSpecs.cs" />
