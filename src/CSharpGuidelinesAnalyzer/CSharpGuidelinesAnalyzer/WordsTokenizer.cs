@@ -116,13 +116,21 @@ namespace CSharpGuidelinesAnalyzer
             {
                 case WordTokenKind.CamelCaseWord:
                 case WordTokenKind.PascalCaseWord:
+                {
                     return IsLowerCaseLetter(ch);
+                }
                 case WordTokenKind.UpperCaseWord:
+                {
                     return IsUpperCaseLetter(ch);
+                }
                 case WordTokenKind.Separators:
+                {
                     return IsSeparator(ch);
+                }
                 default:
+                {
                     throw new NotSupportedException($"Unexpected token kind {kind}.");
+                }
             }
         }
 

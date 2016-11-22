@@ -110,6 +110,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var tokenizer = new WordsTokenizer(text);
             List<WordToken> tokens = tokenizer.GetTokens().ToList();
 
+            RemoveWhitelistedTokens(tokens);
+
+            return string.Join(string.Empty, tokens.Select(t => t.Text));
+        }
+
+        private static void RemoveWhitelistedTokens([NotNull] List<WordToken> tokens)
+        {
+#pragma warning disable AV1530 // Loop variable should not be written to in loop body
             for (int index = 0; index < tokens.Count - 1; index++)
             {
                 string thisTokenText = tokens[index].Text;
@@ -121,8 +129,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                     index--;
                 }
             }
-
-            return string.Join(string.Empty, tokens.Select(t => t.Text));
+#pragma warning restore AV1530 // Loop variable should not be written to in loop body
         }
 
         private static bool IsDimensional([NotNull] string thisTokenText, [NotNull] string nextTokenText)
