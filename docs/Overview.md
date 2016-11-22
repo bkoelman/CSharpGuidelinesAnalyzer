@@ -84,7 +84,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when a digit occurs in a type, member, parameter or variable name.
 
 ### [AV1706](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md#av1706): Don't use abbreviations (MEDIUM)
-- [x] This analyzer reports member, parameter and variable names that consist of a single-letter or contain any of the abbreviations "Btn", "Ctrl", "Frm", "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str".
+- [x] This analyzer reports member, parameter and variable names that consist of a single-letter or contain abbreviations like "Btn", "Ctrl", "Frm", "Chk", "Str" etc.
 
 ### [AV1708](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md#av1708): Name types using nouns, noun phrases or adjective phrases (MEDIUM)
 - [x] This analyzer reports types that have any of the terms "Utility", "Utilities", "Facility", "Facilities", "Helper", "Helpers", "Common" or "Shared" in their name.
@@ -119,7 +119,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports when the compiler warning level is lower than 4. Requires [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full Solution Analysis.md).
 
 ### [AV2215](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/2200_FrameworkGuidelines.md#av2215): Properly fill the attributes of the AssemblyInfo.cs file (LOW)
-- [x] This analyzer reports when the `AssemblyTitle`, `AssemblyDescription`, `AssemblyConfiguration`, `AssemblyCompany`, `AssemblyProduct`, `AssemblyCopyright`, `AssemblyTrademark`, `AssemblyVersion` or `AssemblyFileVersion` is missing or invoked with an empty string.
+- [x] This analyzer reports when the `AssemblyTitle`, `AssemblyDescription`, `AssemblyConfiguration`, `AssemblyCompany`, `AssemblyProduct`, `AssemblyCopyright`, `AssemblyTrademark` or `AssemblyVersion` is missing or invoked with an empty string.
 
 ### [AV2230](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/2200_FrameworkGuidelines.md#av2230): Only use the dynamic keyword when talking to a dynamic object (HIGH)
 - [x] This analyzer reports when a member, parameter or variable that is declared as `dynamic` is assigned the result of an expression whose type is not `object` or `dynamic`.
