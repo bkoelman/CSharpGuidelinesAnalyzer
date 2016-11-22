@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
@@ -8,36 +9,48 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     /// <summary />
     internal static class IdentifierExtensions
     {
-        public static bool StartsWithAnyWordOf([NotNull] this string identifierName,
-            [ItemNotNull] ImmutableArray<string> wordsToFind, TextMatchMode matchMode)
-        {
-            Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
-
-            string firstWord = GetFirstWord(identifierName);
-
-            var availableWords = new TextCollection(wordsToFind);
-            return availableWords.Contains(firstWord, matchMode);
-        }
-
         [NotNull]
-        private static string GetFirstWord([NotNull] string identifierName)
-        {
-            var extractor = new WordsInIdentifierExtractor(identifierName);
-            IList<string> wordsInText = extractor.ExtractWords();
-
-            return wordsInText.First();
-        }
-
-        [CanBeNull]
-        public static string GetFirstWordInSetFromIdentifier([NotNull] this string identifierName,
-            [ItemNotNull] [NotNull] ICollection<string> wordsToFind, TextMatchMode matchMode)
+        public static ICollection<WordToken> GetWordsInList([NotNull] this string identifierName,
+            [NotNull] [ItemNotNull] ICollection<string> list)
         {
             Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
+            Guard.NotNullNorEmpty(list, nameof(list));
 
-            var extractor = new WordsInIdentifierExtractor(identifierName);
-            var wordsInText = new TextCollection(extractor.ExtractWords());
+            if (!QuickScanMayContainWordsListed(identifierName, list))
+            {
+                return ImmutableArray<WordToken>.Empty;
+            }
 
-            return wordsToFind.FirstOrDefault(word => wordsInText.Contains(word, matchMode));
+            var tokenizer = new WordsTokenizer(identifierName);
+            return tokenizer.GetWords().Where(w => IsListed(w, list)).ToArray();
+        }
+
+        public static bool StartsWithWordInList([NotNull] this string identifierName,
+            [NotNull] [ItemNotNull] ICollection<string> list)
+        {
+            Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
+            Guard.NotNullNorEmpty(list, nameof(list));
+
+            if (!QuickScanMayContainWordsListed(identifierName, list))
+            {
+                return false;
+            }
+
+            var tokenizer = new WordsTokenizer(identifierName);
+
+            WordToken[] words = tokenizer.GetWords().Take(1).ToArray();
+            return words.Any() && IsListed(words.First(), list);
+        }
+
+        private static bool QuickScanMayContainWordsListed([NotNull] string text,
+            [NotNull] [ItemNotNull] IEnumerable<string> list)
+        {
+            return list.Any(word => text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
+        }
+
+        private static bool IsListed(WordToken wordToken, [NotNull] [ItemNotNull] IEnumerable<string> list)
+        {
+            return list.Any(word => string.Equals(word, wordToken.Text, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

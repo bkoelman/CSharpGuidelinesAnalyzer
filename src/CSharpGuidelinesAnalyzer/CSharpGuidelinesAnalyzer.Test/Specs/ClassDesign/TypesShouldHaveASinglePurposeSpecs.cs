@@ -44,6 +44,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
+        internal void When_uppercase_struct_name_contains_the_word_and_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct [|CUSTOMER_AND_ORDER|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Type 'CUSTOMER_AND_ORDER' contains the word 'and'.");
+        }
+
+        [Fact]
         internal void When_enum_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
@@ -58,6 +75,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Type 'Match1And2' contains the word 'and'.");
+        }
+
+        [Fact]
+        internal void When_uppercase_enum_name_contains_the_word_and_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    enum [|MATCH1AND2|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Type 'MATCH1AND2' contains the word 'and'.");
         }
 
         [Fact]

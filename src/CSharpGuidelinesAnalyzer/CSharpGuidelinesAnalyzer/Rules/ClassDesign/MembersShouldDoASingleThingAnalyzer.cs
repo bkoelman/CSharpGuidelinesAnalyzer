@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -27,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("And");
+        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("and");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -53,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private static bool ContainsBlacklistedWord([NotNull] string name)
         {
-            return name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) != null;
+            return name.GetWordsInList(WordsBlacklist).Any();
         }
     }
 }

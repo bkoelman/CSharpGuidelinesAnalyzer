@@ -113,7 +113,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private bool IsWhitelisted([NotNull] string identifierName)
         {
-            return identifierName.StartsWithAnyWordOf(WordsWhitelist, TextMatchMode.AllowLowerCaseMatch);
+            return identifierName.StartsWithWordInList(WordsWhitelist);
         }
 
         [NotNull]

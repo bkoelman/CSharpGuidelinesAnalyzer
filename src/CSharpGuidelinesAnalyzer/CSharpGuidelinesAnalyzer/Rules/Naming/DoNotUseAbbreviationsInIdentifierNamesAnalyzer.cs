@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -104,7 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private static bool IsBlacklisted([NotNull] string name)
         {
-            return name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.AllowLowerCaseMatch) != null;
+            return name.GetWordsInList(WordsBlacklist).Any();
         }
 
         private static bool IsSingleLetter([NotNull] string name)

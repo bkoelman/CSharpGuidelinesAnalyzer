@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -41,10 +43,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var type = (INamedTypeSymbol) context.Symbol;
 
-            string word = type.Name.GetFirstWordInSetFromIdentifier(WordsBlacklist, TextMatchMode.RequireExactMatch);
-            if (word != null)
+            ICollection<WordToken> wordsListed = type.Name.GetWordsInList(WordsBlacklist);
+            if (wordsListed.Any())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, word));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, wordsListed.First().Text));
             }
         }
     }
