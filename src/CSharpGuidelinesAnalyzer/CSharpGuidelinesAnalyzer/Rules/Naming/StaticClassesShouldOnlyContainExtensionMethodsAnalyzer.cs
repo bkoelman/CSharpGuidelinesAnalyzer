@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     {
         public const string DiagnosticId = "AV1745";
 
-        private const string Title = "Name of extension method container class should end with 'Extensions'.";
+        private const string Title = "Name of extension method container class should end with 'Extensions'";
 
         private const string MessageFormat =
             "Name of extension method container class '{0}' should end with 'Extensions'.";

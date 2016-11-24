@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         public const string DiagnosticId = "AV1225";
 
         private const string Title =
-            "Methods that raise an event should be protected virtual and be named 'On' followed by event name.";
+            "Methods that raise an event should be protected virtual and be named 'On' followed by event name";
 
         private const string KindMessageFormat = "Event '{0}' should be raised from a regular method.";
 

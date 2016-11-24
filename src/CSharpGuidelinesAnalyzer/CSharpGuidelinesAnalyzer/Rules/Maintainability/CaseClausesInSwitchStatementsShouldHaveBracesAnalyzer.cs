@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1535";
 
-        private const string Title = "Missing block in case statement.";
+        private const string Title = "Missing block in case statement";
         private const string MessageFormat = "Missing block in case statement.";
 
         private const string Description =

@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     {
         public const string DiagnosticId = "AV2215";
 
-        private const string Title = "Assembly-level attribute is missing or empty.";
+        private const string Title = "Assembly-level attribute is missing or empty";
         private const string MessageFormat = "Assembly-level attribute '{0}' is missing or empty.";
         private const string Description = "Properly fill the attributes of the AssemblyInfo.cs file.";
         private const string Category = "Framework";

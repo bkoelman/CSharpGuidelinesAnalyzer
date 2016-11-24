@@ -70,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "if-else-if construct should end with an unconditional else clause.");
+                "If-else-if construct should end with an unconditional else clause.");
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "if-else-if construct should end with an unconditional else clause.");
+                "If-else-if construct should end with an unconditional else clause.");
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "if-else-if construct should end with an unconditional else clause.");
+                "If-else-if construct should end with an unconditional else clause.");
         }
 
         [Fact]
@@ -249,9 +249,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "if-else-if construct should end with an unconditional else clause.",
-                "if-else-if construct should end with an unconditional else clause.",
-                "if-else-if construct should end with an unconditional else clause.");
+                "If-else-if construct should end with an unconditional else clause.",
+                "If-else-if construct should end with an unconditional else clause.",
+                "If-else-if construct should end with an unconditional else clause.");
         }
 
         [Fact]

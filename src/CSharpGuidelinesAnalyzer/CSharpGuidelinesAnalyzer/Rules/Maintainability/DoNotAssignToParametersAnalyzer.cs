@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1568";
 
-        private const string Title = "The value of a parameter is overwritten in its method body.";
+        private const string Title = "The value of a parameter is overwritten in its method body";
         private const string MessageFormat = "The value of parameter '{0}' is overwritten in its method body.";
         private const string Description = "Don't use parameters as temporary variables.";
         private const string Category = "Maintainability";
