@@ -34,7 +34,7 @@ Rule warnings can be suppressed at various scopes, ranging from per line to at t
 #pragma warning restore AV1532 // Loop statement contains nested loop
 ```
 On the location of a warning, press **Ctrl+.** or **Alt+Enter** and select **Suppress**, **in Source**.
-        
+
 * In `GlobalSuppressions.cs`, for example:
 ```csharp
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "AV1532:Loop statement contains nested loop", Justification = "<Pending>", Scope = "member", Target = "~M:CSharpGuidelinesDemo.Demo.RunDemo(System.String[][],System.Boolean,System.String)~System.Collections.Generic.List{System.String}")]
@@ -45,6 +45,8 @@ Note that you can broaden the suppression scope by removing the `Target` and/or 
 ```csharp
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "AV1532:Loop statement contains nested loop", Justification = "<Pending>")]
 ```
+
+**Note:** Due to a [bug in Resharper](https://youtrack.jetbrains.com/issue/RSRP-461893) you may not see the **Suppress** context menu item. To make the option accessible, temporarily suspend Resharper.
 
 * In a custom .ruleset file, which contains Code Analysis settings:
 
