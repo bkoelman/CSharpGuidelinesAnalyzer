@@ -3,13 +3,16 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/q37dldfggtcwf6u4/branch/master?svg=true)](https://ci.appveyor.com/project/bkoelman/csharpguidelinesanalyzer/branch/master)
 [![csharpguidelinesanalyzer MyGet Build Status](https://www.myget.org/BuildSource/Badge/csharpguidelinesanalyzer?identifier=757dfdd3-26d5-4842-abac-4cdf820e3f6d)](https://www.myget.org/)
 
-This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), which are not implemented here.
+This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). 
+
+Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), which are not implemented here.
+See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules.
 
 ![Analyzer in action](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/gh-pages/images/analyzer-in-action.png)
 
 ## Project status
 
-All analyzers have been implemented, but testing and optimization work is still in progress. See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules and their status.
+This project is in its final testing phase. Expect the 1.0 stable release within a few weeks.
 
 ## Get started
 
@@ -17,13 +20,41 @@ All analyzers have been implemented, but testing and optimization work is still 
 
 * From the NuGet package manager console:
 
-  `Install-Package CSharpGuidelinesAnalyzer -Pre`
+  `Install-Package CSharpGuidelinesAnalyzer -pre`
 
 * Rebuild your solution
 
+## Suppressing rules
+Rule warnings can be suppressed at various scopes, ranging from per line to at the project or solution level.
+
+* With `#pragma` lines, for example:
+```csharp
+#pragma warning disable AV1532 // Loop statement contains nested loop
+    foreach (string item in itemArray)
+#pragma warning restore AV1532 // Loop statement contains nested loop
+```
+On the location of a warning, press **Ctrl+.** or **Alt+Enter** and select **Suppress**, **in Source**.
+        
+* In `GlobalSuppressions.cs`, for example:
+```csharp
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "AV1532:Loop statement contains nested loop", Justification = "<Pending>", Scope = "member", Target = "~M:CSharpGuidelinesDemo.Demo.RunDemo(System.String[][],System.Boolean,System.String)~System.Collections.Generic.List{System.String}")]
+```
+On the location of a warning, press **Ctrl+.** or **Alt+Enter** and select **Suppress**, **in Suppression File**.
+Note that you can broaden the suppression scope by removing the `Target` and/or `Scope` attributes:
+
+```csharp
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "AV1532:Loop statement contains nested loop", Justification = "<Pending>")]
+```
+
+* In a custom .ruleset file, which contains Code Analysis settings:
+
+Right-click your project, select **Properties**, tab **Code Analysis**. Click **Open**, expand **CSharpGuidelinesAnalyzers** and uncheck the rules you want to disable. When you save changes, a .ruleset file is added to your project.
+
+To apply the custom ruleset to the entire solution, move the .ruleset file next to your .sln file and browse to it on the CodeAnalysis tab for each project.
+
 ## Contribute!
 
-This analyzer pack still needs a lot of testing on various codebases. Some of the best ways to contribute are to try things out, file bugs, and join in design conversations.
+The analyzers in this project benefit a lot from testing on various codebases. Some of the best ways to contribute are to try things out, file bugs, and join in design conversations.
 
 ## Trying out the latest build
 
