@@ -48,9 +48,6 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ### [AV1522](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1522): Assign each variable in a separate statement (HIGH)
 - [x] This analyzer reports when multiple properties, fields, parameters or variables are assigned in a single statement.
 
-### [AV1525](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1525): Don't make explicit comparisons to true or false (HIGH)
-- [x] This analyzer reports boolean comparisons with `true` or `false`.
-
 ### [AV1530](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1530): Don't change a loop variable inside a for loop (MEDIUM)
 - [x] This analyzer reports when loop variables are assigned in the loop body.
 

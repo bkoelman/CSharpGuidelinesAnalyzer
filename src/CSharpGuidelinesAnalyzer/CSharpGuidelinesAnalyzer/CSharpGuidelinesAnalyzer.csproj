@@ -65,7 +65,6 @@
     <Compile Include="Rules\Maintainability\AssignVariablesInSeparateStatementsAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\AvoidBooleanParametersAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\AvoidConditionsWithDoubleNegativesAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidExplicitBooleanComparisonsAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\AvoidMembersWithMoreThanSevenStatementsAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\AvoidMembersWithMoreThanThreeParametersAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\AvoidMultipleTypesPerFileAnalyzer.cs" />

@@ -161,7 +161,6 @@
     <Compile Include="Specs\Maintainability\AssignVariablesInSeparateStatementsSpecs.cs" />
     <Compile Include="Specs\Maintainability\AvoidBooleanParametersSpecs.cs" />
     <Compile Include="Specs\Maintainability\AvoidConditionsWithDoubleNegativesSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidExplicitBooleanComparisonsSpecs.cs" />
     <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanSevenStatementsSpecs.cs" />
     <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanThreeParametersSpecs.cs" />
     <Compile Include="Specs\Maintainability\AvoidMultipleTypesPerFileSpecs.cs" />
