@@ -23,8 +23,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string Category = "Maintainability";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -45,8 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
                     if (systemBoolean != null)
                     {
-                        startContext.RegisterOperationAction(
-                            c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),
+                        startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),
                             OperationKind.SwitchStatement);
                     }
                 }
@@ -87,8 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext,
-            [NotNull] IdentifierInfo identifierInfo)
+        private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext, [NotNull] IdentifierInfo identifierInfo)
         {
             return IsSwitchCompleteForBooleanTypes(identifierInfo, analysisContext) ??
                 IsSwitchCompleteForEnumerationTypes(identifierInfo, analysisContext);
@@ -235,8 +233,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull]
             public ISymbol BooleanFalse { get; }
 
-            public SwitchAnalysisContext([NotNull] ISwitchStatement switchStatement,
-                [NotNull] INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
+            public SwitchAnalysisContext([NotNull] ISwitchStatement switchStatement, [NotNull] INamedTypeSymbol systemBoolean,
+                OperationAnalysisContext context)
             {
                 Guard.NotNull(switchStatement, nameof(switchStatement));
                 Guard.NotNull(systemBoolean, nameof(systemBoolean));

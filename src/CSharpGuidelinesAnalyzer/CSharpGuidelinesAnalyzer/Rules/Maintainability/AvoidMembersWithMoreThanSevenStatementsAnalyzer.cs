@@ -103,7 +103,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitFixedStatement([NotNull] IFixedStatement operation)
             {
-                // Note: fixed statements must always occur in combination with a declaration 
+                // Note: fixed statements must always occur in combination with a declaration
                 // expression statement. So to allow eight fixed statements, we do not count these.
                 base.VisitFixedStatement(operation);
             }

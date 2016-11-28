@@ -137,7 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                // multiline 
+                // multiline
                 string startMessage = text.ToString(TextSpan.FromBounds(fullSpan.Start, startLine.End));
                 ReportTodoCommentInfoFromSingleLine(startMessage, fullSpan.Start, context);
 
