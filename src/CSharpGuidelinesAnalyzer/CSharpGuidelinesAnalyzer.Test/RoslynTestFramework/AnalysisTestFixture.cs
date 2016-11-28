@@ -114,11 +114,16 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 Location location = analyzerDiagnostic.Location;
 
                 if (diagnosticsCaptureMode == DiagnosticsCaptureMode.AllowOutsideSourceTree ||
-                    (location.IsInSource && location.SourceTree == tree))
+                    LocationIsInSourceTree(location, tree))
                 {
                     yield return analyzerDiagnostic;
                 }
             }
+        }
+
+        private static bool LocationIsInSourceTree([NotNull] Location location, [CanBeNull] SyntaxTree tree)
+        {
+            return location.IsInSource && location.SourceTree == tree;
         }
 
         private static void VerifyDiagnosticCount([NotNull] AnalysisResult result,

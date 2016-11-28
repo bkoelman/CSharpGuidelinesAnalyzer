@@ -99,8 +99,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class MarkupParser
         {
-            const string SpanStartText = "[|";
-            const string SpanEndText = "|]";
+            private const string SpanStartText = "[|";
+            private const string SpanEndText = "|]";
             private const int SpanTextLength = 2;
 
             [NotNull]
