@@ -51,12 +51,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
 
             IMethodSymbol[] accessibleMethods = type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal).ToArray();
-            if (accessibleMethods.Any(method => !method.IsExtensionMethod))
-            {
-                return false;
-            }
+            bool hasRegularAccessibleMethods = accessibleMethods.Any(method => !method.IsExtensionMethod);
 
-            return accessibleMethods.Any();
+            return !hasRegularAccessibleMethods && accessibleMethods.Any();
         }
 
         private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)

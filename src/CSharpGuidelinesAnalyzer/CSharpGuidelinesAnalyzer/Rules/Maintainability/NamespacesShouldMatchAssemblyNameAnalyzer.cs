@@ -88,12 +88,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return string.Empty;
             }
 
-            if (assemblyName.EndsWith(".Core", StringComparison.Ordinal))
-            {
-                return assemblyName.Substring(0, assemblyName.Length - ".Core".Length);
-            }
-
-            return assemblyName;
+            return assemblyName.EndsWith(".Core", StringComparison.Ordinal)
+                ? assemblyName.Substring(0, assemblyName.Length - ".Core".Length)
+                : assemblyName;
         }
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
@@ -192,24 +189,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
 
                 bool? isMatchOnParts = IsMatchOnNamespaceParts(currentNamespaceParts, matchMode);
-                if (isMatchOnParts != null)
-                {
-                    return isMatchOnParts.Value;
-                }
 
-                return true;
+                return isMatchOnParts == null || isMatchOnParts.Value;
             }
 
             private bool IsCurrentNamespacePartOfJetBrainsAnnotations([NotNull] [ItemNotNull] string[] currentNamespaceParts)
             {
-                if (currentNamespaceParts.Length == 1)
+                switch (currentNamespaceParts.Length)
                 {
-                    return currentNamespaceParts[0] == JetBrainsAnnotationsNamespace[0];
-                }
-
-                if (currentNamespaceParts.Length == 2)
-                {
-                    return currentNamespaceParts.SequenceEqual(JetBrainsAnnotationsNamespace);
+                    case 1:
+                        return currentNamespaceParts[0] == JetBrainsAnnotationsNamespace[0];
+                    case 2:
+                        return currentNamespaceParts.SequenceEqual(JetBrainsAnnotationsNamespace);
                 }
 
                 return false;
