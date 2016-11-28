@@ -17,18 +17,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             "Methods that raise an event should be protected virtual and be named 'On' followed by event name";
 
         private const string KindMessageFormat = "Event '{0}' should be raised from a regular method.";
-
-        private const string ModifiersMessageFormat =
-            "Method '{0}' raises event '{1}', so should be protected and virtual.";
-
+        private const string ModifiersMessageFormat = "Method '{0}' raises event '{1}', so should be protected and virtual.";
         private const string NameMessageFormat = "Method '{0}' raises event '{1}', so it should be named '{2}'.";
         private const string Description = "Use a protected virtual method to raise each event.";
         private const string Category = "Miscellaneous Design";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            KindMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title, KindMessageFormat,
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title,
@@ -36,9 +32,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            NameMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat,
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -49,8 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeInvocation),
-                OperationKind.InvocationExpression);
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.InvocationExpression);
         }
 
         private void AnalyzeInvocation(OperationAnalysisContext context)
@@ -104,8 +98,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation,
-            [CanBeNull] IMethodSymbol containingMethod, OperationAnalysisContext context)
+        private IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
+            OperationAnalysisContext context)
         {
             var local = operation as ILocalReferenceExpression;
 
@@ -118,8 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod,
             [NotNull] ILocalSymbol local, OperationAnalysisContext context)
         {
-            IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation,
-                context.CancellationToken);
+            IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
             if (body != null)
             {
                 var walker = new LocalAssignmentWalker(local);
@@ -132,8 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IMethodSymbol TryGetContainingMethod([NotNull] IInvocationExpression invocation,
-            OperationAnalysisContext context)
+        private IMethodSymbol TryGetContainingMethod([NotNull] IInvocationExpression invocation, OperationAnalysisContext context)
         {
             SemanticModel model = context.Compilation.GetSemanticModel(invocation.Syntax.SyntaxTree);
             return model.GetEnclosingSymbol(invocation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
@@ -160,8 +152,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             string nameExpected = "On" + evnt.Name;
             if (method.Name != nameExpected)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, evnt.Name,
-                    nameExpected));
+                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, evnt.Name, nameExpected));
             }
         }
 
@@ -172,8 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 if (!method.IsVirtual || !IsProtected(method))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ModifiersRule, method.Locations[0], method.Name,
-                        evnt.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(ModifiersRule, method.Locations[0], method.Name, evnt.Name));
                 }
             }
         }

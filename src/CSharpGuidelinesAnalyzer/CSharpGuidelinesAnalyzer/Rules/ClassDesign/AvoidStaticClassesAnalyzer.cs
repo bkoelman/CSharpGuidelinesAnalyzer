@@ -24,9 +24,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string Category = "Class Design";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TypeMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
@@ -34,8 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(TypeRule, MemberRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(TypeRule, MemberRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -66,8 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private static void AnalyzeAccessibleMethods([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
         {
-            IEnumerable<IMethodSymbol> accessibleMethods =
-                type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal);
+            IEnumerable<IMethodSymbol> accessibleMethods = type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal);
 
             foreach (IMethodSymbol method in accessibleMethods.Where(method => !method.IsExtensionMethod))
             {
@@ -80,8 +77,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
         {
-            return method.DeclaredAccessibility == Accessibility.Public ||
-                method.DeclaredAccessibility == Accessibility.Internal;
+            return method.DeclaredAccessibility == Accessibility.Public || method.DeclaredAccessibility == Accessibility.Internal;
         }
     }
 }

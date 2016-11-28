@@ -22,9 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string OperationMessageFormat =
             "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution.";
 
-        private const string QueryMessageFormat =
-            "{0} '{1}' returns the result of a query that uses deferred execution.";
-
+        private const string QueryMessageFormat = "{0} '{1}' returns the result of a query that uses deferred execution.";
         private const string Description = "Evaluate the result of a LINQ expression before returning it.";
         private const string Category = "Miscellaneous Design";
 
@@ -34,26 +32,23 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            QueryMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryMessageFormat,
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(OperationRule, QueryRule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All",
-            "Any", "Cast", "Concat", "Contains", "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join",
-            "OfType", "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse", "Select", "SelectMany",
-            "SequenceEqual", "Skip", "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where",
-            "Zip");
+        private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any",
+            "Cast", "Concat", "Contains", "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join", "OfType",
+            "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse", "Select", "SelectMany", "SequenceEqual", "Skip",
+            "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where", "Zip");
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("AsEnumerable",
-            "Average", "Count", "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault",
-            "Last", "LastOrDefault", "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray",
-            "ToDictionary", "ToList", "ToLookup");
+        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("AsEnumerable", "Average",
+            "Count", "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault",
+            "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray", "ToDictionary", "ToList", "ToLookup");
 
         [NotNull]
         private const string QueryOperationName = "";
@@ -87,13 +82,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static bool ReturnsEnumerable([NotNull] IMethodSymbol method)
         {
-            return method.ReturnType.OriginalDefinition.SpecialType ==
-                SpecialType.System_Collections_Generic_IEnumerable_T ||
+            return method.ReturnType.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
                 method.ReturnType.SpecialType == SpecialType.System_Collections_IEnumerable;
         }
 
-        private void AnalyzeReturnStatement([NotNull] IReturnStatement returnStatement,
-            OperationBlockAnalysisContext context,
+        private void AnalyzeReturnStatement([NotNull] IReturnStatement returnStatement, OperationBlockAnalysisContext context,
             [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
             if (!ReturnsConstant(returnStatement) && !IsYieldBreak(returnStatement))
@@ -112,8 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return returnStatement.ReturnedValue is ILiteralExpression;
         }
 
-        private void AnalyzeReturnValue([NotNull] IReturnStatement returnStatement,
-            OperationBlockAnalysisContext context,
+        private void AnalyzeReturnValue([NotNull] IReturnStatement returnStatement, OperationBlockAnalysisContext context,
             [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
         {
             EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue, context.OperationBlocks,
@@ -128,8 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [NotNull]
         private static EvaluationResult AnalyzeExpression([NotNull] IOperation expression,
             [ItemNotNull] ImmutableArray<IOperation> body,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache,
-            CancellationToken cancellationToken)
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken)
         {
             Guard.NotNull(expression, nameof(expression));
             Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
@@ -139,8 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             var local = expression as ILocalReferenceExpression;
             if (local != null)
             {
-                var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache,
-                    cancellationToken);
+                var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache, cancellationToken);
                 assignmentWalker.VisitMethod();
 
                 return assignmentWalker.Result;
@@ -210,8 +200,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             public bool IsDeferred => evaluationState == EvaluationState.Deferred;
 
             [NotNull]
-            public static readonly EvaluationResult Query = new EvaluationResult(EvaluationState.Deferred,
-                QueryOperationName);
+            public static readonly EvaluationResult Query = new EvaluationResult(EvaluationState.Deferred, QueryOperationName);
 
             public EvaluationResult()
             {
@@ -342,8 +331,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             private readonly CancellationToken cancellationToken;
 
             public VariableAssignmentWalker([NotNull] ILocalSymbol local, [ItemNotNull] ImmutableArray<IOperation> body,
-                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache,
-                CancellationToken cancellationToken)
+                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken)
             {
                 Guard.NotNull(local, nameof(local));
                 Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
@@ -399,8 +387,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 Guard.NotNull(assignedValue, nameof(assignedValue));
 
-                EvaluationResult result = AnalyzeExpression(assignedValue, body, variableEvaluationCache,
-                    cancellationToken);
+                EvaluationResult result = AnalyzeExpression(assignedValue, body, variableEvaluationCache, cancellationToken);
                 Result.CopyIfConclusiveFrom(result);
             }
         }

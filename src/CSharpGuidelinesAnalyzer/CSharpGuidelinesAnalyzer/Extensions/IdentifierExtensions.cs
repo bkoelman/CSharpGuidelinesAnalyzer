@@ -42,8 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return words.Any() && IsListed(words.First(), list);
         }
 
-        private static bool QuickScanMayContainWordsListed([NotNull] string text,
-            [NotNull] [ItemNotNull] IEnumerable<string> list)
+        private static bool QuickScanMayContainWordsListed([NotNull] string text, [NotNull] [ItemNotNull] IEnumerable<string> list)
         {
             return list.Any(word => text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
         }

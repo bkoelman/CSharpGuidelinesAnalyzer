@@ -14,16 +14,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public const string DiagnosticId = "AV1502";
 
         private const string Title = "Logical not operator is applied on a member which has a negation in its name";
-
-        private const string MessageFormat =
-            "Logical not operator is applied on {0} '{1}', which has a negation in its name.";
-
+        private const string MessageFormat = "Logical not operator is applied on {0} '{1}', which has a negation in its name.";
         private const string Description = "Avoid conditions with double negatives.";
         private const string Category = "Maintainability";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

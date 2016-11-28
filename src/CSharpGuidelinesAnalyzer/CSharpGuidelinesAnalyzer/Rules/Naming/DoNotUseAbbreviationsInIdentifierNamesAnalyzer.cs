@@ -20,19 +20,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string Category = "Naming";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
-            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
+            SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Btn", "Ctrl", "Frm",
-            "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk",
-            "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str");
+        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Btn", "Ctrl", "Frm", "Chk", "Cmb",
+            "Ctx", "Dg", "Pnl", "Dlg", "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw",
+            "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt", "Len", "Idx", "Str");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -80,8 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (!parameter.IsInterfaceImplementation())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind,
-                        parameter.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
                 }
             }
         }

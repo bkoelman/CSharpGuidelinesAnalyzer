@@ -47,8 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             });
         }
 
-        public static void SkipInvalid(this OperationAnalysisContext context,
-            [NotNull] Action<OperationAnalysisContext> action)
+        public static void SkipInvalid(this OperationAnalysisContext context, [NotNull] Action<OperationAnalysisContext> action)
         {
             if (!context.Operation.IsInvalid)
             {
@@ -65,8 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
         }
 
-        public static void SkipEmptyName(this SymbolAnalysisContext context,
-            [NotNull] Action<SymbolAnalysisContext> action)
+        public static void SkipEmptyName(this SymbolAnalysisContext context, [NotNull] Action<SymbolAnalysisContext> action)
         {
             if (!string.IsNullOrEmpty(context.Symbol.Name))
             {
@@ -74,8 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
         }
 
-        public static void SkipEmptyName(this SyntaxNodeAnalysisContext context,
-            [NotNull] Action<SymbolAnalysisContext> action)
+        public static void SkipEmptyName(this SyntaxNodeAnalysisContext context, [NotNull] Action<SymbolAnalysisContext> action)
         {
             SymbolAnalysisContext symbolContext = context.ToSymbolContext();
             symbolContext.SkipEmptyName(_ => action(symbolContext));

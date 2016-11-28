@@ -28,8 +28,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override IdentifierInfo VisitParameterReferenceExpression(
-                [NotNull] IParameterReferenceExpression operation, [CanBeNull] object argument)
+            public override IdentifierInfo VisitParameterReferenceExpression([NotNull] IParameterReferenceExpression operation,
+                [CanBeNull] object argument)
             {
                 var name = new IdentifierName(operation.Parameter.Name,
                     /* CSharpShortErrorMessageFormat returns 'ref int', ie. without parameter name */
@@ -52,8 +52,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override IdentifierInfo VisitPropertyReferenceExpression(
-                [NotNull] IPropertyReferenceExpression operation, [CanBeNull] object argument)
+            public override IdentifierInfo VisitPropertyReferenceExpression([NotNull] IPropertyReferenceExpression operation,
+                [CanBeNull] object argument)
             {
                 return CreateForMemberReferenceExpression(operation, operation.Property.Type);
             }
@@ -80,8 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.TargetMethod.Name,
                     operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
-                return new IdentifierInfo(name, operation.TargetMethod.ReturnType,
-                    operation.TargetMethod.Kind.ToString());
+                return new IdentifierInfo(name, operation.TargetMethod.ReturnType, operation.TargetMethod.Kind.ToString());
             }
         }
 
@@ -114,8 +113,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override Location VisitForLoopStatement([NotNull] IForLoopStatement operation,
-                [CanBeNull] object argument)
+            public override Location VisitForLoopStatement([NotNull] IForLoopStatement operation, [CanBeNull] object argument)
             {
                 var syntax = (ForStatementSyntax) operation.Syntax;
                 return syntax.ForKeyword.GetLocation();
@@ -130,15 +128,13 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override Location VisitReturnStatement([NotNull] IReturnStatement operation,
-                [CanBeNull] object argument)
+            public override Location VisitReturnStatement([NotNull] IReturnStatement operation, [CanBeNull] object argument)
             {
                 return GetLocationForReturnOrYield(operation);
             }
 
             [NotNull]
-            public override Location VisitYieldBreakStatement([NotNull] IReturnStatement operation,
-                [CanBeNull] object argument)
+            public override Location VisitYieldBreakStatement([NotNull] IReturnStatement operation, [CanBeNull] object argument)
             {
                 return GetLocationForReturnOrYield(operation);
             }
@@ -179,8 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override Location VisitUsingStatement([NotNull] IUsingStatement operation,
-                [CanBeNull] object argument)
+            public override Location VisitUsingStatement([NotNull] IUsingStatement operation, [CanBeNull] object argument)
             {
                 var syntax = (UsingStatementSyntax) operation.Syntax;
                 return syntax.UsingKeyword.GetLocation();
@@ -194,16 +189,14 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override Location VisitSwitchStatement([NotNull] ISwitchStatement operation,
-                [CanBeNull] object argument)
+            public override Location VisitSwitchStatement([NotNull] ISwitchStatement operation, [CanBeNull] object argument)
             {
                 var syntax = (SwitchStatementSyntax) operation.Syntax;
                 return syntax.SwitchKeyword.GetLocation();
             }
 
             [NotNull]
-            public override Location VisitThrowStatement([NotNull] IThrowStatement operation,
-                [CanBeNull] object argument)
+            public override Location VisitThrowStatement([NotNull] IThrowStatement operation, [CanBeNull] object argument)
             {
                 var syntax = (ThrowStatementSyntax) operation.Syntax;
                 return syntax.ThrowKeyword.GetLocation();

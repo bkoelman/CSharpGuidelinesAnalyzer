@@ -16,22 +16,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public const string DiagnosticId = "AV2305";
 
         private const string Title = "Missing XML comment for internally visible type, member or parameter";
-
-        private const string MissingTypeOrMemberMessageFormat =
-            "Missing XML comment for internally visible type or member '{0}'.";
-
-        private const string MissingParameterMessageFormat =
-            "Missing XML comment for internally visible parameter '{0}'.";
-
-        private const string ExtraParameterMessageFormat =
-            "Parameter '{0}' in XML comment not found in method signature.";
-
+        private const string MissingTypeOrMemberMessageFormat = "Missing XML comment for internally visible type or member '{0}'.";
+        private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'.";
+        private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature.";
         private const string Description = "Document all public, protected and internal types and members.";
         private const string Category = "Documentation";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId,
-            Title, MissingTypeOrMemberMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
+        private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            MissingTypeOrMemberMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
@@ -48,8 +41,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
             => ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
-            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
+            SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [NotNull]
         [ItemNotNull]
@@ -170,8 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 {
                     if (!parameterNamesInDocumentation.Contains(parameter.Name))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0],
-                            parameter.Name));
+                        context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0], parameter.Name));
                     }
                     else
                     {

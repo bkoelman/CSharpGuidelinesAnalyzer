@@ -69,8 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
         }
 
-        private static void AnalyzeTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol,
-            SymbolAnalysisContext context)
+        private static void AnalyzeTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol, SymbolAnalysisContext context)
         {
             string reportAssemblyName = namespaceSymbol.ContainingAssembly.Name;
             string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
@@ -111,8 +110,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private sealed class TypesInNamespaceVisitor : SymbolVisitor
         {
             [ItemNotNull]
-            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace =
-                ImmutableArray.Create("JetBrains", "Annotations");
+            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace = ImmutableArray.Create("JetBrains",
+                "Annotations");
 
             [ItemNotNull]
             private readonly ImmutableArray<string> assemblyNameParts;
@@ -138,8 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
                 Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
 
-                assemblyNameParts =
-                    assemblyName.Split(DotSeparator, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
+                assemblyNameParts = assemblyName.Split(DotSeparator, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
 
                 this.reportAssemblyName = reportAssemblyName;
                 this.context = context;
@@ -202,8 +200,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return true;
             }
 
-            private bool IsCurrentNamespacePartOfJetBrainsAnnotations(
-                [NotNull] [ItemNotNull] string[] currentNamespaceParts)
+            private bool IsCurrentNamespacePartOfJetBrainsAnnotations([NotNull] [ItemNotNull] string[] currentNamespaceParts)
             {
                 if (currentNamespaceParts.Length == 1)
                 {

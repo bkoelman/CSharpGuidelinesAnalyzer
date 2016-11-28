@@ -6,8 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("CSharpGuidelinesAnalyzer")]
-[assembly:
-    AssemblyDescription("Reports diagnostics for C# coding guidelines that are not already covered by Resharper.")]
+[assembly: AssemblyDescription("Reports diagnostics for C# coding guidelines that are not already covered by Resharper.")]
 
 #if DEBUG
 

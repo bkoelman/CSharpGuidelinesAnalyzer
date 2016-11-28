@@ -14,16 +14,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         public const string DiagnosticId = "AV1745";
 
         private const string Title = "Name of extension method container class should end with 'Extensions'";
-
-        private const string MessageFormat =
-            "Name of extension method container class '{0}' should end with 'Extensions'.";
-
+        private const string MessageFormat = "Name of extension method container class '{0}' should end with 'Extensions'.";
         private const string Description = "Group extension methods in a class suffixed with Extensions.";
         private const string Category = "Naming";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -53,8 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return false;
             }
 
-            IMethodSymbol[] accessibleMethods =
-                type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal).ToArray();
+            IMethodSymbol[] accessibleMethods = type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal).ToArray();
             if (accessibleMethods.Any(method => !method.IsExtensionMethod))
             {
                 return false;
@@ -65,8 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
         {
-            return method.DeclaredAccessibility == Accessibility.Public ||
-                method.DeclaredAccessibility == Accessibility.Internal;
+            return method.DeclaredAccessibility == Accessibility.Public || method.DeclaredAccessibility == Accessibility.Internal;
         }
     }
 }

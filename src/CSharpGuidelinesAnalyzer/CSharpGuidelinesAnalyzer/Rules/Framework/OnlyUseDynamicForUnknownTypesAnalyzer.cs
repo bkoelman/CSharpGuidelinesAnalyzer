@@ -18,8 +18,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string Category = "Framework";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -36,8 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                     startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
                         OperationKind.VariableDeclaration);
 
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment),
-                        OperationKind.AssignmentExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment), OperationKind.AssignmentExpression);
                 }
             });
         }
@@ -50,8 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 if (RequiresReport(declaration.InitialValue))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(),
-                        declaration.Variable.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(), declaration.Variable.Name));
                 }
             }
         }
@@ -83,8 +81,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 ITypeSymbol sourceType = conversion.Operand.Type;
 
-                if (sourceType != null && !IsDynamicType(sourceType) &&
-                    sourceType.SpecialType != SpecialType.System_Object)
+                if (sourceType != null && !IsDynamicType(sourceType) && sourceType.SpecialType != SpecialType.System_Object)
                 {
                     return true;
                 }

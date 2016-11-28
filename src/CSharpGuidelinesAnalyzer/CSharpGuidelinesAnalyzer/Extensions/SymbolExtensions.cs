@@ -14,8 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     {
         [ItemNotNull]
         private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
-            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
-                "Xunit.FactAttribute", "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
+            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
+                "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
 
         public static bool HidesBaseMember([NotNull] this ISymbol member, CancellationToken cancellationToken)
         {
@@ -51,9 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(owningSymbol, nameof(owningSymbol));
 
-            return IsPropertyOrEventAccessor(owningSymbol)
-                ? ((IMethodSymbol) owningSymbol).AssociatedSymbol
-                : owningSymbol;
+            return IsPropertyOrEventAccessor(owningSymbol) ? ((IMethodSymbol) owningSymbol).AssociatedSymbol : owningSymbol;
         }
 
         public static bool IsPropertyOrEventAccessor([CanBeNull] this ISymbol symbol)
@@ -146,8 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             Guard.NotNull(method, nameof(method));
 
             SyntaxNode[] syntaxNodes =
-                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken))
-                    .ToArray();
+                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray();
 
             return TryGetBodyForMethodSyntaxNodes(method, syntaxNodes, cancellationToken) ??
                 TryGetBodyForConstructorSyntaxNodes(syntaxNodes);
@@ -172,8 +169,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        private static SyntaxNode TryGetBodyForMethodSyntax([CanBeNull] SyntaxNode syntaxNode,
-            [NotNull] IMethodSymbol method, CancellationToken cancellationToken)
+        private static SyntaxNode TryGetBodyForMethodSyntax([CanBeNull] SyntaxNode syntaxNode, [NotNull] IMethodSymbol method,
+            CancellationToken cancellationToken)
         {
             var methodSyntax = syntaxNode as MethodDeclarationSyntax;
             if (methodSyntax != null)
@@ -186,8 +183,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        private static SyntaxNode TryGetBodyForMethodBlockOrArrowExpressionSyntax(
-            [NotNull] MethodDeclarationSyntax methodSyntax)
+        private static SyntaxNode TryGetBodyForMethodBlockOrArrowExpressionSyntax([NotNull] MethodDeclarationSyntax methodSyntax)
         {
             return (SyntaxNode) methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
         }
@@ -209,11 +205,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        private static SyntaxNode TryGetBodyForConstructorSyntaxNodes(
-            [NotNull] [ItemNotNull] IEnumerable<SyntaxNode> syntaxNodes)
+        private static SyntaxNode TryGetBodyForConstructorSyntaxNodes([NotNull] [ItemNotNull] IEnumerable<SyntaxNode> syntaxNodes)
         {
-            foreach (
-                ConstructorDeclarationSyntax constructorSyntax in syntaxNodes.OfType<ConstructorDeclarationSyntax>())
+            foreach (ConstructorDeclarationSyntax constructorSyntax in syntaxNodes.OfType<ConstructorDeclarationSyntax>())
             {
                 if (constructorSyntax.Body != null)
                 {

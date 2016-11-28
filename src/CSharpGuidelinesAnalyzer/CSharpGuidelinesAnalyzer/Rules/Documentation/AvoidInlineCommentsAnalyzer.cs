@@ -18,15 +18,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string Category = "Documentation";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange",
-            "// Act", "// Assert", "// Act and assert");
+        private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act",
+            "// Assert", "// Act and assert");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -39,10 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
         {
             SyntaxTrivia[] outerCommentTrivia =
-                context.CodeBlock.GetLeadingTrivia()
-                    .Concat(context.CodeBlock.GetTrailingTrivia())
-                    .Where(IsComment)
-                    .ToArray();
+                context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia()).Where(IsComment).ToArray();
 
             AnalyzeCommentTrivia(outerCommentTrivia, context);
         }

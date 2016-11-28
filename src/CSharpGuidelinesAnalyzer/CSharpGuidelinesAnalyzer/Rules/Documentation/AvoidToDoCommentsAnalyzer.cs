@@ -19,8 +19,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string Category = "Documentation";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -66,8 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 return PreprocessorHasComment(trivia) || IsSingleLineComment(trivia) || IsMultilineComment(trivia);
             }
 
-            private void ReportTodoComments([NotNull] SourceText text, SyntaxTrivia trivia,
-                SyntaxTreeAnalysisContext context)
+            private void ReportTodoComments([NotNull] SourceText text, SyntaxTrivia trivia, SyntaxTreeAnalysisContext context)
             {
                 if (PreprocessorHasComment(trivia))
                 {
@@ -117,8 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                Location location = Location.Create(context.Tree,
-                    TextSpan.FromBounds(start + index, start + message.Length));
+                Location location = Location.Create(context.Tree, TextSpan.FromBounds(start + index, start + message.Length));
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));
             }
 
@@ -134,9 +132,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 // single line multiline comments
                 if (startLine.LineNumber == endLine.LineNumber)
                 {
-                    string message = postfixLength == 0
-                        ? fullString
-                        : fullString.Substring(0, fullSpan.Length - postfixLength);
+                    string message = postfixLength == 0 ? fullString : fullString.Substring(0, fullSpan.Length - postfixLength);
                     ReportTodoCommentInfoFromSingleLine(message, fullSpan.Start, context);
                     return;
                 }
@@ -189,16 +185,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 SyntaxKind kind = trivia.Kind();
 
-                return kind == SyntaxKind.SingleLineCommentTrivia ||
-                    kind == SyntaxKind.SingleLineDocumentationCommentTrivia;
+                return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.SingleLineDocumentationCommentTrivia;
             }
 
             private bool IsMultilineComment(SyntaxTrivia trivia)
             {
                 SyntaxKind kind = trivia.Kind();
 
-                return kind == SyntaxKind.MultiLineCommentTrivia ||
-                    kind == SyntaxKind.MultiLineDocumentationCommentTrivia;
+                return kind == SyntaxKind.MultiLineCommentTrivia || kind == SyntaxKind.MultiLineDocumentationCommentTrivia;
             }
         }
     }

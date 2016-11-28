@@ -31,8 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(SenderRule, ArgsRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -46,8 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
                     if (systemEventArgs != null)
                     {
-                        startContext.RegisterOperationAction(
-                            c => c.SkipInvalid(_ => AnalyzeEventInvocation(c, systemEventArgs)),
+                        startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeEventInvocation(c, systemEventArgs)),
                             OperationKind.InvocationExpression);
                     }
                 }
@@ -130,8 +128,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     : null;
         }
 
-        private void AnalyzeArgsArgument([NotNull] IInvocationExpression invocation,
-            [NotNull] INamedTypeSymbol systemEventArgs, OperationAnalysisContext context)
+        private void AnalyzeArgsArgument([NotNull] IInvocationExpression invocation, [NotNull] INamedTypeSymbol systemEventArgs,
+            OperationAnalysisContext context)
         {
             IArgument argsArgument = GetArgsArgument(invocation, systemEventArgs);
             if (argsArgument != null && IsNullConstant(argsArgument.Value))
@@ -142,15 +140,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IArgument GetArgsArgument([NotNull] IInvocationExpression invocation,
-            [NotNull] INamedTypeSymbol systemEventArgs)
+        private IArgument GetArgsArgument([NotNull] IInvocationExpression invocation, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             if (invocation.ArgumentsInParameterOrder.Length == 2)
             {
                 IArgument argument = invocation.ArgumentsInParameterOrder[1];
 
-                if (!string.IsNullOrEmpty(argument.Parameter?.Name) &&
-                    IsEventArgs(argument.Parameter.Type, systemEventArgs))
+                if (!string.IsNullOrEmpty(argument.Parameter?.Name) && IsEventArgs(argument.Parameter.Type, systemEventArgs))
                 {
                     return argument;
                 }

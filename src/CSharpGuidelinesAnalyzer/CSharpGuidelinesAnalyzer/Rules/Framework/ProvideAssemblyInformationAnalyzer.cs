@@ -18,8 +18,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string Category = "Framework";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -34,8 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 ConcurrentQueue<INamedTypeSymbol> assemblyAttributesToAnalyze =
                     GetAssemblyAttributesToAnalyze(startContext.Compilation);
 
-                ImmutableArray<AttributeData> attributesInCompilation =
-                    startContext.Compilation.Assembly.GetAttributes();
+                ImmutableArray<AttributeData> attributesInCompilation = startContext.Compilation.Assembly.GetAttributes();
 
                 if (assemblyAttributesToAnalyze.Any())
                 {
@@ -108,8 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (string.IsNullOrEmpty(firstStringArgument))
             {
-                SyntaxNode syntaxNode =
-                    attributeInCompilation.ApplicationSyntaxReference.GetSyntax(context.CancellationToken);
+                SyntaxNode syntaxNode = attributeInCompilation.ApplicationSyntaxReference.GetSyntax(context.CancellationToken);
                 Location location = syntaxNode != null ? syntaxNode.GetLocation() : Location.None;
 
                 ReportAt(location, assemblyAttributeToAnalyze, context);

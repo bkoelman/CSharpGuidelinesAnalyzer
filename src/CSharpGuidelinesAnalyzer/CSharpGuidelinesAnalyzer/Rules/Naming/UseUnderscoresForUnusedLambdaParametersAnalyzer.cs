@@ -13,16 +13,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         public const string DiagnosticId = "AV1739";
 
         private const string Title = "Unused lambda parameter should be renamed to one or more underscores";
-
-        private const string MessageFormat =
-            "Unused lambda parameter '{0}' should be renamed to one or more underscores.";
-
+        private const string MessageFormat = "Unused lambda parameter '{0}' should be renamed to one or more underscores.";
         private const string Description = "Use an underscore for irrelevant lambda parameters.";
         private const string Category = "Naming";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -32,8 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
-                OperationKind.LambdaExpression);
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression), OperationKind.LambdaExpression);
         }
 
         private void AnalyzeLambdaExpression(OperationAnalysisContext context)
@@ -72,8 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
                 if (dataFlowAnalysis.Succeeded)
                 {
-                    if (!dataFlowAnalysis.ReadInside.Contains(parameter) &&
-                        !dataFlowAnalysis.WrittenInside.Contains(parameter) &&
+                    if (!dataFlowAnalysis.ReadInside.Contains(parameter) && !dataFlowAnalysis.WrittenInside.Contains(parameter) &&
                         !dataFlowAnalysis.Captured.Contains(parameter))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));

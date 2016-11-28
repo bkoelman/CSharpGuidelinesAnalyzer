@@ -19,20 +19,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string Category = "Naming";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
-            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
+            SymbolKind.Method, SymbolKind.Field);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Is", "Was", "Were",
-            "Has", "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows",
-            "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain", "Contains", "Require", "Requires",
-            "Return", "Returns", "Starts", "Consists", "Targets");
+        private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Is", "Was", "Were", "Has",
+            "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support",
+            "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain", "Contains", "Require", "Requires", "Return", "Returns",
+            "Starts", "Consists", "Targets");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -45,8 +45,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() ||
-                IsOperator(context.Symbol) || context.Symbol.IsOverride)
+            if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() || IsOperator(context.Symbol) ||
+                context.Symbol.IsOverride)
             {
                 return;
             }
@@ -59,8 +59,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (!IsWhitelisted(context.Symbol.Name) && !context.Symbol.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
-                    LowerCaseKind(context.Symbol.Kind), context.Symbol.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], LowerCaseKind(context.Symbol.Kind),
+                    context.Symbol.Name));
             }
         }
 

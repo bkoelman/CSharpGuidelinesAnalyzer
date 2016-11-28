@@ -36,9 +36,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            OrderMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title, OrderMessageFormat,
+            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -122,8 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     CompareOrderOfParameters(overload, longestOverload, context);
                 }
 
-                ImmutableArray<IMethodSymbol> otherOverloads =
-                    methodGroup.Where(m => !m.Equals(overload)).ToImmutableArray();
+                ImmutableArray<IMethodSymbol> otherOverloads = methodGroup.Where(m => !m.Equals(overload)).ToImmutableArray();
 
                 if (!HasInvocationToAnyOf(otherOverloads, overload, context))
                 {
@@ -147,9 +145,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private bool CanBeMadeVirtual([NotNull] IMethodSymbol method)
         {
-            return !method.IsStatic && !method.ContainingType.IsSealed &&
-                method.ContainingType.TypeKind != TypeKind.Struct && !method.IsVirtual && !method.IsOverride &&
-                !method.ExplicitInterfaceImplementations.Any();
+            return !method.IsStatic && !method.ContainingType.IsSealed && method.ContainingType.TypeKind != TypeKind.Struct &&
+                !method.IsVirtual && !method.IsOverride && !method.ExplicitInterfaceImplementations.Any();
         }
 
         private void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
@@ -183,8 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private bool HasInvocationToAnyOf([ItemNotNull] ImmutableArray<IMethodSymbol> methodsToInvoke,
             [NotNull] IMethodSymbol methodToAnalyze, SymbolAnalysisContext context)
         {
-            IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation,
-                context.CancellationToken);
+            IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
             if (operation != null)
             {
                 var walker = new MethodInvocationWalker(methodsToInvoke);

@@ -17,14 +17,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string Category = "Naming";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
+            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(
-            SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
+            SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
