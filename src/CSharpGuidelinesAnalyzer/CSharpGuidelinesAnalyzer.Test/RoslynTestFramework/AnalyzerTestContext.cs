@@ -19,8 +19,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private static readonly ImmutableHashSet<MetadataReference> DefaultReferences =
             ImmutableHashSet.Create(new MetadataReference[]
             {
-                MetadataReference.CreateFromFile(typeof (object).GetTypeInfo().Assembly.Location),
-                MetadataReference.CreateFromFile(typeof (Enumerable).GetTypeInfo().Assembly.Location)
+                MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(Enumerable).GetTypeInfo().Assembly.Location)
             });
 
         [NotNull]

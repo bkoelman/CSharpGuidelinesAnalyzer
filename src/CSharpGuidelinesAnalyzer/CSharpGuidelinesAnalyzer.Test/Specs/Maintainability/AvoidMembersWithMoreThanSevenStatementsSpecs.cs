@@ -116,7 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -147,7 +147,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -839,7 +839,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -872,7 +872,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -903,7 +903,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -932,7 +932,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -1047,7 +1047,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -1092,7 +1092,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {

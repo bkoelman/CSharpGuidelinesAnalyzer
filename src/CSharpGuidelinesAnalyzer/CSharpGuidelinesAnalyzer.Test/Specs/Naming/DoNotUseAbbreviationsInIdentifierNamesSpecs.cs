@@ -646,8 +646,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {

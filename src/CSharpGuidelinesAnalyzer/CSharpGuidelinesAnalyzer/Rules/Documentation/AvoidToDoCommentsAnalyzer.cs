@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                if ((message.Length > index + TodoCommentToken.Length) &&
+                if (message.Length > index + TodoCommentToken.Length &&
                     SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]))
                 {
                     return;

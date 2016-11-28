@@ -55,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (ICollection<>).Namespace)
+                .Using(typeof(ICollection<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -119,7 +119,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -140,7 +140,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     public abstract class B
                     {
@@ -167,7 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     public class B
                     {
@@ -197,7 +197,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {
@@ -224,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (List<>).Namespace)
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     public interface I
                     {

@@ -27,11 +27,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         [NotNull]
         private static PortableExecutableReference SystemAssembly
-            => MetadataReference.CreateFromFile(typeof (Component).Assembly.Location);
+            => MetadataReference.CreateFromFile(typeof(Component).Assembly.Location);
 
         [NotNull]
         private static PortableExecutableReference MsCorLibAssembly
-            => MetadataReference.CreateFromFile(typeof (object).Assembly.Location);
+            => MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
 
         /// <summary>
         /// Intended for internal use.

@@ -51,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (List<string>).Namespace)
+                .Using(typeof(List<string>).Namespace)
                 .InDefaultClass(@"
                     List<string> M()
                     {
@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -93,8 +93,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
-                .Using(typeof (IList<>).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
+                .Using(typeof(IList<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -115,10 +115,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable).Namespace)
-                .Using(typeof (IList<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
+                .Using(typeof(IList<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -140,9 +140,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IList<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IList<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -163,9 +163,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -189,9 +189,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -216,9 +216,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -241,9 +241,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -266,9 +266,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -294,9 +294,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -321,9 +321,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -351,9 +351,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -378,9 +378,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -405,9 +405,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -432,9 +432,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -462,9 +462,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -491,9 +491,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -517,9 +517,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -541,7 +541,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable<>).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -562,9 +562,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -591,9 +591,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -618,9 +618,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -647,9 +647,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -676,9 +676,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -700,7 +700,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (IEnumerable<>).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -721,9 +721,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -745,9 +745,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (Enumerable).Assembly)
-                .Using(typeof (Enumerable).Namespace)
-                .Using(typeof (IEnumerable<>).Namespace)
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -818,7 +818,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (IEnumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
                 .InDefaultClass(@"
                     class C
                     {

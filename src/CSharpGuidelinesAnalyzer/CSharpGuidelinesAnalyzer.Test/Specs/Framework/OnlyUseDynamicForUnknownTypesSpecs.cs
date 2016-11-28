@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InDefaultClass(@"
                     void M(dynamic p)
                     {
@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InDefaultClass(@"
                     void M(dynamic p)
                     {
@@ -163,7 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -184,7 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -205,7 +205,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -227,7 +227,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -248,7 +248,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -271,7 +271,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -294,7 +294,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -318,7 +318,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -341,7 +341,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -364,7 +364,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -387,7 +387,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {
@@ -411,7 +411,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (DynamicAttribute).Assembly)
+                .WithReference(typeof(DynamicAttribute).Assembly)
                 .InGlobalScope(@"
                     class C
                     {

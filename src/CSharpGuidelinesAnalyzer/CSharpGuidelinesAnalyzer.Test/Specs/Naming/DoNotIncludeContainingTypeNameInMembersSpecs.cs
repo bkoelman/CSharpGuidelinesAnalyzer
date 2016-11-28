@@ -171,7 +171,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (NotImplementedException).Namespace)
+                .Using(typeof(NotImplementedException).Namespace)
                 .InGlobalScope(@"
                     class Registration
                     {

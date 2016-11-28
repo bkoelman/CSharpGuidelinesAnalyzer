@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (Task).Namespace)
+                .Using(typeof(Task).Namespace)
                 .InDefaultClass(@"
                     async Task SomeAsync()
                     {
@@ -33,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof (Task).Namespace)
+                .Using(typeof(Task).Namespace)
                 .InDefaultClass(@"
                     async Task SomeTaskAsync()
                     {
@@ -51,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (Task).Namespace)
+                .Using(typeof(Task).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
@@ -73,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof (Task).Namespace)
+                .Using(typeof(Task).Namespace)
                 .InGlobalScope(@"
                     class C
                     {

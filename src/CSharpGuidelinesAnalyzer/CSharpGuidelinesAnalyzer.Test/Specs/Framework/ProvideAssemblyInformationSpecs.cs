@@ -15,8 +15,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (AssemblyTitleAttribute).Assembly)
-                .Using(typeof (AssemblyTitleAttribute).Namespace)
+                .WithReference(typeof(AssemblyTitleAttribute).Assembly)
+                .Using(typeof(AssemblyTitleAttribute).Namespace)
                 .InGlobalScope(@"
                     [assembly: AssemblyTitle(""XXX"")]
                     [assembly: AssemblyDescription(""XXX"")]
@@ -38,8 +38,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (AssemblyTitleAttribute).Assembly)
-                .Using(typeof (AssemblyTitleAttribute).Namespace)
+                .WithReference(typeof(AssemblyTitleAttribute).Assembly)
+                .Using(typeof(AssemblyTitleAttribute).Namespace)
                 .AllowingDiagnosticsOutsideSourceTree()
                 .InGlobalScope(@"
                     [assembly: [|AssemblyTitle("""")|]]
@@ -69,8 +69,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof (AssemblyTitleAttribute).Assembly)
-                .Using(typeof (AssemblyTitleAttribute).Namespace)
+                .WithReference(typeof(AssemblyTitleAttribute).Assembly)
+                .Using(typeof(AssemblyTitleAttribute).Namespace)
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
