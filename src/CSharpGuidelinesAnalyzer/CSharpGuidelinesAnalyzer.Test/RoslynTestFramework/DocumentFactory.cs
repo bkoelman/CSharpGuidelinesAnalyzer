@@ -59,7 +59,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         private ParseOptions GetParseOptions(DocumentationMode documentationMode, [NotNull] string languageName)
         {
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
             // Bug workaround: Setting DocumentationMode to a non-default value resets Features.
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
 
             ParseOptions optionsWithLostFeatures = languageName == LanguageNames.VisualBasic
                 ? (ParseOptions) DefaultBasicParseOptions.WithDocumentationMode(documentationMode)

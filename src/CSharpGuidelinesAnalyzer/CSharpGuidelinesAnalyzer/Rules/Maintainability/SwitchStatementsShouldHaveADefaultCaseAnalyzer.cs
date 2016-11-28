@@ -209,8 +209,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     }
                 }
 
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
                 // Switch statements with non-constant case expressions are not supported
                 // because they make completion analysis non-trivial.
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
                 return null;
             }
 

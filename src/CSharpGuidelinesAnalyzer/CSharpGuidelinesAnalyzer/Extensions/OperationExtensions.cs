@@ -32,7 +32,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 [CanBeNull] object argument)
             {
                 var name = new IdentifierName(operation.Parameter.Name,
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
                     /* CSharpShortErrorMessageFormat returns 'ref int', ie. without parameter name */
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
                     operation.Parameter.Name);
                 return new IdentifierInfo(name, operation.Parameter.Type, operation.Parameter.Kind.ToString());
             }

@@ -95,7 +95,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private static bool IsBodyCompilerGenerated([NotNull] ILambdaExpression operation)
             {
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
                 // Workaround for https://github.com/dotnet/roslyn/issues/10214
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
+
                 var lambdaExpressionSyntax = operation.Syntax as LambdaExpressionSyntax;
                 var expressionSyntax = lambdaExpressionSyntax?.Body as ExpressionSyntax;
                 return expressionSyntax != null;
@@ -103,8 +106,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitFixedStatement([NotNull] IFixedStatement operation)
             {
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
                 // Note: fixed statements must always occur in combination with a declaration
                 // expression statement. So to allow eight fixed statements, we do not count these.
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
+
                 base.VisitFixedStatement(operation);
             }
 

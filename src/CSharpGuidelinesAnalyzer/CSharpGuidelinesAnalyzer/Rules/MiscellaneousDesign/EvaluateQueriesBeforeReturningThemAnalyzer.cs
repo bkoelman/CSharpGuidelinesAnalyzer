@@ -130,29 +130,46 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             var local = expression as ILocalReferenceExpression;
             if (local != null)
             {
-                var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache, cancellationToken);
-                assignmentWalker.VisitMethod();
-
-                return assignmentWalker.Result;
+                return AnalyzeLocalReference(body, variableEvaluationCache, cancellationToken, local);
             }
 
             var conditional = expression as IConditionalChoiceExpression;
             if (conditional != null)
             {
-                EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body, variableEvaluationCache,
-                    cancellationToken);
-                EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body, variableEvaluationCache,
-                    cancellationToken);
-
-                return EvaluationResult.Unify(trueResult, falseResult);
+                return AnalyzeConditionalChoice(body, variableEvaluationCache, cancellationToken, conditional);
             }
 
             var queryExpressionSyntax = expression.Syntax as QueryExpressionSyntax;
-            if (queryExpressionSyntax != null)
-            {
-                return EvaluationResult.Query;
-            }
+            return queryExpressionSyntax != null ? EvaluationResult.Query : AnalyzeMemberInvocation(expression);
+        }
 
+        [NotNull]
+        private static EvaluationResult AnalyzeLocalReference([ItemNotNull] ImmutableArray<IOperation> body,
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken,
+            [NotNull] ILocalReferenceExpression local)
+        {
+            var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache, cancellationToken);
+            assignmentWalker.VisitMethod();
+
+            return assignmentWalker.Result;
+        }
+
+        [NotNull]
+        private static EvaluationResult AnalyzeConditionalChoice([ItemNotNull] ImmutableArray<IOperation> body,
+            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken,
+            [NotNull] IConditionalChoiceExpression conditional)
+        {
+            EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body, variableEvaluationCache,
+                cancellationToken);
+            EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body, variableEvaluationCache,
+                cancellationToken);
+
+            return EvaluationResult.Unify(trueResult, falseResult);
+        }
+
+        [NotNull]
+        private static EvaluationResult AnalyzeMemberInvocation([NotNull] IOperation expression)
+        {
             var invocationWalker = new MemberInvocationWalker();
             invocationWalker.Visit(expression);
 

@@ -198,9 +198,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 switch (currentNamespaceParts.Length)
                 {
                     case 1:
+                    {
                         return currentNamespaceParts[0] == JetBrainsAnnotationsNamespace[0];
+                    }
                     case 2:
+                    {
                         return currentNamespaceParts.SequenceEqual(JetBrainsAnnotationsNamespace);
+                    }
                 }
 
                 return false;
