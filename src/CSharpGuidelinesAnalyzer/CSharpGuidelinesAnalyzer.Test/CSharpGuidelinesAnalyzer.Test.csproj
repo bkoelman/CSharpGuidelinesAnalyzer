@@ -172,6 +172,7 @@
     <Compile Include="Specs\Maintainability\IfElseIfStatementsShouldFinishWithElseClauseSpecs.cs" />
     <Compile Include="Specs\Maintainability\NamespacesShouldMatchAssemblyNameSpecs.cs" />
     <Compile Include="Specs\Maintainability\OverloadsShouldCallOtherOverloadsSpecs.cs" />
+    <Compile Include="Specs\Maintainability\SwitchStatementsShouldHaveADefaultCaseSpecs.cs" />
     <Compile Include="Specs\MemberDesign\ReturnInterfacesToCollectionsSpecs.cs" />
     <Compile Include="Specs\MiscellaneousDesign\DoNotPassNullsOnEventInvocationSpecs.cs" />
     <Compile Include="Specs\MiscellaneousDesign\EvaluateQueriesBeforeReturningThemSpecs.cs" />

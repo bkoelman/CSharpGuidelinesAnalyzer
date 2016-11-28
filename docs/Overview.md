@@ -57,6 +57,9 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 ### [AV1535](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1535): Always add a block after keywords such as if, else, while, for, foreach and case (MEDIUM)
 - [x] This analyzer reports when a case statement does not have a block. The other scenarios are already covered by Resharper.
 
+### [AV1536](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1536): Always add a default block after the last case in a switch statement (HIGH)
+- [x] This analyzer reports when `switch` statements on (nullable) `bool` or (nullable) non-flags `enum` types are incomplete and do not have a default case.
+
 ### [AV1537](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md#av1537): Finish every if-else-if statement with an else-part (MEDIUM)
 - [x] This analyzer reports `if-else-if` statements that do not end with an unconditional `else` clause.
 

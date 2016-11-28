@@ -76,6 +76,7 @@
     <Compile Include="Rules\Maintainability\IfElseIfStatementsShouldFinishWithElseClauseAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\NamespacesShouldMatchAssemblyNameAnalyzer.cs" />
     <Compile Include="Rules\Maintainability\OverloadsShouldCallOtherOverloadsAnalyzer.cs" />
+    <Compile Include="Rules\Maintainability\SwitchStatementsShouldHaveADefaultCaseAnalyzer.cs" />
     <Compile Include="Rules\MemberDesign\ReturnInterfacesToCollectionsAnalyzer.cs" />
     <Compile Include="Rules\MiscellaneousDesign\DoNotPassNullsOnEventInvocationAnalyzer.cs" />
     <Compile Include="Rules\MiscellaneousDesign\EvaluateQueriesBeforeReturningThemAnalyzer.cs" />
