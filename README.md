@@ -5,7 +5,7 @@
 
 This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). 
 
-Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), which are not implemented here.
+Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), for which [a layer file is provided](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md).
 See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules.
 
 ![Analyzer in action](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/gh-pages/images/analyzer-in-action.png)
@@ -23,6 +23,8 @@ This project is in its final testing phase. Expect the 1.0 stable release within
   `Install-Package CSharpGuidelinesAnalyzer -pre`
 
 * Rebuild your solution
+
+* [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md)
 
 ## Suppressing rules
 Rule warnings can be suppressed at various scopes, ranging from per line to at the project or solution level.
