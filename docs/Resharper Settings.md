@@ -7,5 +7,5 @@ To try it out, follow the next steps:
 * Open your solution in Visual Studio
 * Go to **Resharper**, **Manage Options**
 * At the level **Solution team-shared**, click the green plus next to it and select **Open Settings File**
-* Download and browse to [CSharpGuidelines.Layer.DotSettings](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/CSharpGuidelines.Layer.DotSettings)
+* Download [CSharpGuidelines.Layer.DotSettings](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/CSharpGuidelines.Layer.DotSettings) to your solution folder and browse to it
 * Click **Close** to save changes
