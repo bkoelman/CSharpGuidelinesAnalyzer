@@ -1,6 +1,7 @@
 # CSharp Guidelines Analyzer
 
 [![Build status](https://ci.appveyor.com/api/projects/status/q37dldfggtcwf6u4/branch/master?svg=true)](https://ci.appveyor.com/project/bkoelman/csharpguidelinesanalyzer/branch/master)
+[![codecov](https://codecov.io/gh/bkoelman/CSharpGuidelinesAnalyzer/branch/master/graph/badge.svg)](https://codecov.io/gh/bkoelman/CSharpGuidelinesAnalyzer)
 [![csharpguidelinesanalyzer MyGet Build Status](https://www.myget.org/BuildSource/Badge/csharpguidelinesanalyzer?identifier=757dfdd3-26d5-4842-abac-4cdf820e3f6d)](https://www.myget.org/)
 
 This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). 
