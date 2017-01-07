@@ -139,12 +139,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private bool? HasCaseClausesFor([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
-            ICollection<ISymbol> caseClauseValues = TryGetSymbolsForCaseClauses(analysisContext);
-            if (caseClauseValues == null)
-            {
-                return null;
-            }
+            var collector = new CaseClauseCollector();
+            ICollection<ISymbol> caseClauseValues = collector.TryGetSymbolsForCaseClauses(analysisContext);
 
+            return caseClauseValues == null ? null : HasCaseClauseForExpectedValues(expectedValues, caseClauseValues);
+        }
+
+        [CanBeNull]
+        private static bool? HasCaseClauseForExpectedValues([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
+            [NotNull] [ItemCanBeNull] ICollection<ISymbol> caseClauseValues)
+        {
             foreach (ISymbol expectedValue in expectedValues)
             {
                 if (!caseClauseValues.Contains(expectedValue))
@@ -156,67 +160,114 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return true;
         }
 
-        [CanBeNull]
-        [ItemCanBeNull]
-        private ICollection<ISymbol> TryGetSymbolsForCaseClauses([NotNull] SwitchAnalysisContext analysisContext)
+        private sealed class CaseClauseCollector
         {
-            var caseClauseValues = new HashSet<ISymbol>();
+            [NotNull]
+            [ItemCanBeNull]
+            private readonly HashSet<ISymbol> caseClauseValues = new HashSet<ISymbol>();
 
-            IEnumerable<ISingleValueCaseClause> caseClauses =
-                analysisContext.SwitchStatement.Cases.SelectMany(@case => @case.Clauses.OfType<ISingleValueCaseClause>());
-            foreach (ISingleValueCaseClause caseClause in caseClauses)
+            [CanBeNull]
+            [ItemCanBeNull]
+            public ICollection<ISymbol> TryGetSymbolsForCaseClauses([NotNull] SwitchAnalysisContext analysisContext)
             {
-                analysisContext.CancellationToken.ThrowIfCancellationRequested();
+                IEnumerable<ISingleValueCaseClause> caseClauses =
+                    analysisContext.SwitchStatement.Cases.SelectMany(@case => @case.Clauses.OfType<ISingleValueCaseClause>());
+                foreach (ISingleValueCaseClause caseClause in caseClauses)
+                {
+                    analysisContext.CancellationToken.ThrowIfCancellationRequested();
 
+                    if (ProcessAsLiteralSyntax(analysisContext, caseClause) || ProcessAsField(caseClause) ||
+                        ProcessAsConversion(analysisContext, caseClause))
+                    {
+                        continue;
+                    }
+
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
+                    // Switch statements with non-constant case expressions are not supported
+                    // because they make completion analysis non-trivial.
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
+                    return null;
+                }
+
+                return caseClauseValues;
+            }
+
+            private bool ProcessAsConversion([NotNull] SwitchAnalysisContext analysisContext,
+                [NotNull] ISingleValueCaseClause caseClause)
+            {
+                var conversion = caseClause.Value as IConversionExpression;
+                var memberSyntax = conversion?.Syntax as MemberAccessExpressionSyntax;
+
+                IFieldSymbol field = analysisContext.GetFieldOrNull(memberSyntax);
+                if (field != null)
+                {
+                    caseClauseValues.Add(field);
+                    return true;
+                }
+
+                return false;
+            }
+
+            private bool ProcessAsLiteralSyntax([NotNull] SwitchAnalysisContext analysisContext,
+                [NotNull] ISingleValueCaseClause caseClause)
+            {
                 var literalSyntax = caseClause.Value.Syntax as LiteralExpressionSyntax;
                 if (literalSyntax != null)
                 {
-                    if (literalSyntax.Token.IsKind(SyntaxKind.TrueKeyword))
+                    if (ProcessLiteralSyntaxAsTrueKeyword(analysisContext, literalSyntax) ||
+                        ProcessLiteralSyntaxAsFalseKeyword(analysisContext, literalSyntax) ||
+                        ProcessLiteralSyntaxAsNullKeyword(literalSyntax))
                     {
-                        caseClauseValues.Add(analysisContext.BooleanTrue);
-                        continue;
-                    }
-
-                    if (literalSyntax.Token.IsKind(SyntaxKind.FalseKeyword))
-                    {
-                        caseClauseValues.Add(analysisContext.BooleanFalse);
-                        continue;
-                    }
-
-                    if (literalSyntax.Token.IsKind(SyntaxKind.NullKeyword))
-                    {
-                        caseClauseValues.Add(null);
-                        continue;
+                        return true;
                     }
                 }
 
+                return false;
+            }
+
+            private bool ProcessLiteralSyntaxAsTrueKeyword([NotNull] SwitchAnalysisContext analysisContext,
+                [NotNull] LiteralExpressionSyntax literalSyntax)
+            {
+                if (literalSyntax.Token.IsKind(SyntaxKind.TrueKeyword))
+                {
+                    caseClauseValues.Add(analysisContext.BooleanTrue);
+                    return true;
+                }
+
+                return false;
+            }
+
+            private bool ProcessLiteralSyntaxAsFalseKeyword([NotNull] SwitchAnalysisContext analysisContext,
+                [NotNull] LiteralExpressionSyntax literalSyntax)
+            {
+                if (literalSyntax.Token.IsKind(SyntaxKind.FalseKeyword))
+                {
+                    caseClauseValues.Add(analysisContext.BooleanFalse);
+                    return true;
+                }
+                return false;
+            }
+
+            private bool ProcessLiteralSyntaxAsNullKeyword([NotNull] LiteralExpressionSyntax literalSyntax)
+            {
+                if (literalSyntax.Token.IsKind(SyntaxKind.NullKeyword))
+                {
+                    caseClauseValues.Add(null);
+                    return true;
+                }
+                return false;
+            }
+
+            private bool ProcessAsField([NotNull] ISingleValueCaseClause caseClause)
+            {
                 var enumField = caseClause.Value as IFieldReferenceExpression;
                 if (enumField != null)
                 {
                     caseClauseValues.Add(enumField.Field);
-                    continue;
+                    return true;
                 }
-
-                var conversion = caseClause.Value as IConversionExpression;
-                var memberSyntax = conversion?.Syntax as MemberAccessExpressionSyntax;
-                if (memberSyntax != null)
-                {
-                    IFieldSymbol field = analysisContext.GetFieldOrNull(memberSyntax);
-                    if (field != null)
-                    {
-                        caseClauseValues.Add(field);
-                        continue;
-                    }
-                }
-
-#pragma warning disable AV2310 // Code blocks should not contain inline comments
-                // Switch statements with non-constant case expressions are not supported
-                // because they make completion analysis non-trivial.
-#pragma warning restore AV2310 // Code blocks should not contain inline comments
-                return null;
+                return false;
             }
-
-            return caseClauseValues;
         }
 
         private sealed class SwitchAnalysisContext
@@ -250,12 +301,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
 
             [CanBeNull]
-            public IFieldSymbol GetFieldOrNull([NotNull] MemberAccessExpressionSyntax memberSyntax)
+            public IFieldSymbol GetFieldOrNull([CanBeNull] MemberAccessExpressionSyntax memberSyntax)
             {
-                Guard.NotNull(memberSyntax, nameof(memberSyntax));
+                if (memberSyntax != null)
+                {
+                    SemanticModel model = compilation.GetSemanticModel(memberSyntax.SyntaxTree);
+                    return model.GetSymbolInfo(memberSyntax, CancellationToken).Symbol as IFieldSymbol;
+                }
 
-                SemanticModel model = compilation.GetSemanticModel(memberSyntax.SyntaxTree);
-                return model.GetSymbolInfo(memberSyntax, CancellationToken).Symbol as IFieldSymbol;
+                return null;
             }
         }
     }
