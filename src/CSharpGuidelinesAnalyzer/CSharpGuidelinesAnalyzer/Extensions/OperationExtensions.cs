@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Reflection;
+using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Semantics;
@@ -211,6 +213,20 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 var syntax = (SwitchLabelSyntax) operation.Syntax;
                 return syntax.Keyword.GetLocation();
             }
+        }
+
+        public static bool IsCompilerGenerated([CanBeNull] this IOperation operation)
+        {
+            if (operation != null)
+            {
+                Type type = operation.GetType();
+                PropertyInfo property = type.GetRuntimeProperty("WasCompilerGenerated");
+                if (property != null)
+                {
+                    return (bool) property.GetMethod.Invoke(operation, null);
+                }
+            }
+            return false;
         }
     }
 }

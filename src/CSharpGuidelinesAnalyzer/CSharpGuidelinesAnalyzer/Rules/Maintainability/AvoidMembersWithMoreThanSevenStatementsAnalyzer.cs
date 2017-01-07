@@ -69,19 +69,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitBranchStatement([NotNull] IBranchStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitBranchStatement(operation);
             }
 
             public override void VisitEmptyStatement([NotNull] IEmptyStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitEmptyStatement(operation);
             }
 
             public override void VisitExpressionStatement([NotNull] IExpressionStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitExpressionStatement(operation);
             }
 
@@ -116,86 +116,94 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitForEachLoopStatement(operation);
             }
 
             public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 Visit(operation.Body);
             }
 
             public override void VisitIfStatement([NotNull] IIfStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitIfStatement(operation);
             }
 
             public override void VisitInvalidStatement([NotNull] IInvalidStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitInvalidStatement(operation);
             }
 
             public override void VisitLabelStatement([NotNull] ILabelStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitLabelStatement(operation);
             }
 
             public override void VisitLockStatement([NotNull] ILockStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitLockStatement(operation);
             }
 
             public override void VisitReturnStatement([NotNull] IReturnStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitReturnStatement(operation);
             }
 
             public override void VisitSwitchStatement([NotNull] ISwitchStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitSwitchStatement(operation);
             }
 
             public override void VisitThrowStatement([NotNull] IThrowStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitThrowStatement(operation);
             }
 
             public override void VisitTryStatement([NotNull] ITryStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitTryStatement(operation);
             }
 
             public override void VisitUsingStatement([NotNull] IUsingStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitUsingStatement(operation);
             }
 
             public override void VisitVariableDeclarationStatement([NotNull] IVariableDeclarationStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitVariableDeclarationStatement(operation);
             }
 
             public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitWhileUntilLoopStatement(operation);
             }
 
             public override void VisitYieldBreakStatement([NotNull] IReturnStatement operation)
             {
-                StatementCount++;
+                IncrementStatementCount(operation);
                 base.VisitYieldBreakStatement(operation);
+            }
+
+            private void IncrementStatementCount([CanBeNull] IOperation operation)
+            {
+                if (!operation.IsCompilerGenerated())
+                {
+                    StatementCount++;
+                }
             }
         }
     }
