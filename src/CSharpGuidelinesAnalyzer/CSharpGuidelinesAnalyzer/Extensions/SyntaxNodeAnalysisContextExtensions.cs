@@ -14,10 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         private static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext,
-            [NotNull] ISymbol symbol)
+            [CanBeNull] ISymbol symbol)
         {
-            Guard.NotNull(symbol, nameof(symbol));
-
             return new SymbolAnalysisContext(symbol, syntaxContext.SemanticModel.Compilation, syntaxContext.Options,
                 syntaxContext.ReportDiagnostic, _ => true, syntaxContext.CancellationToken);
         }

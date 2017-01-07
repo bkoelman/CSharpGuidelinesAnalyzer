@@ -75,7 +75,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static void SkipEmptyName(this SyntaxNodeAnalysisContext context, [NotNull] Action<SymbolAnalysisContext> action)
         {
             SymbolAnalysisContext symbolContext = context.ToSymbolContext();
-            symbolContext.SkipEmptyName(_ => action(symbolContext));
+
+            // Bug workaround for https://github.com/dotnet/roslyn/issues/16209
+            if (symbolContext.Symbol != null)
+            {
+                symbolContext.SkipEmptyName(_ => action(symbolContext));
+            }
         }
     }
 }
