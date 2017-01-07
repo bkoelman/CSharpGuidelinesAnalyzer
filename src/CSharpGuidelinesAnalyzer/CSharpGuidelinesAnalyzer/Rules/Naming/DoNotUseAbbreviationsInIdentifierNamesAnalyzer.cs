@@ -95,10 +95,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var declaration = (IVariableDeclaration) context.Operation;
 
-            if (IsBlacklisted(declaration.Variable.Name) || IsSingleLetter(declaration.Variable.Name))
+            if (!string.IsNullOrWhiteSpace(declaration.Variable.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
-                    declaration.Variable.Name));
+                if (IsBlacklisted(declaration.Variable.Name) || IsSingleLetter(declaration.Variable.Name))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
+                        declaration.Variable.Name));
+                }
             }
         }
 
