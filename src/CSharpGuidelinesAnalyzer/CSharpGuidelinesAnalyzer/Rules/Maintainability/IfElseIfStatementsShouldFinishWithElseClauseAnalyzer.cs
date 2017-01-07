@@ -109,7 +109,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 if (IsIfElseIfConstruct(ifStatement))
                 {
-                    AnalyzeIfElseIfConstruct(ifStatement);
+                    var analyzer = new IfElseIfConstructAnalyzer(this, ifStatement);
+                    analyzer.Analyze();
                 }
             }
 
@@ -128,47 +129,78 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return ifElseStatement != null;
             }
 
-            private void AnalyzeIfElseIfConstruct([NotNull] IIfStatement topIfStatement)
+            private sealed class IfElseIfConstructAnalyzer
             {
-                Location topIfKeywordLocation = topIfStatement.GetLocationForKeyword();
+                [NotNull]
+                private readonly IfStatementAnalyzer owner;
 
-                IIfStatement ifStatement = topIfStatement;
-                while (true)
+                [CanBeNull]
+                private readonly Location topIfKeywordLocation;
+
+                [NotNull]
+                private IIfStatement ifStatement;
+
+                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IIfStatement topIfStatement)
                 {
-                    context.CancellationToken.ThrowIfCancellationRequested();
+                    this.owner = owner;
 
-                    IOperation falseBlock = ifStatement.IfFalseStatement;
+                    topIfKeywordLocation = topIfStatement.GetLocationForKeyword();
+                    ifStatement = topIfStatement;
+                }
 
+                public void Analyze()
+                {
+                    if (topIfKeywordLocation != null)
+                    {
+                        while (true)
+                        {
+                            owner.context.CancellationToken.ThrowIfCancellationRequested();
+
+                            IOperation falseBlock = ifStatement.IfFalseStatement;
+                            if (!AnalyzeFalseBlock(falseBlock))
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                private bool AnalyzeFalseBlock([CanBeNull] IOperation falseBlock)
+                {
                     if (falseBlock == null)
                     {
-                        // no else clause
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, topIfKeywordLocation));
-
-                        Remove(ifStatement, ifStatementsLeftToAnalyze);
-                        break;
+                        return HandleMissingElseClause();
                     }
 
                     var ifElseStatement = falseBlock as IIfStatement;
-                    if (ifElseStatement != null)
-                    {
-                        // else-if
-                        Remove(ifElseStatement, ifStatementsLeftToAnalyze);
-
-                        ifStatement = ifElseStatement;
-                    }
-                    else
-                    {
-                        // unconditional else
-                        break;
-                    }
+                    return ifElseStatement == null ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
                 }
-            }
 
-            private void Remove([NotNull] IIfStatement ifStatementToRemove,
-                [NotNull] IDictionary<Location, IIfStatement> ifStatements)
-            {
-                Location location = ifStatementToRemove.GetLocationForKeyword();
-                ifStatements.Remove(location);
+                private bool HandleMissingElseClause()
+                {
+                    owner.context.ReportDiagnostic(Diagnostic.Create(Rule, topIfKeywordLocation));
+                    Remove(ifStatement, owner.ifStatementsLeftToAnalyze);
+                    return false;
+                }
+
+                private bool HandleUnconditionalElse()
+                {
+                    return false;
+                }
+
+                private bool HandleElseIf([NotNull] IIfStatement ifElseStatement)
+                {
+                    Remove(ifElseStatement, owner.ifStatementsLeftToAnalyze);
+                    ifStatement = ifElseStatement;
+                    return true;
+                }
+
+                private void Remove([NotNull] IIfStatement ifStatementToRemove,
+                    [NotNull] IDictionary<Location, IIfStatement> ifStatements)
+                {
+                    Location location = ifStatementToRemove.GetLocationForKeyword();
+                    ifStatements.Remove(location);
+                }
             }
         }
     }
