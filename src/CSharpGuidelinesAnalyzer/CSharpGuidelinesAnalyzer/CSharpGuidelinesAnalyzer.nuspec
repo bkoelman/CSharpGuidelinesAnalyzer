@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper.</description>
-    <releaseNotes>Removed analyzer for AV1525; restored analyzer for AV1536.</releaseNotes>
+    <releaseNotes>Fixed incorrect statement count by AV1500 in VS 2017 RC; fixed crash on parameters of local functions in VS 2017 RC.</releaseNotes>
     <copyright>Apache License, Version 2.0</copyright>
     <language>en-us</language>
     <tags>csharp c# coding guidelines analyzer</tags>
