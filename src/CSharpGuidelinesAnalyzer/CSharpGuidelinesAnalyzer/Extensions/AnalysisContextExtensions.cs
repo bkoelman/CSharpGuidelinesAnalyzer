@@ -76,7 +76,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             SymbolAnalysisContext symbolContext = context.ToSymbolContext();
 
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
             // Bug workaround for https://github.com/dotnet/roslyn/issues/16209
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
             if (symbolContext.Symbol != null)
             {
                 symbolContext.SkipEmptyName(_ => action(symbolContext));
