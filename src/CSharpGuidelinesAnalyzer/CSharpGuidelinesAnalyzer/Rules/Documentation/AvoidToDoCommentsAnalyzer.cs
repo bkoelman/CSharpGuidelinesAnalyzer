@@ -32,70 +32,71 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            var commentAnalyzer = new TodoCommentAnalyzer();
+            context.RegisterSyntaxTreeAction(AnalyzeTodoComments);
+        }
 
-            context.RegisterSyntaxTreeAction(c => commentAnalyzer.AnalyzeTodoComments(c));
+        private void AnalyzeTodoComments(SyntaxTreeAnalysisContext context)
+        {
+            SourceText text = context.Tree.GetText(context.CancellationToken);
+            SyntaxNode root = context.Tree.GetRoot(context.CancellationToken);
+
+            var analyzer = new TodoCommentAnalyzer(text, context);
+
+            foreach (SyntaxTrivia trivia in root.DescendantTrivia())
+            {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
+                analyzer.Analyze(trivia);
+            }
         }
 
         private sealed class TodoCommentAnalyzer
         {
-            // This class is a simplified variant, based on Roslyn's internal class:
-            // Microsoft.CodeAnalysis.Editor.CSharp.TodoComments.CSharpTodoCommentService
-
-            private static readonly int MultiLineCommentPostfixLength = "*/".Length;
             private const string SingleLineCommentPrefix = "//";
+            private static readonly int MultiLineCommentPostfixLength = "*/".Length;
 
-            public void AnalyzeTodoComments(SyntaxTreeAnalysisContext context)
+            [NotNull]
+            private readonly SourceText text;
+
+            private SyntaxTreeAnalysisContext context;
+
+            public TodoCommentAnalyzer([NotNull] SourceText text, SyntaxTreeAnalysisContext context)
             {
-                SourceText text = context.Tree.GetText(context.CancellationToken);
-                SyntaxNode root = context.Tree.GetRoot(context.CancellationToken);
+                Guard.NotNull(text, nameof(text));
 
-                foreach (SyntaxTrivia trivia in root.DescendantTrivia())
-                {
-                    context.CancellationToken.ThrowIfCancellationRequested();
-
-                    if (ContainsComments(trivia))
-                    {
-                        ReportTodoComments(text, trivia, context);
-                    }
-                }
+                this.text = text;
+                this.context = context;
             }
 
-            private bool ContainsComments(SyntaxTrivia trivia)
+            public void Analyze(SyntaxTrivia trivia)
             {
-                return PreprocessorHasComment(trivia) || IsSingleLineComment(trivia) || IsMultilineComment(trivia);
+#pragma warning disable AV1537 // If-else-if construct should end with an unconditional else clause
+                if (PreprocessorHasSingleLineComment(trivia))
+                {
+                    ProcessSingleLineCommentAfterPreprocessor(trivia);
+                }
+                else if (IsSingleLineComment(trivia))
+                {
+                    ProcessCommentOnSingleOrMultipleLines(trivia, 0);
+                }
+                else if (IsMultilineComment(trivia))
+                {
+                    ProcessCommentOnSingleOrMultipleLines(trivia, MultiLineCommentPostfixLength);
+                }
+#pragma warning restore AV1537 // If-else-if construct should end with an unconditional else clause
             }
 
-            private void ReportTodoComments([NotNull] SourceText text, SyntaxTrivia trivia, SyntaxTreeAnalysisContext context)
+            private void ProcessSingleLineCommentAfterPreprocessor(SyntaxTrivia trivia)
             {
-                if (PreprocessorHasComment(trivia))
-                {
-                    string message = trivia.ToString();
+                string message = trivia.ToString();
 
-                    int index = message.IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal);
-                    int start = trivia.FullSpan.Start + index;
+                int index = message.IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal);
+                int start = trivia.FullSpan.Start + index;
 
-                    ReportTodoCommentInfoFromSingleLine(message.Substring(index), start, context);
-                    return;
-                }
-
-                if (IsSingleLineComment(trivia))
-                {
-                    ProcessMultilineComment(text, trivia, 0, context);
-                    return;
-                }
-
-                if (IsMultilineComment(trivia))
-                {
-                    ProcessMultilineComment(text, trivia, MultiLineCommentPostfixLength, context);
-                    return;
-                }
-
-                throw ExceptionFactory.Unreachable();
+                ReportTodoCommentFromSingleLine(message.Substring(index), start);
             }
 
-            private void ReportTodoCommentInfoFromSingleLine([NotNull] string message, int start,
-                SyntaxTreeAnalysisContext context)
+            private void ReportTodoCommentFromSingleLine([NotNull] string message, int start)
             {
                 int index = GetCommentStartingIndex(message);
                 if (index >= message.Length)
@@ -103,15 +104,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                if (
-                    string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length,
-                        StringComparison.OrdinalIgnoreCase) != 0)
-                {
-                    return;
-                }
-
-                if (message.Length > index + TodoCommentToken.Length &&
-                    SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]))
+                if (!StartsWithTodoCommentToken(message, index) || HasIdentifierCharacterAfterTodoCommentToken(message, index))
                 {
                     return;
                 }
@@ -120,8 +113,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));
             }
 
-            private void ProcessMultilineComment([NotNull] SourceText text, SyntaxTrivia trivia, int postfixLength,
-                SyntaxTreeAnalysisContext context)
+            private static bool StartsWithTodoCommentToken([NotNull] string message, int index)
+            {
+                return
+                    string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length,
+                        StringComparison.OrdinalIgnoreCase) == 0;
+            }
+
+            private static bool HasIdentifierCharacterAfterTodoCommentToken([NotNull] string message, int index)
+            {
+                return message.Length > index + TodoCommentToken.Length &&
+                    SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]);
+            }
+
+            private void ProcessCommentOnSingleOrMultipleLines(SyntaxTrivia trivia, int postfixLength)
             {
                 TextSpan fullSpan = trivia.FullSpan;
                 string fullString = trivia.ToFullString();
@@ -129,34 +134,55 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 TextLine startLine = text.Lines.GetLineFromPosition(fullSpan.Start);
                 TextLine endLine = text.Lines.GetLineFromPosition(fullSpan.End);
 
-                // single line multiline comments
                 if (startLine.LineNumber == endLine.LineNumber)
                 {
-                    string message = postfixLength == 0 ? fullString : fullString.Substring(0, fullSpan.Length - postfixLength);
-                    ReportTodoCommentInfoFromSingleLine(message, fullSpan.Start, context);
-                    return;
+                    ProcessCommentOnSingleLine(fullString, fullSpan, postfixLength);
                 }
+                else
+                {
+                    ProcessCommentOnMultipleLines(fullSpan, new LineRange(startLine, endLine), postfixLength);
+                }
+            }
 
-                // multiline
-                string startMessage = text.ToString(TextSpan.FromBounds(fullSpan.Start, startLine.End));
-                ReportTodoCommentInfoFromSingleLine(startMessage, fullSpan.Start, context);
+            private void ProcessCommentOnSingleLine([NotNull] string fullString, TextSpan fullSpan, int postfixLength)
+            {
+                string message = postfixLength == 0 ? fullString : fullString.Substring(0, fullSpan.Length - postfixLength);
+                ReportTodoCommentFromSingleLine(message, fullSpan.Start);
+            }
 
+            private void ProcessCommentOnMultipleLines(TextSpan fullSpan, LineRange range, int postfixLength)
+            {
+                ProcessFirstLine(fullSpan, range.StartLine);
+                ProcessNextLines(range.StartLine, range.EndLine);
+                ProcessLastLine(fullSpan, range.EndLine, postfixLength);
+            }
+
+            private void ProcessFirstLine(TextSpan fullSpan, TextLine startLine)
+            {
+                string firstMessage = text.ToString(TextSpan.FromBounds(fullSpan.Start, startLine.End));
+                ReportTodoCommentFromSingleLine(firstMessage, fullSpan.Start);
+            }
+
+            private void ProcessNextLines(TextLine startLine, TextLine endLine)
+            {
                 for (int lineNumber = startLine.LineNumber + 1; lineNumber < endLine.LineNumber; lineNumber++)
                 {
                     TextLine line = text.Lines[lineNumber];
-                    string message = line.ToString();
-
-                    ReportTodoCommentInfoFromSingleLine(message, line.Start, context);
+                    string nextMessage = line.ToString();
+                    ReportTodoCommentFromSingleLine(nextMessage, line.Start);
                 }
+            }
 
+            private void ProcessLastLine(TextSpan fullSpan, TextLine endLine, int postfixLength)
+            {
                 int length = fullSpan.End - endLine.Start;
                 if (length >= postfixLength)
                 {
                     length -= postfixLength;
                 }
 
-                string endMessage = text.ToString(new TextSpan(endLine.Start, length));
-                ReportTodoCommentInfoFromSingleLine(endMessage, endLine.Start, context);
+                string lastMessage = text.ToString(new TextSpan(endLine.Start, length));
+                ReportTodoCommentFromSingleLine(lastMessage, endLine.Start);
             }
 
             private int GetCommentStartingIndex([NotNull] string message)
@@ -173,7 +199,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 return message.Length;
             }
 
-            private bool PreprocessorHasComment(SyntaxTrivia trivia)
+            private bool PreprocessorHasSingleLineComment(SyntaxTrivia trivia)
             {
                 SyntaxKind kind = trivia.Kind();
 
@@ -193,6 +219,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 SyntaxKind kind = trivia.Kind();
 
                 return kind == SyntaxKind.MultiLineCommentTrivia || kind == SyntaxKind.MultiLineDocumentationCommentTrivia;
+            }
+
+            private struct LineRange
+            {
+                public TextLine StartLine { get; }
+                public TextLine EndLine { get; }
+
+                public LineRange(TextLine startLine, TextLine endLine)
+                {
+                    StartLine = startLine;
+                    EndLine = endLine;
+                }
             }
         }
     }
