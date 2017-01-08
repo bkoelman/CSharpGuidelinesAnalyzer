@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             AnalysisResult result = GetAnalysisResult(context, messages);
 
             VerifyDiagnosticCount(result, context.DiagnosticsCaptureMode);
-            VerifyDignostics(result, context);
+            VerifyDiagnostics(result, context);
         }
 
         [NotNull]
@@ -137,7 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             result.Diagnostics.Should().HaveSameCount(result.Messages);
         }
 
-        private static void VerifyDignostics([NotNull] AnalysisResult result, [NotNull] AnalyzerTestContext context)
+        private static void VerifyDiagnostics([NotNull] AnalysisResult result, [NotNull] AnalyzerTestContext context)
         {
             for (int index = 0; index < result.Diagnostics.Count; index++)
             {

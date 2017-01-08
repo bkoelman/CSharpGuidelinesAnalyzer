@@ -21,18 +21,18 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
         [NotNull]
-        private static readonly IEnumerable<KeyValuePair<string, string>> OperationFeatures = new[]
+        private static readonly IEnumerable<KeyValuePair<string, string>> OperationFeature = new[]
         {
             new KeyValuePair<string, string>("IOperation", "true")
         };
 
         [NotNull]
         private static readonly CSharpParseOptions DefaultCSharpParseOptions =
-            new CSharpParseOptions().WithFeatures(OperationFeatures);
+            new CSharpParseOptions().WithFeatures(OperationFeature);
 
         [NotNull]
         private static readonly VisualBasicParseOptions DefaultBasicParseOptions =
-            new VisualBasicParseOptions().WithFeatures(OperationFeatures);
+            new VisualBasicParseOptions().WithFeatures(OperationFeature);
 
         [NotNull]
         public DocumentWithSpans GetDocumentWithSpansFromMarkup([NotNull] AnalyzerTestContext context)
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 ? (ParseOptions) DefaultBasicParseOptions.WithDocumentationMode(documentationMode)
                 : DefaultCSharpParseOptions.WithDocumentationMode(documentationMode);
 
-            return optionsWithLostFeatures.WithFeatures(OperationFeatures);
+            return optionsWithLostFeatures.WithFeatures(OperationFeature);
         }
 
         [NotNull]
@@ -208,6 +208,12 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                     AppendCodeBlockAfterSpanEnd();
                 }
 
+                private void LocateFirstSpanStart()
+                {
+                    offset = 0;
+                    spanStartIndex = parser.GetNextSpanStart(offset);
+                }
+
                 private void LoopOverText()
                 {
                     while (HasFoundSpanStart)
@@ -223,26 +229,14 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                     }
                 }
 
-                private void LocateFirstSpanStart()
+                private void AppendCodeBlockBeforeSpanStart()
                 {
-                    offset = 0;
-                    spanStartIndex = parser.GetNextSpanStart(offset);
-                }
-
-                private void LocateNextSpanStart()
-                {
-                    offset = spanEndIndex + SpanTextLength;
-                    spanStartIndex = parser.GetNextSpanStart(offset);
+                    parser.AppendCodeBlock(offset, spanStartIndex - offset);
                 }
 
                 private void LocateNextSpanEnd()
                 {
                     spanEndIndex = parser.GetNextSpanEnd(spanStartIndex);
-                }
-
-                private void AppendCodeBlockBeforeSpanStart()
-                {
-                    parser.AppendCodeBlock(offset, spanStartIndex - offset);
                 }
 
                 private void AppendCodeBlockBetweenSpans()
@@ -251,14 +245,20 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                         spanEndIndex - spanStartIndex - SpanTextLength);
                 }
 
-                private void AppendCodeBlockAfterSpanEnd()
-                {
-                    parser.AppendLastCodeBlock(offset);
-                }
-
                 private void AppendTextSpan()
                 {
                     parser.AppendTextSpan(spanStartIndex, spanEndIndex);
+                }
+
+                private void LocateNextSpanStart()
+                {
+                    offset = spanEndIndex + SpanTextLength;
+                    spanStartIndex = parser.GetNextSpanStart(offset);
+                }
+
+                private void AppendCodeBlockAfterSpanEnd()
+                {
+                    parser.AppendLastCodeBlock(offset);
                 }
             }
         }
