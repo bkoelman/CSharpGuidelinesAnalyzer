@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     /// <summary />
     internal static class OperationExtensions
     {
+        [NotNull]
+        private static readonly ConcurrentDictionary<Type, MethodInfo> OperationCompilerGeneratedCache =
+            new ConcurrentDictionary<Type, MethodInfo>();
+
         [CanBeNull]
         public static IdentifierInfo TryGetIdentifierInfo([CanBeNull] this IOperation identifier)
         {
@@ -217,16 +222,32 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static bool IsCompilerGenerated([CanBeNull] this IOperation operation)
         {
-            if (operation != null)
+            Type type = operation?.GetType();
+            if (type != null)
             {
-                Type type = operation.GetType();
-                PropertyInfo property = type.GetRuntimeProperty("WasCompilerGenerated");
-                if (property != null)
+                MethodInfo compilerGeneratedGetter = GetOperationCompilerGeneratedGetterFor(type);
+                if (compilerGeneratedGetter != null)
                 {
-                    return (bool) property.GetMethod.Invoke(operation, null);
+                    return (bool) compilerGeneratedGetter.Invoke(operation, null);
                 }
             }
+
             return false;
+        }
+
+        [CanBeNull]
+        private static MethodInfo GetOperationCompilerGeneratedGetterFor([NotNull] Type type)
+        {
+            MethodInfo compilerGeneratedGetter;
+            if (!OperationCompilerGeneratedCache.TryGetValue(type, out compilerGeneratedGetter))
+            {
+                PropertyInfo property = type.GetRuntimeProperty("WasCompilerGenerated");
+                compilerGeneratedGetter = property?.GetMethod;
+
+                OperationCompilerGeneratedCache.TryAdd(type, compilerGeneratedGetter);
+            }
+
+            return compilerGeneratedGetter;
         }
     }
 }
