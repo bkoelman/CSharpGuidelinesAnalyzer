@@ -149,7 +149,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
             OperationAnalysisContext context)
         {
-            string nameExpected = "On" + evnt.Name;
+            string nameExpected = string.Concat("On", evnt.Name);
             if (method.Name != nameExpected)
             {
                 context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, evnt.Name, nameExpected));

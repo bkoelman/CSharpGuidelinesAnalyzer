@@ -73,7 +73,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
 
             messageBuilder.Append(" and '");
-            messageBuilder.Append(variableNames[variableNames.Count - 1] + "'");
+            messageBuilder.Append(variableNames[variableNames.Count - 1]);
+            messageBuilder.Append("'");
 
             return messageBuilder.ToString();
         }
@@ -85,7 +86,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 messageBuilder.Append(", ");
             }
 
-            messageBuilder.Append("'" + variableName + "'");
+            messageBuilder.Append("'");
+            messageBuilder.Append(variableName);
+            messageBuilder.Append("'");
         }
 
         private sealed class StatementWalker : OperationWalker

@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             [NotNull] IEventAssignmentExpression assignment, OperationAnalysisContext context)
         {
             string eventTargetName = GetEventTargetName(assignment.EventInstance);
-            string handlerNameExpected = "On" + eventTargetName + assignment.Event.Name;
+            string handlerNameExpected = string.Concat("On", eventTargetName, assignment.Event.Name);
 
             string handlerNameActual = binding.Method.Name;
             if (handlerNameActual != handlerNameExpected)

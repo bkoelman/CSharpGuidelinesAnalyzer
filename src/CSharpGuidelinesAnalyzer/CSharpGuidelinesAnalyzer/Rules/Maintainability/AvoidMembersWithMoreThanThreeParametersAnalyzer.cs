@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -52,17 +53,40 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (!method.IsPropertyOrEventAccessor() && ExceedsMaximumLength(method.Parameters))
             {
-                string name = IsConstructor(method)
-                    ? "Constructor for '" + method.ContainingType.Name + "'"
-                    : "Method '" + method.Name + "'";
-
-                ReportDiagnostic(context, method, name);
+                string memberName = GetMemberName(method);
+                ReportDiagnostic(context, method, memberName);
             }
+        }
+
+        [NotNull]
+        private static string GetMemberName([NotNull] IMethodSymbol method)
+        {
+            return IsConstructor(method) ? GetNameForConstructor(method) : GetNameForMethod(method);
         }
 
         private static bool IsConstructor([NotNull] IMethodSymbol method)
         {
             return method.MethodKind == MethodKind.Constructor;
+        }
+
+        [NotNull]
+        private static string GetNameForConstructor([NotNull] IMethodSymbol method)
+        {
+            var builder = new StringBuilder();
+            builder.Append("Constructor for '");
+            builder.Append(method.ContainingType.Name);
+            builder.Append("'");
+            return builder.ToString();
+        }
+
+        [NotNull]
+        private static string GetNameForMethod([NotNull] IMethodSymbol method)
+        {
+            var builder = new StringBuilder();
+            builder.Append("Method '");
+            builder.Append(method.Name);
+            builder.Append("'");
+            return builder.ToString();
         }
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
@@ -71,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (IsDelegate(type) && ExceedsMaximumLength(type.DelegateInvokeMethod?.Parameters))
             {
-                ReportDiagnostic(context, type, "Delegate '" + type.Name + "'");
+                ReportDiagnostic(context, type, $"Delegate '{type.Name}'");
             }
         }
 

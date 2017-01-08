@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer
             Guard.NotNullNorWhiteSpace(ruleId, nameof(ruleId));
 
             string categoryLink = GetLinkForCategory(category);
-            return categoryLink + "#" + ruleId.ToLowerInvariant();
+            return $"{categoryLink}#{ruleId.ToLowerInvariant()}";
         }
 
 #pragma warning disable AV1500 // Member contains more than seven statements
