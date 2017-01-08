@@ -21,8 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         protected abstract DiagnosticAnalyzer CreateAnalyzer();
 
-        protected void AssertDiagnostics([NotNull] AnalyzerTestContext context,
-            [NotNull] [ItemNotNull] params string[] messages)
+        protected void AssertDiagnostics([NotNull] AnalyzerTestContext context, [NotNull] [ItemNotNull] params string[] messages)
         {
             Guard.NotNull(context, nameof(context));
             Guard.NotNull(messages, nameof(messages));
@@ -30,8 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             RunDiagnostics(context, messages);
         }
 
-        private void RunDiagnostics([NotNull] AnalyzerTestContext context,
-            [NotNull] [ItemNotNull] params string[] messages)
+        private void RunDiagnostics([NotNull] AnalyzerTestContext context, [NotNull] [ItemNotNull] params string[] messages)
         {
             AnalysisResult result = GetAnalysisResult(context, messages);
 
@@ -40,8 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
         [NotNull]
-        private AnalysisResult GetAnalysisResult([NotNull] AnalyzerTestContext context,
-            [NotNull] [ItemNotNull] string[] messages)
+        private AnalysisResult GetAnalysisResult([NotNull] AnalyzerTestContext context, [NotNull] [ItemNotNull] string[] messages)
         {
             DocumentWithSpans documentWithSpans = DocumentFactory.GetDocumentWithSpansFromMarkup(context);
 
@@ -126,8 +123,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return location.IsInSource && location.SourceTree == tree;
         }
 
-        private static void VerifyDiagnosticCount([NotNull] AnalysisResult result,
-            DiagnosticsCaptureMode captureMode)
+        private static void VerifyDiagnosticCount([NotNull] AnalysisResult result, DiagnosticsCaptureMode captureMode)
         {
             if (captureMode == DiagnosticsCaptureMode.RequireInSourceTree)
             {
@@ -171,8 +167,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             [ItemNotNull]
             public IList<string> Messages { get; }
 
-            public AnalysisResult([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics,
-                [NotNull] IList<TextSpan> spans, [NotNull] [ItemNotNull] IList<string> messages)
+            public AnalysisResult([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics, [NotNull] IList<TextSpan> spans,
+                [NotNull] [ItemNotNull] IList<string> messages)
             {
                 Guard.NotNull(diagnostics, nameof(diagnostics));
                 Guard.NotNull(spans, nameof(spans));
