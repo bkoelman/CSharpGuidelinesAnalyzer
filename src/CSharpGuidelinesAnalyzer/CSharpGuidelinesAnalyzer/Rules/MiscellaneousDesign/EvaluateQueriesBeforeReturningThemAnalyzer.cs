@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -91,7 +90,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         {
             if (!ReturnsConstant(returnStatement) && !IsYieldBreak(returnStatement))
             {
-                AnalyzeReturnValue(returnStatement, context, variableEvaluationCache);
+                var analyzer = new ReturnValueAnalyzer(context, variableEvaluationCache);
+                analyzer.Analyze(returnStatement);
             }
         }
 
@@ -105,89 +105,228 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return returnStatement.ReturnedValue is ILiteralExpression;
         }
 
-        private void AnalyzeReturnValue([NotNull] IReturnStatement returnStatement, OperationBlockAnalysisContext context,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
+        private sealed class ReturnValueAnalyzer
         {
-            EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue, context.OperationBlocks,
-                variableEvaluationCache, context.CancellationToken);
+            private OperationBlockAnalysisContext context;
 
-            if (result.IsConclusive && result.IsDeferred)
+            [NotNull]
+            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache;
+
+            public ReturnValueAnalyzer(OperationBlockAnalysisContext context,
+                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
             {
-                ReportDiagnosticAt(returnStatement, result.DeferredOperationName, context);
-            }
-        }
-
-        [NotNull]
-        private static EvaluationResult AnalyzeExpression([NotNull] IOperation expression,
-            [ItemNotNull] ImmutableArray<IOperation> body,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken)
-        {
-            Guard.NotNull(expression, nameof(expression));
-            Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
-
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var local = expression as ILocalReferenceExpression;
-            if (local != null)
-            {
-                return AnalyzeLocalReference(body, variableEvaluationCache, cancellationToken, local);
+                this.context = context;
+                this.variableEvaluationCache = variableEvaluationCache;
             }
 
-            var conditional = expression as IConditionalChoiceExpression;
-            if (conditional != null)
+            public void Analyze([NotNull] IReturnStatement returnStatement)
             {
-                return AnalyzeConditionalChoice(body, variableEvaluationCache, cancellationToken, conditional);
+                EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue);
+
+                if (result.IsConclusive && result.IsDeferred)
+                {
+                    ReportDiagnosticAt(returnStatement, result.DeferredOperationName);
+                }
             }
 
-            var queryExpressionSyntax = expression.Syntax as QueryExpressionSyntax;
-            return queryExpressionSyntax != null ? EvaluationResult.Query : AnalyzeMemberInvocation(expression);
-        }
+            [NotNull]
+            private EvaluationResult AnalyzeExpression([NotNull] IOperation expression)
+            {
+                Guard.NotNull(expression, nameof(expression));
 
-        [NotNull]
-        private static EvaluationResult AnalyzeLocalReference([ItemNotNull] ImmutableArray<IOperation> body,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken,
-            [NotNull] ILocalReferenceExpression local)
-        {
-            var assignmentWalker = new VariableAssignmentWalker(local.Local, body, variableEvaluationCache, cancellationToken);
-            assignmentWalker.VisitMethod();
+                context.CancellationToken.ThrowIfCancellationRequested();
 
-            return assignmentWalker.Result;
-        }
+                var visitor = new ExpressionVisitor(this);
+                visitor.Visit(expression);
 
-        [NotNull]
-        private static EvaluationResult AnalyzeConditionalChoice([ItemNotNull] ImmutableArray<IOperation> body,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken,
-            [NotNull] IConditionalChoiceExpression conditional)
-        {
-            EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue, body, variableEvaluationCache,
-                cancellationToken);
-            EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue, body, variableEvaluationCache,
-                cancellationToken);
+                return visitor.Result ??
+                    (expression.Syntax is QueryExpressionSyntax ? EvaluationResult.Query : AnalyzeMemberInvocation(expression));
+            }
 
-            return EvaluationResult.Unify(trueResult, falseResult);
-        }
+            private sealed class ExpressionVisitor : OperationVisitor
+            {
+                [NotNull]
+                private readonly ReturnValueAnalyzer owner;
 
-        [NotNull]
-        private static EvaluationResult AnalyzeMemberInvocation([NotNull] IOperation expression)
-        {
-            var invocationWalker = new MemberInvocationWalker();
-            invocationWalker.Visit(expression);
+                [CanBeNull]
+                public EvaluationResult Result { get; private set; }
 
-            return invocationWalker.Result;
-        }
+                public ExpressionVisitor([NotNull] ReturnValueAnalyzer owner)
+                {
+                    Guard.NotNull(owner, nameof(owner));
+                    this.owner = owner;
+                }
 
-        private void ReportDiagnosticAt([NotNull] IReturnStatement returnStatement, [NotNull] string operationName,
-            OperationBlockAnalysisContext context)
-        {
-            Location location = returnStatement.GetLocationForKeyword();
-            ISymbol containingMember = context.OwningSymbol.GetContainingMember();
-            string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                public override void VisitLocalReferenceExpression([NotNull] ILocalReferenceExpression operation)
+                {
+                    Result = owner.AnalyzeLocalReference(operation);
+                }
 
-            Diagnostic diagnostic = operationName == QueryOperationName
-                ? Diagnostic.Create(QueryRule, location, containingMember.Kind, memberName)
-                : Diagnostic.Create(OperationRule, location, containingMember.Kind, memberName, operationName);
+                public override void VisitConditionalChoiceExpression([NotNull] IConditionalChoiceExpression operation)
+                {
+                    Result = owner.AnalyzeConditionalChoice(operation);
+                }
+            }
 
-            context.ReportDiagnostic(diagnostic);
+            [NotNull]
+            private EvaluationResult AnalyzeLocalReference([NotNull] ILocalReferenceExpression local)
+            {
+                var assignmentWalker = new VariableAssignmentWalker(local.Local, this);
+                assignmentWalker.VisitMethod();
+
+                return assignmentWalker.Result;
+            }
+
+            [NotNull]
+            private EvaluationResult AnalyzeConditionalChoice([NotNull] IConditionalChoiceExpression conditional)
+            {
+                EvaluationResult trueResult = AnalyzeExpression(conditional.IfTrueValue);
+                EvaluationResult falseResult = AnalyzeExpression(conditional.IfFalseValue);
+
+                return EvaluationResult.Unify(trueResult, falseResult);
+            }
+
+            [NotNull]
+            private static EvaluationResult AnalyzeMemberInvocation([NotNull] IOperation expression)
+            {
+                var invocationWalker = new MemberInvocationWalker();
+                invocationWalker.Visit(expression);
+
+                return invocationWalker.Result;
+            }
+
+            private void ReportDiagnosticAt([NotNull] IReturnStatement returnStatement, [NotNull] string operationName)
+            {
+                Location location = returnStatement.GetLocationForKeyword();
+                ISymbol containingMember = context.OwningSymbol.GetContainingMember();
+                string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                Diagnostic diagnostic = operationName == QueryOperationName
+                    ? Diagnostic.Create(QueryRule, location, containingMember.Kind, memberName)
+                    : Diagnostic.Create(OperationRule, location, containingMember.Kind, memberName, operationName);
+
+                context.ReportDiagnostic(diagnostic);
+            }
+
+            private abstract class LinqOperationWalker : OperationWalker
+            {
+                [NotNull]
+                public EvaluationResult Result { get; } = new EvaluationResult();
+            }
+
+            /// <summary>
+            /// Analyzes method invocations in an expression, to determine whether the final expression is based on deferred or
+            /// immediate execution.
+            /// </summary>
+            private sealed class MemberInvocationWalker : LinqOperationWalker
+            {
+                public override void VisitInvocationExpression([NotNull] IInvocationExpression operation)
+                {
+                    base.VisitInvocationExpression(operation);
+
+                    if (operation.Instance == null)
+                    {
+                        if (IsExecutionDeferred(operation) || IsExecutionImmediate(operation))
+                        {
+                            return;
+                        }
+                    }
+
+                    Result.SetUnknown();
+                }
+
+                private bool IsExecutionDeferred([NotNull] IInvocationExpression operation)
+                {
+                    if (LinqOperatorsDeferred.Contains(operation.TargetMethod.Name))
+                    {
+                        Result.SetDeferred(operation.TargetMethod.Name);
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                private bool IsExecutionImmediate([NotNull] IInvocationExpression operation)
+                {
+                    if (LinqOperatorsImmediate.Contains(operation.TargetMethod.Name))
+                    {
+                        Result.SetImmediate();
+                        return true;
+                    }
+
+                    return false;
+                }
+            }
+
+            /// <summary>
+            /// Analyzes all assignments to a specific variable, storing the final state.
+            /// </summary>
+            private sealed class VariableAssignmentWalker : LinqOperationWalker
+            {
+                [NotNull]
+                private readonly ILocalSymbol currentLocal;
+
+                [NotNull]
+                private readonly ReturnValueAnalyzer owner;
+
+                public VariableAssignmentWalker([NotNull] ILocalSymbol local, [NotNull] ReturnValueAnalyzer owner)
+                {
+                    Guard.NotNull(local, nameof(local));
+                    Guard.NotNull(owner, nameof(owner));
+
+                    currentLocal = local;
+                    this.owner = owner;
+                }
+
+                public void VisitMethod()
+                {
+                    if (owner.variableEvaluationCache.ContainsKey(currentLocal))
+                    {
+                        Result.CopyFrom(owner.variableEvaluationCache[currentLocal]);
+                    }
+                    else
+                    {
+                        foreach (IOperation operation in owner.context.OperationBlocks)
+                        {
+                            Visit(operation);
+                        }
+
+                        owner.variableEvaluationCache[currentLocal] = Result;
+                    }
+                }
+
+                public override void VisitVariableDeclarationStatement([NotNull] IVariableDeclarationStatement operation)
+                {
+                    base.VisitVariableDeclarationStatement(operation);
+
+                    foreach (IVariableDeclaration variable in operation.Variables)
+                    {
+                        if (currentLocal.Equals(variable.Variable))
+                        {
+                            AnalyzeAssignmentValue(variable.InitialValue);
+                        }
+                    }
+                }
+
+                public override void VisitAssignmentExpression([NotNull] IAssignmentExpression operation)
+                {
+                    base.VisitAssignmentExpression(operation);
+
+                    var targetLocal = operation.Target as ILocalReferenceExpression;
+                    if (targetLocal != null && currentLocal.Equals(targetLocal.Local))
+                    {
+                        AnalyzeAssignmentValue(operation.Value);
+                    }
+                }
+
+                private void AnalyzeAssignmentValue([NotNull] IOperation assignedValue)
+                {
+                    Guard.NotNull(assignedValue, nameof(assignedValue));
+
+                    EvaluationResult result = owner.AnalyzeExpression(assignedValue);
+                    Result.CopyIfConclusiveFrom(result);
+                }
+            }
         }
 
         private sealed class EvaluationResult
@@ -294,118 +433,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 Unknown,
                 Immediate,
                 Deferred
-            }
-        }
-
-        private abstract class LinqOperationWalker : OperationWalker
-        {
-            [NotNull]
-            public EvaluationResult Result { get; } = new EvaluationResult();
-        }
-
-        /// <summary>
-        /// Analyzes method invocations in an expression, to determine whether the final expression is based on deferred or
-        /// immediate execution.
-        /// </summary>
-        private sealed class MemberInvocationWalker : LinqOperationWalker
-        {
-            public override void VisitInvocationExpression([NotNull] IInvocationExpression operation)
-            {
-                base.VisitInvocationExpression(operation);
-
-                if (operation.Instance == null)
-                {
-                    if (LinqOperatorsDeferred.Contains(operation.TargetMethod.Name))
-                    {
-                        Result.SetDeferred(operation.TargetMethod.Name);
-                        return;
-                    }
-                    if (LinqOperatorsImmediate.Contains(operation.TargetMethod.Name))
-                    {
-                        Result.SetImmediate();
-                        return;
-                    }
-                }
-
-                Result.SetUnknown();
-            }
-        }
-
-        /// <summary>
-        /// Analyzes all assignments to a specific variable, storing the final state.
-        /// </summary>
-        private sealed class VariableAssignmentWalker : LinqOperationWalker
-        {
-            [NotNull]
-            private readonly ILocalSymbol currentLocal;
-
-            [ItemNotNull]
-            private readonly ImmutableArray<IOperation> body;
-
-            [NotNull]
-            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache;
-
-            private readonly CancellationToken cancellationToken;
-
-            public VariableAssignmentWalker([NotNull] ILocalSymbol local, [ItemNotNull] ImmutableArray<IOperation> body,
-                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache, CancellationToken cancellationToken)
-            {
-                Guard.NotNull(local, nameof(local));
-                Guard.NotNull(variableEvaluationCache, nameof(variableEvaluationCache));
-
-                currentLocal = local;
-                this.body = body;
-                this.variableEvaluationCache = variableEvaluationCache;
-                this.cancellationToken = cancellationToken;
-            }
-
-            public void VisitMethod()
-            {
-                if (variableEvaluationCache.ContainsKey(currentLocal))
-                {
-                    Result.CopyFrom(variableEvaluationCache[currentLocal]);
-                }
-                else
-                {
-                    foreach (IOperation operation in body)
-                    {
-                        Visit(operation);
-                    }
-
-                    variableEvaluationCache[currentLocal] = Result;
-                }
-            }
-
-            public override void VisitVariableDeclarationStatement([NotNull] IVariableDeclarationStatement operation)
-            {
-                base.VisitVariableDeclarationStatement(operation);
-
-                foreach (IVariableDeclaration variable in operation.Variables)
-                {
-                    if (currentLocal.Equals(variable.Variable))
-                    {
-                        AnalyzeAssignmentValue(variable.InitialValue);
-                    }
-                }
-            }
-
-            public override void VisitAssignmentExpression([NotNull] IAssignmentExpression operation)
-            {
-                base.VisitAssignmentExpression(operation);
-
-                var targetLocal = operation.Target as ILocalReferenceExpression;
-                if (targetLocal != null && currentLocal.Equals(targetLocal.Local))
-                {
-                    AnalyzeAssignmentValue(operation.Value);
-                }
-            }
-
-            private void AnalyzeAssignmentValue([NotNull] IOperation assignedValue)
-            {
-                Guard.NotNull(assignedValue, nameof(assignedValue));
-
-                EvaluationResult result = AnalyzeExpression(assignedValue, body, variableEvaluationCache, cancellationToken);
-                Result.CopyIfConclusiveFrom(result);
             }
         }
     }
