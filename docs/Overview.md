@@ -102,7 +102,7 @@ The list below describes per rule what its analyzer reports on. Checked rules ar
 - [x] This analyzer reports public and internal boolean parameters and members whose names do not start with words like "Is", "Has", "Can" etc.
 
 ### [AV1738](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md#av1738): Prefix an event handler with On (LOW)
-- [x] This analyzer reports when the target method in an event handler assignment does not match the pattern "On" followed by target field name and the name of the event.
+- [x] This analyzer reports when the target method in an event handler assignment does not match the pattern: target field name, followed by "On" and the name of the event.
 
 ### [AV1739](https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md#av1739): Use an underscore for irrelevant lambda parameters (LOW)
 - [x] This analyzer reports unused lambda parameters whose names contain any characters other than underscores.

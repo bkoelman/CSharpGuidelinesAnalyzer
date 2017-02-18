@@ -138,10 +138,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
                         public void M()
                         {
-                            _topLeft.ValueChanged += OnTopLeftValueChanged;
+                            _topLeft.ValueChanged += TopLeftOnValueChanged;
                         }
 
-                        public void OnTopLeftValueChanged(object sender, EventArgs e)
+                        public void TopLeftOnValueChanged(object sender, EventArgs e)
                         {
                         }
                     }
@@ -181,7 +181,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'HandleTopLeftValueChanged' that handles event 'ValueChanged' should be renamed to 'OnTopLeftValueChanged'.");
+                "Method 'HandleTopLeftValueChanged' that handles event 'ValueChanged' should be renamed to 'TopLeftOnValueChanged'.");
         }
 
         [Fact]
