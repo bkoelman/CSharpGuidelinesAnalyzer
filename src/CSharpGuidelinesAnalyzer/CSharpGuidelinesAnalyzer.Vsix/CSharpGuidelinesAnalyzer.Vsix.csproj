@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -78,11 +78,7 @@
   </Target>
   <Target Name="UpdateVsixVersion" AfterTargets="GetSemanticVersionFromOutputAssembly;CopyVsixManifestFile" BeforeTargets="AfterBuild">
     <Message Text="Updating VSIX version to $(SemanticVersion)" Importance="High" />
-    <XmlPoke
-      XmlInputPath="source.extension.vsixmanifest"
-      Query="/n:PackageManifest/n:Metadata/n:Identity/@Version"
-      Value="$(SemanticVersion)"
-      Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011' Name='DoNotKnowWhatThisIsFor-ButItIsRequired' /&gt;">
+    <XmlPoke XmlInputPath="source.extension.vsixmanifest" Query="/n:PackageManifest/n:Metadata/n:Identity/@Version" Value="$(SemanticVersion)" Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011' Name='DoNotKnowWhatThisIsFor-ButItIsRequired' /&gt;">
     </XmlPoke>
   </Target>
   <Target Name="ExcludeFilesFromVSIX" BeforeTargets="CreateVsixContainer" AfterTargets="GetVsixSourceItems">
