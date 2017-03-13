@@ -11,13 +11,9 @@ See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/
 
 ![Analyzer in action](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/gh-pages/images/analyzer-in-action.png)
 
-## Project status
-
-This project is in its final testing phase. Expect the 1.0 stable release within a few weeks.
-
 ## Get started
 
-* At the minimum, you need [Visual Studio 2015 with Update 2](https://www.visualstudio.com/). If you are using Update 3, it is recommended to [activate Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
+* At the minimum, you need [Visual Studio 2015 with Update 2](https://www.visualstudio.com/). If you are using Update 3 (or Visual Studio 2017), it is recommended to [activate Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
 
 * From the NuGet package manager console:
 
