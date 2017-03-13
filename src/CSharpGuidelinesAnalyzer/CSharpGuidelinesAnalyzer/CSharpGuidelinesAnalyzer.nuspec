@@ -9,7 +9,7 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper.</description>
+    <description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 or 2015 with at least Update 2.</description>
     <releaseNotes>First stable version; includes support for Visual Studio 2017.</releaseNotes>
     <copyright>Apache License, Version 2.0</copyright>
     <language>en-us</language>
