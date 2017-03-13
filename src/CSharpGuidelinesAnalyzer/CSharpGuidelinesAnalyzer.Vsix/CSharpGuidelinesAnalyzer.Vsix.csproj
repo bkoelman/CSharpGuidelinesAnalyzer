@@ -86,7 +86,7 @@
       <VsixSourceItem Remove="$(SolutionDir)CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer\tools\install.ps1" />
       <VsixSourceItem Remove="$(SolutionDir)CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer\tools\uninstall.ps1" />
       <VsixSourceItem Remove="$(SolutionDir)CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.nuspec" />
-      <VsixSourceItem Remove="$(SolutionDir)packages\JetBrains.Annotations.10.1.5\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.PCL328.dll" />
+      <VsixSourceItem Remove="$(SolutionDir)packages\JetBrains.Annotations.10.4.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.dll" />
     </ItemGroup>
     <!--
         <Message Text="VsixSourceItem collection now contains: @(VsixSourceItem)" Importance="High" />
