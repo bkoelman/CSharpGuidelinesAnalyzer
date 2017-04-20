@@ -17,7 +17,7 @@ See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/
 
 * From the NuGet package manager console:
 
-  `Install-Package CSharpGuidelinesAnalyzer -pre`
+  `Install-Package CSharpGuidelinesAnalyzer`
 
 * Rebuild your solution
 
