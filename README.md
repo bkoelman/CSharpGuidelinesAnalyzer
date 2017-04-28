@@ -21,7 +21,7 @@ See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/
 
 * Rebuild your solution
 
-* [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md)
+* Recommended: [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md)
 
 ## Suppressing rules
 Rule warnings can be suppressed at various scopes, ranging from per line to at the project or solution level.
