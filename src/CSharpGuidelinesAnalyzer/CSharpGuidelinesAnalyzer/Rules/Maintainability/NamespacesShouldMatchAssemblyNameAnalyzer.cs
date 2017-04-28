@@ -42,8 +42,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NamespaceRule,
+            TypeInNamespaceRule, GlobalTypeRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -56,7 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeNamespace(SymbolAnalysisContext context)
         {
-            var namespaceSymbol = (INamespaceSymbol) context.Symbol;
+            var namespaceSymbol = (INamespaceSymbol)context.Symbol;
 
             if (IsTopLevelNamespace(namespaceSymbol))
             {
@@ -95,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             if (type.ContainingNamespace.IsGlobalNamespace)
             {
@@ -107,8 +107,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private sealed class TypesInNamespaceVisitor : SymbolVisitor
         {
             [ItemNotNull]
-            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace = ImmutableArray.Create("JetBrains",
-                "Annotations");
+            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace =
+                ImmutableArray.Create("JetBrains", "Annotations");
 
             [ItemNotNull]
             private readonly ImmutableArray<string> assemblyNameParts;

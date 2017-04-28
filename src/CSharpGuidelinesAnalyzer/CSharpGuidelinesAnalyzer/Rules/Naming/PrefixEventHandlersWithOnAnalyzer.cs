@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeEventAssignment(OperationAnalysisContext context)
         {
-            var assignment = (IEventAssignmentExpression) context.Operation;
+            var assignment = (IEventAssignmentExpression)context.Operation;
 
             if (!assignment.Adds)
             {

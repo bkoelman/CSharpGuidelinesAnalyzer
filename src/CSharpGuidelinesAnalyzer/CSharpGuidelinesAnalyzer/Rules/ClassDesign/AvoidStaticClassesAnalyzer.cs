@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             if (!type.IsStatic)
             {

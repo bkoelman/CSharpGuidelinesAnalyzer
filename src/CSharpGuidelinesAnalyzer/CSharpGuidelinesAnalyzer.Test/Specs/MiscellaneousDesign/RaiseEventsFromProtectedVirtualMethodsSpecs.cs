@@ -10,8 +10,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         protected override string DiagnosticId => RaiseEventsFromProtectedVirtualMethodsAnalyzer.DiagnosticId;
 
         [Fact]
-        public void
-            When_event_invocation_method_is_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
+        internal void When_event_invocation_method_is_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

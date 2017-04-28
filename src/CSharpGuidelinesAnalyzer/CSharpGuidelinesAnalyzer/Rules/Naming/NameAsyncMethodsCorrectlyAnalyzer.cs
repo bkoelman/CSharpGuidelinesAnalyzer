@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMethod(SymbolAnalysisContext context)
         {
-            var method = (IMethodSymbol) context.Symbol;
+            var method = (IMethodSymbol)context.Symbol;
 
             if (method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal))
             {

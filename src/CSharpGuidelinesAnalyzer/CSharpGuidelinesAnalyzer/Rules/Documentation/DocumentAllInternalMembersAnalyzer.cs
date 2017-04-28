@@ -16,7 +16,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public const string DiagnosticId = "AV2305";
 
         private const string Title = "Missing XML comment for internally visible type, member or parameter";
-        private const string MissingTypeOrMemberMessageFormat = "Missing XML comment for internally visible type or member '{0}'.";
+
+        private const string MissingTypeOrMemberMessageFormat =
+            "Missing XML comment for internally visible type or member '{0}'.";
+
         private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'.";
         private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature.";
         private const string Description = "Document all public, protected and internal types and members.";
@@ -38,8 +41,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
+            MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
             SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -138,8 +141,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         {
             var parameterNames = new HashSet<string>();
 
-            foreach (XElement paramElement in
-                document.Element("member")?.Elements("param") ?? ImmutableArray<XElement>.Empty)
+            foreach (XElement paramElement in document.Element("member")?.Elements("param") ?? ImmutableArray<XElement>.Empty)
             {
                 XAttribute paramAttribute = paramElement.Attribute("name");
 

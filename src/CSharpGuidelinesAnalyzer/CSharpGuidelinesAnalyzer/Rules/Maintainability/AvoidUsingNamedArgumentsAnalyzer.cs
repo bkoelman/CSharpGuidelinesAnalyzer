@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeArgument(OperationAnalysisContext context)
         {
-            var argument = (IArgument) context.Operation;
+            var argument = (IArgument)context.Operation;
 
             if (argument.ArgumentKind == ArgumentKind.Named && !argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {

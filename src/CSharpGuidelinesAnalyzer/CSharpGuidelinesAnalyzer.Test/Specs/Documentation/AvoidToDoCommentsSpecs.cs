@@ -111,8 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void
-            When_source_contains_preprocessor_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
+        internal void When_source_contains_preprocessor_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -128,8 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void
-            When_source_contains_preprocessor_directive_with_documentation_comment_with_space_it_must_be_reported()
+        internal void When_source_contains_preprocessor_directive_with_documentation_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -160,8 +158,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        public void
-            When_source_contains_end_region_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
+        internal void When_source_contains_end_region_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

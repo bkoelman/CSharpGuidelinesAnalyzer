@@ -50,15 +50,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private ConcurrentQueue<INamedTypeSymbol> GetAssemblyAttributesToAnalyze([NotNull] Compilation compilation)
 #pragma warning restore AV1130 // Return type in method signature should be a collection interface instead of a concrete type
         {
-            ImmutableArray<INamedTypeSymbol> attributes =
-                ImmutableArray.Create(compilation.GetTypeByMetadataName("System.Reflection.AssemblyTitleAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyDescriptionAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyConfigurationAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyCompanyAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyProductAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyCopyrightAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyTrademarkAttribute"),
-                    compilation.GetTypeByMetadataName("System.Reflection.AssemblyVersionAttribute"));
+            ImmutableArray<INamedTypeSymbol> attributes = ImmutableArray.Create(
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyTitleAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyDescriptionAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyConfigurationAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyCompanyAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyProductAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyCopyrightAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyTrademarkAttribute"),
+                compilation.GetTypeByMetadataName("System.Reflection.AssemblyVersionAttribute"));
 
             return attributes.Any(attr => attr == null)
                 ? new ConcurrentQueue<INamedTypeSymbol>()

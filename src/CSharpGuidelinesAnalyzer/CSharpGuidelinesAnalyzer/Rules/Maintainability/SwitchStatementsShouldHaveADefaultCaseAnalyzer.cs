@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)
         {
-            var switchStatement = (ISwitchStatement) context.Operation;
+            var switchStatement = (ISwitchStatement)context.Operation;
 
             if (HasDefaultCase(switchStatement))
             {
@@ -122,8 +122,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (isEnumeration || isNullableEnumeration)
             {
                 ITypeSymbol enumType = isEnumeration
-                    ? (INamedTypeSymbol) identifierInfo.Type
-                    : ((INamedTypeSymbol) identifierInfo.Type).TypeArguments[0];
+                    ? (INamedTypeSymbol)identifierInfo.Type
+                    : ((INamedTypeSymbol)identifierInfo.Type).TypeArguments[0];
 
                 ISymbol[] possibleValues = isEnumeration
                     ? enumType.GetMembers().OfType<IFieldSymbol>().Cast<ISymbol>().ToArray()

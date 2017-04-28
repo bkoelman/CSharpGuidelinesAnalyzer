@@ -124,7 +124,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override Location VisitForLoopStatement([NotNull] IForLoopStatement operation, [CanBeNull] object argument)
             {
-                var syntax = (ForStatementSyntax) operation.Syntax;
+                var syntax = (ForStatementSyntax)operation.Syntax;
                 return syntax.ForKeyword.GetLocation();
             }
 
@@ -132,7 +132,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             public override Location VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation,
                 [CanBeNull] object argument)
             {
-                var syntax = (ForEachStatementSyntax) operation.Syntax;
+                var syntax = (ForEachStatementSyntax)operation.Syntax;
                 return syntax.ForEachKeyword.GetLocation();
             }
 
@@ -179,35 +179,35 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override Location VisitIfStatement([NotNull] IIfStatement operation, [CanBeNull] object argument)
             {
-                var syntax = (IfStatementSyntax) operation.Syntax;
+                var syntax = (IfStatementSyntax)operation.Syntax;
                 return syntax.IfKeyword.GetLocation();
             }
 
             [NotNull]
             public override Location VisitUsingStatement([NotNull] IUsingStatement operation, [CanBeNull] object argument)
             {
-                var syntax = (UsingStatementSyntax) operation.Syntax;
+                var syntax = (UsingStatementSyntax)operation.Syntax;
                 return syntax.UsingKeyword.GetLocation();
             }
 
             [NotNull]
             public override Location VisitLockStatement([NotNull] ILockStatement operation, [CanBeNull] object argument)
             {
-                var syntax = (LockStatementSyntax) operation.Syntax;
+                var syntax = (LockStatementSyntax)operation.Syntax;
                 return syntax.LockKeyword.GetLocation();
             }
 
             [NotNull]
             public override Location VisitSwitchStatement([NotNull] ISwitchStatement operation, [CanBeNull] object argument)
             {
-                var syntax = (SwitchStatementSyntax) operation.Syntax;
+                var syntax = (SwitchStatementSyntax)operation.Syntax;
                 return syntax.SwitchKeyword.GetLocation();
             }
 
             [NotNull]
             public override Location VisitThrowStatement([NotNull] IThrowStatement operation, [CanBeNull] object argument)
             {
-                var syntax = (ThrowStatementSyntax) operation.Syntax;
+                var syntax = (ThrowStatementSyntax)operation.Syntax;
                 return syntax.ThrowKeyword.GetLocation();
             }
 
@@ -215,7 +215,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             public override Location VisitSingleValueCaseClause([NotNull] ISingleValueCaseClause operation,
                 [CanBeNull] object argument)
             {
-                var syntax = (SwitchLabelSyntax) operation.Syntax;
+                var syntax = (SwitchLabelSyntax)operation.Syntax;
                 return syntax.Keyword.GetLocation();
             }
         }
@@ -228,7 +228,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 MethodInfo compilerGeneratedGetter = GetOperationCompilerGeneratedGetterFor(type);
                 if (compilerGeneratedGetter != null)
                 {
-                    return (bool) compilerGeneratedGetter.Invoke(operation, null);
+                    return (bool)compilerGeneratedGetter.Invoke(operation, null);
                 }
             }
 

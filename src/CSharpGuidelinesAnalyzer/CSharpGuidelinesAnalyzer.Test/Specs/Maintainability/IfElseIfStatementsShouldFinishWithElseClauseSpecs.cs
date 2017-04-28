@@ -99,8 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void
-            When_an_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
+        internal void When_an_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -154,9 +153,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void
-            When_an_if_else_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported
-            ()
+        internal void
+            When_an_if_else_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -185,8 +183,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void
-            When_an_if_else_if_else_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
+        internal void When_an_if_else_if_else_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -217,8 +214,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_nested_if_else_if_statements_do_not_end_with_an_unconditional_else_clause_it_must_be_reported
-            ()
+        internal void When_nested_if_else_if_statements_do_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

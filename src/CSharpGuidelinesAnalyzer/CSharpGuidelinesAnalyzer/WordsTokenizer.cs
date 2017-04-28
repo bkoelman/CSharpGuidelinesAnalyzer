@@ -86,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer
         [CanBeNull]
         private char? PeekChar()
         {
-            return position < text.Length - 1 ? text[position + 1] : (char?) null;
+            return position < text.Length - 1 ? text[position + 1] : (char?)null;
         }
 
         private WordToken CreateTokenFromScan(int startIndex, WordTokenKind kind)

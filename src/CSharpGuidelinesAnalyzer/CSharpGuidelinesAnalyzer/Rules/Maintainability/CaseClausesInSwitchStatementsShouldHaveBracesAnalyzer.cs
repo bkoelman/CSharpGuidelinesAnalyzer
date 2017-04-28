@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeSwitchCase(OperationAnalysisContext context)
         {
-            var switchCase = (ISwitchCase) context.Operation;
+            var switchCase = (ISwitchCase)context.Operation;
 
             if (switchCase.Body.Length > 0)
             {

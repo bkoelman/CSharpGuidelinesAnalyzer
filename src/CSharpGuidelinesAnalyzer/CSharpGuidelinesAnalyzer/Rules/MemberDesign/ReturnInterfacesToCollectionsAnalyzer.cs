@@ -12,7 +12,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     {
         public const string DiagnosticId = "AV1130";
 
-        private const string Title = "Return type in method signature should be a collection interface instead of a concrete type";
+        private const string Title =
+            "Return type in method signature should be a collection interface instead of a concrete type";
 
         private const string MessageFormat =
             "Return type in signature for '{0}' should be a collection interface instead of a concrete type.";
@@ -37,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private void AnalyzeMethod(SymbolAnalysisContext context)
         {
-            var method = (IMethodSymbol) context.Symbol;
+            var method = (IMethodSymbol)context.Symbol;
 
             if (IsString(method.ReturnType))
             {

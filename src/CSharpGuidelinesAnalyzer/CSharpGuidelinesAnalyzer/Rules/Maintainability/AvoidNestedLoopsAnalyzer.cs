@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeLoopStatement(OperationAnalysisContext context)
         {
-            var loopStatement = (ILoopStatement) context.Operation;
+            var loopStatement = (ILoopStatement)context.Operation;
 
             var walker = new LoopBodyWalker();
             walker.Visit(loopStatement.Body);

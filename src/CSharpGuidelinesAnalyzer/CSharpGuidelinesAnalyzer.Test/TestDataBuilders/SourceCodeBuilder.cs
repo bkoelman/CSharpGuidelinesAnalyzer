@@ -13,8 +13,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         [NotNull]
-        private AnalyzerTestContext testContext = new AnalyzerTestContext(string.Empty, LanguageNames.CSharp)
-            .WithReferences(DefaultReferences);
+        private AnalyzerTestContext testContext =
+            new AnalyzerTestContext(string.Empty, LanguageNames.CSharp).WithReferences(DefaultReferences);
 
         [NotNull]
         [ItemNotNull]
@@ -26,12 +26,12 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             });
 
         [NotNull]
-        private static PortableExecutableReference SystemAssembly
-            => MetadataReference.CreateFromFile(typeof(Component).Assembly.Location);
+        private static PortableExecutableReference SystemAssembly => MetadataReference.CreateFromFile(typeof(Component).Assembly
+            .Location);
 
         [NotNull]
-        private static PortableExecutableReference MsCorLibAssembly
-            => MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+        private static PortableExecutableReference MsCorLibAssembly => MetadataReference.CreateFromFile(typeof(object).Assembly
+            .Location);
 
         /// <summary>
         /// Intended for internal use.
@@ -43,10 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [NotNull]
         public AnalyzerTestContext TestContext
         {
-            get
-            {
-                return testContext;
-            }
+            get => testContext;
             set
             {
                 Guard.NotNull(value, nameof(value));

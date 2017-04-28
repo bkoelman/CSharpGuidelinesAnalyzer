@@ -43,8 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             CodeWithSpans codeWithSpans = parser.Parse();
 
             ParseOptions parseOptions = GetParseOptions(context.DocumentationMode, context.LanguageName);
-            CompilationOptions compilationOptions = GetCompilationOptions(context.CompilerWarningLevel,
-                context.LanguageName);
+            CompilationOptions compilationOptions = GetCompilationOptions(context.CompilerWarningLevel, context.LanguageName);
 
             Document document = new AdhocWorkspace()
                 .AddProject(context.AssemblyName, context.LanguageName)
@@ -64,7 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 #pragma warning restore AV2310 // Code blocks should not contain inline comments
 
             ParseOptions optionsWithLostFeatures = languageName == LanguageNames.VisualBasic
-                ? (ParseOptions) DefaultBasicParseOptions.WithDocumentationMode(documentationMode)
+                ? (ParseOptions)DefaultBasicParseOptions.WithDocumentationMode(documentationMode)
                 : DefaultCSharpParseOptions.WithDocumentationMode(documentationMode);
 
             return optionsWithLostFeatures.WithFeatures(OperationFeature);
@@ -241,8 +240,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
                 private void AppendCodeBlockBetweenSpans()
                 {
-                    parser.AppendCodeBlock(spanStartIndex + SpanTextLength,
-                        spanEndIndex - spanStartIndex - SpanTextLength);
+                    parser.AppendCodeBlock(spanStartIndex + SpanTextLength, spanEndIndex - spanStartIndex - SpanTextLength);
                 }
 
                 private void AppendTextSpan()

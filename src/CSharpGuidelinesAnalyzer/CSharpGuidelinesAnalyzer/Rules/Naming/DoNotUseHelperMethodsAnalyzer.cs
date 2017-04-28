@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             ICollection<WordToken> wordsListed = type.Name.GetWordsInList(WordsBlacklist);
             if (wordsListed.Any())

@@ -418,7 +418,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact(Skip = "https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/85")]
-        public void When_struct_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal void When_struct_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

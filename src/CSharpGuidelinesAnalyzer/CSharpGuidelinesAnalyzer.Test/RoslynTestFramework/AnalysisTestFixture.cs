@@ -55,8 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         {
             IEnumerable<Diagnostic> diagnostics =
                 EnumerateDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,
-                        context.DiagnosticsCaptureMode)
-                    .Where(d => d.Id == DiagnosticId);
+                    context.DiagnosticsCaptureMode).Where(d => d.Id == DiagnosticId);
 
             if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
             {

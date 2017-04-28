@@ -185,8 +185,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        public void
-            When_remote_event_is_bound_to_a_method_on_a_field_named_underscore_and_matches_pattern_it_must_be_skipped()
+        internal void When_remote_event_is_bound_to_a_method_on_a_field_named_underscore_and_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

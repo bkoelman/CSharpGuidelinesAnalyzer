@@ -29,12 +29,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression), OperationKind.LambdaExpression);
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
+                OperationKind.LambdaExpression);
         }
 
         private void AnalyzeLambdaExpression(OperationAnalysisContext context)
         {
-            var lambdaExpression = (ILambdaExpression) context.Operation;
+            var lambdaExpression = (ILambdaExpression)context.Operation;
 
             foreach (IParameterSymbol parameter in lambdaExpression.Signature.Parameters)
             {

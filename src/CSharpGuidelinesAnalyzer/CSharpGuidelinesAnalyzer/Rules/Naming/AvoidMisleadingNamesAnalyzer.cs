@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration) context.Operation;
+            var declaration = (IVariableDeclaration)context.Operation;
             ILocalSymbol variable = declaration.Variable;
 
             if (Blacklist.Contains(variable.Name))
@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            var parameter = (IParameterSymbol)context.Symbol;
 
             if (Blacklist.Contains(parameter.Name))
             {

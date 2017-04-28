@@ -55,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType,
             [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
         {
-            var invocation = (IInvocationExpression) context.Operation;
+            var invocation = (IInvocationExpression)context.Operation;
 
             if (invocation.TargetMethod.ContainingType.Equals(taskType))
             {

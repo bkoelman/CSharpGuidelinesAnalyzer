@@ -39,7 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeProperty(SymbolAnalysisContext context)
         {
-            var property = (IPropertySymbol) context.Symbol;
+            var property = (IPropertySymbol)context.Symbol;
 
             if (property.IsIndexer && ExceedsMaximumLength(property.Parameters))
             {
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeMethod(SymbolAnalysisContext context)
         {
-            var method = (IMethodSymbol) context.Symbol;
+            var method = (IMethodSymbol)context.Symbol;
 
             if (!method.IsPropertyOrEventAccessor() && ExceedsMaximumLength(method.Parameters))
             {
@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             if (IsDelegate(type) && ExceedsMaximumLength(type.DelegateInvokeMethod?.Parameters))
             {

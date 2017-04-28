@@ -48,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             if (ContainsDigitsNonWhitelisted(type.Name))
             {
@@ -73,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            var parameter = (IParameterSymbol)context.Symbol;
 
             if (ContainsDigitsNonWhitelisted(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
                 !parameter.IsInterfaceImplementation())
@@ -84,7 +84,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration) context.Operation;
+            var declaration = (IVariableDeclaration)context.Operation;
 
             if (ContainsDigitsNonWhitelisted(declaration.Variable.Name))
             {

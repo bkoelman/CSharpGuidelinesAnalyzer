@@ -409,8 +409,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped
-            ()
+        internal void When_multiple_identifiers_are_assigned_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -522,8 +521,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_multiple_identifiers_are_assigned_in_the_case_clause_of_a_switch_statement_it_must_be_skipped
-            ()
+        internal void When_multiple_identifiers_are_assigned_in_the_case_clause_of_a_switch_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

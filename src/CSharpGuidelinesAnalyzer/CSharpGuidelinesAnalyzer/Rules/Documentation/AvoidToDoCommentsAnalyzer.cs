@@ -115,9 +115,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             private static bool StartsWithTodoCommentToken([NotNull] string message, int index)
             {
-                return
-                    string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length,
-                        StringComparison.OrdinalIgnoreCase) == 0;
+                return string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length,
+                    StringComparison.OrdinalIgnoreCase) == 0;
             }
 
             private static bool HasIdentifierCharacterAfterTodoCommentToken([NotNull] string message, int index)
@@ -203,8 +202,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 SyntaxKind kind = trivia.Kind();
 
-                return kind != SyntaxKind.RegionDirectiveTrivia && SyntaxFacts.IsPreprocessorDirective(kind) &&
-                    trivia.ToString().IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0;
+                return kind != SyntaxKind.RegionDirectiveTrivia && SyntaxFacts.IsPreprocessorDirective(kind) && trivia.ToString()
+                    .IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0;
             }
 
             private bool IsSingleLineComment(SyntaxTrivia trivia)

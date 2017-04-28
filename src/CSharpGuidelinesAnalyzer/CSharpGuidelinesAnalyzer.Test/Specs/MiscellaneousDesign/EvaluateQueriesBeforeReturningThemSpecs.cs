@@ -184,8 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void
-            When_method_conditionally_returns_variable_that_contains_the_result_of_Where_call_it_must_be_reported()
+        internal void When_method_conditionally_returns_variable_that_contains_the_result_of_Where_call_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -210,9 +209,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void
-            When_method_conditionally_returns_variable_that_contains_the_result_of_Where_call_with_redundant_braces_it_must_be_reported
-            ()
+        internal void
+            When_method_conditionally_returns_variable_that_contains_the_result_of_Where_call_with_redundant_braces_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -236,8 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        internal void
-            When_method_returns_variable_that_contains_the_result_of_ToList_after_Where_call_it_must_be_skipped()
+        internal void When_method_returns_variable_that_contains_the_result_of_ToList_after_Where_call_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -261,8 +258,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        internal void When_method_returns_variable_that_eventually_contains_the_result_of_Where_call_it_must_be_reported
-            ()
+        internal void When_method_returns_variable_that_eventually_contains_the_result_of_Where_call_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -288,9 +284,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void
-            When_method_returns_variable_that_eventually_contains_the_result_of_ToArray_after_Where_call_it_must_be_skipped
-            ()
+        internal void
+            When_method_returns_variable_that_eventually_contains_the_result_of_ToArray_after_Where_call_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -316,8 +311,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        internal void
-            When_method_returns_variable_that_eventually_contains_the_result_of_Select_call_it_must_be_reported()
+        internal void When_method_returns_variable_that_eventually_contains_the_result_of_Select_call_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -457,7 +451,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        public void
+        internal void
             When_method_returns_variable_that_contains_the_result_of_ToList_after_a_query_expression_it_must_be_skipped()
         {
             // Arrange

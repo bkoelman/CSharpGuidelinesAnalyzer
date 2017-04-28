@@ -36,20 +36,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                     startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
                         OperationKind.VariableDeclaration);
 
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment), OperationKind.AssignmentExpression);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment),
+                        OperationKind.AssignmentExpression);
                 }
             });
         }
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration) context.Operation;
+            var declaration = (IVariableDeclaration)context.Operation;
 
             if (IsDynamicType(declaration.Variable.Type))
             {
                 if (RequiresReport(declaration.InitialValue))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(), declaration.Variable.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(),
+                        declaration.Variable.Name));
                 }
             }
         }
@@ -61,7 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private void AnalyzeAssignment(OperationAnalysisContext context)
         {
-            var assignment = (IAssignmentExpression) context.Operation;
+            var assignment = (IAssignmentExpression)context.Operation;
 
             IdentifierInfo identifierInfo = assignment.Target.TryGetIdentifierInfo();
             if (identifierInfo != null && IsDynamicType(identifierInfo.Type))

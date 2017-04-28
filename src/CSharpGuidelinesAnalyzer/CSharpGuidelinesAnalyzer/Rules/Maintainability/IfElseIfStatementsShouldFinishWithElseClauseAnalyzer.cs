@@ -72,7 +72,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 public int Compare(Location x, Location y)
                 {
-                    return x.SourceSpan.Start.CompareTo(y.SourceSpan.Start);
+                    if (ReferenceEquals(x, y))
+                    {
+                        return 0;
+                    }
+
+                    return x == null ? -1 : y == null ? 1 : x.SourceSpan.Start.CompareTo(y.SourceSpan.Start);
                 }
             }
         }

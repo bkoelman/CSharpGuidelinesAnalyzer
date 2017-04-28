@@ -35,8 +35,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(OperationRule, QueryRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(OperationRule,
+            QueryRule);
 
         [ItemNotNull]
         private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any",
@@ -70,8 +70,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             var variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
 
-            foreach (IReturnStatement returnStatement in
-                context.OperationBlocks.SelectMany(b => b.DescendantsAndSelf().OfType<IReturnStatement>()))
+            foreach (IReturnStatement returnStatement in context.OperationBlocks.SelectMany(b => b.DescendantsAndSelf()
+                .OfType<IReturnStatement>()))
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -139,8 +139,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 var visitor = new ExpressionVisitor(this);
                 visitor.Visit(expression);
 
-                return visitor.Result ??
-                    (expression.Syntax is QueryExpressionSyntax ? EvaluationResult.Query : AnalyzeMemberInvocation(expression));
+                return visitor.Result ?? (expression.Syntax is QueryExpressionSyntax
+                    ? EvaluationResult.Query
+                    : AnalyzeMemberInvocation(expression));
             }
 
             private sealed class ExpressionVisitor : OperationVisitor
@@ -215,8 +216,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
 
             /// <summary>
-            /// Analyzes method invocations in an expression, to determine whether the final expression is based on deferred or
-            /// immediate execution.
+            /// Analyzes method invocations in an expression, to determine whether the final expression is based on deferred or immediate
+            /// execution.
             /// </summary>
             private sealed class MemberInvocationWalker : LinqOperationWalker
             {

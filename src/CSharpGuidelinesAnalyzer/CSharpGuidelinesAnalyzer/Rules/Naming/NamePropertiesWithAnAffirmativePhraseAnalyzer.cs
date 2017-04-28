@@ -25,8 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
-            SymbolKind.Method, SymbolKind.Field);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
+            ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
 
         [ItemNotNull]
         private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Is", "Was", "Were", "Has",
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            var parameter = (IParameterSymbol)context.Symbol;
 
             if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride ||
                 !parameter.Type.IsBooleanOrNullableBoolean())

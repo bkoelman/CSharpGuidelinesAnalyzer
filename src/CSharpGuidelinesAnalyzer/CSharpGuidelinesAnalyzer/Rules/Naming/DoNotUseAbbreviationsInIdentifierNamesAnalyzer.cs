@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            var parameter = (IParameterSymbol)context.Symbol;
 
             if (parameter.ContainingSymbol.IsOverride)
             {
@@ -93,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration) context.Operation;
+            var declaration = (IVariableDeclaration)context.Operation;
 
             if (!string.IsNullOrWhiteSpace(declaration.Variable.Name))
             {

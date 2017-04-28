@@ -39,7 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeUnaryOperator(OperationAnalysisContext context)
         {
-            var unaryOperator = (IUnaryOperatorExpression) context.Operation;
+            var unaryOperator = (IUnaryOperatorExpression)context.Operation;
 
             if (IsOperatorNot(unaryOperator))
             {

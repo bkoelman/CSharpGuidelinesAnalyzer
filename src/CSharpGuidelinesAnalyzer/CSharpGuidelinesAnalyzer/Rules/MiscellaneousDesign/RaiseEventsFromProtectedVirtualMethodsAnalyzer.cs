@@ -36,8 +36,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(KindRule,
+            ModifiersRule, NameRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private void AnalyzeInvocation(OperationAnalysisContext context)
         {
-            var invocation = (IInvocationExpression) context.Operation;
+            var invocation = (IInvocationExpression)context.Operation;
 
             if (invocation.TargetMethod.MethodKind == MethodKind.DelegateInvoke)
             {

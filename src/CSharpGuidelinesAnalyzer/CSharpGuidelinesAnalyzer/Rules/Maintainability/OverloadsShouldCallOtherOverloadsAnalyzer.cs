@@ -40,8 +40,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(InvokeRule,
+            MakeVirtualRule, OrderRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -59,21 +59,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             if (type.TypeKind != TypeKind.Class && type.TypeKind != TypeKind.Struct)
             {
                 return;
             }
 
-            IGrouping<string, IMethodSymbol>[] methodGroups =
-                type.GetMembers()
-                    .OfType<IMethodSymbol>()
-                    .Where(method => method.MethodKind != MethodKind.Constructor)
-                    .Where(method => HasMethodBody(method, context.CancellationToken))
-                    .GroupBy(method => method.Name)
-                    .Where(HasAtLeastTwoItems)
-                    .ToArray();
+            IGrouping<string, IMethodSymbol>[] methodGroups = type.GetMembers().OfType<IMethodSymbol>()
+                .Where(method => method.MethodKind != MethodKind.Constructor)
+                .Where(method => HasMethodBody(method, context.CancellationToken)).GroupBy(method => method.Name)
+                .Where(HasAtLeastTwoItems).ToArray();
 
             foreach (IGrouping<string, IMethodSymbol> methodGroup in methodGroups)
             {
@@ -136,8 +132,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [CanBeNull]
         private IMethodSymbol TryGetSingleLongestOverload([NotNull] [ItemNotNull] ICollection<IMethodSymbol> methodGroup)
         {
-            IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
-                methodGroup.GroupBy(mg => mg.Parameters.Length).OrderByDescending(x => x.Key).First();
+            IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount = methodGroup.GroupBy(mg => mg.Parameters.Length)
+                .OrderByDescending(x => x.Key).First();
             return overloadsWithHighestParameterCount.Skip(1).FirstOrDefault() == null
                 ? overloadsWithHighestParameterCount.First()
                 : null;

@@ -25,8 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act",
-            "// Assert", "// Act and assert");
+        private static readonly ImmutableArray<string> ArrangeActAssertLines =
+            ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -38,8 +38,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
         {
-            SyntaxTrivia[] outerCommentTrivia =
-                context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia()).Where(IsComment).ToArray();
+            SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia())
+                .Where(IsComment).ToArray();
 
             AnalyzeCommentTrivia(outerCommentTrivia, context);
         }

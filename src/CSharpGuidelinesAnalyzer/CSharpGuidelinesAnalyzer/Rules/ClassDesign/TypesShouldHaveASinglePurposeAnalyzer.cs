@@ -37,7 +37,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private void AnalyzeType(SymbolAnalysisContext context)
         {
-            var type = (INamedTypeSymbol) context.Symbol;
+            var type = (INamedTypeSymbol)context.Symbol;
 
             if (ContainsBlacklistedWord(type.Name))
             {

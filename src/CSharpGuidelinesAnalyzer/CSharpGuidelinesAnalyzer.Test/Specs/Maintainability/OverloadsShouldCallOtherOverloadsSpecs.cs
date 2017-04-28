@@ -286,8 +286,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void
-            When_shorter_expression_bodied_method_overload_does_not_invoke_another_overload_it_must_be_reported()
+        internal void When_shorter_expression_bodied_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -727,8 +726,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void
-            When_parameter_order_in_generic_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
+        internal void When_parameter_order_in_generic_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

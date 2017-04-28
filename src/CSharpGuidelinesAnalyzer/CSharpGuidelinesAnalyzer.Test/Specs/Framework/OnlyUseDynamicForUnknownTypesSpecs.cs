@@ -46,9 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void
-            When_declared_variable_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported
-            ()
+        internal void When_declared_variable_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -66,9 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        public void
-            When_declared_variable_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped
-            ()
+        internal void When_declared_variable_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

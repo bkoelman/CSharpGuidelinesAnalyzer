@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
-            var forStatementSyntax = (ForStatementSyntax) context.Node;
+            var forStatementSyntax = (ForStatementSyntax)context.Node;
 
             if (forStatementSyntax.Declaration != null)
             {

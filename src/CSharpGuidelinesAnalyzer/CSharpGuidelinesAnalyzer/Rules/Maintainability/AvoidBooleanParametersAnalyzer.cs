@@ -34,7 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
-            var parameter = (IParameterSymbol) context.Symbol;
+            var parameter = (IParameterSymbol)context.Symbol;
 
             if (IsParameterAccessible(parameter) && parameter.Type.IsBooleanOrNullableBoolean())
             {

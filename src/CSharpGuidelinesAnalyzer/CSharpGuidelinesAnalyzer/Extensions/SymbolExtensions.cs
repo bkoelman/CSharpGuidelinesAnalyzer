@@ -13,9 +13,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     internal static class SymbolExtensions
     {
         [ItemNotNull]
-        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
-            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
-                "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
+        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
+            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
+            "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
 
         public static bool HidesBaseMember([NotNull] this ISymbol member, CancellationToken cancellationToken)
         {
@@ -51,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(owningSymbol, nameof(owningSymbol));
 
-            return IsPropertyOrEventAccessor(owningSymbol) ? ((IMethodSymbol) owningSymbol).AssociatedSymbol : owningSymbol;
+            return IsPropertyOrEventAccessor(owningSymbol) ? ((IMethodSymbol)owningSymbol).AssociatedSymbol : owningSymbol;
         }
 
         public static bool IsPropertyOrEventAccessor([CanBeNull] this ISymbol symbol)
@@ -95,7 +95,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return false;
         }
 
-        public static bool IsInterfaceImplementation<TSymbol>([NotNull] this TSymbol member) where TSymbol : ISymbol
+        public static bool IsInterfaceImplementation<TSymbol>([NotNull] this TSymbol member)
+            where TSymbol : ISymbol
         {
             if (!(member is IFieldSymbol))
             {
@@ -143,8 +144,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(method, nameof(method));
 
-            SyntaxNode[] syntaxNodes =
-                method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray();
+            SyntaxNode[] syntaxNodes = method.DeclaringSyntaxReferences
+                .Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray();
 
             return TryGetBodyForMethodSyntaxNodes(method, syntaxNodes, cancellationToken) ??
                 TryGetBodyForConstructorSyntaxNodes(syntaxNodes);
@@ -185,7 +186,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         [CanBeNull]
         private static SyntaxNode TryGetBodyForMethodBlockOrArrowExpressionSyntax([NotNull] MethodDeclarationSyntax methodSyntax)
         {
-            return (SyntaxNode) methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
+            return (SyntaxNode)methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
         }
 
         [CanBeNull]

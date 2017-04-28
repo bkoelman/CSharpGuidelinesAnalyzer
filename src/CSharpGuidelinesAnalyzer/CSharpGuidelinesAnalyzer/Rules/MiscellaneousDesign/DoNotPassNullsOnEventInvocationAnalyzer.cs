@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
         {
-            var expression = (IInvocationExpression) context.Operation;
+            var expression = (IInvocationExpression)context.Operation;
 
             bool? targetsStaticEvent = IsStaticEvent(expression.Instance, context.Compilation);
             if (targetsStaticEvent != null)

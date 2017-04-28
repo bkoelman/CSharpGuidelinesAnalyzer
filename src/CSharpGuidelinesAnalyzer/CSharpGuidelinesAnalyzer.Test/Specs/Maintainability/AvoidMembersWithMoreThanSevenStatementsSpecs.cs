@@ -1208,8 +1208,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        public void
-            When_method_contains_six_statements_and_an_invocation_with_lambda_statement_block_it_must_be_reported()
+        internal void When_method_contains_six_statements_and_an_invocation_with_lambda_statement_block_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

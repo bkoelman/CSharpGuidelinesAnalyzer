@@ -27,11 +27,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private readonly ImmutableArray<OperationKind> statementKinds =
-            ImmutableArray.Create(OperationKind.VariableDeclarationStatement, OperationKind.SwitchStatement,
-                OperationKind.IfStatement, OperationKind.LoopStatement, OperationKind.ThrowStatement,
-                OperationKind.ReturnStatement, OperationKind.LockStatement, OperationKind.UsingStatement,
-                OperationKind.YieldReturnStatement, OperationKind.ExpressionStatement);
+        private readonly ImmutableArray<OperationKind> statementKinds = ImmutableArray.Create(
+            OperationKind.VariableDeclarationStatement, OperationKind.SwitchStatement, OperationKind.IfStatement,
+            OperationKind.LoopStatement, OperationKind.ThrowStatement, OperationKind.ReturnStatement, OperationKind.LockStatement,
+            OperationKind.UsingStatement, OperationKind.YieldReturnStatement, OperationKind.ExpressionStatement);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
