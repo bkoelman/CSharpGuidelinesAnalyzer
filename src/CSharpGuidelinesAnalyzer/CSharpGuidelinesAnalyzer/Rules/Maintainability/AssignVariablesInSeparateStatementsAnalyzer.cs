@@ -98,9 +98,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitVariableDeclaration([NotNull] IVariableDeclaration operation)
             {
-                if (operation.InitialValue != null)
+                if (operation.Initializer != null)
                 {
-                    IdentifiersAssigned.Add(operation.Variable.Name);
+                    IdentifiersAssigned.Add(operation.Variables.Single().Name);
                 }
 
                 base.VisitVariableDeclaration(operation);

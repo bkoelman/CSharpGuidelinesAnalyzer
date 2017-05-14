@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -45,13 +46,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration)context.Operation;
+            ILocalSymbol variable = declaration.Variables.Single();
 
-            if (IsDynamicType(declaration.Variable.Type))
+            if (IsDynamicType(variable.Type))
             {
-                if (RequiresReport(declaration.InitialValue))
+                if (RequiresReport(declaration.Initializer))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(),
-                        declaration.Variable.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(), variable.Name));
                 }
             }
         }

@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Semantics;
 
@@ -36,10 +37,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var argument = (IArgument)context.Operation;
 
-            if (argument.ArgumentKind == ArgumentKind.Named && !argument.Parameter.Type.IsBooleanOrNullableBoolean())
+            if (!argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(), argument.Parameter.Name,
-                    FormatSymbol(argument.Parameter.ContainingSymbol)));
+                // Workaround for https://github.com/dotnet/roslyn/issues/19371
+                ArgumentSyntax syntax = argument.Syntax as ArgumentSyntax ?? argument.Syntax?.Parent as ArgumentSyntax;
+
+                if (syntax?.NameColon != null)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(), argument.Parameter.Name,
+                        FormatSymbol(argument.Parameter.ContainingSymbol)));
+                }
             }
         }
 
