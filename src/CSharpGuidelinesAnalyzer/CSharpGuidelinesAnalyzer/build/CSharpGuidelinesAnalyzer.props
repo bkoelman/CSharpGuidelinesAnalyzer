@@ -1,5 +1,14 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup>
+  <Choose>
+    <When Condition="$(Features) == ''">
+      <PropertyGroup>
         <Features>IOperation</Features>
-    </PropertyGroup>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <Features>IOperation,$(Features)</Features>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
 </Project>
