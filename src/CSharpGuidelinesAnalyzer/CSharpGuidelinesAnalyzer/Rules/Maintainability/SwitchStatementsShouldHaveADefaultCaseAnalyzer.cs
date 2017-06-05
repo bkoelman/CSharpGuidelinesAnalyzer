@@ -13,7 +13,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SwitchStatementsShouldHaveADefaultCaseAnalyzer : DiagnosticAnalyzer
+    public sealed class SwitchStatementsShouldHaveADefaultCaseAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1536";
 

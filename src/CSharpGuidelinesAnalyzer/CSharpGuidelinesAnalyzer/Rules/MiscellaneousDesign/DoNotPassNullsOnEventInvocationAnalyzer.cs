@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotPassNullsOnEventInvocationAnalyzer : DiagnosticAnalyzer
+    public sealed class DoNotPassNullsOnEventInvocationAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1235";
 

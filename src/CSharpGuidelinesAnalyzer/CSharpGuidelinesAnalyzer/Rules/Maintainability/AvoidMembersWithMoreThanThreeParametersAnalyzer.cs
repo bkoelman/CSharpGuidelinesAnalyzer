@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidMembersWithMoreThanThreeParametersAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidMembersWithMoreThanThreeParametersAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1561";
         private const int MaxParameterLength = 3;

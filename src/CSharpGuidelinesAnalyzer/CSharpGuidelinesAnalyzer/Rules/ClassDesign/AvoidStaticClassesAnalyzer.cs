@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidStaticClassesAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidStaticClassesAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1008";
 

@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotUseAbbreviationsInIdentifierNamesAnalyzer : DiagnosticAnalyzer
+    public sealed class DoNotUseAbbreviationsInIdentifierNamesAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1706";
 

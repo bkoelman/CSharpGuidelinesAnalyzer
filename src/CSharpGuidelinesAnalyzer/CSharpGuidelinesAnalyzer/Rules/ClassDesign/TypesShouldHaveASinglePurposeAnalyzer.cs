@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class TypesShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
+    public sealed class TypesShouldHaveASinglePurposeAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1000";
 

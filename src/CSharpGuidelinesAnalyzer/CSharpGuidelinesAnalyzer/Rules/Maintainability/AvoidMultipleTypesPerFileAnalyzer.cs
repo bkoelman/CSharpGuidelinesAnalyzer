@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidMultipleTypesPerFileAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1507";
 

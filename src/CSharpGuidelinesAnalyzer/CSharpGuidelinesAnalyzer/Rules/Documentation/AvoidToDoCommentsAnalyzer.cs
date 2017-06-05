@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidToDoCommentsAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidToDoCommentsAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV2318";
 

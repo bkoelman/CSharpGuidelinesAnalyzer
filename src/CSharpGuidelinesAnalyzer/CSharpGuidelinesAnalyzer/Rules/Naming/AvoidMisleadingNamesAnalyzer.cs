@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidMisleadingNamesAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidMisleadingNamesAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1712";
 

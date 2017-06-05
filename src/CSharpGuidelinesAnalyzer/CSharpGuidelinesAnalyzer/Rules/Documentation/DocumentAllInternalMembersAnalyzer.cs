@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DocumentAllInternalMembersAnalyzer : DiagnosticAnalyzer
+    public sealed class DocumentAllInternalMembersAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV2305";
 

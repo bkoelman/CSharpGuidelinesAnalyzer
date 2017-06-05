@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class CaseClausesInSwitchStatementsShouldHaveBracesAnalyzer : DiagnosticAnalyzer
+    public sealed class CaseClausesInSwitchStatementsShouldHaveBracesAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1535";
 

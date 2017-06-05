@@ -10,7 +10,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
 #pragma warning disable AV1708 // Type name contains term that should be avoided
-    public sealed class DoNotUseHelperMethodsAnalyzer : DiagnosticAnalyzer
+    public sealed class DoNotUseHelperMethodsAnalyzer : GuidelineAnalyzer
 #pragma warning restore AV1708 // Type name contains term that should be avoided
     {
         public const string DiagnosticId = "AV1708";

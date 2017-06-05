@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidUsingNamedArgumentsAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidUsingNamedArgumentsAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1555";
 

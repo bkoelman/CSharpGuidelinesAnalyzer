@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class StaticClassesShouldOnlyContainExtensionMethodsAnalyzer : DiagnosticAnalyzer
+    public sealed class StaticClassesShouldOnlyContainExtensionMethodsAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1745";
 

@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class EvaluateQueriesBeforeReturningThemAnalyzer : DiagnosticAnalyzer
+    public sealed class EvaluateQueriesBeforeReturningThemAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1250";
 

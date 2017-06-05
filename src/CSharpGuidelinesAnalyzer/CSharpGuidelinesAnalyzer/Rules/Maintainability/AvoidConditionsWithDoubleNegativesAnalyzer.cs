@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidConditionsWithDoubleNegativesAnalyzer : DiagnosticAnalyzer
+    public sealed class AvoidConditionsWithDoubleNegativesAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1502";
 

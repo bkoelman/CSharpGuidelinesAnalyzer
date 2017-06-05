@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotHideInheritedMembersAnalyzer : DiagnosticAnalyzer
+    public sealed class DoNotHideInheritedMembersAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1010";
 

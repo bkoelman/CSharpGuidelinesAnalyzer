@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotUseNumbersInIdentifiersAnalyzer : DiagnosticAnalyzer
+    public sealed class DoNotUseNumbersInIdentifiersAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1704";
 

@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class FavorAsyncAwaitOverTaskContinueWithAnalyzer : DiagnosticAnalyzer
+    public sealed class FavorAsyncAwaitOverTaskContinueWithAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV2235";
 

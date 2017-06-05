@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class BuildWithTheHighestWarningLevelAnalyzer : DiagnosticAnalyzer
+    public sealed class BuildWithTheHighestWarningLevelAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV2210";
 

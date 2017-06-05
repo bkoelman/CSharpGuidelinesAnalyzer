@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Semantics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseUnderscoresForUnusedLambdaParametersAnalyzer : DiagnosticAnalyzer
+    public sealed class UseUnderscoresForUnusedLambdaParametersAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1739";
 
