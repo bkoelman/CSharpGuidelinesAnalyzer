@@ -9,13 +9,13 @@
   <PropertyGroup>
     <PackageId>CSharpGuidelinesAnalyzer</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <PackageVersion>1.1.0</PackageVersion>
+    <Version>2.0.0</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 with at least Update 3.</Description>
+    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Works with Visual Studio 2017 Update 3 or later. Use v1.0.1 for previous versions of Visual Studio.</Description>
     <PackageReleaseNotes>Updated for IOperation API changes in Visual Studio 2017 Update 3.</PackageReleaseNotes>
     <Copyright>Apache License, Version 2.0</Copyright>
     <PackageTags>csharp c# coding guidelines analyzer</PackageTags>

@@ -24,12 +24,7 @@ namespace CSharpGuidelinesAnalyzer
         private sealed class CompilerVersionCompatibilityValidator
         {
             [NotNull]
-            private static readonly Version MinVersion = new Version(1, 2, 0, 0);
-
-            [NotNull]
-            private static readonly Version MaxVersion = new Version(2, 2, 0, 0);
-
-            private const string BaseMessage = "This analyzer package requires Visual Studio 2015 Update 2 - 2017 Update 2.";
+            private static readonly Version MinVersion = new Version(2, 3, 0, 0);
 
             [NotNull]
             private static readonly Lazy<VisualStudioVersionStatus> VersionStatusLazy;
@@ -43,11 +38,7 @@ namespace CSharpGuidelinesAnalyzer
             {
                 Version version = GetCompilerVersion();
 
-                return version < MinVersion
-                    ? VisualStudioVersionStatus.TooLow
-                    : version > MaxVersion
-                        ? VisualStudioVersionStatus.TooHigh
-                        : VisualStudioVersionStatus.Ok;
+                return version < MinVersion ? VisualStudioVersionStatus.TooLow : VisualStudioVersionStatus.Ok;
             }
 
             [NotNull]
@@ -64,28 +55,15 @@ namespace CSharpGuidelinesAnalyzer
             [CanBeNull]
             public string GetMessage()
             {
-                switch (VersionStatusLazy.Value)
-                {
-                    case VisualStudioVersionStatus.TooLow:
-                    {
-                        return BaseMessage + " Please upgrade to a newer version of Visual Studio.";
-                    }
-                    case VisualStudioVersionStatus.TooHigh:
-                    {
-                        return BaseMessage + " Please upgrade to a newer version of CSharpGuidelinesAnalyzer.";
-                    }
-                    default:
-                    {
-                        return null;
-                    }
-                }
+                return VersionStatusLazy.Value == VisualStudioVersionStatus.TooLow
+                    ? "This analyzer package requires Visual Studio 2017 Update 3 or later. Please upgrade to a newer version of Visual Studio."
+                    : null;
             }
 
             private enum VisualStudioVersionStatus
             {
                 Ok,
-                TooLow,
-                TooHigh
+                TooLow
             }
         }
     }
