@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -248,6 +250,30 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             return compilerGeneratedGetter;
+        }
+
+        public static bool IsInvalid([NotNull] this IOperation operation, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Guard.NotNull(operation, nameof(operation));
+            Guard.NotNull(compilation, nameof(compilation));
+
+            if (operation.Syntax != null)
+            {
+                SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
+
+                if (!model.GetDiagnostics(operation.Syntax.Span, cancellationToken).Any(IsError))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool IsError([NotNull] Diagnostic diagnostic)
+        {
+            return diagnostic.Severity == DiagnosticSeverity.Error;
         }
     }
 }
