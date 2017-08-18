@@ -54,6 +54,8 @@ Note that you can broaden the suppression scope by removing the `Target` and/or 
 
 Right-click your project, select **Properties**, tab **Code Analysis**. Click **Open**, expand **CSharpGuidelinesAnalyzers** and uncheck the rules you want to disable. When you save changes, a .ruleset file is added to your project.
 
+Alternatively, navigate to your project in **Solution Explorer** and expand **References**, **Analyzers**, **CSharpGuidelinesAnalyzer**. Then right-click on one of the rules and select **Set Rule Set Severity**. These changes are stored in a .ruleset file in your project.
+
 To apply the custom ruleset to the entire solution, move the .ruleset file next to your .sln file and browse to it on the CodeAnalysis tab for each project.
 
 ## Contribute!
