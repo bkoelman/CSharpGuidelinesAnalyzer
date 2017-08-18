@@ -15,11 +15,12 @@
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Works with Visual Studio 2017 Update 3 or later. Use v1.0.1 for previous versions of Visual Studio.</Description>
-    <PackageReleaseNotes>Updated for IOperation API changes in Visual Studio 2017 Update 3.</PackageReleaseNotes>
+    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 Update 3. Use v1.0.1 if you are using Visual Studio 2015 with Update 2 or higher.</Description>
+    <PackageReleaseNotes>Updated for IOperation API changes in Visual Studio 2017 Update 3. Use v1.0.1 if you are using Visual Studio 2015 with Update 2 or higher.</PackageReleaseNotes>
     <Copyright>Apache License, Version 2.0</Copyright>
     <PackageTags>csharp c# coding guidelines analyzer</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\..\bin\Debug</OutputPath>
@@ -28,13 +29,11 @@
     <OutputPath>..\..\..\bin\Release</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\..\LICENSE.txt" Link="LICENSE.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="..\..\..\LICENSE.txt" Link="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="tools\*.ps1" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="tools" />
-    <None Update="build\*.props" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="build" />
+    <None Update="tools\*.ps1" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" />
+    <None Update="build\*.props" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" />
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
