@@ -13,15 +13,19 @@ See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/
 
 ## Get started
 
-* At the minimum, you need [Visual Studio 2015 with Update 2](https://www.visualstudio.com/). If you are using Update 3 (or Visual Studio 2017), it is recommended to [activate Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
+The latest stable version requires [Visual Studio 2017 with Update 3](https://www.visualstudio.com/). To get instant feedback on all files in your solution, activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
 
 * From the NuGet package manager console:
 
-  `Install-Package CSharpGuidelinesAnalyzer`
+  `Install-Package CSharpGuidelinesAnalyzer` 
+
+  or, if you are using Visual Studio 2015 with Update 2 or higher:
+
+  `Install-Package CSharpGuidelinesAnalyzer -version 1.0.1`
 
 * Rebuild your solution
 
-* Recommended: [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md)
+* Optional: [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md)
 
 ## Suppressing rules
 Rule warnings can be suppressed at various scopes, ranging from per line to at the project or solution level.
