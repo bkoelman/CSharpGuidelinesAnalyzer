@@ -39,10 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
-    <PackageReference Include="jetbrains.annotations" Version="11.0.0" PrivateAssets="all" />
-    <PackageReference Include="jetbrains.externalannotations" Version="10.2.29" PrivateAssets="all" />
-    <PackageReference Include="microsoft.codeanalysis" Version="2.3.1" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.3.0-beta1" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.29" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="1.0.8" PrivateAssets="all" />
   </ItemGroup>
   <Target Name="CopyExternalAnnotations" BeforeTargets="BeforeBuild" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
