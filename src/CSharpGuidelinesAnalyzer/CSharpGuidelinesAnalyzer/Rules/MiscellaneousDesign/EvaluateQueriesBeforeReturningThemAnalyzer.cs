@@ -300,11 +300,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitVariableDeclarationStatement(operation);
 
-                    foreach (IVariableDeclaration variable in operation.Variables)
+                    foreach (IVariableDeclaration variable in operation.Declarations)
                     {
-                        if (currentLocal.Equals(variable.Variable))
+                        if (currentLocal.Equals(variable.Variables.Single()))
                         {
-                            AnalyzeAssignmentValue(variable.InitialValue);
+                            AnalyzeAssignmentValue(variable.Initializer);
                         }
                     }
                 }

@@ -85,11 +85,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration)context.Operation;
+            ILocalSymbol variable = declaration.Variables.Single();
 
-            if (ContainsDigitsNonWhitelisted(declaration.Variable.Name))
+            if (ContainsDigitsNonWhitelisted(variable.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
-                    declaration.Variable.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
             }
         }
 

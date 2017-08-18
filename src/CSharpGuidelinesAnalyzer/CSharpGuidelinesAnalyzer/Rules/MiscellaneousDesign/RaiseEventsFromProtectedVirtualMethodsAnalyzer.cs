@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -201,9 +202,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public override void VisitVariableDeclaration([NotNull] IVariableDeclaration operation)
             {
-                if (local.Equals(operation.Variable))
+                if (local.Equals(operation.Variables.Single()))
                 {
-                    TrySetEvent(operation.InitialValue);
+                    TrySetEvent(operation.Initializer);
                 }
 
                 base.VisitVariableDeclaration(operation);

@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -42,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration)context.Operation;
-            ILocalSymbol variable = declaration.Variable;
+            ILocalSymbol variable = declaration.Variables.Single();
 
             if (Blacklist.Contains(variable.Name))
             {

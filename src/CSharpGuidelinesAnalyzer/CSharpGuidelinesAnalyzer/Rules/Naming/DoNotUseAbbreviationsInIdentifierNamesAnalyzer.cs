@@ -94,13 +94,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
         {
             var declaration = (IVariableDeclaration)context.Operation;
+            ILocalSymbol variable = declaration.Variables.Single();
 
-            if (!string.IsNullOrWhiteSpace(declaration.Variable.Name))
+            if (!string.IsNullOrWhiteSpace(variable.Name))
             {
-                if (IsBlacklisted(declaration.Variable.Name) || IsSingleLetter(declaration.Variable.Name))
+                if (IsBlacklisted(variable.Name) || IsSingleLetter(variable.Name))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Variable.Locations[0], "Variable",
-                        declaration.Variable.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
                 }
             }
         }

@@ -1,219 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props" Condition="Exists('..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props')" />
-  <Import Project="..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E3AFF0DD-B4CB-4054-BBB1-1F240B5803DC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSharpGuidelinesAnalyzer.Test</RootNamespace>
-    <AssemblyName>CSharpGuidelinesAnalyzer.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net46</TargetFramework>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Label="Start settings">
-    <StartAction>Program</StartAction>
-    <StartProgram>$(UserProfile)\.nuget\packages\xunit.runner.console\2.1.0\tools\xunit.console.x86.exe</StartProgram>
-    <StartArguments>$(AssemblyName).dll -noshadow -wait</StartArguments>
-    <StartWorkingDirectory>$(OutDir)</StartWorkingDirectory>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;JETBRAINS_ANNOTATIONS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;JETBRAINS_ANNOTATIONS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.Annotations.10.4.0\lib\net\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.1.2.0\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.1.2.0\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.2.0\lib\net45\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.VisualBasic, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.VisualBasic.1.2.0\lib\net45\Microsoft.CodeAnalysis.VisualBasic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.VisualBasic.Workspaces.1.2.0\lib\net45\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.2.0\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.2.0\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Composition.AttributedModel, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Convention, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Hosting, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Runtime, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.TypedParts, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core" />
-    <Reference Include="System.Reflection.Metadata, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Reflection.Metadata.1.2.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.assert, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.assert.2.2.0\lib\netstandard1.1\xunit.assert.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.core, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.extensibility.core.2.2.0\lib\netstandard1.1\xunit.core.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.execution.desktop, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.extensibility.execution.2.2.0\lib\net452\xunit.execution.desktop.dll</HintPath>
-    </Reference>
+    <None Remove="CSharpGuidelinesAnalyzer.Test.csproj.DotSettings" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSharpGuidelinesAnalysisTestFixture.cs" />
-    <Compile Include="ParsedSourceCode.cs" />
-    <Compile Include="RoslynTestFramework\AnalysisTestFixture.cs" />
-    <Compile Include="RoslynTestFramework\AnalyzerTestContext.cs" />
-    <Compile Include="RoslynTestFramework\DiagnosticsCaptureMode.cs" />
-    <Compile Include="RoslynTestFramework\DocumentWithSpans.cs" />
-    <Compile Include="RoslynTestFramework\DocumentFactory.cs" />
-    <Compile Include="RoslynTestFramework\TestValidationMode.cs" />
-    <Compile Include="Specs\WordsTokenizerSpecs.cs" />
-    <Compile Include="Specs\ClassDesign\AvoidStaticClassesSpecs.cs" />
-    <Compile Include="Specs\ClassDesign\DoNotHideInheritedMembersSpecs.cs" />
-    <Compile Include="Specs\ClassDesign\MembersShouldDoASingleThingSpecs.cs" />
-    <Compile Include="Specs\ClassDesign\TypesShouldHaveASinglePurposeSpecs.cs" />
-    <Compile Include="Specs\Documentation\AvoidToDoCommentsSpecs.cs" />
-    <Compile Include="Specs\Documentation\AvoidInlineCommentsSpecs.cs" />
-    <Compile Include="Specs\Documentation\DocumentAllInternalMembersSpecs.cs" />
-    <Compile Include="Specs\Framework\BuildWithTheHighestWarningLevelSpecs.cs" />
-    <Compile Include="Specs\Framework\FavorAsyncAwaitOverTaskContinueWithSpecs.cs" />
-    <Compile Include="Specs\Framework\OnlyUseDynamicForUnknownTypesSpecs.cs" />
-    <Compile Include="Specs\Framework\ProvideAssemblyInformationSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AssignVariablesInSeparateStatementsSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidBooleanParametersSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidConditionsWithDoubleNegativesSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanSevenStatementsSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidMembersWithMoreThanThreeParametersSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidMultipleTypesPerFileSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidNestedLoopsSpecs.cs" />
-    <Compile Include="Specs\Maintainability\AvoidUsingNamedArgumentsSpecs.cs" />
-    <Compile Include="Specs\Maintainability\CaseClausesInSwitchStatementsShouldHaveBracesSpecs.cs" />
-    <Compile Include="Specs\Maintainability\DoNotAssignToParametersSpecs.cs" />
-    <Compile Include="Specs\Maintainability\DoNotChangeLoopVariablesSpecs.cs" />
-    <Compile Include="Specs\Maintainability\IfElseIfStatementsShouldFinishWithElseClauseSpecs.cs" />
-    <Compile Include="Specs\Maintainability\NamespacesShouldMatchAssemblyNameSpecs.cs" />
-    <Compile Include="Specs\Maintainability\OverloadsShouldCallOtherOverloadsSpecs.cs" />
-    <Compile Include="Specs\Maintainability\SwitchStatementsShouldHaveADefaultCaseSpecs.cs" />
-    <Compile Include="Specs\MemberDesign\ReturnInterfacesToCollectionsSpecs.cs" />
-    <Compile Include="Specs\MiscellaneousDesign\DoNotPassNullsOnEventInvocationSpecs.cs" />
-    <Compile Include="Specs\MiscellaneousDesign\EvaluateQueriesBeforeReturningThemSpecs.cs" />
-    <Compile Include="Specs\MiscellaneousDesign\RaiseEventsFromProtectedVirtualMethodsSpecs.cs" />
-    <Compile Include="Specs\Naming\AvoidMisleadingNamesSpecs.cs" />
-    <Compile Include="Specs\Naming\DoNotIncludeContainingTypeNameInMembersSpecs.cs" />
-    <Compile Include="Specs\Naming\DoNotUseAbbreviationsInIdentifierNamesSpecs.cs" />
-    <Compile Include="Specs\Naming\DoNotUseHelperMethodsSpecs.cs" />
-    <Compile Include="Specs\Naming\DoNotUseNumbersInIdentifiersSpecs.cs" />
-    <Compile Include="Specs\Naming\NameAsyncMethodsCorrectlySpecs.cs" />
-    <Compile Include="Specs\Naming\NamePropertiesWithAnAffirmativePhraseSpecs.cs" />
-    <Compile Include="Specs\Naming\PrefixEventHandlersWithOnSpecs.cs" />
-    <Compile Include="Specs\Naming\StaticClassesShouldOnlyContainExtensionMethodsSpecs.cs" />
-    <Compile Include="Specs\Naming\UseFrameworkTerminologyInMemberNamesSpecs.cs" />
-    <Compile Include="Specs\Naming\UseUnderscoresForUnusedLambdaParametersSpecs.cs" />
-    <Compile Include="TestDataBuilders\TypeSourceCodeBuilder.cs" />
-    <Compile Include="TestDataBuilders\ITestDataBuilder.cs" />
-    <Compile Include="TestDataBuilders\MemberSourceCodeBuilder.cs" />
-    <Compile Include="TestDataBuilders\SourceCodeBuilder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestDataBuilders\SourceCodeBuilderExtensions.cs" />
+    <PackageReference Include="FluentAssertions" Version="4.19.3" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+    <PackageReference Include="OpenCover" Version="4.6.519" />
+    <PackageReference Include="ReportGenerator" Version="2.5.10" />
+    <PackageReference Include="ResharperCodeContractNullability" Version="1.0.8" PrivateAssets="all" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="xunit" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.2.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.csproj">
-      <Project>{560612BD-75DC-40B3-A070-A913B925B60F}</Project>
-      <Name>CSharpGuidelinesAnalyzer</Name>
-    </ProjectReference>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\analyzers\dotnet\cs\CSharpGuidelinesAnalyzer.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\ResharperCodeContractNullability.1.0.7\analyzers\dotnet\cs\CodeContractNullability.dll" />
-    <Analyzer Include="..\..\packages\ResharperCodeContractNullability.1.0.7\analyzers\dotnet\cs\MsgPack.dll" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props'))" />
-    <Error Condition="!Exists('..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props'))" />
-  </Target>
 </Project>

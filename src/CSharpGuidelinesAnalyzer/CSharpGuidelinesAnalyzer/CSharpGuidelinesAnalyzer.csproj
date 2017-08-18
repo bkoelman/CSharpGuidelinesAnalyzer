@@ -1,222 +1,59 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props" Condition="Exists('..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ProjectGuid>{560612BD-75DC-40B3-A070-A913B925B60F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSharpGuidelinesAnalyzer</RootNamespace>
-    <AssemblyName>CSharpGuidelinesAnalyzer</AssemblyName>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+  <PropertyGroup>
+    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
+    <Title>C# Coding Guidelines Analyzer</Title>
+    <Version>2.0.0</Version>
+    <Authors>Bart Koelman</Authors>
+    <Company />
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Works with Visual Studio 2017 Update 3 or later. Use v1.0.1 for previous versions of Visual Studio.</Description>
+    <PackageReleaseNotes>Updated for IOperation API changes in Visual Studio 2017 Update 3.</PackageReleaseNotes>
+    <Copyright>Apache License, Version 2.0</Copyright>
+    <PackageTags>csharp c# coding guidelines analyzer</PackageTags>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>..\..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ExceptionFactory.cs" />
-    <Compile Include="Extensions\AnalysisContextExtensions.cs" />
-    <Compile Include="Extensions\CompilationExtensions.cs" />
-    <Compile Include="Extensions\IdentifierExtensions.cs" />
-    <Compile Include="Extensions\OperationExtensions.cs" />
-    <Compile Include="Extensions\SymbolExtensions.cs" />
-    <Compile Include="Extensions\SyntaxNodeAnalysisContextExtensions.cs" />
-    <Compile Include="GuidelineAnalyzer.cs" />
-    <Compile Include="IdentifierName.cs" />
-    <Compile Include="Extensions\TypeSymbolExtensions.cs" />
-    <Compile Include="Guard.cs" />
-    <Compile Include="HelpLinkUris.cs" />
-    <Compile Include="IdentifierInfo.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rules\ClassDesign\AvoidStaticClassesAnalyzer.cs" />
-    <Compile Include="Rules\ClassDesign\DoNotHideInheritedMembersAnalyzer.cs" />
-    <Compile Include="Rules\ClassDesign\MembersShouldDoASingleThingAnalyzer.cs" />
-    <Compile Include="Rules\ClassDesign\TypesShouldHaveASinglePurposeAnalyzer.cs" />
-    <Compile Include="Rules\Documentation\AvoidInlineCommentsAnalyzer.cs" />
-    <Compile Include="Rules\Documentation\AvoidToDoCommentsAnalyzer.cs" />
-    <Compile Include="Rules\Documentation\DocumentAllInternalMembersAnalyzer.cs" />
-    <Compile Include="Rules\Framework\BuildWithTheHighestWarningLevelAnalyzer.cs" />
-    <Compile Include="Rules\Framework\FavorAsyncAwaitOverTaskContinueWithAnalyzer.cs" />
-    <Compile Include="Rules\Framework\OnlyUseDynamicForUnknownTypesAnalyzer.cs" />
-    <Compile Include="Rules\Framework\ProvideAssemblyInformationAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AssignVariablesInSeparateStatementsAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidBooleanParametersAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidConditionsWithDoubleNegativesAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidMembersWithMoreThanSevenStatementsAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidMembersWithMoreThanThreeParametersAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidMultipleTypesPerFileAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidNestedLoopsAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\AvoidUsingNamedArgumentsAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\CaseClausesInSwitchStatementsShouldHaveBracesAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\DoNotAssignToParametersAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\DoNotChangeLoopVariablesAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\IfElseIfStatementsShouldFinishWithElseClauseAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\NamespacesShouldMatchAssemblyNameAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\OverloadsShouldCallOtherOverloadsAnalyzer.cs" />
-    <Compile Include="Rules\Maintainability\SwitchStatementsShouldHaveADefaultCaseAnalyzer.cs" />
-    <Compile Include="Rules\MemberDesign\ReturnInterfacesToCollectionsAnalyzer.cs" />
-    <Compile Include="Rules\MiscellaneousDesign\DoNotPassNullsOnEventInvocationAnalyzer.cs" />
-    <Compile Include="Rules\MiscellaneousDesign\EvaluateQueriesBeforeReturningThemAnalyzer.cs" />
-    <Compile Include="Rules\MiscellaneousDesign\RaiseEventsFromProtectedVirtualMethodsAnalyzer.cs" />
-    <Compile Include="Rules\Naming\AvoidMisleadingNamesAnalyzer.cs" />
-    <Compile Include="Rules\Naming\DoNotIncludeContainingTypeNameInMembersAnalyzer.cs" />
-    <Compile Include="Rules\Naming\DoNotUseAbbreviationsInIdentifierNamesAnalyzer.cs" />
-    <Compile Include="Rules\Naming\DoNotUseHelperMethodsAnalyzer.cs" />
-    <Compile Include="Rules\Naming\DoNotUseNumbersInIdentifiersAnalyzer.cs" />
-    <Compile Include="Rules\Naming\NameAsyncMethodsCorrectlyAnalyzer.cs" />
-    <Compile Include="Rules\Naming\NamePropertiesWithAnAffirmativePhraseAnalyzer.cs" />
-    <Compile Include="Rules\Naming\PrefixEventHandlersWithOnAnalyzer.cs" />
-    <Compile Include="Rules\Naming\StaticClassesShouldOnlyContainExtensionMethodsAnalyzer.cs" />
-    <Compile Include="Rules\Naming\UseFrameworkTerminologyInMemberNamesAnalyzer.cs" />
-    <Compile Include="Rules\Naming\UseUnderscoresForUnusedLambdaParametersAnalyzer.cs" />
-    <Compile Include="WordsTokenizer.cs" />
-    <Compile Include="WordToken.cs" />
-    <Compile Include="WordTokenKind.cs" />
+    <None Include="..\..\..\LICENSE.txt" Link="LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\LICENSE.txt">
-      <Link>LICENSE.txt</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="CSharpGuidelinesAnalyzer.nuspec">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="tools\install.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="tools\uninstall.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="ReadMe.txt" />
+    <None Update="tools\*.ps1" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="tools" />
+    <None Update="build\*.props" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="build" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\analyzers\dotnet\cs\CSharpGuidelinesAnalyzer.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
-    <Analyzer Include="..\..\packages\ResharperCodeContractNullability.1.0.7\analyzers\dotnet\cs\CodeContractNullability.dll" />
-    <Analyzer Include="..\..\packages\ResharperCodeContractNullability.1.0.7\analyzers\dotnet\cs\MsgPack.dll" />
+    <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.29" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" PrivateAssets="all" />
+    <PackageReference Include="ResharperCodeContractNullability" Version="1.0.8" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=10.4.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.Annotations.10.4.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.1.2.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.1.2.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.2.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.2.0\lib\portable-net45+win8\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Collections.Immutable.1.1.37\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.AttributedModel, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Convention, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Hosting, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.Runtime, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Composition.TypedParts, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Reflection.Metadata.1.2.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="build\CSharpGuidelinesAnalyzer.props">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Target Name="GetSemanticVersionFromOutputAssembly">
+  <Target Name="CopyExternalAnnotations" BeforeTargets="BeforeBuild" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
     <PropertyGroup>
-      <In>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs'))</In>
-      <Pattern>\[assembly:\s*AssemblyInformationalVersion\(@?"(?&lt;SemanticVersionString&gt;[0-9A-Za-z-.]+)"\)\]</Pattern>
-      <SemanticVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern), System.Text.RegularExpressions.RegexOptions.Multiline).Groups["SemanticVersionString"].Value)</SemanticVersion>
+      <ExternalAnnotationsVersion>10.2.29</ExternalAnnotationsVersion>
+      <ExternalAnnotationsSourceDir>"$(USERPROFILE)\.nuget\packages\JetBrains.ExternalAnnotations\$(ExternalAnnotationsVersion)\DotFiles\ExternalAnnotations\*.xml"</ExternalAnnotationsSourceDir>
+      <ExternalAnnotationsTargetDir>"$(LOCALAPPDATA)\JetBrains\Installations\ReSharperPlatformVs15\ExternalAnnotations"</ExternalAnnotationsTargetDir>
     </PropertyGroup>
-  </Target>
-  <Target Name="GetSemanticVersionFromCurrentTime">
-    <PropertyGroup>
-      <SemanticVersion>$([System.DateTime]::Now.ToString(`yyMM`)).$([System.DateTime]::Now.ToString(`ddHH`)).$([System.DateTime]::Now.ToString(`mmss`))</SemanticVersion>
-    </PropertyGroup>
-  </Target>
-  <!--
-    For easier debugging of NuGet install/uninstall scripts, change DependsOnTargets below to "GetSemanticVersionFromCurrentTime".
-  -->
-  <Target Name="AfterBuild" DependsOnTargets="GetSemanticVersionFromOutputAssembly">
-    <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
-      <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
-    </GetAssemblyIdentity>
-    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.3.5.0\tools\NuGet.exe&quot; pack CSharpGuidelinesAnalyzer.nuspec -NoPackageAnalysis -OutputDirectory . -Version $(SemanticVersion)" WorkingDirectory="$(OutDir)" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+
+    <Message Importance="High" Text="Copying External Annotations from: $(ExternalAnnotationsSourceDir) to: $(ExternalAnnotationsTargetDir)" />
+    <Exec Command="xcopy $(ExternalAnnotationsSourceDir) $(ExternalAnnotationsTargetDir) /s /i /r /y /q /d" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
     </Exec>
-  </Target>
-  <Target Name="CopyExternalAnnotations" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
-    <Exec Command="&quot;$(SolutionDir)packages\NuGet.CommandLine.3.5.0\tools\NuGet.exe&quot; install JetBrains.ExternalAnnotations -Version 10.0.15 -OutputDirectory &quot;$(SolutionDir)packages&quot;" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
-    </Exec>
-    <Message Importance="High" Text="Copying External Annotations to: &quot;%LOCALAPPDATA%\JetBrains\Installations\ReSharperPlatformVs14\ExternalAnnotations&quot;" />
-    <Exec Command="xcopy &quot;$(SolutionDir)packages\JetBrains.ExternalAnnotations.10.0.15\DotFiles\ExternalAnnotations\*.xml&quot; &quot;%LOCALAPPDATA%\JetBrains\Installations\ReSharperPlatformVs14\ExternalAnnotations&quot; /s /i /r /y /q" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
-    </Exec>
-  </Target>
-  <Target Name="BeforeBuild" DependsOnTargets="CopyExternalAnnotations">
-  </Target>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CSharpGuidelinesAnalyzer.1.0.0\build\CSharpGuidelinesAnalyzer.props'))" />
   </Target>
 </Project>
