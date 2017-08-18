@@ -13,9 +13,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     internal static class SymbolExtensions
     {
         [ItemNotNull]
-        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
-            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
-                "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
+        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
+            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
+            "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
 
         public static bool HidesBaseMember([NotNull] this ISymbol member, CancellationToken cancellationToken)
         {
@@ -129,7 +129,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
                 IOperation operation = model.GetOperation(bodySyntax);
 
-                if (!operation.IsInvalid(compilation, cancellationToken))
+                if (!operation.IsInvalid)
                 {
                     return operation;
                 }
