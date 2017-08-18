@@ -11,26 +11,13 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [ItemNotNull]
         private readonly List<string> types = new List<string>();
 
-        private bool doGenerateNamespace;
-
         protected override string GetSourceCode()
         {
             var builder = new StringBuilder();
 
-            AppendNamespaceStart(builder);
             AppendTypes(builder);
-            AppendNamespaceEnd(builder);
 
             return builder.ToString();
-        }
-
-        private void AppendNamespaceStart([NotNull] StringBuilder builder)
-        {
-            if (doGenerateNamespace)
-            {
-                builder.AppendLine("namespace TestNamespace");
-                builder.AppendLine("{");
-            }
         }
 
         private void AppendTypes([NotNull] StringBuilder builder)
@@ -48,21 +35,12 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             }
         }
 
-        private void AppendNamespaceEnd([NotNull] StringBuilder builder)
-        {
-            if (doGenerateNamespace)
-            {
-                builder.AppendLine("}");
-            }
-        }
-
         [NotNull]
         public TypeSourceCodeBuilder InGlobalScope([NotNull] string typeCode)
         {
             Guard.NotNull(typeCode, nameof(typeCode));
 
             types.Add(typeCode);
-            doGenerateNamespace = false;
             return this;
         }
     }
