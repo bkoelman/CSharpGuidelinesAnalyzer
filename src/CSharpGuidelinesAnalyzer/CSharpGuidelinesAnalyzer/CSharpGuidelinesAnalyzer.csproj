@@ -10,7 +10,7 @@
   <PropertyGroup>
     <PackageId>CSharpGuidelinesAnalyzer</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>2.0.0</Version>
+    <Version>2.0.1-pre</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
@@ -44,6 +44,16 @@
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="1.0.8" PrivateAssets="all" />
   </ItemGroup>
+  <!--
+    To bypass the NuGet cache during install/uninstall debugging, uncomment the target below.
+
+  <Target Name="SetPackageVersionFromCurrentTime" BeforeTargets="BeforeBuild">
+    <PropertyGroup>
+      <PackageVersion>$([System.DateTime]::Now.ToString(`yyMM`)).$([System.DateTime]::Now.ToString(`ddHH`)).$([System.DateTime]::Now.ToString(`mmss`))-pre</PackageVersion>
+    </PropertyGroup>
+    <Message Importance="High" Text="Setting PackageVersion to $(PackageVersion)" />
+  </Target>
+  -->
   <Target Name="CopyExternalAnnotations" BeforeTargets="BeforeBuild" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
     <PropertyGroup>
       <ExternalAnnotationsVersion>10.2.29</ExternalAnnotationsVersion>
