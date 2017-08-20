@@ -95,8 +95,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private void ValidateCompileErrors([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)
         {
-            bool hasErrors = compilerDiagnostics.Any(d => d.Severity == DiagnosticSeverity.Error);
-            hasErrors.Should().BeFalse("test should have no compile errors");
+            Diagnostic[] compilerErrors = compilerDiagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).ToArray();
+            compilerErrors.Should().BeEmpty("test should not have compile errors");
         }
 
         [NotNull]
