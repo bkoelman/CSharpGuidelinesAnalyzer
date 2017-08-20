@@ -18,7 +18,7 @@ To try out the NuGet package:
  1. Create a local NuGet feed by following the instructions here:
     > http://docs.nuget.org/docs/creating-packages/hosting-your-own-nuget-feeds
  2. Copy the .nupkg file into that folder.
- 3. Open the target project in Visual Studio 2015.
+ 3. Open the target project in Visual Studio 2015/2017.
  4. Right-click on the project node in Solution Explorer and choose Manage
     NuGet Packages.
  5. Select the NuGet feed you created on the left.
