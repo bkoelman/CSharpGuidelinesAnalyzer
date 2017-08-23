@@ -38,8 +38,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
                 if (assemblyAttributesToAnalyze.Any())
                 {
-                    startContext.RegisterSemanticModelAction(
-                        c => AnalyzeSemanticModel(c, assemblyAttributesToAnalyze, attributesInCompilation));
+                    startContext.RegisterSemanticModelAction(c =>
+                        AnalyzeSemanticModel(c, assemblyAttributesToAnalyze, attributesInCompilation));
                 }
             });
         }

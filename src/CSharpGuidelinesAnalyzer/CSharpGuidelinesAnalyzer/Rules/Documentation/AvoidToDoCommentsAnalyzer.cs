@@ -202,8 +202,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 SyntaxKind kind = trivia.Kind();
 
-                return kind != SyntaxKind.RegionDirectiveTrivia && SyntaxFacts.IsPreprocessorDirective(kind) && trivia.ToString()
-                    .IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0;
+                return kind != SyntaxKind.RegionDirectiveTrivia && SyntaxFacts.IsPreprocessorDirective(kind) &&
+                    trivia.ToString().IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0;
             }
 
             private bool IsSingleLineComment(SyntaxTrivia trivia)

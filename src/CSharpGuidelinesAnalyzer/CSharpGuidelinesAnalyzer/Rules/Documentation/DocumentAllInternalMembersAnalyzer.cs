@@ -41,11 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
-            MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property,
-            SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
+            ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [NotNull]
         [ItemNotNull]

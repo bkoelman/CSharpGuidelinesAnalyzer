@@ -40,8 +40,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(InvokeRule,
-            MakeVirtualRule, OrderRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -132,8 +132,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [CanBeNull]
         private IMethodSymbol TryGetSingleLongestOverload([NotNull] [ItemNotNull] ICollection<IMethodSymbol> methodGroup)
         {
-            IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount = methodGroup.GroupBy(mg => mg.Parameters.Length)
-                .OrderByDescending(x => x.Key).First();
+            IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
+                methodGroup.GroupBy(mg => mg.Parameters.Length).OrderByDescending(x => x.Key).First();
             return overloadsWithHighestParameterCount.Skip(1).FirstOrDefault() == null
                 ? overloadsWithHighestParameterCount.First()
                 : null;

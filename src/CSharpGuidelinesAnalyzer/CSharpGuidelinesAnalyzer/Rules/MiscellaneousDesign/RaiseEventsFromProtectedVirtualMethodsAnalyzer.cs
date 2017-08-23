@@ -37,8 +37,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(KindRule,
-            ModifiersRule, NameRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

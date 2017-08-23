@@ -13,9 +13,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     internal static class SymbolExtensions
     {
         [ItemNotNull]
-        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
-            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
-            "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
+        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
+            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
+                "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
 
         public static bool HidesBaseMember([NotNull] this ISymbol member, CancellationToken cancellationToken)
         {
@@ -26,9 +26,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             var method = syntax as MethodDeclarationSyntax;
             var propertyEventIndexer = syntax as BasePropertyDeclarationSyntax;
 
-            EventFieldDeclarationSyntax eventField = member is IEventSymbol
-                ? syntax.FirstAncestorOrSelf<EventFieldDeclarationSyntax>()
-                : null;
+            EventFieldDeclarationSyntax eventField =
+                member is IEventSymbol ? syntax.FirstAncestorOrSelf<EventFieldDeclarationSyntax>() : null;
 
             return ContainsNewModifier(method?.Modifiers ?? propertyEventIndexer?.Modifiers ?? eventField?.Modifiers);
         }

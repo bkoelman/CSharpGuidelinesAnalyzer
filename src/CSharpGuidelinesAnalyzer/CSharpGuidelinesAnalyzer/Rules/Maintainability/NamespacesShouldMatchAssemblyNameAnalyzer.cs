@@ -42,8 +42,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             HelpLinkUris.GetForCategory(Category, DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NamespaceRule,
-            TypeInNamespaceRule, GlobalTypeRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
