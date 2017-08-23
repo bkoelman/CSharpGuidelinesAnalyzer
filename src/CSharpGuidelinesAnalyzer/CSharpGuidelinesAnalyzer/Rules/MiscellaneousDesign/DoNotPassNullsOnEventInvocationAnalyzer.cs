@@ -45,14 +45,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
                     if (systemEventArgs != null)
                     {
-                        startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeEventInvocation(c, systemEventArgs)),
+                        startContext.RegisterOperationAction(
+                            c => c.SkipInvalid(_ => AnalyzeInvocationExpression(c, systemEventArgs)),
                             OperationKind.InvocationExpression);
                     }
                 }
             });
         }
 
-        private void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
+        private void AnalyzeInvocationExpression(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             var invocation = (IInvocationExpression)context.Operation;
 
@@ -61,6 +62,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 return;
             }
 
+            AnalyzeEventInvocation(invocation, context, systemEventArgs);
+        }
+
+        private void AnalyzeEventInvocation([NotNull] IInvocationExpression invocation, OperationAnalysisContext context,
+            [NotNull] INamedTypeSymbol systemEventArgs)
+        {
             bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
             if (targetsStaticEvent != null)
             {
@@ -144,8 +151,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private IArgument GetArgsArgument([NotNull] IInvocationExpression invocation, [NotNull] INamedTypeSymbol systemEventArgs)
         {
-            return invocation.ArgumentsInEvaluationOrder.FirstOrDefault(x => !string.IsNullOrEmpty(x.Parameter?.Name) &&
-                IsEventArgs(x.Parameter.Type, systemEventArgs));
+            return invocation.ArgumentsInEvaluationOrder.FirstOrDefault(x =>
+                !string.IsNullOrEmpty(x.Parameter?.Name) && IsEventArgs(x.Parameter.Type, systemEventArgs));
         }
 
         private static bool IsEventArgs([CanBeNull] ITypeSymbol type, [NotNull] INamedTypeSymbol systemEventArgs)

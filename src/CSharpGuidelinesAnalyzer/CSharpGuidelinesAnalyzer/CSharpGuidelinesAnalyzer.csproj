@@ -8,7 +8,8 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
+    <!-- https://github.com/NuGet/Home/issues/5630 -->
+    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
     <Version>2.0.1-pre</Version>
     <Authors>Bart Koelman</Authors>
@@ -39,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="2.0.0" />
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.29" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" PrivateAssets="all" />

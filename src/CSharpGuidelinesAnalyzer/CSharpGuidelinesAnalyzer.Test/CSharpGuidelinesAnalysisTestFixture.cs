@@ -1,5 +1,9 @@
 using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using JetBrains.Annotations;
+using System.Reflection;
+
+[assembly: AssemblyTrademark("-")]
+[assembly: AssemblyCopyright("-")]
 
 namespace CSharpGuidelinesAnalyzer.Test
 {

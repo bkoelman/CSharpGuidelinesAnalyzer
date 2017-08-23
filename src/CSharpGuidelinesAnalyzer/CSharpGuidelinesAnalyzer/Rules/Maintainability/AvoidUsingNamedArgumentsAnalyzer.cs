@@ -39,8 +39,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (!argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {
+#pragma warning disable AV2310 // Code blocks should not contain inline comments
                 // Workaround for https://github.com/dotnet/roslyn/issues/19371
                 ArgumentSyntax syntax = argument.Syntax as ArgumentSyntax ?? argument.Syntax?.Parent as ArgumentSyntax;
+#pragma warning restore AV2310 // Code blocks should not contain inline comments
 
                 if (syntax?.NameColon != null)
                 {
