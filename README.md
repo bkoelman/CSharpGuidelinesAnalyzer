@@ -70,6 +70,6 @@ After each commit, a new prerelease NuGet package is automatically published to 
     * Click **+**
     * Name: **AppVeyor CSharpGuidelinesAnalyzer**, Source: **https://ci.appveyor.com/nuget/csharpguidelinesanalyzer**
     * Click **Update**, **Ok**
-* Open the NuGet package manager console  (**Tools**, **NuGet Package Manager**, **Package Manager Console**)
+* Open the NuGet package manager console (**Tools**, **NuGet Package Manager**, **Package Manager Console**)
     * Select **AppVeyor CSharpGuidelinesAnalyzer** as package source
     * Run command: `Install-Package CSharpGuidelinesAnalyzer -pre`
