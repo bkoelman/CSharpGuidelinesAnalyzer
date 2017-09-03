@@ -1,4 +1,4 @@
-namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
+﻿namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     public enum TestValidationMode
     {

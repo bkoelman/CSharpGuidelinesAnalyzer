@@ -53,9 +53,12 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private IList<Diagnostic> GetSortedAnalyzerDiagnostics([NotNull] AnalyzerTestContext context,
             [NotNull] DocumentWithSpans documentWithSpans)
         {
+            CompilationWithAnalyzers compilationWithAnalyzers =
+                GetCompilationWithAnalyzers(documentWithSpans.Document, context.ValidationMode, context.Options);
+
             IEnumerable<Diagnostic> diagnostics =
-                EnumerateDiagnosticsForDocument(documentWithSpans.Document, context.ValidationMode,
-                    context.DiagnosticsCaptureMode).Where(d => d.Id == DiagnosticId);
+                EnumerateDiagnosticsForDocument(documentWithSpans.Document, context.DiagnosticsCaptureMode,
+                    compilationWithAnalyzers).Where(d => d.Id == DiagnosticId);
 
             if (context.DiagnosticsCaptureMode == DiagnosticsCaptureMode.RequireInSourceTree)
             {
@@ -68,10 +71,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         [ItemNotNull]
         private IEnumerable<Diagnostic> EnumerateDiagnosticsForDocument([NotNull] Document document,
-            TestValidationMode validationMode, DiagnosticsCaptureMode diagnosticsCaptureMode)
+            DiagnosticsCaptureMode diagnosticsCaptureMode, [NotNull] CompilationWithAnalyzers compilationWithAnalyzers)
         {
-            CompilationWithAnalyzers compilationWithAnalyzers = GetCompilationWithAnalyzers(document, validationMode);
-
             SyntaxTree tree = document.GetSyntaxTreeAsync().Result;
 
             return EnumerateAnalyzerDiagnostics(compilationWithAnalyzers, tree, diagnosticsCaptureMode);
@@ -79,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [NotNull]
         private CompilationWithAnalyzers GetCompilationWithAnalyzers([NotNull] Document document,
-            TestValidationMode validationMode)
+            TestValidationMode validationMode, [NotNull] AnalyzerOptions options)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(CreateAnalyzer());
             Compilation compilation = document.Project.GetCompilationAsync().Result;
@@ -90,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 ValidateCompileErrors(compilerDiagnostics);
             }
 
-            return compilation.WithAnalyzers(analyzers);
+            return compilation.WithAnalyzers(analyzers, options);
         }
 
         private void ValidateCompileErrors([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)

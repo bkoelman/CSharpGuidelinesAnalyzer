@@ -21,18 +21,16 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
         [NotNull]
-        private static readonly IEnumerable<KeyValuePair<string, string>> OperationFeature = new[]
+        private static readonly IEnumerable<KeyValuePair<string, string>> OperationFeatureFlag = new[]
         {
             new KeyValuePair<string, string>("IOperation", "true")
         };
 
         [NotNull]
-        private static readonly CSharpParseOptions DefaultCSharpParseOptions =
-            new CSharpParseOptions().WithFeatures(OperationFeature);
+        private static readonly CSharpParseOptions DefaultCSharpParseOptions = new CSharpParseOptions();
 
         [NotNull]
-        private static readonly VisualBasicParseOptions DefaultBasicParseOptions =
-            new VisualBasicParseOptions().WithFeatures(OperationFeature);
+        private static readonly VisualBasicParseOptions DefaultBasicParseOptions = new VisualBasicParseOptions();
 
         [NotNull]
         public DocumentWithSpans GetDocumentWithSpansFromMarkup([NotNull] AnalyzerTestContext context)
@@ -42,7 +40,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             var parser = new MarkupParser(context.MarkupCode);
             CodeWithSpans codeWithSpans = parser.Parse();
 
-            ParseOptions parseOptions = GetParseOptions(context.DocumentationMode, context.LanguageName);
+            ParseOptions parseOptions =
+                GetParseOptions(context.DocumentationMode, context.LanguageName, context.OperationFeature);
             CompilationOptions compilationOptions = GetCompilationOptions(context.CompilerWarningLevel, context.LanguageName);
 
             Document document = new AdhocWorkspace()
@@ -56,7 +55,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
         [NotNull]
-        private ParseOptions GetParseOptions(DocumentationMode documentationMode, [NotNull] string languageName)
+        private ParseOptions GetParseOptions(DocumentationMode documentationMode, [NotNull] string languageName,
+            OperationFeature operationFeature)
         {
 #pragma warning disable AV2310 // Code blocks should not contain inline comments
             // Bug workaround: Setting DocumentationMode to a non-default value resets Features.
@@ -66,7 +66,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 ? (ParseOptions)DefaultBasicParseOptions.WithDocumentationMode(documentationMode)
                 : DefaultCSharpParseOptions.WithDocumentationMode(documentationMode);
 
-            return optionsWithLostFeatures.WithFeatures(OperationFeature);
+            return operationFeature == OperationFeature.Enabled
+                ? optionsWithLostFeatures.WithFeatures(OperationFeatureFlag)
+                : optionsWithLostFeatures;
         }
 
         [NotNull]

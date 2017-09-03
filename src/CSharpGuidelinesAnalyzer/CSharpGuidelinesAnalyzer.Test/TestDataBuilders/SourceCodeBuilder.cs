@@ -13,8 +13,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         [NotNull]
-        private AnalyzerTestContext testContext =
-            new AnalyzerTestContext(string.Empty, LanguageNames.CSharp).WithReferences(DefaultReferences);
+        private AnalyzerTestContext testContext = new AnalyzerTestContext(string.Empty, LanguageNames.CSharp)
+            .WithReferences(DefaultReferences)
+            .WithOperationFeature(OperationFeature.Enabled);
 
         [NotNull]
         [ItemNotNull]
