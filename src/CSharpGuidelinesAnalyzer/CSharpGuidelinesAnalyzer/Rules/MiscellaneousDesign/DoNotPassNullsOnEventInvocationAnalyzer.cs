@@ -93,8 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private static bool? IsStaticEventInvocation([NotNull] IOperation operation)
         {
-            var eventReference = operation as IEventReferenceExpression;
-            if (eventReference != null)
+            if (operation is IEventReferenceExpression eventReference)
             {
                 return eventReference.Instance == null;
             }
@@ -106,12 +105,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation,
             [NotNull] Compilation compilation)
         {
-            var conditionalAccess = operation as IConditionalAccessInstanceExpression;
-            if (conditionalAccess != null)
+            if (operation is IConditionalAccessInstanceExpression)
             {
                 SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
-                var eventSymbol = model.GetSymbolInfo(operation.Syntax).Symbol as IEventSymbol;
-                if (eventSymbol != null)
+                if (model.GetSymbolInfo(operation.Syntax).Symbol is IEventSymbol eventSymbol)
                 {
                     return eventSymbol.IsStatic;
                 }

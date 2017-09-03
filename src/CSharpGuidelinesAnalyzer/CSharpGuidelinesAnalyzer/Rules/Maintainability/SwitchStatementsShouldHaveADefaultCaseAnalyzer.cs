@@ -211,8 +211,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private bool ProcessAsLiteralSyntax([NotNull] SwitchAnalysisContext analysisContext,
                 [NotNull] ISingleValueCaseClause caseClause)
             {
-                var literalSyntax = caseClause.Value.Syntax as LiteralExpressionSyntax;
-                if (literalSyntax != null)
+                if (caseClause.Value.Syntax is LiteralExpressionSyntax literalSyntax)
                 {
                     if (ProcessLiteralSyntaxAsTrueKeyword(analysisContext, literalSyntax) ||
                         ProcessLiteralSyntaxAsFalseKeyword(analysisContext, literalSyntax) ||
@@ -260,8 +259,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private bool ProcessAsField([NotNull] ISingleValueCaseClause caseClause)
             {
-                var enumField = caseClause.Value as IFieldReferenceExpression;
-                if (enumField != null)
+                if (caseClause.Value is IFieldReferenceExpression enumField)
                 {
                     caseClauseValues.Add(enumField.Field);
                     return true;

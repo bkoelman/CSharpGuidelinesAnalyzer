@@ -98,8 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            var method = symbol as IMethodSymbol;
-            if (method != null && method.Parameters.Any())
+            if (symbol is IMethodSymbol method && method.Parameters.Any())
             {
                 AnalyzeParameters(method.Parameters, documentationXml, context);
             }

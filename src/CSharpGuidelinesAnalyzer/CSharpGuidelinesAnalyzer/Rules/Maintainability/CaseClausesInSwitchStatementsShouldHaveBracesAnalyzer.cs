@@ -39,8 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (switchCase.Body.Length > 0)
             {
-                var block = switchCase.Body[0] as IBlockStatement;
-                if (block == null)
+                if (!(switchCase.Body[0] is IBlockStatement))
                 {
                     ReportAtLastClause(switchCase, context);
                 }

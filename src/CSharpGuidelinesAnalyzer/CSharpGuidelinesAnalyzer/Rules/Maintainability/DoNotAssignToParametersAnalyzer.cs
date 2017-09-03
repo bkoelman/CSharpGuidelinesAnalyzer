@@ -47,8 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            var method = parameter.ContainingSymbol as IMethodSymbol;
-            if (method == null || method.IsAbstract)
+            if (!(parameter.ContainingSymbol is IMethodSymbol method) || method.IsAbstract)
             {
                 return;
             }

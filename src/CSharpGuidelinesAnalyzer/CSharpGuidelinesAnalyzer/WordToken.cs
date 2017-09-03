@@ -25,7 +25,7 @@ namespace CSharpGuidelinesAnalyzer
 
         public override bool Equals([CanBeNull] object obj)
         {
-            return obj is WordToken && Equals((WordToken)obj);
+            return obj is WordToken wordToken && Equals(wordToken);
         }
 
         public override int GetHashCode()

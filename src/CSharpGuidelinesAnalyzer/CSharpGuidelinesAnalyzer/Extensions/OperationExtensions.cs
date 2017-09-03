@@ -106,14 +106,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             public override Location VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation,
                 [CanBeNull] object argument)
             {
-                var doSyntax = operation.Syntax as DoStatementSyntax;
-                if (doSyntax != null)
+                if (operation.Syntax is DoStatementSyntax doSyntax)
                 {
                     return doSyntax.DoKeyword.GetLocation();
                 }
 
-                var whileSyntax = operation.Syntax as WhileStatementSyntax;
-                if (whileSyntax != null)
+                if (operation.Syntax is WhileStatementSyntax whileSyntax)
                 {
                     return whileSyntax.WhileKeyword.GetLocation();
                 }
@@ -151,14 +149,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             private static Location GetLocationForReturnOrYield([NotNull] IReturnStatement operation)
             {
-                var returnSyntax = operation.Syntax as ReturnStatementSyntax;
-                if (returnSyntax != null)
+                if (operation.Syntax is ReturnStatementSyntax returnSyntax)
                 {
                     return returnSyntax.ReturnKeyword.GetLocation();
                 }
 
-                var yieldSyntax = operation.Syntax as YieldStatementSyntax;
-                if (yieldSyntax != null)
+                if (operation.Syntax is YieldStatementSyntax yieldSyntax)
                 {
                     return GetLocationForYieldStatement(yieldSyntax);
                 }
@@ -238,8 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         [CanBeNull]
         private static MethodInfo GetOperationCompilerGeneratedGetterFor([NotNull] Type type)
         {
-            MethodInfo compilerGeneratedGetter;
-            if (!OperationCompilerGeneratedCache.TryGetValue(type, out compilerGeneratedGetter))
+            if (!OperationCompilerGeneratedCache.TryGetValue(type, out MethodInfo compilerGeneratedGetter))
             {
                 PropertyInfo property = type.GetRuntimeProperty("WasCompilerGenerated");
                 compilerGeneratedGetter = property?.GetMethod;

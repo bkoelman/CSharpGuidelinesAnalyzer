@@ -88,8 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation,
             [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
-            var conditionalAccess = operation as IConditionalAccessInstanceExpression;
-            if (conditionalAccess != null)
+            if (operation is IConditionalAccessInstanceExpression)
             {
                 SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
                 return model.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
@@ -102,9 +101,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
             OperationAnalysisContext context)
         {
-            var local = operation as ILocalReferenceExpression;
-
-            return local != null && containingMethod != null
+            return operation is ILocalReferenceExpression local && containingMethod != null
                 ? TryGetEventFromMethodStatements(containingMethod, local.Local, context)
                 : null;
         }
@@ -191,8 +188,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public override void VisitAssignmentExpression([NotNull] IAssignmentExpression operation)
             {
-                var targetLocal = operation.Target as ILocalReferenceExpression;
-                if (targetLocal != null && local.Equals(targetLocal.Local))
+                if (operation.Target is ILocalReferenceExpression targetLocal && local.Equals(targetLocal.Local))
                 {
                     TrySetEvent(operation.Value);
                 }
@@ -212,8 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             private void TrySetEvent([CanBeNull] IOperation assignedValue)
             {
-                var eventReference = assignedValue as IEventReferenceExpression;
-                if (eventReference != null)
+                if (assignedValue is IEventReferenceExpression eventReference)
                 {
                     Event = eventReference.Event;
                 }

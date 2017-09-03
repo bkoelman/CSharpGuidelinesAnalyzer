@@ -172,8 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         private static SyntaxNode TryGetBodyForMethodSyntax([CanBeNull] SyntaxNode syntaxNode, [NotNull] IMethodSymbol method,
             CancellationToken cancellationToken)
         {
-            var methodSyntax = syntaxNode as MethodDeclarationSyntax;
-            if (methodSyntax != null)
+            if (syntaxNode is MethodDeclarationSyntax methodSyntax)
             {
                 return TryGetBodyForMethodBlockOrArrowExpressionSyntax(methodSyntax) ??
                     TryGetBodyForPartialMethodSyntax(method, cancellationToken);
@@ -220,8 +219,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static bool IsUnitTestMethod([CanBeNull] this ISymbol symbol)
         {
-            var method = symbol as IMethodSymbol;
-            return method != null && HasUnitTestAttribute(method);
+            return symbol is IMethodSymbol method && HasUnitTestAttribute(method);
         }
 
         private static bool HasUnitTestAttribute([NotNull] IMethodSymbol method)

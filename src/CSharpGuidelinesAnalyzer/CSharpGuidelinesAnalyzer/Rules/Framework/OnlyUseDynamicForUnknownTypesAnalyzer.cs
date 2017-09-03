@@ -79,8 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private bool RequiresReport([CanBeNull] IOperation value)
         {
-            var conversion = value as IConversionExpression;
-            if (conversion != null && !conversion.IsExplicit)
+            if (value is IConversionExpression conversion && !conversion.IsExplicit)
             {
                 ITypeSymbol sourceType = conversion.Operand.Type;
 

@@ -62,8 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
-            var method = context.OwningSymbol as IMethodSymbol;
-            if (method == null || method.ReturnsVoid || !ReturnsEnumerable(method))
+            if (!(context.OwningSymbol is IMethodSymbol method) || method.ReturnsVoid || !ReturnsEnumerable(method))
             {
                 return;
             }
@@ -313,8 +312,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitAssignmentExpression(operation);
 
-                    var targetLocal = operation.Target as ILocalReferenceExpression;
-                    if (targetLocal != null && currentLocal.Equals(targetLocal.Local))
+                    if (operation.Target is ILocalReferenceExpression targetLocal && currentLocal.Equals(targetLocal.Local))
                     {
                         AnalyzeAssignmentValue(operation.Value);
                     }

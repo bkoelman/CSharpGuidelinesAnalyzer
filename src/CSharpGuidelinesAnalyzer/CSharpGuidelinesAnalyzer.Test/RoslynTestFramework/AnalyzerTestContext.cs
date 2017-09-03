@@ -162,14 +162,5 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References, DocumentationMode,
                 OperationFeature, CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode.AllowOutsideSourceTree, Options);
         }
-
-        [NotNull]
-        public AnalyzerTestContext WithAnalyzerOptions([NotNull] AnalyzerOptions options)
-        {
-            Guard.NotNull(options, nameof(options));
-
-            return new AnalyzerTestContext(MarkupCode, LanguageName, FileName, AssemblyName, References, DocumentationMode,
-                OperationFeature, CompilerWarningLevel, ValidationMode, DiagnosticsCaptureMode, options);
-        }
     }
 }

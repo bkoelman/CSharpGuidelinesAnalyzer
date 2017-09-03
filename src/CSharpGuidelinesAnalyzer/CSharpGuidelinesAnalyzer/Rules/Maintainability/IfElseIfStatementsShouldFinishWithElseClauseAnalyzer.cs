@@ -130,8 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private bool IsIfElseIfConstruct([NotNull] IIfStatement ifStatement)
             {
-                var ifElseStatement = ifStatement.IfFalseStatement as IIfStatement;
-                return ifElseStatement != null;
+                return ifStatement.IfFalseStatement is IIfStatement;
             }
 
             private sealed class IfElseIfConstructAnalyzer
@@ -177,8 +176,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         return HandleMissingElseClause();
                     }
 
-                    var ifElseStatement = falseBlock as IIfStatement;
-                    return ifElseStatement == null ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
+                    return !(falseBlock is IIfStatement ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
                 }
 
                 private bool HandleMissingElseClause()

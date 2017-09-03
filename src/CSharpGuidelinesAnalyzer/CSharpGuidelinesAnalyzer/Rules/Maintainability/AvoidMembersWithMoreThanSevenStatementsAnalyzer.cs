@@ -100,8 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 #pragma warning restore AV2310 // Code blocks should not contain inline comments
 
                 var lambdaExpressionSyntax = operation.Syntax as LambdaExpressionSyntax;
-                var expressionSyntax = lambdaExpressionSyntax?.Body as ExpressionSyntax;
-                return expressionSyntax != null;
+                return lambdaExpressionSyntax?.Body is ExpressionSyntax;
             }
 
             public override void VisitFixedStatement([NotNull] IFixedStatement operation)
