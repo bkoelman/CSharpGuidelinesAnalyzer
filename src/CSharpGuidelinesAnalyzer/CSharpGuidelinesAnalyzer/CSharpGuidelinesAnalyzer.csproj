@@ -4,7 +4,7 @@
     <PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup>

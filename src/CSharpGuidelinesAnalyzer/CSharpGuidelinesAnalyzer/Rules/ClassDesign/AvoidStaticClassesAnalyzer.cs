@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Xml.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
+using CSharpGuidelinesAnalyzer.Suppressions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -45,6 +47,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)
         {
+            Serialize();
+
             var type = (INamedTypeSymbol)context.Symbol;
 
             if (!type.IsStatic)
@@ -60,6 +64,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             {
                 AnalyzeAccessibleMethods(type, context);
             }
+        }
+
+        private static void Serialize()
+        {
+            var tree = new XElement("CSharpGuidelinesAnalyzerSuppressions",
+                new XAttribute("version", "1.0.0.0"),
+                new XElement("Rules",
+                    new XElement("Rule",
+                        new XAttribute("id", "AV0000"),
+                        new XElement("Locations",
+                            new XElement("Location",
+                                new XAttribute("relativeTo", "Member"),
+                                new XAttribute("value", "Namespace.ClassName.Method1"),
+                                new XAttribute("line", "3"),
+                                new XAttribute("column", "4"))))));
+
+            SuppressionSerializer serializer = new SuppressionSerializer();
+            var instance = serializer.Deserialize(tree.ToString());
+
+            var text = serializer.Serialize(instance);
         }
 
         private static void AnalyzeAccessibleMethods([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
