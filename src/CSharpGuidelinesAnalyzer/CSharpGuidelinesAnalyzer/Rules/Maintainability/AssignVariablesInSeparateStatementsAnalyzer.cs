@@ -118,18 +118,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 base.VisitAssignmentExpression(operation);
             }
 
+            public override void VisitCompoundAssignmentExpression([NotNull] ICompoundAssignmentExpression operation)
+            {
+                RegisterAssignment(operation.Target);
+
+                base.VisitCompoundAssignmentExpression(operation);
+            }
+
             public override void VisitIncrementExpression([NotNull] IIncrementExpression operation)
             {
                 RegisterAssignment(operation.Target);
 
                 base.VisitIncrementExpression(operation);
-            }
-
-            public override void VisitCompoundAssignmentExpression([NotNull] ICompoundAssignmentExpression operation)
-            {
-                RegisterAssignment(operation.Target);
-
-                base.VisitAssignmentExpression(operation);
             }
 
             private void RegisterAssignment([NotNull] IOperation operation)
