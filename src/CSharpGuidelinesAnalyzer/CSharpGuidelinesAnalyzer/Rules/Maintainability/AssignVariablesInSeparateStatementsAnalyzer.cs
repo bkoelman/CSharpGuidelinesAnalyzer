@@ -58,7 +58,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static Location GetLocation([NotNull] IOperation operation)
         {
-            return operation.GetLocationForKeyword() ?? operation.Syntax.GetLocation();
+            return operation.GetLocationForKeyword(LookupKeywordStrategy.PreferWhileKeywordInDoWhileLoop) ??
+                operation.Syntax.GetLocation();
         }
 
         [NotNull]
@@ -117,6 +118,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 base.VisitAssignmentExpression(operation);
             }
 
+            public override void VisitIncrementExpression([NotNull] IIncrementExpression operation)
+            {
+                RegisterAssignment(operation.Target);
+
+                base.VisitIncrementExpression(operation);
+            }
+
+            public override void VisitCompoundAssignmentExpression([NotNull] ICompoundAssignmentExpression operation)
+            {
+                RegisterAssignment(operation.Target);
+
+                base.VisitAssignmentExpression(operation);
+            }
+
             private void RegisterAssignment([NotNull] IOperation operation)
             {
                 IdentifierInfo identifierInfo = operation.TryGetIdentifierInfo();
@@ -133,9 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
             {
-                VisitArray(operation.Before);
                 Visit(operation.Condition);
-                VisitArray(operation.AtLoopBottom);
             }
 
             public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
@@ -155,7 +168,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitUsingStatement([NotNull] IUsingStatement operation)
             {
-                Visit(operation.Declaration);
                 Visit(operation.Value);
             }
 

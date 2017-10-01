@@ -94,21 +94,31 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        public static Location GetLocationForKeyword([NotNull] this IOperation operation)
+        public static Location GetLocationForKeyword([NotNull] this IOperation operation,
+            LookupKeywordStrategy lookupStrategy = LookupKeywordStrategy.PreferDoKeywordInDoWhileLoop)
         {
-            var visitor = new OperationLocationVisitor();
+            var visitor = new OperationLocationVisitor(lookupStrategy);
             return visitor.Visit(operation, null);
         }
 
         private sealed class OperationLocationVisitor : OperationVisitor<object, Location>
         {
+            private readonly LookupKeywordStrategy lookupStrategy;
+
+            public OperationLocationVisitor(LookupKeywordStrategy lookupStrategy)
+            {
+                this.lookupStrategy = lookupStrategy;
+            }
+
             [NotNull]
             public override Location VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation,
                 [CanBeNull] object argument)
             {
                 if (operation.Syntax is DoStatementSyntax doSyntax)
                 {
-                    return doSyntax.DoKeyword.GetLocation();
+                    return lookupStrategy == LookupKeywordStrategy.PreferDoKeywordInDoWhileLoop
+                        ? doSyntax.DoKeyword.GetLocation()
+                        : doSyntax.WhileKeyword.GetLocation();
                 }
 
                 if (operation.Syntax is WhileStatementSyntax whileSyntax)
