@@ -71,6 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             int statement2 = 2;
                             int statement3 = 3;
                             int statement4 = 4;
+
                             int statement5 = 5;
                             int statement6 = 6;
                             int statement7 = 7;
@@ -99,6 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             int statement2 = 2;
                             int statement3 = 3;
                             int statement4 = 4;
+
                             int statement5 = 5;
                             int statement6 = 6;
                             int statement7 = 7;
@@ -128,6 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             i++;
                             i += 3;
                             i--;
+
                             i += (true ? 5 : 0);
                             i *= 6;
                             i--;
@@ -159,6 +162,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             i++;
                             i += 3;
                             i--;
+
                             i += (true ? 5 : 0);
                             i *= 6;
                             i--;
@@ -309,6 +313,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                 while (true)
                                     while (true)
                                         while (true)
+
                                             while (true)
                                                 while (true)
                                                     while (true)
@@ -339,6 +344,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                 while (true)
                                     while (true)
                                         while (true)
+
                                             while (true)
                                                 while (true)
                                                     while (true)
@@ -673,7 +679,63 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_eight_try_throw_statements_it_must_be_reported()
+        internal void When_method_contains_eight_throw_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                    .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|](string s)
+                        {
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of seven statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_throw_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(string s)
+                        {
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_try_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -684,27 +746,48 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             try
                             {
-                                throw new NotImplementedException();
+                                try
+                                {
+                                }
+                                finally
+                                {
+                                }
                             }
                             catch (Exception)
                             {
                                 try
                                 {
-                                    throw new NotImplementedException();
+                                    try
+                                    {
+                                    }
+                                    finally
+                                    {
+                                    }
                                 }
                                 catch (Exception)
                                 {
                                 }
                             }
+
                             try
                             {
-                                throw new NotImplementedException();
+                                try
+                                {
+                                }
+                                finally
+                                {
+                                }
                             }
                             catch (Exception)
                             {
                                 try
                                 {
-                                    throw new NotImplementedException();
+                                    try
+                                    {
+                                    }
+                                    finally
+                                    {
+                                    }
                                 }
                                 catch (Exception)
                                 {
@@ -721,7 +804,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_seven_try_throw_statements_it_must_be_skipped()
+        internal void When_method_contains_seven_try_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -732,21 +815,37 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             try
                             {
-                                throw new NotImplementedException();
+                                try
+                                {
+                                }
+                                finally
+                                {
+                                }
                             }
                             catch (Exception)
                             {
                                 try
                                 {
-                                    throw new NotImplementedException();
+                                    try
+                                    {
+                                    }
+                                    finally
+                                    {
+                                    }
                                 }
                                 catch (Exception)
                                 {
                                 }
                             }
+
                             try
                             {
-                                throw new NotImplementedException();
+                                try
+                                {
+                                }
+                                finally
+                                {
+                                }
                             }
                             catch (Exception)
                             {
@@ -913,6 +1012,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             yield return new object();
                             yield break;
                             yield return new object();
+
                             yield break;
                             yield return new object();
                             yield break;
@@ -942,6 +1042,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             yield return new object();
                             yield break;
                             yield return new object();
+
                             yield break;
                             yield return new object();
                             yield break;
@@ -974,6 +1075,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                     {
                                         lock (guard)
                                         {
+
                                             lock (guard)
                                             {
                                                 lock (guard)
@@ -1020,6 +1122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                     {
                                         lock (guard)
                                         {
+
                                             lock (guard)
                                             {
                                                 lock (guard)
@@ -1053,28 +1156,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         unsafe void [|M|]()
                         {
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
                         }
@@ -1098,25 +1202,26 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         unsafe void M()
                         {
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
-                            fixed (char* p = Environment.MachineName)
+                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
                             {
                             }
                         }
@@ -1146,6 +1251,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                 goto Label4;
                             Label4:
                                 goto Label5;
+
                             Label5:
                                 goto Label6;
                             Label6:
@@ -1182,6 +1288,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                 goto Label4;
                             Label4:
                                 goto Label5;
+
                             Label5:
                                 goto Label6;
                             Label6:

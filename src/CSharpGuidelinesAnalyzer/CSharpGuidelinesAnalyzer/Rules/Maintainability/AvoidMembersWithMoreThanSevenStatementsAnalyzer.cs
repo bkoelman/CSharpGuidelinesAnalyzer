@@ -107,7 +107,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
 #pragma warning disable AV2310 // Code blocks should not contain inline comments
                 // Note: fixed statements must always occur in combination with a declaration
-                // expression statement. So to allow eight fixed statements, we do not count these.
+                // expression statement (which may declare multiple variables of the same type).
+                // So to allow eight fixed statements, we do not count these.
 #pragma warning restore AV2310 // Code blocks should not contain inline comments
 
                 base.VisitFixedStatement(operation);
