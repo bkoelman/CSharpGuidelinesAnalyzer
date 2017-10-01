@@ -1129,7 +1129,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_eight_goto_and_label_statements_it_must_be_reported()
+        internal void When_method_contains_labels_and_eight_goto_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1145,6 +1145,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             Label3:
                                 goto Label4;
                             Label4:
+                                goto Label5;
+                            Label5:
+                                goto Label6;
+                            Label6:
+                                goto Label7;
+                            Label7:
+                                goto Label8;
+                            Label8:
                                 goto Label1;
                         }
                     }
@@ -1157,7 +1165,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_seven_goto_and_label_statements_it_must_be_skipped()
+        internal void When_method_contains_labels_and_seven_goto_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1171,7 +1179,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             Label2:
                                 goto Label3;
                             Label3:
-                                goto Label3;
+                                goto Label4;
+                            Label4:
+                                goto Label5;
+                            Label5:
+                                goto Label6;
+                            Label6:
+                                goto Label7;
+                            Label7:
                                 goto Label1;
                         }
                     }

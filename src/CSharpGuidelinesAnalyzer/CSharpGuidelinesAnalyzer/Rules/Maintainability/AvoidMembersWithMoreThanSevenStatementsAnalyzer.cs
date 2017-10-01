@@ -137,12 +137,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 base.VisitInvalidStatement(operation);
             }
 
-            public override void VisitLabelStatement([NotNull] ILabelStatement operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitLabelStatement(operation);
-            }
-
             public override void VisitLockStatement([NotNull] ILockStatement operation)
             {
                 IncrementStatementCount(operation);
