@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName,
                 SymbolAnalysisContext context)
             {
-                Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
+                Guard.NotNull(assemblyName, nameof(assemblyName));
                 Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
 
                 assemblyNameParts = assemblyName.Split(DotSeparator, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();

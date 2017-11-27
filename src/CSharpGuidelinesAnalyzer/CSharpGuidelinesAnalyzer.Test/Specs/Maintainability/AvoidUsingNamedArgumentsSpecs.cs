@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                     void N()
                     {
-                        M(3, s: [|string.Empty|]);
+                        M(3, [|s: string.Empty|]);
                     }
                 ")
                 .Build();

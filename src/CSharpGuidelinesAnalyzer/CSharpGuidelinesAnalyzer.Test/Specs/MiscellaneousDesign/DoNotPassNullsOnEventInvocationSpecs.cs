@@ -71,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
                         void M()
                         {
-                            ValueChanged(e: EventArgs.Empty, sender: [|ConstantForNull|]);
+                            ValueChanged(e: EventArgs.Empty, [|sender: ConstantForNull|]);
                         }
                     }
                 ")
@@ -282,7 +282,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
                         void M()
                         {
-                            ValueChanged(e: [|ConstantForNull|], sender: this);
+                            ValueChanged([|e: ConstantForNull|], sender: this);
                         }
                     }
                 ")

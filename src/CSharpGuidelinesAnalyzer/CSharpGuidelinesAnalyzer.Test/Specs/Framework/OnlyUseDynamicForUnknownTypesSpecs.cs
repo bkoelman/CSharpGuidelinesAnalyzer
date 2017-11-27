@@ -53,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .InDefaultClass(@"
                     void M()
                     {
-                        [|dynamic d = ""A"";|]
+                        dynamic [|d = ""A""|];
                     }
                 ")
                 .Build();
@@ -323,6 +323,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                         void M()
                         {
                             f = (dynamic)""A"";
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_field_of_type_dynamic_is_added_to_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(DynamicAttribute).Assembly)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        private dynamic f;
+
+                        void M()
+                        {
+                            f += 5;
                         }
                     }
                 ")

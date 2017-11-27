@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -35,20 +35,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeSwitchCase(OperationAnalysisContext context)
         {
-            var switchCase = (ISwitchCase)context.Operation;
+            var switchCase = (ISwitchCaseOperation)context.Operation;
 
             if (switchCase.Body.Length > 0)
             {
-                if (!(switchCase.Body[0] is IBlockStatement))
+                if (!(switchCase.Body[0] is IBlockOperation))
                 {
                     ReportAtLastClause(switchCase, context);
                 }
             }
         }
 
-        private static void ReportAtLastClause([NotNull] ISwitchCase switchCase, OperationAnalysisContext context)
+        private static void ReportAtLastClause([NotNull] ISwitchCaseOperation switchCase, OperationAnalysisContext context)
         {
-            ICaseClause lastClause = switchCase.Clauses.Last();
+            ICaseClauseOperation lastClause = switchCase.Clauses.Last();
 
             Location location = lastClause.GetLocationForKeyword();
             context.ReportDiagnostic(Diagnostic.Create(Rule, location));

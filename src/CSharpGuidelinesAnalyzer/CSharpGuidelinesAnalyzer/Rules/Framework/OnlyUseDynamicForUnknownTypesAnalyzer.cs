@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
@@ -34,25 +34,25 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 if (startContext.Compilation.SupportsOperations())
                 {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
-                        OperationKind.VariableDeclaration);
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator),
+                        OperationKind.VariableDeclarator);
 
                     startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment),
-                        OperationKind.AssignmentExpression);
+                        OperationKind.SimpleAssignment, OperationKind.CompoundAssignment);
                 }
             });
         }
 
-        private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
+        private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration)context.Operation;
-            ILocalSymbol variable = declaration.Variables.Single();
+            var declarator = (IVariableDeclaratorOperation)context.Operation;
+            ILocalSymbol variable = declarator.Symbol;
 
-            if (IsDynamicType(variable.Type))
+            if (IsDynamicType(variable.Type) && declarator.Initializer != null)
             {
-                if (RequiresReport(declaration.Initializer))
+                if (RequiresReport(declarator.Initializer.Value))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, declaration.Syntax.GetLocation(), variable.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, declarator.Syntax.GetLocation(), variable.Name));
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private void AnalyzeAssignment(OperationAnalysisContext context)
         {
-            var assignment = (IAssignmentExpression)context.Operation;
+            var assignment = (IAssignmentOperation)context.Operation;
 
             IdentifierInfo identifierInfo = assignment.Target.TryGetIdentifierInfo();
             if (identifierInfo != null && IsDynamicType(identifierInfo.Type))
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private bool RequiresReport([CanBeNull] IOperation value)
         {
-            if (value is IConversionExpression conversion && !conversion.IsExplicit)
+            if (value is IConversionOperation conversion && conversion.IsImplicit)
             {
                 ITypeSymbol sourceType = conversion.Operand.Type;
 

@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static void SkipInvalid(this OperationAnalysisContext context, [NotNull] Action<OperationAnalysisContext> action)
         {
-            if (!context.Operation.IsInvalid)
+            if (!context.Operation.HasErrors(context.Compilation, context.CancellationToken))
             {
                 action(context);
             }
@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static void SkipInvalid(this OperationBlockAnalysisContext context,
             [NotNull] Action<OperationBlockAnalysisContext> action)
         {
-            if (!context.OperationBlocks.Any(block => block.IsInvalid))
+            if (!context.OperationBlocks.Any(block => block.HasErrors(context.Compilation, context.CancellationToken)))
             {
                 action(context);
             }

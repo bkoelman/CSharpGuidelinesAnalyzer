@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -42,8 +42,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
-                OperationKind.VariableDeclaration);
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator),
+                OperationKind.VariableDeclarator);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
@@ -90,10 +90,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return parameter.ContainingSymbol is IMethodSymbol method && method.MethodKind == MethodKind.LambdaMethod;
         }
 
-        private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
+        private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration)context.Operation;
-            ILocalSymbol variable = declaration.Variables.Single();
+            var declarator = (IVariableDeclaratorOperation)context.Operation;
+            ILocalSymbol variable = declarator.Symbol;
 
             if (!string.IsNullOrWhiteSpace(variable.Name))
             {

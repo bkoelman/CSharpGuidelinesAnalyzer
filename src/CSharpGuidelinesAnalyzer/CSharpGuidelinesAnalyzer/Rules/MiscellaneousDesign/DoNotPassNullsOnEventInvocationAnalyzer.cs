@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
@@ -47,7 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     {
                         startContext.RegisterOperationAction(
                             c => c.SkipInvalid(_ => AnalyzeInvocationExpression(c, systemEventArgs)),
-                            OperationKind.InvocationExpression);
+                            OperationKind.Invocation);
                     }
                 }
             });
@@ -55,9 +55,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private void AnalyzeInvocationExpression(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
         {
-            var invocation = (IInvocationExpression)context.Operation;
+            var invocation = (IInvocationOperation)context.Operation;
 
-            if (invocation.ArgumentsInEvaluationOrder.Length != 2)
+            if (invocation.Arguments.Length != 2)
             {
                 return;
             }
@@ -65,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             AnalyzeEventInvocation(invocation, context, systemEventArgs);
         }
 
-        private void AnalyzeEventInvocation([NotNull] IInvocationExpression invocation, OperationAnalysisContext context,
+        private void AnalyzeEventInvocation([NotNull] IInvocationOperation invocation, OperationAnalysisContext context,
             [NotNull] INamedTypeSymbol systemEventArgs)
         {
             bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
@@ -93,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private static bool? IsStaticEventInvocation([NotNull] IOperation operation)
         {
-            if (operation is IEventReferenceExpression eventReference)
+            if (operation is IEventReferenceOperation eventReference)
             {
                 return eventReference.Instance == null;
             }
@@ -105,7 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation,
             [NotNull] Compilation compilation)
         {
-            if (operation is IConditionalAccessInstanceExpression)
+            if (operation is IConditionalAccessInstanceOperation)
             {
                 SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
                 if (model.GetSymbolInfo(operation.Syntax).Symbol is IEventSymbol eventSymbol)
@@ -117,9 +117,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return null;
         }
 
-        private void AnalyzeSenderArgument([NotNull] IInvocationExpression invocation, OperationAnalysisContext context)
+        private void AnalyzeSenderArgument([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
         {
-            IArgument senderArgument = GetSenderArgument(invocation);
+            IArgumentOperation senderArgument = GetSenderArgument(invocation);
             if (senderArgument != null && IsNullConstant(senderArgument.Value))
             {
                 context.ReportDiagnostic(Diagnostic.Create(SenderRule, senderArgument.Syntax.GetLocation()));
@@ -127,17 +127,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IArgument GetSenderArgument([NotNull] IInvocationExpression invocation)
+        private IArgumentOperation GetSenderArgument([NotNull] IInvocationOperation invocation)
         {
-            IArgument argument = invocation.ArgumentsInEvaluationOrder.FirstOrDefault(x => x.Parameter.Name == "sender");
+            IArgumentOperation argument = invocation.Arguments.FirstOrDefault(x => x.Parameter.Name == "sender");
 
             return argument != null && argument.Parameter.Type.SpecialType == SpecialType.System_Object ? argument : null;
         }
 
-        private void AnalyzeArgsArgument([NotNull] IInvocationExpression invocation, [NotNull] INamedTypeSymbol systemEventArgs,
+        private void AnalyzeArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs,
             OperationAnalysisContext context)
         {
-            IArgument argsArgument = GetArgsArgument(invocation, systemEventArgs);
+            IArgumentOperation argsArgument = GetArgsArgument(invocation, systemEventArgs);
             if (argsArgument != null && IsNullConstant(argsArgument.Value))
             {
                 context.ReportDiagnostic(Diagnostic.Create(ArgsRule, argsArgument.Syntax.GetLocation(),
@@ -146,9 +146,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IArgument GetArgsArgument([NotNull] IInvocationExpression invocation, [NotNull] INamedTypeSymbol systemEventArgs)
+        private IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs)
         {
-            return invocation.ArgumentsInEvaluationOrder.FirstOrDefault(x =>
+            return invocation.Arguments.FirstOrDefault(x =>
                 !string.IsNullOrEmpty(x.Parameter?.Name) && IsEventArgs(x.Parameter.Type, systemEventArgs));
         }
 

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -35,7 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeArgument(OperationAnalysisContext context)
         {
-            var argument = (IArgument)context.Operation;
+            var argument = (IArgumentOperation)context.Operation;
 
             if (!argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {

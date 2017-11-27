@@ -42,7 +42,7 @@
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="JetBrains.Annotations" Version="11.0.0" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.29" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0-beta3" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="1.0.8" PrivateAssets="all" />
   </ItemGroup>
   <!--

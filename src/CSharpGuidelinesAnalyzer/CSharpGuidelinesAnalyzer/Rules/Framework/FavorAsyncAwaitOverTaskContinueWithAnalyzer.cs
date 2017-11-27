@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
@@ -48,14 +48,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
                 startContext.RegisterOperationAction(
                     c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
-                    OperationKind.InvocationExpression);
+                    OperationKind.Invocation);
             }
         }
 
         private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType,
             [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
         {
-            var invocation = (IInvocationExpression)context.Operation;
+            var invocation = (IInvocationOperation)context.Operation;
 
             if (invocation.TargetMethod.ContainingType.Equals(taskType))
             {

@@ -6,7 +6,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -199,7 +199,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 this.methodsToFind = methodsToFind;
             }
 
-            public override void VisitInvocationExpression([NotNull] IInvocationExpression operation)
+            public override void VisitInvocation([NotNull] IInvocationOperation operation)
             {
                 if (!HasFoundInvocation)
                 {
@@ -210,12 +210,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                     if (!HasFoundInvocation)
                     {
-                        base.VisitInvocationExpression(operation);
+                        base.VisitInvocation(operation);
                     }
                 }
             }
 
-            private void ScanInvocation([NotNull] IInvocationExpression operation, [NotNull] IMethodSymbol methodToFind)
+            private void ScanInvocation([NotNull] IInvocationOperation operation, [NotNull] IMethodSymbol methodToFind)
             {
                 if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
                 {
@@ -230,7 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
             }
 
-            private void ScanExplicitInterfaceInvocation([NotNull] IInvocationExpression operation,
+            private void ScanExplicitInterfaceInvocation([NotNull] IInvocationOperation operation,
                 [NotNull] IMethodSymbol methodToFind)
             {
                 foreach (IMethodSymbol ifaceMethod in methodToFind.ExplicitInterfaceImplementations)

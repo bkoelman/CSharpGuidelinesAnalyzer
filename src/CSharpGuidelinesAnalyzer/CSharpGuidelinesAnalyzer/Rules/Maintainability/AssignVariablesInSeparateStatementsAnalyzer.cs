@@ -6,7 +6,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -28,9 +28,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         private readonly ImmutableArray<OperationKind> statementKinds = ImmutableArray.Create(
-            OperationKind.VariableDeclarationStatement, OperationKind.SwitchStatement, OperationKind.IfStatement,
-            OperationKind.LoopStatement, OperationKind.ThrowStatement, OperationKind.ReturnStatement, OperationKind.LockStatement,
-            OperationKind.UsingStatement, OperationKind.YieldReturnStatement, OperationKind.ExpressionStatement);
+            OperationKind.VariableDeclarationGroup, OperationKind.Switch, OperationKind.Conditional, OperationKind.Loop,
+            OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using, OperationKind.YieldReturn,
+            OperationKind.ExpressionStatement);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -42,15 +42,55 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeStatement(OperationAnalysisContext context)
         {
-            var statementWalker = new StatementWalker();
-            statementWalker.Visit(context.Operation);
+            if (!context.Operation.IsStatement())
+            {
+                return;
+            }
+
+            if (context.Operation is IForLoopOperation forLoopOperation)
+            {
+                AnalyzeForLoop(forLoopOperation, context);
+            }
+            else
+            {
+                var statementWalker = new StatementWalker(ForLoopSection.None);
+                AnalyzeVisitOperation(context.Operation, statementWalker, context);
+            }
+        }
+
+        private void AnalyzeForLoop([NotNull] IForLoopOperation forLoopOperation, OperationAnalysisContext context)
+        {
+            foreach (IOperation beforeOperation in forLoopOperation.Before)
+            {
+                AnalyzeForLoopSection(ForLoopSection.Before, beforeOperation, context);
+            }
+
+            AnalyzeForLoopSection(ForLoopSection.Condition, forLoopOperation.Condition, context);
+
+            foreach (IOperation bottomOperation in forLoopOperation.AtLoopBottom)
+            {
+                AnalyzeForLoopSection(ForLoopSection.AtLoopBottom, bottomOperation, context);
+            }
+        }
+
+        private void AnalyzeForLoopSection(ForLoopSection section, [NotNull] IOperation operation,
+            OperationAnalysisContext context)
+        {
+            var statementWalker = new StatementWalker(section);
+            AnalyzeVisitOperation(operation, statementWalker, context);
+        }
+
+        private void AnalyzeVisitOperation([NotNull] IOperation operation, [NotNull] StatementWalker statementWalker,
+            OperationAnalysisContext context)
+        {
+            statementWalker.Visit(operation);
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
             if (statementWalker.IdentifiersAssigned.Count > 1)
             {
                 string identifiers = FormatIdentifierList(statementWalker.IdentifiersAssigned.ToList());
-                Location location = GetLocation(context.Operation);
+                Location location = GetLocation(operation);
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location, identifiers));
             }
         }
@@ -91,45 +131,52 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             messageBuilder.Append("'");
         }
 
+        /// <summary>
+        /// Collects assignment expressions in the current statement, but without descending into nested statement blocks.
+        /// </summary>
         private sealed class StatementWalker : OperationWalker
         {
+            private readonly ForLoopSection section;
+
+            public StatementWalker(ForLoopSection section)
+            {
+                this.section = section;
+            }
+
             [NotNull]
             [ItemNotNull]
             public ICollection<string> IdentifiersAssigned { get; } = new HashSet<string>();
 
-            public override void VisitVariableDeclaration([NotNull] IVariableDeclaration operation)
+            public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
                 if (operation.Initializer != null)
                 {
-                    IdentifiersAssigned.Add(operation.Variables.Single().Name);
+                    IdentifiersAssigned.Add(operation.Symbol.Name);
                 }
 
-                base.VisitVariableDeclaration(operation);
+                base.VisitVariableDeclarator(operation);
             }
 
-            public override void VisitLambdaExpression([NotNull] ILambdaExpression operation)
+            public override void VisitAnonymousFunction([NotNull] IAnonymousFunctionOperation operation)
             {
             }
 
-            public override void VisitAssignmentExpression([NotNull] IAssignmentExpression operation)
-            {
-                RegisterAssignment(operation.Target);
-
-                base.VisitAssignmentExpression(operation);
-            }
-
-            public override void VisitCompoundAssignmentExpression([NotNull] ICompoundAssignmentExpression operation)
+            public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
             {
                 RegisterAssignment(operation.Target);
-
-                base.VisitCompoundAssignmentExpression(operation);
+                base.VisitSimpleAssignment(operation);
             }
 
-            public override void VisitIncrementExpression([NotNull] IIncrementExpression operation)
+            public override void VisitCompoundAssignment([NotNull] ICompoundAssignmentOperation operation)
             {
                 RegisterAssignment(operation.Target);
+                base.VisitCompoundAssignment(operation);
+            }
 
-                base.VisitIncrementExpression(operation);
+            public override void VisitIncrementOrDecrement([NotNull] IIncrementOrDecrementOperation operation)
+            {
+                RegisterAssignment(operation.Target);
+                base.VisitIncrementOrDecrement(operation);
             }
 
             private void RegisterAssignment([NotNull] IOperation operation)
@@ -141,37 +188,62 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
             }
 
-            public override void VisitIfStatement([NotNull] IIfStatement operation)
+            public override void VisitConditional([NotNull] IConditionalOperation operation)
             {
-                Visit(operation.Condition);
+                if (operation.IsStatement())
+                {
+                    Visit(operation.Condition);
+                }
+                else
+                {
+                    base.VisitConditional(operation);
+                }
             }
 
-            public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
+            public override void VisitForLoop([NotNull] IForLoopOperation operation)
             {
-                Visit(operation.Condition);
+                switch (section)
+                {
+                    case ForLoopSection.Before:
+                    {
+                        VisitArray(operation.Before);
+                        break;
+                    }
+                    case ForLoopSection.Condition:
+                    {
+                        Visit(operation.Condition);
+                        break;
+                    }
+                    case ForLoopSection.AtLoopBottom:
+                    {
+                        VisitArray(operation.AtLoopBottom);
+                        break;
+                    }
+                }
             }
 
-            public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
+            public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
             {
+                Visit(operation.LoopControlVariable);
                 Visit(operation.Collection);
             }
 
-            public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
+            public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
             {
                 Visit(operation.Condition);
             }
 
-            public override void VisitLockStatement([NotNull] ILockStatement operation)
+            public override void VisitLock([NotNull] ILockOperation operation)
             {
-                Visit(operation.LockedObject);
+                Visit(operation.LockedValue);
             }
 
-            public override void VisitUsingStatement([NotNull] IUsingStatement operation)
+            public override void VisitUsing([NotNull] IUsingOperation operation)
             {
-                Visit(operation.Value);
+                Visit(operation.Resources);
             }
 
-            public override void VisitSwitchCase([NotNull] ISwitchCase operation)
+            public override void VisitSwitchCase([NotNull] ISwitchCaseOperation operation)
             {
                 VisitArray(operation.Clauses);
             }
@@ -186,6 +258,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     }
                 }
             }
+        }
+
+        private enum ForLoopSection
+        {
+            None,
+            Before,
+            Condition,
+            AtLoopBottom
         }
     }
 }

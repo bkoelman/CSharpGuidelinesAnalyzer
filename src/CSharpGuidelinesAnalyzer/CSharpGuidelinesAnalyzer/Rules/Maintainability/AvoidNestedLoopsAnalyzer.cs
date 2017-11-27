@@ -3,7 +3,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -29,12 +29,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLoopStatement), OperationKind.LoopStatement);
+            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLoopStatement), OperationKind.Loop);
         }
 
         private void AnalyzeLoopStatement(OperationAnalysisContext context)
         {
-            var loopStatement = (ILoopStatement)context.Operation;
+            var loopStatement = (ILoopOperation)context.Operation;
 
             var walker = new LoopBodyWalker();
             walker.Visit(loopStatement.Body);
@@ -52,17 +52,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [CanBeNull]
             public Location LoopStatementLocation { get; private set; }
 
-            public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
+            public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
             {
                 LoopStatementLocation = operation.GetLocationForKeyword();
             }
 
-            public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
+            public override void VisitForLoop([NotNull] IForLoopOperation operation)
             {
                 LoopStatementLocation = operation.GetLocationForKeyword();
             }
 
-            public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
+            public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
             {
                 LoopStatementLocation = operation.GetLocationForKeyword();
             }
