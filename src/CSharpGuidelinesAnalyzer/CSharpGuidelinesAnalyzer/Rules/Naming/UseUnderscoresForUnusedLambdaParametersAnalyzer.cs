@@ -3,7 +3,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -29,19 +29,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
-                OperationKind.LambdaExpression);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression), OperationKind.AnonymousFunction);
         }
 
         private void AnalyzeLambdaExpression(OperationAnalysisContext context)
         {
-            var lambdaExpression = (ILambdaExpression)context.Operation;
+            var lambdaExpression = (IAnonymousFunctionOperation)context.Operation;
 
-            foreach (IParameterSymbol parameter in lambdaExpression.Signature.Parameters)
+            foreach (IParameterSymbol parameter in lambdaExpression.Symbol.Parameters)
             {
                 if (!ConsistsOfUnderscoresOnly(parameter.Name))
                 {
-                    AnalyzeParameterUsage(parameter, lambdaExpression.Signature, context);
+                    AnalyzeParameterUsage(parameter, lambdaExpression.Symbol, context);
                 }
             }
         }

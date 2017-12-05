@@ -393,7 +393,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         int i, j, k;
 
-                        [|for|] (k = 1; (i = j = 5) > 0; k -= 2)
+                        for (k = 1; [|(i = j = 5) > 0|]; k -= 2)
                         {
                             k = 3;
                         }
@@ -1044,7 +1044,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         IDisposable j;
                         int k;
 
-                        using ([|IDisposable i = j = null|])
+                        [|using|] (IDisposable i = j = null)
                         {
                             k = 3;
                         }

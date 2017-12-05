@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -33,13 +33,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeUnaryOperator),
-                OperationKind.UnaryOperatorExpression);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeUnaryOperator), OperationKind.UnaryOperator);
         }
 
         private void AnalyzeUnaryOperator(OperationAnalysisContext context)
         {
-            var unaryOperator = (IUnaryOperatorExpression)context.Operation;
+            var unaryOperator = (IUnaryOperation)context.Operation;
 
             if (IsOperatorNot(unaryOperator))
             {
@@ -53,9 +52,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static bool IsOperatorNot([NotNull] IUnaryOperatorExpression unaryOperator)
+        private static bool IsOperatorNot([NotNull] IUnaryOperation unaryOperator)
         {
-            return unaryOperator.UnaryOperationKind == UnaryOperationKind.BooleanLogicalNot;
+            return unaryOperator.OperatorKind == UnaryOperatorKind.Not;
         }
 
         private static bool ContainsNegatingWord([NotNull] IdentifierInfo info)

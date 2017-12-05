@@ -1,11 +1,10 @@
 using System.Collections.Immutable;
-using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -34,16 +33,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclaration),
-                OperationKind.VariableDeclaration);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
 
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
         }
 
-        private void AnalyzeVariableDeclaration(OperationAnalysisContext context)
+        private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
         {
-            var declaration = (IVariableDeclaration)context.Operation;
-            ILocalSymbol variable = declaration.Variables.Single();
+            var declarator = (IVariableDeclaratorOperation)context.Operation;
+            ILocalSymbol variable = declarator.Symbol;
 
             if (Blacklist.Contains(variable.Name))
             {

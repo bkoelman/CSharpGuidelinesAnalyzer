@@ -5,7 +5,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
+            context.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
         }
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
@@ -39,15 +39,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             var collector = new IfStatementCollector();
             collector.VisitBlocks(context.OperationBlocks);
 
-            var analyzer = new IfStatementAnalyzer(collector.CollectedStatements, context);
+            var analyzer = new IfStatementAnalyzer(collector.CollectedIfStatements, context);
             analyzer.Analyze();
         }
 
         private sealed class IfStatementCollector : OperationWalker
         {
             [NotNull]
-            public IDictionary<Location, IIfStatement> CollectedStatements { get; } =
-                new SortedDictionary<Location, IIfStatement>(LocationComparer.Default);
+            public IDictionary<Location, IConditionalOperation> CollectedIfStatements { get; } =
+                new SortedDictionary<Location, IConditionalOperation>(LocationComparer.Default);
 
             public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
             {
@@ -57,12 +57,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
             }
 
-            public override void VisitIfStatement([NotNull] IIfStatement operation)
+            public override void VisitConditional([NotNull] IConditionalOperation operation)
             {
-                Location location = operation.GetLocationForKeyword();
-                CollectedStatements.Add(location, operation);
+                if (operation.IsStatement())
+                {
+                    Location location = operation.GetLocationForKeyword();
+                    CollectedIfStatements.Add(location, operation);
+                }
 
-                base.VisitIfStatement(operation);
+                base.VisitConditional(operation);
             }
 
             private sealed class LocationComparer : IComparer<Location>
@@ -85,11 +88,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private sealed class IfStatementAnalyzer
         {
             [NotNull]
-            private readonly IDictionary<Location, IIfStatement> ifStatementsLeftToAnalyze;
+            private readonly IDictionary<Location, IConditionalOperation> ifStatementsLeftToAnalyze;
 
             private OperationBlockAnalysisContext context;
 
-            public IfStatementAnalyzer([NotNull] IDictionary<Location, IIfStatement> ifStatementsToAnalyze,
+            public IfStatementAnalyzer([NotNull] IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze,
                 OperationBlockAnalysisContext context)
             {
                 Guard.NotNull(ifStatementsToAnalyze, nameof(ifStatementsToAnalyze));
@@ -110,7 +113,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private void AnalyzeTopIfStatement()
             {
-                IIfStatement ifStatement = ConsumeNextIfStatement();
+                IConditionalOperation ifStatement = ConsumeNextIfStatement();
 
                 if (IsIfElseIfConstruct(ifStatement))
                 {
@@ -120,17 +123,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
 
             [NotNull]
-            private IIfStatement ConsumeNextIfStatement()
+            private IConditionalOperation ConsumeNextIfStatement()
             {
-                KeyValuePair<Location, IIfStatement> entry = ifStatementsLeftToAnalyze.First();
+                KeyValuePair<Location, IConditionalOperation> entry = ifStatementsLeftToAnalyze.First();
                 ifStatementsLeftToAnalyze.Remove(entry.Key);
 
                 return entry.Value;
             }
 
-            private bool IsIfElseIfConstruct([NotNull] IIfStatement ifStatement)
+            private bool IsIfElseIfConstruct([NotNull] IConditionalOperation ifStatement)
             {
-                return ifStatement.IfFalseStatement is IIfStatement;
+                return ifStatement.WhenFalse is IConditionalOperation;
             }
 
             private sealed class IfElseIfConstructAnalyzer
@@ -142,9 +145,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 private readonly Location topIfKeywordLocation;
 
                 [NotNull]
-                private IIfStatement ifStatement;
+                private IConditionalOperation ifStatement;
 
-                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IIfStatement topIfStatement)
+                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation topIfStatement)
                 {
                     this.owner = owner;
 
@@ -160,7 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         {
                             owner.context.CancellationToken.ThrowIfCancellationRequested();
 
-                            IOperation falseBlock = ifStatement.IfFalseStatement;
+                            IOperation falseBlock = ifStatement.WhenFalse;
                             if (!AnalyzeFalseBlock(falseBlock))
                             {
                                 break;
@@ -176,7 +179,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         return HandleMissingElseClause();
                     }
 
-                    return !(falseBlock is IIfStatement ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
+                    return !(falseBlock is IConditionalOperation ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
                 }
 
                 private bool HandleMissingElseClause()
@@ -191,15 +194,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     return false;
                 }
 
-                private bool HandleElseIf([NotNull] IIfStatement ifElseStatement)
+                private bool HandleElseIf([NotNull] IConditionalOperation ifElseStatement)
                 {
                     Remove(ifElseStatement, owner.ifStatementsLeftToAnalyze);
                     ifStatement = ifElseStatement;
                     return true;
                 }
 
-                private void Remove([NotNull] IIfStatement ifStatementToRemove,
-                    [NotNull] IDictionary<Location, IIfStatement> ifStatements)
+                private void Remove([NotNull] IConditionalOperation ifStatementToRemove,
+                    [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
                 {
                     Location location = ifStatementToRemove.GetLocationForKeyword();
                     ifStatements.Remove(location);

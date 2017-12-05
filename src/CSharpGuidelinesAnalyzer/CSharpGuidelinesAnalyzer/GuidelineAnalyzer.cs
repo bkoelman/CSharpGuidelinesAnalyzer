@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer
         private sealed class CompilerVersionCompatibilityValidator
         {
             [NotNull]
-            private static readonly Version MinVersion = new Version(2, 3, 0, 0);
+            private static readonly Version MinVersion = new Version(2, 6, 0, 0);
 
             [NotNull]
             private static readonly Lazy<VisualStudioVersionStatus> VersionStatusLazy;
@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer
             public string GetMessage()
             {
                 return VersionStatusLazy.Value == VisualStudioVersionStatus.TooLow
-                    ? "This analyzer package requires Visual Studio 2017 Update 3 or later. Please upgrade to a newer version of Visual Studio."
+                    ? "This analyzer package requires Visual Studio 2017 Update 5 or later. Please upgrade to a newer version of Visual Studio."
                     : null;
             }
 

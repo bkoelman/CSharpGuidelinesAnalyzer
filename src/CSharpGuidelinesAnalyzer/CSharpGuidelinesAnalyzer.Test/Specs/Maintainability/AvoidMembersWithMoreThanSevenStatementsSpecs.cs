@@ -593,6 +593,174 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_method_contains_eight_local_functions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            void L1()
+                            {
+                            }
+
+                            void L2()
+                            {
+                            }
+
+                            void L3()
+                            {
+                            }
+
+                            void L4()
+                            {
+                            }
+
+                            void L5()
+                            {
+                            }
+
+                            void L6()
+                            {
+                            }
+
+                            void L7()
+                            {
+                            }
+
+                            void L8()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_local_functions_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void L1()
+                            {
+                            }
+
+                            void L2()
+                            {
+                            }
+
+                            void L3()
+                            {
+                            }
+
+                            void L4()
+                            {
+                            }
+
+                            void L5()
+                            {
+                            }
+
+                            void L6()
+                            {
+                            }
+
+                            void L7()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_statements_with_local_functions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            void L1()
+                            {
+                                void L2()
+                                {
+                                    void L3()
+                                    {
+                                        ; ;
+                                    }
+
+                                    L3();
+                                }
+
+                                L2();
+                            }
+
+                            L1();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_statements_with_local_functions_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void L1()
+                            {
+                                void L2()
+                                {
+                                    void L3()
+                                    {
+                                        ;
+                                    }
+
+                                    L3();
+                                }
+
+                                L2();
+                            }
+
+                            L1();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_method_contains_eight_switch_statements_it_must_be_reported()
         {
             // Arrange
@@ -679,11 +847,76 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_method_contains_eight_statements_in_switch_case_blocks_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|](int i)
+                        {
+                            switch (i)
+                            {
+                                case 1:
+                                {
+                                    ; ; ;
+                                    break;
+                                }
+                                default:
+                                {
+                                    ; ;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of seven statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_statements_in_switch_case_blocks_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(int i)
+                        {
+                            switch (i)
+                            {
+                                case 1:
+                                {
+                                    ; ;
+                                    break;
+                                }
+                                default:
+                                {
+                                    ; ;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_method_contains_eight_throw_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                    .InGlobalScope(@"
+                .InGlobalScope(@"
                     class C
                     {
                         void [|M|](string s)
@@ -1145,7 +1378,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
-        [Fact]
+        [Fact(Skip = "IOperation API support for fixed statements is currently unavailable")]
         internal void When_method_contains_eight_fixed_statements_it_must_be_reported()
         {
             // Arrange

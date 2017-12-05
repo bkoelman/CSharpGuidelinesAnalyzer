@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -30,44 +30,45 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeEventAssignment),
-                OperationKind.EventAssignmentExpression);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeEventAssignment), OperationKind.EventAssignment);
         }
 
         private void AnalyzeEventAssignment(OperationAnalysisContext context)
         {
-            var assignment = (IEventAssignmentExpression)context.Operation;
+            var assignment = (IEventAssignmentOperation)context.Operation;
 
             if (!assignment.Adds)
             {
                 return;
             }
 
-            var binding = assignment.HandlerValue as IMethodBindingExpression;
-            if (binding?.Method != null)
+            var delegateCreation = assignment.HandlerValue as IDelegateCreationOperation;
+            var reference = delegateCreation?.Target as IMethodReferenceOperation;
+
+            if (reference?.Method != null)
             {
-                AnalyzeEventAssignmentMethod(binding, assignment, context);
+                AnalyzeEventAssignmentMethod(reference, assignment, context);
             }
         }
 
-        private static void AnalyzeEventAssignmentMethod([NotNull] IMethodBindingExpression binding,
-            [NotNull] IEventAssignmentExpression assignment, OperationAnalysisContext context)
+        private static void AnalyzeEventAssignmentMethod([NotNull] IMethodReferenceOperation binding,
+            [NotNull] IEventAssignmentOperation assignment, OperationAnalysisContext context)
         {
-            string eventTargetName = GetEventTargetName(assignment.EventInstance);
-            string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.Event.Name);
+            string eventTargetName = GetEventTargetName(assignment.EventReference.Instance);
+            string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.EventReference.Event.Name);
 
             string handlerNameActual = binding.Method.Name;
             if (handlerNameActual != handlerNameExpected)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), handlerNameActual,
-                    assignment.Event.Name, handlerNameExpected));
+                    assignment.EventReference.Event.Name, handlerNameExpected));
             }
         }
 
         [NotNull]
         private static string GetEventTargetName([NotNull] IOperation eventInstance)
         {
-            bool isEventLocal = eventInstance is IInstanceReferenceExpression;
+            bool isEventLocal = eventInstance is IInstanceReferenceOperation;
 
             if (!isEventLocal)
             {

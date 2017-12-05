@@ -1,11 +1,10 @@
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
@@ -45,12 +44,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.InvocationExpression);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.Invocation);
         }
 
         private void AnalyzeInvocation(OperationAnalysisContext context)
         {
-            var invocation = (IInvocationExpression)context.Operation;
+            var invocation = (IInvocationOperation)context.Operation;
 
             if (invocation.TargetMethod.MethodKind == MethodKind.DelegateInvoke)
             {
@@ -58,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
         }
 
-        private void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationExpression invocation)
+        private void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationOperation invocation)
         {
             IEventSymbol evnt = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
             if (evnt != null)
@@ -80,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private IEventSymbol TryGetEventForInvocation([NotNull] IOperation operation)
         {
-            var eventReference = operation as IEventReferenceExpression;
+            var eventReference = operation as IEventReferenceOperation;
             return eventReference?.Event;
         }
 
@@ -88,7 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation,
             [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
-            if (operation is IConditionalAccessInstanceExpression)
+            if (operation is IConditionalAccessInstanceOperation)
             {
                 SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
                 return model.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
@@ -101,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
             OperationAnalysisContext context)
         {
-            return operation is ILocalReferenceExpression local && containingMethod != null
+            return operation is ILocalReferenceOperation local && containingMethod != null
                 ? TryGetEventFromMethodStatements(containingMethod, local.Local, context)
                 : null;
         }
@@ -123,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IMethodSymbol TryGetContainingMethod([NotNull] IInvocationExpression invocation, OperationAnalysisContext context)
+        private IMethodSymbol TryGetContainingMethod([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
         {
             SemanticModel model = context.Compilation.GetSemanticModel(invocation.Syntax.SyntaxTree);
             return model.GetEnclosingSymbol(invocation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
@@ -186,29 +185,29 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 this.local = local;
             }
 
-            public override void VisitAssignmentExpression([NotNull] IAssignmentExpression operation)
+            public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
             {
-                if (operation.Target is ILocalReferenceExpression targetLocal && local.Equals(targetLocal.Local))
+                if (operation.Target is ILocalReferenceOperation targetLocal && local.Equals(targetLocal.Local))
                 {
                     TrySetEvent(operation.Value);
                 }
 
-                base.VisitAssignmentExpression(operation);
+                base.VisitSimpleAssignment(operation);
             }
 
-            public override void VisitVariableDeclaration([NotNull] IVariableDeclaration operation)
+            public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
-                if (local.Equals(operation.Variables.Single()))
+                if (local.Equals(operation.Symbol) && operation.Initializer != null)
                 {
-                    TrySetEvent(operation.Initializer);
+                    TrySetEvent(operation.Initializer.Value);
                 }
 
-                base.VisitVariableDeclaration(operation);
+                base.VisitVariableDeclarator(operation);
             }
 
             private void TrySetEvent([CanBeNull] IOperation assignedValue)
             {
-                if (assignedValue is IEventReferenceExpression eventReference)
+                if (assignedValue is IEventReferenceOperation eventReference)
                 {
                     Event = eventReference.Event;
                 }

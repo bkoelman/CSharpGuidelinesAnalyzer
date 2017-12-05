@@ -2,9 +2,8 @@ using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -30,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
+            context.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
         }
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
@@ -67,134 +66,97 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
             }
 
-            public override void VisitBranchStatement([NotNull] IBranchStatement operation)
+            public override void VisitBranch([NotNull] IBranchOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitBranchStatement(operation);
             }
 
-            public override void VisitEmptyStatement([NotNull] IEmptyStatement operation)
+            public override void VisitEmpty([NotNull] IEmptyOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitEmptyStatement(operation);
             }
 
-            public override void VisitExpressionStatement([NotNull] IExpressionStatement operation)
+            public override void VisitExpressionStatement([NotNull] IExpressionStatementOperation operation)
             {
                 IncrementStatementCount(operation);
                 base.VisitExpressionStatement(operation);
             }
 
-            public override void VisitLambdaExpression([NotNull] ILambdaExpression operation)
-            {
-                if (!IsBodyCompilerGenerated(operation))
-                {
-                    Visit(operation.Body);
-                }
-            }
-
-            private static bool IsBodyCompilerGenerated([NotNull] ILambdaExpression operation)
-            {
-#pragma warning disable AV2310 // Code blocks should not contain inline comments
-                // Workaround for https://github.com/dotnet/roslyn/issues/10214
-#pragma warning restore AV2310 // Code blocks should not contain inline comments
-
-                var lambdaExpressionSyntax = operation.Syntax as LambdaExpressionSyntax;
-                return lambdaExpressionSyntax?.Body is ExpressionSyntax;
-            }
-
-            public override void VisitFixedStatement([NotNull] IFixedStatement operation)
-            {
-#pragma warning disable AV2310 // Code blocks should not contain inline comments
-                // Note: fixed statements must always occur in combination with a declaration
-                // expression statement (which may declare multiple variables of the same type).
-                // So to allow eight fixed statements, we do not count these.
-#pragma warning restore AV2310 // Code blocks should not contain inline comments
-
-                base.VisitFixedStatement(operation);
-            }
-
-            public override void VisitForEachLoopStatement([NotNull] IForEachLoopStatement operation)
+            public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitForEachLoopStatement(operation);
+                base.VisitForEachLoop(operation);
             }
 
-            public override void VisitForLoopStatement([NotNull] IForLoopStatement operation)
+            public override void VisitForLoop([NotNull] IForLoopOperation operation)
             {
                 IncrementStatementCount(operation);
-                Visit(operation.Body);
+                base.VisitForLoop(operation);
             }
 
-            public override void VisitIfStatement([NotNull] IIfStatement operation)
+            public override void VisitConditional([NotNull] IConditionalOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitIfStatement(operation);
+                base.VisitConditional(operation);
             }
 
-            public override void VisitInvalidStatement([NotNull] IInvalidStatement operation)
+            public override void VisitLock([NotNull] ILockOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitInvalidStatement(operation);
+                base.VisitLock(operation);
             }
 
-            public override void VisitLockStatement([NotNull] ILockStatement operation)
+            public override void VisitReturn([NotNull] IReturnOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitLockStatement(operation);
+                base.VisitReturn(operation);
             }
 
-            public override void VisitReturnStatement([NotNull] IReturnStatement operation)
+            public override void VisitSwitch([NotNull] ISwitchOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitReturnStatement(operation);
+                base.VisitSwitch(operation);
             }
 
-            public override void VisitSwitchStatement([NotNull] ISwitchStatement operation)
+            public override void VisitThrow([NotNull] IThrowOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitSwitchStatement(operation);
+                base.VisitThrow(operation);
             }
 
-            public override void VisitThrowStatement([NotNull] IThrowStatement operation)
+            public override void VisitTry([NotNull] ITryOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitThrowStatement(operation);
+                base.VisitTry(operation);
             }
 
-            public override void VisitTryStatement([NotNull] ITryStatement operation)
+            public override void VisitUsing([NotNull] IUsingOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitTryStatement(operation);
+                base.VisitUsing(operation);
             }
 
-            public override void VisitUsingStatement([NotNull] IUsingStatement operation)
+            public override void VisitVariableDeclarationGroup([NotNull] IVariableDeclarationGroupOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitUsingStatement(operation);
+                base.VisitVariableDeclarationGroup(operation);
             }
 
-            public override void VisitVariableDeclarationStatement([NotNull] IVariableDeclarationStatement operation)
+            public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitVariableDeclarationStatement(operation);
+                base.VisitWhileLoop(operation);
             }
 
-            public override void VisitWhileUntilLoopStatement([NotNull] IWhileUntilLoopStatement operation)
+            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
             {
                 IncrementStatementCount(operation);
-                base.VisitWhileUntilLoopStatement(operation);
-            }
-
-            public override void VisitYieldBreakStatement([NotNull] IReturnStatement operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitYieldBreakStatement(operation);
+                base.VisitLocalFunction(operation);
             }
 
             private void IncrementStatementCount([CanBeNull] IOperation operation)
             {
-                if (!operation.IsCompilerGenerated())
+                if (operation != null && !operation.IsImplicit && operation.IsStatement())
                 {
                     StatementCount++;
                 }

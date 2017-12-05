@@ -4,7 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Semantics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
@@ -32,30 +32,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.Compilation.SupportsOperations())
+                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+                if (taskType != null)
                 {
-                    RegisterAnalyzeCompilation(startContext);
+                    ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
+
+                    startContext.RegisterOperationAction(
+                        c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
+                        OperationKind.Invocation);
                 }
             });
-        }
-
-        private void RegisterAnalyzeCompilation([NotNull] CompilationStartAnalysisContext startContext)
-        {
-            INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-            if (taskType != null)
-            {
-                ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
-
-                startContext.RegisterOperationAction(
-                    c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
-                    OperationKind.InvocationExpression);
-            }
         }
 
         private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType,
             [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
         {
-            var invocation = (IInvocationExpression)context.Operation;
+            var invocation = (IInvocationOperation)context.Operation;
 
             if (invocation.TargetMethod.ContainingType.Equals(taskType))
             {
