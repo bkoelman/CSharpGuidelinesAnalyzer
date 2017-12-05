@@ -29,8 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression),
-                OperationKind.AnonymousFunction);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression), OperationKind.AnonymousFunction);
         }
 
         private void AnalyzeLambdaExpression(OperationAnalysisContext context)

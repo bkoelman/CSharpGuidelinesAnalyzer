@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -45,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.Invocation);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.Invocation);
         }
 
         private void AnalyzeInvocation(OperationAnalysisContext context)

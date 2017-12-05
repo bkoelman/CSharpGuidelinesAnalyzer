@@ -40,14 +40,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.Compilation.SupportsOperations())
+                INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
+                if (systemBoolean != null)
                 {
-                    INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
-                    if (systemBoolean != null)
-                    {
-                        startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),
-                            OperationKind.Switch);
-                    }
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),
+                        OperationKind.Switch);
                 }
             });
         }
@@ -171,7 +168,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             public ICollection<ISymbol> TryGetSymbolsForCaseClauses([NotNull] SwitchAnalysisContext analysisContext)
             {
                 IEnumerable<ISingleValueCaseClauseOperation> caseClauses =
-                    analysisContext.SwitchStatement.Cases.SelectMany(@case => @case.Clauses.OfType<ISingleValueCaseClauseOperation>());
+                    analysisContext.SwitchStatement.Cases.SelectMany(@case =>
+                        @case.Clauses.OfType<ISingleValueCaseClauseOperation>());
                 foreach (ISingleValueCaseClauseOperation caseClause in caseClauses)
                 {
                     analysisContext.CancellationToken.ThrowIfCancellationRequested();

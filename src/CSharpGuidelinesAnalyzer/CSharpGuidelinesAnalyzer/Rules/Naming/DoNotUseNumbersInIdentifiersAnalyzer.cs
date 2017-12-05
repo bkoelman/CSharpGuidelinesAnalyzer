@@ -42,8 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator),
-                OperationKind.VariableDeclarator);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
         }
 
         private void AnalyzeNamedType(SymbolAnalysisContext context)

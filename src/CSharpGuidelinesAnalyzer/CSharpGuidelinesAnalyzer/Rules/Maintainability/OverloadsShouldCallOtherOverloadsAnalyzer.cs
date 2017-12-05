@@ -50,10 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
-                }
+                startContext.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
             });
         }
 

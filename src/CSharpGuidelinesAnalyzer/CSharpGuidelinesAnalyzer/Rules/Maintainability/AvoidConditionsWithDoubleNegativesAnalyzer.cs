@@ -33,8 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeUnaryOperator),
-                OperationKind.UnaryOperator);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeUnaryOperator), OperationKind.UnaryOperator);
         }
 
         private void AnalyzeUnaryOperator(OperationAnalysisContext context)

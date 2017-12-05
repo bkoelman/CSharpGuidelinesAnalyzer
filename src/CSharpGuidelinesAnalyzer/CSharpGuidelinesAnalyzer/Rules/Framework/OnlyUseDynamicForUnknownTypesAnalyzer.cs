@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -32,14 +31,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.Compilation.SupportsOperations())
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator),
-                        OperationKind.VariableDeclarator);
+                startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator),
+                    OperationKind.VariableDeclarator);
 
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment),
-                        OperationKind.SimpleAssignment, OperationKind.CompoundAssignment);
-                }
+                startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment), OperationKind.SimpleAssignment,
+                    OperationKind.CompoundAssignment);
             });
         }
 

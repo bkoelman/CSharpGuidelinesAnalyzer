@@ -40,15 +40,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.Compilation.SupportsOperations())
+                INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
+                if (systemEventArgs != null)
                 {
-                    INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
-                    if (systemEventArgs != null)
-                    {
-                        startContext.RegisterOperationAction(
-                            c => c.SkipInvalid(_ => AnalyzeInvocationExpression(c, systemEventArgs)),
-                            OperationKind.Invocation);
-                    }
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocationExpression(c, systemEventArgs)),
+                        OperationKind.Invocation);
                 }
             });
         }
@@ -146,7 +142,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs)
+        private IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation,
+            [NotNull] INamedTypeSymbol systemEventArgs)
         {
             return invocation.Arguments.FirstOrDefault(x =>
                 !string.IsNullOrEmpty(x.Parameter?.Name) && IsEventArgs(x.Parameter.Type, systemEventArgs));

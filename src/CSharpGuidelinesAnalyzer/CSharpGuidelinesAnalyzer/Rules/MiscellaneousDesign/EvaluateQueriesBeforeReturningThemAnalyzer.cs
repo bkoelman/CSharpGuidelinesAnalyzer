@@ -5,7 +5,6 @@ using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -57,7 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
+            context.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
         }
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)

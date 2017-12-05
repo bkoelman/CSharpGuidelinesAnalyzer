@@ -30,8 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationAction(c => c.SkipInvalid(AnalyzeEventAssignment),
-                OperationKind.EventAssignment);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeEventAssignment), OperationKind.EventAssignment);
         }
 
         private void AnalyzeEventAssignment(OperationAnalysisContext context)

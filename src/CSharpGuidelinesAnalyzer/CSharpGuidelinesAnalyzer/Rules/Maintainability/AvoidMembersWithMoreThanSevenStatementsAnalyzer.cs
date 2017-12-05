@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterConditionalOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
+            context.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
         }
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
