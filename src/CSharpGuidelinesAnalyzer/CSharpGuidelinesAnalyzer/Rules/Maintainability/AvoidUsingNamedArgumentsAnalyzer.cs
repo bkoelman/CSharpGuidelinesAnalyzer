@@ -41,8 +41,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (!argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {
-                var syntax = (ArgumentSyntax)argument.Syntax;
-                if (syntax.NameColon != null)
+                var syntax = argument.Syntax as ArgumentSyntax;
+                if (syntax?.NameColon != null)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(), argument.Parameter.Name,
                         FormatSymbol(argument.Parameter.ContainingSymbol)));
