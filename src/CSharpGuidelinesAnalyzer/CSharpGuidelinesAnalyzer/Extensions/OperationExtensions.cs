@@ -169,22 +169,42 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 {
                     case BranchKind.Continue:
                     {
-                        var syntax = (ContinueStatementSyntax)operation.Syntax;
-                        return syntax.ContinueKeyword.GetLocation();
+                        return VisitContinueStatement(operation);
                     }
                     case BranchKind.Break:
                     {
-                        var syntax = (BreakStatementSyntax)operation.Syntax;
-                        return syntax.BreakKeyword.GetLocation();
+                        return VisitBreakStatement(operation);
                     }
                     case BranchKind.GoTo:
                     {
-                        var syntax = (GotoStatementSyntax)operation.Syntax;
-                        return syntax.GotoKeyword.GetLocation();
+                        return VisitGoToStatement(operation);
+                    }
+                    default:
+                    {
+                        throw ExceptionFactory.Unreachable();
                     }
                 }
+            }
 
-                throw ExceptionFactory.Unreachable();
+            [NotNull]
+            private static Location VisitContinueStatement([NotNull] IBranchOperation operation)
+            {
+                var syntax = (ContinueStatementSyntax)operation.Syntax;
+                return syntax.ContinueKeyword.GetLocation();
+            }
+
+            [NotNull]
+            private static Location VisitBreakStatement([NotNull] IBranchOperation operation)
+            {
+                var syntax = (BreakStatementSyntax)operation.Syntax;
+                return syntax.BreakKeyword.GetLocation();
+            }
+
+            [NotNull]
+            private static Location VisitGoToStatement([NotNull] IBranchOperation operation)
+            {
+                var syntax = (GotoStatementSyntax)operation.Syntax;
+                return syntax.GotoKeyword.GetLocation();
             }
 
             [NotNull]
@@ -289,43 +309,53 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static bool IsStatement([NotNull] this IOperation operation)
         {
-            if (operation.Type != null)
+            if (operation.Type != null || HasConstantValue(operation))
             {
                 return false;
             }
 
-            if (operation.ConstantValue.HasValue && operation.ConstantValue.Value == null)
+            if (operation is IBlockOperation || operation is ILabeledOperation)
             {
                 return false;
             }
 
-            if (operation.Parent is IBlockOperation && !(operation is IBlockOperation) && !(operation is ILabeledOperation))
+            if (operation.Parent is IBlockOperation)
             {
                 return true;
             }
 
-            if (operation is IBlockOperation)
-            {
-                return false;
-            }
+            return OperationIsStatementBecauseItExistsInBodyOfParent(operation);
+        }
 
-            if (operation.Parent is IForLoopOperation parentForLoop && IsOperationInBodyOfParent(operation, parentForLoop.Body))
-            {
-                return true;
-            }
+        private static bool OperationIsStatementBecauseItExistsInBodyOfParent([NotNull] IOperation operation)
+        {
+            return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) ||
+                OperationExistsInBodyOfWhileLoop(operation) || OperationExistsInBodyOfIfStatement(operation) ||
+                OperationExistsInBodyOfTryFinallyStatement(operation) || OperationExistsInBodyOfCatchClause(operation) ||
+                OperationExistsInBodyOfCaseClause(operation) || OperationExistsInBodyOfLockStatement(operation) ||
+                OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
+        }
 
-            if (operation.Parent is IForEachLoopOperation parentForEachLoop &&
-                IsOperationInBodyOfParent(operation, parentForEachLoop.Body))
-            {
-                return true;
-            }
+        private static bool OperationExistsInBodyOfForLoop([NotNull] IOperation operation)
+        {
+            return operation.Parent is IForLoopOperation parentForLoop &&
+                IsOperationInBodyOfParent(operation, parentForLoop.Body);
+        }
 
-            if (operation.Parent is IWhileLoopOperation parentWhileLoop &&
-                IsOperationInBodyOfParent(operation, parentWhileLoop.Body))
-            {
-                return true;
-            }
+        private static bool OperationExistsInBodyOfForEachLoop([NotNull] IOperation operation)
+        {
+            return operation.Parent is IForEachLoopOperation parentForEachLoop &&
+                IsOperationInBodyOfParent(operation, parentForEachLoop.Body);
+        }
 
+        private static bool OperationExistsInBodyOfWhileLoop([NotNull] IOperation operation)
+        {
+            return operation.Parent is IWhileLoopOperation parentWhileLoop &&
+                IsOperationInBodyOfParent(operation, parentWhileLoop.Body);
+        }
+
+        private static bool OperationExistsInBodyOfIfStatement([NotNull] IOperation operation)
+        {
             if (operation.Parent is IConditionalOperation parentConditional && parentConditional.IsStatement())
             {
                 if (IsOperationInBodyOfParent(operation, parentConditional.WhenTrue) ||
@@ -334,6 +364,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     return true;
                 }
             }
+
+            return false;
+        }
+
+        private static bool OperationExistsInBodyOfTryFinallyStatement([NotNull] IOperation operation)
+        {
             if (operation.Parent is ITryOperation parentTry)
             {
                 if (IsOperationInBodyOfParent(operation, parentTry.Body) ||
@@ -343,33 +379,39 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 }
             }
 
-            if (operation.Parent is ICatchClauseOperation parentCatchClause &&
-                IsOperationInBodyOfParent(operation, parentCatchClause.Handler))
-            {
-                return true;
-            }
-
-            if (operation.Parent is ISwitchCaseOperation parentSwitchCase && parentSwitchCase.Body.Contains(operation))
-            {
-                return true;
-            }
-
-            if (operation.Parent is ILockOperation parentLock && IsOperationInBodyOfParent(operation, parentLock.Body))
-            {
-                return true;
-            }
-
-            if (operation.Parent is ILabeledOperation parentLabel && IsOperationInBodyOfParent(operation, parentLabel.Operation))
-            {
-                return true;
-            }
-
-            if (operation.Parent is IUsingOperation parentUsing && IsOperationInBodyOfParent(operation, parentUsing.Body))
-            {
-                return true;
-            }
-
             return false;
+        }
+
+        private static bool OperationExistsInBodyOfCatchClause([NotNull] IOperation operation)
+        {
+            return operation.Parent is ICatchClauseOperation parentCatchClause &&
+                IsOperationInBodyOfParent(operation, parentCatchClause.Handler);
+        }
+
+        private static bool OperationExistsInBodyOfCaseClause([NotNull] IOperation operation)
+        {
+            return operation.Parent is ISwitchCaseOperation parentSwitchCase && parentSwitchCase.Body.Contains(operation);
+        }
+
+        private static bool OperationExistsInBodyOfLockStatement([NotNull] IOperation operation)
+        {
+            return operation.Parent is ILockOperation parentLock && IsOperationInBodyOfParent(operation, parentLock.Body);
+        }
+
+        private static bool OperationExistsInBodyOfLabel([NotNull] IOperation operation)
+        {
+            return operation.Parent is ILabeledOperation parentLabel &&
+                IsOperationInBodyOfParent(operation, parentLabel.Operation);
+        }
+
+        private static bool OperationExistsInBodyOfUsingStatement([NotNull] IOperation operation)
+        {
+            return operation.Parent is IUsingOperation parentUsing && IsOperationInBodyOfParent(operation, parentUsing.Body);
+        }
+
+        private static bool HasConstantValue([NotNull] IOperation operation)
+        {
+            return operation.ConstantValue.HasValue && operation.ConstantValue.Value == null;
         }
 
         private static bool IsOperationInBodyOfParent([NotNull] IOperation operation, [NotNull] IOperation parentOperationBody)
