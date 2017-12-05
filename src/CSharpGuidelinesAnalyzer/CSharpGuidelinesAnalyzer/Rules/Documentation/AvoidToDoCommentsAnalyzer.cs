@@ -70,7 +70,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             public void Analyze(SyntaxTrivia trivia)
             {
-#pragma warning disable AV1537 // If-else-if construct should end with an unconditional else clause
                 if (PreprocessorHasSingleLineComment(trivia))
                 {
                     ProcessSingleLineCommentAfterPreprocessor(trivia);
@@ -83,7 +82,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 {
                     ProcessCommentOnSingleOrMultipleLines(trivia, MultiLineCommentPostfixLength);
                 }
-#pragma warning restore AV1537 // If-else-if construct should end with an unconditional else clause
+                else
+                {
+                    // No action required.
+                }
             }
 
             private void ProcessSingleLineCommentAfterPreprocessor(SyntaxTrivia trivia)

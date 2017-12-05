@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Documentation
@@ -51,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 context.CancellationToken.ThrowIfCancellationRequested();
 
                 if (!outerCommentTrivia.Contains(commentTrivia) && !IsResharperSuppression(commentTrivia) &&
-                    !IsArrangeActAssertUnitTestPattern(commentTrivia))
+                    !IsArrangeActAssertUnitTestPattern(commentTrivia) && !IsCommentInEmptyElseClause(commentTrivia))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
                 }
@@ -74,6 +75,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         {
             string text = commentTrivia.ToString();
             return ArrangeActAssertLines.Any(line => line.Equals(text));
+        }
+
+        private static bool IsCommentInEmptyElseClause(SyntaxTrivia commentTrivia)
+        {
+            return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() &&
+                parentBlock.Parent is ElseClauseSyntax;
         }
     }
 }

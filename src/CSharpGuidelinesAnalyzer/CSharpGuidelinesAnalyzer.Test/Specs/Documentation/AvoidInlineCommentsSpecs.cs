@@ -224,7 +224,34 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
                         // Assert
                         Debug.Assert(x == 9);
+                    }
+                ")
+                .Build();
 
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_else_clause_contains_only_comment_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int i)
+                    {
+                        if (i > 10)
+                        {
+                            Console.WriteLine('>');
+                        }
+                        else if (i < 8)
+                        {
+                            Console.WriteLine('<');
+                        }
+                        else
+                        {
+                            // No action required.
+                        }
                     }
                 ")
                 .Build();
