@@ -14,11 +14,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string Title = "Member hides inherited member";
         private const string MessageFormat = "'{0}' hides inherited member.";
         private const string Description = "Don't hide inherited members with the new keyword.";
-        private const string Category = "Class Design";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

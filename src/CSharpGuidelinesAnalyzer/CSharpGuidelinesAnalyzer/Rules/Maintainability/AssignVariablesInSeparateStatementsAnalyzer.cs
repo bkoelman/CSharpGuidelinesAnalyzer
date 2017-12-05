@@ -18,11 +18,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string Title = "Assign each property, field, parameter or variable in a separate statement";
         private const string MessageFormat = "{0} are assigned in a single statement.";
         private const string Description = "Assign each variable in a separate statement.";
-        private const string Category = "Maintainability";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

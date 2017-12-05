@@ -76,20 +76,15 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(parameter, nameof(parameter));
 
-#pragma warning disable AV1532 // Loop statement contains nested loop
-            foreach (INamedTypeSymbol iface in parameter.ContainingType.AllInterfaces)
+            foreach (ISymbol ifaceMember in parameter.ContainingType.AllInterfaces.SelectMany(iface => iface.GetMembers()))
             {
-                foreach (ISymbol ifaceMember in iface.GetMembers())
-                {
-                    ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+                ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
 
-                    if (parameter.ContainingSymbol.Equals(implementer))
-                    {
-                        return true;
-                    }
+                if (parameter.ContainingSymbol.Equals(implementer))
+                {
+                    return true;
                 }
             }
-#pragma warning restore AV1532 // Loop statement contains nested loop
 
             return false;
         }
@@ -99,20 +94,16 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             if (!(member is IFieldSymbol))
             {
-#pragma warning disable AV1532 // Loop statement contains nested loop
-                foreach (INamedTypeSymbol iface in member.ContainingType.AllInterfaces)
+                foreach (TSymbol ifaceMember in member.ContainingType.AllInterfaces.SelectMany(iface =>
+                    iface.GetMembers().OfType<TSymbol>()))
                 {
-                    foreach (TSymbol ifaceMember in iface.GetMembers().OfType<TSymbol>())
-                    {
-                        ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+                    ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
 
-                        if (member.Equals(implementer))
-                        {
-                            return true;
-                        }
+                    if (member.Equals(implementer))
+                    {
+                        return true;
                     }
                 }
-#pragma warning restore AV1532 // Loop statement contains nested loop
             }
 
             return false;

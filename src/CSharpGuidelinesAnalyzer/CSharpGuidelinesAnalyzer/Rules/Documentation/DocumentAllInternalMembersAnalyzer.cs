@@ -23,22 +23,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'.";
         private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature.";
         private const string Description = "Document all public, protected and internal types and members.";
-        private const string Category = "Documentation";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
         [NotNull]
         private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MissingTypeOrMemberMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            MissingTypeOrMemberMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor MissingParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MissingParameterMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            MissingParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor ExtraParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ExtraParameterMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            ExtraParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

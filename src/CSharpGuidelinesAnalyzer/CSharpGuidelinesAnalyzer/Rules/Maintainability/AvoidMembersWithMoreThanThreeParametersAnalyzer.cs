@@ -18,11 +18,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string Title = "Method or constructor contains more than three parameters";
         private const string MessageFormat = "{0} contains more than three parameters.";
         private const string Description = "Don't allow methods and constructors with more than three parameters.";
-        private const string Category = "Maintainability";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

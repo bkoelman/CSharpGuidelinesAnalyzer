@@ -15,11 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string Title = "Loop variable should not be written to in loop body";
         private const string MessageFormat = "Loop variable '{0}' should not be written to in loop body.";
         private const string Description = "Don't change a loop variable inside a for loop.";
-        private const string Category = "Maintainability";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

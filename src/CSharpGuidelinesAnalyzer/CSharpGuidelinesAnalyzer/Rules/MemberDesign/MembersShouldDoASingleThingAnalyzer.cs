@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
+namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class MembersShouldDoASingleThingAnalyzer : GuidelineAnalyzer
@@ -15,11 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string Title = "Member contains the word 'and'";
         private const string MessageFormat = "{0} '{1}' contains the word 'and'.";
         private const string Description = "A method or property should do only one thing.";
-        private const string Category = "Member Design";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

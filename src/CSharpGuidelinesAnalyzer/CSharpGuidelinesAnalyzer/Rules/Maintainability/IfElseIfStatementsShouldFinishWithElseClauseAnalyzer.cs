@@ -17,11 +17,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string Title = "If-else-if construct should end with an unconditional else clause";
         private const string MessageFormat = "If-else-if construct should end with an unconditional else clause.";
         private const string Description = "Finish every if-else-if statement with an else-part.";
-        private const string Category = "Maintainability";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -147,7 +149,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 [NotNull]
                 private IConditionalOperation ifStatement;
 
-                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation topIfStatement)
+                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner,
+                    [NotNull] IConditionalOperation topIfStatement)
                 {
                     this.owner = owner;
 
@@ -179,7 +182,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         return HandleMissingElseClause();
                     }
 
-                    return !(falseBlock is IConditionalOperation ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
+                    return !(falseBlock is IConditionalOperation ifElseStatement)
+                        ? HandleUnconditionalElse()
+                        : HandleElseIf(ifElseStatement);
                 }
 
                 private bool HandleMissingElseClause()

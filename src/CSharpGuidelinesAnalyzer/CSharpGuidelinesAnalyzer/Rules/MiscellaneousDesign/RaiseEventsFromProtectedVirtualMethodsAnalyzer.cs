@@ -20,20 +20,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string ModifiersMessageFormat = "Method '{0}' raises event '{1}', so should be protected and virtual.";
         private const string NameMessageFormat = "Method '{0}' raises event '{1}', so it should be named '{2}'.";
         private const string Description = "Use a protected virtual method to raise each event.";
-        private const string Category = "Miscellaneous Design";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
         private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title, KindMessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ModifiersMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            ModifiersMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

@@ -15,11 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string Title = "Unused lambda parameter should be renamed to one or more underscores";
         private const string MessageFormat = "Unused lambda parameter '{0}' should be renamed to one or more underscores.";
         private const string Description = "Use an underscore for irrelevant lambda parameters.";
-        private const string Category = "Naming";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

@@ -18,17 +18,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string ArgsTitle = "Argument for second parameter is null in event invocation";
         private const string ArgsMessageFormat = "'{0}' argument is null in event invocation.";
         private const string Description = "Don't pass null as the sender argument when raising an event.";
-        private const string Category = "Miscellaneous Design";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
         private static readonly DiagnosticDescriptor SenderRule = new DiagnosticDescriptor(DiagnosticId, SenderTitle,
-            SenderMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            SenderMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor ArgsRule = new DiagnosticDescriptor(DiagnosticId, ArgsTitle,
-            ArgsMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            ArgsMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);

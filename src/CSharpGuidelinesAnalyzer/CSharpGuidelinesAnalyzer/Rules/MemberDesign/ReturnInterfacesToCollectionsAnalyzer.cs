@@ -19,11 +19,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             "Return type in signature for '{0}' should be a collection interface instead of a concrete type.";
 
         private const string Description = "Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class.";
-        private const string Category = "Member Design";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

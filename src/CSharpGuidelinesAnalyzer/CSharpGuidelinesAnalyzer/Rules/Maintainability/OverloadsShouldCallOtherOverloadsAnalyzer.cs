@@ -23,21 +23,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             "Parameter order in '{0}' does not match with the parameter order of the longest overload.";
 
         private const string Description = "Call the more overloaded method from other overloads.";
-        private const string Category = "Maintainability";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
         private static readonly DiagnosticDescriptor InvokeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            InvokeMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            InvokeMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor MakeVirtualRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MakeVirtualMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            MakeVirtualMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title, OrderMessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

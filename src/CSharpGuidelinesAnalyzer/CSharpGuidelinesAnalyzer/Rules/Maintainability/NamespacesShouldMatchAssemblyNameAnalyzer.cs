@@ -24,22 +24,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'.";
 
         private const string Description = "Name assemblies after their contained namespace.";
-        private const string Category = "Maintainability";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
         private static readonly DiagnosticDescriptor NamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            NamespaceMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            NamespaceMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor TypeInNamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TypeInNamespaceMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            TypeInNamespaceMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor GlobalTypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            GlobalTypeMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            GlobalTypeMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

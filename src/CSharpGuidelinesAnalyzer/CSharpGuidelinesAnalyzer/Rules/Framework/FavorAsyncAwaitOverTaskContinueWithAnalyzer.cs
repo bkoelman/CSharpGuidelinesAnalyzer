@@ -16,11 +16,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string Title = "Call to Task.ContinueWith should be replaced with an async method";
         private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an async method.";
         private const string Description = "Favor async/await over the Task.";
-        private const string Category = "Framework";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

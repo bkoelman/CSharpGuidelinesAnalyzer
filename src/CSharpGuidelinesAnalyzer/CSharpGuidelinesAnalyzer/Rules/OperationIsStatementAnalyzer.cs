@@ -17,11 +17,13 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private const string Title = "Operation should be a statement";
         private const string TypeMessageFormat = "Operation '{0}' should be a statement";
         private const string Description = "Operation should be a statement.";
-        private const string Category = "Framework";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

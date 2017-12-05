@@ -21,16 +21,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private const string MemberMessageFormat = "Class '{0}' contains {1} non-extension method '{2}'.";
         private const string Description = "Avoid static classes.";
-        private const string Category = "Class Design";
+
+        [NotNull]
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
         [NotNull]
         private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
-            Category, DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [NotNull]
         private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MemberMessageFormat, Category, DiagnosticSeverity.Warning, true, Description,
-            HelpLinkUris.GetForCategory(Category, DiagnosticId));
+            MemberMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(TypeRule, MemberRule);

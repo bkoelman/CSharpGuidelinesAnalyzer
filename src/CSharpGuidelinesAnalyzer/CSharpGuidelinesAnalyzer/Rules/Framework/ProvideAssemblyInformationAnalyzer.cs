@@ -15,11 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string Title = "Assembly-level attribute is missing or empty";
         private const string MessageFormat = "Assembly-level attribute '{0}' is missing or empty.";
         private const string Description = "Properly fill the attributes of the AssemblyInfo.cs file.";
-        private const string Category = "Framework";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

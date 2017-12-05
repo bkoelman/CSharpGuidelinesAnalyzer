@@ -15,11 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string Title = "A non-dynamic result is implicitly assigned to a dynamic identifier";
         private const string MessageFormat = "A non-dynamic result is implicitly assigned to dynamic identifier '{0}'.";
         private const string Description = "Only use the dynamic keyword when talking to a dynamic object.";
-        private const string Category = "Framework";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

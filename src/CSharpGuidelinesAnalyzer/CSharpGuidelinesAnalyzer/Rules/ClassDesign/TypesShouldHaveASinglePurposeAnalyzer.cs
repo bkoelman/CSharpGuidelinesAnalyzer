@@ -15,11 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string Title = "Type contains the word 'and'";
         private const string MessageFormat = "Type '{0}' contains the word 'and'.";
         private const string Description = "A class or interface should have a single purpose.";
-        private const string Category = "Class Design";
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category,
-            DiagnosticSeverity.Warning, true, Description, HelpLinkUris.GetForCategory(Category, DiagnosticId));
+        private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
