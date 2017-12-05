@@ -416,15 +416,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .InDefaultClass(@"
                     void M()
                     {
-                        void [|N|]() => [|throw new System.Exception()|];
+                        void [|N|]() => throw new System.Exception();
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Operation 'N' should be a statement",
-                "Operation 'throw new System.Exception()' should be a statement");
+                "Operation 'N' should be a statement");
         }
 
         [Fact(Skip = "TODO: Look into nested location reporting")]

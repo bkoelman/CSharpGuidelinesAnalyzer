@@ -84,6 +84,11 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static Location GetLocationForKeyword([NotNull] this IOperation operation,
             LookupKeywordStrategy lookupStrategy = LookupKeywordStrategy.PreferDoKeywordInDoWhileLoop)
         {
+            if (operation.IsImplicit)
+            {
+                return null;
+            }
+
             var visitor = new OperationLocationVisitor(lookupStrategy);
             return visitor.Visit(operation, null);
         }
@@ -119,7 +124,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     return whileSyntax.WhileKeyword.GetLocation();
                 }
 
-                throw ExceptionFactory.Unreachable();
+                return base.VisitWhileLoop(operation, argument);
             }
 
             [NotNull]
@@ -149,7 +154,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     return GetLocationForYieldStatement(yieldSyntax);
                 }
 
-                throw ExceptionFactory.Unreachable();
+                return base.VisitReturn(operation, argument);
             }
 
             [NotNull]
@@ -181,7 +186,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     }
                     default:
                     {
-                        throw ExceptionFactory.Unreachable();
+                        return base.VisitBranch(operation, argument);
                     }
                 }
             }
