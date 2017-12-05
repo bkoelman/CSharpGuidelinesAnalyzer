@@ -64,7 +64,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (IsSwitchComplete(analysisContext) == false)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, switchStatement.Syntax.GetLocation()));
+                Location location = switchStatement.GetLocationForKeyword() ?? switchStatement.Syntax.GetLocation();
+                context.ReportDiagnostic(Diagnostic.Create(Rule, location));
             }
         }
 

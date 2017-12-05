@@ -61,11 +61,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M(bool b)
                     {
-                        [|switch (b)
+                        [|switch|] (b)
                         {
                             case false:
                                 throw new NotImplementedException();
-                        }|]
+                        }
                     }
                 ")
                 .Build();
@@ -128,12 +128,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InDefaultClass(@"
                     void M(bool? b)
                     {
-                        [|switch (b)
+                        [|switch|] (b)
                         {
                             case true:
                             case false:
                                 throw new NotImplementedException();
-                        }|]
+                        }
                     }
                 ")
                 .Build();
@@ -226,12 +226,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                     void M(Status s)
                     {
-                        [|switch (s)
+                        [|switch|] (s)
                         {
                             case Status.Pending:
                             case Status.Active:
                                 throw new NotImplementedException();
-                        }|]
+                        }
                     }
                 ")
                 .Build();
@@ -301,13 +301,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                     void M(Status? s)
                     {
-                        [|switch (s)
+                        [|switch|] (s)
                         {
                             case Status.Pending:
                             case Status.Active:
                             case Status.Completed:
                                 throw new NotImplementedException();
-                        }|]
+                        }
                     }
                 ")
                 .Build();
