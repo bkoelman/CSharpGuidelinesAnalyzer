@@ -9,16 +9,16 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
-    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
+    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>2.0.1-pre</Version>
+    <Version>2.6.0</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 Update 3. Use v1.0.1 if you are using Visual Studio 2015 with Update 2 or higher.</Description>
-    <PackageReleaseNotes>Updated for IOperation API changes in Visual Studio 2017 Update 3. Use v1.0.1 if you are using Visual Studio 2015 with Update 2 or higher.</PackageReleaseNotes>
+    <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 Update 5 or higher.</Description>
+    <PackageReleaseNotes>Updated for IOperation API changes in Visual Studio 2017 Update 5.</PackageReleaseNotes>
     <Copyright>Apache License, Version 2.0</Copyright>
     <PackageTags>csharp c# coding guidelines analyzer</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
@@ -35,7 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="tools\*.ps1" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" />
-    <None Update="build\*.props" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="" />
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>

@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer
             public string GetMessage()
             {
                 return VersionStatusLazy.Value == VisualStudioVersionStatus.TooLow
-                    ? "This analyzer package requires Visual Studio 2017 Update 5 or later. Please upgrade to a newer version of Visual Studio."
+                    ? "This analyzer package requires Visual Studio 2017 Update 5 or higher. Please upgrade to a newer version of Visual Studio."
                     : null;
             }
 

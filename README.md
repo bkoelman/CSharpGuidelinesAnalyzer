@@ -12,11 +12,15 @@ See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/
 
 ## Get started
 
-The latest stable version requires [Visual Studio 2017 with Update 3](https://www.visualstudio.com/). To get instant feedback on all files in your solution, activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
+The latest stable version requires [Visual Studio 2017 with Update 5](https://www.visualstudio.com/). To get instant feedback on all files in your solution, activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
 
 * From the NuGet package manager console:
 
   `Install-Package CSharpGuidelinesAnalyzer` 
+
+  or, if you are using Visual Studio 2017 with Update 3:
+
+  `Install-Package CSharpGuidelinesAnalyzer -version 2.0.0`
 
   or, if you are using Visual Studio 2015 with Update 2 or higher:
 
