@@ -14,8 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     {
         [NotNull]
         private AnalyzerTestContext testContext = new AnalyzerTestContext(string.Empty, LanguageNames.CSharp)
-            .WithReferences(DefaultReferences)
-            .WithOperationFeature(OperationFeature.Enabled);
+            .WithReferences(DefaultReferences);
 
         [NotNull]
         [ItemNotNull]
