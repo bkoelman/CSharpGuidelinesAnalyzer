@@ -10,9 +10,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
-    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
+    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>2.6.1</Version>
+    <Version>2.6.2-pre</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
