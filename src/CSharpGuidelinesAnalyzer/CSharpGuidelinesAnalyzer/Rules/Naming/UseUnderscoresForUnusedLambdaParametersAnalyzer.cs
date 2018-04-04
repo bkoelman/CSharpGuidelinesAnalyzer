@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -40,11 +41,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             foreach (IParameterSymbol parameter in lambdaExpression.Symbol.Parameters)
             {
-                if (!ConsistsOfUnderscoresOnly(parameter.Name))
+                if (!IsSynthesized(parameter) && !ConsistsOfUnderscoresOnly(parameter.Name))
                 {
                     AnalyzeParameterUsage(parameter, lambdaExpression.Symbol, context);
                 }
             }
+        }
+
+        private bool IsSynthesized([NotNull] IParameterSymbol parameter)
+        {
+            return !parameter.Locations.Any();
         }
 
         private bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
