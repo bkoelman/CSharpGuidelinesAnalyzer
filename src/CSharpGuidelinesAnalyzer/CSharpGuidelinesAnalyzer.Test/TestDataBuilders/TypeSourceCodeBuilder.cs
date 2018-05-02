@@ -22,17 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         private void AppendTypes([NotNull] StringBuilder builder)
         {
-            int index = 0;
-            foreach (string type in types)
-            {
-                if (index > 0)
-                {
-                    builder.AppendLine();
-                }
-
-                builder.AppendLine(type.Trim());
-                index++;
-            }
+            string code = GetLinesOfCode(types);
+            builder.AppendLine(code);
         }
 
         [NotNull]

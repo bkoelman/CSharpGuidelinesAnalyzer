@@ -1,5 +1,5 @@
-﻿using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test
 {
@@ -8,11 +8,13 @@ namespace CSharpGuidelinesAnalyzer.Test
         [NotNull]
         public AnalyzerTestContext TestContext { get; }
 
-        public ParsedSourceCode([NotNull] AnalyzerTestContext testContext)
+        public ParsedSourceCode([NotNull] string sourceText, [NotNull] AnalyzerTestContext testContext)
         {
+            Guard.NotNull(sourceText, nameof(sourceText));
             Guard.NotNull(testContext, nameof(testContext));
 
-            TestContext = testContext;
+            var document = new FixableDocument(sourceText);
+            TestContext = testContext.WithCode(document.SourceText, document.SourceSpans);
         }
     }
 }

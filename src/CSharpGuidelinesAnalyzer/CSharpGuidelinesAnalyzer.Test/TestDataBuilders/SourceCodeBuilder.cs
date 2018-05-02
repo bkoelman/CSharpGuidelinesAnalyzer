@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
+using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
@@ -13,50 +17,29 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         [NotNull]
-        private AnalyzerTestContext testContext = new AnalyzerTestContext(string.Empty, LanguageNames.CSharp)
-            .WithReferences(DefaultReferences);
+        public static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty,
+            Array.Empty<TextSpan>(), LanguageNames.CSharp, new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
+
+        [NotNull]
+        private AnalyzerTestContext testContext = DefaultTestContext;
 
         [NotNull]
         [ItemNotNull]
-        private static readonly ImmutableHashSet<MetadataReference> DefaultReferences =
-            ImmutableHashSet.Create(new MetadataReference[]
-            {
-                MsCorLibAssembly,
-                SystemAssembly
-            });
+        private readonly HashSet<string> namespaceImports = new HashSet<string> { "System" };
 
         [NotNull]
-        private static PortableExecutableReference SystemAssembly => MetadataReference.CreateFromFile(typeof(Component).Assembly
-            .Location);
+        internal readonly CodeEditor Editor;
 
-        [NotNull]
-        private static PortableExecutableReference MsCorLibAssembly => MetadataReference.CreateFromFile(typeof(object).Assembly
-            .Location);
-
-        /// <summary>
-        /// Intended for internal use.
-        /// </summary>
-        [NotNull]
-        [ItemNotNull]
-        internal readonly HashSet<string> NamespaceImports = new HashSet<string> { "System" };
-
-        [NotNull]
-        public AnalyzerTestContext TestContext
+        protected SourceCodeBuilder()
         {
-            get => testContext;
-            set
-            {
-                Guard.NotNull(value, nameof(value));
-                testContext = value;
-            }
+            Editor = new CodeEditor(this);
         }
 
         public ParsedSourceCode Build()
         {
             string sourceText = GetCompleteSourceText();
-            TestContext = TestContext.WithMarkupCode(sourceText);
 
-            return new ParsedSourceCode(TestContext);
+            return new ParsedSourceCode(sourceText, testContext);
         }
 
         [NotNull]
@@ -73,9 +56,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         private void WriteNamespaceImports([NotNull] StringBuilder sourceBuilder)
         {
-            if (NamespaceImports.Any())
+            if (namespaceImports.Any())
             {
-                foreach (string namespaceImport in NamespaceImports)
+                foreach (string namespaceImport in namespaceImports)
                 {
                     sourceBuilder.AppendLine($"using {namespaceImport};");
                 }
@@ -86,5 +69,72 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         [NotNull]
         protected abstract string GetSourceCode();
+
+        [NotNull]
+        protected string GetLinesOfCode([NotNull] [ItemNotNull] IEnumerable<string> codeBlocks)
+        {
+            Guard.NotNull(codeBlocks, nameof(codeBlocks));
+
+            var builder = new StringBuilder();
+
+            bool isInFirstBlock = true;
+            foreach (string codeBlock in codeBlocks)
+            {
+                if (isInFirstBlock)
+                {
+                    isInFirstBlock = false;
+                }
+                else
+                {
+                    builder.AppendLine();
+                }
+
+                bool isOnFirstLineInBlock = true;
+                using (var reader = new StringReader(codeBlock.TrimEnd()))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (isOnFirstLineInBlock)
+                        {
+                            if (line.Trim().Length == 0)
+                            {
+                                continue;
+                            }
+
+                            isOnFirstLineInBlock = false;
+                        }
+
+                        builder.AppendLine(line);
+                    }
+                }
+            }
+
+            return builder.ToString();
+        }
+
+        internal sealed class CodeEditor
+        {
+            [NotNull]
+            private readonly SourceCodeBuilder owner;
+
+            public CodeEditor([NotNull] SourceCodeBuilder owner)
+            {
+                Guard.NotNull(owner, nameof(owner));
+                this.owner = owner;
+            }
+
+            public void UpdateTestContext([NotNull] Func<AnalyzerTestContext, AnalyzerTestContext> change)
+            {
+                Guard.NotNull(change, nameof(change));
+
+                owner.testContext = change(owner.testContext);
+            }
+
+            public void IncludeNamespaceImport([NotNull] string codeNamespace)
+            {
+                owner.namespaceImports.Add(codeNamespace);
+            }
+        }
     }
 }

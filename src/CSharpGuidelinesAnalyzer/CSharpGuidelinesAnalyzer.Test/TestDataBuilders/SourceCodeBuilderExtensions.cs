@@ -1,8 +1,7 @@
-﻿using System.Collections.Immutable;
-using System.Reflection;
-using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
+﻿using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
@@ -14,20 +13,25 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
-            Guard.NotNullNorWhiteSpace(codeNamespace, nameof(codeNamespace));
 
-            source.NamespaceImports.Add(codeNamespace);
+            if (!string.IsNullOrWhiteSpace(codeNamespace))
+            {
+                source.Editor.IncludeNamespaceImport(codeNamespace);
+            }
+
             return source;
         }
 
         [NotNull]
-        public static TBuilder InFileNamed<TBuilder>([NotNull] this TBuilder source, [NotNull] string filename)
+        public static TBuilder InFileNamed<TBuilder>([NotNull] this TBuilder source, [NotNull] string fileName)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
-            Guard.NotNullNorWhiteSpace(filename, nameof(filename));
+            Guard.NotNullNorWhiteSpace(fileName, nameof(fileName));
 
-            return source.UpdateTestContext(source.TestContext.InFileNamed(filename));
+            source.Editor.UpdateTestContext(context => context.InFileNamed(fileName));
+
+            return source;
         }
 
         [NotNull]
@@ -37,7 +41,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNull(source, nameof(source));
             Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
 
-            return source.UpdateTestContext(source.TestContext.InAssemblyNamed(assemblyName));
+            source.Editor.UpdateTestContext(context => context.InAssemblyNamed(assemblyName));
+
+            return source;
         }
 
         [NotNull]
@@ -48,9 +54,10 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNull(assembly, nameof(assembly));
 
             PortableExecutableReference reference = MetadataReference.CreateFromFile(assembly.Location);
-            ImmutableHashSet<MetadataReference> references = source.TestContext.References.Add(reference);
 
-            return source.UpdateTestContext(source.TestContext.WithReferences(references));
+            source.Editor.UpdateTestContext(context => context.WithReferences(context.References.Add(reference)));
+
+            return source;
         }
 
         [NotNull]
@@ -59,16 +66,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         {
             Guard.NotNull(source, nameof(source));
 
-            return source.UpdateTestContext(source.TestContext.WithDocumentationMode(DocumentationMode.Diagnose));
-        }
+            source.Editor.UpdateTestContext(context => context.WithDocumentationMode(DocumentationMode.Diagnose));
 
-        [NotNull]
-        public static TBuilder AllowingCompileErrors<TBuilder>([NotNull] this TBuilder source)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-
-            return source.UpdateTestContext(source.TestContext.InValidationMode(TestValidationMode.AllowCompileErrors));
+            return source;
         }
 
         [NotNull]
@@ -77,7 +77,20 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         {
             Guard.NotNull(source, nameof(source));
 
-            return source.UpdateTestContext(source.TestContext.CompileAtWarningLevel(warningLevel));
+            source.Editor.UpdateTestContext(context => context.CompileAtWarningLevel(warningLevel));
+
+            return source;
+        }
+
+        [NotNull]
+        public static TBuilder AllowingCompileErrors<TBuilder>([NotNull] this TBuilder source)
+            where TBuilder : SourceCodeBuilder
+        {
+            Guard.NotNull(source, nameof(source));
+
+            source.Editor.UpdateTestContext(context => context.InValidationMode(TestValidationMode.AllowCompileErrors));
+
+            return source;
         }
 
         [NotNull]
@@ -86,15 +99,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         {
             Guard.NotNull(source, nameof(source));
 
-            return source.UpdateTestContext(source.TestContext.AllowingDiagnosticsOutsideSourceTree());
-        }
+            source.Editor.UpdateTestContext(context => context.AllowingDiagnosticsOutsideSourceTree());
 
-        [NotNull]
-        private static TBuilder UpdateTestContext<TBuilder>([NotNull] this TBuilder source,
-            [NotNull] AnalyzerTestContext testContext)
-            where TBuilder : SourceCodeBuilder
-        {
-            source.TestContext = testContext;
             return source;
         }
     }
