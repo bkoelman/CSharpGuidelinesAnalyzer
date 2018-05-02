@@ -1,0 +1,3 @@
+[submodule "src/CSharpGuidelinesAnalyzer/CSharpGuidelinesAnalyzer.Test/RoslynTestFramework"]
+	path = src/CSharpGuidelinesAnalyzer/CSharpGuidelinesAnalyzer.Test/RoslynTestFramework
+	url = https://github.com/bkoelman/RoslynTestFramework
