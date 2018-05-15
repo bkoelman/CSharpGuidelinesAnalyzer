@@ -137,7 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override Location VisitForEachLoop([NotNull] IForEachLoopOperation operation, [CanBeNull] object argument)
             {
-                var syntax = (ForEachStatementSyntax)operation.Syntax;
+                var syntax = (CommonForEachStatementSyntax)operation.Syntax;
                 return syntax.ForEachKeyword.GetLocation();
             }
 
