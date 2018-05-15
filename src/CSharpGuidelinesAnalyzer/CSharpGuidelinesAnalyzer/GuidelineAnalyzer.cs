@@ -5,8 +5,6 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-[assembly: AssemblyTrademark("-")]
-
 namespace CSharpGuidelinesAnalyzer
 {
     public abstract class GuidelineAnalyzer : DiagnosticAnalyzer
