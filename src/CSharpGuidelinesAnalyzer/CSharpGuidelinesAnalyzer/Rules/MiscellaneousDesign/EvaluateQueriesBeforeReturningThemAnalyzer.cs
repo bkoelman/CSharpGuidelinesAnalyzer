@@ -413,6 +413,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     return first;
                 }
+
                 if (second.IsConclusive && second.IsDeferred)
                 {
                     return second;

@@ -222,6 +222,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     return true;
                 }
             }
+
             return false;
         }
 

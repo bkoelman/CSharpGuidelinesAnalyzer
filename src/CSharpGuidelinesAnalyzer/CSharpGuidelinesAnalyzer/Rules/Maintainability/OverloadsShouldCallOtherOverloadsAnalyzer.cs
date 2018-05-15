@@ -167,6 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     return false;
                 }
             }
+
             return true;
         }
 

@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
+  xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="CSharpGuidelinesAnalyzer..1d571424-b954-4fb3-8e9f-c8bcca9a17f0" Version="|%CurrentProject%;GetVsixPackageVersion|" Language="en-US" Publisher="Bart Koelman" />
+    <Identity Id="CSharpGuidelinesAnalyzer..1d571424-b954-4fb3-8e9f-c8bcca9a17f0"
+      Version="|%CurrentProject%;GetVsixPackageVersion|" Language="en-US" Publisher="Bart Koelman" />
     <DisplayName>CSharp Coding Guidelines Analyzer</DisplayName>
     <Description xml:space="preserve">Reports diagnostics for C# coding guidelines that are not already covered by Resharper.</Description>
     <MoreInfo>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</MoreInfo>
@@ -14,11 +16,14 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="CSharpGuidelinesAnalyzer" Path="|CSharpGuidelinesAnalyzer|" />
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="CSharpGuidelinesAnalyzer" Path="|CSharpGuidelinesAnalyzer|" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="CSharpGuidelinesAnalyzer"
+      Path="|CSharpGuidelinesAnalyzer|" />
+    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="CSharpGuidelinesAnalyzer"
+      Path="|CSharpGuidelinesAnalyzer|" />
   </Assets>
   <Prerequisites>
     <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />
-    <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0,16.0)" DisplayName="Roslyn Language Services" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0,16.0)"
+      DisplayName="Roslyn Language Services" />
   </Prerequisites>
 </PackageManifest>

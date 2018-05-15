@@ -107,6 +107,7 @@ namespace CSharpGuidelinesAnalyzer
             {
                 position++;
             }
+
             position++;
         }
 

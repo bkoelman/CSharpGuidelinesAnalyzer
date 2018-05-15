@@ -245,6 +245,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     caseClauseValues.Add(analysisContext.BooleanFalse);
                     return true;
                 }
+
                 return false;
             }
 
@@ -255,6 +256,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     caseClauseValues.Add(null);
                     return true;
                 }
+
                 return false;
             }
 
@@ -265,6 +267,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     caseClauseValues.Add(enumField.Field);
                     return true;
                 }
+
                 return false;
             }
         }
