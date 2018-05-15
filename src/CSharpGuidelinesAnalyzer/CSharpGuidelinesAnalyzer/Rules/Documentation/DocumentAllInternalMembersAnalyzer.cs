@@ -29,15 +29,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         [NotNull]
         private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MissingTypeOrMemberMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            MissingTypeOrMemberMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor MissingParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MissingParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            MissingParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor ExtraParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ExtraParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            ExtraParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

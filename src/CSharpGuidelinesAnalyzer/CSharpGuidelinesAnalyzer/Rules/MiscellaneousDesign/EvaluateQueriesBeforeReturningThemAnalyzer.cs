@@ -28,11 +28,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         [NotNull]
         private static readonly DiagnosticDescriptor OperationRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            OperationMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            OperationMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryMessageFormat,
-            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

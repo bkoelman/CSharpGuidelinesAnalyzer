@@ -29,15 +29,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         private static readonly DiagnosticDescriptor InvokeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            InvokeMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            InvokeMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor MakeVirtualRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MakeVirtualMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            MakeVirtualMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title, OrderMessageFormat,
-            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.HelpLinkUri);
+            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

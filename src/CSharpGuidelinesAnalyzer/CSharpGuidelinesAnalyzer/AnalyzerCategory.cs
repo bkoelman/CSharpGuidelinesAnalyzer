@@ -8,40 +8,48 @@ namespace CSharpGuidelinesAnalyzer
         public string Name { get; }
 
         [NotNull]
-        public string HelpLinkUri { get; }
+        private readonly string helpCategoryUri;
 
         [NotNull]
-        public static readonly AnalyzerCategory ClassDesign = new AnalyzerCategory("Class Design",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1000_ClassDesignGuidelines.md");
+        public static readonly AnalyzerCategory ClassDesign =
+            new AnalyzerCategory("Class Design", "https://csharpcodingguidelines.com/class-design-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory Documentation = new AnalyzerCategory("Documentation",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/2300_DocumentationGuidelines.md");
+        public static readonly AnalyzerCategory MemberDesign =
+            new AnalyzerCategory("Member Design", "https://csharpcodingguidelines.com/member-design-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory Framework = new AnalyzerCategory("Framework",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/2200_FrameworkGuidelines.md");
+        public static readonly AnalyzerCategory MiscellaneousDesign =
+            new AnalyzerCategory("Miscellaneous Design", "https://csharpcodingguidelines.com/misc-design-guidelines/");
 
         [NotNull]
         public static readonly AnalyzerCategory Maintainability = new AnalyzerCategory("Maintainability",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1500_MaintainabilityGuidelines.md");
+            "https://csharpcodingguidelines.com/maintainability-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory MemberDesign = new AnalyzerCategory("Member Design",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1100_MemberDesignGuidelines.md");
+        public static readonly AnalyzerCategory Naming =
+            new AnalyzerCategory("Naming", "https://csharpcodingguidelines.com/naming-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory MiscellaneousDesign = new AnalyzerCategory("Miscellaneous Design",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1200_MiscellaneousDesignGuidelines.md");
+        public static readonly AnalyzerCategory Framework = new AnalyzerCategory("Framework",
+            "https://csharpcodingguidelines.com/framework-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory Naming = new AnalyzerCategory("Naming",
-            "https://github.com/dennisdoomen/CSharpGuidelines/blob/master/Src/Guidelines/1700_NamingGuidelines.md");
+        public static readonly AnalyzerCategory Documentation = new AnalyzerCategory("Documentation",
+            "https://csharpcodingguidelines.com/documentation-guidelines/");
 
-        private AnalyzerCategory([NotNull] string name, [NotNull] string helpLinkUri)
+        private AnalyzerCategory([NotNull] string name, [NotNull] string categoryUri)
         {
             Name = name;
-            HelpLinkUri = helpLinkUri;
+            helpCategoryUri = categoryUri;
+        }
+
+        [NotNull]
+        public string GetHelpLinkUri([NotNull] string ruleId)
+        {
+            Guard.NotNullNorWhiteSpace(ruleId, nameof(ruleId));
+
+            return helpCategoryUri + "#" + ruleId.ToLowerInvariant();
         }
     }
 }
