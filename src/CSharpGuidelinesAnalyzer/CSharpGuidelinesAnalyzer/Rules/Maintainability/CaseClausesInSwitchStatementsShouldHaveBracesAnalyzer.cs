@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private const string Title = "Missing block in case statement";
         private const string MessageFormat = "Missing block in case statement.";
-        private const string Description = "Always add a block after keywords such as if, else, while, for, foreach and case.";
+        private const string Description = "Always add a block after the keywords if, else, do, while, for, foreach and case.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

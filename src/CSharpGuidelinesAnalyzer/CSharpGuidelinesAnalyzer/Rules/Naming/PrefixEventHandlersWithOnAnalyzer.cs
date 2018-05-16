@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private const string Title = "Event handlers should be named according to a pattern";
         private const string MessageFormat = "Method '{0}' that handles event '{1}' should be renamed to '{2}'.";
-        private const string Description = "Prefix an event handler with On.";
+        private const string Description = "Prefix an event handler with \"On\".";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

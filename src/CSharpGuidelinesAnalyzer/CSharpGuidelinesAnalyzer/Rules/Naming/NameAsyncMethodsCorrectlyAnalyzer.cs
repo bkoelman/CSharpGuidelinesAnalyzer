@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private const string Title = "Name of async method should end with Async or TaskAsync";
         private const string MessageFormat = "Name of async method '{0}' should end with Async or TaskAsync.";
-        private const string Description = "Post-fix asynchronous methods with Async or TaskAsync.";
+        private const string Description = "Postfix asynchronous methods with Async or TaskAsync.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

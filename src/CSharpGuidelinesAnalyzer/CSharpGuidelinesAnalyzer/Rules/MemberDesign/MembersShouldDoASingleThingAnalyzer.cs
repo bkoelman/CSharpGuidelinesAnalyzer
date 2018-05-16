@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private const string Title = "Member contains the word 'and'";
         private const string MessageFormat = "{0} '{1}' contains the word 'and'.";
-        private const string Description = "A method or property should do only one thing.";
+        private const string Description = "A property, method or local function should do only one thing.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;

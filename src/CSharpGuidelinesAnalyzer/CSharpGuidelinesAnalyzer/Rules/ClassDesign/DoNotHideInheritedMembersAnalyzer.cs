@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private const string Title = "Member hides inherited member";
         private const string MessageFormat = "'{0}' hides inherited member.";
-        private const string Description = "Don't hide inherited members with the new keyword.";
+        private const string Description = "Don't suppress compiler warnings using the new keyword.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;

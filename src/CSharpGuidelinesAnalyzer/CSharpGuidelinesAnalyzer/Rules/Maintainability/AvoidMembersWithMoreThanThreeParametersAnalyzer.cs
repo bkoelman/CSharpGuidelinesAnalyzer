@@ -13,11 +13,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class AvoidMembersWithMoreThanThreeParametersAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1561";
-        private const int MaxParameterLength = 3;
 
-        private const string Title = "Method or constructor contains more than three parameters";
-        private const string MessageFormat = "{0} contains more than three parameters.";
-        private const string Description = "Don't allow methods and constructors with more than three parameters.";
+        private const int MaxParameterLength = 3;
+        private const string MaxParameterLengthText = "3";
+
+        private const string Title = "Method or constructor contains more than " + MaxParameterLengthText + " parameters";
+        private const string MessageFormat = "{0} contains more than " + MaxParameterLengthText + " parameters.";
+        private const string Description = "Don’t declare signatures with more than " + MaxParameterLengthText + " parameters.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

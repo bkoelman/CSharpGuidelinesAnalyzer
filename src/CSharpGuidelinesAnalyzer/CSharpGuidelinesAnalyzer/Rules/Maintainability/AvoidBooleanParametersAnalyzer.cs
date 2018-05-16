@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private const string Title = "Parameter is of type bool or bool?";
         private const string MessageFormat = "Parameter '{0}' is of type '{1}'.";
-        private const string Description = "Avoid methods that take a bool flag.";
+        private const string Description = "Avoid signatures that take a bool parameter.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
