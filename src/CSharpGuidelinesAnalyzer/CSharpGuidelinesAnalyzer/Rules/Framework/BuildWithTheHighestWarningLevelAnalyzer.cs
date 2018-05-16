@@ -8,6 +8,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class BuildWithTheHighestWarningLevelAnalyzer : GuidelineAnalyzer
     {
+        // TODO: Also report when not building with warn-as-error.
+
         public const string DiagnosticId = "AV2210";
 
         private const string Title = "Compiler warning level is set too low";

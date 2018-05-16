@@ -34,9 +34,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 [CanBeNull] object argument)
             {
                 var name = new IdentifierName(operation.Parameter.Name,
-#pragma warning disable AV2310 // Code blocks should not contain inline comments
+#pragma warning disable AV2310 // Code block should not contain inline comment
                     /* CSharpShortErrorMessageFormat returns 'int', ie. without parameter name */
-#pragma warning restore AV2310 // Code blocks should not contain inline comments
+#pragma warning restore AV2310 // Code block should not contain inline comment
                     operation.Parameter.Name);
                 return new IdentifierInfo(name, operation.Parameter.Type, operation.Parameter.Kind.ToString());
             }
