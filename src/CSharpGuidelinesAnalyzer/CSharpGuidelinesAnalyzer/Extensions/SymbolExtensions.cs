@@ -21,15 +21,53 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(member, nameof(member));
 
-            SyntaxNode syntax = member.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
+            foreach (SyntaxReference reference in member.DeclaringSyntaxReferences)
+            {
+                SyntaxNode syntax = reference.GetSyntax(cancellationToken);
+                SyntaxTokenList? modifiers = TryGetModifiers(syntax);
 
-            var method = syntax as MethodDeclarationSyntax;
-            var propertyEventIndexer = syntax as BasePropertyDeclarationSyntax;
+                if (ContainsNewModifier(modifiers))
+                {
+                    return true;
+                }
+            }
 
-            EventFieldDeclarationSyntax eventField =
-                member is IEventSymbol ? syntax.FirstAncestorOrSelf<EventFieldDeclarationSyntax>() : null;
+            return false;
+        }
 
-            return ContainsNewModifier(method?.Modifiers ?? propertyEventIndexer?.Modifiers ?? eventField?.Modifiers);
+        [CanBeNull]
+        private static SyntaxTokenList? TryGetModifiers([CanBeNull] SyntaxNode syntax)
+        {
+            switch (syntax)
+            {
+                case MethodDeclarationSyntax methodSyntax:
+                {
+                    return methodSyntax.Modifiers;
+                }
+                case BasePropertyDeclarationSyntax propertyEventIndexerSyntax:
+                {
+                    return propertyEventIndexerSyntax.Modifiers;
+                }
+                case VariableDeclaratorSyntax _:
+                {
+                    if (syntax.Parent.Parent is BaseFieldDeclarationSyntax eventFieldSyntax)
+                    {
+                        return eventFieldSyntax.Modifiers;
+                    }
+
+                    break;
+                }
+                case BaseTypeDeclarationSyntax typeSyntax:
+                {
+                    return typeSyntax.Modifiers;
+                }
+                case DelegateDeclarationSyntax delegateSyntax:
+                {
+                    return delegateSyntax.Modifiers;
+                }
+            }
+
+            return null;
         }
 
         public static bool AreDocumentationCommentsReported([NotNull] this ISymbol symbol)

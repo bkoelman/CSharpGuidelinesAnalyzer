@@ -10,7 +10,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         protected override string DiagnosticId => DoNotHideInheritedMemberAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_base_property_is_overridden_it_must_be_skipped()
+        internal void When_field_hides_base_field_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public string F;
+                    }
+
+                    class C : B
+                    {
+                        public new string [|F|];
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.F' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_property_overrides_base_property_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -52,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_base_property_is_hidden_it_must_be_reported()
+        internal void When_property_hides_base_property_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -95,7 +118,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_base_method_is_overridden_it_must_be_skipped()
+        internal void When_method_overrides_base_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -121,7 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_base_method_is_hidden_it_must_be_reported()
+        internal void When_method_hides_base_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -148,7 +171,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_base_event_is_overridden_it_must_be_skipped()
+        internal void When_event_overrides_base_event_with_accessors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -190,7 +213,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_base_event_is_hidden_it_must_be_reported()
+        internal void When_event_hides_base_event_with_accessors_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -233,7 +256,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_default_base_event_is_hidden_it_must_be_reported()
+        internal void When_event_overrides_base_event_without_accessors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -241,6 +264,237 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                     class B
                     {
                         public virtual event EventHandler Changed;
+                    }
+
+                    class C : B
+                    {
+                        public override event EventHandler Changed;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_event_hides_base_event_without_accessors_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public virtual event EventHandler Changed;
+                    }
+
+                    class C : B
+                    {
+                        public new event EventHandler [|Changed|];
+                    }
+
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.Changed' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_nested_class_hides_base_nested_struct_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public struct S
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                        public new class [|S|]
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.S' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_nested_struct_hides_base_nested_class_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public class S
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                        public new struct [|S|]
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.S' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_delegate_hides_base_property_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public int P
+                        {
+                            get; set;
+                        }
+                    }
+
+                    class C : B
+                    {
+                        public new delegate void [|P|](string s);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.P' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_property_hides_base_delegate_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public delegate void P(string s);
+                    }
+
+                    class C : B
+                    {
+                        public new int [|P|]
+                        {
+                            get; set;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.P' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_nested_enum_hides_base_field_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public int F;
+                    }
+
+                    class C : B
+                    {
+                        public new enum [|F|]
+                        {
+                            A, B
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.F' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_field_hides_base_nested_enum_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public enum F
+                        {
+                            A, B
+                        }
+                    }
+
+                    class C : B
+                    {
+                        public new int [|F|];
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.F' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_nested_interface_hides_base_event_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public event EventHandler Changed;
+                    }
+
+                    class C : B
+                    {
+                        public new interface [|Changed|]
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'C.Changed' hides inherited member.");
+        }
+
+        [Fact]
+        internal void When_event_hides_base_nested_interface_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        public interface Changed
+                        {
+                        }
                     }
 
                     class C : B

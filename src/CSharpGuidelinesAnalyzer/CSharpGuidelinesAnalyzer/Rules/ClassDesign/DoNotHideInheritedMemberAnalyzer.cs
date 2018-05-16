@@ -9,8 +9,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotHideInheritedMemberAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Also check for nested types, which use it to shadow a base member
-
         public const string DiagnosticId = "AV1010";
 
         private const string Title = "Member hides inherited member";
@@ -27,8 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Event);
+        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Field,
+            SymbolKind.Property, SymbolKind.Method, SymbolKind.Event, SymbolKind.NamedType);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -40,6 +38,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
+            if (context.Symbol is INamedTypeSymbol typeSymbol && typeSymbol.ContainingType == null)
+            {
+                return;
+            }
+
             if (context.Symbol.IsPropertyOrEventAccessor())
             {
                 return;
