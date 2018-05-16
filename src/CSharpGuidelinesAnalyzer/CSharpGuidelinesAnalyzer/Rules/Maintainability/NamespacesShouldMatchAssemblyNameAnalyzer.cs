@@ -30,17 +30,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         private static readonly DiagnosticDescriptor NamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            NamespaceMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            NamespaceMessageFormat, Category.Name, DiagnosticSeverity.Info, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor TypeInNamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TypeInNamespaceMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            TypeInNamespaceMessageFormat, Category.Name, DiagnosticSeverity.Info, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor GlobalTypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            GlobalTypeMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            GlobalTypeMessageFormat, Category.Name, DiagnosticSeverity.Info, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
