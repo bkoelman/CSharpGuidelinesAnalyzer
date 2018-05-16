@@ -1,20 +1,20 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class MemberShouldDoASingleThingAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Also check local function names
-
         public const string DiagnosticId = "AV1115";
 
-        private const string Title = "Member contains the word 'and', which suggests it does multiple things";
+        private const string Title = "Member or local function contains the word 'and', which suggests it does multiple things";
         private const string MessageFormat = "{0} '{1}' contains the word 'and', which suggests it does multiple things.";
         private const string Description = "A property, method or local function should do only one thing.";
 
@@ -40,19 +40,32 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsUnitTestMethod())
+            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic, context.Symbol.Kind.ToString());
+        }
+
+        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        {
+            var operation = (ILocalFunctionOperation)context.Operation;
+
+            AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic, "Local function");
+        }
+
+        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic,
+            [NotNull] string kind)
+        {
+            if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod())
             {
                 return;
             }
 
-            if (ContainsBlacklistedWord(context.Symbol.Name))
+            if (ContainsBlacklistedWord(symbol.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
-                    context.Symbol.Name));
+                reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], kind, symbol.Name));
             }
         }
 

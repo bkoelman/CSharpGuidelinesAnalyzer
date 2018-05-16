@@ -48,6 +48,58 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
+        internal void When_local_function_name_contains_the_word_And_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct C
+                    {
+                        void M()
+                        {
+                            void [|SaveCustomerAndOrder|]()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests it does multiple things.");
+        }
+
+        [Fact]
+        internal void When_nested_local_function_name_contains_the_word_And_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct C
+                    {
+                        void M()
+                        {
+                            void N()
+                            {
+                                void O()
+                                {
+                                    void [|SaveCustomerAndOrder|]()
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests it does multiple things.");
+        }
+
+        [Fact]
         internal void When_field_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
