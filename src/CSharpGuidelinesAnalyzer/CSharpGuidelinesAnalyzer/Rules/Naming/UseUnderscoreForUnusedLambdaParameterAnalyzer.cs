@@ -9,16 +9,13 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseDiscardForUnusedParameterAnalyzer : GuidelineAnalyzer
+    public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Also check for non-lambda parameters
-        // TODO: Make sure using a discard (not multiple underscores)
-
         public const string DiagnosticId = "AV1739";
 
-        private const string Title = "Unused parameter should be replaced by discard";
-        private const string MessageFormat = "Unused parameter '{0}' should be replaced by a discard.";
-        private const string Description = "Use an underscore for irrelevant parameters.";
+        private const string Title = "Unused lambda parameter should be renamed to underscore(s)";
+        private const string MessageFormat = "Unused lambda parameter '{0}' should be renamed to underscore(s).";
+        private const string Description = "Use an underscore for irrelevant lambda parameters.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

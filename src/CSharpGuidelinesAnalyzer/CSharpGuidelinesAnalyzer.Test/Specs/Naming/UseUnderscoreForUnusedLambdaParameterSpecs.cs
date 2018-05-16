@@ -5,12 +5,12 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public sealed class UseDiscardForUnusedParameterSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => UseDiscardForUnusedParameterAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => UseUnderscoreForUnusedLambdaParameterAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_lamda_parameter_is_unused_in_body_it_must_be_reported()
+        internal void When_lambda_parameter_is_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -28,11 +28,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Unused parameter 'x' should be replaced by a discard.");
+                "Unused lambda parameter 'x' should be renamed to underscore(s).");
         }
 
         [Fact]
-        internal void When_lamda_parameters_are_unused_in_body_it_must_be_reported()
+        internal void When_lambda_parameters_are_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -53,12 +53,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Unused parameter 'x' should be replaced by a discard.",
-                "Unused parameter 'y' should be replaced by a discard.");
+                "Unused lambda parameter 'x' should be renamed to underscore(s).",
+                "Unused lambda parameter 'y' should be renamed to underscore(s).");
         }
 
         [Fact]
-        internal void When_unused_lamda_parameter_is_named_underscore_it_must_be_skipped()
+        internal void When_unused_lambda_parameter_is_named_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_unused_lamda_parameters_are_named_with_underscores_it_must_be_skipped()
+        internal void When_unused_lambda_parameters_are_named_with_underscores_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -100,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_lamda_parameter_is_read_from_in_body_it_must_be_skipped()
+        internal void When_lambda_parameter_is_read_from_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_lamda_parameter_is_written_to_in_body_it_must_be_skipped()
+        internal void When_lambda_parameter_is_written_to_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -146,7 +146,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_lamda_parameter_is_captured_in_body_it_must_be_skipped()
+        internal void When_lambda_parameter_is_captured_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -175,7 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new UseDiscardForUnusedParameterAnalyzer();
+            return new UseUnderscoreForUnusedLambdaParameterAnalyzer();
         }
     }
 }
