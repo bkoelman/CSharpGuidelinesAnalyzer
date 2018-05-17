@@ -5,9 +5,9 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public sealed class NamePropertiesWithAnAffirmativePhraseSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => NamePropertiesWithAnAffirmativePhraseAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => NamePropertyWithAnAffirmativePhraseAnalyzer.DiagnosticId;
 
         [Fact]
         internal void When_public_field_type_is_int_it_must_be_skipped()
@@ -1081,7 +1081,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new NamePropertiesWithAnAffirmativePhraseAnalyzer();
+            return new NamePropertyWithAnAffirmativePhraseAnalyzer();
         }
     }
 }

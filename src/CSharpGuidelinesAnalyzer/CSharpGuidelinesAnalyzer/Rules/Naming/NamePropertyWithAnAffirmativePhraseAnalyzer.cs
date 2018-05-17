@@ -9,11 +9,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NamePropertiesWithAnAffirmativePhraseAnalyzer : GuidelineAnalyzer
+    public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : GuidelineAnalyzer
     {
         public const string DiagnosticId = "AV1715";
 
-        private const string Title = "The name of boolean identifiers should start with a verb";
+        private const string Title = "Name of boolean identifier should start with a verb";
         private const string MessageFormat = "The name of boolean {0} '{1}' should start with a verb.";
         private const string Description = "Properly name properties.";
 

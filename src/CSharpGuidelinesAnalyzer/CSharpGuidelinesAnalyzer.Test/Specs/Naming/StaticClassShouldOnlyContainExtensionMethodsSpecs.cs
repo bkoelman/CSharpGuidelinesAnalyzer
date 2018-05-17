@@ -5,9 +5,9 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-    public sealed class StaticClassesShouldOnlyContainExtensionMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => StaticClassesShouldOnlyContainExtensionMethodsAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => StaticClassShouldOnlyContainExtensionMethodsAnalyzer.DiagnosticId;
 
         [Fact]
         internal void When_class_is_not_static_it_must_be_skipped()
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new StaticClassesShouldOnlyContainExtensionMethodsAnalyzer();
+            return new StaticClassShouldOnlyContainExtensionMethodsAnalyzer();
         }
     }
 }
