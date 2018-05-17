@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_static_class_has_no_extension_methods_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal void When_static_class_contains_no_members_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -59,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_static_class_has_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal void When_static_class_contains_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_static_class_has_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal void When_static_class_contains_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -105,7 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_static_class_has_public_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal void When_static_class_contains_public_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -121,11 +121,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Class 'SomeExtensions' contains public non-extension method 'M'.");
+                "Extension method container class 'SomeExtensions' contains public non-extension-method 'M'.");
         }
 
         [Fact]
-        internal void When_static_class_has_internal_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal void When_static_class_contains_internal_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -141,7 +141,101 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Class 'SomeExtensions' contains internal non-extension method 'M'.");
+                "Extension method container class 'SomeExtensions' contains internal non-extension-method 'M'.");
+        }
+
+        [Fact]
+        internal void When_static_class_contains_public_const_field_and_name_ends_with_Extensions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        public const int [|C|] = 1;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Extension method container class 'SomeExtensions' contains public non-extension-method 'C'.");
+        }
+
+        [Fact]
+        internal void When_static_class_contains_public_static_field_and_name_ends_with_Extensions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        public static readonly int [|F|] = 1;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Extension method container class 'SomeExtensions' contains public non-extension-method 'F'.");
+        }
+
+        [Fact]
+        internal void When_static_class_contains_public_static_property_and_name_ends_with_Extensions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        public static int [|P|]
+                        {
+                            get; set;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Extension method container class 'SomeExtensions' contains public non-extension-method 'P'.");
+        }
+
+        [Fact]
+        internal void When_static_class_contains_public_static_event_and_name_ends_with_Extensions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        public static event EventHandler [|E|];
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Extension method container class 'SomeExtensions' contains public non-extension-method 'E'.");
+        }
+
+        [Fact]
+        internal void When_static_class_contains_static_constructor_and_name_ends_with_Extensions_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        static SomeExtensions()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

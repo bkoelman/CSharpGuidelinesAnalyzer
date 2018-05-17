@@ -19,7 +19,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string TypeMessageFormat =
             "Class '{0}' should be non-static or its name should be suffixed with 'Extensions'.";
 
-        private const string MemberMessageFormat = "Class '{0}' contains {1} non-extension method '{2}'.";
+        private const string MemberMessageFormat =
+            "Extension method container class '{0}' contains {1} non-extension-method '{2}'.";
+
         private const string Description = "Avoid static classes.";
 
         [NotNull]
@@ -60,26 +62,42 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             }
             else
             {
-                AnalyzeAccessibleMethods(type, context);
+                AnalyzeTypeMembers(type, context);
             }
         }
 
-        private static void AnalyzeAccessibleMethods([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
+        private static void AnalyzeTypeMembers([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
         {
-            IEnumerable<IMethodSymbol> accessibleMethods = type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal);
+            IEnumerable<ISymbol> accessibleMembers =
+                type.GetMembers().Where(IsPublicOrInternal).Where(x => !x.IsPropertyOrEventAccessor());
 
-            foreach (IMethodSymbol method in accessibleMethods.Where(method =>
-                !method.IsExtensionMethod && !method.IsSynthesized()))
+            foreach (ISymbol member in accessibleMembers)
             {
-                context.CancellationToken.ThrowIfCancellationRequested();
-
-                string accessibility = method.DeclaredAccessibility == Accessibility.Public ? "public" : "internal";
-                context.ReportDiagnostic(
-                    Diagnostic.Create(MemberRule, method.Locations[0], type.Name, accessibility, method.Name));
+                AnalyzeAccessibleMember(member, type, context);
             }
         }
 
-        private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
+        private static void AnalyzeAccessibleMember([NotNull] ISymbol member, [NotNull] INamedTypeSymbol containingType,
+            SymbolAnalysisContext context)
+        {
+            context.CancellationToken.ThrowIfCancellationRequested();
+
+            if (member.IsSynthesized())
+            {
+                return;
+            }
+
+            if (member is IMethodSymbol method && (method.IsExtensionMethod || method.MethodKind == MethodKind.StaticConstructor))
+            {
+                return;
+            }
+
+            string accessibility = member.DeclaredAccessibility == Accessibility.Public ? "public" : "internal";
+            context.ReportDiagnostic(Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility,
+                member.Name));
+        }
+
+        private static bool IsPublicOrInternal([NotNull] ISymbol method)
         {
             return method.DeclaredAccessibility == Accessibility.Public || method.DeclaredAccessibility == Accessibility.Internal;
         }
