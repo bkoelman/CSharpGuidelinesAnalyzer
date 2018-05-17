@@ -10,9 +10,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidBooleanParameterAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Also check constructors, delegates and local functions
-        // TODO: Add exception for Deconstruct() method
-
         public const string DiagnosticId = "AV1564";
 
         private const string Title = "Parameter is of type bool or bool?";
@@ -40,6 +37,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol)context.Symbol;
+
+            if (parameter.ContainingSymbol.Name == "Deconstruct")
+            {
+                return;
+            }
 
             if (IsParameterAccessible(parameter) && parameter.Type.IsBooleanOrNullableBoolean())
             {

@@ -60,6 +60,76 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_public_method_parameter_type_is_bool_in_Deconstruct_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public string Text;
+                        public bool IsEnabled;
+
+                        public void Deconstruct(out string text, out bool isEnabled)
+                        {
+                            text = Text;
+                            isEnabled = IsEnabled;
+                        }
+
+                        static void Test()
+                        {
+                            S s = new S
+                            {
+                                Text = string.Empty,
+                                IsEnabled = true
+                            };
+
+                            (string a, bool b) = s;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_public_constructor_parameter_type_is_bool_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public C(bool [|b|])
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'b' is of type 'bool'.");
+        }
+
+        [Fact]
+        internal void When_public_delegate_parameter_type_is_bool_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public delegate void D(bool [|b|]);
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'b' is of type 'bool'.");
+        }
+
+        [Fact]
         internal void When_public_property_is_bool_it_must_be_skipped()
         {
             // Arrange
