@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -37,21 +36,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeLambdaExpression(OperationAnalysisContext context)
         {
-
             var lambdaExpression = (IAnonymousFunctionOperation)context.Operation;
 
             foreach (IParameterSymbol parameter in lambdaExpression.Symbol.Parameters)
             {
-                if (!IsSynthesized(parameter) && !ConsistsOfUnderscoresOnly(parameter.Name))
+                if (!parameter.IsSynthesized() && !ConsistsOfUnderscoresOnly(parameter.Name))
                 {
                     AnalyzeParameterUsage(parameter, lambdaExpression.Symbol, context);
                 }
             }
-        }
-
-        private bool IsSynthesized([NotNull] IParameterSymbol parameter)
-        {
-            return !parameter.Locations.Any();
         }
 
         private bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)

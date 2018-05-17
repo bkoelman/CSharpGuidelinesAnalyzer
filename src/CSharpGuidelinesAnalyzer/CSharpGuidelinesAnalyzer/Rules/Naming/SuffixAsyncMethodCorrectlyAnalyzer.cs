@@ -38,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal))
+            if (method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
                     method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));

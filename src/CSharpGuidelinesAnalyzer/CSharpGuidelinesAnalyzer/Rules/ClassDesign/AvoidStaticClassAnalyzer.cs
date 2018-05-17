@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
-            if (!type.IsStatic)
+            if (!type.IsStatic || type.IsSynthesized())
             {
                 return;
             }
@@ -68,12 +68,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         {
             IEnumerable<IMethodSymbol> accessibleMethods = type.GetMembers().OfType<IMethodSymbol>().Where(IsPublicOrInternal);
 
-            foreach (IMethodSymbol method in accessibleMethods.Where(method => !method.IsExtensionMethod))
+            foreach (IMethodSymbol method in accessibleMethods.Where(method =>
+                !method.IsExtensionMethod && !method.IsSynthesized()))
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                context.ReportDiagnostic(Diagnostic.Create(MemberRule, method.Locations[0], type.Name,
-                    method.DeclaredAccessibility == Accessibility.Public ? "public" : "internal", method.Name));
+                string accessibility = method.DeclaredAccessibility == Accessibility.Public ? "public" : "internal";
+                context.ReportDiagnostic(
+                    Diagnostic.Create(MemberRule, method.Locations[0], type.Name, accessibility, method.Name));
             }
         }
 

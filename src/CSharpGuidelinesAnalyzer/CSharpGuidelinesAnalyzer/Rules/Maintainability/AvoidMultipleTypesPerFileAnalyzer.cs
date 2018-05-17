@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -61,11 +62,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static void ReportType(SemanticModelAnalysisContext context, [NotNull] SyntaxNode typeSyntax)
         {
-            string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
             ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(typeSyntax, context.CancellationToken);
-            string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
 
-            context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName));
+            if (!symbol.IsSynthesized())
+            {
+                string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
+                string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+
+                context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName));
+            }
         }
 
         private sealed class TopLevelTypeSyntaxWalker : SyntaxWalker

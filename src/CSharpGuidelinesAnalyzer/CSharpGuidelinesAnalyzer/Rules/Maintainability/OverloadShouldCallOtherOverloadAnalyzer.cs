@@ -98,7 +98,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     IMethodSymbol methodToReport = longestOverload.PartialImplementationPart ?? longestOverload;
 
-                    context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
+                    if (!methodToReport.IsSynthesized())
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
+                    }
                 }
 
                 AnalyzeOverloads(methodGroup, longestOverload, context);
@@ -122,8 +125,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
 
-                    context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
-                        methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                    if (!methodToReport.IsSynthesized())
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
+                            methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                    }
                 }
             }
         }
@@ -149,7 +155,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             List<IParameterSymbol> parametersInlongestOverload = longestOverload.Parameters.ToList();
 
-            if (!AreParametersDeclaredInSameOrder(method, parametersInlongestOverload))
+            if (!AreParametersDeclaredInSameOrder(method, parametersInlongestOverload) && !method.IsSynthesized())
             {
                 context.ReportDiagnostic(Diagnostic.Create(OrderRule, method.Locations[0],
                     method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));

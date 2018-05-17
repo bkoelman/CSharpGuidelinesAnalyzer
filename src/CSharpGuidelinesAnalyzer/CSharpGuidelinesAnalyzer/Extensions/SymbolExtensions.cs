@@ -305,5 +305,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             return symbol.Kind.ToString();
         }
+
+        public static bool IsSynthesized([NotNull] this ISymbol symbol)
+        {
+            Guard.NotNull(symbol, nameof(symbol));
+
+            return !symbol.Locations.Any();
+        }
     }
 }

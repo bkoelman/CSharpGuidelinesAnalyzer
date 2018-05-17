@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.RefKind != RefKind.None || IsNonIntegralStruct(parameter))
+            if (parameter.RefKind != RefKind.None || IsNonIntegralStruct(parameter) || parameter.IsSynthesized())
             {
                 return;
             }

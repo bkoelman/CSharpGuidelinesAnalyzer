@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
-            if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod())
+            if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod() || symbol.IsSynthesized())
             {
                 return;
             }

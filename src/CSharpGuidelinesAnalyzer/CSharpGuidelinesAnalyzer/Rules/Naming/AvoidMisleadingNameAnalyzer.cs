@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var declarator = (IVariableDeclaratorOperation)context.Operation;
             ILocalSymbol variable = declarator.Symbol;
 
-            if (Blacklist.Contains(variable.Name))
+            if (Blacklist.Contains(variable.Name) && !variable.IsSynthesized())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
             }
@@ -55,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (Blacklist.Contains(parameter.Name))
+            if (Blacklist.Contains(parameter.Name) && !parameter.IsSynthesized())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }

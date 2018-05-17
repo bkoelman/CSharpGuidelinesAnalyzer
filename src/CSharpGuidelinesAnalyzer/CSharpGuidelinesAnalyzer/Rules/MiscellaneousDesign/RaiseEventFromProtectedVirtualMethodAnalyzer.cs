@@ -135,13 +135,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         {
             if (method == null || method.MethodKind != MethodKind.Ordinary)
             {
-                Location location = method != null ? method.Locations[0] : context.Operation.Syntax.GetLocation();
+                Location location = method != null && !method.IsSynthesized()
+                    ? method.Locations[0]
+                    : context.Operation.Syntax.GetLocation();
+
                 context.ReportDiagnostic(Diagnostic.Create(KindRule, location, evnt.Name));
             }
             else
             {
-                AnalyzeMethodName(method, evnt, context);
-                AnalyzeMethodSignature(method, evnt, context);
+                if (!method.IsSynthesized())
+                {
+                    AnalyzeMethodName(method, evnt, context);
+                    AnalyzeMethodSignature(method, evnt, context);
+                }
             }
         }
 

@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
                 return;
             }
 
-            if (context.Symbol.IsPropertyOrEventAccessor())
+            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsSynthesized())
             {
                 return;
             }

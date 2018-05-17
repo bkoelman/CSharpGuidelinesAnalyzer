@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor())
+            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsSynthesized())
             {
                 return;
             }

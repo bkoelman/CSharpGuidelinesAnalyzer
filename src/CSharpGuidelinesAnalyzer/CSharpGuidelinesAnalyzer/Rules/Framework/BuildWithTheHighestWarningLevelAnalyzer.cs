@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private void AnalyzeCompilationOptions(CompilationAnalysisContext context)
         {
-            var options = context.Compilation.Options;
+            CompilationOptions options = context.Compilation.Options;
 
             if (options.GeneralDiagnosticOption != ReportDiagnostic.Error)
             {

@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
-            if (type.ContainingNamespace.IsGlobalNamespace)
+            if (type.ContainingNamespace.IsGlobalNamespace && !type.IsSynthesized())
             {
                 context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name,
                     type.ContainingAssembly.Name));
@@ -148,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 namespaceNames.Push(symbol.Name);
 
-                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequirePartialMatchWithAssemblyName))
+                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequirePartialMatchWithAssemblyName) && !symbol.IsSynthesized())
                 {
                     context.ReportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
                         reportAssemblyName));
@@ -174,7 +174,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
             {
-                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName))
+                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName) &&
+                    !symbol.IsSynthesized())
                 {
                     context.ReportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
                         CurrentNamespaceName, reportAssemblyName));

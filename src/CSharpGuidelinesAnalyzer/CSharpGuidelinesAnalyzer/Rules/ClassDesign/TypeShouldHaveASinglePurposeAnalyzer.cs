@@ -41,6 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
+            if (type.IsSynthesized())
+            {
+                return;
+            }
+
             if (ContainsBlacklistedWord(type.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name));

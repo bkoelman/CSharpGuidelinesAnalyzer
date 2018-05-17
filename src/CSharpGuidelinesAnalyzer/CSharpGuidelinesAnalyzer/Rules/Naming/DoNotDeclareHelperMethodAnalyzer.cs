@@ -45,6 +45,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
+            if (type.IsSynthesized())
+            {
+                return;
+            }
+
             ICollection<WordToken> wordsListed = type.Name.GetWordsInList(WordsBlacklist);
             if (wordsListed.Any())
             {

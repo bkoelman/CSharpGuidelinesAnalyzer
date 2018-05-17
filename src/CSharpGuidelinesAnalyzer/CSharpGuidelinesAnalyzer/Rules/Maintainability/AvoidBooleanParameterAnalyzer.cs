@@ -38,7 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.ContainingSymbol.IsDeconstructor())
+            if (parameter.ContainingSymbol.IsDeconstructor() || parameter.IsSynthesized())
             {
                 return;
             }

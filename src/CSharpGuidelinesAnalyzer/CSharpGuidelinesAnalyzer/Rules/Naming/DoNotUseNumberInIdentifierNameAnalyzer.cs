@@ -51,6 +51,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
+            if (type.IsSynthesized())
+            {
+                return;
+            }
+
             if (ContainsDigitsNonWhitelisted(type.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind, type.Name));
@@ -61,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             ISymbol member = context.Symbol;
 
-            if (member.IsPropertyOrEventAccessor() || context.Symbol.IsUnitTestMethod())
+            if (member.IsPropertyOrEventAccessor() || context.Symbol.IsUnitTestMethod() || member.IsSynthesized())
             {
                 return;
             }
@@ -76,6 +81,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
+            if (parameter.IsSynthesized())
+            {
+                return;
+            }
+
             if (ContainsDigitsNonWhitelisted(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
                 !parameter.IsInterfaceImplementation())
             {
@@ -87,6 +97,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var declarator = (IVariableDeclaratorOperation)context.Operation;
             ILocalSymbol variable = declarator.Symbol;
+
+            if (variable.IsSynthesized())
+            {
+                return;
+            }
 
             if (ContainsDigitsNonWhitelisted(variable.Name))
             {

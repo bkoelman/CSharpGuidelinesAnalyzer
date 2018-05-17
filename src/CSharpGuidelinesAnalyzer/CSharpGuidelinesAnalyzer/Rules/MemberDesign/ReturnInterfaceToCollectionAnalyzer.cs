@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (IsString(method.ReturnType))
+            if (IsString(method.ReturnType) || method.IsSynthesized())
             {
                 return;
             }

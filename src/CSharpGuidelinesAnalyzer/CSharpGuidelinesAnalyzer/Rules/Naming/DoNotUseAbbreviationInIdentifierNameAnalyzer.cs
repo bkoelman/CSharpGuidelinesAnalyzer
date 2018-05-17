@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsOverride)
+            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsOverride || context.Symbol.IsSynthesized())
             {
                 return;
             }
@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.ContainingSymbol.IsOverride)
+            if (parameter.ContainingSymbol.IsOverride || parameter.IsSynthesized())
             {
                 return;
             }
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var declarator = (IVariableDeclaratorOperation)context.Operation;
             ILocalSymbol variable = declarator.Symbol;
 
-            if (!string.IsNullOrWhiteSpace(variable.Name))
+            if (!string.IsNullOrWhiteSpace(variable.Name) && !variable.IsSynthesized())
             {
                 if (IsBlacklisted(variable.Name) || IsSingleLetter(variable.Name))
                 {

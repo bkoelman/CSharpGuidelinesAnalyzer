@@ -19,8 +19,8 @@ namespace CSharpGuidelinesAnalyzer
             new AnalyzerCategory("Member Design", "https://csharpcodingguidelines.com/member-design-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory MiscellaneousDesign =
-            new AnalyzerCategory("Miscellaneous Design", "https://csharpcodingguidelines.com/misc-design-guidelines/");
+        public static readonly AnalyzerCategory MiscellaneousDesign = new AnalyzerCategory("Miscellaneous Design",
+            "https://csharpcodingguidelines.com/misc-design-guidelines/");
 
         [NotNull]
         public static readonly AnalyzerCategory Maintainability = new AnalyzerCategory("Maintainability",
@@ -31,12 +31,12 @@ namespace CSharpGuidelinesAnalyzer
             new AnalyzerCategory("Naming", "https://csharpcodingguidelines.com/naming-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory Framework = new AnalyzerCategory("Framework",
-            "https://csharpcodingguidelines.com/framework-guidelines/");
+        public static readonly AnalyzerCategory Framework =
+            new AnalyzerCategory("Framework", "https://csharpcodingguidelines.com/framework-guidelines/");
 
         [NotNull]
-        public static readonly AnalyzerCategory Documentation = new AnalyzerCategory("Documentation",
-            "https://csharpcodingguidelines.com/documentation-guidelines/");
+        public static readonly AnalyzerCategory Documentation =
+            new AnalyzerCategory("Documentation", "https://csharpcodingguidelines.com/documentation-guidelines/");
 
         private AnalyzerCategory([NotNull] string name, [NotNull] string categoryUri)
         {

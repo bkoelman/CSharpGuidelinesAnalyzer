@@ -48,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() || IsOperator(context.Symbol) ||
-                context.Symbol.IsOverride)
+                context.Symbol.IsOverride || context.Symbol.IsSynthesized())
             {
                 return;
             }
@@ -101,7 +101,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             var parameter = (IParameterSymbol)context.Symbol;
 
             if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride ||
-                !parameter.Type.IsBooleanOrNullableBoolean())
+                !parameter.Type.IsBooleanOrNullableBoolean() || parameter.IsSynthesized())
             {
                 return;
             }

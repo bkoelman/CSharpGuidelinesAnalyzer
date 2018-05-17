@@ -91,6 +91,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static void AnalyzeSymbol([NotNull] ISymbol symbol, SymbolAnalysisContext context)
         {
+            if (symbol.IsSynthesized())
+            {
+                return;
+            }
+
             string documentationXml = symbol.GetDocumentationCommentXml(null, false, context.CancellationToken);
             if (string.IsNullOrEmpty(documentationXml))
             {
@@ -166,7 +171,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 {
                     if (!parameterNamesInDocumentation.Contains(parameter.Name))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0], parameter.Name));
+                        if (!parameter.IsSynthesized())
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0],
+                                parameter.Name));
+                        }
                     }
                     else
                     {
@@ -179,6 +188,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static void AnalyzeExtraParameters([NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation,
             SymbolAnalysisContext context)
         {
+            if (context.Symbol.IsSynthesized())
+            {
+                return;
+            }
+
             foreach (string parameterNameInDocumentation in parameterNamesInDocumentation)
             {
                 context.CancellationToken.ThrowIfCancellationRequested();

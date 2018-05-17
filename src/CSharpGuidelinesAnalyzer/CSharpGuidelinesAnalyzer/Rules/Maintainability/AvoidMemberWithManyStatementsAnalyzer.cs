@@ -51,9 +51,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             ISymbol containingMember = context.OwningSymbol.GetContainingMember();
 
-            string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-            Location location = containingMember.Locations[0];
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName, statementCount));
+            if (!containingMember.IsSynthesized())
+            {
+                string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                Location location = containingMember.Locations[0];
+
+                context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName, statementCount));
+            }
         }
 
         private sealed class StatementWalker : OperationWalker
