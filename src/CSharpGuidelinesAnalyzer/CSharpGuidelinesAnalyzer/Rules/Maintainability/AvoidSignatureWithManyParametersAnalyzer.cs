@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,15 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidSignatureWithManyParametersAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Check additional signatures, such as constructors, delegates and local functions
         // TODO: Check that parameters are not tuples
         // TODO: Check that tuple return value has at most 2 elements
-        // TODO: Add exception for Deconstruct() method
 
         public const string DiagnosticId = "AV1561";
 
@@ -44,6 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeProperty), SymbolKind.Property);
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
         }
 
         private void AnalyzeProperty(SymbolAnalysisContext context)
@@ -52,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (property.IsIndexer && ExceedsMaximumLength(property.Parameters))
             {
-                ReportDiagnostic(context, property, "Indexer");
+                ReportDiagnostic(property, "Indexer", context.ReportDiagnostic);
             }
         }
 
@@ -60,10 +61,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var method = (IMethodSymbol)context.Symbol;
 
+            if (method.IsDeconstructor())
+            {
+                return;
+            }
+
             if (!method.IsPropertyOrEventAccessor() && ExceedsMaximumLength(method.Parameters))
             {
                 string memberName = GetMemberName(method);
-                ReportDiagnostic(context, method, memberName);
+                ReportDiagnostic(method, memberName, context.ReportDiagnostic);
             }
         }
 
@@ -92,9 +98,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static string GetNameForMethod([NotNull] IMethodSymbol method)
         {
             var builder = new StringBuilder();
-            builder.Append("Method '");
+
+            builder.Append(method.GetKind());
+            builder.Append(" '");
             builder.Append(method.Name);
             builder.Append("'");
+
             return builder.ToString();
         }
 
@@ -104,7 +113,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (IsDelegate(type) && ExceedsMaximumLength(type.DelegateInvokeMethod?.Parameters))
             {
-                ReportDiagnostic(context, type, $"Delegate '{type.Name}'");
+                ReportDiagnostic(type, $"Delegate '{type.Name}'", context.ReportDiagnostic);
             }
         }
 
@@ -113,15 +122,27 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return type.TypeKind == TypeKind.Delegate;
         }
 
+        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        {
+            var operation = (ILocalFunctionOperation)context.Operation;
+
+            if (ExceedsMaximumLength(operation.Symbol.Parameters))
+            {
+                string memberName = GetMemberName(operation.Symbol);
+                ReportDiagnostic(operation.Symbol, memberName, context.ReportDiagnostic);
+            }
+        }
+
         private static bool ExceedsMaximumLength([CanBeNull] [ItemNotNull] IEnumerable<IParameterSymbol> parameters)
         {
             return parameters != null && parameters.Count() > MaxParameterLength;
         }
 
-        private static void ReportDiagnostic(SymbolAnalysisContext context, [NotNull] ISymbol symbol, [NotNull] string name)
+        private static void ReportDiagnostic([NotNull] ISymbol symbol, [NotNull] string name,
+            [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             Diagnostic diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], name);
-            context.ReportDiagnostic(diagnostic);
+            reportDiagnostic(diagnostic);
         }
     }
 }

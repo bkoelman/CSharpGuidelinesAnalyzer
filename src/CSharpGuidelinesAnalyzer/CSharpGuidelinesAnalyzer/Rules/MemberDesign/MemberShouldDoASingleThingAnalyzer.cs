@@ -45,18 +45,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic, context.Symbol.Kind.ToString());
+            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic);
         }
 
         private void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
-            AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic, "Local function");
+            AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic);
         }
 
-        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic,
-            [NotNull] string kind)
+        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod())
             {
@@ -65,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
             if (ContainsBlacklistedWord(symbol.Name))
             {
-                reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], kind, symbol.Name));
+                reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name));
             }
         }
 

@@ -43,6 +43,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_deconstruct_method_contains_four_parameters_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public string A;
+                        public string B;
+                        public string C;
+                        public string D;
+
+                        public void Deconstruct(out string a, out string b, out string c, out string d)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
@@ -143,6 +168,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Delegate 'D' contains more than 3 parameters.");
+        }
+
+        [Fact]
+        internal void When_local_function_contains_three_parameters_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(int first, string second, double third)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_local_function_contains_four_parameters_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void [|L|](int first, string second, double third, object fourth)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'L' contains more than 3 parameters.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

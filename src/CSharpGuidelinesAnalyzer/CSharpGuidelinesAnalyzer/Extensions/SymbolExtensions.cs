@@ -279,5 +279,31 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             return true;
         }
+
+        public static bool IsDeconstructor([CanBeNull] this ISymbol symbol)
+        {
+            return symbol is IMethodSymbol method && method.Name == "Deconstruct";
+        }
+
+        [NotNull]
+        public static string GetKind([NotNull] this ISymbol symbol)
+        {
+            Guard.NotNull(symbol, nameof(symbol));
+
+            if (symbol.Kind == SymbolKind.Method && symbol is IMethodSymbol method)
+            {
+                if (method.MethodKind == MethodKind.Constructor || method.MethodKind == MethodKind.StaticConstructor)
+                {
+                    return "Constructor";
+                }
+
+                if (method.MethodKind == MethodKind.LocalFunction)
+                {
+                    return "Local function";
+                }
+            }
+
+            return symbol.Kind.ToString();
+        }
     }
 }
