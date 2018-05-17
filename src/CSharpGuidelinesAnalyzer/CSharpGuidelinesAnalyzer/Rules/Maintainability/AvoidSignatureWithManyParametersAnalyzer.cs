@@ -14,27 +14,38 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidSignatureWithManyParametersAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Check that parameters are not tuples
-        // TODO: Check that tuple return value has at most 2 elements
-
         public const string DiagnosticId = "AV1561";
 
         private const int MaxParameterLength = 3;
         private const string MaxParameterLengthText = "3";
 
         private const string Title = "Signature contains more than " + MaxParameterLengthText + " parameters";
-        private const string MessageFormat = "{0} contains more than " + MaxParameterLengthText + " parameters.";
+        private const string ParameterCountMessageFormat = "{0} contains more than " + MaxParameterLengthText + " parameters.";
+        private const string TupleParameterMessageFormat = "{0} contains tuple parameter '{1}'.";
+        private const string TupleReturnMessageFormat = "{0} returns a tuple with more than 2 elements.";
         private const string Description = "Don't declare signatures with more than " + MaxParameterLengthText + " parameters.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor ParameterCountRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            ParameterCountMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor TupleParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            TupleParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor TupleReturnRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            TupleReturnMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -51,9 +62,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var property = (IPropertySymbol)context.Symbol;
 
-            if (property.IsIndexer && ExceedsMaximumLength(property.Parameters))
+            if (property.IsIndexer)
             {
-                ReportDiagnostic(property, "Indexer", context.ReportDiagnostic);
+                AnalyzeParameters(property.Parameters, property, "Indexer", context.ReportDiagnostic);
             }
         }
 
@@ -66,11 +77,23 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            if (!method.IsPropertyOrEventAccessor() && ExceedsMaximumLength(method.Parameters))
+            if (!method.IsPropertyOrEventAccessor())
             {
                 string memberName = GetMemberName(method);
-                ReportDiagnostic(method, memberName, context.ReportDiagnostic);
+
+                AnalyzeParameters(method.Parameters, method, memberName, context.ReportDiagnostic);
+
+                if (MethodCanReturnValue(method))
+                {
+                    AnalyzeReturnValue(method.ReturnType, method, memberName, context.ReportDiagnostic);
+                }
             }
+        }
+
+        private static bool MethodCanReturnValue([NotNull] IMethodSymbol method)
+        {
+            return method.MethodKind != MethodKind.Constructor && method.MethodKind != MethodKind.StaticConstructor &&
+                method.MethodKind != MethodKind.Destructor;
         }
 
         [NotNull]
@@ -111,9 +134,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
-            if (IsDelegate(type) && ExceedsMaximumLength(type.DelegateInvokeMethod?.Parameters))
+            if (IsDelegate(type))
             {
-                ReportDiagnostic(type, $"Delegate '{type.Name}'", context.ReportDiagnostic);
+                IMethodSymbol method = type.DelegateInvokeMethod;
+                if (method != null)
+                {
+                    string typeName = $"Delegate '{type.Name}'";
+
+                    AnalyzeParameters(method.Parameters, type, typeName, context.ReportDiagnostic);
+                    AnalyzeReturnValue(method.ReturnType, type, typeName, context.ReportDiagnostic);
+                }
             }
         }
 
@@ -126,10 +156,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
-            if (ExceedsMaximumLength(operation.Symbol.Parameters))
+            string memberName = GetMemberName(operation.Symbol);
+
+            AnalyzeParameters(operation.Symbol.Parameters, operation.Symbol, memberName, context.ReportDiagnostic);
+            AnalyzeReturnValue(operation.Symbol.ReturnType, operation.Symbol, memberName, context.ReportDiagnostic);
+        }
+
+        private void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [NotNull] ISymbol member,
+            [NotNull] string memberName, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (ExceedsMaximumLength(parameters))
             {
-                string memberName = GetMemberName(operation.Symbol);
-                ReportDiagnostic(operation.Symbol, memberName, context.ReportDiagnostic);
+                ReportParameterCountDiagnostic(member, memberName, reportDiagnostic);
+            }
+
+            foreach (IParameterSymbol parameter in parameters)
+            {
+                if (parameter.Type.IsTupleType)
+                {
+                    ReportTupleParameterDiagnostic(parameter, memberName, parameter.Name, reportDiagnostic);
+                }
             }
         }
 
@@ -138,10 +184,36 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return parameters != null && parameters.Count() > MaxParameterLength;
         }
 
-        private static void ReportDiagnostic([NotNull] ISymbol symbol, [NotNull] string name,
+        private static void ReportParameterCountDiagnostic([NotNull] ISymbol symbol, [NotNull] string name,
             [NotNull] Action<Diagnostic> reportDiagnostic)
         {
-            Diagnostic diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], name);
+            Diagnostic diagnostic = Diagnostic.Create(ParameterCountRule, symbol.Locations[0], name);
+            reportDiagnostic(diagnostic);
+        }
+
+        private static void ReportTupleParameterDiagnostic([NotNull] ISymbol symbol, [NotNull] string memberName,
+            [NotNull] string parameterName, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            Diagnostic diagnostic = Diagnostic.Create(TupleParameterRule, symbol.Locations[0], memberName, parameterName);
+            reportDiagnostic(diagnostic);
+        }
+
+        private void AnalyzeReturnValue([NotNull] ITypeSymbol returnType, [NotNull] ISymbol member, [NotNull] string memberName,
+            [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (returnType.IsTupleType && returnType is INamedTypeSymbol type)
+            {
+                if (type.TupleElements.Length > 2)
+                {
+                    ReportTupleReturnDiagnostic(member, memberName, reportDiagnostic);
+                }
+            }
+        }
+
+        private static void ReportTupleReturnDiagnostic([NotNull] ISymbol symbol, [NotNull] string memberName,
+            [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            Diagnostic diagnostic = Diagnostic.Create(TupleReturnRule, symbol.Locations[0], memberName);
             reportDiagnostic(diagnostic);
         }
     }
