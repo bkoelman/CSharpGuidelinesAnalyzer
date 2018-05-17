@@ -15,6 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(4)
+                .CompileWithWarningAsError()
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
@@ -28,6 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(3)
+                .CompileWithWarningAsError()
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
@@ -42,6 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(2)
+                .CompileWithWarningAsError()
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
@@ -56,6 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(1)
+                .CompileWithWarningAsError()
                 .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
@@ -65,6 +69,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         // Note: at warning level 0, analyzers do not even run. So a test for that is omitted here.
+
+        [Fact]
+        internal void When_warnaserror_is_enabled_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .CompileWithWarningAsError()
+                .AllowingDiagnosticsOutsideSourceTree()
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_warnaserror_is_disabled_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .AllowingDiagnosticsOutsideSourceTree()
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Build with -warnaserror.");
+        }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {

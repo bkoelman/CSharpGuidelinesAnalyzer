@@ -8,37 +8,50 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class BuildWithTheHighestWarningLevelAnalyzer : GuidelineAnalyzer
     {
-        // TODO: Also report when not building with warn-as-error.
-
         public const string DiagnosticId = "AV2210";
 
-        private const string Title = "Compiler warning level is set too low";
-        private const string MessageFormat = "Build with warning level 4.";
+        private const string Title = "Compiler warnings are not treated as errors or warning level is too low";
+        private const string WarningLevelMessageFormat = "Build with warning level 4.";
+        private const string WarningAsErrorMessageFormat = "Build with -warnaserror.";
         private const string Description = "Build with the highest warning level.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor WarningLevelRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            WarningLevelMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor WarningAsErrorRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            WarningAsErrorMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(WarningLevelRule, WarningAsErrorRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationAction(AnalyzeWarningLevel);
+            context.RegisterCompilationAction(AnalyzeCompilationOptions);
         }
 
-        private void AnalyzeWarningLevel(CompilationAnalysisContext context)
+        private void AnalyzeCompilationOptions(CompilationAnalysisContext context)
         {
-            if (context.Compilation.Options.WarningLevel < 4)
+            var options = context.Compilation.Options;
+
+            if (options.GeneralDiagnosticOption != ReportDiagnostic.Error)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, Location.None));
+                context.ReportDiagnostic(Diagnostic.Create(WarningAsErrorRule, Location.None));
+            }
+
+            if (options.WarningLevel < 4)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(WarningLevelRule, Location.None));
             }
         }
     }
