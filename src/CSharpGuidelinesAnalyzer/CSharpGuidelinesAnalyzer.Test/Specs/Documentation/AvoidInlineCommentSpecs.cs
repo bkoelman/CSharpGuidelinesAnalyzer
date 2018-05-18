@@ -208,6 +208,24 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_method_body_contains_Resharper_language_injection_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        /*language=regexp|jsregexp*/
+                        string regex = @""^[A-Z]+$"";
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
         {
             // Arrange
@@ -224,6 +242,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
                         // Assert
                         Debug.Assert(x == 9);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Debug).Namespace)
+                .InDefaultClass(@"
+                    void UnitTest()
+                    {
+                        // Arrange
+                        int x = 10;
+
+                        // Act and assert
+                        Debug.Assert(--x == 9);
                     }
                 ")
                 .Build();
@@ -252,28 +292,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                         {
                             // No action required.
                         }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .Using(typeof(Debug).Namespace)
-                .InDefaultClass(@"
-                    void UnitTest()
-                    {
-                        // Arrange
-                        int x = 10;
-
-                        // Act and assert
-                        Debug.Assert(--x == 9);
                     }
                 ")
                 .Build();

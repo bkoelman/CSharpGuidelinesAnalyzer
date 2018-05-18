@@ -54,7 +54,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 context.CancellationToken.ThrowIfCancellationRequested();
 
                 if (!outerCommentTrivia.Contains(commentTrivia) && !IsResharperSuppression(commentTrivia) &&
-                    !IsArrangeActAssertUnitTestPattern(commentTrivia) && !IsCommentInEmptyElseClause(commentTrivia))
+                    !IsResharperLanguageInjection(commentTrivia) && !IsArrangeActAssertUnitTestPattern(commentTrivia) &&
+                    !IsCommentInEmptyElseClause(commentTrivia))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
                 }
@@ -71,6 +72,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         {
             string text = commentTrivia.ToString();
             return text.Contains("// ReSharper disable ") || text.Contains("// ReSharper restore ");
+        }
+
+        private bool IsResharperLanguageInjection(SyntaxTrivia commentTrivia)
+        {
+            string text = commentTrivia.ToString();
+            return text.Contains("language=");
         }
 
         private bool IsArrangeActAssertUnitTestPattern(SyntaxTrivia commentTrivia)
