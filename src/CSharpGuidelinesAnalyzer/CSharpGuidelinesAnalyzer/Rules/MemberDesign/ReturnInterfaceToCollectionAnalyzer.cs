@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (IsString(method.ReturnType) || IsImmutable(method.ReturnType) || method.IsSynthesized())
+            if (method.ReturnsVoid || IsString(method.ReturnType) || IsImmutable(method.ReturnType) || method.IsSynthesized())
             {
                 return;
             }
