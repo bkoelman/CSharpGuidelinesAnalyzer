@@ -125,6 +125,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_field_initializer_contains_single_line_comment_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public int F = Int32
+                        [|// comment|]
+                        .Parse(""1"");
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Code block should not contain inline comment.");
+        }
+
+        [Fact]
         internal void When_property_getter_contains_multiple_comments_they_must_be_reported()
         {
             // Arrange
