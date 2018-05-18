@@ -43,6 +43,27 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
+        internal void When_partial_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static partial class [|C|]
+                    {
+                    }
+
+                    static partial class C
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Class 'C' should be non-static or its name should be suffixed with 'Extensions'.");
+        }
+
+        [Fact]
         internal void When_static_class_contains_no_members_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
