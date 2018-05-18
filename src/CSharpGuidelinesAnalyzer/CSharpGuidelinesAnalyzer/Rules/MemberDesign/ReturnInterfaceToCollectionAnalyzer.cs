@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -42,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (IsString(method.ReturnType) || method.IsSynthesized())
+            if (IsString(method.ReturnType) || IsImmutable(method.ReturnType) || method.IsSynthesized())
             {
                 return;
             }
@@ -62,6 +63,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static bool IsString([NotNull] ITypeSymbol type)
         {
             return type.SpecialType == SpecialType.System_String;
+        }
+
+        private static bool IsImmutable([NotNull] ITypeSymbol type)
+        {
+            return type.Name.StartsWith("Immutable", StringComparison.Ordinal) ||
+                type.Name.StartsWith("IImmutable", StringComparison.Ordinal);
         }
 
         private static bool IsArray([NotNull] ITypeSymbol type)

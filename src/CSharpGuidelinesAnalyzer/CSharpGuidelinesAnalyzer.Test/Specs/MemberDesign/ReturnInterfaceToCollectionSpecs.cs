@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Rules.MemberDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -124,6 +125,118 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                     class C
                     {
                         IEnumerable M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_ImmutableArray_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(ImmutableArray<>).Assembly)
+                .Using(typeof(ImmutableArray<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        ImmutableArray<int> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_IImmutableList_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(IImmutableList<>).Assembly)
+                .Using(typeof(IImmutableList<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IImmutableList<int> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_ImmutableStack_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(ImmutableStack<>).Assembly)
+                .Using(typeof(ImmutableStack<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        ImmutableStack<int> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_ImmutableDictionary_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(ImmutableDictionary<,>).Assembly)
+                .Using(typeof(ImmutableDictionary<,>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        ImmutableDictionary<int, string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_aliased_ImmutableHashSet_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(ImmutableHashSet<>).Assembly)
+                .Using(typeof(ImmutableHashSet<>).Namespace)
+                .InGlobalScope(@"
+                    using HS = System.Collections.Immutable.ImmutableHashSet<int>;
+
+                    class C
+                    {
+                        HS M()
                         {
                             throw new NotImplementedException();
                         }
