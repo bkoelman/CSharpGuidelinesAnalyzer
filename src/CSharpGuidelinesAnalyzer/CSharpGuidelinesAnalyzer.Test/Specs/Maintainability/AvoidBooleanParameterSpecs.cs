@@ -687,7 +687,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             {
                             }
 
-                            private void M5(bool b5)
+                            private protected void M5(bool [|b5|])
+                            {
+                            }
+
+                            private void M6(bool b6)
                             {
                             }
                         }
@@ -700,7 +704,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Parameter 'b1' is of type 'bool'.",
                 "Parameter 'b2' is of type 'bool'.",
                 "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.");
+                "Parameter 'b4' is of type 'bool'.",
+                "Parameter 'b5' is of type 'bool'.");
         }
 
         [Fact]
@@ -729,7 +734,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             {
                             }
 
-                            private void M5(bool b5)
+                            private protected void M5(bool [|b5|])
+                            {
+                            }
+
+                            private void M6(bool b6)
                             {
                             }
                         }
@@ -742,7 +751,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Parameter 'b1' is of type 'bool'.",
                 "Parameter 'b2' is of type 'bool'.",
                 "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.");
+                "Parameter 'b4' is of type 'bool'.",
+                "Parameter 'b5' is of type 'bool'.");
         }
 
         [Fact]
@@ -771,7 +781,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             {
                             }
 
-                            private void M5(bool b5)
+                            private protected void M5(bool [|b5|])
+                            {
+                            }
+
+                            private void M6(bool b6)
                             {
                             }
                         }
@@ -784,7 +798,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Parameter 'b1' is of type 'bool'.",
                 "Parameter 'b2' is of type 'bool'.",
                 "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.");
+                "Parameter 'b4' is of type 'bool'.",
+                "Parameter 'b5' is of type 'bool'.");
         }
 
         [Fact]
@@ -813,7 +828,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             {
                             }
 
-                            private void M5(bool b5)
+                            private protected void M5(bool [|b5|])
+                            {
+                            }
+
+                            private void M6(bool b6)
                             {
                             }
                         }
@@ -826,7 +845,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Parameter 'b1' is of type 'bool'.",
                 "Parameter 'b2' is of type 'bool'.",
                 "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.");
+                "Parameter 'b4' is of type 'bool'.",
+                "Parameter 'b5' is of type 'bool'.");
         }
 
         [Fact]
@@ -855,7 +875,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             {
                             }
 
-                            private void M5(bool b5)
+                            private protected void M5(bool b5)
+                            {
+                            }
+
+                            private void M6(bool b6)
                             {
                             }
                         }
