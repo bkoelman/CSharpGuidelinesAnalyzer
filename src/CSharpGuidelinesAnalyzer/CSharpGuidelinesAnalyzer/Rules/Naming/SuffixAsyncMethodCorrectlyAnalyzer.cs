@@ -40,8 +40,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
-                    method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                IMethodSymbol entryPoint = context.Compilation.GetEntryPoint(context.CancellationToken);
+
+                if (!Equals(method, entryPoint))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
+                        method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                }
             }
         }
     }

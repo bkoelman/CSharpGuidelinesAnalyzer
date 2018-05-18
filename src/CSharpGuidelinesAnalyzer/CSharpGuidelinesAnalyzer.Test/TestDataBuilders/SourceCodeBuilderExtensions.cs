@@ -72,6 +72,17 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         }
 
         [NotNull]
+        public static TBuilder WithOutputKind<TBuilder>([NotNull] this TBuilder source, OutputKind outputKind)
+            where TBuilder : SourceCodeBuilder
+        {
+            Guard.NotNull(source, nameof(source));
+
+            source.Editor.UpdateTestContext(context => context.WithOutputKind(outputKind));
+
+            return source;
+        }
+
+        [NotNull]
         public static TBuilder CompileAtWarningLevel<TBuilder>([NotNull] this TBuilder source, int warningLevel)
             where TBuilder : SourceCodeBuilder
         {

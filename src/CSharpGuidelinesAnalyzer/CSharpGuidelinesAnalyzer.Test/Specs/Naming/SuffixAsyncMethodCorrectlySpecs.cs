@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
@@ -78,6 +79,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                     class C
                     {
                         Task Some()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_async_entry_point_method_name_does_not_end_with_Async_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .WithOutputKind(OutputKind.WindowsApplication)
+                .InGlobalScope(@"
+                    class Program
+                    {
+                        static async Task Main(string[] args)
                         {
                             throw new NotImplementedException();
                         }
