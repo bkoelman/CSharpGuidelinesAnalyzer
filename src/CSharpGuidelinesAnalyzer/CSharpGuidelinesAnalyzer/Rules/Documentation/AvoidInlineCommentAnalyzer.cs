@@ -53,11 +53,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                if (!outerCommentTrivia.Contains(commentTrivia) && !IsResharperSuppression(commentTrivia) &&
-                    !IsResharperLanguageInjection(commentTrivia) && !IsArrangeActAssertUnitTestPattern(commentTrivia) &&
-                    !IsCommentInEmptyElseClause(commentTrivia))
+                if (!outerCommentTrivia.Contains(commentTrivia) && !IsCommentInEmptyElseClause(commentTrivia))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
+                    string commentText = commentTrivia.ToString();
+
+                    if (!IsResharperSuppression(commentText) && !IsResharperLanguageInjection(commentText) &&
+                        !IsArrangeActAssertUnitTestPattern(commentText))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
+                    }
                 }
             }
         }
@@ -68,28 +72,25 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.MultiLineCommentTrivia;
         }
 
-        private bool IsResharperSuppression(SyntaxTrivia commentTrivia)
-        {
-            string text = commentTrivia.ToString();
-            return text.Contains("// ReSharper disable ") || text.Contains("// ReSharper restore ");
-        }
-
-        private bool IsResharperLanguageInjection(SyntaxTrivia commentTrivia)
-        {
-            string text = commentTrivia.ToString();
-            return text.Contains("language=");
-        }
-
-        private bool IsArrangeActAssertUnitTestPattern(SyntaxTrivia commentTrivia)
-        {
-            string text = commentTrivia.ToString();
-            return ArrangeActAssertLines.Any(line => line.Equals(text));
-        }
-
         private static bool IsCommentInEmptyElseClause(SyntaxTrivia commentTrivia)
         {
             return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() &&
                 parentBlock.Parent is ElseClauseSyntax;
+        }
+
+        private bool IsResharperSuppression([NotNull] string commentText)
+        {
+            return commentText.Contains("// ReSharper disable ") || commentText.Contains("// ReSharper restore ");
+        }
+
+        private bool IsResharperLanguageInjection([NotNull] string commentText)
+        {
+            return commentText.Contains("language=");
+        }
+
+        private bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
+        {
+            return ArrangeActAssertLines.Any(line => line.Equals(commentText));
         }
     }
 }
