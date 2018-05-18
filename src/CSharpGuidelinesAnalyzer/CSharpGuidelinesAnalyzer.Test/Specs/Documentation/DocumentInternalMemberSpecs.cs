@@ -287,7 +287,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        internal void When_public_property_is_undocumented_it_must_be_skipped()
+        internal void When_undocumented_member_is_not_internal_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -297,7 +297,137 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                     {
                         public class C
                         {
-                            public string P { get; set; }
+                            public string F1;
+                            protected string F2;
+                            protected internal string F3;
+                            private string F4;
+
+                            public string P1 { get; set; }
+                            protected string P2 { get; set; }
+                            protected internal string P3 { get; set; }
+                            private string P4 { get; set; }
+
+                            public event EventHandler E1;
+                            protected event EventHandler E2;
+                            protected internal event EventHandler E3;
+                            private event EventHandler E4;
+
+                            public int M1(string p1) => throw new NotImplementedException();
+                            protected int M2(string p2) => throw new NotImplementedException();
+                            protected internal int M3(string p3) => throw new NotImplementedException();
+                            private int M4(string p4) => throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_internal_field_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            internal int [|F|];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+        }
+
+        [Fact]
+        internal void When_internal_field_is_documented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            internal int F;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_internal_field_in_private_class_is_undocumented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            private class X
+                            {
+                                internal int F;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_private_protected_field_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            private protected int [|F|];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+        }
+
+        [Fact]
+        internal void When_private_protected_field_is_documented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            private protected int F;
                         }
                     }
                 ")
@@ -376,7 +506,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        internal void When_public_method_is_undocumented_it_must_be_skipped()
+        internal void When_private_protected_property_is_undocumented_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -386,9 +516,142 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                     {
                         public class C
                         {
-                            public void M()
+                            private protected string [|P|] { get; set; }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.P'.");
+        }
+
+        [Fact]
+        internal void When_private_protected_property_is_documented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            private protected string P { get; set; }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_internal_event_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            internal event EventHandler [|E|];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
+        }
+
+        [Fact]
+        internal void When_internal_event_is_documented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            internal event EventHandler E;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_internal_event_in_private_class_is_undocumented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            private class X
                             {
+                                internal event EventHandler E;
                             }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_private_protected_event_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            private protected event EventHandler [|E|];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
+        }
+
+        [Fact]
+        internal void When_private_protected_event_is_documented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            private protected event EventHandler E;
                         }
                     }
                 ")
@@ -473,7 +736,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        internal void When_public_field_is_undocumented_it_must_be_skipped()
+        internal void When_private_protected_method_is_undocumented_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -483,28 +746,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                     {
                         public class C
                         {
-                            public int F;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_internal_field_is_undocumented_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            internal int [|F|];
+                            private protected void [|M|]()
+                            {
+                            }
                         }
                     }
                 ")
@@ -512,11 +756,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.M()'.");
         }
 
         [Fact]
-        internal void When_internal_field_is_documented_it_must_be_skipped()
+        internal void When_private_protected_method_is_documented_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -527,141 +771,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                         public class C
                         {
                             /// <summary />
-                            internal int F;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_internal_field_in_private_class_is_undocumented_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            private class X
-                            {
-                                internal int F;
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_public_event_is_undocumented_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            public event EventHandler E;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_internal_event_is_undocumented_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            internal event EventHandler [|E|];
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
-        }
-
-        [Fact]
-        internal void When_internal_event_is_documented_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            /// <summary />
-                            internal event EventHandler E;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_internal_event_in_private_class_is_undocumented_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            private class X
-                            {
-                                internal event EventHandler E;
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_parameter_in_public_method_is_undocumented_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithDocumentationComments()
-                .InGlobalScope(@"
-                    namespace N.M
-                    {
-                        public class C
-                        {
-                            public void M(int i)
+                            private protected void M()
                             {
                             }
                         }
@@ -750,6 +860,56 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_parameter_in_private_protected_method_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            private protected void M(int [|i|])
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible parameter 'i'.");
+        }
+
+        [Fact]
+        internal void When_parameter_in_private_protected_method_is_documented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            /// <param name=""i"" />
+                            private protected void M(int i)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_parameter_in_lambda_expression_is_undocumented_it_must_be_skipped()
         {
             // Arrange
@@ -789,6 +949,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                             /// <param name=""z"" />
                             /// <param name=""i"" />
                             internal void [|M|](int i)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'z' in XML comment not found in method signature.");
+        }
+
+        [Fact]
+        internal void When_private_protected_method_has_documentation_for_missing_parameter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            /// <param name=""z"" />
+                            /// <param name=""i"" />
+                            private protected void [|M|](int i)
                             {
                             }
                         }
