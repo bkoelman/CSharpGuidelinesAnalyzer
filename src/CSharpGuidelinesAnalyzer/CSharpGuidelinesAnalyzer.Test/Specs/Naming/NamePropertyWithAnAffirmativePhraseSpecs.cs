@@ -727,7 +727,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
                             protected internal bool [|thisIsVisible4|];
 
-                            private bool thisIsVisible5;
+                            private protected bool [|thisIsVisible5|];
+
+                            private bool thisIsVisible6;
                         }
                     }
                 ")
@@ -738,7 +740,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean field 'thisIsVisible1' should start with a verb.",
                 "The name of boolean field 'thisIsVisible2' should start with a verb.",
                 "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+                "The name of boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -760,7 +763,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
                             protected internal bool [|thisIsVisible4|];
 
-                            private bool thisIsVisible5;
+                            private protected bool [|thisIsVisible5|];
+
+                            private bool thisIsVisible6;
                         }
                     }
                 ")
@@ -771,7 +776,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean field 'thisIsVisible1' should start with a verb.",
                 "The name of boolean field 'thisIsVisible2' should start with a verb.",
                 "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+                "The name of boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -793,7 +799,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
                             protected internal bool [|thisIsVisible4|];
 
-                            private bool thisIsVisible5;
+                            private protected bool [|thisIsVisible5|];
+
+                            private bool thisIsVisible6;
                         }
                     }
                 ")
@@ -804,7 +812,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean field 'thisIsVisible1' should start with a verb.",
                 "The name of boolean field 'thisIsVisible2' should start with a verb.",
                 "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+                "The name of boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -826,7 +835,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
                             protected internal bool [|thisIsVisible4|];
 
-                            private bool thisIsVisible5;
+                            private protected bool [|thisIsVisible5|];
+
+                            private bool thisIsVisible6;
                         }
                     }
                 ")
@@ -837,7 +848,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean field 'thisIsVisible1' should start with a verb.",
                 "The name of boolean field 'thisIsVisible2' should start with a verb.",
                 "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.");
+                "The name of boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -858,7 +870,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
                             protected internal bool thisIsVisible4;
 
-                            private bool thisIsVisible5;
+                            private protected bool thisIsVisible5;
+
+                            private bool thisIsVisible6;
                         }
                     }
                 ")
@@ -895,7 +909,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            private void M5(bool thisIsVisible5)
+                            protected internal void M5(bool [|thisIsVisible5|])
+                            {
+                            }
+
+                            private void M6(bool thisIsVisible6)
                             {
                             }
                         }
@@ -908,7 +926,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -938,7 +957,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            private void M5(bool thisIsVisible5)
+                            protected internal void M5(bool [|thisIsVisible5|])
+                            {
+                            }
+
+                            private void M6(bool thisIsVisible6)
                             {
                             }
                         }
@@ -951,7 +974,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -981,7 +1005,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            private void M5(bool thisIsVisible5)
+                            protected internal void M5(bool [|thisIsVisible5|])
+                            {
+                            }
+
+                            private void M6(bool thisIsVisible6)
                             {
                             }
                         }
@@ -994,7 +1022,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -1024,7 +1053,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            private void M5(bool thisIsVisible5)
+                            protected internal void M5(bool [|thisIsVisible5|])
+                            {
+                            }
+
+                            private void M6(bool thisIsVisible6)
                             {
                             }
                         }
@@ -1037,7 +1070,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
                 "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.");
+                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -1067,7 +1101,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            private void M5(bool thisIsVisible5)
+                            private protected void M5(bool thisIsVisible5)
+                            {
+                            }
+
+                            private void M6(bool thisIsVisible6)
                             {
                             }
                         }
