@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer
             return other.Text == Text && other.Kind == Kind;
         }
 
-        public override bool Equals([CanBeNull] object obj)
+        public override bool Equals(object obj)
         {
             return obj is WordToken wordToken && Equals(wordToken);
         }

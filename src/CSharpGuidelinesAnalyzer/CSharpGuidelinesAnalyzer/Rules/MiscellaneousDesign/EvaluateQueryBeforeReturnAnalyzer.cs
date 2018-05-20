@@ -50,7 +50,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             "Count", "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault",
             "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray", "ToDictionary", "ToList", "ToLookup");
 
-        [NotNull]
         private const string QueryOperationName = "";
 
         public override void Initialize([NotNull] AnalysisContext context)
