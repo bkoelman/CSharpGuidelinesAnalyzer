@@ -72,11 +72,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (method.IsDeconstructor())
-            {
-                return;
-            }
-
             if (!method.IsPropertyOrEventAccessor())
             {
                 string memberName = GetMemberName(method);

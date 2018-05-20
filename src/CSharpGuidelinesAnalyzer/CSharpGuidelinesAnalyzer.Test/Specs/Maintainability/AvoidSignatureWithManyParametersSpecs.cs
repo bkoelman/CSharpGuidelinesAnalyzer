@@ -129,31 +129,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_deconstruct_method_contains_four_parameters_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    public struct S
-                    {
-                        public string A;
-                        public string B;
-                        public string C;
-                        public string D;
-
-                        public void Deconstruct(out string a, out string b, out string c, out string d)
-                        {
-                            throw new NotImplementedException();
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
         internal void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
