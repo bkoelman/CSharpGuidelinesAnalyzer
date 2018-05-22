@@ -84,6 +84,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 {
                     ProcessCommentOnSingleOrMultipleLines(trivia, MultiLineCommentPostfixLength);
                 }
+                // ReSharper disable once RedundantIfElseBlock
                 else
                 {
                     // No action required.
