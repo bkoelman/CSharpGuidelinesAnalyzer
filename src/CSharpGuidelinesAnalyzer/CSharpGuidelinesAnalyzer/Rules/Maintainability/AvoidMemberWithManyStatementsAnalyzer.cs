@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -12,9 +13,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1500";
 
-        private const string Title = "Member contains more than seven statements";
-        private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of seven statements.";
-        private const string Description = "Methods should not exceed 7 statements.";
+        private const int MaxStatementCount = 7;
+        private const string MaxStatementCountText = "7";
+
+        private const string Title = "Member contains more than " + MaxStatementCountText + " statements";
+
+        private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of " +
+            MaxStatementCountText + " statements.";
+
+        private const string Description = "Methods should not exceed " + MaxStatementCountText + " statements.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -41,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            if (statementWalker.StatementCount > 7)
+            if (statementWalker.StatementCount > MaxStatementCount)
             {
                 ReportMember(context, statementWalker.StatementCount);
             }
@@ -70,6 +77,30 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     Visit(block);
                 }
+            }
+
+            public override void VisitBlock([NotNull] IBlockOperation operation)
+            {
+                var parentSyntax = operation.Syntax?.Parent;
+
+                if (parentSyntax is CheckedStatementSyntax || parentSyntax is UnsafeStatementSyntax)
+                {
+                    // IOperation API support for checked/unsafe statements is currently unavailable.
+                    StatementCount++;
+                }
+
+                base.VisitBlock(operation);
+            }
+
+            public override void VisitVariableDeclaration([NotNull] IVariableDeclarationOperation operation)
+            {
+                if (operation.Syntax?.Parent is FixedStatementSyntax)
+                {
+                    // IOperation API support for fixed statements is currently unavailable.
+                    StatementCount++;
+                }
+
+                base.VisitVariableDeclaration(operation);
             }
 
             public override void VisitBranch([NotNull] IBranchOperation operation)

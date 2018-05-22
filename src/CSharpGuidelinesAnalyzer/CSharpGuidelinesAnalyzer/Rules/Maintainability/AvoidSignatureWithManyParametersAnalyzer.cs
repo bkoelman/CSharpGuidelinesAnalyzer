@@ -16,14 +16,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1561";
 
-        private const int MaxParameterLength = 3;
-        private const string MaxParameterLengthText = "3";
+        private const int MaxParameterCount = 3;
+        private const string MaxParameterCountText = "3";
 
-        private const string Title = "Signature contains more than " + MaxParameterLengthText + " parameters";
-        private const string ParameterCountMessageFormat = "{0} contains more than " + MaxParameterLengthText + " parameters.";
+        private const string Title = "Signature contains more than " + MaxParameterCountText + " parameters";
+        private const string ParameterCountMessageFormat = "{0} contains more than " + MaxParameterCountText + " parameters.";
         private const string TupleParameterMessageFormat = "{0} contains tuple parameter '{1}'.";
         private const string TupleReturnMessageFormat = "{0} returns a tuple with more than 2 elements.";
-        private const string Description = "Don't declare signatures with more than " + MaxParameterLengthText + " parameters.";
+        private const string Description = "Don't declare signatures with more than " + MaxParameterCountText + " parameters.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -176,7 +176,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool ExceedsMaximumLength([CanBeNull] [ItemNotNull] IEnumerable<IParameterSymbol> parameters)
         {
-            return parameters != null && parameters.Count() > MaxParameterLength;
+            return parameters != null && parameters.Count() > MaxParameterCount;
         }
 
         private static void ReportParameterCount([NotNull] ISymbol symbol, [NotNull] string name,

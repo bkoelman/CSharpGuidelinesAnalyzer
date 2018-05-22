@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -47,7 +47,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             ; ;
                             ; ;
                             ; ;
-                            ;
+
+                            // Block scopes are not counted
+                            {
+                                {
+                                    ;
+                                }
+                            }
                         }
                     }
                 ")
@@ -83,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -142,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -204,7 +210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -266,7 +272,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -327,7 +333,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -409,7 +415,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -527,7 +533,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -554,7 +560,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                         }
                                         else
                                         {
-                                            if (true)
+                                            if (true ? false : true)
                                             {
                                             }
                                             else
@@ -640,7 +646,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -722,7 +728,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -802,7 +808,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -876,7 +882,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -937,7 +943,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1033,7 +1039,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1130,7 +1136,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1196,7 +1202,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'C.P' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Property 'C.P' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1257,7 +1263,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1332,7 +1338,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1378,7 +1384,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
-        [Fact(Skip = "IOperation API support for fixed statements is currently unavailable")]
+        [Fact]
         internal void When_method_contains_eight_fixed_statements_it_must_be_reported()
         {
             // Arrange
@@ -1390,29 +1396,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         unsafe void [|M|]()
                         {
                             fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
-                            }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
-                            }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
-                            }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
-                            }
+                                fixed (char* p3 = Environment.MachineName, p4 = Environment.MachineName)
+                                    fixed (char* p5 = Environment.MachineName, p6 = Environment.MachineName)
+                                        fixed (char* p7 = Environment.MachineName, p8 = Environment.MachineName)
+                                        {
+                                        }
 
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+                            fixed (char* p9 = Environment.MachineName, p10 = Environment.MachineName)
                             {
-                            }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
-                            }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
-                            }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
-                            {
+                                fixed (char* p11 = Environment.MachineName, p12 = Environment.MachineName)
+                                {
+                                    fixed (char* p13 = Environment.MachineName, p14 = Environment.MachineName)
+                                    {
+                                        fixed (char* p15 = Environment.MachineName, p16 = Environment.MachineName)
+                                        {
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -1421,7 +1421,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1436,25 +1436,200 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         unsafe void M()
                         {
                             fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+                                fixed (char* p3 = Environment.MachineName, p4 = Environment.MachineName)
+                                    fixed (char* p5 = Environment.MachineName, p6 = Environment.MachineName)
+                                        fixed (char* p7 = Environment.MachineName, p8 = Environment.MachineName)
+                                        {
+                                        }
+
+                            fixed (char* p9 = Environment.MachineName, p10 = Environment.MachineName)
+                            {
+                                fixed (char* p11 = Environment.MachineName, p12 = Environment.MachineName)
+                                {
+                                    fixed (char* p13 = Environment.MachineName, p14 = Environment.MachineName)
+                                    {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_unsafe_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            unsafe
                             {
                             }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+                            unsafe
                             {
                             }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_unsafe_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                            unsafe
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_checked_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            checked
+                            {
+                                unchecked
+                                {
+                                }
+                            }
+
+                            unchecked
+                            {
+                                checked
+                                {
+                                }
+                            }
+
+                            checked
                             {
                             }
 
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+                            unchecked
                             {
                             }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+
+                            checked
                             {
                             }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+
+                            unchecked
                             {
                             }
-                            fixed (char* p1 = Environment.MachineName, p2 = Environment.MachineName)
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_checked_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            checked
+                            {
+                                unchecked
+                                {
+                                }
+                            }
+
+                            unchecked
+                            {
+                                checked
+                                {
+                                }
+                            }
+
+                            checked
+                            {
+                            }
+
+                            unchecked
+                            {
+                            }
+
+                            checked
                             {
                             }
                         }
@@ -1500,7 +1675,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1588,7 +1763,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of seven statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
