@@ -127,6 +127,133 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_logical_not_operator_is_applied_on_a_local_function_with_Not_in_its_name_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public void M()
+                        {
+                            bool IsNotVisible()
+                            {
+                                return true;
+                            }
+
+                            void L()
+                            {
+                                if ([|!IsNotVisible()|])
+                                {
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Logical not operator is applied on local function 'IsNotVisible', which has a negation in its name.");
+        }
+
+        [Fact]
+        internal void When_logical_not_operator_is_applied_on_a_local_function_with_No_in_its_name_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public void M()
+                        {
+                            bool IsNoActiveCustomer()
+                            {
+                                return true;
+                            }
+
+                            void L()
+                            {
+                                if ([|!IsNoActiveCustomer()|])
+                                {
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Logical not operator is applied on local function 'IsNoActiveCustomer', which has a negation in its name.");
+        }
+
+        [Fact]
+        internal void When_logical_not_operator_is_applied_on_a_chained_local_function_with_No_in_its_name_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public void M()
+                        {
+                            IEnumerable<string> GetNotActiveCustomerNames()
+                            {
+                                throw new NotImplementedException();
+                            }
+
+                            void L()
+                            {
+                                if (!GetNotActiveCustomerNames().Any())
+                                {
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_logical_not_operator_is_applied_on_a_normal_local_function_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public void M()
+                        {
+                            bool IsNotVisible()
+                            {
+                                return true;
+                            }
+
+                            bool IsHidden() => IsNotVisible();
+
+                            void L()
+                            {
+                                if (!IsHidden())
+                                {
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_logical_not_operator_is_applied_on_a_property_with_Not_in_its_name_it_must_be_reported()
         {
             // Arrange

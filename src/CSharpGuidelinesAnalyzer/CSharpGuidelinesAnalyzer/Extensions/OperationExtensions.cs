@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.TargetMethod.Name,
                     operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
-                return new IdentifierInfo(name, operation.TargetMethod.ReturnType, operation.TargetMethod.Kind.ToString());
+                return new IdentifierInfo(name, operation.TargetMethod.ReturnType, operation.TargetMethod.GetKind());
             }
         }
 

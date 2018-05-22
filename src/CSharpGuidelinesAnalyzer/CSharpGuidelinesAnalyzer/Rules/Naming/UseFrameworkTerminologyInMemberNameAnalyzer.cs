@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -12,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     {
         public const string DiagnosticId = "AV1711";
 
-        private const string Title = "Name members similarly to members of .NET Framework classes";
+        private const string Title = "Name members and local functions similarly to members of .NET Framework classes";
         private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'.";
         private const string Description = "Name members similarly to members of related .NET Framework classes.";
 
@@ -40,6 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
@@ -49,10 +52,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (WordsReplacementMap.ContainsKey(context.Symbol.Name))
+            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic);
+        }
+
+        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        {
+            var localFunction = (ILocalFunctionOperation)context.Operation;
+
+            AnalyzeSymbol(localFunction.Symbol, context.ReportDiagnostic);
+        }
+
+        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (WordsReplacementMap.ContainsKey(symbol.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
-                    context.Symbol.Name, WordsReplacementMap[context.Symbol.Name]));
+                reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name,
+                    WordsReplacementMap[symbol.Name]));
             }
         }
     }

@@ -14,7 +14,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     {
         public const string DiagnosticId = "AV1706";
 
-        private const string Title = "Member, parameter or variable name contains an abbreviation or is too short";
+        private const string Title =
+            "Member, local function, parameter or variable name contains an abbreviation or is too short";
+
         private const string MessageFormat = "{0} '{1}' should have a more descriptive name.";
         private const string Description = "Don't use abbreviations.";
 
@@ -42,8 +44,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
-
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
         }
 
@@ -58,9 +60,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (!context.Symbol.IsInterfaceImplementation())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.GetKind(),
                         context.Symbol.Name));
                 }
+            }
+        }
+
+        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        {
+            var localFunction = (ILocalFunctionOperation)context.Operation;
+
+            if (IsBlacklisted(localFunction.Symbol.Name) || IsSingleLetter(localFunction.Symbol.Name))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0],
+                    localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
             }
         }
 

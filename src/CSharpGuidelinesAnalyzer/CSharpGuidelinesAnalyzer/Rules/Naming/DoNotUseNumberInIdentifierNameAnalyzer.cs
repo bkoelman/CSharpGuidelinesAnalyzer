@@ -42,8 +42,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
-
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
         }
 
@@ -73,7 +73,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(member.Name) && !member.IsOverride && !member.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.Kind, member.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
+            }
+        }
+
+        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        {
+            var localFunction = (ILocalFunctionOperation)context.Operation;
+
+            if (ContainsDigitsNonWhitelisted(localFunction.Symbol.Name))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0],
+                    localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
             }
         }
 

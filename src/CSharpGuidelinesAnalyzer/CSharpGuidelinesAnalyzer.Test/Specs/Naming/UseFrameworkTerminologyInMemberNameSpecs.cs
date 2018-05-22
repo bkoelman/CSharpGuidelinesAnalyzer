@@ -44,6 +44,46 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_local_function_is_named_AddItem_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void [|AddItem|]()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'AddItem' should be renamed to 'Add'.");
+        }
+
+        [Fact]
+        internal void When_local_function_is_named_Delete_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void [|Delete|]()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'Delete' should be renamed to 'Remove'.");
+        }
+
+        [Fact]
         internal void When_property_is_named_NumberOfItems_it_must_be_reported()
         {
             // Arrange

@@ -205,8 +205,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
                 Diagnostic diagnostic = operationName == QueryOperationName
-                    ? Diagnostic.Create(QueryRule, location, containingMember.Kind, memberName)
-                    : Diagnostic.Create(OperationRule, location, containingMember.Kind, memberName, operationName);
+                    ? Diagnostic.Create(QueryRule, location, containingMember.GetKind(), memberName)
+                    : Diagnostic.Create(OperationRule, location, containingMember.GetKind(), memberName, operationName);
 
                 context.ReportDiagnostic(diagnostic);
             }

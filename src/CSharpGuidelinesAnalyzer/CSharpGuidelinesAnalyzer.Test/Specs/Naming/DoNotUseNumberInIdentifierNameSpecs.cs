@@ -382,7 +382,52 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_name_contains_no_digits_it_must_be_skipped()
+        internal void When_local_function_name_contains_no_digits_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void L()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_local_function_name_contains_a_digit_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void [|L6|]()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'L6' contains one or more digits in its name.");
+        }
+
+        [Fact]
+        internal void When_method_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -401,7 +446,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_name_contains_a_digit_it_must_be_reported()
+        internal void When_method_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -410,6 +455,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                     {
                         void M(int [|p1|])
                         {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'p1' contains one or more digits in its name.");
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_name_contains_a_digit_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void L(int [|p1|])
+                            {
+                            }
                         }
                     }
                 ")

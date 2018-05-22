@@ -421,6 +421,74 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_local_function_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Some()
+                        {
+                            void More()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_local_function_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Some()
+                        {
+                            void [|MakeRptVisible|]()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'MakeRptVisible' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_local_function_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Some()
+                        {
+                            void [|L|]()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'L' should have a more descriptive name.");
+        }
+
+        [Fact]
         internal void When_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
