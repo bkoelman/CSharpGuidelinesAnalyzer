@@ -81,7 +81,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitBlock([NotNull] IBlockOperation operation)
             {
-                var parentSyntax = operation.Syntax?.Parent;
+                SyntaxNode parentSyntax = operation.Syntax?.Parent;
 
                 if (parentSyntax is CheckedStatementSyntax || parentSyntax is UnsafeStatementSyntax)
                 {
@@ -183,12 +183,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 IncrementStatementCount(operation);
                 base.VisitWhileLoop(operation);
-            }
-
-            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitLocalFunction(operation);
             }
 
             private void IncrementStatementCount([CanBeNull] IOperation operation)

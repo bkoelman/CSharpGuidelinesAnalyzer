@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
@@ -109,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                             int statement5 = 5;
                             int statement6 = 6;
-                            int statement7 = 7;
+                            int statement7 = 7, other = 8;
                         }
                     }
                 ")
@@ -599,14 +600,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_eight_local_functions_it_must_be_reported()
+        internal void When_method_contains_eight_local_function_declarations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class C
                     {
-                        void [|M|]()
+                        void M()
                         {
                             void L1()
                             {
@@ -645,58 +646,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
-        }
-
-        [Fact]
-        internal void When_method_contains_seven_local_functions_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M()
-                        {
-                            void L1()
-                            {
-                            }
-
-                            void L2()
-                            {
-                            }
-
-                            void L3()
-                            {
-                            }
-
-                            void L4()
-                            {
-                            }
-
-                            void L5()
-                            {
-                            }
-
-                            void L6()
-                            {
-                            }
-
-                            void L7()
-                            {
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_statements_with_local_functions_it_must_be_reported()
+        internal void When_method_contains_eight_local_function_invocations_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -705,22 +659,19 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         void [|M|]()
                         {
-                            void L1()
+                            void L()
                             {
-                                void L2()
-                                {
-                                    void L3()
-                                    {
-                                        ; ;
-                                    }
-
-                                    L3();
-                                }
-
-                                L2();
                             }
 
-                            L1();
+                            L();
+                            L();
+                            L();
+                            L();
+
+                            L();
+                            L();
+                            L();
+                            L();
                         }
                     }
                 ")
@@ -732,7 +683,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_seven_statements_with_local_functions_it_must_be_skipped()
+        internal void When_method_contains_seven_local_function_invocations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -741,22 +692,18 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         void M()
                         {
-                            void L1()
+                            void L()
                             {
-                                void L2()
-                                {
-                                    void L3()
-                                    {
-                                        ;
-                                    }
-
-                                    L3();
-                                }
-
-                                L2();
                             }
 
-                            L1();
+                            L();
+                            L();
+                            L();
+                            L();
+
+                            L();
+                            L();
+                            L();
                         }
                     }
                 ")
@@ -1160,7 +1107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                             using (d)
                                 using (d)
-                                    using (d)
+                                    using (var x = d)
                                     {
                                     }
                         }
@@ -1764,6 +1711,76 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_mixed_set_of_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IDisposable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IDisposable AcquireResource() => throw null; 
+                        int field;
+
+                        void [|M1|]()
+                        {
+                            using (var resource = AcquireResource())                    // 1
+                            {
+                                int i = true ? 1 : throw new NotSupportedException();   // 2
+
+                                try                                                     // 3
+                                {
+                                    int j = checked(i++);                               // 4
+                                    Action action = () => throw null;                   // 5
+                                }
+                                catch (Exception ex)
+                                {
+                                    return;                                             // 6
+                                    throw;                                              // 7
+                                }
+                                finally
+                                {
+                                    ;                                                   // 8
+                                }
+                            }
+                        }
+
+                        void [|M2|](int i)
+                        {
+                            switch (i)                                      // 1
+                            {
+                                case 1:
+                                case 2:
+                                case 3:
+                                    goto case 4;                            // 2
+                                case 4:
+                                    goto default;                           // 3
+                                default:
+                                {
+                                    throw null;                             // 4
+                                }
+                            }
+
+                            unsafe                                          // 5
+                            {
+                                fixed (int* p = &field)                     // 6
+                                {
+                                    var x = stackalloc int[] { 1, 2, 3 };   // 7
+                                    int y = *x;                             // 8
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M1()' contains 8 statements, which exceeds the maximum of 7 statements.",
+                "Method 'C.M2(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
