@@ -32,6 +32,25 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
+        internal void When_event_invocation_method_is_private_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        private protected virtual void OnValueChanged(EventArgs args) => ValueChanged?.Invoke(this, args);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_event_invocation_method_is_not_protected_it_must_be_reported()
         {
             // Arrange
@@ -191,6 +210,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                         {
                             Action action = [|() => ValueChanged?.Invoke(this, EventArgs.Empty)|];
                             action();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Event 'ValueChanged' should be raised from a regular method.");
+        }
+
+        [Fact]
+        internal void When_event_invocation_method_is_local_function_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        public void RaiseEvent(EventArgs args)
+                        {
+                            void [|OnValueChanged|]()
+                            {
+                                ValueChanged?.Invoke(this, args);
+                            }
                         }
                     }
                 ")
