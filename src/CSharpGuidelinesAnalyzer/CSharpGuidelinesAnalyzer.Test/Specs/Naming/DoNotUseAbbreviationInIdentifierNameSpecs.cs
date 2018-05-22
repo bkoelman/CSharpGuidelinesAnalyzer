@@ -648,6 +648,74 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_local_function_parameter_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Method()
+                        {
+                            void LocalFunction(int someParameter)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Method()
+                        {
+                            void LocalFunction(object [|tvHistory|])
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'tvHistory' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Method()
+                        {
+                            void LocalFunction(object [|x|])
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'x' should have a more descriptive name.");
+        }
+
+        [Fact]
         internal void When_variable_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange

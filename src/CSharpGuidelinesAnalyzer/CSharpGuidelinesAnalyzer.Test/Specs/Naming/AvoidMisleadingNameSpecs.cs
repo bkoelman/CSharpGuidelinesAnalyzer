@@ -30,13 +30,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_is_named_b001_it_must_be_reported()
+        internal void When_method_parameter_is_named_b001_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
                     void M(int [|b001|])
                     {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'b001' has a name that is difficult to read.");
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_is_named_b001_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(int [|b001|])
+                        {
+                        }
                     }
                 ")
                 .Build();
@@ -65,13 +85,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_is_named_lo_it_must_be_reported()
+        internal void When_method_parameter_is_named_lo_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
                     void M(int [|lo|])
                     {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'lo' has a name that is difficult to read.");
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_is_named_lo_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(int [|lo|])
+                        {
+                        }
                     }
                 ")
                 .Build();
@@ -100,13 +140,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_is_named_I1_it_must_be_reported()
+        internal void When_method_parameter_is_named_I1_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
                     void M(string [|I1|] = ""X"")
                     {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'I1' has a name that is difficult to read.");
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_is_named_I1_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(string [|I1|] = ""X"")
+                        {
+                        }
                     }
                 ")
                 .Build();
@@ -135,7 +195,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_is_named_lOl_it_must_be_reported()
+        internal void When_method_parameter_is_named_lOl_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
