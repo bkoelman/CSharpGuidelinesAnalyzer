@@ -935,6 +935,33 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_parameter_in_local_function_is_undocumented_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <summary />
+                            internal void M()
+                            {
+                                void N(int i)
+                                {
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_internal_method_has_documentation_for_missing_parameter_it_must_be_reported()
         {
             // Arrange
