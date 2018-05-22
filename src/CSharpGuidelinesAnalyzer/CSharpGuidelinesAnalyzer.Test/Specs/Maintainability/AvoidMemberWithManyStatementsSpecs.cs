@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
@@ -1720,12 +1721,16 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(IDisposable).Namespace)
+                .Using(typeof(CLSCompliantAttribute).Namespace)
+                .Using(typeof(CallerMemberNameAttribute).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
                         IDisposable AcquireResource() => throw null; 
                         int field;
 
+                        [CLSCompliant(isCompliant: false)]
+                        [Obsolete(null, false)]
                         void [|M1|]()
                         {
                             using (var resource = AcquireResource())                    // 1
@@ -1749,7 +1754,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             }
                         }
 
-                        void [|M2|](int i)
+                        void [|M2|](int i, [CallerMemberName] string memberName = null)
                         {
                             switch (i)                                      // 1
                             {
@@ -1781,7 +1786,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M1()' contains 8 statements, which exceeds the maximum of 7 statements.",
-                "Method 'C.M2(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M2(int, string)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1793,7 +1798,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     class C
                     {
-                        async Task [|M|](bool b)
+                        async Task [|M|](bool b = default(bool))
                         {
                             if (b)                      // 1
                             {
@@ -1819,6 +1824,130 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_local_function_contains_eight_empty_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+
+                            void [|L|]()
+                            {
+                                ; ;
+                                ; ;
+                                ; ;
+                                ; ;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'L()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_local_function_contains_seven_empty_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+
+                            void L()
+                            {
+                                ; ;
+                                ; ;
+                                ; ;
+                                ;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_nested_local_function_contains_eight_empty_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+
+                            void X()
+                            {
+                                ; ;
+
+                                void [|L|]()
+                                {
+                                    ; ;
+                                    ; ;
+                                    ; ;
+                                    ; ;
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'L()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_nested_local_function_contains_seven_empty_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+
+                            void X()
+                            {
+                                ; ;
+
+                                void L()
+                                {
+                                    ; ;
+                                    ; ;
+                                    ; ;
+                                    ;
+                                }
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

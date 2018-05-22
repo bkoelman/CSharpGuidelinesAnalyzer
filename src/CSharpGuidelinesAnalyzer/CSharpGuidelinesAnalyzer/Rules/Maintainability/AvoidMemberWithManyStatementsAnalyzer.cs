@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Immutable;
+using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -16,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const int MaxStatementCount = 7;
         private const string MaxStatementCountText = "7";
 
-        private const string Title = "Member contains more than " + MaxStatementCountText + " statements";
+        private const string Title = "Member or local function contains more than " + MaxStatementCountText + " statements";
 
         private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of " +
             MaxStatementCountText + " statements.";
@@ -43,33 +45,51 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
-            var statementWalker = new StatementWalker();
+            var statementWalker = new StatementWalker(context.ReportDiagnostic, context.CancellationToken);
             statementWalker.VisitBlocks(context.OperationBlocks);
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            if (statementWalker.StatementCount > MaxStatementCount)
+            CompleteBodyAnalysis(context.OwningSymbol, statementWalker.StatementCount, context.ReportDiagnostic);
+        }
+
+        private static void CompleteBodyAnalysis([NotNull] ISymbol containingSymbol, int statementCount,
+            [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (statementCount > MaxStatementCount)
             {
-                ReportMember(context, statementWalker.StatementCount);
+                ReportMember(containingSymbol, reportDiagnostic, statementCount);
             }
         }
 
-        private static void ReportMember(OperationBlockAnalysisContext context, int statementCount)
+        private static void ReportMember([NotNull] ISymbol memberSymbol, [NotNull] Action<Diagnostic> reportDiagnostic,
+            int statementCount)
         {
-            ISymbol containingMember = context.OwningSymbol.GetContainingMember();
+            ISymbol containingMember = memberSymbol.GetContainingMember();
 
             if (!containingMember.IsSynthesized())
             {
                 string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                 Location location = containingMember.Locations[0];
 
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location, containingMember.Kind, memberName, statementCount));
+                reportDiagnostic(Diagnostic.Create(Rule, location, containingMember.GetKind(), memberName, statementCount));
             }
         }
 
         private sealed class StatementWalker : OperationWalker
         {
+            [NotNull]
+            private readonly Action<Diagnostic> reportDiagnostic;
+
+            private CancellationToken cancellationToken;
+
             public int StatementCount { get; private set; }
+
+            public StatementWalker([NotNull] Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+            {
+                this.reportDiagnostic = reportDiagnostic;
+                this.cancellationToken = cancellationToken;
+            }
 
             public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
             {
@@ -183,6 +203,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 IncrementStatementCount(operation);
                 base.VisitWhileLoop(operation);
+            }
+
+            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
+            {
+                var statementWalker = new StatementWalker(reportDiagnostic, cancellationToken);
+                statementWalker.VisitBlock(operation.Body);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                CompleteBodyAnalysis(operation.Symbol, statementWalker.StatementCount, reportDiagnostic);
             }
 
             private void IncrementStatementCount([CanBeNull] IOperation operation)
