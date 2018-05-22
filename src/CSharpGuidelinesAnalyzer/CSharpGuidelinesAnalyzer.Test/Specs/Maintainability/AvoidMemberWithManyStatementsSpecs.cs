@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -1781,6 +1782,43 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M1()' contains 8 statements, which exceeds the maximum of 7 statements.",
                 "Method 'C.M2(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_async_method_contains_mixed_set_of_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        async Task [|M|](bool b)
+                        {
+                            if (b)                      // 1
+                            {
+                                throw null;             // 2
+                            }
+
+                            await Task.Yield();         // 3
+
+                            if (!b)                     // 4
+                            {
+                                await Task.Yield();     // 5
+                                await Task.Yield();     // 6
+                            }
+                            else
+                                throw null;             // 7
+
+                            return;                     // 8
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
