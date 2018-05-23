@@ -452,6 +452,56 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_switch_statement_type_is_enum_with_guard_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public enum Status { Pending, Active, Completed }
+
+                    void M(Status s)
+                    {
+                        switch (s)
+                        {
+                            case Status.Completed when new[] { 1 }.Length > 0:
+                            {
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_switch_statement_type_is_enum_with_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public enum Status { Pending, Active, Completed }
+
+                    void M(Status s)
+                    {
+                        switch (s)
+                        {
+                            case object obj:
+                            {
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new SwitchStatementShouldHaveDefaultCaseAnalyzer();

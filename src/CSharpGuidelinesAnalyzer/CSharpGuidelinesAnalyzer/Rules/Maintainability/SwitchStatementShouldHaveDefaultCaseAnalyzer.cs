@@ -55,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var switchStatement = (ISwitchOperation)context.Operation;
 
-            if (HasDefaultCase(switchStatement))
+            if (HasDefaultOrPatternCase(switchStatement))
             {
                 return;
             }
@@ -71,10 +71,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static bool HasDefaultCase([NotNull] ISwitchOperation switchStatement)
+        private static bool HasDefaultOrPatternCase([NotNull] ISwitchOperation switchStatement)
         {
-            IEnumerable<ICaseClauseOperation> caseClauses = switchStatement.Cases.SelectMany(@case => @case.Clauses);
-            return caseClauses.Any(clause => clause.CaseKind == CaseKind.Default);
+            return switchStatement.Cases.SelectMany(@case => @case.Clauses).Any(IsDefaultOrPatternCase);
+        }
+
+        private static bool IsDefaultOrPatternCase([NotNull] ICaseClauseOperation clause)
+        {
+            return clause.CaseKind == CaseKind.Default || clause.CaseKind == CaseKind.Pattern;
         }
 
         [CanBeNull]
