@@ -24,12 +24,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         [NotNull]
         private static readonly DiagnosticDescriptor SenderRule = new DiagnosticDescriptor(DiagnosticId, SenderTitle,
-            SenderMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            SenderMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor ArgsRule = new DiagnosticDescriptor(DiagnosticId, ArgsTitle,
-            ArgsMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            ArgsMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]

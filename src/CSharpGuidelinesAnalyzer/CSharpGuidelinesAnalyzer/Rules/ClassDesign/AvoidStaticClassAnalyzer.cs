@@ -29,11 +29,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         [NotNull]
         private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
-            Category.Name, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MemberMessageFormat, Category.Name, DiagnosticSeverity.Info, true, Description,
+            MemberMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]

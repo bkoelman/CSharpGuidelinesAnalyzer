@@ -4,44 +4,44 @@ namespace CSharpGuidelinesAnalyzer
 {
     internal sealed class AnalyzerCategory
     {
+        private const string CommitHash = "f317fda591167ba937a8dadf6723a0e8e412b705";
+
         [NotNull]
-        public string Name { get; }
+        public string DisplayName { get; }
 
         [NotNull]
         private readonly string helpCategoryUri;
 
         [NotNull]
         public static readonly AnalyzerCategory ClassDesign =
-            new AnalyzerCategory("Class Design", "https://csharpcodingguidelines.com/class-design-guidelines/");
+            new AnalyzerCategory("Class Design", "1000_ClassDesignGuidelines.md");
 
         [NotNull]
         public static readonly AnalyzerCategory MemberDesign =
-            new AnalyzerCategory("Member Design", "https://csharpcodingguidelines.com/member-design-guidelines/");
+            new AnalyzerCategory("Member Design", "1100_MemberDesignGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory MiscellaneousDesign = new AnalyzerCategory("Miscellaneous Design",
-            "https://csharpcodingguidelines.com/misc-design-guidelines/");
+        public static readonly AnalyzerCategory MiscellaneousDesign =
+            new AnalyzerCategory("Miscellaneous Design", "1200_MiscellaneousDesignGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory Maintainability = new AnalyzerCategory("Maintainability",
-            "https://csharpcodingguidelines.com/maintainability-guidelines/");
+        public static readonly AnalyzerCategory Maintainability =
+            new AnalyzerCategory("Maintainability", "1500_MaintainabilityGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory Naming =
-            new AnalyzerCategory("Naming", "https://csharpcodingguidelines.com/naming-guidelines/");
+        public static readonly AnalyzerCategory Naming = new AnalyzerCategory("Naming", "1700_NamingGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory Framework =
-            new AnalyzerCategory("Framework", "https://csharpcodingguidelines.com/framework-guidelines/");
+        public static readonly AnalyzerCategory Framework = new AnalyzerCategory("Framework", "2200_FrameworkGuidelines.md");
 
         [NotNull]
         public static readonly AnalyzerCategory Documentation =
-            new AnalyzerCategory("Documentation", "https://csharpcodingguidelines.com/documentation-guidelines/");
+            new AnalyzerCategory("Documentation", "2300_DocumentationGuidelines.md");
 
-        private AnalyzerCategory([NotNull] string name, [NotNull] string categoryUri)
+        private AnalyzerCategory([NotNull] string displayName, [NotNull] string documentName)
         {
-            Name = name;
-            helpCategoryUri = categoryUri;
+            DisplayName = displayName;
+            helpCategoryUri = $"https://github.com/dennisdoomen/CSharpGuidelines/blob/{CommitHash}/_pages/{documentName}";
         }
 
         [NotNull]

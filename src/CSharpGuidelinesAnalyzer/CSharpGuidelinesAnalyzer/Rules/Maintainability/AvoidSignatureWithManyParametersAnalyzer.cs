@@ -30,17 +30,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         private static readonly DiagnosticDescriptor ParameterCountRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ParameterCountMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            ParameterCountMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor TupleParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TupleParameterMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            TupleParameterMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor TupleReturnRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TupleReturnMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            TupleReturnMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]

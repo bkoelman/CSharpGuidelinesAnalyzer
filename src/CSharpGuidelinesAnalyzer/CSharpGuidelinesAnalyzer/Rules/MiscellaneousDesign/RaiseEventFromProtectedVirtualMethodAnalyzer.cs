@@ -26,16 +26,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         [NotNull]
         private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title, KindMessageFormat,
-            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ModifiersMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            ModifiersMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat,
-            Category.Name, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

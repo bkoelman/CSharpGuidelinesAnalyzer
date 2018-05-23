@@ -20,12 +20,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         [NotNull]
         private static readonly DiagnosticDescriptor WarningLevelRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            WarningLevelMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            WarningLevelMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly DiagnosticDescriptor WarningAsErrorRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            WarningAsErrorMessageFormat, Category.Name, DiagnosticSeverity.Warning, true, Description,
+            WarningAsErrorMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
