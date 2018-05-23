@@ -76,6 +76,47 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_file_declares_multiple_classes_with_same_name_but_different_arity_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InFileNamed("Example.cs")
+                .InGlobalScope(@"
+                    namespace N1
+                    {
+                        class C
+                        {
+                            class Nested
+                            {
+                            }
+                        }
+
+                        class \u0043<T> // unicode escape for C
+                        {
+                        }
+                    }
+
+                    class C<TA, TB>
+                    {
+                    }
+
+                    namespace N2.N3
+                    {
+                        class C<TA, TB, TC>
+                        {
+                            class Nested
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_file_declares_a_single_struct_it_must_be_skipped()
         {
             // Arrange
@@ -139,6 +180,47 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "File 'Example.cs' contains additional type 'N1.S2'.",
                 "File 'Example.cs' contains additional type 'S3'.",
                 "File 'Example.cs' contains additional type 'N2.N3.S4'.");
+        }
+
+        [Fact]
+        internal void When_file_declares_multiple_structs_with_same_name_but_different_arity_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InFileNamed("Example.cs")
+                .InGlobalScope(@"
+                    namespace N1
+                    {
+                        struct S
+                        {
+                            struct Nested
+                            {
+                            }
+                        }
+
+                        struct \u0053<T> // unicode escape for S
+                        {
+                        }
+                    }
+
+                    struct S<TA, TB>
+                    {
+                    }
+
+                    namespace N2.N3
+                    {
+                        struct S<TA, TB, TC>
+                        {
+                            struct Nested
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
@@ -256,6 +338,41 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_file_declares_multiple_interfaces_with_same_name_but_different_arity_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InFileNamed("Example.cs")
+                .InGlobalScope(@"
+                    namespace N1
+                    {
+                        interface I
+                        {
+                        }
+
+                        interface \u0049<T> // unicode escape for I
+                        {
+                        }
+                    }
+
+                    interface I<TA, TB>
+                    {
+                    }
+
+                    namespace N2.N3
+                    {
+                        interface I<TA, TB, TC>
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_file_declares_a_single_delegate_it_must_be_skipped()
         {
             // Arrange
@@ -303,7 +420,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_file_declares_multiple_toplevel_classes_it_must_be_reported()
+        internal void When_file_declares_multiple_delegates_with_same_name_but_different_arity_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -311,37 +428,22 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     namespace N1
                     {
-                        class C1
-                        {
-                            class Nested
-                            {
-                            }
-                        }
+                        delegate void D();
+
+                        delegate void \u0044<T>(T t); // unicode escape for D
                     }
 
-                    namespace N2
-                    {
-                        class [|C2|]
-                        {
-                        }
-                    }
+                    delegate TB D<TA, TB>(TA ta);
 
-                    class [|C3|]
+                    namespace N2.N3
                     {
-                        class Nested
-                        {
-                            class Deeper
-                            {
-                            }
-                        }
+                        delegate TC D<TA, TB, TC>(TA ta, TB tb);
                     }
                 ")
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "File 'Example.cs' contains additional type 'N2.C2'.",
-                "File 'Example.cs' contains additional type 'C3'.");
+            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -6,6 +7,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
@@ -53,9 +55,33 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (walker.TopLevelTypeDeclarations.Count > 1)
             {
-                foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1))
+                SyntaxNode firstTypeSyntax = walker.TopLevelTypeDeclarations.First();
+                string firstTypeName = GetTypeName(firstTypeSyntax);
+
+                foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1)
+                    .Where(typeSyntax => GetTypeName(typeSyntax) != firstTypeName))
                 {
                     ReportType(context, extraTypeSyntax);
+                }
+            }
+        }
+
+        [NotNull]
+        private static string GetTypeName([NotNull] SyntaxNode syntax)
+        {
+            switch (syntax)
+            {
+                case BaseTypeDeclarationSyntax typeSyntax:
+                {
+                    return typeSyntax.Identifier.ValueText;
+                }
+                case DelegateDeclarationSyntax delegateSyntax:
+                {
+                    return delegateSyntax.Identifier.ValueText;
+                }
+                default:
+                {
+                    throw new NotSupportedException($"Unknown type declaration '{syntax.GetType().Name}'.");
                 }
             }
         }
