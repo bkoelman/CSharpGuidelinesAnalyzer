@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : GuidelineAnalyzer
+    public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1505";
 

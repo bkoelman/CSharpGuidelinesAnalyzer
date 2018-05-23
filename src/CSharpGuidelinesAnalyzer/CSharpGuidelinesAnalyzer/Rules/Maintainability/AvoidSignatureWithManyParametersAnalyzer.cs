@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidSignatureWithManyParametersAnalyzer : GuidelineAnalyzer
+    public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1561";
 

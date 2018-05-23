@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotPassNullOnEventInvocationAnalyzer : GuidelineAnalyzer
+    public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1235";
 

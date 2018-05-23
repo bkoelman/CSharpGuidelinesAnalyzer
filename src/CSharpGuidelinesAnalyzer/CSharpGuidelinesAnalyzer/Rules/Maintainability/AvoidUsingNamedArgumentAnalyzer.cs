@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidUsingNamedArgumentAnalyzer : GuidelineAnalyzer
+    public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1555";
 

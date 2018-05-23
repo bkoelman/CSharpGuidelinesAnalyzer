@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidMemberWithManyStatementsAnalyzer : GuidelineAnalyzer
+    public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1500";
 

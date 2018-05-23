@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class EvaluateQueryBeforeReturnAnalyzer : GuidelineAnalyzer
+    public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1250";
 

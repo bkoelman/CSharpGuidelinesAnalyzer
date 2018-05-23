@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class OverloadShouldCallOtherOverloadAnalyzer : GuidelineAnalyzer
+    public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1551";
 

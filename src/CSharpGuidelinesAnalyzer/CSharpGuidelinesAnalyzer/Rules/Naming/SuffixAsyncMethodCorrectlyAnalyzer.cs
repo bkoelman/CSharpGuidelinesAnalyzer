@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SuffixAsyncMethodCorrectlyAnalyzer : GuidelineAnalyzer
+    public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1755";
 

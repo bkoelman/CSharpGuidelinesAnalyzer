@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotChangeLoopVariableAnalyzer : GuidelineAnalyzer
+    public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1530";
 

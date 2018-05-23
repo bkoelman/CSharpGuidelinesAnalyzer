@@ -13,7 +13,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : GuidelineAnalyzer
+    public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1536";
 

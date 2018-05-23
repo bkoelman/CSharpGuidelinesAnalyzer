@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidNestedLoopsAnalyzer : GuidelineAnalyzer
+    public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1532";
 

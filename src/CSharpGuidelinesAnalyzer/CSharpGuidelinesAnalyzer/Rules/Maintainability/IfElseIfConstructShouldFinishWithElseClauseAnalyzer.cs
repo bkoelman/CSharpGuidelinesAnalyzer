@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : GuidelineAnalyzer
+    public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1537";
 

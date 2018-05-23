@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : GuidelineAnalyzer
+    public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1535";
 

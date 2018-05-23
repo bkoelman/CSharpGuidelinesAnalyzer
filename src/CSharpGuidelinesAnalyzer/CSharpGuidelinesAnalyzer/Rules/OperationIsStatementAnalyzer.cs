@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace CSharpGuidelinesAnalyzer.Rules
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class OperationIsStatementAnalyzer : GuidelineAnalyzer
+    public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV0000";
 
