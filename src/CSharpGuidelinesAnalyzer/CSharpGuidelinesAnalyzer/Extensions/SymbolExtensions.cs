@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
@@ -172,48 +171,53 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(method, nameof(method));
 
-            SyntaxNode[] syntaxNodes = method.DeclaringSyntaxReferences
-                .Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray();
-
-            return TryGetBodyForMethodSyntaxNodes(method, syntaxNodes, cancellationToken) ??
-                TryGetBodyForConstructorSyntaxNodes(syntaxNodes);
-        }
-
-        [CanBeNull]
-        private static SyntaxNode TryGetBodyForMethodSyntaxNodes([NotNull] IMethodSymbol method,
-            [NotNull] [ItemNotNull] IEnumerable<SyntaxNode> syntaxNodes, CancellationToken cancellationToken)
-        {
-            foreach (SyntaxNode syntaxNode in syntaxNodes)
+            foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences
+                .Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray())
             {
-                SyntaxNode bodySyntax = TryGetBodyForMethodSyntax(syntaxNode, method, cancellationToken) ??
-                    TryGetBodyForAnonymousFunctionSyntax(syntaxNode);
-
+                SyntaxNode bodySyntax = TryGetDeclarationBody(syntaxNode);
                 if (bodySyntax != null)
                 {
                     return bodySyntax;
                 }
             }
 
-            return null;
+            return TryGetBodyForPartialMethodSyntax(method, cancellationToken);
         }
 
         [CanBeNull]
-        private static SyntaxNode TryGetBodyForMethodSyntax([CanBeNull] SyntaxNode syntaxNode, [NotNull] IMethodSymbol method,
-            CancellationToken cancellationToken)
+        private static SyntaxNode TryGetDeclarationBody([NotNull] SyntaxNode syntaxNode)
         {
-            if (syntaxNode is MethodDeclarationSyntax methodSyntax)
+            switch (syntaxNode)
             {
-                return TryGetBodyForMethodBlockOrArrowExpressionSyntax(methodSyntax) ??
-                    TryGetBodyForPartialMethodSyntax(method, cancellationToken);
+                case BaseMethodDeclarationSyntax methodSyntax:
+                {
+                    return (SyntaxNode)methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
+                }
+                case AccessorDeclarationSyntax accessorSyntax:
+                {
+                    return (SyntaxNode)accessorSyntax.Body ?? accessorSyntax.ExpressionBody?.Expression;
+                }
+                case PropertyDeclarationSyntax propertySyntax:
+                {
+                    return propertySyntax.ExpressionBody?.Expression;
+                }
+                case IndexerDeclarationSyntax indexerSyntax:
+                {
+                    return indexerSyntax.ExpressionBody?.Expression;
+                }
+                case AnonymousFunctionExpressionSyntax anonymousFunctionSyntax:
+                {
+                    return anonymousFunctionSyntax.Body;
+                }
+                case LocalFunctionStatementSyntax localFunctionSyntax:
+                {
+                    return (SyntaxNode)localFunctionSyntax.Body ?? localFunctionSyntax.ExpressionBody?.Expression;
+                }
+                default:
+                {
+                    return null;
+                }
             }
-
-            return null;
-        }
-
-        [CanBeNull]
-        private static SyntaxNode TryGetBodyForMethodBlockOrArrowExpressionSyntax([NotNull] MethodDeclarationSyntax methodSyntax)
-        {
-            return (SyntaxNode)methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
         }
 
         [CanBeNull]
@@ -223,27 +227,6 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return method.PartialImplementationPart != null
                 ? TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken)
                 : null;
-        }
-
-        [CanBeNull]
-        private static SyntaxNode TryGetBodyForAnonymousFunctionSyntax([NotNull] SyntaxNode syntaxNode)
-        {
-            var lambdaSyntax = syntaxNode as AnonymousFunctionExpressionSyntax;
-            return lambdaSyntax?.Body;
-        }
-
-        [CanBeNull]
-        private static SyntaxNode TryGetBodyForConstructorSyntaxNodes([NotNull] [ItemNotNull] IEnumerable<SyntaxNode> syntaxNodes)
-        {
-            foreach (ConstructorDeclarationSyntax constructorSyntax in syntaxNodes.OfType<ConstructorDeclarationSyntax>())
-            {
-                if (constructorSyntax.Body != null)
-                {
-                    return constructorSyntax.Body;
-                }
-            }
-
-            return null;
         }
 
         public static bool IsUnitTestMethod([CanBeNull] this ISymbol symbol)
