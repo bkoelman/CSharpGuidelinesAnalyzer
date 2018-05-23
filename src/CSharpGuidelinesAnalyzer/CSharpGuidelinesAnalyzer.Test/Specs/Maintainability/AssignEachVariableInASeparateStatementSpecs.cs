@@ -1193,6 +1193,104 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "'i' and 'j' are assigned in a single statement.");
         }
 
+        [Fact]
+        internal void When_two_variables_are_declared_and_assigned_in_a_declaration_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        bool result = N(out var a, out var b);
+
+                        int x, y;
+                        bool z;
+
+                        z = N(out x, out y);
+                    }
+
+                    bool N(out int i, out int j) => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_two_variables_are_declared_and_assigned_in_a_tuple_declaration_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        (int a, int b) = GetTuple();
+                        (var c, var d) = GetTuple();
+                        (int, int) t = GetTuple();
+
+                        var (x, y) = GetTuple();
+                        var (_, _) = GetTuple();
+                    }
+
+                    (int, int) GetTuple() => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_two_variables_are_declared_and_assigned_in_an_is_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(object a, object b)
+                    {
+                        if (a is string s1 && b is string s2)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_two_variables_are_declared_and_assigned_in_a_pattern_matching_statement_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(object o)
+                    {
+                        switch (o)
+                        {
+                            case string s when s.Length > 0:
+                            {
+                                throw null;
+                            }
+                            case int i when i > 0:
+                            {
+                                throw null;
+                            }
+                            case null:
+                            {
+                                return;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AssignEachVariableInASeparateStatementAnalyzer();

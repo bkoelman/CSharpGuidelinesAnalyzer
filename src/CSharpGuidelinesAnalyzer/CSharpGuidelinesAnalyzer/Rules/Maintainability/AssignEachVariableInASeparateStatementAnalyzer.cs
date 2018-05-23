@@ -93,6 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 string identifiers = FormatIdentifierList(statementWalker.IdentifiersAssigned.ToList());
                 Location location = GetLocation(operation);
+
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location, identifiers));
             }
         }
