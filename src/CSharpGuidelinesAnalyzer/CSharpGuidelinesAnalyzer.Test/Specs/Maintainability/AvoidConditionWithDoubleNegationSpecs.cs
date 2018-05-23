@@ -545,6 +545,59 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void
+            When_logical_not_operator_is_applied_in_a_field_initializer_on_a_variable_with_No_in_its_name_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public bool IsHidden => [|!IsNotVisible()|];
+
+                        bool IsNotVisible() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name.");
+        }
+
+        [Fact]
+        internal void
+            When_logical_not_operator_is_applied_in_a_constructor_initializer_on_a_variable_with_No_in_its_name_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        protected C(bool b)
+                        {
+                        }
+
+                    }
+
+                    class D : C
+                    {
+                        public D()
+                            : base([|!IsNotVisible()|])
+                        {
+                        }
+
+                        static bool IsNotVisible() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AvoidConditionWithDoubleNegationAnalyzer();
