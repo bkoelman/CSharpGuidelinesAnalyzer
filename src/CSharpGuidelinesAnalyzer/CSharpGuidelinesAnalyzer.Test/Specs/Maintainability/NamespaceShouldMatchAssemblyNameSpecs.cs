@@ -263,7 +263,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_type_is_defined_in_nonglobal_namespace_in_Core_assembly_it_must_be_skipped()
+        internal void When_type_is_defined_in_non_global_namespace_in_Core_assembly_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
