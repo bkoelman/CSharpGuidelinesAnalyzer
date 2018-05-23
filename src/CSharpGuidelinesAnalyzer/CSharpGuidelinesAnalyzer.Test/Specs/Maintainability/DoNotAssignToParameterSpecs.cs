@@ -405,7 +405,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                     class C
                     {
-                        public C(S s)
+                        public C(S s = default(S))
                         {
                             s.M();
                         }
@@ -417,8 +417,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
-        [Fact(Skip = "https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/85")]
-        internal void When_struct_parameter_is_written_to_in_method_body_it_must_be_reported()
+        [Fact]
+        internal void When_struct_parameter_is_reassigned_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -437,6 +437,165 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_compound_reassigned_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public static S operator +(S p, int i)
+                        {
+                            throw null;
+                        }
+                    }
+
+                    void M(S [|p|])
+                    {
+                        p += 5;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_pre_incremented_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public static S operator ++(S p)
+                        {
+                            throw null;
+                        }
+                    }
+
+                    void M(S [|p|])
+                    {
+                        ++p;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_post_incremented_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public static S operator ++(S p)
+                        {
+                            throw null;
+                        }
+                    }
+
+                    void M(S [|p|])
+                    {
+                        p++;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_pre_decremented_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public static S operator --(S p)
+                        {
+                            throw null;
+                        }
+                    }
+
+                    void M(S [|p|])
+                    {
+                        --p;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_post_decremented_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                        public static S operator --(S p)
+                        {
+                            throw null;
+                        }
+                    }
+
+                    void M(S [|p|])
+                    {
+                        p--;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_overwritten_by_deconstruction_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public void Deconstruct(out int i, out S s) => throw null;
+
+                        public struct S
+                        {
+                        }
+
+                        void M(S [|s|], C c)
+                        {
+                            int i;
+                            (i, s) = c;
+                        }
+                    }
+
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 's' is overwritten in its method body.");
         }
 
         [Fact]
@@ -465,6 +624,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     void M(out string p)
                     {
                         p = ""X"";
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_in_parameter_is_accessed_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    struct S
+                    {
+                        public void M() => throw null;
+                    }
+
+                    void M(S p)
+                    {
+                        p.M();
                     }
                 ")
                 .Build();

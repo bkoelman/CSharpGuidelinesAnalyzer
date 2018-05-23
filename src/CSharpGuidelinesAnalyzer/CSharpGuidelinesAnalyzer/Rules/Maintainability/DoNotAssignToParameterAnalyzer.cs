@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -26,7 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SpecialType> IntegralValueTypes = ImmutableArray.Create(SpecialType.System_Boolean,
+        private static readonly ImmutableArray<SpecialType> SimpleTypes = ImmutableArray.Create(SpecialType.System_Boolean,
             SpecialType.System_Char, SpecialType.System_SByte, SpecialType.System_Byte, SpecialType.System_Int16,
             SpecialType.System_UInt16, SpecialType.System_Int32, SpecialType.System_UInt32, SpecialType.System_Int64,
             SpecialType.System_UInt64, SpecialType.System_Decimal, SpecialType.System_Single, SpecialType.System_Double,
@@ -44,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.RefKind != RefKind.None || IsNonIntegralStruct(parameter) || parameter.IsSynthesized())
+            if (parameter.RefKind != RefKind.None || parameter.IsSynthesized())
             {
                 return;
             }
@@ -54,7 +55,27 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            AnalyzeParameterUsageInMethod(parameter, method, context);
+            if (IsUserDefinedStruct(parameter))
+            {
+                // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow
+                // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
+
+                AnalyzeParameterUsageInMethodSlow(parameter, method, context);
+            }
+            else
+            {
+                AnalyzeParameterUsageInMethod(parameter, method, context);
+            }
+        }
+
+        private bool IsUserDefinedStruct([NotNull] IParameterSymbol parameter)
+        {
+            return parameter.Type.TypeKind == TypeKind.Struct && !IsSimpleType(parameter.Type);
+        }
+
+        private bool IsSimpleType([NotNull] ITypeSymbol type)
+        {
+            return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T || SimpleTypes.Contains(type.SpecialType);
         }
 
         private static void AnalyzeParameterUsageInMethod([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
@@ -75,15 +96,90 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private bool IsNonIntegralStruct([NotNull] IParameterSymbol parameter)
+        private void AnalyzeParameterUsageInMethodSlow([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
+            SymbolAnalysisContext context)
         {
-            return parameter.Type.TypeKind == TypeKind.Struct && !IsIntegralType(parameter.Type);
+            IOperation body = method.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
+            if (body != null)
+            {
+                var walker = new AssignmentWalker(parameter);
+                walker.Visit(body);
+
+                if (walker.SeenAssignment)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                }
+            }
         }
 
-        private bool IsIntegralType([NotNull] ITypeSymbol type)
+        private sealed class AssignmentWalker : OperationWalker
         {
-            return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T ||
-                IntegralValueTypes.Contains(type.SpecialType);
+            [NotNull]
+            private readonly IParameterSymbol parameter;
+
+            public bool SeenAssignment { get; private set; }
+
+            public AssignmentWalker([NotNull] IParameterSymbol parameter)
+            {
+                Guard.NotNull(parameter, nameof(parameter));
+                this.parameter = parameter;
+            }
+
+            public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
+            {
+                if (IsAssignmentToCurrentParameter(operation.Target))
+                {
+                    SeenAssignment = true;
+                    return;
+                }
+
+                base.VisitSimpleAssignment(operation);
+            }
+
+            public override void VisitCompoundAssignment([NotNull] ICompoundAssignmentOperation operation)
+            {
+                if (IsAssignmentToCurrentParameter(operation.Target))
+                {
+                    SeenAssignment = true;
+                    return;
+                }
+
+                base.VisitCompoundAssignment(operation);
+            }
+
+            public override void VisitIncrementOrDecrement([NotNull] IIncrementOrDecrementOperation operation)
+            {
+                if (IsAssignmentToCurrentParameter(operation.Target))
+                {
+                    SeenAssignment = true;
+                    return;
+                }
+
+                base.VisitIncrementOrDecrement(operation);
+            }
+
+            public override void VisitDeconstructionAssignment([NotNull] IDeconstructionAssignmentOperation operation)
+            {
+                if (operation.Target is ITupleOperation tuple)
+                {
+                    foreach (IOperation element in tuple.Elements)
+                    {
+                        if (IsAssignmentToCurrentParameter(element))
+                        {
+                            SeenAssignment = true;
+                            return;
+                        }
+                    }
+                }
+
+                base.VisitDeconstructionAssignment(operation);
+            }
+
+            private bool IsAssignmentToCurrentParameter([NotNull] IOperation operation)
+            {
+                return operation is IParameterReferenceOperation parameterReference &&
+                    parameter.Equals(parameterReference.Parameter);
+            }
         }
     }
 }
