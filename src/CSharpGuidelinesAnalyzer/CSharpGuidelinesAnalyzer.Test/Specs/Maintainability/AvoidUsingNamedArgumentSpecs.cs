@@ -54,6 +54,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_using_a_named_argument_of_object_type_in_local_function_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Outer()
+                    {
+                        void L(int i, object o = null)
+                        {
+                        }
+
+                        void N()
+                        {
+                            L(3, [|o: null|]);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'o' in the call to 'L(int, object)' is invoked with a named argument.");
+        }
+
+        [Fact]
         internal void When_using_a_named_argument_of_boolean_type_it_must_be_skipped()
         {
             // Arrange
@@ -75,6 +100,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_using_a_named_argument_of_boolean_type_in_local_function_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(bool b = false)
+                        {
+                        }
+
+                        void N()
+                        {
+                            L(b: true);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_using_a_named_argument_of_nullable_boolean_type_it_must_be_skipped()
         {
             // Arrange
@@ -87,6 +136,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     void N()
                     {
                         M(b: true);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_using_a_named_argument_of_nullable_boolean_type_in_local_function_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(bool? b = null)
+                        {
+                        }
+
+                        void N()
+                        {
+                            L(b: true);
+                        }
                     }
                 ")
                 .Build();
