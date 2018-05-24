@@ -127,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
             {
-                if (IsAssignmentToCurrentParameter(operation.Target))
+                if (IsReferenceToCurrentParameter(operation.Target))
                 {
                     SeenAssignment = true;
                     return;
@@ -138,7 +138,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitCompoundAssignment([NotNull] ICompoundAssignmentOperation operation)
             {
-                if (IsAssignmentToCurrentParameter(operation.Target))
+                if (IsReferenceToCurrentParameter(operation.Target))
                 {
                     SeenAssignment = true;
                     return;
@@ -149,7 +149,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitIncrementOrDecrement([NotNull] IIncrementOrDecrementOperation operation)
             {
-                if (IsAssignmentToCurrentParameter(operation.Target))
+                if (IsReferenceToCurrentParameter(operation.Target))
                 {
                     SeenAssignment = true;
                     return;
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     foreach (IOperation element in tuple.Elements)
                     {
-                        if (IsAssignmentToCurrentParameter(element))
+                        if (IsReferenceToCurrentParameter(element))
                         {
                             SeenAssignment = true;
                             return;
@@ -175,7 +175,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 base.VisitDeconstructionAssignment(operation);
             }
 
-            private bool IsAssignmentToCurrentParameter([NotNull] IOperation operation)
+            public override void VisitArgument([NotNull] IArgumentOperation operation)
+            {
+                if (IsReferenceToCurrentParameter(operation.Value))
+                {
+                    if (operation.Parameter.RefKind == RefKind.Ref || operation.Parameter.RefKind == RefKind.Out)
+                    {
+                        SeenAssignment = true;
+                        return;
+                    }
+                }
+
+                base.VisitArgument(operation);
+            }
+
+            private bool IsReferenceToCurrentParameter([NotNull] IOperation operation)
             {
                 return operation is IParameterReferenceOperation parameterReference &&
                     parameter.Equals(parameterReference.Parameter);

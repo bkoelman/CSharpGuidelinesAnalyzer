@@ -599,6 +599,77 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_struct_parameter_is_passed_by_ref_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                    }
+
+                    void M(S [|p|])
+                    {
+                        N(ref p);
+                    }
+
+                    void N(ref S s) => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_passed_by_out_in_method_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                    }
+
+                    void M(S [|p|])
+                    {
+                        N(out p);
+                    }
+
+                    void N(out S s) => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The value of parameter 'p' is overwritten in its method body.");
+        }
+
+        [Fact]
+        internal void When_struct_parameter_is_passed_by_in_in_method_body_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public struct S
+                    {
+                    }
+
+                    void M(S p)
+                    {
+                        N(in p);
+                    }
+
+                    void N(in S s) => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_ref_parameter_is_written_to_in_method_body_it_must_be_skipped()
         {
             // Arrange
@@ -643,7 +714,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         public void M() => throw null;
                     }
 
-                    void M(S p)
+                    void M(in S p)
                     {
                         p.M();
                     }
