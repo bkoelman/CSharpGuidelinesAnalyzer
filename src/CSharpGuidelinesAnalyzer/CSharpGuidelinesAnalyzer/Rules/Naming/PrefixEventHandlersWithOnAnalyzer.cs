@@ -13,8 +13,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     {
         public const string DiagnosticId = "AV1738";
 
-        private const string Title = "Event handlers should be named according to a pattern";
-        private const string MessageFormat = "Method '{0}' that handles event '{1}' should be renamed to '{2}'.";
+        private const string Title = "Event handlers should be named according to the pattern '(InstanceName)On(EventName)'";
+        private const string MessageFormat = "{0} '{1}' that handles event '{2}' should be renamed to '{3}'.";
         private const string Description = "Prefix an event handler with \"On\".";
 
         [NotNull]
@@ -62,8 +62,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             string handlerNameActual = binding.Method.Name;
             if (handlerNameActual != handlerNameExpected)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), handlerNameActual,
-                    assignment.EventReference.Event.Name, handlerNameExpected));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(),
+                    handlerNameActual, assignment.EventReference.Event.Name, handlerNameExpected));
             }
         }
 

@@ -268,6 +268,65 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Method 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'.");
         }
 
+        [Fact]
+        internal void When_local_event_is_bound_to_a_local_function_that_matches_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        public void M()
+                        {
+                            void L()
+                            {
+                                ValueChanged += OnValueChanged;
+                            }
+
+                            void OnValueChanged(object sender, EventArgs e)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_local_event_is_bound_to_a_local_function_that_does_not_match_pattern_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        public void M()
+                        {
+                            void L()
+                            {
+                                ValueChanged += [|HandleValueChanged|];
+                            }
+
+                            void HandleValueChanged(object sender, EventArgs e)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Local function 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new PrefixEventHandlersWithOnAnalyzer();
