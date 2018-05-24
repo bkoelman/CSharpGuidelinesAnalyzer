@@ -174,12 +174,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_field_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private int f;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int f;
                 ")
                 .Build();
 
@@ -191,12 +188,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_field_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private int [|f3|];
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int [|f3|];
                 ")
                 .Build();
 
@@ -209,12 +203,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_property_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public int P { get; } = 123;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public int P { get; } = 123;
                 ")
                 .Build();
 
@@ -226,12 +217,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_property_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public int [|P6|] { get; } = 123;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public int [|P6|] { get; } = 123;
                 ")
                 .Build();
 
@@ -290,12 +278,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_event_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public event EventHandler ValueChanged;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public event EventHandler ValueChanged;
                 ")
                 .Build();
 
@@ -307,12 +292,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_event_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public event EventHandler [|Value9Changed|];
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public event EventHandler [|Value9Changed|];
                 ")
                 .Build();
 
@@ -325,13 +307,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -344,13 +323,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void [|M6|]()
                     {
-                        void [|M6|]()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -414,15 +390,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        void L()
                         {
-                            void L()
-                            {
-                            }
                         }
                     }
                 ")
@@ -436,15 +409,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        void [|L6|]()
                         {
-                            void [|L6|]()
-                            {
-                            }
                         }
                     }
                 ")
@@ -459,13 +429,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int p)
                     {
-                        void M(int p)
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -478,13 +445,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int [|p1|])
                     {
-                        void M(int [|p1|])
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -498,15 +462,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        void L(int p)
                         {
-                            void L(int p)
-                            {
-                            }
                         }
                     }
                 ")
@@ -520,15 +481,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
+                        void L(int [|p1|])
                         {
-                            void L(int [|p1|])
-                            {
-                            }
                         }
                     }
                 ")
@@ -593,14 +551,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
-                        {
-                            string str = ""A"";
-                        }
+                        string str = ""A"";
                     }
                 ")
                 .Build();
@@ -613,14 +568,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
                     {
-                        void M()
-                        {
-                            string [|str12|] = ""A"";
-                        }
+                        string [|str12|] = ""A"";
                     }
                 ")
                 .Build();
@@ -762,13 +714,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_only_whitelisted_words_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Int16SaveInt32Or3DIntoInt64()
                     {
-                        void Int16SaveInt32Or3DIntoInt64()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -781,13 +730,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_whitelisted_words_and_digits_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void [|ConvertDigit9IntoInt32|]()
                     {
-                        void [|ConvertDigit9IntoInt32|]()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -801,13 +747,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_part_of_whitelisted_word_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void [|GetMatrix3Demo|]()
                     {
-                        void [|GetMatrix3Demo|]()
-                        {
-                        }
                     }
                 ")
                 .Build();
