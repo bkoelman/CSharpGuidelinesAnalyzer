@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -47,6 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeTuple), OperationKind.Tuple);
 
             context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
             context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
@@ -72,19 +74,23 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsOverride || context.Symbol.IsSynthesized())
+            ISymbol member = context.Symbol;
+
+            if (member.IsPropertyOrEventAccessor() || member.IsOverride || member.IsSynthesized())
             {
                 return;
             }
 
-            if (IsBlacklisted(context.Symbol.Name) || IsSingleLetter(context.Symbol.Name))
+            if (IsBlacklisted(member.Name) || IsSingleLetter(member.Name))
             {
-                if (!context.Symbol.IsInterfaceImplementation())
+                if (!member.IsInterfaceImplementation())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.GetKind(),
-                        context.Symbol.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
                 }
             }
+
+            ITypeSymbol memberType = member.GetMemberType();
+            AnalyzeTypeAsTuple(memberType, context.ReportDiagnostic);
         }
 
         private void AnalyzeLocalFunction(OperationAnalysisContext context)
@@ -96,6 +102,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0],
                     localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
             }
+
+            AnalyzeTypeAsTuple(localFunction.Symbol.ReturnType, context.ReportDiagnostic);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
@@ -115,6 +123,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
+
+            AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
         }
 
         private static bool IsInLambdaExpression([NotNull] IParameterSymbol parameter)
@@ -134,6 +144,56 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                     context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
                 }
             }
+
+            AnalyzeTypeAsTuple(variable.Type, context.ReportDiagnostic);
+        }
+
+        private void AnalyzeTypeAsTuple([NotNull] ITypeSymbol type, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (type.IsTupleType && type is INamedTypeSymbol tupleType)
+            {
+                foreach (IFieldSymbol tupleElement in tupleType.TupleElements)
+                {
+                    bool isDefaultTupleElement = tupleElement.Equals(tupleElement.CorrespondingTupleField);
+                    if (!isDefaultTupleElement)
+                    {
+                        if (IsBlacklisted(tupleElement.Name) || IsSingleLetter(tupleElement.Name))
+                        {
+                            reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
+                                tupleElement.Name));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AnalyzeTuple(OperationAnalysisContext context)
+        {
+            var tuple = (ITupleOperation)context.Operation;
+
+            foreach (IOperation element in tuple.Elements)
+            {
+                ILocalSymbol tupleElement = TryGetTupleElement(element);
+
+                if (tupleElement != null)
+                {
+                    if (IsBlacklisted(tupleElement.Name) || IsSingleLetter(tupleElement.Name))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
+                            tupleElement.Name));
+                    }
+                }
+            }
+        }
+
+        [CanBeNull]
+        private ILocalSymbol TryGetTupleElement([NotNull] IOperation elementOperation)
+        {
+            ILocalReferenceOperation localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
+                ? declarationExpression.Expression as ILocalReferenceOperation
+                : elementOperation as ILocalReferenceOperation;
+
+            return localReference != null && localReference.IsDeclaration ? localReference.Local : null;
         }
 
         private void AnalyzeFromClause(SyntaxNodeAnalysisContext context)

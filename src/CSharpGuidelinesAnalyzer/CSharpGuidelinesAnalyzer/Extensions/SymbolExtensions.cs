@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
@@ -287,6 +288,44 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             return symbol.Kind.ToString();
+        }
+
+        [NotNull]
+        public static ITypeSymbol GetMemberType([NotNull] this ISymbol symbol)
+        {
+            Guard.NotNull(symbol, nameof(symbol));
+
+            switch (symbol)
+            {
+                case IFieldSymbol field:
+                {
+                    return field.Type;
+                }
+                case IPropertySymbol property:
+                {
+                    return property.Type;
+                }
+                case IEventSymbol evnt:
+                {
+                    return evnt.Type;
+                }
+                case IMethodSymbol method:
+                {
+                    return method.ReturnType;
+                }
+                case IParameterSymbol parameter:
+                {
+                    return parameter.Type;
+                }
+                case ILocalSymbol local:
+                {
+                    return local.Type;
+                }
+                default:
+                {
+                    throw new InvalidOperationException($"Unexpected type '{symbol.GetType()}'.");
+                }
+            }
         }
 
         public static bool IsSynthesized([NotNull] this ISymbol symbol)

@@ -53,7 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            ITypeSymbol type = GetMemberType(context.Symbol);
+            ITypeSymbol type = context.Symbol.GetMemberType();
             if (!type.IsBooleanOrNullableBoolean())
             {
                 return;
@@ -77,23 +77,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static bool IsMemberAccessible([NotNull] ISymbol symbol)
         {
             return symbol.DeclaredAccessibility != Accessibility.Private && symbol.IsSymbolAccessibleFromRoot();
-        }
-
-        [NotNull]
-        private ITypeSymbol GetMemberType([NotNull] ISymbol symbol)
-        {
-            var property = symbol as IPropertySymbol;
-            var method = symbol as IMethodSymbol;
-            var field = symbol as IFieldSymbol;
-
-            ITypeSymbol result = property?.Type ?? method?.ReturnType ?? field?.Type;
-
-            if (result == null)
-            {
-                throw new InvalidOperationException($"Unexpected type '{symbol.GetType()}'.");
-            }
-
-            return result;
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)

@@ -640,6 +640,71 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_tuple_element_names_contain_no_digits_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        (var aa, var bb) = GetTuple();
+                        (int cc, string dd) tt = GetTuple();
+                        var (ee, ff) = GetTuple();
+                    }
+
+                    (int, string) GetTuple() => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_tuple_element_names_contain_digits_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void M((int [|p1|], int [|p2|]) pp)
+                    {
+                        (var [|e1|], var [|e2|]) = GetTuple();
+                        (int [|e3|], string [|e4|]) tt = GetTuple();
+                        var ([|e5|], [|e6|]) = GetTuple();
+
+                        int [|e7|];
+                        string [|e8|];
+
+                        (e7, e8) = GetTuple();
+                        
+                        (int [|l1|], string [|l2|]) LocalGetTuple() => throw null;
+                    }
+
+                    (int [|m1|], string [|m2|]) GetTuple() => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Tuple element 'p1' contains one or more digits in its name.",
+                "Tuple element 'p2' contains one or more digits in its name.",
+                "Tuple element 'e1' contains one or more digits in its name.",
+                "Tuple element 'e2' contains one or more digits in its name.",
+                "Tuple element 'e3' contains one or more digits in its name.",
+                "Tuple element 'e4' contains one or more digits in its name.",
+                "Tuple element 'e5' contains one or more digits in its name.",
+                "Tuple element 'e6' contains one or more digits in its name.",
+                "Variable 'e7' contains one or more digits in its name.",
+                "Variable 'e8' contains one or more digits in its name.",
+                "Tuple element 'l1' contains one or more digits in its name.",
+                "Tuple element 'l2' contains one or more digits in its name.",
+                "Tuple element 'm1' contains one or more digits in its name.",
+                "Tuple element 'm2' contains one or more digits in its name.");
+        }
+
+        [Fact]
         internal void When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange

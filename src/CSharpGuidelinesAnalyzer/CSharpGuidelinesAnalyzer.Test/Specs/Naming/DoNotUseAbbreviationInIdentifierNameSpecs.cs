@@ -986,7 +986,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_range_variable_name_consists_of_single_letter_it_must_be_reported()
+        internal void When_range_variable_names_consist_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1014,6 +1014,49 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Range variable 'd' should have a more descriptive name.",
                 "Range variable 'e' should have a more descriptive name.",
                 "Range variable 'f' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_tuple_element_names_consist_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void Method((int [|p|], int [|q|]) pp)
+                    {
+                        (var [|a|], var [|b|]) = GetTuple();
+                        (int [|c|], string [|d|]) tt = GetTuple();
+                        var ([|e|], [|f|]) = GetTuple();
+
+                        int [|g|];
+                        string [|h|];
+
+                        (g, h) = GetTuple();
+                        
+                        (int [|l|], string [|m|]) LocalGetTuple() => throw null;
+                    }
+
+                    (int [|x|], string [|y|]) GetTuple() => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Tuple element 'p' should have a more descriptive name.",
+                "Tuple element 'q' should have a more descriptive name.",
+                "Tuple element 'a' should have a more descriptive name.",
+                "Tuple element 'b' should have a more descriptive name.",
+                "Tuple element 'c' should have a more descriptive name.",
+                "Tuple element 'd' should have a more descriptive name.",
+                "Tuple element 'e' should have a more descriptive name.",
+                "Tuple element 'f' should have a more descriptive name.",
+                "Variable 'g' should have a more descriptive name.",
+                "Variable 'h' should have a more descriptive name.",
+                "Tuple element 'l' should have a more descriptive name.",
+                "Tuple element 'm' should have a more descriptive name.",
+                "Tuple element 'x' should have a more descriptive name.",
+                "Tuple element 'y' should have a more descriptive name.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

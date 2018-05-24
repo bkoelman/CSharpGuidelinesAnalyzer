@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeTuple), OperationKind.Tuple);
 
             context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
             context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
@@ -82,6 +84,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
             }
+
+            ITypeSymbol memberType = member.GetMemberType();
+            AnalyzeTypeAsTuple(memberType, context.ReportDiagnostic);
         }
 
         private void AnalyzeLocalFunction(OperationAnalysisContext context)
@@ -93,6 +98,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0],
                     localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
             }
+
+            AnalyzeTypeAsTuple(localFunction.Symbol.ReturnType, context.ReportDiagnostic);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
@@ -109,6 +116,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
+
+            AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
         }
 
         private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
@@ -125,6 +134,50 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
             }
+
+            AnalyzeTypeAsTuple(variable.Type, context.ReportDiagnostic);
+        }
+
+        private void AnalyzeTypeAsTuple([NotNull] ITypeSymbol type, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (type.IsTupleType && type is INamedTypeSymbol tupleType)
+            {
+                foreach (IFieldSymbol tupleElement in tupleType.TupleElements)
+                {
+                    bool isDefaultTupleElement = tupleElement.Equals(tupleElement.CorrespondingTupleField);
+
+                    if (!isDefaultTupleElement && ContainsDigitsNonWhitelisted(tupleElement.Name))
+                    {
+                        reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
+                    }
+                }
+            }
+        }
+
+        private void AnalyzeTuple(OperationAnalysisContext context)
+        {
+            var tuple = (ITupleOperation)context.Operation;
+
+            foreach (IOperation element in tuple.Elements)
+            {
+                ILocalSymbol tupleElement = TryGetTupleElement(element);
+
+                if (tupleElement != null && ContainsDigitsNonWhitelisted(tupleElement.Name))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
+                        tupleElement.Name));
+                }
+            }
+        }
+
+        [CanBeNull]
+        private ILocalSymbol TryGetTupleElement([NotNull] IOperation elementOperation)
+        {
+            ILocalReferenceOperation localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
+                ? declarationExpression.Expression as ILocalReferenceOperation
+                : elementOperation as ILocalReferenceOperation;
+
+            return localReference != null && localReference.IsDeclaration ? localReference.Local : null;
         }
 
         private void AnalyzeFromClause(SyntaxNodeAnalysisContext context)
