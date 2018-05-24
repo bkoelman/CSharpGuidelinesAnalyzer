@@ -205,9 +205,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
-                if (local.Equals(operation.Symbol) && operation.Initializer != null)
+                if (local.Equals(operation.Symbol))
                 {
-                    TrySetEvent(operation.Initializer.Value);
+                    IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+                    if (initializer != null)
+                    {
+                        TrySetEvent(initializer.Value);
+                    }
                 }
 
                 base.VisitVariableDeclarator(operation);

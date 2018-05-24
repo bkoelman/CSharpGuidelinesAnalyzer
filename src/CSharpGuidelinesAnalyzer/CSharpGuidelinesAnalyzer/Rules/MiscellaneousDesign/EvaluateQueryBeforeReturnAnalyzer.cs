@@ -302,9 +302,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitVariableDeclarator(operation);
 
-                    if (currentLocal.Equals(operation.Symbol) && operation.Initializer != null)
+                    if (currentLocal.Equals(operation.Symbol))
                     {
-                        AnalyzeAssignmentValue(operation.Initializer.Value);
+                        IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+                        if (initializer != null)
+                        {
+                            AnalyzeAssignmentValue(initializer.Value);
+                        }
                     }
                 }
 

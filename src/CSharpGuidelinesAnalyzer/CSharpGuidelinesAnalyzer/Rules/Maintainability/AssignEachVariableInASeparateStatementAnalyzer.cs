@@ -152,7 +152,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
-                if (operation.Initializer != null)
+                IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+                if (initializer != null)
                 {
                     IdentifiersAssigned.Add(operation.Symbol.Name);
                 }

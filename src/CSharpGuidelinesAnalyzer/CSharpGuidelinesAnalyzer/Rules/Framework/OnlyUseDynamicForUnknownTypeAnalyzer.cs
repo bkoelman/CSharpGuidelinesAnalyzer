@@ -46,11 +46,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             var declarator = (IVariableDeclaratorOperation)context.Operation;
             ILocalSymbol variable = declarator.Symbol;
 
-            if (IsDynamicType(variable.Type) && declarator.Initializer != null)
+            if (IsDynamicType(variable.Type))
             {
-                if (RequiresReport(declarator.Initializer.Value))
+                IVariableInitializerOperation initializer = declarator.GetVariableInitializer();
+
+                if (initializer != null)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, declarator.Syntax.GetLocation(), variable.Name));
+                    if (RequiresReport(initializer.Value))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, declarator.Syntax.GetLocation(), variable.Name));
+                    }
                 }
             }
         }
