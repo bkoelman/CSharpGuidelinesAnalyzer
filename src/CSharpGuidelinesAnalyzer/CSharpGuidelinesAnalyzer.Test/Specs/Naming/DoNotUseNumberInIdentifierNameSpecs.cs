@@ -142,6 +142,35 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_delegate_name_contains_no_digits_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    delegate void NoDigits();
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_delegate_name_contains_a_digit_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    delegate void [|D5|]();
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Delegate 'D5' contains one or more digits in its name.");
+        }
+
+        [Fact]
         internal void When_field_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
@@ -463,6 +492,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Parameter 'p1' contains one or more digits in its name.");
+        }
+
+        [Fact]
+        internal void When_local_function_parameter_name_contains_no_digits_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void L(int p)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
