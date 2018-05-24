@@ -4,6 +4,7 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -47,6 +48,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
+
+            context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
+            context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
+            context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClause, SyntaxKind.JoinIntoClause);
+            context.RegisterSyntaxNodeAction(AnalyzeQueryContinuation, SyntaxKind.QueryContinuation);
+            context.RegisterSyntaxNodeAction(AnalyzeLetClause, SyntaxKind.LetClause);
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
@@ -90,12 +97,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 ? IsBlacklisted(parameter.Name)
                 : IsBlacklisted(parameter.Name) || IsSingleLetter(parameter.Name);
 
-            if (requiresReport)
+            if (requiresReport && !parameter.IsInterfaceImplementation())
             {
-                if (!parameter.IsInterfaceImplementation())
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
-                }
+                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
         }
 
@@ -115,6 +119,47 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
                 }
+            }
+        }
+
+        private void AnalyzeFromClause(SyntaxNodeAnalysisContext context)
+        {
+            var fromClause = (FromClauseSyntax)context.Node;
+            AnalyzeRangeVariable(fromClause.Identifier, context);
+        }
+
+        private void AnalyzeJoinClause(SyntaxNodeAnalysisContext context)
+        {
+            var joinClause = (JoinClauseSyntax)context.Node;
+            AnalyzeRangeVariable(joinClause.Identifier, context);
+        }
+
+        private void AnalyzeJoinIntoClause(SyntaxNodeAnalysisContext context)
+        {
+            var joinIntoClause = (JoinIntoClauseSyntax)context.Node;
+            AnalyzeRangeVariable(joinIntoClause.Identifier, context);
+        }
+
+        private void AnalyzeQueryContinuation(SyntaxNodeAnalysisContext context)
+        {
+            var queryContinuation = (QueryContinuationSyntax)context.Node;
+            AnalyzeRangeVariable(queryContinuation.Identifier, context);
+        }
+
+        private void AnalyzeLetClause(SyntaxNodeAnalysisContext context)
+        {
+            var letClause = (LetClauseSyntax)context.Node;
+            AnalyzeRangeVariable(letClause.Identifier, context);
+        }
+
+        private static void AnalyzeRangeVariable(SyntaxToken identifierToken, SyntaxNodeAnalysisContext context)
+        {
+            string rangeVariableName = identifierToken.ValueText;
+
+            if (IsBlacklisted(rangeVariableName) || IsSingleLetter(rangeVariableName))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable",
+                    rangeVariableName));
             }
         }
 

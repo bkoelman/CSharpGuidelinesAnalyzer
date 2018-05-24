@@ -819,6 +819,40 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_range_variable_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void Method()
+                        {
+                            var query =
+                                from [|a|] in Enumerable.Empty<string>()
+                                join [|b|] in Enumerable.Empty<string>() on a.GetHashCode() equals b.GetHashCode() into [|c|]
+                                group c by c.ToString() into [|d|]
+                                let [|e|] = d.GetHashCode()
+                                where true
+                                let [|f|] = e.ToString()
+                                select string.Empty;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Range variable 'a' should have a more descriptive name.",
+                "Range variable 'b' should have a more descriptive name.",
+                "Range variable 'c' should have a more descriptive name.",
+                "Range variable 'd' should have a more descriptive name.",
+                "Range variable 'e' should have a more descriptive name.",
+                "Range variable 'f' should have a more descriptive name.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseAbbreviationInIdentifierNameAnalyzer();

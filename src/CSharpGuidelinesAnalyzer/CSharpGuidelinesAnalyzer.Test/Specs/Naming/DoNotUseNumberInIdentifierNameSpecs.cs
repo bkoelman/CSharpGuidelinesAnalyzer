@@ -1,3 +1,4 @@
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -580,6 +581,62 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Variable 'str12' contains one or more digits in its name.");
+        }
+
+        [Fact]
+        internal void When_range_variable_names_contain_no_digits_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                            var query =
+                                from a in Enumerable.Empty<string>()
+                                join b in Enumerable.Empty<string>() on a.GetHashCode() equals b.GetHashCode() into c
+                                group c by c.ToString() into d
+                                let e = d.GetHashCode()
+                                where true
+                                let f = e.ToString()
+                                select string.Empty;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_range_variable_names_contain_digits_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                            var query =
+                                from [|a1|] in Enumerable.Empty<string>()
+                                join [|b2|] in Enumerable.Empty<string>() on a1.GetHashCode() equals b2.GetHashCode() into [|c3|]
+                                group c3 by c3.ToString() into [|d4|]
+                                let [|e5|] = d4.GetHashCode()
+                                where true
+                                let [|f6|] = e5.ToString()
+                                select string.Empty;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Range variable 'a1' contains one or more digits in its name.",
+                "Range variable 'b2' contains one or more digits in its name.",
+                "Range variable 'c3' contains one or more digits in its name.",
+                "Range variable 'd4' contains one or more digits in its name.",
+                "Range variable 'e5' contains one or more digits in its name.",
+                "Range variable 'f6' contains one or more digits in its name.");
         }
 
         [Fact]
