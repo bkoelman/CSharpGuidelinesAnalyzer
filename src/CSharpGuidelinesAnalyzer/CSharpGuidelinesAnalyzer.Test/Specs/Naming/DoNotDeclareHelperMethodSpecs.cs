@@ -111,6 +111,38 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_interface_name_contains_the_word_Utility_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface [|IUtilityObjects|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Name of type 'IUtilityObjects' contains the term 'Utility'.");
+        }
+
+        [Fact]
+        internal void When_delegate_name_contains_the_word_Facilities_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    delegate void [|ServiceFacilitiesUtilityCallback|]();
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Name of type 'ServiceFacilitiesUtilityCallback' contains the term 'Facilities'.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotDeclareHelperMethodAnalyzer();
