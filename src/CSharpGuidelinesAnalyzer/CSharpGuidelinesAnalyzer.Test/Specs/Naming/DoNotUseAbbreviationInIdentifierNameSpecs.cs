@@ -11,15 +11,256 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => DoNotUseAbbreviationInIdentifierNameAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_field_name_contains_no_abbreviation_it_must_be_skipped()
+        internal void When_class_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    class OkButtonContainer
                     {
-                        private int some;
                     }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_class_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class [|OkBtnContainer|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Class 'OkBtnContainer' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_class_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class [|C|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Class 'C' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_struct_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct OkButtonContainer
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_struct_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct [|OkBtnContainer|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Struct 'OkBtnContainer' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_struct_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct [|S|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Struct 'S' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_enum_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    enum NextButtonAction
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_enum_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    enum [|NextBtnAction|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Enum 'NextBtnAction' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_enum_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    enum [|E|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Enum 'E' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_interface_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface IOkButtonContainer
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_interface_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface [|IOkBtnContainer|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Interface 'IOkBtnContainer' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_interface_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface [|I|]
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Interface 'I' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_delegate_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    delegate void ButtonClick();
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_delegate_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    delegate void [|BtnClick|]();
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Delegate 'BtnClick' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_delegate_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    delegate void [|D|]();
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Delegate 'D' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_field_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int some;
                 ")
                 .Build();
 
@@ -31,12 +272,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_field_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private int [|txtData|];
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int [|txtData|];
                 ")
                 .Build();
 
@@ -49,12 +287,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_field_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private int [|i|];
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int [|i|];
                 ")
                 .Build();
 
@@ -67,12 +302,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_property_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public int Some { get; } = 123;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public int Some { get; } = 123;
                 ")
                 .Build();
 
@@ -84,12 +316,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_property_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public bool [|ChkActive|] { get; } = true;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public bool [|ChkActive|] { get; } = true;
                 ")
                 .Build();
 
@@ -102,12 +331,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_property_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public bool [|X|] { get; } = true;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public bool [|X|] { get; } = true;
                 ")
                 .Build();
 
@@ -122,12 +348,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class B
+                    public abstract class Bb
                     {
                         public abstract int [|CmbItemCount|] { get; }
                     }
 
-                    public class C : B
+                    public class Cc : Bb
                     {
                         public override int CmbItemCount => 123;
                     }
@@ -145,12 +371,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class B
+                    public abstract class Bb
                     {
                         public abstract int [|X|] { get; }
                     }
 
-                    public class C : B
+                    public class Cc : Bb
                     {
                         public override int X => 123;
                     }
@@ -168,12 +394,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public interface I
+                    public interface Ii
                     {
                         int [|PrgValue|] { get; }
                     }
 
-                    public class C : I
+                    public class Cc : Ii
                     {
                         public int PrgValue => 123;
                     }
@@ -191,12 +417,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public interface I
+                    public interface Ii
                     {
                         int [|P|] { get; }
                     }
 
-                    public class C : I
+                    public class Cc : Ii
                     {
                         public int P => 123;
                     }
@@ -212,12 +438,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_event_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public event EventHandler ValueChanged;
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public event EventHandler ValueChanged;
                 ")
                 .Build();
 
@@ -229,12 +452,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_event_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public event EventHandler [|TxtChanged|];
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public event EventHandler [|TxtChanged|];
                 ")
                 .Build();
 
@@ -247,12 +467,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_event_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        public event EventHandler [|E|];
-                    }
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public event EventHandler [|E|];
                 ")
                 .Build();
 
@@ -265,13 +482,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void More()
                     {
-                        void More()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -284,13 +498,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void [|MakeRptVisible|]()
                     {
-                        void [|MakeRptVisible|]()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -304,13 +515,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_method_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void [|M|]()
                     {
-                        void [|M|]()
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -326,12 +534,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class B
+                    public abstract class Bb
                     {
                         public abstract void [|MakeRptVisible|]();
                     }
 
-                    public class C : B
+                    public class Cc : Bb
                     {
                         public override void MakeRptVisible()
                         {
@@ -351,12 +559,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class B
+                    public abstract class Bb
                     {
                         public abstract void [|M|]();
                     }
 
-                    public class C : B
+                    public class Cc : Bb
                     {
                         public override void M()
                         {
@@ -376,12 +584,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public interface I
+                    public interface Ii
                     {
                         void [|FldCount|]();
                     }
 
-                    public class C : I
+                    public class Cc : Ii
                     {
                         public void FldCount()
                         {
@@ -401,12 +609,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public interface I
+                    public interface Ii
                     {
                         void [|M|]();
                     }
 
-                    public class C : I
+                    public class Cc : Ii
                     {
                         public void M()
                         {
@@ -424,15 +632,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Some()
                     {
-                        void Some()
+                        void More()
                         {
-                            void More()
-                            {
-                            }
                         }
                     }
                 ")
@@ -446,15 +651,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Some()
                     {
-                        void Some()
+                        void [|MakeRptVisible|]()
                         {
-                            void [|MakeRptVisible|]()
-                            {
-                            }
                         }
                     }
                 ")
@@ -469,15 +671,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Some()
                     {
-                        void Some()
+                        void [|L|]()
                         {
-                            void [|L|]()
-                            {
-                            }
                         }
                     }
                 ")
@@ -492,13 +691,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method(int someParameter)
                     {
-                        void Method(int someParameter)
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -511,13 +707,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method(object [|tvHistory|])
                     {
-                        void Method(object [|tvHistory|])
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -531,13 +724,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method(object [|x|])
                     {
-                        void Method(object [|x|])
-                        {
-                        }
                     }
                 ")
                 .Build();
@@ -553,12 +743,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class B
+                    public abstract class Bb
                     {
                         public abstract void Method(int [|btnCount|]);
                     }
 
-                    public class C : B
+                    public class Cc : Bb
                     {
                         public override void Method(int btnCount)
                         {
@@ -578,12 +768,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class B
+                    public abstract class Bb
                     {
                         public abstract void Method(int [|x|]);
                     }
 
-                    public class C : B
+                    public class Cc : Bb
                     {
                         public override void Method(int x)
                         {
@@ -603,12 +793,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public interface I
+                    public interface Ii
                     {
                         void Method(int [|btnCount|]);
                     }
 
-                    public class C : I
+                    public class Cc : Ii
                     {
                         public void Method(int btnCount)
                         {
@@ -628,12 +818,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public interface I
+                    public interface Ii
                     {
                         void Method(int [|x|]);
                     }
 
-                    public class C : I
+                    public class Cc : Ii
                     {
                         public void Method(int x)
                         {
@@ -651,15 +841,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
+                        void LocalFunction(int someParameter)
                         {
-                            void LocalFunction(int someParameter)
-                            {
-                            }
                         }
                     }
                 ")
@@ -673,15 +860,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
+                        void LocalFunction(object [|tvHistory|])
                         {
-                            void LocalFunction(object [|tvHistory|])
-                            {
-                            }
                         }
                     }
                 ")
@@ -696,15 +880,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_local_function_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
+                        void LocalFunction(object [|x|])
                         {
-                            void LocalFunction(object [|x|])
-                            {
-                            }
                         }
                     }
                 ")
@@ -719,14 +900,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
-                        {
-                            string lineString = ""A"";
-                        }
+                        string lineString = ""A"";
                     }
                 ")
                 .Build();
@@ -739,14 +917,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
-                        {
-                            string [|str|] = ""A"";
-                        }
+                        string [|str|] = ""A"";
                     }
                 ")
                 .Build();
@@ -760,14 +935,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
-                        {
-                            string [|s|] = ""A"";
-                        }
+                        string [|s|] = ""A"";
                     }
                 ")
                 .Build();
@@ -781,16 +953,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_consists_of_single_letter_inside_lambda_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .WithReference(typeof(Enumerable).Assembly)
                 .Using(typeof(Enumerable).Namespace)
-                .InGlobalScope(@"
-                    class C
+                .InDefaultClass(@"
+                    int[] Method(int[] items)
                     {
-                        int[] Method(int[] items)
-                        {
-                            return items.Where(i => i > 5).ToArray();
-                        }
+                        return items.Where(i => i > 5).ToArray();
                     }
                 ")
                 .Build();
@@ -803,14 +972,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_variable_name_consists_of_single_underscore_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
-                        {
-                            string _ = ""A"";
-                        }
+                        string _ = ""A"";
                     }
                 ")
                 .Build();
@@ -823,22 +989,19 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_range_variable_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .Using(typeof(Enumerable).Namespace)
-                .InGlobalScope(@"
-                    class C
+                .InDefaultClass(@"
+                    void Method()
                     {
-                        void Method()
-                        {
-                            var query =
-                                from [|a|] in Enumerable.Empty<string>()
-                                join [|b|] in Enumerable.Empty<string>() on a.GetHashCode() equals b.GetHashCode() into [|c|]
-                                group c by c.ToString() into [|d|]
-                                let [|e|] = d.GetHashCode()
-                                where true
-                                let [|f|] = e.ToString()
-                                select string.Empty;
-                        }
+                        var query =
+                            from [|a|] in Enumerable.Empty<string>()
+                            join [|b|] in Enumerable.Empty<string>() on a.GetHashCode() equals b.GetHashCode() into [|c|]
+                            group c by c.ToString() into [|d|]
+                            let [|e|] = d.GetHashCode()
+                            where true
+                            let [|f|] = e.ToString()
+                            select string.Empty;
                     }
                 ")
                 .Build();

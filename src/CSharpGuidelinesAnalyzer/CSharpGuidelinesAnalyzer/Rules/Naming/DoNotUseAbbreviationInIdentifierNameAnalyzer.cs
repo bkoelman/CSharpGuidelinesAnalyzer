@@ -15,9 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     {
         public const string DiagnosticId = "AV1706";
 
-        private const string Title =
-            "Member, local function, parameter or variable name contains an abbreviation or is too short";
-
+        private const string Title = "Identifier contains an abbreviation or is too short";
         private const string MessageFormat = "{0} '{1}' should have a more descriptive name.";
         private const string Description = "Don't use abbreviations.";
 
@@ -44,6 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
@@ -54,6 +53,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClause, SyntaxKind.JoinIntoClause);
             context.RegisterSyntaxNodeAction(AnalyzeQueryContinuation, SyntaxKind.QueryContinuation);
             context.RegisterSyntaxNodeAction(AnalyzeLetClause, SyntaxKind.LetClause);
+        }
+
+        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        {
+            var type = (INamedTypeSymbol)context.Symbol;
+
+            if (type.IsSynthesized())
+            {
+                return;
+            }
+
+            if (IsBlacklisted(type.Name) || IsSingleLetter(type.Name))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind, type.Name));
+            }
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
