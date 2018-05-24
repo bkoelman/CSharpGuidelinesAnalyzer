@@ -98,6 +98,36 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Property 'NumberOfItems' should be renamed to 'Count'.");
         }
 
+        [Fact]
+        internal void When_field_is_named_NumberOfItems_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public int [|NumberOfItems|];
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Field 'NumberOfItems' should be renamed to 'Count'.");
+        }
+
+        [Fact]
+        internal void When_const_field_is_named_NumberOfItems_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    public const int [|NumberOfItems|] = 3;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Field 'NumberOfItems' should be renamed to 'Count'.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new UseFrameworkTerminologyInMemberNameAnalyzer();
