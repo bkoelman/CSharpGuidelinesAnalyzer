@@ -73,10 +73,92 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         internal void When_regular_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .Using(typeof(Task).Namespace)
-                .InGlobalScope(@"
-                    class C
+                .InDefaultClass(@"
+                    Task Some()
+                    {
+                        throw new NotImplementedException();
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_async_local_function_name_ends_with_Async_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        async Task SomeAsync()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_async_local_function_name_ends_with_TaskAsync_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        async Task SomeTaskAsync()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_async_local_function_name_does_not_end_with_Async_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        async Task [|Some|]()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Name of async local function 'Some()' should end with Async or TaskAsync.");
+        }
+
+        [Fact]
+        internal void When_regular_local_function_name_does_not_end_with_Async_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InDefaultClass(@"
+                    void M()
                     {
                         Task Some()
                         {
