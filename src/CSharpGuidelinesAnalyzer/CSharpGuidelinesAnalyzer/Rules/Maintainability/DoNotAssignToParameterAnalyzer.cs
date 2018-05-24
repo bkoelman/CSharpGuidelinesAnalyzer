@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -39,18 +41,31 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
+            context.RegisterSymbolAction(AnalyzeProperty, SymbolKind.Property);
+            context.RegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.RefKind != RefKind.None || parameter.IsSynthesized())
+            if (!(parameter.ContainingSymbol is IMethodSymbol method) || method.IsAbstract)
             {
                 return;
             }
 
-            if (!(parameter.ContainingSymbol is IMethodSymbol method) || method.IsAbstract)
+            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
+            {
+                AnalyzeParameterUsage(parameter, method, collector, context);
+
+                FilterDuplicateLocations(collector.Diagnostics);
+            }
+        }
+
+        private void AnalyzeParameterUsage([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
+            [NotNull] DiagnosticCollector collector, SymbolAnalysisContext context)
+        {
+            if (parameter.RefKind != RefKind.None || parameter.IsSynthesized())
             {
                 return;
             }
@@ -60,11 +75,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow
                 // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
 
-                AnalyzeParameterUsageInMethodSlow(parameter, method, context);
+                AnalyzeParameterUsageInMethodSlow(parameter, method, collector, context);
             }
             else
             {
-                AnalyzeParameterUsageInMethod(parameter, method, context);
+                AnalyzeParameterUsageInMethod(parameter, method, collector, context);
             }
         }
 
@@ -79,7 +94,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         private static void AnalyzeParameterUsageInMethod([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
-            SymbolAnalysisContext context)
+            [NotNull] DiagnosticCollector collector, SymbolAnalysisContext context)
         {
             SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (body != null)
@@ -90,14 +105,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     if (dataFlowAnalysis.WrittenInside.Contains(parameter))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                        collector.Add(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
                     }
                 }
             }
         }
 
         private void AnalyzeParameterUsageInMethodSlow([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
-            SymbolAnalysisContext context)
+            [NotNull] DiagnosticCollector collector, SymbolAnalysisContext context)
         {
             IOperation body = method.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
             if (body != null)
@@ -107,7 +122,65 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 if (walker.SeenAssignment)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                    collector.Add(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                }
+            }
+        }
+
+        private void FilterDuplicateLocations([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics)
+        {
+            for (int index = 0; index < diagnostics.Count; index++)
+            {
+                Diagnostic diagnostic = diagnostics[index];
+
+                Diagnostic[] duplicates = diagnostics
+                    .Where(d => !ReferenceEquals(d, diagnostic) && d.Location == diagnostic.Location).ToArray();
+                if (duplicates.Any())
+                {
+                    foreach (Diagnostic duplicate in duplicates)
+                    {
+                        diagnostics.Remove(duplicate);
+                    }
+
+                    index = 0;
+                }
+            }
+        }
+
+        private void AnalyzeProperty(SymbolAnalysisContext context)
+        {
+            var property = (IPropertySymbol)context.Symbol;
+
+            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
+            {
+                AnalyzeAccessorMethod(property.GetMethod, collector, context);
+                AnalyzeAccessorMethod(property.SetMethod, collector, context);
+
+                FilterDuplicateLocations(collector.Diagnostics);
+            }
+        }
+
+        private void AnalyzeEvent(SymbolAnalysisContext context)
+        {
+            var evnt = (IEventSymbol)context.Symbol;
+
+            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
+            {
+                AnalyzeAccessorMethod(evnt.AddMethod, collector, context);
+                AnalyzeAccessorMethod(evnt.RemoveMethod, collector, context);
+
+                FilterDuplicateLocations(collector.Diagnostics);
+            }
+        }
+
+        private void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod, [NotNull] DiagnosticCollector collector,
+            SymbolAnalysisContext context)
+        {
+            if (accessorMethod != null && !accessorMethod.IsAbstract)
+            {
+                foreach (IParameterSymbol parameter in accessorMethod.Parameters)
+                {
+                    AnalyzeParameterUsage(parameter, accessorMethod, collector, context);
                 }
             }
         }
