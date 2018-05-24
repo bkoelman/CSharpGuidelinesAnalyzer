@@ -211,6 +211,26 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Parameter 'lOl' has a name that is difficult to read.");
         }
 
+        [Fact]
+        internal void When_local_function_parameter_is_named_lOl_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        void L(string [|lOl|] = ""X"")
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'lOl' has a name that is difficult to read.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AvoidMisleadingNameAnalyzer();
