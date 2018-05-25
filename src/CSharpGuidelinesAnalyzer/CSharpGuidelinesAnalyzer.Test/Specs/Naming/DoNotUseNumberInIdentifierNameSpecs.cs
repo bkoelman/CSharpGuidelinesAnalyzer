@@ -754,6 +754,34 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_inferred_tuple_element_names_contain_digits_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void Method()
+                    {
+                        var anon = new
+                        {
+                            [|A1|] = string.Empty,
+                            [|B1|] = 1
+                        };
+
+                        var tuple = ([|anon.A1|], [|anon.B1|]);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property 'A1' contains one or more digits in its name.",
+                "Property 'B1' contains one or more digits in its name.",
+                "Tuple element 'A1' contains one or more digits in its name.",
+                "Tuple element 'B1' contains one or more digits in its name.");
+        }
+
+        [Fact]
         internal void When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange

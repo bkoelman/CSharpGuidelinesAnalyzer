@@ -1085,6 +1085,34 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Tuple element 'y' should have a more descriptive name.");
         }
 
+        [Fact]
+        internal void When_inferred_tuple_element_names_consist_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .InDefaultClass(@"
+                    void Method()
+                    {
+                        var anon = new
+                        {
+                            [|A|] = string.Empty,
+                            [|B|] = 1
+                        };
+
+                        var tuple = ([|anon.A|], [|anon.B|]);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property 'A' should have a more descriptive name.",
+                "Property 'B' should have a more descriptive name.",
+                "Tuple element 'A' should have a more descriptive name.",
+                "Tuple element 'B' should have a more descriptive name.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseAbbreviationInIdentifierNameAnalyzer();
