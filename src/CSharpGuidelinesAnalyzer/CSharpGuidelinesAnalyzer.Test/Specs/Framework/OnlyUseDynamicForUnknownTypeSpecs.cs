@@ -1,4 +1,4 @@
-using System.Runtime.CompilerServices;
+using System;
 using CSharpGuidelinesAnalyzer.Rules.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,15 +11,37 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         protected override string DiagnosticId => OnlyUseDynamicForUnknownTypeAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_declared_variable_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_dynamic_identifier_is_assigned_from_dynamic_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InDefaultClass(@"
-                    void M(dynamic p)
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
                     {
-                        dynamic d = p;
+                        dynamic field = GetDynamic();
+
+                        dynamic Property
+                        {
+                            get => field;
+                            set => value = field;
+                        }
+
+                        public C()
+                        {
+                            dynamic d = GetDynamicLocal();
+
+                            dynamic GetDynamicLocal() => throw null;
+                        }
+
+                        void M(ref dynamic p)
+                        {
+                            SetDynamic(p);
+
+                            p += field;
+                        }
+
+                        static dynamic GetDynamic() => throw null;
+                        static void SetDynamic(dynamic d) => throw null;
                     }
                 ")
                 .Build();
@@ -29,14 +51,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_declared_variable_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
+        internal void When_dynamic_identifier_is_assigned_from_object_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M(object p)
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
                     {
-                        dynamic d = p;
+                        protected B(dynamic d)
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                        dynamic field = GetObject();
+
+                        dynamic Property
+                        {
+                            get => field;
+                            set => value = field;
+                        }
+
+                        public C()
+                            : base(new object())
+                        {
+                            dynamic d = GetObjectLocal();
+
+                            object GetObjectLocal() => throw null;
+                        }
+
+                        void M(ref dynamic p)
+                        {
+                            SetDynamic(new object());
+
+                            p += field;
+                        }
+
+                        static object GetObject() => throw null;
+                        static void SetDynamic(dynamic d) => throw null;
                     }
                 ")
                 .Build();
@@ -46,32 +99,135 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_declared_variable_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
+        internal void When_dynamic_identifier_is_assigned_from_null_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
                     {
-                        dynamic [|d = ""A""|];
+                        protected B(dynamic d)
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                        dynamic field = null;
+
+                        dynamic Property
+                        {
+                            get => null;
+                            set => value = null;
+                        }
+
+                        public C()
+                            : base(null)
+                        {
+                            dynamic d = null;
+                        }
+
+                        void M(ref dynamic p)
+                        {
+                            SetDynamic(null);
+
+                            p += null;
+                        }
+
+                        static void SetDynamic(dynamic d) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_dynamic_identifier_is_assigned_from_constant_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        protected B(dynamic d)
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                        dynamic field = [|""A""|];
+
+                        dynamic Property
+                        {
+                            get => [|1.5m|];
+                            set => value = [|1|];
+                        }
+
+                        public C()
+                            : base([|'X'|])
+                        {
+                            dynamic d = [|2.8D|];
+                        }
+
+                        void M(ref dynamic p)
+                        {
+                            const byte b = (byte)0;
+                            SetDynamic([|b|]);
+
+                            p += [|2.9F|];
+                        }
+
+                        static void SetDynamic(dynamic d) => throw null;
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "A non-dynamic result is implicitly assigned to dynamic identifier 'd'.");
+                "An expression of type 'String' is implicitly converted to dynamic.",
+                "An expression of type 'Decimal' is implicitly converted to dynamic.",
+                "An expression of type 'Int32' is implicitly converted to dynamic.",
+                "An expression of type 'Char' is implicitly converted to dynamic.",
+                "An expression of type 'Double' is implicitly converted to dynamic.",
+                "An expression of type 'Byte' is implicitly converted to dynamic.",
+                "An expression of type 'Single' is implicitly converted to dynamic.");
         }
 
         [Fact]
-        internal void When_declared_variable_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
+        internal void When_dynamic_identifier_is_assigned_from_cast_to_dynamic_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
                     {
-                        dynamic d = (dynamic)""A"";
+                        dynamic field = (dynamic)""A"";
+
+                        dynamic Property
+                        {
+                            get => (dynamic)1.5m;
+                            set => value = (dynamic)1;
+                        }
+
+                        public C()
+                        {
+                            dynamic d = (dynamic)2.8D;
+                        }
+
+                        void M(ref dynamic p)
+                        {
+                            const byte b = (byte)0;
+                            SetDynamic((dynamic)b);
+
+                            p += (dynamic)2.9F;
+
+                            dynamic d = (dynamic)new { A = p };
+                        }
+
+                        static void SetDynamic(dynamic d) => throw null;
                     }
                 ")
                 .Build();
@@ -81,365 +237,80 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_variable_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
+        internal void When_dynamic_identifier_is_assigned_from_invocation_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InDefaultClass(@"
-                    void M(dynamic p)
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
                     {
-                        dynamic d;
-                        d = p;
+                        protected B(dynamic d)
+                        {
+                        }
                     }
-                ")
-                .Build();
 
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_variable_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M(object p)
+                    class C : B
                     {
-                        dynamic d;
-                        d = p;
-                    }
-                ")
-                .Build();
+                        dynamic field = [|GetString()|];
 
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
+                        dynamic Property
+                        {
+                            get => [|GetDecimal()|];
+                            set => value = [|GetInt32()|];
+                        }
 
-        [Fact]
-        internal void When_variable_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .InDefaultClass(@"
-                    void M()
-                    {
-                        dynamic d;
-                        [|d = ""A""|];
+                        public C()
+                            : base([|GetChar()|])
+                        {
+                            dynamic d = [|GetDouble()|];
+
+                            double GetDouble() => throw null;
+                        }
+
+                        void M(ref dynamic p)
+                        {
+                            SetDynamic([|GetByte()|]);
+
+                            p += [|GetDateTime()|];
+
+                            dynamic d = [|new { A = p }|];
+
+                            DateTime GetDateTime() => throw null;
+                        }
+
+                        static string GetString() => throw null;
+                        static decimal GetDecimal() => throw null;
+                        static int GetInt32() => throw null;
+                        static char GetChar() => throw null;
+                        static byte GetByte() => throw null;
+                        static void SetDynamic(dynamic d) => throw null;
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "A non-dynamic result is implicitly assigned to dynamic identifier 'd'.");
+                "An expression of type 'String' is implicitly converted to dynamic.",
+                "An expression of type 'Decimal' is implicitly converted to dynamic.",
+                "An expression of type 'Int32' is implicitly converted to dynamic.",
+                "An expression of type 'Char' is implicitly converted to dynamic.",
+                "An expression of type 'Double' is implicitly converted to dynamic.",
+                "An expression of type 'Byte' is implicitly converted to dynamic.",
+                "An expression of type 'DateTime' is implicitly converted to dynamic.",
+                "An expression of type '(anonymous)' is implicitly converted to dynamic.");
         }
 
         [Fact]
-        internal void When_variable_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
+        internal void When_dynamic_identifier_is_assigned_from_Activator_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Activator).Namespace)
                 .InDefaultClass(@"
-                    void M()
+                    void M(ref dynamic p)
                     {
-                        dynamic d;
-                        d = (dynamic)""A"";
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_parameter_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M(dynamic p1, ref dynamic p2)
-                        {
-                            p2 = p1;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_parameter_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M(object p, out dynamic d)
-                        {
-                            d = p;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_parameter_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M(ref dynamic d)
-                        {
-                            [|d = ""A""|];
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "A non-dynamic result is implicitly assigned to dynamic identifier 'd'.");
-        }
-
-        [Fact]
-        internal void When_parameter_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M(ref dynamic d)
-                        {
-                            d = (dynamic)""A"";
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_field_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private dynamic f;
-
-                        void M(dynamic p)
-                        {
-                            f = p;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_field_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private dynamic f;
-
-                        void M(object p)
-                        {
-                            f = p;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_field_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private dynamic f;
-
-                        void M()
-                        {
-                            [|f = ""A""|];
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "A non-dynamic result is implicitly assigned to dynamic identifier 'f'.");
-        }
-
-        [Fact]
-        internal void When_field_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private dynamic f;
-
-                        void M()
-                        {
-                            f = (dynamic)""A"";
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_field_of_type_dynamic_is_added_to_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        private dynamic f;
-
-                        void M()
-                        {
-                            f += 5;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_property_of_type_dynamic_is_assigned_to_another_dynamic_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        dynamic P { get; set; }
-
-                        void M(dynamic p)
-                        {
-                            P = p;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_property_of_type_dynamic_is_assigned_to_an_Object_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        dynamic P { get; set; }
-
-                        void M(object p)
-                        {
-                            P = p;
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_property_of_type_dynamic_is_assigned_to_implicitly_cast_string_constant_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        dynamic P { get; set; }
-
-                        void M()
-                        {
-                            [|P = ""A""|];
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "A non-dynamic result is implicitly assigned to dynamic identifier 'P'.");
-        }
-
-        [Fact]
-        internal void When_property_of_type_dynamic_is_assigned_to_explicitly_cast_string_constant_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(DynamicAttribute).Assembly)
-                .InGlobalScope(@"
-                    class C
-                    {
-                        dynamic P { get; set; }
-
-                        void M()
-                        {
-                            P = (dynamic)""A"";
-                        }
+                        dynamic instance1 = Activator.CreateInstance(new int[0].GetType());
+                        dynamic instance2 = Activator.CreateInstance(null, string.Empty, string.Empty);
                     }
                 ")
                 .Build();

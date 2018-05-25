@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -12,8 +13,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     {
         public const string DiagnosticId = "AV2230";
 
-        private const string Title = "A non-dynamic result is implicitly assigned to a dynamic identifier";
-        private const string MessageFormat = "A non-dynamic result is implicitly assigned to dynamic identifier '{0}'.";
+        private const string Title = "An expression is implicitly converted to dynamic";
+        private const string MessageFormat = "An expression of type '{0}' is implicitly converted to dynamic.";
         private const string Description = "Only use the dynamic keyword when talking to a dynamic object.";
 
         [NotNull]
@@ -33,66 +34,76 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator),
-                    OperationKind.VariableDeclarator);
+                INamedTypeSymbol objectHandleType =
+                    startContext.Compilation.GetTypeByMetadataName("System.Runtime.Remoting.ObjectHandle");
 
-                startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAssignment), OperationKind.SimpleAssignment,
+                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeConversion(c, objectHandleType)),
+                    OperationKind.Conversion);
+                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeCompoundAssignment(c, objectHandleType)),
                     OperationKind.CompoundAssignment);
             });
         }
 
-        private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
+        private void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
-            var declarator = (IVariableDeclaratorOperation)context.Operation;
-            ILocalSymbol variable = declarator.Symbol;
-
-            if (IsDynamicType(variable.Type))
+            var conversion = (IConversionOperation)context.Operation;
+            if (!conversion.IsImplicit)
             {
-                IVariableInitializerOperation initializer = declarator.GetVariableInitializer();
+                return;
+            }
 
-                if (initializer != null)
-                {
-                    if (RequiresReport(initializer.Value))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, declarator.Syntax.GetLocation(), variable.Name));
-                    }
-                }
+            ITypeSymbol sourceType = conversion.Operand.Type;
+            ITypeSymbol destinationType = conversion.Type;
+
+            AnalyzeFromToConversion(sourceType, destinationType, objectHandleType, conversion.Syntax.GetLocation(),
+                context.ReportDiagnostic);
+        }
+
+        private void AnalyzeCompoundAssignment(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
+        {
+            var compoundAssignment = (ICompoundAssignmentOperation)context.Operation;
+
+            ITypeSymbol sourceType = compoundAssignment.Value.Type;
+            ITypeSymbol destinationType = compoundAssignment.Target.Type;
+
+            AnalyzeFromToConversion(sourceType, destinationType, objectHandleType, compoundAssignment.Value.Syntax.GetLocation(),
+                context.ReportDiagnostic);
+        }
+
+        private void AnalyzeFromToConversion([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType,
+            [CanBeNull] INamedTypeSymbol objectHandleType, [NotNull] Location reportLocation,
+            [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            if (!IsDynamic(destinationType))
+            {
+                return;
+            }
+
+            if (sourceType == null || IsObject(sourceType) || IsObjectHandle(sourceType, objectHandleType))
+            {
+                return;
+            }
+
+            if (sourceType.TypeKind != TypeKind.Dynamic)
+            {
+                string sourceTypeName = sourceType.IsAnonymousType ? "(anonymous)" : sourceType.Name;
+                reportDiagnostic(Diagnostic.Create(Rule, reportLocation, sourceTypeName));
             }
         }
 
-        private static bool IsDynamicType([NotNull] ITypeSymbol type)
+        private static bool IsDynamic([NotNull] ITypeSymbol type)
         {
             return type.TypeKind == TypeKind.Dynamic;
         }
 
-        private void AnalyzeAssignment(OperationAnalysisContext context)
+        private static bool IsObject([NotNull] ITypeSymbol type)
         {
-            var assignment = (IAssignmentOperation)context.Operation;
-
-            IdentifierInfo identifierInfo = assignment.Target.TryGetIdentifierInfo();
-            if (identifierInfo != null && IsDynamicType(identifierInfo.Type))
-            {
-                if (RequiresReport(assignment.Value))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, assignment.Syntax.GetLocation(),
-                        identifierInfo.Name.ShortName));
-                }
-            }
+            return type.SpecialType == SpecialType.System_Object;
         }
 
-        private bool RequiresReport([CanBeNull] IOperation value)
+        private bool IsObjectHandle([NotNull] ITypeSymbol type, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
-            if (value is IConversionOperation conversion && conversion.IsImplicit)
-            {
-                ITypeSymbol sourceType = conversion.Operand.Type;
-
-                if (sourceType != null && !IsDynamicType(sourceType) && sourceType.SpecialType != SpecialType.System_Object)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return objectHandleType != null && objectHandleType.Equals(type);
         }
     }
 }
