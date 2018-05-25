@@ -41,8 +41,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
-            context.RegisterSymbolAction(AnalyzeProperty, SymbolKind.Property);
-            context.RegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeProperty), SymbolKind.Property);
+            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeEvent), SymbolKind.Event);
         }
 
         private void AnalyzeParameter(SymbolAnalysisContext context)

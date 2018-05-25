@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Hidden, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+            Category.DisplayName, DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -33,7 +33,8 @@ namespace CSharpGuidelinesAnalyzer.Rules
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(AnalyzeOperation, (OperationKind[])Enum.GetValues(typeof(OperationKind)));
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeOperation),
+                (OperationKind[])Enum.GetValues(typeof(OperationKind)));
         }
 
         private void AnalyzeOperation(OperationAnalysisContext context)
