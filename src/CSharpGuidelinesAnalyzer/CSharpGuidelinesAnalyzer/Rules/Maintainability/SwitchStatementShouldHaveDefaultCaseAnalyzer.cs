@@ -33,7 +33,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         [ItemCanBeNull]
-        private static readonly ISymbol[] NullSymbolArray = { null };
+        private static readonly ISymbol[] NullSymbolArray =
+        {
+            null
+        };
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

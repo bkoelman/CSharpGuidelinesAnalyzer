@@ -32,9 +32,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [NotNull]
-        private static readonly ImmutableDictionary<string, string> WordsReplacementMap =
-            new Dictionary<string, string> { { "AddItem", "Add" }, { "Delete", "Remove" }, { "NumberOfItems", "Count" } }
-                .ToImmutableDictionary();
+        private static readonly ImmutableDictionary<string, string> WordsReplacementMap = new Dictionary<string, string>
+        {
+            { "AddItem", "Add" },
+            { "Delete", "Remove" },
+            { "NumberOfItems", "Count" }
+        }.ToImmutableDictionary();
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

@@ -128,7 +128,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
 
             [NotNull]
-            private static readonly char[] DotSeparator = { '.' };
+            private static readonly char[] DotSeparator =
+            {
+                '.'
+            };
 
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName,
                 SymbolAnalysisContext context)
