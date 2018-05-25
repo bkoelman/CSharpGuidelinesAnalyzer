@@ -14,8 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     {
         public const string DiagnosticId = "AV1115";
 
-        private const string Title = "Member or local function contains the word 'and', which suggests it does multiple things";
-        private const string MessageFormat = "{0} '{1}' contains the word 'and', which suggests it does multiple things.";
+        private const string Title = "Member or local function contains the word 'and', which suggests doing multiple things";
+        private const string MessageFormat = "{0} '{1}' contains the word 'and', which suggests doing multiple things.";
         private const string Description = "A property, method or local function should do only one thing.";
 
         [NotNull]

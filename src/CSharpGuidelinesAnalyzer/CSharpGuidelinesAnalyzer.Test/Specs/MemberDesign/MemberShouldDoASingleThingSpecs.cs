@@ -24,7 +24,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'CustomerAndOrder' contains the word 'and', which suggests it does multiple things.");
+                "Property 'CustomerAndOrder' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'SaveCustomerAndOrder' contains the word 'and', which suggests it does multiple things.");
+                "Method 'SaveCustomerAndOrder' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests it does multiple things.");
+                "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests it does multiple things.");
+                "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field '_customerAndOrder' contains the word 'and', which suggests it does multiple things.");
+                "Field '_customerAndOrder' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'CustomerAndOrderSaved' contains the word 'and', which suggests it does multiple things.");
+                "Event 'CustomerAndOrderSaved' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'save_customer_and_order' contains the word 'and', which suggests it does multiple things.");
+                "Method 'save_customer_and_order' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -182,7 +182,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'Match1And2' contains the word 'and', which suggests it does multiple things.");
+                "Method 'Match1And2' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
