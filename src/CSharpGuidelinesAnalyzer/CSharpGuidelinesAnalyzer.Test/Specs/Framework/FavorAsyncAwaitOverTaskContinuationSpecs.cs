@@ -37,6 +37,34 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
+        internal void When_method_contains_invocation_of_generic_TaskContinueWith_with_using_static_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    namespace N
+                    {
+                        class C
+                        {
+                            Task<string> M(int i)
+                            {
+                                var task = GetStringTask();
+                                return [|task.ContinueWith(t => t.Result)|];
+                            }
+
+                            Task<string> GetStringTask() => throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an async method.");
+        }
+
+        [Fact]
         internal void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange
@@ -64,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_method_contains_invocation_of_TaskContinueWith_in_alternate_namespace_it_must_be_skipped()
+        internal void When_method_contains_invocation_of_TaskContinueWith_from_alternate_namespace_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

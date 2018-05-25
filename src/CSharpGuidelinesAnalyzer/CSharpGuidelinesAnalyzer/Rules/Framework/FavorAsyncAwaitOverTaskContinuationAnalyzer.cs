@@ -35,27 +35,44 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             context.RegisterCompilationStartAction(startContext =>
             {
                 INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-                if (taskType != null)
-                {
-                    ImmutableArray<ISymbol> continueWithMethodGroup = taskType.GetMembers("ContinueWith");
+                INamedTypeSymbol genericTaskType =
+                    startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 
+                ImmutableArray<ISymbol> continueWithMethodGroup = GetTaskContinueWithMethodGroup(taskType, genericTaskType);
+
+                if (!continueWithMethodGroup.IsEmpty)
+                {
                     startContext.RegisterOperationAction(
-                        c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, continueWithMethodGroup, c)),
+                        c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, genericTaskType, continueWithMethodGroup, c)),
                         OperationKind.Invocation);
                 }
             });
         }
 
-        private void AnalyzeInvocation([NotNull] INamedTypeSymbol taskType,
+        [ItemNotNull]
+        private ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup([CanBeNull] INamedTypeSymbol taskType,
+            [CanBeNull] INamedTypeSymbol genericTaskType)
+        {
+            ImmutableArray<ISymbol> taskContinueWithMethodGroup =
+                taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+
+            ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup =
+                genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+
+            return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
+        }
+
+        private void AnalyzeInvocation([CanBeNull] INamedTypeSymbol taskType, [CanBeNull] INamedTypeSymbol genericTaskType,
             [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
-            if (invocation.TargetMethod.ContainingType.Equals(taskType))
+            if (invocation.TargetMethod.ContainingType.Equals(taskType) ||
+                invocation.TargetMethod.ContainingType.ConstructedFrom.Equals(genericTaskType))
             {
-                IMethodSymbol targetMethodConstructed = invocation.TargetMethod.ConstructedFrom;
+                IMethodSymbol openTypedTargetMethod = invocation.TargetMethod.OriginalDefinition;
 
-                if (continueWithMethodGroup.Any(method => method.Equals(targetMethodConstructed)))
+                if (continueWithMethodGroup.Any(method => method.Equals(openTypedTargetMethod)))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, context.Operation.Syntax.GetLocation(),
                         context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
