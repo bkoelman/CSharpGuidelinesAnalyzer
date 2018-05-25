@@ -192,6 +192,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
             }
 
+            public override void VisitAnonymousObjectCreation([NotNull] IAnonymousObjectCreationOperation operation)
+            {
+            }
+
             public override void VisitConditional([NotNull] IConditionalOperation operation)
             {
                 if (operation.IsStatement())

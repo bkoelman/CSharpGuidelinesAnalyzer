@@ -1194,6 +1194,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_a_property_is_declared_and_assigned_in_an_anonymous_type_creation_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        var instance = new { Abc = string.Empty };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_two_variables_are_declared_and_assigned_in_a_declaration_expression_it_must_be_skipped()
         {
             // Arrange
