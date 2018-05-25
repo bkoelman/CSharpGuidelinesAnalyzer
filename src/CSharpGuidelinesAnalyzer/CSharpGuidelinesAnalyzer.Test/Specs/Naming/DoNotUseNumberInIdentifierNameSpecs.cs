@@ -230,6 +230,55 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_property_name_contains_no_digits_in_anonymous_type_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int B;
+
+                    void Method()
+                    {
+                        var instance = new
+                        {
+                            A = string.Empty,
+                            B
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_property_name_contains_a_digit_in_anonymous_type_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int [|B1|];
+
+                    void Method()
+                    {
+                        var instance = new
+                        {
+                            [|A1|] = string.Empty,
+                            [|B1|]
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Field 'B1' contains one or more digits in its name.",
+                "Property 'A1' contains one or more digits in its name.",
+                "Property 'B1' contains one or more digits in its name.");
+        }
+
+        [Fact]
         internal void When_inherited_property_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange

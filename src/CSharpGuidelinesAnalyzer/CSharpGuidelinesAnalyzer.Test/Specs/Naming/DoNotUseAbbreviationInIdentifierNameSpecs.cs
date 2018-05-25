@@ -343,6 +343,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_property_name_consists_of_single_letter_in_anonymous_type_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    private int [|B|];
+
+                    void Method()
+                    {
+                        var instance = new
+                        {
+                            [|A|] = string.Empty,
+                            [|B|]
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Field 'B' should have a more descriptive name.",
+                "Property 'A' should have a more descriptive name.",
+                "Property 'B' should have a more descriptive name.");
+        }
+
+        [Fact]
         internal void When_inherited_property_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange

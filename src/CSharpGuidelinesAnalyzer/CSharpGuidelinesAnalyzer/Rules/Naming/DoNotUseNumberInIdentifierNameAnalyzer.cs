@@ -48,6 +48,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeTuple), OperationKind.Tuple);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousObjectCreation),
+                OperationKind.AnonymousObjectCreation);
 
             context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
             context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
@@ -178,6 +180,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 : elementOperation as ILocalReferenceOperation;
 
             return localReference != null && localReference.IsDeclaration ? localReference.Local : null;
+        }
+
+        private void AnalyzeAnonymousObjectCreation(OperationAnalysisContext context)
+        {
+            var creationExpression = (IAnonymousObjectCreationOperation)context.Operation;
+
+            foreach (IPropertySymbol property in creationExpression.Type.GetMembers().OfType<IPropertySymbol>())
+            {
+                if (ContainsDigitsNonWhitelisted(property.Name))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name));
+                }
+            }
         }
 
         private void AnalyzeFromClause(SyntaxNodeAnalysisContext context)
