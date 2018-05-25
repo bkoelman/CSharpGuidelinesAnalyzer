@@ -6,9 +6,9 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 {
-    public sealed class OnlyUseDynamicForUnknownTypeSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => OnlyUseDynamicForUnknownTypeAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => DoNotImplicitlyConvertToDynamicAnalyzer.DiagnosticId;
 
         [Fact]
         internal void When_dynamic_identifier_is_assigned_from_dynamic_it_must_be_skipped()
@@ -321,7 +321,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new OnlyUseDynamicForUnknownTypeAnalyzer();
+            return new DoNotImplicitlyConvertToDynamicAnalyzer();
         }
     }
 }

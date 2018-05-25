@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace CSharpGuidelinesAnalyzer.Rules.Framework
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class OnlyUseDynamicForUnknownTypeAnalyzer : DiagnosticAnalyzer
+    public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV2230";
 
