@@ -241,6 +241,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             string rangeVariableName = identifierToken.ValueText;
 
+            if (string.IsNullOrEmpty(rangeVariableName))
+            {
+                return;
+            }
+
             if (ContainsDigitsNonWhitelisted(rangeVariableName))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable",
