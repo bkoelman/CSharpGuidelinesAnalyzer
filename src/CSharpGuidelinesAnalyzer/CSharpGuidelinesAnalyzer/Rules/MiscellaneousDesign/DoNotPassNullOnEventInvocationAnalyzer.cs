@@ -45,13 +45,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
                 if (systemEventArgs != null)
                 {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocationExpression(c, systemEventArgs)),
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, systemEventArgs)),
                         OperationKind.Invocation);
                 }
             });
         }
 
-        private void AnalyzeInvocationExpression(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
+        private void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
