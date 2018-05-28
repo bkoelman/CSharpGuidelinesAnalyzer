@@ -253,6 +253,13 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
+            public override Location VisitCatchClause([NotNull] ICatchClauseOperation operation, [CanBeNull] object argument)
+            {
+                var syntax = (CatchClauseSyntax)operation.Syntax;
+                return syntax.CatchKeyword.GetLocation();
+            }
+
+            [NotNull]
             public override Location VisitThrow([NotNull] IThrowOperation operation, [CanBeNull] object argument)
             {
                 if (operation.IsStatement())
@@ -286,6 +293,27 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var syntax = (SwitchLabelSyntax)operation.Syntax;
                 return syntax.Keyword.GetLocation();
+            }
+
+            [NotNull]
+            public override Location VisitAwait([NotNull] IAwaitOperation operation, [CanBeNull] object argument)
+            {
+                var syntax = (AwaitExpressionSyntax)operation.Syntax;
+                return syntax.AwaitKeyword.GetLocation();
+            }
+
+            [NotNull]
+            public override Location VisitSizeOf([NotNull] ISizeOfOperation operation, [CanBeNull] object argument)
+            {
+                var syntax = (SizeOfExpressionSyntax)operation.Syntax;
+                return syntax.GetLocation();
+            }
+
+            [NotNull]
+            public override Location VisitTypeOf([NotNull] ITypeOfOperation operation, [CanBeNull] object argument)
+            {
+                var syntax = (TypeOfExpressionSyntax)operation.Syntax;
+                return syntax.GetLocation();
             }
 
             [NotNull]
