@@ -34,9 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 [CanBeNull] object argument)
             {
                 var name = new IdentifierName(operation.Parameter.Name,
-#pragma warning disable AV2310 // Code block should not contain inline comment
                     /* CSharpShortErrorMessageFormat returns 'int', ie. without parameter name */
-#pragma warning restore AV2310 // Code block should not contain inline comment
                     operation.Parameter.Name);
                 return new IdentifierInfo(name, operation.Parameter.Type, operation.Parameter.Kind.ToString());
             }
@@ -82,24 +80,28 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         [CanBeNull]
         public static Location GetLocationForKeyword([NotNull] this IOperation operation,
-            LookupKeywordStrategy lookupStrategy = LookupKeywordStrategy.PreferDoKeywordInDoWhileLoop)
+            DoWhileLoopLookupKeywordStrategy doWhileLoopLookupStrategy = DoWhileLoopLookupKeywordStrategy.PreferDoKeyword,
+            TryFinallyLookupKeywordStrategy tryFinallyLookupKeywordStrategy = TryFinallyLookupKeywordStrategy.PreferTryKeyword)
         {
             if (operation.IsImplicit)
             {
                 return null;
             }
 
-            var visitor = new OperationLocationVisitor(lookupStrategy);
+            var visitor = new OperationLocationVisitor(doWhileLoopLookupStrategy, tryFinallyLookupKeywordStrategy);
             return visitor.Visit(operation, null);
         }
 
         private sealed class OperationLocationVisitor : OperationVisitor<object, Location>
         {
-            private readonly LookupKeywordStrategy lookupStrategy;
+            private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy;
+            private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy;
 
-            public OperationLocationVisitor(LookupKeywordStrategy lookupStrategy)
+            public OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy,
+                TryFinallyLookupKeywordStrategy tryFinallyStrategy)
             {
-                this.lookupStrategy = lookupStrategy;
+                this.doWhileStrategy = doWhileStrategy;
+                this.tryFinallyStrategy = tryFinallyStrategy;
             }
 
             [NotNull]
@@ -114,7 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 if (operation.Syntax is DoStatementSyntax doSyntax)
                 {
-                    return lookupStrategy == LookupKeywordStrategy.PreferDoKeywordInDoWhileLoop
+                    return doWhileStrategy == DoWhileLoopLookupKeywordStrategy.PreferDoKeyword
                         ? doSyntax.DoKeyword.GetLocation()
                         : doSyntax.WhileKeyword.GetLocation();
                 }
@@ -248,8 +250,29 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override Location VisitTry([NotNull] ITryOperation operation, [CanBeNull] object argument)
             {
-                var syntax = (TryStatementSyntax)operation.Syntax;
-                return syntax.TryKeyword.GetLocation();
+                var trySyntax = (TryStatementSyntax)operation.Syntax;
+
+                if (tryFinallyStrategy == TryFinallyLookupKeywordStrategy.PreferTryKeyword)
+                {
+                    return trySyntax.TryKeyword.GetLocation();
+                }
+
+                var finallySyntax = operation.Finally.Syntax as FinallyClauseSyntax;
+                if (finallySyntax == null)
+                {
+                    // Bug workaround for https://github.com/dotnet/roslyn/issues/27208
+                    if (operation.Finally.Syntax is BlockSyntax finallyBlockSyntax)
+                    {
+                        finallySyntax = finallyBlockSyntax.Parent as FinallyClauseSyntax;
+                    }
+
+                    if (finallySyntax == null)
+                    {
+                        return base.VisitTry(operation, argument);
+                    }
+                }
+
+                return finallySyntax.FinallyKeyword.GetLocation();
             }
 
             [NotNull]
@@ -306,14 +329,26 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             public override Location VisitSizeOf([NotNull] ISizeOfOperation operation, [CanBeNull] object argument)
             {
                 var syntax = (SizeOfExpressionSyntax)operation.Syntax;
-                return syntax.GetLocation();
+                return syntax.Keyword.GetLocation();
             }
 
             [NotNull]
             public override Location VisitTypeOf([NotNull] ITypeOfOperation operation, [CanBeNull] object argument)
             {
                 var syntax = (TypeOfExpressionSyntax)operation.Syntax;
-                return syntax.GetLocation();
+                return syntax.Keyword.GetLocation();
+            }
+
+            [NotNull]
+            public override Location VisitNameOf([NotNull] INameOfOperation operation, [CanBeNull] object argument)
+            {
+                if (operation.Syntax is InvocationExpressionSyntax invocationSyntax &&
+                    invocationSyntax.Expression is IdentifierNameSyntax expressionSyntax)
+                {
+                    return expressionSyntax.GetLocation();
+                }
+
+                return base.VisitNameOf(operation, argument);
             }
 
             [NotNull]
