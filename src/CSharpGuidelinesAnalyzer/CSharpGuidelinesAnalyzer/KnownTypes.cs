@@ -78,6 +78,14 @@ namespace CSharpGuidelinesAnalyzer
         }
 
         [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericEqualityComparerT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.EqualityComparer`1");
+        }
+
+        [CanBeNull]
         public static INamedTypeSymbol SystemRuntimeRemotingObjectHandle([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
