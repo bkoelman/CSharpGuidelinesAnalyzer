@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol systemBoolean = startContext.Compilation.GetTypeByMetadataName("System.Boolean");
+                INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
                 if (systemBoolean != null)
                 {
                     startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),

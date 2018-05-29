@@ -34,8 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol objectHandleType =
-                    startContext.Compilation.GetTypeByMetadataName("System.Runtime.Remoting.ObjectHandle");
+                INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
 
                 startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeConversion(c, objectHandleType)),
                     OperationKind.Conversion);

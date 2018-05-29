@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         private const string Title = "Operation should have a keyword";
         private const string TypeMessageFormat = "Operation should have a keyword";
-        private const string Description = "Operation should have a keyword.";
+        private const string Description = "Internal analyzer that reports the keyword location for an IOperation instance.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

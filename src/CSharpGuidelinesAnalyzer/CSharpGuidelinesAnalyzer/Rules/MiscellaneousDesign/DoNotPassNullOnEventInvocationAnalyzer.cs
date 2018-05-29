@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol systemEventArgs = startContext.Compilation.GetTypeByMetadataName("System.EventArgs");
+                INamedTypeSymbol systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
                 if (systemEventArgs != null)
                 {
                     startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, systemEventArgs)),

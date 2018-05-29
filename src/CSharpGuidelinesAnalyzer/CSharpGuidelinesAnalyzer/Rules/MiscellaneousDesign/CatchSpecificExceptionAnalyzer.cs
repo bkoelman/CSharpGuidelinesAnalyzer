@@ -52,20 +52,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         {
             ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(3);
 
-            AddTypeToBuilder(compilation, "System.Exception", builder);
-            AddTypeToBuilder(compilation, "System.SystemException", builder);
-            AddTypeToBuilder(compilation, "System.ApplicationException", builder);
+            AddTypeToBuilder(KnownTypes.SystemException(compilation), builder);
+            AddTypeToBuilder(KnownTypes.SystemSystemException(compilation), builder);
+            AddTypeToBuilder(KnownTypes.SystemApplicationException(compilation), builder);
 
             return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
         }
 
-        private void AddTypeToBuilder([NotNull] Compilation compilation, [NotNull] string typeName,
-            [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder list)
+        private void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type,
+            [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
         {
-            INamedTypeSymbol type = compilation.GetTypeByMetadataName(typeName);
             if (type != null)
             {
-                list.Add(type);
+                builder.Add(type);
             }
         }
 

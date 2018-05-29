@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         private const string Title = "Operation should be a statement";
         private const string TypeMessageFormat = "Operation '{0}' should be a statement";
-        private const string Description = "Operation should be a statement.";
+        private const string Description = "Internal analyzer that reports when an IOperation instance represents a statement.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

@@ -34,9 +34,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-                INamedTypeSymbol genericTaskType =
-                    startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
+                INamedTypeSymbol taskType = KnownTypes.SystemThreadingTasksTask(startContext.Compilation);
+                INamedTypeSymbol genericTaskType = KnownTypes.SystemThreadingTasksTaskT(startContext.Compilation);
 
                 ImmutableArray<ISymbol> continueWithMethodGroup = GetTaskContinueWithMethodGroup(taskType, genericTaskType);
 
