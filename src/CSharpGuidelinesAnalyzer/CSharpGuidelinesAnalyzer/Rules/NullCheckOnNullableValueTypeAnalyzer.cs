@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -15,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         public const string DiagnosticId = "AV0000";
 
         private const string Title = "Expression of nullable value type is checked for null or not-null";
-        private const string TypeMessageFormat = "Expression of nullable value type '{0}' is checked for {1}";
+        private const string TypeMessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";
 
         private const string Description =
             "Internal analyzer that reports when an expression of type nullable value type is checked for null or not-null.";
@@ -37,267 +36,66 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                var knownSymbols = new KnownSymbols(startContext.Compilation);
+                var scanner = new NullCheckScanner(startContext.Compilation);
 
-                if (knownSymbols.NullableHasValueProperty != null)
-                {
-                    startContext.RegisterOperationAction(
-                        c => c.SkipInvalid(_ => AnalyzePropertyReference(c, knownSymbols.NullableHasValueProperty)),
-                        OperationKind.PropertyReference);
-                }
-
-                if (knownSymbols.HasMethods)
-                {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, knownSymbols)),
-                        OperationKind.Invocation);
-                }
-
-                startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeIsPattern), OperationKind.IsPattern);
-                startContext.RegisterOperationAction(c => c.SkipInvalid(AnalyzeBinaryOperator), OperationKind.BinaryOperator);
+                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzePropertyReference(c, scanner)),
+                    OperationKind.PropertyReference);
+                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, scanner)),
+                    OperationKind.Invocation);
+                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeIsPattern(c, scanner)),
+                    OperationKind.IsPattern);
+                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeBinaryOperator(c, scanner)),
+                    OperationKind.BinaryOperator);
             });
         }
 
-        private void AnalyzePropertyReference(OperationAnalysisContext context,
-            [NotNull] IPropertySymbol nullableHasValueProperty)
+        private void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
         {
             var propertyReference = (IPropertyReferenceOperation)context.Operation;
 
-            if (propertyReference.Property.OriginalDefinition.Equals(nullableHasValueProperty) &&
-                IsNullableValueType(propertyReference.Instance))
-            {
-                ReportAtOperation(propertyReference.Instance, context.ReportDiagnostic, false);
-            }
+            NullCheckScanResult? scanResult = scanner.ScanPropertyReference(propertyReference);
+            ReportForScanResult(scanResult, context.ReportDiagnostic);
         }
 
-        private void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] KnownSymbols knownSymbols)
+        private void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
-            if (invocation.TargetMethod == null)
-            {
-                return;
-            }
-
-            if (invocation.Arguments.Length == 1)
-            {
-                AnalyzeSingleArgumentInvocation(invocation, knownSymbols, context);
-            }
-            else if (invocation.Arguments.Length == 2)
-            {
-                AnalyzeDoubleArgumentInvocation(invocation, knownSymbols, context);
-            }
+            NullCheckScanResult? scanResult = scanner.ScanInvocation(invocation);
+            ReportForScanResult(scanResult, context.ReportDiagnostic);
         }
 
-        private void AnalyzeSingleArgumentInvocation([NotNull] IInvocationOperation invocation,
-            [NotNull] KnownSymbols knownSymbols, OperationAnalysisContext context)
-        {
-            if (invocation.Instance == null)
-            {
-                return;
-            }
-
-            bool isNullableEquals = invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.NullableEqualsMethod);
-            if (isNullableEquals)
-            {
-                bool isInverted = IsInverted(invocation);
-
-                AnalyzeArguments(invocation.Instance, invocation.Arguments[0].Value, isInverted, context.ReportDiagnostic);
-            }
-        }
-
-        private void AnalyzeDoubleArgumentInvocation([NotNull] IInvocationOperation invocation,
-            [NotNull] KnownSymbols knownSymbols, OperationAnalysisContext context)
-        {
-            bool isObjectReferenceEquals = invocation.TargetMethod.Equals(knownSymbols.ObjectReferenceEqualsMethod);
-            bool isStaticObjectEquals = invocation.TargetMethod.Equals(knownSymbols.StaticObjectEqualsMethod);
-            bool isEqualityComparerEquals =
-                invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.EqualityComparerEqualsMethod);
-
-            if (isObjectReferenceEquals || isStaticObjectEquals || isEqualityComparerEquals)
-            {
-                IArgumentOperation leftArgument = invocation.Arguments[0];
-                IArgumentOperation rightArgument = invocation.Arguments[1];
-
-                bool isInverted = IsInverted(invocation);
-
-                AnalyzeArguments(leftArgument.Value, rightArgument.Value, isInverted, context.ReportDiagnostic);
-            }
-        }
-
-        private void AnalyzeIsPattern(OperationAnalysisContext context)
+        private void AnalyzeIsPattern(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
         {
             var isPattern = (IIsPatternOperation)context.Operation;
 
-            if (isPattern.Pattern is IConstantPatternOperation constantPattern)
-            {
-                if (IsConstantNullOrDefault(constantPattern.Value) && IsNullableValueType(isPattern.Value))
-                {
-                    bool isInverted = IsInverted(isPattern);
-
-                    ReportAtOperation(isPattern.Value, context.ReportDiagnostic, isInverted);
-                }
-            }
+            NullCheckScanResult? scanResult = scanner.ScanIsPattern(isPattern);
+            ReportForScanResult(scanResult, context.ReportDiagnostic);
         }
 
-        private void AnalyzeBinaryOperator(OperationAnalysisContext context)
+        private void AnalyzeBinaryOperator(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
         {
             var binaryOperator = (IBinaryOperation)context.Operation;
 
-            bool isInverted;
-            if (binaryOperator.OperatorKind == BinaryOperatorKind.Equals)
-            {
-                isInverted = false;
-            }
-            else if (binaryOperator.OperatorKind == BinaryOperatorKind.NotEquals)
-            {
-                isInverted = true;
-            }
-            else
-            {
-                return;
-            }
-
-            AnalyzeArguments(binaryOperator.LeftOperand, binaryOperator.RightOperand, isInverted, context.ReportDiagnostic);
+            NullCheckScanResult? scanResult = scanner.ScanBinaryOperator(binaryOperator);
+            ReportForScanResult(scanResult, context.ReportDiagnostic);
         }
 
-        private bool IsInverted([NotNull] IOperation operation)
-        {
-            bool isInverted = false;
-
-            IOperation currentOperation = operation.Parent;
-            while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
-            {
-                isInverted = !isInverted;
-                currentOperation = currentOperation.Parent;
-            }
-
-            return isInverted;
-        }
-
-        private void AnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument, bool isInverted,
+        private void ReportForScanResult([CanBeNull] NullCheckScanResult? scanResult,
             [NotNull] Action<Diagnostic> reportDiagnostic)
         {
-            bool leftIsNull = IsConstantNullOrDefault(leftArgument);
-            bool rightIsNull = IsConstantNullOrDefault(rightArgument);
-
-            if (rightIsNull)
+            if (scanResult != null)
             {
-                if (leftIsNull)
-                {
-                    return;
-                }
-
-                if (IsNullableValueType(leftArgument))
-                {
-                    ReportAtOperation(leftArgument, reportDiagnostic, isInverted);
-                }
+                ReportAtOperation(scanResult.Value.Operation, reportDiagnostic, scanResult.Value.IsInverted,
+                    scanResult.Value.Kind);
             }
-            else
-            {
-                if (!leftIsNull)
-                {
-                    return;
-                }
-
-                if (IsNullableValueType(rightArgument))
-                {
-                    ReportAtOperation(rightArgument, reportDiagnostic, isInverted);
-                }
-            }
-        }
-
-        private bool IsConstantNullOrDefault([NotNull] IOperation operation)
-        {
-            IOperation source = operation is IConversionOperation conversion ? conversion.Operand : operation;
-
-            if (source.ConstantValue.HasValue && source.ConstantValue.Value == null)
-            {
-                return true;
-            }
-
-            return source is IDefaultValueOperation;
-        }
-
-        private bool IsNullableValueType([NotNull] IOperation operation)
-        {
-            IOperation source = operation is IConversionOperation conversion ? conversion.Operand : operation;
-
-            return source.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
         }
 
         private static void ReportAtOperation([NotNull] IOperation operation, [NotNull] Action<Diagnostic> reportDiagnostic,
-            bool isInverted)
+            bool isInverted, NullCheckKind nullCheckKind)
         {
             reportDiagnostic(Diagnostic.Create(Rule, operation.Syntax.GetLocation(), operation.Syntax.ToString(),
-                isInverted ? "not-null" : "null"));
-        }
-
-        private sealed class KnownSymbols
-        {
-            [CanBeNull]
-            public IPropertySymbol NullableHasValueProperty { get; }
-
-            [CanBeNull]
-            public IMethodSymbol ObjectReferenceEqualsMethod { get; }
-
-            [CanBeNull]
-            public IMethodSymbol StaticObjectEqualsMethod { get; }
-
-            [CanBeNull]
-            public IMethodSymbol NullableEqualsMethod { get; }
-
-            [CanBeNull]
-            public IMethodSymbol EqualityComparerEqualsMethod { get; }
-
-            public bool HasMethods =>
-                ObjectReferenceEqualsMethod != null || StaticObjectEqualsMethod != null || NullableEqualsMethod != null ||
-                EqualityComparerEqualsMethod != null;
-
-            public KnownSymbols([NotNull] Compilation compilation)
-            {
-                Guard.NotNull(compilation, nameof(compilation));
-
-                NullableHasValueProperty = ResolveNullableHasValueProperty(compilation);
-                ObjectReferenceEqualsMethod = ResolveObjectReferenceEquals(compilation);
-                StaticObjectEqualsMethod = ResolveStaticObjectEquals(compilation);
-                NullableEqualsMethod = ResolveNullableEquals(compilation);
-                EqualityComparerEqualsMethod = ResolveEqualityComparerEquals(compilation);
-            }
-
-            [CanBeNull]
-            private static IPropertySymbol ResolveNullableHasValueProperty([NotNull] Compilation compilation)
-            {
-                INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
-                return nullableType?.GetMembers("HasValue").OfType<IPropertySymbol>().FirstOrDefault();
-            }
-
-            [CanBeNull]
-            private IMethodSymbol ResolveObjectReferenceEquals([NotNull] Compilation compilation)
-            {
-                INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
-                return objectType?.GetMembers("ReferenceEquals").OfType<IMethodSymbol>().FirstOrDefault();
-            }
-
-            [CanBeNull]
-            private IMethodSymbol ResolveStaticObjectEquals([NotNull] Compilation compilation)
-            {
-                INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
-                return objectType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault(m => m.IsStatic);
-            }
-
-            [CanBeNull]
-            private IMethodSymbol ResolveNullableEquals([NotNull] Compilation compilation)
-            {
-                INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
-                return nullableType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
-            }
-
-            [CanBeNull]
-            private IMethodSymbol ResolveEqualityComparerEquals([NotNull] Compilation compilation)
-            {
-                INamedTypeSymbol equalityComparerType = KnownTypes.SystemCollectionsGenericEqualityComparerT(compilation);
-                return equalityComparerType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
-            }
+                isInverted ? "not-null" : "null", nullCheckKind));
         }
     }
 }

@@ -402,10 +402,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null",
-                "Expression of nullable value type 'j' is checked for null",
-                "Expression of nullable value type 'k' is checked for null",
-                "Expression of nullable value type 'l' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'j' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'k' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'l' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -441,10 +441,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null",
-                "Expression of nullable value type 'j' is checked for not-null",
-                "Expression of nullable value type 'k' is checked for not-null",
-                "Expression of nullable value type 'l' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type 'j' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type 'k' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type 'l' is checked for not-null using EqualityOperator");
         }
 
         [Fact]
@@ -472,7 +472,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using IsPattern");
         }
 
         [Fact]
@@ -500,7 +500,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using IsPattern");
         }
 
         [Fact]
@@ -520,7 +520,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using NullableHasValueMethod");
         }
 
         [Fact]
@@ -540,7 +540,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using NullableHasValueMethod");
         }
 
         [Fact]
@@ -572,9 +572,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null",
-                "Expression of nullable value type 'j' is checked for null",
-                "Expression of nullable value type 'k' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using NullableEqualsMethod",
+                "Expression of nullable value type 'j' is checked for null using NullableEqualsMethod",
+                "Expression of nullable value type 'k' is checked for null using NullableEqualsMethod");
         }
 
         [Fact]
@@ -606,9 +606,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null",
-                "Expression of nullable value type 'j' is checked for not-null",
-                "Expression of nullable value type 'k' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using NullableEqualsMethod",
+                "Expression of nullable value type 'j' is checked for not-null using NullableEqualsMethod",
+                "Expression of nullable value type 'k' is checked for not-null using NullableEqualsMethod");
         }
 
         [Fact]
@@ -648,10 +648,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null",
-                "Expression of nullable value type 'j' is checked for null",
-                "Expression of nullable value type 'k' is checked for null",
-                "Expression of nullable value type 'l' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using StaticObjectEqualsMethod",
+                "Expression of nullable value type 'j' is checked for null using StaticObjectEqualsMethod",
+                "Expression of nullable value type 'k' is checked for null using StaticObjectEqualsMethod",
+                "Expression of nullable value type 'l' is checked for null using StaticObjectEqualsMethod");
         }
 
         [Fact]
@@ -691,10 +691,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null",
-                "Expression of nullable value type 'j' is checked for not-null",
-                "Expression of nullable value type 'k' is checked for not-null",
-                "Expression of nullable value type 'l' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using StaticObjectEqualsMethod",
+                "Expression of nullable value type 'j' is checked for not-null using StaticObjectEqualsMethod",
+                "Expression of nullable value type 'k' is checked for not-null using StaticObjectEqualsMethod",
+                "Expression of nullable value type 'l' is checked for not-null using StaticObjectEqualsMethod");
         }
 
         [Fact]
@@ -738,10 +738,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null",
-                "Expression of nullable value type 'j' is checked for null",
-                "Expression of nullable value type 'k' is checked for null",
-                "Expression of nullable value type 'l' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'j' is checked for null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'k' is checked for null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'l' is checked for null using StaticObjectReferenceEqualsMethod");
         }
 
         [Fact]
@@ -785,10 +785,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null",
-                "Expression of nullable value type 'j' is checked for not-null",
-                "Expression of nullable value type 'k' is checked for not-null",
-                "Expression of nullable value type 'l' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'j' is checked for not-null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'k' is checked for not-null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'l' is checked for not-null using StaticObjectReferenceEqualsMethod");
         }
 
         [Fact]
@@ -832,10 +832,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null",
-                "Expression of nullable value type 'j' is checked for null",
-                "Expression of nullable value type 'k' is checked for null",
-                "Expression of nullable value type 'l' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'j' is checked for null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'k' is checked for null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'l' is checked for null using StaticObjectReferenceEqualsMethod");
         }
 
         [Fact]
@@ -879,10 +879,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null",
-                "Expression of nullable value type 'j' is checked for not-null",
-                "Expression of nullable value type 'k' is checked for not-null",
-                "Expression of nullable value type 'l' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'j' is checked for not-null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'k' is checked for not-null using StaticObjectReferenceEqualsMethod",
+                "Expression of nullable value type 'l' is checked for not-null using StaticObjectReferenceEqualsMethod");
         }
 
         [Fact]
@@ -927,10 +927,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null",
-                "Expression of nullable value type 'j' is checked for null",
-                "Expression of nullable value type 'k' is checked for null",
-                "Expression of nullable value type 'l' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using EqualityComparerEqualsMethod",
+                "Expression of nullable value type 'j' is checked for null using EqualityComparerEqualsMethod",
+                "Expression of nullable value type 'k' is checked for null using EqualityComparerEqualsMethod",
+                "Expression of nullable value type 'l' is checked for null using EqualityComparerEqualsMethod");
         }
 
         [Fact]
@@ -942,11 +942,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .InDefaultClass(@"
                     void M(int? i, int? j, int? k, int? l)
                     {
-                        if (!object.ReferenceEquals([|i|], null))
+                        if (!EqualityComparer<int?>.Default.Equals([|i|], null))
                         {
                         }
 
-                        if (!object.ReferenceEquals(null, [|j|]))
+                        if (!EqualityComparer<int?>.Default.Equals(null, [|j|]))
                         {
                         }
 
@@ -958,15 +958,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                         {
                         }
 
-                        if (!object.ReferenceEquals(i, 0) || !object.ReferenceEquals(j, 0))
+                        if (!EqualityComparer<int?>.Default.Equals(i, 0) || !EqualityComparer<int?>.Default.Equals(j, 0))
                         {
                         }
 
-                        if (!object.ReferenceEquals(null, null))
+                        if (!EqualityComparer<int?>.Default.Equals(null, null))
                         {
                         }
 
-                        if (!object.ReferenceEquals(0, 0))
+                        if (!EqualityComparer<int?>.Default.Equals(0, 0))
                         {
                         }
                     }
@@ -975,10 +975,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for not-null",
-                "Expression of nullable value type 'j' is checked for not-null",
-                "Expression of nullable value type 'k' is checked for not-null",
-                "Expression of nullable value type 'l' is checked for not-null");
+                "Expression of nullable value type 'i' is checked for not-null using EqualityComparerEqualsMethod",
+                "Expression of nullable value type 'j' is checked for not-null using EqualityComparerEqualsMethod",
+                "Expression of nullable value type 'k' is checked for not-null using EqualityComparerEqualsMethod",
+                "Expression of nullable value type 'l' is checked for not-null using EqualityComparerEqualsMethod");
         }
 
         [Fact]
@@ -1014,9 +1014,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type '(object)i' is checked for null",
-                "Expression of nullable value type '(object)j' is checked for null",
-                "Expression of nullable value type '(object)k' is checked for null");
+                "Expression of nullable value type '(object)i' is checked for null using EqualityOperator",
+                "Expression of nullable value type '(object)j' is checked for null using EqualityOperator",
+                "Expression of nullable value type '(object)k' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1052,9 +1052,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type '(object)i' is checked for not-null",
-                "Expression of nullable value type '(object)j' is checked for not-null",
-                "Expression of nullable value type '(object)k' is checked for not-null");
+                "Expression of nullable value type '(object)i' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type '(object)j' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type '(object)k' is checked for not-null using EqualityOperator");
         }
 
         [Fact]
@@ -1119,7 +1119,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'v' is checked for null");
+                "Expression of nullable value type 'v' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1141,7 +1141,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'tuple.v' is checked for null");
+                "Expression of nullable value type 'tuple.v' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1164,7 +1164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'rangeVar' is checked for null");
+                "Expression of nullable value type 'rangeVar' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1186,7 +1186,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'f' is checked for null");
+                "Expression of nullable value type 'f' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1208,7 +1208,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'P' is checked for null");
+                "Expression of nullable value type 'P' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1231,7 +1231,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null");
+                "Expression of nullable value type 'i' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1253,7 +1253,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'L()' is checked for null");
+                "Expression of nullable value type 'L()' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1276,7 +1276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'N(string.Empty)' is checked for null");
+                "Expression of nullable value type 'N(string.Empty)' is checked for null using EqualityOperator");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
