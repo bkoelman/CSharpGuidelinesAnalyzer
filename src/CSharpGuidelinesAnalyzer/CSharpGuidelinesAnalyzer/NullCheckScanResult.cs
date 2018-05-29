@@ -6,17 +6,17 @@ namespace CSharpGuidelinesAnalyzer
     internal struct NullCheckScanResult
     {
         [NotNull]
-        public IOperation Operation { get; }
+        public IOperation Target { get; }
 
         public NullCheckKind Kind { get; }
 
         public bool IsInverted { get; }
 
-        public NullCheckScanResult([NotNull] IOperation operation, NullCheckKind kind, bool isInverted)
+        public NullCheckScanResult([NotNull] IOperation target, NullCheckKind kind, bool isInverted)
         {
-            Guard.NotNull(operation, nameof(operation));
+            Guard.NotNull(target, nameof(target));
 
-            Operation = operation;
+            Target = target;
             Kind = kind;
             IsInverted = isInverted;
         }
