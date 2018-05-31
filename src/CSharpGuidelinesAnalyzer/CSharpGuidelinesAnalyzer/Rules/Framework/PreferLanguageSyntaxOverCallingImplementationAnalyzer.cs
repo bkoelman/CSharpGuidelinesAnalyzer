@@ -134,13 +134,27 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private bool IsNonNullCheck([NotNull] IOperation operation, [NotNull] NullCheckScanner scanner)
         {
+            IOperation targetOperation = DescendIntoNotOperators(operation);
+
             var walker = new NullCheckWalker(scanner);
-            walker.Visit(operation);
+            walker.Visit(targetOperation);
 
             return walker.ScanResult != null && walker.ScanResult.Value.IsInverted;
         }
 
-        private sealed class NullCheckWalker : OperationWalker
+        [NotNull]
+        private static IOperation DescendIntoNotOperators([NotNull] IOperation operation)
+        {
+            IOperation currentOperation = operation;
+            while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
+            {
+                currentOperation = unaryOperation.Operand;
+            }
+
+            return currentOperation;
+        }
+
+        private sealed class NullCheckWalker : OperationVisitor
         {
             [NotNull]
             private readonly NullCheckScanner scanner;
