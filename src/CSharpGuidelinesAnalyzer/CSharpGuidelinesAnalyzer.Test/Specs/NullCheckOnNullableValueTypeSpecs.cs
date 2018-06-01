@@ -375,7 +375,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
-                    void M(int? i, int? j, int? k, int? l)
+                    void M(int? i, int? j, int? k, int? l, int? m, int? n)
                     {
                         if ([|i|] == null)
                         {
@@ -393,6 +393,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                         {
                         }
 
+                        if (!([|m|] != null))
+                        {
+                        }
+
+                        if (!(([|n|] == null) && j > 0))
+                        {
+                        }
+
                         if (i == 0 || j >= 0)
                         {
                         }
@@ -405,7 +413,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 "Expression of nullable value type 'i' is checked for null using EqualityOperator",
                 "Expression of nullable value type 'j' is checked for null using EqualityOperator",
                 "Expression of nullable value type 'k' is checked for null using EqualityOperator",
-                "Expression of nullable value type 'l' is checked for null using EqualityOperator");
+                "Expression of nullable value type 'l' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'm' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'n' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -414,7 +424,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
-                    void M(int? i, int? j, int? k, int? l)
+                    void M(int? i, int? j, int? k, int? l, int? m)
                     {
                         if ([|i|] != null)
                         {
@@ -432,6 +442,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                         {
                         }
 
+                        if (!([|m|] == null))
+                        {
+                        }
+
                         if (i != 0 || j < 0)
                         {
                         }
@@ -444,7 +458,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 "Expression of nullable value type 'i' is checked for not-null using EqualityOperator",
                 "Expression of nullable value type 'j' is checked for not-null using EqualityOperator",
                 "Expression of nullable value type 'k' is checked for not-null using EqualityOperator",
-                "Expression of nullable value type 'l' is checked for not-null using EqualityOperator");
+                "Expression of nullable value type 'l' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type 'm' is checked for not-null using EqualityOperator");
         }
 
         [Fact]
@@ -989,15 +1004,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .InDefaultClass(@"
                     void M(int? i, int? j, int? k)
                     {
-                        if ([|(object)i|] == null)
+                        if ((object)[|i|] == null)
                         {
                         }
 
-                        if (null == [|(object)j|])
+                        if (null == (object)[|j|])
                         {
                         }
 
-                        if ([|(object)k|] == default)
+                        if ((object)[|k|] == default)
                         {
                         }
 
@@ -1014,9 +1029,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type '(object)i' is checked for null using EqualityOperator",
-                "Expression of nullable value type '(object)j' is checked for null using EqualityOperator",
-                "Expression of nullable value type '(object)k' is checked for null using EqualityOperator");
+                "Expression of nullable value type 'i' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'j' is checked for null using EqualityOperator",
+                "Expression of nullable value type 'k' is checked for null using EqualityOperator");
         }
 
         [Fact]
@@ -1027,15 +1042,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .InDefaultClass(@"
                     void M(int? i, int? j, int? k)
                     {
-                        if ([|(object)i|] != null)
+                        if ((object)[|i|] != null)
                         {
                         }
 
-                        if (null != [|(object)j|])
+                        if (null != (object)[|j|])
                         {
                         }
 
-                        if ([|(object)k|] != default)
+                        if ((object)[|k|] != default)
                         {
                         }
 
@@ -1052,9 +1067,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type '(object)i' is checked for not-null using EqualityOperator",
-                "Expression of nullable value type '(object)j' is checked for not-null using EqualityOperator",
-                "Expression of nullable value type '(object)k' is checked for not-null using EqualityOperator");
+                "Expression of nullable value type 'i' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type 'j' is checked for not-null using EqualityOperator",
+                "Expression of nullable value type 'k' is checked for not-null using EqualityOperator");
         }
 
         [Fact]

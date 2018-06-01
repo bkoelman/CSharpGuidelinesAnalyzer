@@ -100,11 +100,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 return;
             }
 
-            if (IsNonNullCheck(binaryOperator.LeftOperand, scanner))
+            IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
+            if (leftTarget != null && !(leftTarget is IInvocationOperation))
             {
-                if (binaryOperator.RightOperand is IBinaryOperation rightOperation)
+                if (binaryOperator.RightOperand is IBinaryOperation rightOperation &&
+                    NumericComparisonOperators.Contains(rightOperation.OperatorKind))
                 {
-                    if (NumericComparisonOperators.Contains(rightOperation.OperatorKind))
+                    if (OperationEqualityComparer.Default.Equals(leftTarget, rightOperation.LeftOperand) ||
+                        OperationEqualityComparer.Default.Equals(leftTarget, rightOperation.RightOperand))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(NullableComparisonRule, binaryOperator.Syntax.GetLocation()));
                     }
@@ -132,18 +135,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return false;
         }
 
-        private bool IsNonNullCheck([NotNull] IOperation operation, [NotNull] NullCheckScanner scanner)
+        [CanBeNull]
+        private IOperation TryGetTargetInNotNullCheck([NotNull] IOperation operation, [NotNull] NullCheckScanner scanner)
         {
-            IOperation targetOperation = DescendIntoNotOperators(operation);
+            IOperation targetOperation = SkipNotOperators(operation);
 
             var walker = new NullCheckWalker(scanner);
             walker.Visit(targetOperation);
 
-            return walker.ScanResult != null && walker.ScanResult.Value.IsInverted;
+            return walker.ScanResult != null && walker.ScanResult.Value.IsInverted ? walker.ScanResult.Value.Target : null;
         }
 
         [NotNull]
-        private static IOperation DescendIntoNotOperators([NotNull] IOperation operation)
+        private static IOperation SkipNotOperators([NotNull] IOperation operation)
         {
             IOperation currentOperation = operation;
             while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)

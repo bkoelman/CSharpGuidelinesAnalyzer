@@ -60,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer
                 bool isNullableEquals = invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.NullableEqualsMethod);
                 if (isNullableEquals)
                 {
-                    bool isInverted = IsInverted(invocation);
+                    bool isInverted = IsParentInverted(invocation);
 
                     return AnalyzeArguments(invocation.Instance, invocation.Arguments[0].Value,
                         NullCheckKind.NullableEqualsMethod, isInverted);
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer
                 IArgumentOperation leftArgument = invocation.Arguments[0];
                 IArgumentOperation rightArgument = invocation.Arguments[1];
 
-                bool isInverted = IsInverted(invocation);
+                bool isInverted = IsParentInverted(invocation);
 
                 return AnalyzeArguments(leftArgument.Value, rightArgument.Value, nullCheckKind.Value, isInverted);
             }
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer
             {
                 if (IsConstantNullOrDefault(constantPattern.Value) && IsNullableValueType(isPattern.Value))
                 {
-                    bool isInverted = IsInverted(isPattern);
+                    bool isInverted = IsParentInverted(isPattern);
 
                     return new NullCheckScanResult(isPattern.Value, NullCheckKind.IsPattern, isInverted);
                 }
@@ -135,25 +135,27 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(binaryOperator, nameof(binaryOperator));
 
-            bool isInverted;
+            bool isOperatorInverted;
             if (binaryOperator.OperatorKind == BinaryOperatorKind.Equals)
             {
-                isInverted = false;
+                isOperatorInverted = false;
             }
             else if (binaryOperator.OperatorKind == BinaryOperatorKind.NotEquals)
             {
-                isInverted = true;
+                isOperatorInverted = true;
             }
             else
             {
                 return null;
             }
 
+            bool isInverted = IsParentInverted(binaryOperator) ? !isOperatorInverted : isOperatorInverted;
+
             return AnalyzeArguments(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckKind.EqualityOperator,
                 isInverted);
         }
 
-        private bool IsInverted([NotNull] IOperation operation)
+        private bool IsParentInverted([NotNull] IOperation operation)
         {
             bool isInverted = false;
 
@@ -169,6 +171,28 @@ namespace CSharpGuidelinesAnalyzer
 
         [CanBeNull]
         private NullCheckScanResult? AnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
+            NullCheckKind nullCheckKind, bool isInverted)
+        {
+            IOperation leftArgumentNoConversion = SkipTypeConversions(leftArgument);
+            IOperation rightArgumentNoConversion = SkipTypeConversions(rightArgument);
+
+            return InnerAnalyzeArguments(leftArgumentNoConversion, rightArgumentNoConversion, nullCheckKind, isInverted);
+        }
+
+        [NotNull]
+        private IOperation SkipTypeConversions([NotNull] IOperation operation)
+        {
+            IOperation currentOperation = operation;
+            while (currentOperation is IConversionOperation conversion)
+            {
+                currentOperation = conversion.Operand;
+            }
+
+            return currentOperation;
+        }
+
+        [CanBeNull]
+        private NullCheckScanResult? InnerAnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
             NullCheckKind nullCheckKind, bool isInverted)
         {
             bool leftIsNull = IsConstantNullOrDefault(leftArgument);
@@ -194,21 +218,17 @@ namespace CSharpGuidelinesAnalyzer
 
         private bool IsConstantNullOrDefault([NotNull] IOperation operation)
         {
-            IOperation source = operation is IConversionOperation conversion ? conversion.Operand : operation;
-
-            if (source.ConstantValue.HasValue && source.ConstantValue.Value == null)
+            if (operation.ConstantValue.HasValue && operation.ConstantValue.Value == null)
             {
                 return true;
             }
 
-            return source is IDefaultValueOperation;
+            return operation is IDefaultValueOperation;
         }
 
         private bool IsNullableValueType([NotNull] IOperation operation)
         {
-            IOperation source = operation is IConversionOperation conversion ? conversion.Operand : operation;
-
-            return source.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
+            return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
         }
 
         private sealed class KnownSymbols

@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_and_compared_to_number_it_must_be_reported()
+        internal void When_nullable_value_type_is_checked_for_null_in_various_ways_and_compared_to_number_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -141,6 +141,102 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.");
+        }
+
+        [Fact]
+        internal void When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_to_number_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int? P { get; set; }
+
+                        int? F;
+
+                        void M(int? i, int?[] j, int?[] k, dynamic d)
+                        {
+                            if ([|i != null && i > 5|])
+                            {
+                            }
+
+                            if ([|j[0] != null && j[0] > 5|])
+                            {
+                            }
+
+                            if ([|k[i.Value + 1] != null && k[i.Value + 1] > 5|])
+                            {
+                            }
+
+                            if ([|!(P is null) && P > 5|])
+                            {
+                            }
+
+                            if ([|F != null && F > 5|])
+                            {
+                            }
+
+                            int? l = i;
+                            if ([|l != null && l > 5|])
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.");
+        }
+
+        [Fact]
+        internal void When_nullable_value_type_is_checked_for_null_and_different_argument_is_compared_to_number_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(int? i, int? other, int?[] array, dynamic k)
+                        {
+                            if (i != null && other > 5)
+                            {
+                            }
+
+                            if (array[0] != null && array[1] > 5)
+                            {
+                            }
+
+                            if (k.M() != null && k.M() > 5)
+                            {
+                            }
+
+                            if (N() != null && N() > 5)
+                            {
+                            }
+
+                            if (this != null && this > 5)
+                            {
+                            }
+                        }
+
+                        int? N() => throw null;
+
+                        public static bool operator >(C left, int right) => throw null;
+                        public static bool operator <(C left, int right) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
