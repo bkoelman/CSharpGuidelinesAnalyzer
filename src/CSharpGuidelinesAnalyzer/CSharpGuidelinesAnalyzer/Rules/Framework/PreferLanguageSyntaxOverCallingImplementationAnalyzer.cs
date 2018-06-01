@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2230";
+        public const string DiagnosticId = "AV2202";
 
         private const string Title = "Prefer language syntax over explicit calls to underlying implementations";
 
