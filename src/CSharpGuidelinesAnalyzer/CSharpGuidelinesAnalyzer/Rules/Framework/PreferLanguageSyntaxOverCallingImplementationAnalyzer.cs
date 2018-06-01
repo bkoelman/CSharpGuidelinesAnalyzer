@@ -140,10 +140,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             IOperation targetOperation = SkipNotOperators(operation);
 
-            var walker = new NullCheckWalker(scanner);
-            walker.Visit(targetOperation);
+            var visitor = new NullCheckVisitor(scanner);
+            visitor.Visit(targetOperation);
 
-            return walker.ScanResult != null && walker.ScanResult.Value.IsInverted ? walker.ScanResult.Value.Target : null;
+            return visitor.ScanResult != null && visitor.ScanResult.Value.IsInverted ? visitor.ScanResult.Value.Target : null;
         }
 
         [NotNull]
@@ -158,7 +158,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return currentOperation;
         }
 
-        private sealed class NullCheckWalker : OperationVisitor
+        private sealed class NullCheckVisitor : OperationVisitor
         {
             [NotNull]
             private readonly NullCheckScanner scanner;
@@ -166,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             [CanBeNull]
             public NullCheckScanResult? ScanResult { get; private set; }
 
-            public NullCheckWalker([NotNull] NullCheckScanner scanner)
+            public NullCheckVisitor([NotNull] NullCheckScanner scanner)
             {
                 Guard.NotNull(scanner, nameof(scanner));
                 this.scanner = scanner;
