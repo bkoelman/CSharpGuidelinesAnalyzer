@@ -196,6 +196,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
             }
 
+            public override void VisitObjectCreation([NotNull] IObjectCreationOperation operation)
+            {
+            }
+
+            public override void VisitDynamicObjectCreation([NotNull] IDynamicObjectCreationOperation operation)
+            {
+            }
+
             public override void VisitConditional([NotNull] IConditionalOperation operation)
             {
                 if (operation.IsStatement())
