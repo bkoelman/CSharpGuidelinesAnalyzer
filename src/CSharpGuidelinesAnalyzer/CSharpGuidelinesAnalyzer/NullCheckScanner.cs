@@ -10,6 +10,9 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         private readonly KnownSymbols knownSymbols;
 
+        [CanBeNull]
+        public IPropertySymbol NullableHasValueProperty => knownSymbols.NullableValueProperty;
+
         public NullCheckScanner([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
@@ -237,6 +240,9 @@ namespace CSharpGuidelinesAnalyzer
             public IPropertySymbol NullableHasValueProperty { get; }
 
             [CanBeNull]
+            public IPropertySymbol NullableValueProperty { get; }
+
+            [CanBeNull]
             public IMethodSymbol StaticObjectReferenceEqualsMethod { get; }
 
             [CanBeNull]
@@ -253,6 +259,7 @@ namespace CSharpGuidelinesAnalyzer
                 Guard.NotNull(compilation, nameof(compilation));
 
                 NullableHasValueProperty = ResolveNullableHasValueProperty(compilation);
+                NullableValueProperty = ResolveNullableValueProperty(compilation);
                 StaticObjectReferenceEqualsMethod = ResolveObjectReferenceEquals(compilation);
                 StaticObjectEqualsMethod = ResolveStaticObjectEquals(compilation);
                 NullableEqualsMethod = ResolveNullableEquals(compilation);
@@ -264,6 +271,13 @@ namespace CSharpGuidelinesAnalyzer
             {
                 INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
                 return nullableType?.GetMembers("HasValue").OfType<IPropertySymbol>().FirstOrDefault();
+            }
+
+            [CanBeNull]
+            private static IPropertySymbol ResolveNullableValueProperty([NotNull] Compilation compilation)
+            {
+                INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+                return nullableType?.GetMembers("Value").OfType<IPropertySymbol>().FirstOrDefault();
             }
 
             [CanBeNull]

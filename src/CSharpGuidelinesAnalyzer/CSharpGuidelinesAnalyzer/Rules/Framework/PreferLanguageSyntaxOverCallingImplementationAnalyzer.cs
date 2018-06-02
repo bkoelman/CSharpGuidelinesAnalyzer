@@ -18,8 +18,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private const string NullableHasValueMessageFormat = "Replace call to Nullable<T>.HasValue with null check.";
         private const string NullableComparisonMessageFormat = "Remove null check in numeric comparison.";
-        private const string TupleTypeMessageFormat = "Use a tuple expression instead of '{0}'.";
-        private const string TupleEqualityMessageFormat = "Use tuple equality instead of item comparisons.";
 
         private const string Description = "Prefer language syntax over explicit calls to underlying implementations.";
 
@@ -46,19 +44,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             NullableComparisonMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor TupleTypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TupleTypeMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
-
-        [NotNull]
-        private static readonly DiagnosticDescriptor TupleEqualityRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TupleEqualityMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
-
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule, TupleTypeRule, TupleEqualityRule);
+            ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -74,9 +62,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
                 startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeBinaryOperator(c, scanner)),
                     OperationKind.BinaryOperator);
-
-                // TODO: TupleTypeRule
-                // TODO: TupleEqualityRule
             });
         }
 
@@ -106,8 +91,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 if (binaryOperator.RightOperand is IBinaryOperation rightOperation &&
                     NumericComparisonOperators.Contains(rightOperation.OperatorKind))
                 {
-                    if (OperationEqualityComparer.Default.Equals(leftTarget, rightOperation.LeftOperand) ||
-                        OperationEqualityComparer.Default.Equals(leftTarget, rightOperation.RightOperand))
+                    if (HaveSameTarget(leftTarget, rightOperation.LeftOperand, scanner) ||
+                        HaveSameTarget(leftTarget, rightOperation.RightOperand, scanner))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(NullableComparisonRule, binaryOperator.Syntax.GetLocation()));
                     }
@@ -156,6 +141,29 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
 
             return currentOperation;
+        }
+
+        private bool HaveSameTarget([NotNull] IOperation leftOperation, [NotNull] IOperation rightOperation,
+            [NotNull] NullCheckScanner scanner)
+        {
+            IOperation innerRightOperation = SkipNullableValueProperty(rightOperation, scanner.NullableHasValueProperty);
+
+            return OperationEqualityComparer.Default.Equals(leftOperation, innerRightOperation);
+        }
+
+        [NotNull]
+        private IOperation SkipNullableValueProperty([NotNull] IOperation operation,
+            [CanBeNull] IPropertySymbol nullableHasValueProperty)
+        {
+            if (nullableHasValueProperty != null && operation is IPropertyReferenceOperation propertyReference)
+            {
+                if (propertyReference.Property.OriginalDefinition.Equals(nullableHasValueProperty))
+                {
+                    return propertyReference.Instance;
+                }
+            }
+
+            return operation;
         }
 
         private sealed class NullCheckVisitor : OperationVisitor
