@@ -11,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1235";
+        public const string DiagnosticId = "AV1210";
 
         private const string Title = "Catch a specific exception instead of Exception, SystemException or ApplicationException";
 
@@ -78,7 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 return;
             }
 
-            if (catchClause.ExceptionType != null && exceptionTypes.Contains(catchClause.ExceptionType))
+            if (catchClause.ExceptionType == null || exceptionTypes.Contains(catchClause.ExceptionType))
             {
                 Location location = catchClause.GetLocationForKeyword();
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));

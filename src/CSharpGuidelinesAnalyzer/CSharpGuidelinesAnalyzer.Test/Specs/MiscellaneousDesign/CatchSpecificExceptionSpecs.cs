@@ -240,6 +240,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_catching_unmanaged_exception_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        try
+                        {
+                            M();
+                        }
+                        [|catch|]
+                        {
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Catch a specific exception instead of Exception, SystemException or ApplicationException.");
+        }
+
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new CatchSpecificExceptionAnalyzer();
