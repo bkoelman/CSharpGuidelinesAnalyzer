@@ -229,7 +229,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
                 else
                 {
-                    if (methodsToFind.Any(method => method.Equals(operation.TargetMethod)))
+                    if (methodsToFind.Any(method => method.Equals(operation.TargetMethod.OriginalDefinition)))
                     {
                         HasFoundInvocation = true;
                     }
@@ -241,7 +241,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 foreach (IMethodSymbol ifaceMethod in methodToFind.ExplicitInterfaceImplementations)
                 {
-                    if (operation.TargetMethod.Equals(ifaceMethod))
+                    if (operation.TargetMethod.OriginalDefinition.Equals(ifaceMethod.OriginalDefinition))
                     {
                         HasFoundInvocation = true;
                         break;

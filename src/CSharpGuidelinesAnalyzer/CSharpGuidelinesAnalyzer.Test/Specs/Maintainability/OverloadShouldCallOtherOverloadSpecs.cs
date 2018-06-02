@@ -240,6 +240,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_shorter_method_overload_invokes_another_generic_overload_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            M(string.Empty, 0);
+                        }
+
+                        protected virtual void M<T>(string s, T t)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_shorter_method_overload_invokes_itself_it_must_be_reported()
         {
             // Arrange
@@ -736,7 +760,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         T M();
                         T M(string value);
                         T M(int index, string value);
-                        T M(string value, int index, bool flag);
+                        T M<U>(string value, int index, U extra);
                     }
 
                     public class C : I<bool>
@@ -756,10 +780,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         bool I<bool>.M(int index, string value)
                         {
                             var iface = (I<bool>)this;
-                            return iface.M(value, index, false);
+                            return iface.M(value, index, 0);
                         }
 
-                        bool I<bool>.M(string value, int index, bool flag)
+                        bool I<bool>.M<U>(string value, int index, U extra)
                         {
                             throw new NotImplementedException();
                         }
