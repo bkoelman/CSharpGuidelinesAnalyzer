@@ -20,7 +20,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             "Class '{0}' should be non-static or its name should be suffixed with 'Extensions'.";
 
         private const string MemberMessageFormat =
-            "Extension method container class '{0}' contains {1} non-extension-method '{2}'.";
+            "Extension method container class '{0}' contains {1} member '{2}', which is not an extension method.";
 
         private const string Description = "Avoid static classes.";
 

@@ -142,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Extension method container class 'SomeExtensions' contains public non-extension-method 'M'.");
+                "Extension method container class 'SomeExtensions' contains public member 'M', which is not an extension method.");
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Extension method container class 'SomeExtensions' contains internal non-extension-method 'M'.");
+                "Extension method container class 'SomeExtensions' contains internal member 'M', which is not an extension method.");
         }
 
         [Fact]
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Extension method container class 'SomeExtensions' contains public non-extension-method 'C'.");
+                "Extension method container class 'SomeExtensions' contains public member 'C', which is not an extension method.");
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Extension method container class 'SomeExtensions' contains public non-extension-method 'F'.");
+                "Extension method container class 'SomeExtensions' contains public member 'F', which is not an extension method.");
         }
 
         [Fact]
@@ -219,7 +219,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Extension method container class 'SomeExtensions' contains public non-extension-method 'P'.");
+                "Extension method container class 'SomeExtensions' contains public member 'P', which is not an extension method.");
         }
 
         [Fact]
@@ -237,7 +237,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Extension method container class 'SomeExtensions' contains public non-extension-method 'E'.");
+                "Extension method container class 'SomeExtensions' contains public member 'E', which is not an extension method.");
         }
 
         [Fact]
