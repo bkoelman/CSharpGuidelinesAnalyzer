@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' contains more than 3 parameters.");
+                "Method 'M' contains 4 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' returns a tuple with more than 2 elements.");
+                "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
         }
 
         [Fact]
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains more than 3 parameters.");
+                "Constructor for 'C' contains 4 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
@@ -219,7 +219,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Indexer contains more than 3 parameters.");
+                "Indexer contains 4 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
@@ -266,7 +266,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' contains more than 3 parameters.");
+                "Delegate 'D' contains 4 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
@@ -310,7 +310,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' returns a tuple with more than 2 elements.");
+                "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
         }
 
         [Fact]
@@ -349,7 +349,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' contains more than 3 parameters.");
+                "Local function 'L' contains 4 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
@@ -410,7 +410,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' returns a tuple with more than 2 elements.");
+                "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

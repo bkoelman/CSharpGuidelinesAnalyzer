@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing block in case/default clause of switch statement.");
+                "Missing block in case or default clause of switch statement.");
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing block in case/default clause of switch statement.");
+                "Missing block in case or default clause of switch statement.");
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing block in case/default clause of switch statement.");
+                "Missing block in case or default clause of switch statement.");
         }
 
         [Fact]

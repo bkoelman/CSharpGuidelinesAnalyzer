@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -20,9 +18,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MaxParameterCountText = "3";
 
         private const string Title = "Signature contains more than " + MaxParameterCountText + " parameters";
-        private const string ParameterCountMessageFormat = "{0} contains more than " + MaxParameterCountText + " parameters.";
+
+        private const string ParameterCountMessageFormat = "{0} contains {1} parameters, which exceeds the maximum of " +
+            MaxParameterCountText + " parameters.";
+
         private const string TupleParameterMessageFormat = "{0} contains tuple parameter '{1}'.";
-        private const string TupleReturnMessageFormat = "{0} returns a tuple with more than 2 elements.";
+
+        private const string TupleReturnMessageFormat =
+            "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements.";
+
         private const string Description = "Don't declare signatures with more than " + MaxParameterCountText + " parameters.";
 
         [NotNull]
@@ -160,9 +164,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [NotNull] ISymbol member,
             [NotNull] string memberName, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
-            if (ExceedsMaximumLength(parameters))
+            if (parameters.Length > MaxParameterCount)
             {
-                ReportParameterCount(member, memberName, reportDiagnostic);
+                ReportParameterCount(member, memberName, parameters.Length, reportDiagnostic);
             }
 
             foreach (IParameterSymbol parameter in parameters)
@@ -174,17 +178,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static bool ExceedsMaximumLength([CanBeNull] [ItemNotNull] IEnumerable<IParameterSymbol> parameters)
-        {
-            return parameters != null && parameters.Count() > MaxParameterCount;
-        }
-
-        private static void ReportParameterCount([NotNull] ISymbol symbol, [NotNull] string name,
+        private static void ReportParameterCount([NotNull] ISymbol symbol, [NotNull] string name, int parameterCount,
             [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             if (!symbol.IsSynthesized())
             {
-                Diagnostic diagnostic = Diagnostic.Create(ParameterCountRule, symbol.Locations[0], name);
+                Diagnostic diagnostic = Diagnostic.Create(ParameterCountRule, symbol.Locations[0], name, parameterCount);
                 reportDiagnostic(diagnostic);
             }
         }
@@ -206,17 +205,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (type.TupleElements.Length > 2)
                 {
-                    ReportTupleReturn(member, memberName, reportDiagnostic);
+                    ReportTupleReturn(member, memberName, type.TupleElements.Length, reportDiagnostic);
                 }
             }
         }
 
-        private static void ReportTupleReturn([NotNull] ISymbol symbol, [NotNull] string memberName,
+        private static void ReportTupleReturn([NotNull] ISymbol symbol, [NotNull] string memberName, int tupleElementCount,
             [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             if (!symbol.IsSynthesized())
             {
-                Diagnostic diagnostic = Diagnostic.Create(TupleReturnRule, symbol.Locations[0], memberName);
+                Diagnostic diagnostic = Diagnostic.Create(TupleReturnRule, symbol.Locations[0], memberName, tupleElementCount);
                 reportDiagnostic(diagnostic);
             }
         }
