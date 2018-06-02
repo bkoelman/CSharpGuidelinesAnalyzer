@@ -535,7 +535,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Expression of nullable value type 'i' is checked for null using NullableHasValueMethod");
+                "Expression of nullable value type 'i' is checked for not-null using NullableHasValueMethod");
         }
 
         [Fact]

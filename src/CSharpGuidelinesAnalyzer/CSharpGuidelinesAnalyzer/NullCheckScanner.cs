@@ -28,7 +28,9 @@ namespace CSharpGuidelinesAnalyzer
             if (propertyReference.Property.OriginalDefinition.Equals(knownSymbols.NullableHasValueProperty) &&
                 IsNullableValueType(propertyReference.Instance))
             {
-                return new NullCheckScanResult(propertyReference.Instance, NullCheckKind.NullableHasValueMethod, false);
+                bool isInverted = IsParentInverted(propertyReference);
+
+                return new NullCheckScanResult(propertyReference.Instance, NullCheckKind.NullableHasValueMethod, !isInverted);
             }
 
             return null;
