@@ -359,7 +359,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         public static bool HasErrors([NotNull] this IOperation operation, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Guard.NotNull(operation, nameof(operation));
             Guard.NotNull(compilation, nameof(compilation));
