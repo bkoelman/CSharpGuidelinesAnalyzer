@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -49,11 +50,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (context.Symbol.Name.Contains(typeName))
+            string memberName = WithoutExplicitInterfacePrefix(context.Symbol.Name);
+            if (memberName.Contains(typeName))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name, typeName));
             }
+        }
+
+        [NotNull]
+        private string WithoutExplicitInterfacePrefix([NotNull] string name)
+        {
+            int index = name.IndexOf(".", StringComparison.Ordinal);
+            return index != -1 ? name.Substring(index) : name;
         }
     }
 }

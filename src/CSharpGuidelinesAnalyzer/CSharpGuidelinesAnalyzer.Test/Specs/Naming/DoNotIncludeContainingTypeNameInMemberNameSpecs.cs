@@ -50,7 +50,52 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_type_name_consists_of_a_single_letter_it_must_be_skipped()
+        internal void When_explicitly_implemented_method_name_contains_class_name_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface IEmployee
+                    {
+                        string GetEmployee();
+                    }
+
+                    class Employee : IEmployee
+                    {
+                        string IEmployee.[|GetEmployee|]() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'IEmployee.GetEmployee' contains the name of its containing type 'Employee'.");
+        }
+
+        [Fact]
+        internal void When_explicitly_implemented_method_name_does_not_contain_class_name_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface IEmployee
+                    {
+                        string GetName();
+                    }
+
+                    class Employee : IEmployee
+                    {
+                        string IEmployee.GetName() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_class_name_consists_of_a_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -110,6 +155,24 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
                     class Order
+                    {
+                        bool [|IsOrderDeleted|] { get; set; }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property 'IsOrderDeleted' contains the name of its containing type 'Order'.");
+        }
+
+        [Fact]
+        internal void When_property_name_contains_generic_class_name_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class Order<TCategory>
                     {
                         bool [|IsOrderDeleted|] { get; set; }
                     }
