@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
                 return;
             }
 
-            string accessibility = member.DeclaredAccessibility == Accessibility.Public ? "public" : "internal";
+            string accessibility = member.DeclaredAccessibility.ToText().ToLowerInvariant();
             context.ReportDiagnostic(Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility,
                 member.Name));
         }

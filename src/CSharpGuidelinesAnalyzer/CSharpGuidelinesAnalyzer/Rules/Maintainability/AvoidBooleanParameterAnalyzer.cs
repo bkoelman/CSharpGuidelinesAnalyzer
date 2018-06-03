@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1564";
 
-        private const string Title = "Parameter is of type bool or bool?";
+        private const string Title = "Parameter in public or internal member is of type bool or bool?";
         private const string MessageFormat = "Parameter '{0}' is of type '{1}'.";
         private const string Description = "Avoid signatures that take a bool parameter.";
 

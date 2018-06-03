@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean field 'thisIsVisible' should start with a verb.");
+                "The name of public boolean field 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean field 'thisIsVisible' should start with a verb.");
+                "The name of public boolean field 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -145,7 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean property 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean property 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -180,11 +180,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean property 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean property 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
-        internal void When_public_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_inherited_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -203,12 +203,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean property 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean property 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
         internal void
-            When_public_inherited_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_inherited_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -227,11 +227,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean property 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean property 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
-        internal void When_public_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_implemented_property_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -250,12 +250,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean property 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean property 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
         internal void
-            When_public_implemented_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_implemented_property_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -274,7 +274,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean property 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean property 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -335,7 +335,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean method 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean method 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -401,11 +401,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean method 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean method 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
-        internal void When_public_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_inherited_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -427,12 +427,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean method 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean method 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
         internal void
-            When_public_inherited_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_inherited_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -454,11 +454,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean method 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean method 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
-        internal void When_public_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_implemented_method_return_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -480,12 +480,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean method 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean method 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
         internal void
-            When_public_implemented_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_implemented_method_return_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -507,7 +507,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean method 'ThisIsVisible' should start with a verb.");
+                "The name of public boolean method 'ThisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -565,7 +565,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -604,11 +604,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
-        internal void When_public_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_inherited_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -629,12 +629,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
         internal void
-            When_public_inherited_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_inherited_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -655,11 +655,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
-        internal void When_public_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+        internal void When_public_implemented_parameter_type_is_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -680,12 +680,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
         internal void
-            When_public_implemented_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_skipped()
+            When_public_implemented_parameter_type_is_nullable_bool_and_name_does_not_start_with_a_verb_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -706,7 +706,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible' should start with a verb.");
         }
 
         [Fact]
@@ -737,11 +737,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean field 'thisIsVisible1' should start with a verb.",
-                "The name of boolean field 'thisIsVisible2' should start with a verb.",
-                "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.",
-                "The name of boolean field 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -773,11 +773,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean field 'thisIsVisible1' should start with a verb.",
-                "The name of boolean field 'thisIsVisible2' should start with a verb.",
-                "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.",
-                "The name of boolean field 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -809,11 +809,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean field 'thisIsVisible1' should start with a verb.",
-                "The name of boolean field 'thisIsVisible2' should start with a verb.",
-                "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.",
-                "The name of boolean field 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -845,11 +845,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean field 'thisIsVisible1' should start with a verb.",
-                "The name of boolean field 'thisIsVisible2' should start with a verb.",
-                "The name of boolean field 'thisIsVisible3' should start with a verb.",
-                "The name of boolean field 'thisIsVisible4' should start with a verb.",
-                "The name of boolean field 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean field 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean field 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean field 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean field 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean field 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -909,7 +909,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            protected internal void M5(bool [|thisIsVisible5|])
+                            private protected void M5(bool [|thisIsVisible5|])
                             {
                             }
 
@@ -923,11 +923,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -957,7 +957,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            protected internal void M5(bool [|thisIsVisible5|])
+                            private protected void M5(bool [|thisIsVisible5|])
                             {
                             }
 
@@ -971,11 +971,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -1005,7 +1005,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            protected internal void M5(bool [|thisIsVisible5|])
+                            private protected void M5(bool [|thisIsVisible5|])
                             {
                             }
 
@@ -1019,11 +1019,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]
@@ -1053,7 +1053,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                             {
                             }
 
-                            protected internal void M5(bool [|thisIsVisible5|])
+                            private protected void M5(bool [|thisIsVisible5|])
                             {
                             }
 
@@ -1067,11 +1067,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The name of boolean parameter 'thisIsVisible1' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible2' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible3' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible4' should start with a verb.",
-                "The name of boolean parameter 'thisIsVisible5' should start with a verb.");
+                "The name of public boolean parameter 'thisIsVisible1' should start with a verb.",
+                "The name of protected boolean parameter 'thisIsVisible2' should start with a verb.",
+                "The name of internal boolean parameter 'thisIsVisible3' should start with a verb.",
+                "The name of protected internal boolean parameter 'thisIsVisible4' should start with a verb.",
+                "The name of private protected boolean parameter 'thisIsVisible5' should start with a verb.");
         }
 
         [Fact]

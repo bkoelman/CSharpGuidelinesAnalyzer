@@ -12,8 +12,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     {
         public const string DiagnosticId = "AV1715";
 
-        private const string Title = "Name of boolean identifier should start with a verb";
-        private const string MessageFormat = "The name of boolean {0} '{1}' should start with a verb.";
+        private const string Title = "Name of public or internal boolean identifier should start with a verb";
+        private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb.";
         private const string Description = "Properly name properties.";
 
         [NotNull]
@@ -60,8 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (!IsWhitelisted(context.Symbol.Name) && !context.Symbol.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], LowerCaseKind(context.Symbol.Kind),
-                    context.Symbol.Name));
+                ReportAt(context, context.Symbol);
             }
         }
 
@@ -90,17 +89,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (!IsWhitelisted(parameter.Name) && !parameter.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], LowerCaseKind(parameter.Kind),
-                    parameter.Name));
+                ReportAt(context, parameter);
             }
         }
 
         private static bool IsParameterAccessible([NotNull] IParameterSymbol parameter)
         {
             ISymbol containingMember = parameter.ContainingSymbol;
-
-            return containingMember.DeclaredAccessibility != Accessibility.Private &&
-                containingMember.IsSymbolAccessibleFromRoot();
+            return IsMemberAccessible(containingMember);
         }
 
         private bool IsWhitelisted([NotNull] string identifierName)
@@ -108,10 +104,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return identifierName.StartsWithWordInList(WordsWhitelist);
         }
 
-        [NotNull]
-        private string LowerCaseKind(SymbolKind kind)
+        private static void ReportAt(SymbolAnalysisContext context, [NotNull] ISymbol symbol)
         {
-            return kind.ToString().ToLowerInvariant();
+            Accessibility accessibility = symbol is IParameterSymbol parameterSymbol
+                ? parameterSymbol.ContainingSymbol.DeclaredAccessibility
+                : symbol.DeclaredAccessibility;
+
+            context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], accessibility.ToText().ToLowerInvariant(),
+                symbol.GetKind().ToLowerInvariant(), symbol.Name));
         }
     }
 }
