@@ -448,6 +448,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_method_parameter_has_out_modifier_in_TryConvert_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        bool result = Fraction.TryConvert(string.Empty, out var value);
+                    }
+
+                    public sealed class Fraction
+                    {
+                        public static bool TryConvert(string text, out Fraction value) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotDeclareRefOrOutParameterAnalyzer();

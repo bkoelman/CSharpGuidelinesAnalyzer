@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -43,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            if (!IsRefOrOutParameter(parameter) || IsOutParameterInTryParseMethod(parameter))
+            if (!IsRefOrOutParameter(parameter) || IsOutParameterInTryMethod(parameter))
             {
                 return;
             }
@@ -56,9 +57,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return parameter.RefKind == RefKind.Ref || parameter.RefKind == RefKind.Out;
         }
 
-        private static bool IsOutParameterInTryParseMethod([NotNull] IParameterSymbol parameter)
+        private static bool IsOutParameterInTryMethod([NotNull] IParameterSymbol parameter)
         {
-            return parameter.RefKind == RefKind.Out && parameter.ContainingSymbol.Name == "TryParse";
+            return parameter.RefKind == RefKind.Out && parameter.ContainingSymbol is IMethodSymbol method &&
+                method.Name.StartsWith("Try", StringComparison.Ordinal);
         }
 
         private void AnalyzeRefParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
