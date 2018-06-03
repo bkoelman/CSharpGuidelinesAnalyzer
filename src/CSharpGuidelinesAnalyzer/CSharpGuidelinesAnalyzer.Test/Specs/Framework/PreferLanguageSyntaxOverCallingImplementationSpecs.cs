@@ -167,11 +167,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                         {
                         }
 
-                        if ([|!object.ReferenceEquals(i, null) && i == 8|])
+                        if ([|!object.ReferenceEquals(i, null) && i > 8|])
                         {
                         }
 
-                        if ([|!EqualityComparer<int?>.Default.Equals(i, null) && i != 8|])
+                        if ([|!EqualityComparer<int?>.Default.Equals(i, null) && i < 8|])
                         {
                         }
                     }
@@ -385,6 +385,53 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void
+            When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_for_non_equality_to_nullable_value_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(int? i, int? j)
+                        {
+                            if (i != null && i == j)
+                            {
+                            }
+
+                            if (i != null && i != j)
+                            {
+                            }
+
+                            if ([|i != null && i > j|])
+                            {
+                            }
+
+                            if ([|i != null && i >= j|])
+                            {
+                            }
+
+                            if ([|i != null && i < j|])
+                            {
+                            }
+
+                            if ([|i != null && i <= j|])
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -105,7 +105,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                         if (HaveSameTarget(leftTarget, rightOperation.LeftOperand, scanner) ||
                             HaveSameTarget(leftTarget, rightOperation.RightOperand, scanner))
                         {
-                            return true;
+                            if (!IsEqualityComparisonWithNullableType(rightOperation))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -178,6 +181,29 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
 
             return operation;
+        }
+
+        private bool IsEqualityComparisonWithNullableType([NotNull] IBinaryOperation binaryOperator)
+        {
+            if (IsEqualityComparison(binaryOperator.OperatorKind))
+            {
+                if (IsNullableValueType(binaryOperator.LeftOperand) && IsNullableValueType(binaryOperator.RightOperand))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsEqualityComparison(BinaryOperatorKind operatorKind)
+        {
+            return operatorKind == BinaryOperatorKind.Equals || operatorKind == BinaryOperatorKind.NotEquals;
+        }
+
+        private bool IsNullableValueType([NotNull] IOperation operation)
+        {
+            return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
         }
 
         private sealed class NullCheckVisitor : OperationVisitor
