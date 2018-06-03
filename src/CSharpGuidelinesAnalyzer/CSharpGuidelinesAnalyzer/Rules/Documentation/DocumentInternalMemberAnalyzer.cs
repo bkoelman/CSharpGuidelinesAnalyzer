@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static bool IsTypeAccessible([NotNull] ISymbol symbol)
         {
-            return symbol.DeclaredAccessibility == Accessibility.Internal;
+            return symbol.DeclaredAccessibility == Accessibility.Internal && symbol.IsSymbolAccessibleFromRoot();
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
