@@ -151,6 +151,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                         {
                         }
 
+                        if ([|i.HasValue && i > 5|])
+                        {
+                        }
+
                         if ([|!(i is null) && i < 5|])
                         {
                         }
@@ -176,6 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",

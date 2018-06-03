@@ -72,6 +72,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             NullCheckScanResult? scanResult = scanner.ScanPropertyReference(propertyReference);
             if (scanResult != null && scanResult.Value.Kind == NullCheckKind.NullableHasValueMethod)
             {
+                if (propertyReference.Parent is IBinaryOperation binaryOperator &&
+                    DoReportForNullableComparison(binaryOperator, scanner))
+                {
+                    return;
+                }
+
                 context.ReportDiagnostic(Diagnostic.Create(NullableHasValueRule, propertyReference.Syntax.GetLocation()));
             }
         }
@@ -80,24 +86,32 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             var binaryOperator = (IBinaryOperation)context.Operation;
 
-            if (!IsLogicalAnd(binaryOperator))
+            if (DoReportForNullableComparison(binaryOperator, scanner))
             {
-                return;
+                context.ReportDiagnostic(Diagnostic.Create(NullableComparisonRule, binaryOperator.Syntax.GetLocation()));
             }
+        }
 
-            IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
-            if (leftTarget != null && !(leftTarget is IInvocationOperation))
+        private bool DoReportForNullableComparison([NotNull] IBinaryOperation binaryOperator, [NotNull] NullCheckScanner scanner)
+        {
+            if (IsLogicalAnd(binaryOperator))
             {
-                if (binaryOperator.RightOperand is IBinaryOperation rightOperation &&
-                    NumericComparisonOperators.Contains(rightOperation.OperatorKind))
+                IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
+                if (leftTarget != null && !(leftTarget is IInvocationOperation))
                 {
-                    if (HaveSameTarget(leftTarget, rightOperation.LeftOperand, scanner) ||
-                        HaveSameTarget(leftTarget, rightOperation.RightOperand, scanner))
+                    if (binaryOperator.RightOperand is IBinaryOperation rightOperation &&
+                        NumericComparisonOperators.Contains(rightOperation.OperatorKind))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(NullableComparisonRule, binaryOperator.Syntax.GetLocation()));
+                        if (HaveSameTarget(leftTarget, rightOperation.LeftOperand, scanner) ||
+                            HaveSameTarget(leftTarget, rightOperation.RightOperand, scanner))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
+
+            return false;
         }
 
         private static bool IsLogicalAnd([NotNull] IBinaryOperation binaryOperation)
