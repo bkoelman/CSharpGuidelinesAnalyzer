@@ -48,7 +48,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 return;
             }
 
-            if (method.IsOverride || method.IsInterfaceImplementation() || method.HidesBaseMember(context.CancellationToken))
+            if (method.IsPropertyOrEventAccessor() || method.IsOverride || method.IsInterfaceImplementation() ||
+                method.HidesBaseMember(context.CancellationToken))
             {
                 return;
             }

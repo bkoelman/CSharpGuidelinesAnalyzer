@@ -359,6 +359,25 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type.");
         }
 
+        [Fact]
+        internal void When_property_type_is_generic_List_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(List<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        List<string> P { get; set; }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new ReturnInterfaceToCollectionAnalyzer();
