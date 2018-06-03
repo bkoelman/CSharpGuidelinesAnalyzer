@@ -71,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'OnValueChanged' raises event 'ValueChanged', so should be protected and virtual.");
+                "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual.");
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'OnValueChanged' raises event 'ValueChanged', so should be protected and virtual.");
+                "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual.");
         }
 
         [Fact]

@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             "Method that raises an event should be protected virtual and be named 'On' followed by event name";
 
         private const string KindMessageFormat = "Event '{0}' should be raised from a regular method.";
-        private const string ModifiersMessageFormat = "Method '{0}' raises event '{1}', so should be protected and virtual.";
+        private const string ModifiersMessageFormat = "Method '{0}' raises event '{1}', so it should be protected and virtual.";
         private const string NameMessageFormat = "Method '{0}' raises event '{1}', so it should be named '{2}'.";
         private const string Description = "Use a protected virtual method to raise each event.";
 
