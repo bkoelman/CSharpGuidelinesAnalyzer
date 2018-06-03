@@ -3,6 +3,7 @@ using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -73,10 +74,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
                 if (continueWithMethodGroup.Any(method => method.Equals(openTypedTargetMethod)))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Operation.Syntax.GetLocation(),
+                    Location location = GetInvocationLocation(context);
+
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, location,
                         context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
                 }
             }
+        }
+
+        [NotNull]
+        private static Location GetInvocationLocation(OperationAnalysisContext context)
+        {
+            IdentifierNameSyntax identifierNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf()
+                .OfType<IdentifierNameSyntax>().First(x => x.Identifier.ValueText == "ContinueWith");
+
+            return identifierNameSyntax.GetLocation();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                         {
                             Task<int> M(int i)
                             {
-                                return [|Task.Delay(1).ContinueWith(t => i)|];
+                                return Task.Delay(1).[|ContinueWith|](t => i);
                             }
                         }
                     }
@@ -50,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                             Task<string> M(int i)
                             {
                                 var task = GetStringTask();
-                                return [|task.ContinueWith(t => t.Result)|];
+                                return task.[|ContinueWith|](t => t.Result);
                             }
 
                             Task<string> GetStringTask() => throw null;
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                         {
                             Task<int> M(int i)
                             {
-                                return [|Delay(1).ContinueWith(t => i)|];
+                                return Delay(1).[|ContinueWith|](t => i);
                             }
                         }
                     }
