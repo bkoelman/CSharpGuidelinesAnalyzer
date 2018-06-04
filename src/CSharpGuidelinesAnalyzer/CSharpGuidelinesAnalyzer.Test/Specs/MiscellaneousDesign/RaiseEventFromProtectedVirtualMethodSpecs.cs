@@ -169,6 +169,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
+        internal void When_event_invocation_method_name_does_not_follow_pattern_and_is_not_protected_and_not_virtual_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public event EventHandler ValueChanged;
+
+                        private void [|RaiseEvent|](EventArgs args)
+                        {
+                            ValueChanged(this, args);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
+        }
+
+        [Fact]
         internal void When_event_invocation_method_name_has_extra_words_it_must_be_reported()
         {
             // Arrange

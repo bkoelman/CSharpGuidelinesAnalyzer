@@ -145,20 +145,25 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 if (!method.IsSynthesized())
                 {
-                    AnalyzeMethodName(method, evnt, context);
-                    AnalyzeMethodSignature(method, evnt, context);
+                    if (!AnalyzeMethodName(method, evnt, context))
+                    {
+                        AnalyzeMethodSignature(method, evnt, context);
+                    }
                 }
             }
         }
 
-        private static void AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
+        private static bool AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
             OperationAnalysisContext context)
         {
             string nameExpected = string.Concat("On", evnt.Name);
             if (method.Name != nameExpected)
             {
                 context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, evnt.Name, nameExpected));
+                return true;
             }
+
+            return false;
         }
 
         private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
