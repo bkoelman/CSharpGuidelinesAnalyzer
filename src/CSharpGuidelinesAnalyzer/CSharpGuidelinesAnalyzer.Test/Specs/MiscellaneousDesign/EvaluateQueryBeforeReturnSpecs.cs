@@ -136,6 +136,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
+        internal void When_method_returns_the_result_of_Where_call_with_nested_Any_call_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .AllowingDiagnosticsOutsideSourceTree()
+                .WithReference(typeof(Enumerable).Assembly)
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable).Namespace)
+                .Using(typeof(IList<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable M(IList<string> source)
+                        {
+                            [|return|] source.Where(x => x.Any());
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(IList<string>)' returns the result of a call to 'Where', which uses deferred execution.");
+        }
+
+        [Fact]
         internal void When_method_returns_the_result_of_First_after_Where_call_it_must_be_skipped()
         {
             // Arrange

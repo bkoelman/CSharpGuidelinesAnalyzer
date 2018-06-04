@@ -74,7 +74,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                AnalyzeReturnStatement(returnStatement, context, variableEvaluationCache);
+                if (!returnStatement.IsImplicit)
+                {
+                    AnalyzeReturnStatement(returnStatement, context, variableEvaluationCache);
+                }
             }
         }
 
