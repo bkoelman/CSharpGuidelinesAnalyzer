@@ -5,11 +5,9 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 {
-#pragma warning disable AV1708 // Type name contains term that should be avoided
-    public sealed class DoNotDeclareHelperMethodSpecs : CSharpGuidelinesAnalysisTestFixture
-#pragma warning restore AV1708 // Type name contains term that should be avoided
+    public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => DoNotDeclareHelperMethodAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => DoNotDeclareHelpingMethodAnalyzer.DiagnosticId;
 
         [Fact]
         internal void When_class_name_is_Helpers_it_must_be_reported()
@@ -145,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new DoNotDeclareHelperMethodAnalyzer();
+            return new DoNotDeclareHelpingMethodAnalyzer();
         }
     }
 }

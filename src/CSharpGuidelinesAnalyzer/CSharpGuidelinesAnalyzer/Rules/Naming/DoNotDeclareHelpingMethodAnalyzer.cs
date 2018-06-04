@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-#pragma warning disable AV1708 // Type name contains term that should be avoided
-    public sealed class DoNotDeclareHelperMethodAnalyzer : DiagnosticAnalyzer
-#pragma warning restore AV1708 // Type name contains term that should be avoided
+    public sealed class DoNotDeclareHelpingMethodAnalyzer : DiagnosticAnalyzer
     {
         public const string DiagnosticId = "AV1708";
 
