@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
@@ -25,6 +26,37 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return tokenizer.GetWords().Where(w => IsListed(w, list)).ToArray();
         }
 
+        public static bool ContainsWordInTheMiddle([NotNull] this string identifierName,
+            [NotNull] string word)
+        {
+            Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
+            Guard.NotNullNorWhiteSpace(word, nameof(word));
+
+            if (!QuickScanMayContainWord(identifierName, word))
+            {
+                return false;
+            }
+
+            var tokenizer = new WordsTokenizer(identifierName);
+            var identifierTokens = tokenizer.GetWords().ToArray();
+
+            return TokenSetContainsWordInTheMiddle(identifierTokens, word);
+        }
+
+        private static bool TokenSetContainsWordInTheMiddle([NotNull] IReadOnlyList<WordToken> tokenSet, [NotNull] string word)
+        {
+            for (int index = 1; index < tokenSet.Count - 1; index++)
+            {
+                var token = tokenSet[index];
+                if (string.Equals(word, token.Text, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool StartsWithWordInList([NotNull] this string identifierName,
             [NotNull] [ItemNotNull] ICollection<string> list)
         {
@@ -45,7 +77,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         private static bool QuickScanMayContainWordsListed([NotNull] string text,
             [NotNull] [ItemNotNull] IEnumerable<string> list)
         {
-            return list.Any(word => text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
+            return list.Any(word => QuickScanMayContainWord(text, word));
+        }
+
+        private static bool QuickScanMayContainWord([NotNull] string text, [NotNull] string word)
+        {
+            return text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1;
         }
 
         private static bool IsListed(WordToken wordToken, [NotNull] [ItemNotNull] IEnumerable<string> list)

@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    enum [|Match1And2|]
+                    enum [|Match1And2Again3|]
                     {
                     }
                 ")
@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'Match1And2' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'Match1And2Again3' contains the word 'and', which suggests in has multiple purposes.");
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    enum [|MATCH1AND2|]
+                    enum [|MATCH1AND2AGAIN3|]
                     {
                     }
                 ")
@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'MATCH1AND2' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'MATCH1AND2AGAIN3' contains the word 'and', which suggests in has multiple purposes.");
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class TheBigLand
+                    class TheBigLandIsHere
                     {
                     }
                 ")
@@ -131,7 +131,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    struct AndyWithJohn
+                    struct VisitAndyWithJohn
                     {
                     }
                 ")
@@ -140,6 +140,55 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
+
+        [Fact]
+        internal void When_class_name_consists_of_the_word_And_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class And
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_class_name_starts_with_the_word_And_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class AndComputer
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_class_name_ends_with_the_word_And_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class LogicalAnd
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -26,8 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("and");
+        private const string BlacklistWord = "and";
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private static bool ContainsBlacklistedWord([NotNull] string name)
         {
-            return name.GetWordsInList(WordsBlacklist).Any();
+            return name.ContainsWordInTheMiddle(BlacklistWord);
         }
     }
 }

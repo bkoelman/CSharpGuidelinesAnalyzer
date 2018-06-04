@@ -173,7 +173,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        void [|Match1And2|]()
+                        void [|Match1And2Again3|]()
                         {
                         }
                     }
@@ -182,7 +182,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'Match1And2' contains the word 'and', which suggests doing multiple things.");
+                "Method 'Match1And2Again3' contains the word 'and', which suggests doing multiple things.");
         }
 
         [Fact]
@@ -193,7 +193,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        void ExploreTheBigLand()
+                        void ExploreTheBigLandOutHere()
                         {
                         }
                     }
@@ -212,7 +212,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        void AndyWithJohn()
+                        void VisitAndyWithJohn()
                         {
                         }
                     }
@@ -350,6 +350,64 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
+
+        [Fact]
+        internal void When_method_name_consists_of_the_word_And_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct C
+                    {
+                        void And()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_name_starts_with_the_word_And_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct C
+                    {
+                        void AndComputer()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_name_ends_with_the_word_And_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    struct C
+                    {
+                        void ParseLogicalAnd()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {

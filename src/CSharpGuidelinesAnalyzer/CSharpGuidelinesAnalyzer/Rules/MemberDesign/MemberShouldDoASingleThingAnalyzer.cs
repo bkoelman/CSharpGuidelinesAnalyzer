@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -31,8 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-        [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("and");
+        private const string BlacklistWord = "and";
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -70,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private static bool ContainsBlacklistedWord([NotNull] string name)
         {
-            return name.GetWordsInList(WordsBlacklist).Any();
+            return name.ContainsWordInTheMiddle(BlacklistWord);
         }
     }
 }
