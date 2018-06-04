@@ -153,6 +153,35 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_remote_static_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public static class Coordinate
+                    {
+                        public static event EventHandler ValueChanged;
+                    }
+
+                    public class C
+                    {
+                        public void M()
+                        {
+                            Coordinate.ValueChanged += CoordinateOnValueChanged;
+                        }
+
+                        public void CoordinateOnValueChanged(object sender, EventArgs e)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_remote_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
@@ -224,6 +253,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                     public class C
                     {
                         public event EventHandler ValueChanged;
+
+                        public void M()
+                        {
+                            ValueChanged += OnValueChanged;
+                        }
+
+                        public void OnValueChanged(object sender, EventArgs e)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_local_static_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public static event EventHandler ValueChanged;
 
                         public void M()
                         {

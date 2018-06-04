@@ -56,7 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static void AnalyzeEventAssignmentMethod([NotNull] IMethodReferenceOperation binding,
             [NotNull] IEventAssignmentOperation assignment, OperationAnalysisContext context)
         {
-            string eventTargetName = GetEventTargetName(assignment.EventReference.Instance);
+            string eventTargetName = GetEventTargetName(assignment.EventReference, binding.Method);
             string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.EventReference.Event.Name);
 
             string handlerNameActual = binding.Method.Name;
@@ -68,10 +68,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         [NotNull]
-        private static string GetEventTargetName([NotNull] IOperation eventInstance)
+        private static string GetEventTargetName([NotNull] IEventReferenceOperation eventReference,
+            [NotNull] IMethodSymbol targetMethod)
+        {
+            return eventReference.Instance != null
+                ? GetInstanceEventTargetName(eventReference.Instance)
+                : GetStaticEventTargetName(eventReference, targetMethod);
+        }
+
+        [NotNull]
+        private static string GetInstanceEventTargetName([NotNull] IOperation eventInstance)
         {
             bool isEventLocal = eventInstance is IInstanceReferenceOperation;
-
             if (!isEventLocal)
             {
                 IdentifierInfo info = eventInstance.TryGetIdentifierInfo();
@@ -103,6 +111,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return identifierName.Length > 0 && char.IsLower(identifierName[0])
                 ? char.ToUpper(identifierName[0]) + identifierName.Substring(1)
                 : identifierName;
+        }
+
+        [NotNull]
+        private static string GetStaticEventTargetName([NotNull] IEventReferenceOperation eventReference,
+            [NotNull] IMethodSymbol targetMethod)
+        {
+            INamedTypeSymbol eventContainingType = eventReference.Event.ContainingType;
+
+            bool isEventLocal = eventContainingType.Equals(targetMethod.ContainingType);
+            return isEventLocal ? string.Empty : eventContainingType.Name;
         }
     }
 }
