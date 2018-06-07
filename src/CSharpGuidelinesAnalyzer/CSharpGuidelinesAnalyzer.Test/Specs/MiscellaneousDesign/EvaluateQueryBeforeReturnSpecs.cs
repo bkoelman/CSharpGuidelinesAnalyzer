@@ -1224,6 +1224,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
         }
 
+        [Fact]
+        internal void When_method_returns_the_result_of_string_Join_invocation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable<char> M()
+                        {
+                            IEnumerable<char> result = string.Join(string.Empty, string.Empty);
+                            return result;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         #endregion
 
         #region Flow analysis on query expressions

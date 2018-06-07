@@ -300,8 +300,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     if (LinqOperatorsDeferred.Contains(operation.TargetMethod.Name))
                     {
-                        Result.SetDeferred(operation.TargetMethod.Name);
-                        return true;
+                        if (operation.TargetMethod.ContainingType.SpecialType != SpecialType.System_String)
+                        {
+                            Result.SetDeferred(operation.TargetMethod.Name);
+                            return true;
+                        }
                     }
 
                     return false;
