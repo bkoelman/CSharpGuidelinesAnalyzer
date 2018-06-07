@@ -189,7 +189,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             VerifyGuidelineDiagnostic(source);
         }
 
-
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new TypeShouldHaveASinglePurposeAnalyzer();

@@ -265,7 +265,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 "Catch a specific exception instead of Exception, SystemException or ApplicationException.");
         }
 
-
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new CatchSpecificExceptionAnalyzer();

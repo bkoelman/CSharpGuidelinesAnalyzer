@@ -469,7 +469,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             VerifyGuidelineDiagnostic(source);
         }
 
-
         [Fact]
         internal void When_method_contains_incomplete_query_it_must_be_skipped()
         {

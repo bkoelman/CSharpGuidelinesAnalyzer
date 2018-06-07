@@ -377,7 +377,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             VerifyGuidelineDiagnostic(source);
         }
 
-
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new ReturnInterfaceToCollectionAnalyzer();

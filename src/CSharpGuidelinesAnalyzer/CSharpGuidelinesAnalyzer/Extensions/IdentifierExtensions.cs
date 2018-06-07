@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
@@ -26,8 +25,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return tokenizer.GetWords().Where(w => IsListed(w, list)).ToArray();
         }
 
-        public static bool ContainsWordInTheMiddle([NotNull] this string identifierName,
-            [NotNull] string word)
+        public static bool ContainsWordInTheMiddle([NotNull] this string identifierName, [NotNull] string word)
         {
             Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
             Guard.NotNullNorWhiteSpace(word, nameof(word));
@@ -38,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             var tokenizer = new WordsTokenizer(identifierName);
-            var identifierTokens = tokenizer.GetWords().ToArray();
+            WordToken[] identifierTokens = tokenizer.GetWords().ToArray();
 
             return TokenSetContainsWordInTheMiddle(identifierTokens, word);
         }
@@ -47,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             for (int index = 1; index < tokenSet.Count - 1; index++)
             {
-                var token = tokenSet[index];
+                WordToken token = tokenSet[index];
                 if (string.Equals(word, token.Text, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;

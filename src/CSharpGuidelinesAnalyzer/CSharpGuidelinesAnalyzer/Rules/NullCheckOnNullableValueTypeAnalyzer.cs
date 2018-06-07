@@ -86,8 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         {
             if (scanResult != null)
             {
-                ReportAtOperation(scanResult.Value.Target, reportDiagnostic, scanResult.Value.IsInverted,
-                    scanResult.Value.Kind);
+                ReportAtOperation(scanResult.Value.Target, reportDiagnostic, scanResult.Value.IsInverted, scanResult.Value.Kind);
             }
         }
 

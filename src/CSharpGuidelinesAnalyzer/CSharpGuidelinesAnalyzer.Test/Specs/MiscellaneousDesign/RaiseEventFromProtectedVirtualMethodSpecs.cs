@@ -169,7 +169,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        internal void When_event_invocation_method_name_does_not_follow_pattern_and_is_not_protected_and_not_virtual_it_must_be_reported()
+        internal void
+            When_event_invocation_method_name_does_not_follow_pattern_and_is_not_protected_and_not_virtual_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
