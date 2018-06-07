@@ -347,9 +347,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 public override void VisitConditional([NotNull] IConditionalOperation operation)
                 {
                     EvaluationResult trueResult = owner.AnalyzeExpression(operation.WhenTrue);
-                    EvaluationResult falseResult = owner.AnalyzeExpression(operation.WhenFalse);
 
-                    Result.CopyFrom(EvaluationResult.Unify(trueResult, falseResult));
+                    if (operation.WhenFalse == null)
+                    {
+                        Result.CopyFrom(trueResult);
+                    }
+                    else
+                    {
+                        EvaluationResult falseResult = owner.AnalyzeExpression(operation.WhenFalse);
+
+                        Result.CopyFrom(EvaluationResult.Unify(trueResult, falseResult));
+                    }
                 }
 
                 public override void VisitCoalesce([NotNull] ICoalesceOperation operation)

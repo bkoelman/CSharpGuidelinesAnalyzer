@@ -1225,6 +1225,39 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
+        internal void When_method_returns_the_result_of_Select_invocation_with_code_block_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable).Namespace)
+                .Using(typeof(Enumerable).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        IEnumerable M()
+                        {
+                            var result = Enumerable.Empty<int>().Select(x =>
+                            {
+                                if (x == 0)
+                                {
+                                    return string.Empty;
+                                }
+
+                                return x.ToString();
+                            });
+
+                            [|return|] result;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' returns the result of a call to 'Select', which uses deferred execution.");
+        }
+
+        [Fact]
         internal void When_method_returns_the_result_of_string_Join_invocation_it_must_be_skipped()
         {
             // Arrange
