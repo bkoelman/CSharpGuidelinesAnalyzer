@@ -21,6 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution.";
 
         private const string QueryMessageFormat = "{0} '{1}' returns the result of a query that uses deferred execution.";
+        private const string QueryableMessageFormat = "{0} '{1}' returns an IQueryable, which uses deferred execution.";
         private const string Description = "Evaluate the result of a LINQ expression before returning it.";
 
         [NotNull]
@@ -35,9 +36,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryMessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly DiagnosticDescriptor QueryableRule = new DiagnosticDescriptor(DiagnosticId, Title,
+            QueryableMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
+            Category.GetHelpLinkUri(DiagnosticId));
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(OperationRule, QueryRule);
+            ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
 
         [ItemNotNull]
         private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any",
@@ -46,79 +52,190 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where", "Zip");
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("AsEnumerable", "Average",
-            "Count", "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault",
-            "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray", "ToDictionary", "ToList", "ToLookup");
+        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("Average", "Count",
+            "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault",
+            "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray", "ToImmutableArray", "ToDictionary",
+            "ToList", "ToLookup");
 
-        private const string QueryOperationName = "";
+        [ItemNotNull]
+        private static readonly ImmutableArray<string> LinqOperatorsTransparent =
+            ImmutableArray.Create("AsEnumerable", "AsQueryable");
+
+        private const string QueryOperationName = "<*>Query";
+        private const string QueryableOperationName = "<*>Queryable";
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                var sequenceTypeInfo = new SequenceTypeInfo(startContext.Compilation);
+
+                startContext.RegisterOperationBlockAction(c => c.SkipInvalid(_ => AnalyzeCodeBlock(c, sequenceTypeInfo)));
+            });
         }
 
-        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
+        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)
         {
-            if (!(context.OwningSymbol is IMethodSymbol method) || method.ReturnsVoid || !ReturnsEnumerable(method))
+            if (!IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
             {
                 return;
             }
 
-            var variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
+            var collector = new ReturnStatementCollector(sequenceTypeInfo, context);
+            collector.VisitBlocks(context.OperationBlocks);
 
-            foreach (IReturnOperation returnStatement in context.OperationBlocks.SelectMany(b =>
-                b.DescendantsAndSelf().OfType<IReturnOperation>()))
+            AnalyzeReturnStatements(collector.ReturnStatements, context);
+        }
+
+        private static bool IsInMethodThatReturnsEnumerable([NotNull] ISymbol owningSymbol,
+            [NotNull] SequenceTypeInfo sequenceTypeInfo)
+        {
+            return owningSymbol is IMethodSymbol method && !method.ReturnsVoid &&
+                sequenceTypeInfo.IsEnumerable(method.ReturnType);
+        }
+
+        private void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements,
+            OperationBlockAnalysisContext context)
+        {
+            if (returnStatements.Any())
             {
-                context.CancellationToken.ThrowIfCancellationRequested();
-
-                if (!returnStatement.IsImplicit)
+                foreach (IReturnOperation returnStatement in returnStatements)
                 {
-                    AnalyzeReturnStatement(returnStatement, context, variableEvaluationCache);
+                    context.CancellationToken.ThrowIfCancellationRequested();
+
+                    var analyzer = new ReturnValueAnalyzer(context);
+                    analyzer.Analyze(returnStatement);
                 }
             }
         }
 
-        private static bool ReturnsEnumerable([NotNull] IMethodSymbol method)
+        private static void ReportDiagnosticAt([NotNull] IReturnOperation returnStatement, [NotNull] string operationName,
+            OperationBlockAnalysisContext context)
         {
-            return method.ReturnType.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
-                method.ReturnType.SpecialType == SpecialType.System_Collections_IEnumerable;
+            Location location = returnStatement.GetLocationForKeyword();
+            ISymbol containingMember = context.OwningSymbol.GetContainingMember();
+            string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+            Diagnostic diagnostic = CreateDiagnosticFor(operationName, location, containingMember, memberName);
+            context.ReportDiagnostic(diagnostic);
         }
 
-        private void AnalyzeReturnStatement([NotNull] IReturnOperation returnStatement, OperationBlockAnalysisContext context,
-            [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
+        [NotNull]
+        private static Diagnostic CreateDiagnosticFor([NotNull] string operationName, [CanBeNull] Location location,
+            [NotNull] ISymbol containingMember, [NotNull] string memberName)
         {
-            if (!ReturnsConstant(returnStatement) && !IsYieldBreak(returnStatement))
+            switch (operationName)
             {
-                var analyzer = new ReturnValueAnalyzer(context, variableEvaluationCache);
-                analyzer.Analyze(returnStatement);
+                case QueryOperationName:
+                {
+                    return Diagnostic.Create(QueryRule, location, containingMember.GetKind(), memberName);
+                }
+                case QueryableOperationName:
+                {
+                    return Diagnostic.Create(QueryableRule, location, containingMember.GetKind(), memberName);
+                }
+                default:
+                {
+                    return Diagnostic.Create(OperationRule, location, containingMember.GetKind(), memberName, operationName);
+                }
             }
         }
 
-        private bool IsYieldBreak([NotNull] IReturnOperation returnStatement)
+        /// <summary>
+        /// Scans for return statements, skipping over anonymous methods and local functions, whose compile-time type allows for deferred
+        /// execution.
+        /// </summary>
+        private sealed class ReturnStatementCollector : OperationWalker
         {
-            return returnStatement.ReturnedValue == null;
-        }
+            [NotNull]
+            private readonly SequenceTypeInfo sequenceTypeInfo;
 
-        private static bool ReturnsConstant([NotNull] IReturnOperation returnStatement)
-        {
-            return returnStatement.ReturnedValue is ILiteralOperation;
-        }
+            private readonly OperationBlockAnalysisContext context;
 
-        private sealed class ReturnValueAnalyzer
-        {
-            private OperationBlockAnalysisContext context;
+            private int scopeDepth;
 
             [NotNull]
-            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache;
+            [ItemNotNull]
+            public IList<IReturnOperation> ReturnStatements { get; } = new List<IReturnOperation>();
 
-            public ReturnValueAnalyzer(OperationBlockAnalysisContext context,
-                [NotNull] IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache)
+            public ReturnStatementCollector([NotNull] SequenceTypeInfo sequenceTypeInfo, OperationBlockAnalysisContext context)
+            {
+                Guard.NotNull(sequenceTypeInfo, nameof(sequenceTypeInfo));
+
+                this.sequenceTypeInfo = sequenceTypeInfo;
+                this.context = context;
+            }
+
+            public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
+            {
+                foreach (IOperation block in blocks)
+                {
+                    Visit(block);
+                }
+            }
+
+            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
+            {
+                scopeDepth++;
+                base.VisitLocalFunction(operation);
+                scopeDepth--;
+            }
+
+            public override void VisitAnonymousFunction([NotNull] IAnonymousFunctionOperation operation)
+            {
+                scopeDepth++;
+                base.VisitAnonymousFunction(operation);
+                scopeDepth--;
+            }
+
+            public override void VisitReturn([NotNull] IReturnOperation operation)
+            {
+                if (scopeDepth == 0 && !operation.IsImplicit && operation.ReturnedValue != null &&
+                    !ReturnsConstant(operation.ReturnedValue) && MethodSignatureTypeIsEnumerable(operation.ReturnedValue))
+                {
+                    ITypeSymbol returnValueType = operation.ReturnedValue.SkipTypeConversions().Type;
+
+                    if (sequenceTypeInfo.IsQueryable(returnValueType))
+                    {
+                        ReportDiagnosticAt(operation, QueryableOperationName, context);
+                    }
+                    else if (sequenceTypeInfo.IsNonQueryableSequenceType(returnValueType))
+                    {
+                        ReturnStatements.Add(operation);
+                    }
+                }
+
+                base.VisitReturn(operation);
+            }
+
+            private static bool ReturnsConstant([NotNull] IOperation returnValue)
+            {
+                return returnValue.ConstantValue.HasValue;
+            }
+
+            private bool MethodSignatureTypeIsEnumerable([NotNull] IOperation returnValue)
+            {
+                return sequenceTypeInfo.IsEnumerable(returnValue.Type);
+            }
+        }
+
+        /// <summary>
+        /// Analyzes the filtered set of return values in a method.
+        /// </summary>
+        private sealed class ReturnValueAnalyzer
+        {
+            private readonly OperationBlockAnalysisContext context;
+
+            [NotNull]
+            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache =
+                new Dictionary<ILocalSymbol, EvaluationResult>();
+
+            public ReturnValueAnalyzer(OperationBlockAnalysisContext context)
             {
                 this.context = context;
-                this.variableEvaluationCache = variableEvaluationCache;
             }
 
             public void Analyze([NotNull] IReturnOperation returnStatement)
@@ -127,7 +244,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                 if (result.IsConclusive && result.IsDeferred)
                 {
-                    ReportDiagnosticAt(returnStatement, result.DeferredOperationName);
+                    ReportDiagnosticAt(returnStatement, result.DeferredOperationName, context);
                 }
             }
 
@@ -138,101 +255,39 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                var visitor = new ExpressionVisitor(this);
-                visitor.Visit(expression);
+                var walker = new ExpressionWalker(this);
+                walker.Visit(expression);
 
-                if (visitor.Result != null)
-                {
-                    return visitor.Result;
-                }
-
-                return expression is ITranslatedQueryOperation ? EvaluationResult.Query : AnalyzeMemberInvocation(expression);
+                return walker.Result;
             }
 
-            private sealed class ExpressionVisitor : OperationVisitor
+            /// <summary>
+            /// Runs flow analysis on the return value expression of a return statement.
+            /// </summary>
+            private sealed class ExpressionWalker : AbstractEvaluatingOperationWalker
             {
                 [NotNull]
                 private readonly ReturnValueAnalyzer owner;
 
-                [CanBeNull]
-                public EvaluationResult Result { get; private set; }
-
-                public ExpressionVisitor([NotNull] ReturnValueAnalyzer owner)
+                public ExpressionWalker([NotNull] ReturnValueAnalyzer owner)
                 {
                     Guard.NotNull(owner, nameof(owner));
                     this.owner = owner;
                 }
 
-                public override void VisitLocalReference([NotNull] ILocalReferenceOperation operation)
+                public override void VisitConversion([NotNull] IConversionOperation operation)
                 {
-                    Result = owner.AnalyzeLocalReference(operation);
+                    Visit(operation.Operand);
                 }
 
-                public override void VisitConditional([NotNull] IConditionalOperation operation)
-                {
-                    Result = owner.AnalyzeConditional(operation);
-                }
-            }
-
-            [NotNull]
-            private EvaluationResult AnalyzeLocalReference([NotNull] ILocalReferenceOperation local)
-            {
-                var assignmentWalker = new VariableAssignmentWalker(local.Local, this);
-                assignmentWalker.VisitMethod();
-
-                return assignmentWalker.Result;
-            }
-
-            [NotNull]
-            private EvaluationResult AnalyzeConditional([NotNull] IConditionalOperation conditional)
-            {
-                EvaluationResult trueResult = AnalyzeExpression(conditional.WhenTrue);
-                EvaluationResult falseResult = AnalyzeExpression(conditional.WhenFalse);
-
-                return EvaluationResult.Unify(trueResult, falseResult);
-            }
-
-            [NotNull]
-            private static EvaluationResult AnalyzeMemberInvocation([NotNull] IOperation expression)
-            {
-                var invocationWalker = new MemberInvocationWalker();
-                invocationWalker.Visit(expression);
-
-                return invocationWalker.Result;
-            }
-
-            private void ReportDiagnosticAt([NotNull] IReturnOperation returnStatement, [NotNull] string operationName)
-            {
-                Location location = returnStatement.GetLocationForKeyword();
-                ISymbol containingMember = context.OwningSymbol.GetContainingMember();
-                string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-
-                Diagnostic diagnostic = operationName == QueryOperationName
-                    ? Diagnostic.Create(QueryRule, location, containingMember.GetKind(), memberName)
-                    : Diagnostic.Create(OperationRule, location, containingMember.GetKind(), memberName, operationName);
-
-                context.ReportDiagnostic(diagnostic);
-            }
-
-            private abstract class LinqOperationWalker : OperationWalker
-            {
-                [NotNull]
-                public EvaluationResult Result { get; } = new EvaluationResult();
-            }
-
-            /// <summary>
-            /// Analyzes method invocations in an expression, to determine whether the final expression is based on deferred or immediate
-            /// execution.
-            /// </summary>
-            private sealed class MemberInvocationWalker : LinqOperationWalker
-            {
                 public override void VisitInvocation([NotNull] IInvocationOperation operation)
                 {
                     base.VisitInvocation(operation);
 
                     if (operation.Instance == null)
                     {
-                        if (IsExecutionDeferred(operation) || IsExecutionImmediate(operation))
+                        if (IsExecutionDeferred(operation) || IsExecutionImmediate(operation) ||
+                            IsExecutionTransparent(operation))
                         {
                             return;
                         }
@@ -262,33 +317,150 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                     return false;
                 }
+
+                private bool IsExecutionTransparent([NotNull] IInvocationOperation operation)
+                {
+                    return LinqOperatorsTransparent.Contains(operation.TargetMethod.Name);
+                }
+
+                public override void VisitLocalReference([NotNull] ILocalReferenceOperation operation)
+                {
+                    if (IsInvokingDelegateVariable(operation))
+                    {
+                        return;
+                    }
+
+                    var assignmentWalker = new VariableAssignmentWalker(operation.Local, operation.Syntax.GetLocation(), owner);
+                    assignmentWalker.VisitBlockBody();
+
+                    Result.CopyFrom(assignmentWalker.Result);
+                }
+
+                private static bool IsInvokingDelegateVariable([NotNull] ILocalReferenceOperation operation)
+                {
+                    return operation.Parent is IInvocationOperation;
+                }
+
+                public override void VisitConditional([NotNull] IConditionalOperation operation)
+                {
+                    EvaluationResult trueResult = owner.AnalyzeExpression(operation.WhenTrue);
+                    EvaluationResult falseResult = owner.AnalyzeExpression(operation.WhenFalse);
+
+                    Result.CopyFrom(EvaluationResult.Unify(trueResult, falseResult));
+                }
+
+                public override void VisitCoalesce([NotNull] ICoalesceOperation operation)
+                {
+                    EvaluationResult valueResult = owner.AnalyzeExpression(operation.Value);
+                    EvaluationResult alternativeResult = owner.AnalyzeExpression(operation.WhenNull);
+
+                    Result.CopyFrom(EvaluationResult.Unify(valueResult, alternativeResult));
+                }
+
+                public override void VisitTranslatedQuery([NotNull] ITranslatedQueryOperation operation)
+                {
+                    Result.CopyFrom(EvaluationResult.Query);
+                }
+
+                public override void VisitObjectCreation([NotNull] IObjectCreationOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitDynamicObjectCreation([NotNull] IDynamicObjectCreationOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitArrayCreation([NotNull] IArrayCreationOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitArrayElementReference([NotNull] IArrayElementReferenceOperation operation)
+                {
+                    Result.SetUnknown();
+                }
+
+                public override void VisitAnonymousObjectCreation([NotNull] IAnonymousObjectCreationOperation operation)
+                {
+                    Result.SetUnknown();
+                }
+
+                public override void VisitObjectOrCollectionInitializer(
+                    [NotNull] IObjectOrCollectionInitializerOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitCollectionElementInitializer([NotNull] ICollectionElementInitializerOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitDefaultValue([NotNull] IDefaultValueOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitDynamicInvocation([NotNull] IDynamicInvocationOperation operation)
+                {
+                    Result.SetUnknown();
+                }
+
+                public override void VisitDynamicMemberReference([NotNull] IDynamicMemberReferenceOperation operation)
+                {
+                    Result.SetUnknown();
+                }
+
+                public override void VisitNameOf([NotNull] INameOfOperation operation)
+                {
+                    Result.SetUnknown();
+                }
+
+                public override void VisitLiteral([NotNull] ILiteralOperation operation)
+                {
+                    Result.SetImmediate();
+                }
+
+                public override void VisitThrow([NotNull] IThrowOperation operation)
+                {
+                    Result.SetImmediate();
+                }
             }
 
             /// <summary>
-            /// Analyzes all assignments to a specific variable, storing the final state.
+            /// Evaluates all assignments to a specific variable in a code block, storing its intermediate states.
             /// </summary>
-            private sealed class VariableAssignmentWalker : LinqOperationWalker
+            private sealed class VariableAssignmentWalker : AbstractEvaluatingOperationWalker
             {
                 [NotNull]
                 private readonly ILocalSymbol currentLocal;
 
                 [NotNull]
+                private readonly Location maxLocation;
+
+                [NotNull]
                 private readonly ReturnValueAnalyzer owner;
 
-                public VariableAssignmentWalker([NotNull] ILocalSymbol local, [NotNull] ReturnValueAnalyzer owner)
+                public VariableAssignmentWalker([NotNull] ILocalSymbol local, [NotNull] Location maxLocation,
+                    [NotNull] ReturnValueAnalyzer owner)
                 {
                     Guard.NotNull(local, nameof(local));
+                    Guard.NotNull(maxLocation, nameof(maxLocation));
                     Guard.NotNull(owner, nameof(owner));
 
                     currentLocal = local;
+                    this.maxLocation = maxLocation;
                     this.owner = owner;
                 }
 
-                public void VisitMethod()
+                public void VisitBlockBody()
                 {
                     if (owner.variableEvaluationCache.ContainsKey(currentLocal))
                     {
-                        Result.CopyFrom(owner.variableEvaluationCache[currentLocal]);
+                        EvaluationResult resultFromCache = owner.variableEvaluationCache[currentLocal];
+                        Result.CopyFrom(resultFromCache);
                     }
                     else
                     {
@@ -296,8 +468,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                         {
                             Visit(operation);
                         }
-
-                        owner.variableEvaluationCache[currentLocal] = Result;
                     }
                 }
 
@@ -305,7 +475,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitVariableDeclarator(operation);
 
-                    if (currentLocal.Equals(operation.Symbol))
+                    if (currentLocal.Equals(operation.Symbol) && EndsBeforeMaxLocation(operation))
                     {
                         IVariableInitializerOperation initializer = operation.GetVariableInitializer();
                         if (initializer != null)
@@ -319,10 +489,32 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitSimpleAssignment(operation);
 
-                    if (operation.Target is ILocalReferenceOperation targetLocal && currentLocal.Equals(targetLocal.Local))
+                    if (operation.Target is ILocalReferenceOperation targetLocal && currentLocal.Equals(targetLocal.Local) &&
+                        EndsBeforeMaxLocation(operation))
                     {
                         AnalyzeAssignmentValue(operation.Value);
                     }
+                }
+
+                public override void VisitDeconstructionAssignment([NotNull] IDeconstructionAssignmentOperation operation)
+                {
+                    base.VisitDeconstructionAssignment(operation);
+
+                    if (operation.Target is ITupleOperation tupleOperation && EndsBeforeMaxLocation(operation))
+                    {
+                        foreach (IOperation element in tupleOperation.Elements)
+                        {
+                            if (element is ILocalReferenceOperation targetLocal && currentLocal.Equals(targetLocal.Local))
+                            {
+                                UpdateResult(EvaluationResult.Unknown);
+                            }
+                        }
+                    }
+                }
+
+                private bool EndsBeforeMaxLocation([NotNull] IOperation operation)
+                {
+                    return operation.Syntax.GetLocation().SourceSpan.End < maxLocation.SourceSpan.Start;
                 }
 
                 private void AnalyzeAssignmentValue([NotNull] IOperation assignedValue)
@@ -330,9 +522,25 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     Guard.NotNull(assignedValue, nameof(assignedValue));
 
                     EvaluationResult result = owner.AnalyzeExpression(assignedValue);
-                    Result.CopyIfConclusiveFrom(result);
+                    UpdateResult(result);
+                }
+
+                private void UpdateResult([NotNull] EvaluationResult result)
+                {
+                    if (result.IsConclusive)
+                    {
+                        Result.CopyFrom(result);
+
+                        owner.variableEvaluationCache[currentLocal] = Result;
+                    }
                 }
             }
+        }
+
+        private abstract class AbstractEvaluatingOperationWalker : OperationWalker
+        {
+            [NotNull]
+            public EvaluationResult Result { get; } = new EvaluationResult();
         }
 
         private sealed class EvaluationResult
@@ -364,6 +572,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             [NotNull]
             public static readonly EvaluationResult Query = new EvaluationResult(EvaluationState.Deferred, QueryOperationName);
 
+            [NotNull]
+            public static readonly EvaluationResult Unknown = new EvaluationResult(EvaluationState.Unknown, null);
+
             public EvaluationResult()
             {
             }
@@ -390,16 +601,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                 evaluationState = EvaluationState.Deferred;
                 deferredOperationNameOrNull = operationName;
-            }
-
-            public void CopyIfConclusiveFrom([NotNull] EvaluationResult result)
-            {
-                Guard.NotNull(result, nameof(result));
-
-                if (result.IsConclusive)
-                {
-                    CopyFrom(result);
-                }
             }
 
             public void CopyFrom([NotNull] EvaluationResult result)
@@ -440,6 +641,77 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 Unknown,
                 Immediate,
                 Deferred
+            }
+        }
+
+        private sealed class SequenceTypeInfo
+        {
+            [ItemNotNull]
+            private readonly ImmutableArray<INamedTypeSymbol> queryableTypes;
+
+            [ItemNotNull]
+            private readonly ImmutableArray<INamedTypeSymbol> otherSequenceTypes;
+
+            public SequenceTypeInfo([NotNull] Compilation compilation)
+            {
+                Guard.NotNull(compilation, nameof(compilation));
+
+                queryableTypes = GetQueryableTypes(compilation);
+                otherSequenceTypes = GetOtherSequenceTypes(compilation);
+            }
+
+            [ItemNotNull]
+            private ImmutableArray<INamedTypeSymbol> GetQueryableTypes([NotNull] Compilation compilation)
+            {
+                ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(4);
+
+                AddTypeToBuilder(KnownTypes.SystemLinqIQueryableT(compilation), builder);
+                AddTypeToBuilder(KnownTypes.SystemLinqIOrderedQueryableT(compilation), builder);
+                AddTypeToBuilder(KnownTypes.SystemLinqIQueryable(compilation), builder);
+                AddTypeToBuilder(KnownTypes.SystemLinqIOrderedQueryable(compilation), builder);
+
+                return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
+            }
+
+            [ItemNotNull]
+            private ImmutableArray<INamedTypeSymbol> GetOtherSequenceTypes([NotNull] Compilation compilation)
+            {
+                ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(3);
+
+                AddTypeToBuilder(KnownTypes.SystemLinqIOrderedEnumerableT(compilation), builder);
+                AddTypeToBuilder(KnownTypes.SystemLinqIGroupingTKeyTElement(compilation), builder);
+                AddTypeToBuilder(KnownTypes.SystemLinqILookupTKeyTElement(compilation), builder);
+
+                return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
+            }
+
+            private void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type,
+                [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
+            {
+                if (type != null)
+                {
+                    builder.Add(type);
+                }
+            }
+
+            public bool IsEnumerable([NotNull] ITypeSymbol type)
+            {
+                return type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
+                    type.SpecialType == SpecialType.System_Collections_IEnumerable;
+            }
+
+            public bool IsQueryable([NotNull] ITypeSymbol type)
+            {
+                Guard.NotNull(type, nameof(type));
+
+                return queryableTypes.Contains(type.OriginalDefinition);
+            }
+
+            public bool IsNonQueryableSequenceType([NotNull] ITypeSymbol type)
+            {
+                Guard.NotNull(type, nameof(type));
+
+                return IsEnumerable(type) || otherSequenceTypes.Contains(type.OriginalDefinition);
             }
         }
     }

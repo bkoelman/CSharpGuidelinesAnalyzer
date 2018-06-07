@@ -92,5 +92,61 @@ namespace CSharpGuidelinesAnalyzer
 
             return compilation.GetTypeByMetadataName("System.Runtime.Remoting.ObjectHandle");
         }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqIOrderedEnumerableT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.IOrderedEnumerable`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqIGroupingTKeyTElement([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.IGrouping`2");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqILookupTKeyTElement([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.ILookup`2");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqIQueryable([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.IQueryable");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqIQueryableT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.IQueryable`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqIOrderedQueryable([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.IOrderedQueryable");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemLinqIOrderedQueryableT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Linq.IOrderedQueryable`1");
+        }
     }
 }

@@ -491,5 +491,17 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             return operation.Equals(parentOperationBody);
         }
+
+        [NotNull]
+        public static IOperation SkipTypeConversions([NotNull] this IOperation operation)
+        {
+            IOperation currentOperation = operation;
+            while (currentOperation is IConversionOperation conversion)
+            {
+                currentOperation = conversion.Operand;
+            }
+
+            return currentOperation;
+        }
     }
 }

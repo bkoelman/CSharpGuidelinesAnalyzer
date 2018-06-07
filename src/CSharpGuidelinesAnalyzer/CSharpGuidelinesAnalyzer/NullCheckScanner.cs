@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
@@ -178,22 +179,10 @@ namespace CSharpGuidelinesAnalyzer
         private NullCheckScanResult? AnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
             NullCheckKind nullCheckKind, bool isInverted)
         {
-            IOperation leftArgumentNoConversion = SkipTypeConversions(leftArgument);
-            IOperation rightArgumentNoConversion = SkipTypeConversions(rightArgument);
+            IOperation leftArgumentNoConversion = leftArgument.SkipTypeConversions();
+            IOperation rightArgumentNoConversion = rightArgument.SkipTypeConversions();
 
             return InnerAnalyzeArguments(leftArgumentNoConversion, rightArgumentNoConversion, nullCheckKind, isInverted);
-        }
-
-        [NotNull]
-        private IOperation SkipTypeConversions([NotNull] IOperation operation)
-        {
-            IOperation currentOperation = operation;
-            while (currentOperation is IConversionOperation conversion)
-            {
-                currentOperation = conversion.Operand;
-            }
-
-            return currentOperation;
         }
 
         [CanBeNull]
