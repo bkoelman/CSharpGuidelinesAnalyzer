@@ -204,6 +204,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
             }
 
+            public override void VisitTypeParameterObjectCreation([NotNull] ITypeParameterObjectCreationOperation operation)
+            {
+            }
+
             public override void VisitConditional([NotNull] IConditionalOperation operation)
             {
                 if (operation.IsStatement())

@@ -1235,6 +1235,48 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_members_are_assigned_in_an_anonymous_object_creation_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        var instance = new { F = 1, P = 2 };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_members_are_assigned_in_a_type_parameter_object_creation_expression_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M<T>()
+                        where T : I, new()
+                    {
+                        var instance = new T { P1 = 1, P2 = 2 };
+                    }
+
+                    interface I
+                    {
+                        int P1 { get; set; }
+                        int P2 { get; set; }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+
+        [Fact]
         internal void When_members_are_assigned_in_a_dynamic_object_creation_expression_it_must_be_skipped()
         {
             // Arrange
