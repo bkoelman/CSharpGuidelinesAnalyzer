@@ -52,11 +52,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     class C
                     {
-                        void M()
+                        public void M()
                         {
                         }
 
-                        void M2(string s)
+                        public void M2(string s)
                         {
                         }
                     }
@@ -79,11 +79,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                         }
 
-                        void M(string s)
+                        public void M(string s)
                         {
                         }
 
-                        void M(int i)
+                        public void M(int i)
                         {
                         }
                     }
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             M(string.Empty);
                         }
 
-                        void [|M|](string s)
+                        public void [|M|](string s)
                         {
                         }
                     }
@@ -117,6 +117,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Method overload with the most parameters should be virtual.");
+        }
+
+        [Fact]
+        internal void When_longest_method_overload_is_private_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            M(string.Empty);
+                        }
+
+                        private void M(string s)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
@@ -132,7 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             M(string.Empty);
                         }
 
-                        void M(string s)
+                        public void M(string s)
                         {
                         }
                     }
@@ -156,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             M(string.Empty);
                         }
 
-                        void M(string s)
+                        public void M(string s)
                         {
                         }
                     }
@@ -180,7 +204,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             M(string.Empty);
                         }
 
-                        static void M(string s)
+                        public static void M(string s)
                         {
                         }
                     }
