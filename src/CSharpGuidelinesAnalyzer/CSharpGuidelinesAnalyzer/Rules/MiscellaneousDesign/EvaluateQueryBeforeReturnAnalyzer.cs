@@ -20,7 +20,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string OperationMessageFormat =
             "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution.";
 
-        private const string QueryMessageFormat = "{0} '{1}' returns the result of a query that uses deferred execution.";
+        private const string QueryMessageFormat = "{0} '{1}' returns the result of a query, which uses deferred execution.";
         private const string QueryableMessageFormat = "{0} '{1}' returns an IQueryable, which uses deferred execution.";
         private const string Description = "Evaluate the result of a LINQ expression before returning it.";
 
