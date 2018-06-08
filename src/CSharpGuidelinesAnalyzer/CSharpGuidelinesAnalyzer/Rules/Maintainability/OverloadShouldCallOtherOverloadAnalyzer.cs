@@ -67,7 +67,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             IGrouping<string, IMethodSymbol>[] methodGroups = type.GetMembers().OfType<IMethodSymbol>()
                 .Where(method => method.MethodKind != MethodKind.Constructor)
-                .Where(method => HasMethodBody(method, context.CancellationToken)).GroupBy(method => method.Name)
+                .Where(method => !method.IsSynthesized())
+                .Where(method => HasMethodBody(method, context.CancellationToken))
+                .GroupBy(method => method.Name)
                 .Where(HasAtLeastTwoItems).ToArray();
 
             foreach (IGrouping<string, IMethodSymbol> methodGroup in methodGroups)
@@ -98,10 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     IMethodSymbol methodToReport = longestOverload.PartialImplementationPart ?? longestOverload;
 
-                    if (!methodToReport.IsSynthesized())
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
-                    }
+                    context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
                 }
 
                 AnalyzeOverloads(methodGroup, longestOverload, context);
@@ -125,11 +124,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
 
-                    if (!methodToReport.IsSynthesized())
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
-                            methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
-                    }
+                    context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
+                        methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
                 }
             }
         }
