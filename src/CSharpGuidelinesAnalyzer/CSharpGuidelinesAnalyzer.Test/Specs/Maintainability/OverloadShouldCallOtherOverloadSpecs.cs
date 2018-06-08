@@ -528,45 +528,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_consistent_with_params_array_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    public class C
-                    {
-                        public bool M()
-                        {
-                            return M(Array.Empty<object>());
-                        }
-
-                        public bool M(params object[] args)
-                        {
-                            return M(string.Empty, args);
-                        }
-
-                        public bool M(string value, params object[] args)
-                        {
-                            return M(value, -1, args);
-                        }
-
-                        public bool M(string value, int index, params object[] args)
-                        {
-                            return M(value, index, false, args);
-                        }
-
-                        protected virtual bool M(string value, int index, bool flag, params object[] args)
-                        {
-                            throw new NotImplementedException();
-                        }
-                    }
-                ")
-                .Build();
-
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
         internal void When_parameter_order_in_overloads_is_consistent_with_extra_parameter_it_must_be_skipped()
         {
             // Arrange
@@ -623,6 +584,189 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             VerifyGuidelineDiagnostic(source,
                 "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload.");
+        }
+
+        [Fact]
+        internal void When_parameter_order_in_overloads_is_consistent_with_params_array_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public bool M()
+                        {
+                            return M(Array.Empty<object>());
+                        }
+
+                        public bool M(params object[] args)
+                        {
+                            return M(string.Empty, args);
+                        }
+
+                        public bool M(string value, params object[] args)
+                        {
+                            return M(value, -1, args);
+                        }
+
+                        public bool M(string value, int index, params object[] args)
+                        {
+                            return M(value, index, false, args);
+                        }
+
+                        protected virtual bool M(string value, int index, bool flag, params object[] args)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_parameter_order_in_overloads_is_not_consistent_with_params_array_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public bool M()
+                        {
+                            return M(Array.Empty<object>());
+                        }
+
+                        public bool M(params object[] args)
+                        {
+                            return M(string.Empty, args);
+                        }
+
+                        public bool M(string value, params object[] args)
+                        {
+                            return M(-1, value, args);
+                        }
+
+                        public bool [|M|](int index, string value, params object[] args)
+                        {
+                            return M(value, index, false, args);
+                        }
+
+                        protected virtual bool M(string value, int index, bool flag, params object[] args)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source,
+                "Parameter order in 'C.M(int, string, params object[])' does not match with the parameter order of the longest overload.");
+        }
+
+        [Fact]
+        internal void When_parameter_order_in_overloads_is_consistent_with_optional_parameters_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public bool M()
+                        {
+                            return M(string.Empty);
+                        }
+
+                        public bool M(string value = null)
+                        {
+                            return M(value, -1);
+                        }
+
+                        public bool M(string value = null, int index = -1)
+                        {
+                            return M(value, index, false);
+                        }
+
+                        protected virtual bool M(string value = null, int index = -1, bool flag = true)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_parameter_order_in_overloads_is_not_consistent_with_optional_parameters_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public bool M()
+                        {
+                            return M(string.Empty);
+                        }
+
+                        public bool M(string value = null)
+                        {
+                            return M(value, -1);
+                        }
+
+                        public bool [|M|](int index = -1, string value = null)
+                        {
+                            return M(value, index, false);
+                        }
+
+                        protected virtual bool M(string value = null, int index = -1, bool flag = true)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source,
+                "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload.");
+        }
+
+        [Fact]
+        internal void
+            When_parameter_order_in_overloads_is_consistent_with_regular_and_optional_and_extra_parameters_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public bool M(DateTime time = default(DateTime))
+                        {
+                            return M(1.0, index: 0, DateTime.MinValue);
+                        }
+
+                        public bool M(double first, int index = -1, DateTime time = default(DateTime))
+                        {
+                            return M(first, value: string.Empty, index: 0, new object());
+                        }
+
+                        public bool M(double first, string value, int index = -1, object other = null)
+                        {
+                            return M(first, value, index, false, Array.Empty<object>());
+                        }
+
+                        protected virtual bool M(double first, string value, int index = -1, bool flag = true, params object[] data)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]

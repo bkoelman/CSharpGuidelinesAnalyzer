@@ -65,11 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            IGrouping<string, IMethodSymbol>[] methodGroups = type.GetMembers().OfType<IMethodSymbol>()
-                .Where(method => method.MethodKind != MethodKind.Constructor)
-                .Where(method => !method.IsSynthesized())
-                .Where(method => HasMethodBody(method, context.CancellationToken))
-                .GroupBy(method => method.Name)
+            IGrouping<string, IMethodSymbol>[] methodGroups = GetRegularMethods(type, context).GroupBy(method => method.Name)
                 .Where(HasAtLeastTwoItems).ToArray();
 
             foreach (IGrouping<string, IMethodSymbol> methodGroup in methodGroups)
@@ -78,6 +74,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 AnalyzeMethodGroup(methodGroup.ToArray(), context);
             }
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<IMethodSymbol> GetRegularMethods([NotNull] INamedTypeSymbol type,
+            SymbolAnalysisContext context)
+        {
+            return type.GetMembers().OfType<IMethodSymbol>().Where(method => IsRegularMethod(method, context.CancellationToken));
+        }
+
+        private static bool IsRegularMethod([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
+        {
+            return method.MethodKind != MethodKind.Constructor && !method.IsSynthesized() &&
+                HasMethodBody(method, cancellationToken);
         }
 
         private static bool HasMethodBody([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
@@ -160,19 +170,45 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         private static bool AreParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
-            [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInlongestOverload)
+            [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
         {
-            for (int parameterIndex = 0; parameterIndex < method.Parameters.Length; parameterIndex++)
+            List<IParameterSymbol> regularParametersInMethod = method.Parameters.Where(IsRegularParameter).ToList();
+            List<IParameterSymbol> regularParametersInlongestOverload =
+                parametersInLongestOverload.Where(IsRegularParameter).ToList();
+
+            if (AreParametersDeclaredInSameOrder(regularParametersInMethod, regularParametersInlongestOverload))
             {
-                IParameterSymbol parameter = method.Parameters[parameterIndex];
-                if (parameter.IsParams)
+                List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
+                List<IParameterSymbol> defaultParametersInlongestOverload =
+                    parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
+
+                if (AreParametersDeclaredInSameOrder(defaultParametersInMethod, defaultParametersInlongestOverload))
                 {
-                    continue;
+                    return true;
                 }
+            }
 
-                string parameterName = parameter.Name;
+            return false;
+        }
 
-                int indexInLongestOverload = parametersInlongestOverload.FindIndex(p => p.Name == parameterName);
+        private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
+        {
+            return !parameter.HasExplicitDefaultValue && !parameter.IsParams;
+        }
+
+        private static bool IsParameterWithDefaultValue([NotNull] IParameterSymbol parameter)
+        {
+            return parameter.HasExplicitDefaultValue && !parameter.IsParams;
+        }
+
+        private static bool AreParametersDeclaredInSameOrder([NotNull] [ItemNotNull] IList<IParameterSymbol> parameters,
+            [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+        {
+            for (int parameterIndex = 0; parameterIndex < parameters.Count; parameterIndex++)
+            {
+                string parameterName = parameters[parameterIndex].Name;
+
+                int indexInLongestOverload = parametersInLongestOverload.FindIndex(p => p.Name == parameterName);
                 if (indexInLongestOverload != -1 && indexInLongestOverload != parameterIndex)
                 {
                     return false;
