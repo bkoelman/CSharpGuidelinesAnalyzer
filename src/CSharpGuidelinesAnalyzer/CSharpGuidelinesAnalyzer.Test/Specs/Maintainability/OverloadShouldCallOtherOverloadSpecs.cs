@@ -528,6 +528,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_parameter_order_in_overloads_is_consistent_with_params_array_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public bool M()
+                        {
+                            return M(Array.Empty<object>());
+                        }
+
+                        public bool M(params object[] args)
+                        {
+                            return M(string.Empty, args);
+                        }
+
+                        public bool M(string value, params object[] args)
+                        {
+                            return M(value, -1, args);
+                        }
+
+                        public bool M(string value, int index, params object[] args)
+                        {
+                            return M(value, index, false, args);
+                        }
+
+                        protected virtual bool M(string value, int index, bool flag, params object[] args)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_parameter_order_in_overloads_is_consistent_with_extra_parameter_it_must_be_skipped()
         {
             // Arrange

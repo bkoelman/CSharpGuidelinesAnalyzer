@@ -168,7 +168,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             for (int parameterIndex = 0; parameterIndex < method.Parameters.Length; parameterIndex++)
             {
-                string parameterName = method.Parameters[parameterIndex].Name;
+                IParameterSymbol parameter = method.Parameters[parameterIndex];
+                if (parameter.IsParams)
+                {
+                    continue;
+                }
+
+                string parameterName = parameter.Name;
 
                 int indexInLongestOverload = parametersInlongestOverload.FindIndex(p => p.Name == parameterName);
                 if (indexInLongestOverload != -1 && indexInLongestOverload != parameterIndex)
