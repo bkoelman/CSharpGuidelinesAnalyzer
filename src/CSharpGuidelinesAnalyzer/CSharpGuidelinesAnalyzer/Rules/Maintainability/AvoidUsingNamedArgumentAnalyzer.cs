@@ -39,7 +39,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var argument = (IArgumentOperation)context.Operation;
 
-            if (!argument.Parameter.Type.IsBooleanOrNullableBoolean())
+            if (!argument.IsImplicit && !argument.Parameter.Type.IsBooleanOrNullableBoolean())
             {
                 var syntax = argument.Syntax as ArgumentSyntax;
                 if (syntax?.NameColon != null)
