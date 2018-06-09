@@ -16,10 +16,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class Employee
+                    namespace N.M
                     {
-                        static void [|GetEmployee|]()
+                        class Employee
                         {
+                            static void [|GetEmployee|]()
+                            {
+                            }
                         }
                     }
                 ")
@@ -36,10 +39,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class Employee
+                    namespace N.M
                     {
-                        static void Activate()
+                        class Employee
                         {
+                            static void Activate()
+                            {
+                            }
                         }
                     }
                 ")
@@ -55,21 +61,24 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    interface IEmployee
+                    namespace N.M
                     {
-                        string GetEmployee();
-                    }
+                        interface IEmployee
+                        {
+                            string GetEmployee();
+                        }
 
-                    class Employee : IEmployee
-                    {
-                        string IEmployee.[|GetEmployee|]() => throw null;
+                        class Employee : IEmployee
+                        {
+                            string IEmployee.[|GetEmployee|]() => throw null;
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'IEmployee.GetEmployee' contains the name of its containing type 'Employee'.");
+                "Method 'N.M.IEmployee.GetEmployee' contains the name of its containing type 'Employee'.");
         }
 
         [Fact]
@@ -78,14 +87,17 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    interface IEmployee
+                    namespace N.M
                     {
-                        string GetName();
-                    }
+                        interface IEmployee
+                        {
+                            string GetName();
+                        }
 
-                    class Employee : IEmployee
-                    {
-                        string IEmployee.GetName() => throw null;
+                        class Employee : IEmployee
+                        {
+                            string IEmployee.GetName() => throw null;
+                        }
                     }
                 ")
                 .Build();

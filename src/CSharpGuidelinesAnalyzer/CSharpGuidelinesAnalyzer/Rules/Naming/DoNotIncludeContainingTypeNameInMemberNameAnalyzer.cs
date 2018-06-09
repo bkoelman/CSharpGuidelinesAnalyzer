@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [NotNull]
         private string WithoutExplicitInterfacePrefix([NotNull] string name)
         {
-            int index = name.IndexOf(".", StringComparison.Ordinal);
+            int index = name.LastIndexOf(".", StringComparison.Ordinal);
             return index != -1 ? name.Substring(index) : name;
         }
     }
