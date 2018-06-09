@@ -402,6 +402,48 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_shorter_method_overload_invokes_same_overload_in_generic_base_type_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B<T>
+                    {
+                        protected virtual void M(T t)
+                        {
+                            M(t, 0);
+                        }
+
+                        protected virtual void M(T t, int i)
+                        {
+                        }
+                    }
+
+                    class C : B<string>
+                    {
+                        protected override void M(string t)
+                        {
+                            base.M(t);
+                        }
+
+                        protected override void M(string t, int i)
+                        {
+                            base.M(t, i);
+                        }
+
+                        protected virtual void M(string t, int i, object o)
+                        {
+                            base.M(t, i);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_shorter_method_overload_is_abstract_it_must_be_skipped()
         {
             // Arrange

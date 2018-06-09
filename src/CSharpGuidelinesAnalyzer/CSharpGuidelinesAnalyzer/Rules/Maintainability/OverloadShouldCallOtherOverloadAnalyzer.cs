@@ -321,7 +321,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
                 else
                 {
-                    if (methodToFind.Equals(operation.TargetMethod.OriginalDefinition))
+                    if (methodToFind.OriginalDefinition.Equals(operation.TargetMethod.OriginalDefinition))
                     {
                         HasFoundInvocation = true;
                     }
