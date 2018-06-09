@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                     void N()
                     {
-                        M(3, [|s: string.Empty|]);
+                        M(3, [|s:|] string.Empty);
                     }
                 ")
                 .Build();
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                     void N()
                     {
-                        M(3, [|s: string.Empty|], 6);
+                        M(3, [|s:|] string.Empty, 6);
                     }
                 ")
                 .Build();
@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                         void N()
                         {
-                            L(3, [|o: null|]);
+                            L(3, [|o:|] null);
                         }
                     }
                 ")

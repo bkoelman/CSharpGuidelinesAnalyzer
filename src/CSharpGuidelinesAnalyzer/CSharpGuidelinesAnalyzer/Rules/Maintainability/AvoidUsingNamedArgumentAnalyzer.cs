@@ -44,7 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 var syntax = argument.Syntax as ArgumentSyntax;
                 if (syntax?.NameColon != null)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, argument.Syntax.GetLocation(), argument.Parameter.Name,
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, syntax.NameColon.GetLocation(), argument.Parameter.Name,
                         FormatSymbol(argument.Parameter.ContainingSymbol)));
                 }
             }
