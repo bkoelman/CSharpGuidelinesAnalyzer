@@ -120,6 +120,35 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_longest_method_overload_in_base_type_is_not_virtual_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        void M()
+                        {
+                            M(string.Empty);
+                        }
+
+                        public void [|M|](string s)
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method overload with the most parameters should be virtual.");
+        }
+
+        [Fact]
         internal void When_longest_method_overload_is_private_it_must_be_skipped()
         {
             // Arrange
@@ -240,6 +269,34 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_shorter_method_overload_does_not_invoke_another_overload_in_base_type_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        void [|M|]()
+                        {
+                        }
+
+                        protected virtual void M(string s)
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Overloaded method 'B.M()' should call another overload.");
+        }
+
+        [Fact]
         internal void When_shorter_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
@@ -310,6 +367,38 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Overloaded method 'C.M()' should call another overload.");
+        }
+
+        [Fact]
+        internal void When_shorter_method_overload_invokes_another_overload_in_base_type_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        protected virtual void M(string s, int i)
+                        {
+                        }
+                    }
+
+                    class C : B
+                    {
+                        void M()
+                        {
+                            base.M(string.Empty, 0);
+                        }
+
+                        void M(string s)
+                        {
+                            base.M(s, 0);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
@@ -584,6 +673,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             VerifyGuidelineDiagnostic(source,
                 "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload.");
+        }
+
+        [Fact]
+        internal void When_parameter_order_in_overloads_is_not_consistent_in_base_type_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class B
+                    {
+                        public bool M()
+                        {
+                            return M(string.Empty);
+                        }
+
+                        public bool M(string value)
+                        {
+                            return M(-1, value);
+                        }
+
+                        public bool [|M|](int index, string value)
+                        {
+                            return M(value, index, false);
+                        }
+
+                        protected virtual bool M(string value, int index, bool flag)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+
+                    public class C : B
+                    {
+                    }
+                ")
+                .Build();
+
+            VerifyGuidelineDiagnostic(source,
+                "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload.");
         }
 
         [Fact]

@@ -45,6 +45,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
 
+        private static readonly ImmutableArray<MethodKind> RegularMethodKinds = new[]
+        {
+            MethodKind.Ordinary,
+            MethodKind.ExplicitInterfaceImplementation,
+            MethodKind.ReducedExtension
+        }.ToImmutableArray();
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -65,28 +72,46 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            IGrouping<string, IMethodSymbol>[] methodGroups = GetRegularMethods(type, context).GroupBy(method => method.Name)
-                .Where(HasAtLeastTwoItems).ToArray();
+            IGrouping<string, IMethodSymbol>[] methodGroups = GetRegularMethodsInTypeHierarchy(type, context.CancellationToken)
+                .GroupBy(method => method.Name).Where(HasAtLeastTwoItems).ToArray();
 
             foreach (IGrouping<string, IMethodSymbol> methodGroup in methodGroups)
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                AnalyzeMethodGroup(methodGroup.ToArray(), context);
+                AnalyzeMethodGroup(methodGroup.ToArray(), type, context);
             }
         }
 
         [NotNull]
         [ItemNotNull]
-        private static IEnumerable<IMethodSymbol> GetRegularMethods([NotNull] INamedTypeSymbol type,
-            SymbolAnalysisContext context)
+        private static IEnumerable<IMethodSymbol> GetRegularMethodsInTypeHierarchy([NotNull] INamedTypeSymbol type,
+            CancellationToken cancellationToken)
         {
-            return type.GetMembers().OfType<IMethodSymbol>().Where(method => IsRegularMethod(method, context.CancellationToken));
+            INamedTypeSymbol currentType = type;
+            do
+            {
+                foreach (IMethodSymbol method in GetRegularMethodsInType(currentType, cancellationToken))
+                {
+                    yield return method;
+                }
+
+                currentType = currentType.BaseType;
+            }
+            while (currentType != null);
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<IMethodSymbol> GetRegularMethodsInType([NotNull] INamedTypeSymbol type,
+            CancellationToken cancellationToken)
+        {
+            return type.GetMembers().OfType<IMethodSymbol>().Where(method => IsRegularMethod(method, cancellationToken));
         }
 
         private static bool IsRegularMethod([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
         {
-            return method.MethodKind != MethodKind.Constructor && !method.IsSynthesized() &&
+            return RegularMethodKinds.Contains(method.MethodKind) && !method.IsSynthesized() &&
                 HasMethodBody(method, cancellationToken);
         }
 
@@ -100,48 +125,57 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return source.Skip(1).Any();
         }
 
-        private void AnalyzeMethodGroup([NotNull] [ItemNotNull] ICollection<IMethodSymbol> methodGroup,
-            SymbolAnalysisContext context)
+        private void AnalyzeMethodGroup([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup,
+            [NotNull] INamedTypeSymbol activeType, SymbolAnalysisContext context)
         {
             IMethodSymbol longestOverload = TryGetSingleLongestOverload(methodGroup);
             if (longestOverload != null)
             {
-                if (CanBeMadeVirtual(longestOverload))
+                if (longestOverload.ContainingType.Equals(activeType) && CanBeMadeVirtual(longestOverload))
                 {
                     IMethodSymbol methodToReport = longestOverload.PartialImplementationPart ?? longestOverload;
-
                     context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
                 }
 
-                AnalyzeOverloads(methodGroup, longestOverload, context);
+                AnalyzeOverloads(methodGroup, longestOverload, activeType, context);
             }
         }
 
-        private void AnalyzeOverloads([NotNull] [ItemNotNull] ICollection<IMethodSymbol> methodGroup,
-            [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
+        private void AnalyzeOverloads([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup,
+            [NotNull] IMethodSymbol longestOverload, [NotNull] INamedTypeSymbol activeType, SymbolAnalysisContext context)
         {
-            foreach (IMethodSymbol overload in methodGroup.Where(method => !method.Equals(longestOverload)))
+            IEnumerable<IMethodSymbol> overloadsInActiveType = methodGroup.Where(method =>
+                !method.Equals(longestOverload) && method.ContainingType.Equals(activeType));
+
+            foreach (IMethodSymbol overload in overloadsInActiveType)
             {
-                if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
-                    !overload.HidesBaseMember(context.CancellationToken))
-                {
-                    CompareOrderOfParameters(overload, longestOverload, context);
-                }
+                AnalyzeOverload(overload, methodGroup, longestOverload, context);
+            }
+        }
 
-                ImmutableArray<IMethodSymbol> otherOverloads = methodGroup.Where(m => !m.Equals(overload)).ToImmutableArray();
+        private void AnalyzeOverload([NotNull] IMethodSymbol overload,
+            [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] IMethodSymbol longestOverload,
+            SymbolAnalysisContext context)
+        {
+            if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
+                !overload.HidesBaseMember(context.CancellationToken))
+            {
+                CompareOrderOfParameters(overload, longestOverload, context);
+            }
 
-                if (!HasInvocationToAnyOf(otherOverloads, overload, context))
-                {
-                    IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
+            var invocationWalker = new MethodInvocationWalker(methodGroup);
 
-                    context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
-                        methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
-                }
+            if (!InvokesAnotherOverload(overload, invocationWalker, context))
+            {
+                IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
+
+                context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
+                    methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
             }
         }
 
         [CanBeNull]
-        private IMethodSymbol TryGetSingleLongestOverload([NotNull] [ItemNotNull] ICollection<IMethodSymbol> methodGroup)
+        private IMethodSymbol TryGetSingleLongestOverload([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
         {
             IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
                 methodGroup.GroupBy(mg => mg.Parameters.Length).OrderByDescending(x => x.Key).First();
@@ -162,7 +196,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             List<IParameterSymbol> parametersInlongestOverload = longestOverload.Parameters.ToList();
 
-            if (!AreParametersDeclaredInSameOrder(method, parametersInlongestOverload) && !method.IsSynthesized())
+            if (!AreParametersDeclaredInSameOrder(method, parametersInlongestOverload))
             {
                 context.ReportDiagnostic(Diagnostic.Create(OrderRule, method.Locations[0],
                     method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
@@ -218,15 +252,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return true;
         }
 
-        private bool HasInvocationToAnyOf([ItemNotNull] ImmutableArray<IMethodSymbol> methodsToInvoke,
-            [NotNull] IMethodSymbol methodToAnalyze, SymbolAnalysisContext context)
+        private bool InvokesAnotherOverload([NotNull] IMethodSymbol methodToAnalyze,
+            [NotNull] MethodInvocationWalker invocationWalker, SymbolAnalysisContext context)
         {
             IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
             if (operation != null)
             {
-                var walker = new MethodInvocationWalker(methodsToInvoke);
-                walker.Visit(operation);
-                return walker.HasFoundInvocation;
+                invocationWalker.AnalyzeBlock(operation, methodToAnalyze);
+                return invocationWalker.HasFoundInvocation;
             }
 
             return false;
@@ -234,33 +267,53 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private sealed class MethodInvocationWalker : OperationWalker
         {
+            [NotNull]
             [ItemNotNull]
-            private readonly ImmutableArray<IMethodSymbol> methodsToFind;
+            private readonly IReadOnlyCollection<IMethodSymbol> methodGroup;
 
             public bool HasFoundInvocation { get; private set; }
 
-            public MethodInvocationWalker([ItemNotNull] ImmutableArray<IMethodSymbol> methodsToFind)
+            [CanBeNull]
+            private IMethodSymbol containingMethod;
+
+            public MethodInvocationWalker([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
             {
-                this.methodsToFind = methodsToFind;
+                this.methodGroup = methodGroup;
+            }
+
+            public void AnalyzeBlock([NotNull] IOperation block, [NotNull] IMethodSymbol containingMethod)
+            {
+                Guard.NotNull(block, nameof(block));
+                Guard.NotNull(containingMethod, nameof(containingMethod));
+
+                this.containingMethod = containingMethod;
+                HasFoundInvocation = false;
+
+                Visit(block);
             }
 
             public override void VisitInvocation([NotNull] IInvocationOperation operation)
             {
+                if (HasFoundInvocation)
+                {
+                    return;
+                }
+
+                foreach (IMethodSymbol methodToFind in methodGroup)
+                {
+                    if (!methodToFind.Equals(containingMethod))
+                    {
+                        VerifyInvocation(operation, methodToFind);
+                    }
+                }
+
                 if (!HasFoundInvocation)
                 {
-                    foreach (IMethodSymbol methodToFind in methodsToFind)
-                    {
-                        ScanInvocation(operation, methodToFind);
-                    }
-
-                    if (!HasFoundInvocation)
-                    {
-                        base.VisitInvocation(operation);
-                    }
+                    base.VisitInvocation(operation);
                 }
             }
 
-            private void ScanInvocation([NotNull] IInvocationOperation operation, [NotNull] IMethodSymbol methodToFind)
+            private void VerifyInvocation([NotNull] IInvocationOperation operation, [NotNull] IMethodSymbol methodToFind)
             {
                 if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
                 {
@@ -268,7 +321,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
                 else
                 {
-                    if (methodsToFind.Any(method => method.Equals(operation.TargetMethod.OriginalDefinition)))
+                    if (methodToFind.Equals(operation.TargetMethod.OriginalDefinition))
                     {
                         HasFoundInvocation = true;
                     }
