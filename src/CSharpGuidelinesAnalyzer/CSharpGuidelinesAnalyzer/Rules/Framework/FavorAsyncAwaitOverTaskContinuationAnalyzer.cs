@@ -14,8 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     {
         public const string DiagnosticId = "AV2235";
 
-        private const string Title = "Call to Task.ContinueWith should be replaced with an async method";
-        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an async method.";
+        private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
+        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
         private const string Description = "Favor async/await over Task continuations.";
 
         [NotNull]
