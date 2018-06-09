@@ -1113,6 +1113,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 "Tuple element 'B' should have a more descriptive name.");
         }
 
+        [Fact]
+        internal void When_variable_name_contains_an_abbreviation_in_catch_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
+                    {
+                        try
+                        {
+                        }
+                        catch (Exception [|ex|])
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Variable 'ex' should have a more descriptive name.");
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new DoNotUseAbbreviationInIdentifierNameAnalyzer();
