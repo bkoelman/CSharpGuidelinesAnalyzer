@@ -4,9 +4,6 @@
     <PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    <DebugType>full</DebugType>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
