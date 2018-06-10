@@ -37,6 +37,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
+        internal void When_method_contains_invocation_of_TaskContinueWith_with_type_parameter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    namespace N
+                    {
+                        class C
+                        {
+                            Task<int> M(int i)
+                            {
+                                return Task.Delay(1).[|ContinueWith<int>|](t => i);
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression.");
+        }
+
+        [Fact]
         internal void When_method_contains_invocation_of_generic_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange

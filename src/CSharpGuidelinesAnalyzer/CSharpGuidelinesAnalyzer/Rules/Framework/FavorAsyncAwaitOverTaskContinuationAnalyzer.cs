@@ -15,7 +15,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         public const string DiagnosticId = "AV2235";
 
         private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
-        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
+
+        private const string MessageFormat =
+            "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
+
         private const string Description = "Favor async/await over Task continuations.";
 
         [NotNull]
@@ -85,10 +88,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [NotNull]
         private static Location GetInvocationLocation(OperationAnalysisContext context)
         {
-            IdentifierNameSyntax identifierNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf()
-                .OfType<IdentifierNameSyntax>().First(x => x.Identifier.ValueText == "ContinueWith");
+            SimpleNameSyntax simpleNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf().OfType<SimpleNameSyntax>()
+                .First(x => x.Identifier.ValueText == "ContinueWith");
 
-            return identifierNameSyntax.GetLocation();
+            return simpleNameSyntax.GetLocation();
         }
     }
 }
