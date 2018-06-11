@@ -70,9 +70,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             }
         }
 
-        private static bool IsTypeAccessible([NotNull] ISymbol symbol)
+        private static bool IsTypeAccessible([NotNull] ISymbol type)
         {
-            return symbol.DeclaredAccessibility == Accessibility.Internal && symbol.IsSymbolAccessibleFromRoot();
+            return type.DeclaredAccessibility == Accessibility.Internal && type.IsSymbolAccessibleFromRoot();
         }
 
         private void AnalyzeMember(SymbolAnalysisContext context)
@@ -84,12 +84,39 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             }
         }
 
-        private static bool IsMemberAccessible([NotNull] ISymbol symbol)
+        private static bool IsMemberAccessible([NotNull] ISymbol member)
         {
-            bool isInternal = symbol.DeclaredAccessibility == Accessibility.Internal ||
-                symbol.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
+            return IsMemberInternal(member) || IsMemberPublicInInternalTypeHierarchy(member);
+        }
 
-            return isInternal && symbol.IsSymbolAccessibleFromRoot();
+        private static bool IsMemberInternal([NotNull] ISymbol member)
+        {
+            bool isInternal = member.DeclaredAccessibility == Accessibility.Internal ||
+                member.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
+
+            return isInternal && member.IsSymbolAccessibleFromRoot();
+        }
+
+        private static bool IsMemberPublicInInternalTypeHierarchy([NotNull] ISymbol member)
+        {
+            return member.DeclaredAccessibility == Accessibility.Public && member.IsSymbolAccessibleFromRoot() &&
+                HasInternalTypeInHierarchy(member);
+        }
+
+        private static bool HasInternalTypeInHierarchy([NotNull] ISymbol symbol)
+        {
+            ISymbol container = symbol;
+            while (container != null)
+            {
+                if (container.DeclaredAccessibility == Accessibility.Internal)
+                {
+                    return true;
+                }
+
+                container = container.ContainingType;
+            }
+
+            return false;
         }
 
         private static void AnalyzeSymbol([NotNull] ISymbol symbol, SymbolAnalysisContext context)

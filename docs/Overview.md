@@ -175,6 +175,7 @@ This analyzer reports when `Task.ContinueWith` is called.
 This analyzer reports (in addition to what the C# compiler reports) when compiling with documentation comments enabled and:
 - an internal type has no XML documentation comments
 - an internal member has no XML documentation comments
+- a public member in an internal type has no XML documentation comments
 - a parameter of an internal member has no XML documentation comments.
 
 ### [AV2310](https://github.com/dennisdoomen/CSharpGuidelines/blob/a7edaf8d516b7a129e5e4967bd51e9012228e479/_pages/2300_DocumentationGuidelines.md#av2310): Avoid inline comments ![](/images/warn-disabled.png "severity: warning; disabled by default")

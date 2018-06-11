@@ -199,7 +199,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                     {
                         internal enum [|E|]
                         {
-                            X
                         }
                     }
                 ")
@@ -208,6 +207,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Missing XML comment for internally visible type or member 'N.M.E'.");
+        }
+
+        [Fact]
+        internal void When_internal_enum_member_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        /// <summary/>
+                        internal enum E
+                        {
+                            [|X|]
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.E.X'.");
         }
 
         [Fact]
@@ -222,6 +244,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                         /// <summary />
                         internal enum E
                         {
+                            /// <summary />
                             X
                         }
                     }
@@ -374,6 +397,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_public_field_in_internal_type_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        /// <summary/>
+                        internal class C
+                        {
+                            public int [|F|];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+        }
+
+        [Fact]
         internal void When_internal_field_is_documented_it_must_be_skipped()
         {
             // Arrange
@@ -475,6 +521,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                         public class C
                         {
                             internal string [|P|] { get; set; }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.P'.");
+        }
+
+        [Fact]
+        internal void When_public_property_in_internal_type_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        /// <summary/>
+                        internal class C
+                        {
+                            public string [|P|] { get; set; }
                         }
                     }
                 ")
@@ -598,6 +667,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_public_event_in_internal_type_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        /// <summary/>
+                        internal class C
+                        {
+                            public event EventHandler [|E|];
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
+        }
+
+        [Fact]
         internal void When_internal_event_is_documented_it_must_be_skipped()
         {
             // Arrange
@@ -699,6 +791,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                         public class C
                         {
                             internal void [|M|]()
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Missing XML comment for internally visible type or member 'N.M.C.M()'.");
+        }
+
+        [Fact]
+        internal void When_public_method_in_internal_type_is_undocumented_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        /// <summary/>
+                        internal class C
+                        {
+                            public void [|M|]()
                             {
                             }
                         }
