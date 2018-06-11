@@ -171,7 +171,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             foreach (IParameterSymbol parameter in parameters)
             {
-                if (parameter.Type.IsTupleType)
+                if (parameter.Type.IsTupleType || TryGetSystemTupleElementCount(parameter.Type) != null)
                 {
                     ReportTupleParameter(parameter, memberName, parameter.Name, reportDiagnostic);
                 }
@@ -201,13 +201,31 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private void AnalyzeReturnValue([NotNull] ITypeSymbol returnType, [NotNull] ISymbol member, [NotNull] string memberName,
             [NotNull] Action<Diagnostic> reportDiagnostic)
         {
-            if (returnType.IsTupleType && returnType is INamedTypeSymbol type)
+            int? elementCount = TryGetValueTupleElementCount(returnType) ?? TryGetSystemTupleElementCount(returnType);
+            if (elementCount > 2)
             {
-                if (type.TupleElements.Length > 2)
+                ReportTupleReturn(member, memberName, elementCount.Value, reportDiagnostic);
+            }
+        }
+
+        [CanBeNull]
+        private static int? TryGetValueTupleElementCount([NotNull] ITypeSymbol type)
+        {
+            return type.IsTupleType && type is INamedTypeSymbol namedType ? (int?)namedType.TupleElements.Length : null;
+        }
+
+        [CanBeNull]
+        private int? TryGetSystemTupleElementCount([NotNull] ITypeSymbol type)
+        {
+            if (type.Name == "Tuple" && type.ToString().StartsWith("System.Tuple<", StringComparison.Ordinal))
+            {
+                if (type is INamedTypeSymbol namedType)
                 {
-                    ReportTupleReturn(member, memberName, type.TupleElements.Length, reportDiagnostic);
+                    return namedType.TypeParameters.Length;
                 }
             }
+
+            return null;
         }
 
         private static void ReportTupleReturn([NotNull] ISymbol symbol, [NotNull] string memberName, int tupleElementCount,
