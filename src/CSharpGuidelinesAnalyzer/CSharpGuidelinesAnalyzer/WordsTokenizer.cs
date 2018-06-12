@@ -37,9 +37,19 @@ namespace CSharpGuidelinesAnalyzer
         {
             Reset();
 
+            int infiniteLoopGuard = 0;
+
             while (position < text.Length)
             {
-                yield return GetNextToken();
+                WordToken nextToken = GetNextToken();
+                yield return nextToken;
+
+                infiniteLoopGuard++;
+                if (infiniteLoopGuard >= 1000)
+                {
+                    throw new Exception(
+                        $"Internal error: infinite loop detected while tokenizing text '{text}' at position {position}.");
+                }
             }
         }
 
@@ -93,9 +103,13 @@ namespace CSharpGuidelinesAnalyzer
         {
             ConsumeWhile(kind);
 
-            if (kind == WordTokenKind.UpperCaseWord && IsLowerCaseLetter(PeekChar()))
+            if (kind == WordTokenKind.UpperCaseWord)
             {
-                PutBackLastUpperCaseLetterThatBelongsToNextWord();
+                bool nextCharIsLowerCaseLetter = position < text.Length && IsLowerCaseLetter(text[position]);
+                if (nextCharIsLowerCaseLetter)
+                {
+                    PutBackLastUpperCaseLetterThatBelongsToNextWord();
+                }
             }
 
             return CreateTokenFrom(startIndex, kind);

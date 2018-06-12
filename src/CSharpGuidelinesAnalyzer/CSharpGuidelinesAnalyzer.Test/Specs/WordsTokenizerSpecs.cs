@@ -130,10 +130,19 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         [Fact]
         internal void When_pascal_cased_word_is_surrounded_by_single_uppercase_letters_it_must_be_tokenized()
         {
-            RunTest("AFirstS",
+            RunTest("AFiS",
                 new WordToken("A", WordTokenKind.UpperCaseWord),
-                new WordToken("First", WordTokenKind.PascalCaseWord),
+                new WordToken("Fi", WordTokenKind.PascalCaseWord),
                 new WordToken("S", WordTokenKind.UpperCaseWord));
+        }
+
+        [Fact]
+        internal void When_pascal_cased_word_is_followed_by_single_uppercase_letter_and_underscore_it_must_be_tokenized()
+        {
+            RunTest("OfT_",
+                new WordToken("Of", WordTokenKind.PascalCaseWord),
+                new WordToken("T", WordTokenKind.UpperCaseWord),
+                new WordToken("_", WordTokenKind.Separators));
         }
 
         [Fact]
