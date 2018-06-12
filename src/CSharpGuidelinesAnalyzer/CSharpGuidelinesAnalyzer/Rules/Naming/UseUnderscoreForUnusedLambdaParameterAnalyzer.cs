@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -38,13 +39,50 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var lambdaExpression = (IAnonymousFunctionOperation)context.Operation;
 
+            if (!lambdaExpression.Symbol.Parameters.Any(IsRegularParameter))
+            {
+                return;
+            }
+
+            SyntaxNode bodySyntax = lambdaExpression.Symbol.TryGetBodySyntaxForMethod(context.CancellationToken);
+            if (bodySyntax == null)
+            {
+                return;
+            }
+
+            DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
+            if (dataFlowAnalysis == null)
+            {
+                return;
+            }
+
             foreach (IParameterSymbol parameter in lambdaExpression.Symbol.Parameters)
             {
-                if (!parameter.IsSynthesized() && !ConsistsOfUnderscoresOnly(parameter.Name))
+                if (IsRegularParameter(parameter) && !IsParameterUsed(parameter, dataFlowAnalysis))
                 {
-                    AnalyzeParameterUsage(parameter, lambdaExpression.Symbol, context);
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
                 }
             }
+        }
+
+        private bool IsRegularParameter([NotNull] IParameterSymbol parameter)
+        {
+            return !parameter.IsSynthesized() && !ConsistsOfUnderscoresOnly(parameter.Name);
+        }
+
+        [CanBeNull]
+        private DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
+        {
+            SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
+            DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
+
+            return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
+        }
+
+        private bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)
+        {
+            return dataFlowAnalysis.ReadInside.Contains(parameter) || dataFlowAnalysis.WrittenInside.Contains(parameter) ||
+                dataFlowAnalysis.Captured.Contains(parameter);
         }
 
         private bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
@@ -58,25 +96,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
 
             return true;
-        }
-
-        private static void AnalyzeParameterUsage([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method,
-            OperationAnalysisContext context)
-        {
-            SyntaxNode body = method.TryGetBodySyntaxForMethod(context.CancellationToken);
-            if (body != null)
-            {
-                SemanticModel model = context.Compilation.GetSemanticModel(body.SyntaxTree);
-                DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(body);
-                if (dataFlowAnalysis.Succeeded)
-                {
-                    if (!dataFlowAnalysis.ReadInside.Contains(parameter) && !dataFlowAnalysis.WrittenInside.Contains(parameter) &&
-                        !dataFlowAnalysis.Captured.Contains(parameter))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
-                    }
-                }
-            }
         }
     }
 }
