@@ -243,6 +243,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_method_body_contains_Resharper_formatter_configurations_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        // @formatter:max_line_length 50
+                        string text = string.Empty;
+                        // @formatter:max_line_length restore
+
+                        // @formatter:off
+                        int i = 1;
+                        // @formatter:on
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
         {
             // Arrange

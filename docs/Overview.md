@@ -179,7 +179,7 @@ This analyzer reports (in addition to what the C# compiler reports) when compili
 - a parameter of an internal member has no XML documentation comments.
 
 ### [AV2310](https://github.com/dennisdoomen/CSharpGuidelines/blob/a7edaf8d516b7a129e5e4967bd51e9012228e479/_pages/2300_DocumentationGuidelines.md#av2310): Avoid inline comments ![](/images/warn-disabled.png "severity: warning; disabled by default")
-This analyzer reports when a comment in found inside a method body, except when it is a Resharper suppression or language injection comment.
+This analyzer reports when a comment in found inside a method body, except when it is a Resharper [suppression](https://www.jetbrains.com/help/resharper/Code_Analysis__Configuring_Warnings.html#suppress), [language injection](https://blog.jetbrains.com/dotnet/2016/12/26/language-injections-in-resharper-ultimate-2016-3/) or [formatter configuration](https://blog.jetbrains.com/dotnet/2017/11/27/different-code-styles-different-code-blocks-resharper-rider/) comment.
 
 ### [AV2318](https://github.com/dennisdoomen/CSharpGuidelines/blob/a7edaf8d516b7a129e5e4967bd51e9012228e479/_pages/2300_DocumentationGuidelines.md#av2318): Don't use comments for tracking work to be done later ![](/images/info.png "severity: info")
 This analyzer reports when a comment starts with the word "TODO".

@@ -57,8 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 {
                     string commentText = commentTrivia.ToString();
 
-                    if (!IsResharperSuppression(commentText) && !IsResharperLanguageInjection(commentText) &&
-                        !IsArrangeActAssertUnitTestPattern(commentText))
+                    if (!IsResharperDirective(commentText) && !IsArrangeActAssertUnitTestPattern(commentText))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
                     }
@@ -78,6 +77,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 parentBlock.Parent is ElseClauseSyntax;
         }
 
+        private bool IsResharperDirective([NotNull] string commentText)
+        {
+            return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) ||
+                IsResharperFormatterConfiguration(commentText);
+        }
+
         private bool IsResharperSuppression([NotNull] string commentText)
         {
             return commentText.Contains("// ReSharper disable ") || commentText.Contains("// ReSharper restore ");
@@ -86,6 +91,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private bool IsResharperLanguageInjection([NotNull] string commentText)
         {
             return commentText.Contains("language=");
+        }
+
+        private bool IsResharperFormatterConfiguration([NotNull] string commentText)
+        {
+            return commentText.Contains("// @formatter:");
         }
 
         private bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
