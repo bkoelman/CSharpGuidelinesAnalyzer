@@ -37,19 +37,14 @@ namespace CSharpGuidelinesAnalyzer
         {
             Reset();
 
-            int infiniteLoopGuard = 0;
+            var guard = new InfiniteLoopGuard();
 
             while (position < text.Length)
             {
+                guard.EnterNextIteration(text, position);
+
                 WordToken nextToken = GetNextToken();
                 yield return nextToken;
-
-                infiniteLoopGuard++;
-                if (infiniteLoopGuard >= 1000)
-                {
-                    throw new Exception(
-                        $"Internal error: infinite loop detected while tokenizing text '{text}' at position {position}.");
-                }
             }
         }
 
@@ -164,6 +159,22 @@ namespace CSharpGuidelinesAnalyzer
         private string ExtractText(int startIndex)
         {
             return text.Substring(startIndex, position - startIndex);
+        }
+
+        private struct InfiniteLoopGuard
+        {
+            private int iterationCount;
+
+            public void EnterNextIteration([NotNull] string text, int position)
+            {
+                iterationCount++;
+
+                if (iterationCount >= 1000)
+                {
+                    throw new Exception(
+                        $"Internal error: infinite loop detected while tokenizing text '{text}' at position {position}.");
+                }
+            }
         }
     }
 }
