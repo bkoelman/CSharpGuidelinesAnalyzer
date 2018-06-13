@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
             {
                 var statementWalker = new StatementWalker(reportDiagnostic, cancellationToken);
-                statementWalker.VisitBlock(operation.Body);
+                statementWalker.Visit(operation.Body);
 
                 cancellationToken.ThrowIfCancellationRequested();
 
