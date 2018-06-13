@@ -29,9 +29,10 @@ namespace CSharpGuidelinesAnalyzer
             if (propertyReference.Property.OriginalDefinition.Equals(knownSymbols.NullableHasValueProperty) &&
                 IsNullableValueType(propertyReference.Instance))
             {
-                bool isInverted = IsParentInverted(propertyReference);
+                NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(propertyReference);
 
-                return new NullCheckScanResult(propertyReference.Instance, NullCheckKind.NullableHasValueMethod, !isInverted);
+                return new NullCheckScanResult(propertyReference.Instance, NullCheckMethod.NullableHasValueMethod,
+                    nullCheckOperand.Toggle());
             }
 
             return null;
@@ -66,10 +67,10 @@ namespace CSharpGuidelinesAnalyzer
                 bool isNullableEquals = invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.NullableEqualsMethod);
                 if (isNullableEquals)
                 {
-                    bool isInverted = IsParentInverted(invocation);
+                    NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
 
                     return AnalyzeArguments(invocation.Instance, invocation.Arguments[0].Value,
-                        NullCheckKind.NullableEqualsMethod, isInverted);
+                        NullCheckMethod.NullableEqualsMethod, nullCheckOperand);
                 }
             }
 
@@ -79,40 +80,40 @@ namespace CSharpGuidelinesAnalyzer
         [CanBeNull]
         private NullCheckScanResult? AnalyzeDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
         {
-            NullCheckKind? nullCheckKind = TryGetNullCheckForDoubleArgumentInvocation(invocation);
-            if (nullCheckKind != null)
+            NullCheckMethod? nullCheckMethod = TryGetNullCheckForDoubleArgumentInvocation(invocation);
+            if (nullCheckMethod != null)
             {
                 IArgumentOperation leftArgument = invocation.Arguments[0];
                 IArgumentOperation rightArgument = invocation.Arguments[1];
 
-                bool isInverted = IsParentInverted(invocation);
+                NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
 
-                return AnalyzeArguments(leftArgument.Value, rightArgument.Value, nullCheckKind.Value, isInverted);
+                return AnalyzeArguments(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value, nullCheckOperand);
             }
 
             return null;
         }
 
         [CanBeNull]
-        private NullCheckKind? TryGetNullCheckForDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
+        private NullCheckMethod? TryGetNullCheckForDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
         {
             bool isObjectReferenceEquals = invocation.TargetMethod.Equals(knownSymbols.StaticObjectReferenceEqualsMethod);
             if (isObjectReferenceEquals)
             {
-                return NullCheckKind.StaticObjectReferenceEqualsMethod;
+                return NullCheckMethod.StaticObjectReferenceEqualsMethod;
             }
 
             bool isStaticObjectEquals = invocation.TargetMethod.Equals(knownSymbols.StaticObjectEqualsMethod);
             if (isStaticObjectEquals)
             {
-                return NullCheckKind.StaticObjectEqualsMethod;
+                return NullCheckMethod.StaticObjectEqualsMethod;
             }
 
             bool isEqualityComparerEquals =
                 invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.EqualityComparerEqualsMethod);
             if (isEqualityComparerEquals)
             {
-                return NullCheckKind.EqualityComparerEqualsMethod;
+                return NullCheckMethod.EqualityComparerEqualsMethod;
             }
 
             return null;
@@ -127,9 +128,9 @@ namespace CSharpGuidelinesAnalyzer
             {
                 if (IsConstantNullOrDefault(constantPattern.Value) && IsNullableValueType(isPattern.Value))
                 {
-                    bool isInverted = IsParentInverted(isPattern);
+                    NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(isPattern);
 
-                    return new NullCheckScanResult(isPattern.Value, NullCheckKind.IsPattern, isInverted);
+                    return new NullCheckScanResult(isPattern.Value, NullCheckMethod.IsPattern, nullCheckOperand);
                 }
             }
 
@@ -141,53 +142,62 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(binaryOperator, nameof(binaryOperator));
 
-            bool isOperatorInverted;
-            if (binaryOperator.OperatorKind == BinaryOperatorKind.Equals)
-            {
-                isOperatorInverted = false;
-            }
-            else if (binaryOperator.OperatorKind == BinaryOperatorKind.NotEquals)
-            {
-                isOperatorInverted = true;
-            }
-            else
+            NullCheckOperand? operatorNullCheckOperand = TryGetBinaryOperatorNullCheckOperand(binaryOperator);
+            if (operatorNullCheckOperand == null)
             {
                 return null;
             }
 
-            bool isInverted = IsParentInverted(binaryOperator) ? !isOperatorInverted : isOperatorInverted;
+            NullCheckOperand parentNullCheckOperand = GetParentNullCheckOperand(binaryOperator);
+            NullCheckOperand nullCheckOperandCombined = parentNullCheckOperand.CombineWith(operatorNullCheckOperand.Value);
 
-            return AnalyzeArguments(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckKind.EqualityOperator,
-                isInverted);
+            return AnalyzeArguments(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckMethod.EqualityOperator,
+                nullCheckOperandCombined);
         }
 
-        private bool IsParentInverted([NotNull] IOperation operation)
+        [CanBeNull]
+        private NullCheckOperand? TryGetBinaryOperatorNullCheckOperand([NotNull] IBinaryOperation binaryOperator)
         {
-            bool isInverted = false;
+            if (binaryOperator.OperatorKind == BinaryOperatorKind.Equals)
+            {
+                return NullCheckOperand.IsNull;
+            }
+
+            if (binaryOperator.OperatorKind == BinaryOperatorKind.NotEquals)
+            {
+                return NullCheckOperand.IsNotNull;
+            }
+
+            return null;
+        }
+
+        private NullCheckOperand GetParentNullCheckOperand([NotNull] IOperation operation)
+        {
+            var operand = NullCheckOperand.IsNull;
 
             IOperation currentOperation = operation.Parent;
             while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
             {
-                isInverted = !isInverted;
+                operand = operand.Toggle();
                 currentOperation = currentOperation.Parent;
             }
 
-            return isInverted;
+            return operand;
         }
 
         [CanBeNull]
         private NullCheckScanResult? AnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
-            NullCheckKind nullCheckKind, bool isInverted)
+            NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
         {
             IOperation leftArgumentNoConversion = leftArgument.SkipTypeConversions();
             IOperation rightArgumentNoConversion = rightArgument.SkipTypeConversions();
 
-            return InnerAnalyzeArguments(leftArgumentNoConversion, rightArgumentNoConversion, nullCheckKind, isInverted);
+            return InnerAnalyzeArguments(leftArgumentNoConversion, rightArgumentNoConversion, nullCheckMethod, nullCheckOperand);
         }
 
         [CanBeNull]
         private NullCheckScanResult? InnerAnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
-            NullCheckKind nullCheckKind, bool isInverted)
+            NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
         {
             bool leftIsNull = IsConstantNullOrDefault(leftArgument);
             bool rightIsNull = IsConstantNullOrDefault(rightArgument);
@@ -196,14 +206,14 @@ namespace CSharpGuidelinesAnalyzer
             {
                 if (!leftIsNull && IsNullableValueType(leftArgument))
                 {
-                    return new NullCheckScanResult(leftArgument, nullCheckKind, isInverted);
+                    return new NullCheckScanResult(leftArgument, nullCheckMethod, nullCheckOperand);
                 }
             }
             else
             {
                 if (leftIsNull && IsNullableValueType(rightArgument))
                 {
-                    return new NullCheckScanResult(rightArgument, nullCheckKind, isInverted);
+                    return new NullCheckScanResult(rightArgument, nullCheckMethod, nullCheckOperand);
                 }
             }
 

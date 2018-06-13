@@ -50,11 +50,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
+            AnalyzeMemberName(typeName, context);
+        }
+
+        private void AnalyzeMemberName([NotNull] string containingTypeName, SymbolAnalysisContext context)
+        {
             string memberName = WithoutExplicitInterfacePrefix(context.Symbol.Name);
-            if (memberName.Contains(typeName))
+            if (memberName.Contains(containingTypeName))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
-                    context.Symbol.Name, typeName));
+                    context.Symbol.Name, containingTypeName));
             }
         }
 

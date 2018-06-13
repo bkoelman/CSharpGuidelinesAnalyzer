@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -165,7 +166,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
                 return GetParameterNamesFromXml(document);
             }
-            catch (Exception)
+            catch (XmlException)
             {
                 return null;
             }

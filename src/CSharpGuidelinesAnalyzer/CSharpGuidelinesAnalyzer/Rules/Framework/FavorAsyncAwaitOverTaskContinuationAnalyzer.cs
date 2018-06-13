@@ -38,44 +38,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol taskType = KnownTypes.SystemThreadingTasksTask(startContext.Compilation);
-                INamedTypeSymbol genericTaskType = KnownTypes.SystemThreadingTasksTaskT(startContext.Compilation);
+                var taskInfo = new TaskTypeInfo(startContext.Compilation);
 
-                ImmutableArray<ISymbol> continueWithMethodGroup = GetTaskContinueWithMethodGroup(taskType, genericTaskType);
-
-                if (!continueWithMethodGroup.IsEmpty)
+                if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
                 {
-                    startContext.RegisterOperationAction(
-                        c => c.SkipInvalid(_ => AnalyzeInvocation(taskType, genericTaskType, continueWithMethodGroup, c)),
+                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(taskInfo, c)),
                         OperationKind.Invocation);
                 }
             });
         }
 
-        [ItemNotNull]
-        private ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup([CanBeNull] INamedTypeSymbol taskType,
-            [CanBeNull] INamedTypeSymbol genericTaskType)
-        {
-            ImmutableArray<ISymbol> taskContinueWithMethodGroup =
-                taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
-
-            ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup =
-                genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
-
-            return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
-        }
-
-        private void AnalyzeInvocation([CanBeNull] INamedTypeSymbol taskType, [CanBeNull] INamedTypeSymbol genericTaskType,
-            [ItemNotNull] ImmutableArray<ISymbol> continueWithMethodGroup, OperationAnalysisContext context)
+        private void AnalyzeInvocation(TaskTypeInfo taskInfo, OperationAnalysisContext context)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
-            if (invocation.TargetMethod.ContainingType.Equals(taskType) ||
-                invocation.TargetMethod.ContainingType.ConstructedFrom.Equals(genericTaskType))
+            if (invocation.TargetMethod.ContainingType.Equals(taskInfo.TaskType) ||
+                invocation.TargetMethod.ContainingType.ConstructedFrom.Equals(taskInfo.GenericTaskType))
             {
                 IMethodSymbol openTypedTargetMethod = invocation.TargetMethod.OriginalDefinition;
 
-                if (continueWithMethodGroup.Any(method => method.Equals(openTypedTargetMethod)))
+                if (taskInfo.ContinueWithMethodGroup.Any(method => method.Equals(openTypedTargetMethod)))
                 {
                     Location location = GetInvocationLocation(context);
 
@@ -92,6 +74,40 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 .First(x => x.Identifier.ValueText == "ContinueWith");
 
             return simpleNameSyntax.GetLocation();
+        }
+
+        private struct TaskTypeInfo
+        {
+            [CanBeNull]
+            public INamedTypeSymbol TaskType { get; }
+
+            [CanBeNull]
+            public INamedTypeSymbol GenericTaskType { get; }
+
+            [ItemNotNull]
+            public ImmutableArray<ISymbol> ContinueWithMethodGroup { get; }
+
+            public TaskTypeInfo([NotNull] Compilation compilation)
+            {
+                Guard.NotNull(compilation, nameof(compilation));
+
+                GenericTaskType = KnownTypes.SystemThreadingTasksTaskT(compilation);
+                TaskType = KnownTypes.SystemThreadingTasksTask(compilation);
+
+                ContinueWithMethodGroup = GetTaskContinueWithMethodGroup();
+            }
+
+            [ItemNotNull]
+            private ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup()
+            {
+                ImmutableArray<ISymbol> taskContinueWithMethodGroup =
+                    TaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+
+                ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup =
+                    GenericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+
+                return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
+            }
         }
     }
 }

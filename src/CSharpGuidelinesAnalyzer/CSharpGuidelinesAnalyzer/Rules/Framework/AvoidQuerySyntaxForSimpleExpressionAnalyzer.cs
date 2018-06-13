@@ -67,10 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 complexity++;
             }
 
-            foreach (QueryClauseSyntax bodyClause in queryExpression.Body.Clauses)
-            {
-                complexity += GetComplexityForClause(bodyClause);
-            }
+            complexity += GetComplexityForClauses(queryExpression);
 
             return complexity;
         }
@@ -89,6 +86,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             return selectOrGroupClause is SelectClauseSyntax selectClause &&
                 selectClause.Expression is AnonymousObjectCreationExpressionSyntax;
+        }
+
+        private static int GetComplexityForClauses([NotNull] QueryExpressionSyntax queryExpression)
+        {
+            int complexity = 0;
+
+            foreach (QueryClauseSyntax bodyClause in queryExpression.Body.Clauses)
+            {
+                complexity += GetComplexityForClause(bodyClause);
+            }
+
+            return complexity;
         }
 
         private static int GetComplexityForClause([NotNull] QueryClauseSyntax bodyClause)

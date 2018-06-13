@@ -65,6 +65,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
+            AnalyzeSwitchCompleteness(switchStatement, systemBoolean, context);
+        }
+
+        private void AnalyzeSwitchCompleteness([NotNull] ISwitchOperation switchStatement,
+            [NotNull] INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
+        {
             var analysisContext = new SwitchAnalysisContext(switchStatement, systemBoolean, context);
 
             if (IsSwitchComplete(analysisContext) == false)

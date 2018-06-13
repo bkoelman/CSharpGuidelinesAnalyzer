@@ -8,28 +8,17 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public IOperation Target { get; }
 
-        public NullCheckKind Kind { get; }
+        public NullCheckMethod Method { get; }
 
-        public bool IsInverted { get; }
+        public NullCheckOperand Operand { get; }
 
-        public NullCheckScanResult([NotNull] IOperation target, NullCheckKind kind, bool isInverted)
+        public NullCheckScanResult([NotNull] IOperation target, NullCheckMethod method, NullCheckOperand operand)
         {
             Guard.NotNull(target, nameof(target));
 
             Target = target;
-            Kind = kind;
-            IsInverted = isInverted;
+            Method = method;
+            Operand = operand;
         }
-    }
-
-    internal enum NullCheckKind
-    {
-        EqualityOperator,
-        IsPattern,
-        NullableHasValueMethod,
-        NullableEqualsMethod,
-        StaticObjectEqualsMethod,
-        StaticObjectReferenceEqualsMethod,
-        EqualityComparerEqualsMethod
     }
 }

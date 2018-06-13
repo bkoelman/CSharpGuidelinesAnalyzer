@@ -257,6 +257,18 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     return trySyntax.TryKeyword.GetLocation();
                 }
 
+                FinallyClauseSyntax finallySyntax = TryGetFinallySyntax(operation);
+                if (finallySyntax != null)
+                {
+                    return finallySyntax.FinallyKeyword.GetLocation();
+                }
+
+                return base.VisitTry(operation, argument);
+            }
+
+            [CanBeNull]
+            private static FinallyClauseSyntax TryGetFinallySyntax([NotNull] ITryOperation operation)
+            {
                 var finallySyntax = operation.Finally.Syntax as FinallyClauseSyntax;
                 if (finallySyntax == null)
                 {
@@ -265,14 +277,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                     {
                         finallySyntax = finallyBlockSyntax.Parent as FinallyClauseSyntax;
                     }
-
-                    if (finallySyntax == null)
-                    {
-                        return base.VisitTry(operation, argument);
-                    }
                 }
 
-                return finallySyntax.FinallyKeyword.GetLocation();
+                return finallySyntax;
             }
 
             [NotNull]

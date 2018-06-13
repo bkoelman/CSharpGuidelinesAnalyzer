@@ -38,15 +38,20 @@ namespace CSharpGuidelinesAnalyzer.Rules
             {
                 var scanner = new NullCheckScanner(startContext.Compilation);
 
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzePropertyReference(c, scanner)),
-                    OperationKind.PropertyReference);
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, scanner)),
-                    OperationKind.Invocation);
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeIsPattern(c, scanner)),
-                    OperationKind.IsPattern);
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeBinaryOperator(c, scanner)),
-                    OperationKind.BinaryOperator);
+                RegisterForOperations(startContext, scanner);
             });
+        }
+
+        private void RegisterForOperations([NotNull] CompilationStartAnalysisContext startContext,
+            [NotNull] NullCheckScanner scanner)
+        {
+            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzePropertyReference(c, scanner)),
+                OperationKind.PropertyReference);
+            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, scanner)),
+                OperationKind.Invocation);
+            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeIsPattern(c, scanner)), OperationKind.IsPattern);
+            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeBinaryOperator(c, scanner)),
+                OperationKind.BinaryOperator);
         }
 
         private void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
@@ -86,15 +91,11 @@ namespace CSharpGuidelinesAnalyzer.Rules
         {
             if (scanResult != null)
             {
-                ReportAtOperation(scanResult.Value.Target, reportDiagnostic, scanResult.Value.IsInverted, scanResult.Value.Kind);
-            }
-        }
+                IOperation operation = scanResult.Value.Target;
 
-        private static void ReportAtOperation([NotNull] IOperation operation, [NotNull] Action<Diagnostic> reportDiagnostic,
-            bool isInverted, NullCheckKind nullCheckKind)
-        {
-            reportDiagnostic(Diagnostic.Create(Rule, operation.Syntax.GetLocation(), operation.Syntax.ToString(),
-                isInverted ? "not-null" : "null", nullCheckKind));
+                reportDiagnostic(Diagnostic.Create(Rule, operation.Syntax.GetLocation(), operation.Syntax.ToString(),
+                    scanResult.Value.Operand == NullCheckOperand.IsNull ? "null" : "not-null", scanResult.Value.Method));
+            }
         }
     }
 }

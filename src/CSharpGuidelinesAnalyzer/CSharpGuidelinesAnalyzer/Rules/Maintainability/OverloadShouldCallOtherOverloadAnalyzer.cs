@@ -106,7 +106,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static IEnumerable<IMethodSymbol> GetRegularMethodsInType([NotNull] INamedTypeSymbol type,
             CancellationToken cancellationToken)
         {
-            return type.GetMembers().OfType<IMethodSymbol>().Where(method => IsRegularMethod(method, cancellationToken));
+            return type.GetMembers().OfType<IMethodSymbol>().Where(method => IsRegularMethod(method, cancellationToken))
+                .ToArray();
         }
 
         private static bool IsRegularMethod([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
@@ -206,28 +207,33 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static bool AreParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
             [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
         {
+            return AreRegularParametersDeclaredInSameOrder(method, parametersInLongestOverload) &&
+                AreDefaultParametersDeclaredInSameOrder(method, parametersInLongestOverload);
+        }
+
+        private static bool AreRegularParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
+            [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+        {
             List<IParameterSymbol> regularParametersInMethod = method.Parameters.Where(IsRegularParameter).ToList();
             List<IParameterSymbol> regularParametersInlongestOverload =
                 parametersInLongestOverload.Where(IsRegularParameter).ToList();
 
-            if (AreParametersDeclaredInSameOrder(regularParametersInMethod, regularParametersInlongestOverload))
-            {
-                List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
-                List<IParameterSymbol> defaultParametersInlongestOverload =
-                    parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
-
-                if (AreParametersDeclaredInSameOrder(defaultParametersInMethod, defaultParametersInlongestOverload))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return AreParametersDeclaredInSameOrder(regularParametersInMethod, regularParametersInlongestOverload);
         }
 
         private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
         {
             return !parameter.HasExplicitDefaultValue && !parameter.IsParams;
+        }
+
+        private static bool AreDefaultParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
+            [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+        {
+            List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
+            List<IParameterSymbol> defaultParametersInlongestOverload =
+                parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
+
+            return AreParametersDeclaredInSameOrder(defaultParametersInMethod, defaultParametersInlongestOverload);
         }
 
         private static bool IsParameterWithDefaultValue([NotNull] IParameterSymbol parameter)
