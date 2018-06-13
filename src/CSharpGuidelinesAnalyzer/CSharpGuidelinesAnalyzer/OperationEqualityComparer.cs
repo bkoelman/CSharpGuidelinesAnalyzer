@@ -620,44 +620,43 @@ namespace CSharpGuidelinesAnalyzer
                     AreSymbolSequencesEqual(operation1.Locals, operation2.Locals);
             }
 
-            private bool AreBaseOperationsEqual([CanBeNull] IOperation operation1, [CanBeNull] IOperation operation2)
+            private bool AreBaseOperationsEqual([CanBeNull] IOperation first, [CanBeNull] IOperation second)
             {
-                if (ReferenceEquals(operation1, operation2))
+                if (ReferenceEquals(first, second))
                 {
                     return true;
                 }
 
-                if (operation1 is null || operation2 is null)
+                if (first is null || second is null)
                 {
                     return false;
                 }
 
-                return operation1.Kind == operation2.Kind && operation1.GetType() == operation2.GetType() &&
-                    AreSymbolsEqual(operation1.Type, operation2.Type) &&
-                    operation1.ConstantValue.Equals(operation2.ConstantValue) && operation1.Language == operation2.Language &&
-                    operation1.IsImplicit == operation2.IsImplicit &&
-                    operation1.Children.SequenceEqual(operation2.Children, equalityComparerForOperations);
+                return first.Kind == second.Kind && first.GetType() == second.GetType() &&
+                    AreSymbolsEqual(first.Type, second.Type) && first.ConstantValue.Equals(second.ConstantValue) &&
+                    first.Language == second.Language && first.IsImplicit == second.IsImplicit &&
+                    first.Children.SequenceEqual(second.Children, equalityComparerForOperations);
             }
 
-            private static bool AreSymbolsEqual([CanBeNull] ISymbol symbol1, [CanBeNull] ISymbol symbol2)
+            private static bool AreSymbolsEqual([CanBeNull] ISymbol first, [CanBeNull] ISymbol second)
             {
-                if (ReferenceEquals(symbol1, symbol2))
+                if (ReferenceEquals(first, second))
                 {
                     return true;
                 }
 
-                if (symbol1 is null)
+                if (first is null)
                 {
                     return false;
                 }
 
-                return symbol1.Equals(symbol2);
+                return first.Equals(second);
             }
 
-            private bool AreSymbolSequencesEqual([NotNull] [ItemNotNull] IEnumerable<ISymbol> sequence1,
-                [NotNull] [ItemNotNull] IEnumerable<ISymbol> sequence2)
+            private bool AreSymbolSequencesEqual([NotNull] [ItemNotNull] IEnumerable<ISymbol> first,
+                [NotNull] [ItemNotNull] IEnumerable<ISymbol> second)
             {
-                return sequence1.SequenceEqual(sequence2, equalityComparerForSymbols);
+                return first.SequenceEqual(second, equalityComparerForSymbols);
             }
 
             private sealed class DelegatingEqualityComparer<T> : IEqualityComparer<T>

@@ -43,15 +43,28 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
+            RegisterForSymbols(context);
+            RegisterForOperations(context);
+            RegisterForSyntax(context);
+        }
+
+        private void RegisterForSymbols([NotNull] AnalysisContext context)
+        {
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
             context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
+        }
+
+        private void RegisterForOperations([NotNull] AnalysisContext context)
+        {
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeTuple), OperationKind.Tuple);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousObjectCreation),
-                OperationKind.AnonymousObjectCreation);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousObjectCreation), OperationKind.AnonymousObjectCreation);
+        }
 
+        private void RegisterForSyntax([NotNull] AnalysisContext context)
+        {
             context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
             context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
             context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClause, SyntaxKind.JoinIntoClause);

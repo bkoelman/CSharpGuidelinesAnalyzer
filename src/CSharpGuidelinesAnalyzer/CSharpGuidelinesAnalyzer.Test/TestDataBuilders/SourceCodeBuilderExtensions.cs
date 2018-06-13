@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         {
             Guard.NotNull(source, nameof(source));
 
-            source.Editor.UpdateTestContext(context => context.CompileWithWarningAsError(true));
+            source.Editor.UpdateTestContext(context => context.CompileWithWarningsAsErrors(TreatWarningsAsErrors.All));
 
             return source;
         }

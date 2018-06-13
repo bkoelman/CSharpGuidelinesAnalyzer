@@ -70,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             var propertyReference = (IPropertyReferenceOperation)context.Operation;
 
             NullCheckScanResult? scanResult = scanner.ScanPropertyReference(propertyReference);
-            if (scanResult != null && scanResult.Value.Kind == NullCheckKind.NullableHasValueMethod)
+            if (scanResult != null && scanResult.Value.Method == NullCheckMethod.NullableHasValueMethod)
             {
                 if (propertyReference.Parent is IBinaryOperation binaryOperator &&
                     DoReportForNullableComparison(binaryOperator, scanner))
@@ -145,7 +145,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             var visitor = new NullCheckVisitor(scanner);
             visitor.Visit(targetOperation);
 
-            return visitor.ScanResult != null && visitor.ScanResult.Value.IsInverted ? visitor.ScanResult.Value.Target : null;
+            return visitor.ScanResult != null && visitor.ScanResult.Value.Operand == NullCheckOperand.IsNotNull
+                ? visitor.ScanResult.Value.Target
+                : null;
         }
 
         [NotNull]

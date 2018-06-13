@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         [NotNull]
-        public static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty,
+        private static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty,
             Array.Empty<TextSpan>(), LanguageNames.CSharp, new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
 
         [NotNull]
@@ -78,7 +78,13 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNull(codeBlocks, nameof(codeBlocks));
 
             var builder = new StringBuilder();
+            AppendCodeBlocks(codeBlocks, builder);
 
+            return builder.ToString();
+        }
+
+        private static void AppendCodeBlocks([NotNull][ItemNotNull] IEnumerable<string> codeBlocks, [NotNull] StringBuilder builder)
+        {
             bool isInFirstBlock = true;
             foreach (string codeBlock in codeBlocks)
             {
@@ -91,28 +97,41 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
                     builder.AppendLine();
                 }
 
-                bool isOnFirstLineInBlock = true;
-                using (var reader = new StringReader(codeBlock.TrimEnd()))
+                AppendCodeBlock(codeBlock.TrimEnd(), builder);
+            }
+        }
+
+        private static void AppendCodeBlock([NotNull] string codeBlock, [NotNull] StringBuilder builder)
+        {
+            bool isOnFirstLineInBlock = true;
+            foreach (string line in GetLinesInText(codeBlock))
+            {
+                if (isOnFirstLineInBlock)
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    if (line.Trim().Length == 0)
                     {
-                        if (isOnFirstLineInBlock)
-                        {
-                            if (line.Trim().Length == 0)
-                            {
-                                continue;
-                            }
-
-                            isOnFirstLineInBlock = false;
-                        }
-
-                        builder.AppendLine(line);
+                        continue;
                     }
+
+                    isOnFirstLineInBlock = false;
+                }
+
+                builder.AppendLine(line);
+            }
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<string> GetLinesInText([NotNull] string text)
+        {
+            using (var reader = new StringReader(text))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    yield return line;
                 }
             }
-
-            return builder.ToString();
         }
 
         internal sealed class CodeEditor

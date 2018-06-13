@@ -164,7 +164,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            IGrouping<bool, IParameterSymbol>[] parameterGrouping = method.Parameters
+            AnalyzeParametersInMethod(method.Parameters, bodySyntax, collector, compilation, cancellationToken);
+        }
+
+        private void AnalyzeParametersInMethod([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
+            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
+        {
+            IGrouping<bool, IParameterSymbol>[] parameterGrouping = parameters
                 .Where(p => p.RefKind == RefKind.None && !p.IsSynthesized()).GroupBy(IsUserDefinedStruct).ToArray();
 
             IParameterSymbol[] ordinaryParameters = parameterGrouping.Where(x => !x.Key).SelectMany(x => x).ToArray();
@@ -232,6 +239,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
+            CollectAssignedStructParameters(parameters, bodyOperation, collector);
+        }
+
+        private static void CollectAssignedStructParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
+            [NotNull] IOperation bodyOperation, [NotNull] DiagnosticCollector collector)
+        {
             var walker = new AssignmentWalker(parameters);
             walker.Visit(bodyOperation);
 

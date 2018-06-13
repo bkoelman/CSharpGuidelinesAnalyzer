@@ -50,13 +50,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
+            AnalyzeParameterUsage(lambdaExpression.Symbol.Parameters, bodySyntax, context);
+        }
+
+        private void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
+            [NotNull] SyntaxNode bodySyntax, OperationAnalysisContext context)
+        {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
             if (dataFlowAnalysis == null)
             {
                 return;
             }
 
-            foreach (IParameterSymbol parameter in lambdaExpression.Symbol.Parameters)
+            foreach (IParameterSymbol parameter in parameters)
             {
                 if (IsRegularParameter(parameter) && !IsParameterUsed(parameter, dataFlowAnalysis))
                 {

@@ -35,6 +35,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return false;
         }
 
+#pragma warning disable AV1500 // Member or local function contains more than 7 statements
         [CanBeNull]
         private static SyntaxTokenList? TryGetModifiers([CanBeNull] SyntaxNode syntax)
         {
@@ -69,6 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             return null;
         }
+#pragma warning restore AV1500 // Member or local function contains more than 7 statements
 
         public static bool AreDocumentationCommentsReported([NotNull] this ISymbol symbol)
         {
@@ -185,6 +187,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return TryGetBodyForPartialMethodSyntax(method, cancellationToken);
         }
 
+#pragma warning disable AV1500 // Member or local function contains more than 7 statements
         [CanBeNull]
         private static SyntaxNode TryGetDeclarationBody([NotNull] SyntaxNode syntaxNode)
         {
@@ -220,6 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 }
             }
         }
+#pragma warning restore AV1500 // Member or local function contains more than 7 statements
 
         [CanBeNull]
         private static SyntaxNode TryGetBodyForPartialMethodSyntax([NotNull] IMethodSymbol method,
@@ -290,6 +294,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return symbol.Kind.ToString();
         }
 
+#pragma warning disable AV1500 // Member or local function contains more than 7 statements
         [NotNull]
         public static ITypeSymbol GetMemberType([NotNull] this ISymbol symbol)
         {
@@ -327,6 +332,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 }
             }
         }
+#pragma warning restore AV1500 // Member or local function contains more than 7 statements
 
         public static bool IsSynthesized([NotNull] this ISymbol symbol)
         {
