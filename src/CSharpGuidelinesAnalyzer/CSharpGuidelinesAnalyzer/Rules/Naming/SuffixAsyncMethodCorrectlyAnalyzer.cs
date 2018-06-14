@@ -41,31 +41,42 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            AnalyzeSymbol(method, context.Compilation, context.ReportDiagnostic, context.CancellationToken);
+            if (RequiresReport(method, context.Compilation, context.CancellationToken))
+            {
+                ReportAt(method, context.ReportDiagnostic);
+            }
         }
 
         private void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
-            AnalyzeSymbol(operation.Symbol, context.Compilation, context.ReportDiagnostic, context.CancellationToken);
+            if (RequiresReport(operation.Symbol, context.Compilation, context.CancellationToken))
+            {
+                ReportAt(operation.Symbol, context.ReportDiagnostic);
+            }
         }
 
-        private static void AnalyzeSymbol([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
-            [NotNull] Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+        private static bool RequiresReport([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
         {
-            if (method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized())
-            {
-                IMethodSymbol entryPoint = method.MethodKind == MethodKind.Ordinary
-                    ? compilation.GetEntryPoint(cancellationToken)
-                    : null;
+            return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() &&
+                !IsEntryPoint(method, compilation, cancellationToken);
+        }
 
-                if (!Equals(method, entryPoint))
-                {
-                    reportDiagnostic(Diagnostic.Create(Rule, method.Locations[0], method.GetKind().ToLowerInvariant(),
-                        method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
-                }
-            }
+        private static bool IsEntryPoint([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
+        {
+            IMethodSymbol entryPoint =
+                method.MethodKind == MethodKind.Ordinary ? compilation.GetEntryPoint(cancellationToken) : null;
+
+            return Equals(method, entryPoint);
+        }
+
+        private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            reportDiagnostic(Diagnostic.Create(Rule, method.Locations[0], method.GetKind().ToLowerInvariant(),
+                method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
         }
     }
 }

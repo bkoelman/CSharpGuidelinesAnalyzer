@@ -100,23 +100,41 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             InnerAnalyzeMethod(accessorMethod, collector, context.Compilation, context.CancellationToken);
         }
 
-        private void FilterDuplicateLocations([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics)
+        private void FilterDuplicateLocations([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
         {
-            for (int index = 0; index < diagnostics.Count; index++)
+            while (true)
             {
-                Diagnostic diagnostic = diagnostics[index];
+                if (!RemoveNextDuplicate(diagnostics))
+                {
+                    return;
+                }
+            }
+        }
 
-                Diagnostic[] duplicates = diagnostics
+        private bool RemoveNextDuplicate([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
+        {
+            foreach (var diagnostic in diagnostics)
+            {
+                var duplicates = diagnostics
                     .Where(d => !ReferenceEquals(d, diagnostic) && d.Location == diagnostic.Location).ToArray();
+
                 if (duplicates.Any())
                 {
-                    foreach (Diagnostic duplicate in duplicates)
-                    {
-                        diagnostics.Remove(duplicate);
-                    }
+                    RemoveRange(diagnostics, duplicates);
 
-                    index = 0;
+                    return true;
                 }
+            }
+
+            return false;
+        }
+
+        private static void RemoveRange<T>([NotNull] [ItemNotNull] ICollection<T> source,
+            [NotNull] [ItemNotNull] ICollection<T> elementsToRemove)
+        {
+            foreach (T elementToRemove in elementsToRemove)
+            {
+                source.Remove(elementToRemove);
             }
         }
 

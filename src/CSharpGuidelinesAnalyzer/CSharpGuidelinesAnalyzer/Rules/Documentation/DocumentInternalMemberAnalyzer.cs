@@ -133,8 +133,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)));
             }
 
-            context.CancellationToken.ThrowIfCancellationRequested();
-
             if (symbol is IMethodSymbol method && method.Parameters.Any())
             {
                 AnalyzeParameters(method.Parameters, documentationXml, context);
@@ -144,6 +142,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
             [CanBeNull] string documentationXml, SymbolAnalysisContext context)
         {
+            context.CancellationToken.ThrowIfCancellationRequested();
+
             ISet<string> parameterNamesInDocumentation = string.IsNullOrEmpty(documentationXml)
                 ? EmptyHashSet
                 : TryParseDocumentationCommentXml(documentationXml);

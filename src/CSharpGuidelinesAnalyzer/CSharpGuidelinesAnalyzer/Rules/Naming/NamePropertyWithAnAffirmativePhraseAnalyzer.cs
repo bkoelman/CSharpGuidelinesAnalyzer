@@ -52,7 +52,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            ITypeSymbol type = context.Symbol.GetMemberType();
+            ITypeSymbol type = context.Symbol.GetSymbolType();
             if (!type.IsBooleanOrNullableBoolean())
             {
                 return;
