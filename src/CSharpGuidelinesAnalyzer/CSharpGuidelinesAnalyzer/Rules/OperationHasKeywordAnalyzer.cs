@@ -39,11 +39,14 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         private void AnalyzeOperation(OperationAnalysisContext context)
         {
-            if (context.Operation.IsImplicit)
+            if (!context.Operation.IsImplicit)
             {
-                return;
+                AnalyzeExplicitOperation(context);
             }
+        }
 
+        private static void AnalyzeExplicitOperation(OperationAnalysisContext context)
+        {
             var doWhileStrategy = DoWhileLoopLookupKeywordStrategy.PreferDoKeyword;
             var tryFinallyStrategy = TryFinallyLookupKeywordStrategy.PreferTryKeyword;
 

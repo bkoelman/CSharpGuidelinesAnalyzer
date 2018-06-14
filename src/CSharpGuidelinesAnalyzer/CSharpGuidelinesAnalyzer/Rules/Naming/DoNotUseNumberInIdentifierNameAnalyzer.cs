@@ -112,7 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
             }
 
-            ITypeSymbol memberType = member.GetMemberType();
+            ITypeSymbol memberType = member.GetSymbolType();
             AnalyzeTypeAsTuple(memberType, context.ReportDiagnostic);
         }
 

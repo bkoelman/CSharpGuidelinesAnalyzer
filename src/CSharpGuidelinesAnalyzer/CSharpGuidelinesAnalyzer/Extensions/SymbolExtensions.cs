@@ -296,7 +296,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
 #pragma warning disable AV1500 // Member or local function contains more than 7 statements
         [NotNull]
-        public static ITypeSymbol GetMemberType([NotNull] this ISymbol symbol)
+        public static ITypeSymbol GetSymbolType([NotNull] this ISymbol symbol)
         {
             Guard.NotNull(symbol, nameof(symbol));
 

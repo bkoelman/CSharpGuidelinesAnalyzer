@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer
 
         [NotNull]
         [ItemNotNull]
-        public IList<Diagnostic> Diagnostics
+        public ICollection<Diagnostic> Diagnostics
         {
             get
             {

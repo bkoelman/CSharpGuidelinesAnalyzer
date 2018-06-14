@@ -60,7 +60,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
             context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeTuple), OperationKind.Tuple);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousObjectCreation), OperationKind.AnonymousObjectCreation);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousObjectCreation),
+                OperationKind.AnonymousObjectCreation);
         }
 
         private void RegisterForSyntax([NotNull] AnalysisContext context)
@@ -81,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (IsBlacklisted(type.Name) || IsSingleLetter(type.Name))
+            if (IsBlacklistedOrSingleLetter(type.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind, type.Name));
             }
@@ -96,15 +97,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (IsBlacklisted(member.Name) || IsSingleLetter(member.Name))
+            if (IsBlacklistedOrSingleLetter(member.Name) && !member.IsInterfaceImplementation())
             {
-                if (!member.IsInterfaceImplementation())
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
-                }
+                context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
             }
 
-            ITypeSymbol memberType = member.GetMemberType();
+            ITypeSymbol memberType = member.GetSymbolType();
             AnalyzeTypeAsTuple(memberType, context.ReportDiagnostic);
         }
 
@@ -112,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var localFunction = (ILocalFunctionOperation)context.Operation;
 
-            if (IsBlacklisted(localFunction.Symbol.Name) || IsSingleLetter(localFunction.Symbol.Name))
+            if (IsBlacklistedOrSingleLetter(localFunction.Symbol.Name))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0],
                     localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
@@ -132,7 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             bool requiresReport = IsInLambdaExpression(parameter)
                 ? IsBlacklisted(parameter.Name)
-                : IsBlacklisted(parameter.Name) || IsSingleLetter(parameter.Name);
+                : IsBlacklistedOrSingleLetter(parameter.Name);
 
             if (requiresReport && !parameter.IsInterfaceImplementation())
             {
@@ -154,7 +152,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (!string.IsNullOrWhiteSpace(variable.Name) && !variable.IsSynthesized())
             {
-                if (IsBlacklisted(variable.Name) || IsSingleLetter(variable.Name))
+                if (IsBlacklistedOrSingleLetter(variable.Name))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
                 }
@@ -170,13 +168,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 foreach (IFieldSymbol tupleElement in tupleType.TupleElements)
                 {
                     bool isDefaultTupleElement = tupleElement.Equals(tupleElement.CorrespondingTupleField);
-                    if (!isDefaultTupleElement)
+                    if (!isDefaultTupleElement && IsBlacklistedOrSingleLetter(tupleElement.Name))
                     {
-                        if (IsBlacklisted(tupleElement.Name) || IsSingleLetter(tupleElement.Name))
-                        {
-                            reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
-                                tupleElement.Name));
-                        }
+                        reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
                     }
                 }
             }
@@ -190,13 +184,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 ILocalSymbol tupleElement = TryGetTupleElement(element);
 
-                if (tupleElement != null)
+                if (tupleElement != null && IsBlacklistedOrSingleLetter(tupleElement.Name))
                 {
-                    if (IsBlacklisted(tupleElement.Name) || IsSingleLetter(tupleElement.Name))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
-                            tupleElement.Name));
-                    }
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
+                        tupleElement.Name));
                 }
             }
         }
@@ -217,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             foreach (IPropertySymbol property in creationExpression.Type.GetMembers().OfType<IPropertySymbol>())
             {
-                if (IsBlacklisted(property.Name) || IsSingleLetter(property.Name))
+                if (IsBlacklistedOrSingleLetter(property.Name))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name));
                 }
@@ -258,16 +249,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             string rangeVariableName = identifierToken.ValueText;
 
-            if (string.IsNullOrEmpty(rangeVariableName))
-            {
-                return;
-            }
-
-            if (IsBlacklisted(rangeVariableName) || IsSingleLetter(rangeVariableName))
+            if (!string.IsNullOrEmpty(rangeVariableName) && IsBlacklistedOrSingleLetter(rangeVariableName))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable",
                     rangeVariableName));
             }
+        }
+
+        private static bool IsBlacklistedOrSingleLetter([NotNull] string name)
+        {
+            return IsBlacklisted(name) || IsSingleLetter(name);
         }
 
         private static bool IsBlacklisted([NotNull] string name)
