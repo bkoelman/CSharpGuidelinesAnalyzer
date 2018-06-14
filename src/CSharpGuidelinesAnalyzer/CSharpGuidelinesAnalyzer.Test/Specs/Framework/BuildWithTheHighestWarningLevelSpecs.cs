@@ -16,7 +16,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(4)
                 .CompileWithWarningAsError()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -30,7 +29,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(3)
                 .CompileWithWarningAsError()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -45,7 +43,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(2)
                 .CompileWithWarningAsError()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -60,7 +57,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileAtWarningLevel(1)
                 .CompileWithWarningAsError()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -76,7 +72,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .CompileWithWarningAsError()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -88,7 +83,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert

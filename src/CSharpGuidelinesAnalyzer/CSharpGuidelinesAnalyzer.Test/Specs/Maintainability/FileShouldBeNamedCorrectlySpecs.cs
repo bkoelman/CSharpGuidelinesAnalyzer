@@ -15,7 +15,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InFileNamed("MainForm.cs")
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -28,7 +27,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InFileNamed("mainForm.cs")
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -42,7 +40,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InFileNamed("Main_Form.cs")
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert
@@ -56,7 +53,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InFileNamed("ValueContainer`1.cs")
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Build();
 
             // Act and assert

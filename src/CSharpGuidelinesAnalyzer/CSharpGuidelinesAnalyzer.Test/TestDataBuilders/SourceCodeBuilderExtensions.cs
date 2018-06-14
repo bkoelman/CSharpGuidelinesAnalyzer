@@ -114,16 +114,5 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
             return source;
         }
-
-        [NotNull]
-        public static TBuilder AllowingDiagnosticsOutsideSourceTree<TBuilder>([NotNull] this TBuilder source)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-
-            source.Editor.UpdateTestContext(context => context.AllowingDiagnosticsOutsideSourceTree());
-
-            return source;
-        }
     }
 }
