@@ -15,14 +15,14 @@ namespace CSharpGuidelinesAnalyzer.Rules
         public const string DiagnosticId = "AV0000";
 
         private const string Title = "Operation should have a keyword";
-        private const string TypeMessageFormat = "Operation should have a keyword";
+        private const string MessageFormat = "Operation should have a keyword";
         private const string Description = "Internal analyzer that reports the keyword location for an IOperation instance.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]

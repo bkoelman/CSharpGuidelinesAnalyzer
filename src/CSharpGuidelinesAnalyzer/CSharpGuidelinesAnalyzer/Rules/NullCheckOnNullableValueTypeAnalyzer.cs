@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         public const string DiagnosticId = "AV0000";
 
         private const string Title = "Expression of nullable value type is checked for null or not-null";
-        private const string TypeMessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";
+        private const string MessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";
 
         private const string Description =
             "Internal analyzer that reports when an expression of type nullable value type is checked for null or not-null.";
@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
