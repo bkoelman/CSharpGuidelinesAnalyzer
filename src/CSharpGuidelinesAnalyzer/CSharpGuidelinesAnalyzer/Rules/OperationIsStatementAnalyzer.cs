@@ -15,14 +15,14 @@ namespace CSharpGuidelinesAnalyzer.Rules
         public const string DiagnosticId = "AV0000";
 
         private const string Title = "Operation should be a statement";
-        private const string TypeMessageFormat = "Operation '{0}' should be a statement";
+        private const string MessageFormat = "Operation '{0}' should be a statement";
         private const string Description = "Internal analyzer that reports when an IOperation instance represents a statement.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
