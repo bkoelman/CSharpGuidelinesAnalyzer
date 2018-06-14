@@ -1133,7 +1133,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .AllowingDiagnosticsOutsideSourceTree()
                 .Using(typeof(Enumerable).Namespace)
                 .Using(typeof(IEnumerable).Namespace)
                 .Using(typeof(IList<>).Namespace)
