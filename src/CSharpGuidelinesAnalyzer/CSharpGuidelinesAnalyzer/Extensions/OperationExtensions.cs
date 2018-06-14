@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        public static Location GetLocationForKeyword([NotNull] this IOperation operation,
+        public static Location TryGetLocationForKeyword([NotNull] this IOperation operation,
             DoWhileLoopLookupKeywordStrategy doWhileLoopLookupStrategy = DoWhileLoopLookupKeywordStrategy.PreferDoKeyword,
             TryFinallyLookupKeywordStrategy tryFinallyLookupKeywordStrategy = TryFinallyLookupKeywordStrategy.PreferTryKeyword)
         {

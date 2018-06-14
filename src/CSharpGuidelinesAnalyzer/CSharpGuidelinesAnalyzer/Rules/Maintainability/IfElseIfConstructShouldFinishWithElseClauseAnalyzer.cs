@@ -63,8 +63,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (operation.IsStatement())
                 {
-                    Location location = operation.GetLocationForKeyword();
-                    CollectedIfStatements.Add(location, operation);
+                    Location location = operation.TryGetLocationForKeyword();
+                    if (location != null)
+                    {
+                        CollectedIfStatements.Add(location, operation);
+                    }
                 }
 
                 base.VisitConditional(operation);
@@ -154,7 +157,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     this.owner = owner;
 
-                    topIfKeywordLocation = topIfStatement.GetLocationForKeyword();
+                    topIfKeywordLocation = topIfStatement.TryGetLocationForKeyword();
                     ifStatement = topIfStatement;
                 }
 
@@ -209,7 +212,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 private void Remove([NotNull] IConditionalOperation ifStatementToRemove,
                     [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
                 {
-                    Location location = ifStatementToRemove.GetLocationForKeyword();
+                    Location location = ifStatementToRemove.TryGetLocationForKeyword();
                     ifStatements.Remove(location);
                 }
             }

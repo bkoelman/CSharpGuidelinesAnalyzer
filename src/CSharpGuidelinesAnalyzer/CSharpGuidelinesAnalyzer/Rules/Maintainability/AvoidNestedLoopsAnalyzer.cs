@@ -56,17 +56,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
             {
-                LoopStatementLocation = operation.GetLocationForKeyword();
+                LoopStatementLocation = operation.TryGetLocationForKeyword();
             }
 
             public override void VisitForLoop([NotNull] IForLoopOperation operation)
             {
-                LoopStatementLocation = operation.GetLocationForKeyword();
+                LoopStatementLocation = operation.TryGetLocationForKeyword();
             }
 
             public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
             {
-                LoopStatementLocation = operation.GetLocationForKeyword();
+                LoopStatementLocation = operation.TryGetLocationForKeyword();
             }
         }
     }

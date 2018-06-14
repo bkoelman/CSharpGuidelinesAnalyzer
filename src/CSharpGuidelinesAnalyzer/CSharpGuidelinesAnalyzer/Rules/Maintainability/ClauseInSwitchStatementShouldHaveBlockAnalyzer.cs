@@ -52,8 +52,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             ICaseClauseOperation lastClause = switchCase.Clauses.Last();
 
-            Location location = lastClause.GetLocationForKeyword();
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+            Location location = lastClause.TryGetLocationForKeyword();
+            if (location != null)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+            }
         }
     }
 }

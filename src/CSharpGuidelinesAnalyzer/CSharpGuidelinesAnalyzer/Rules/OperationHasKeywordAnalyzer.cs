@@ -65,8 +65,8 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private static void AnalyzeLocationForOperation(OperationAnalysisContext context,
             DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
         {
-            Location location = context.Operation.GetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
-            if (location != null && location != Location.None)
+            Location location = context.Operation.TryGetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
+            if (location != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));
             }

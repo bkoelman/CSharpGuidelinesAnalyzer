@@ -101,7 +101,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static Location GetLocation([NotNull] IOperation operation)
         {
-            return operation.GetLocationForKeyword(DoWhileLoopLookupKeywordStrategy.PreferWhileKeyword) ??
+            return operation.TryGetLocationForKeyword(DoWhileLoopLookupKeywordStrategy.PreferWhileKeyword) ??
                 operation.Syntax.GetLocation();
         }
 
