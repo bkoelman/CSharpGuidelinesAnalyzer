@@ -115,12 +115,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void ReportDiagnosticAt([NotNull] IReturnOperation returnStatement, [NotNull] string operationName,
             OperationBlockAnalysisContext context)
         {
-            Location location = returnStatement.GetLocationForKeyword();
-            ISymbol containingMember = context.OwningSymbol.GetContainingMember();
-            string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = returnStatement.TryGetLocationForKeyword();
+            if (location != null)
+            {
+                ISymbol containingMember = context.OwningSymbol.GetContainingMember();
+                string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-            Diagnostic diagnostic = CreateDiagnosticFor(operationName, location, containingMember, memberName);
-            context.ReportDiagnostic(diagnostic);
+                Diagnostic diagnostic = CreateDiagnosticFor(operationName, location, containingMember, memberName);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
 
         [NotNull]

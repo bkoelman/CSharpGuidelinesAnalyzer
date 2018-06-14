@@ -80,8 +80,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (catchClause.ExceptionType == null || exceptionTypes.Contains(catchClause.ExceptionType))
             {
-                Location location = catchClause.GetLocationForKeyword();
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+                Location location = catchClause.TryGetLocationForKeyword();
+                if (location != null)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+                }
             }
         }
     }

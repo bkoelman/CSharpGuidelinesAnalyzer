@@ -1129,7 +1129,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_Where_invocation_with_nested_Any_invocation_it_must_be_reported()
+        internal void When_method_returns_the_result_of_Select_invocation_with_nested_Where_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1139,9 +1139,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M(IList<string> source)
+                        IEnumerable M(IList<IEnumerable<char>> source)
                         {
-                            [|return|] source.Where(x => x.Any());
+                            [|return|] source.Select(x => x.Where(y => true));
                         }
                     }
                 ")
@@ -1149,7 +1149,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<string>)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<IEnumerable<char>>)' returns the result of a call to 'Select', which uses deferred execution.");
         }
 
         [Fact]

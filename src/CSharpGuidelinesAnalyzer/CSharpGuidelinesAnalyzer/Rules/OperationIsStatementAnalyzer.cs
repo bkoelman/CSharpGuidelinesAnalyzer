@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         {
             if (!context.Operation.IsImplicit && context.Operation.IsStatement())
             {
-                Location locationForKeyword = context.Operation.GetLocationForKeyword();
+                Location locationForKeyword = context.Operation.TryGetLocationForKeyword();
                 Location location = locationForKeyword ?? context.Operation.Syntax.GetLocation();
 
                 string keywordText = GetTextAt(location);
