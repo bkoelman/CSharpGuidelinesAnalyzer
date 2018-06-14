@@ -287,12 +287,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 this.methodGroup = methodGroup;
             }
 
-            public void AnalyzeBlock([NotNull] IOperation block, [NotNull] IMethodSymbol containingMethod)
+            public void AnalyzeBlock([NotNull] IOperation block, [NotNull] IMethodSymbol method)
             {
                 Guard.NotNull(block, nameof(block));
-                Guard.NotNull(containingMethod, nameof(containingMethod));
+                Guard.NotNull(method, nameof(method));
 
-                this.containingMethod = containingMethod;
+                containingMethod = method;
                 HasFoundInvocation = false;
 
                 Visit(block);

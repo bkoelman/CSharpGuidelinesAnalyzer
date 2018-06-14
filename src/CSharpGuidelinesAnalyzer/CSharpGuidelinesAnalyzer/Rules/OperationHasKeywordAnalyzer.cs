@@ -53,17 +53,23 @@ namespace CSharpGuidelinesAnalyzer.Rules
                 tryFinallyStrategy = TryFinallyLookupKeywordStrategy.PreferFinallyKeyword;
             }
 
+            AnalyzeLocationForOperation(context, doWhileStrategy, tryFinallyStrategy);
+        }
+
+        private static bool IsReportAtAlternateLocation([NotNull] IOperation operation)
+        {
+            return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax methodSyntax &&
+                methodSyntax.Identifier.ValueText == "ReportAtAlternateLocation";
+        }
+
+        private static void AnalyzeLocationForOperation(OperationAnalysisContext context,
+            DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
+        {
             Location location = context.Operation.GetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
             if (location != null && location != Location.None)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));
             }
-        }
-
-        private static bool IsReportAtAlternateLocation([NotNull] IOperation operation)
-        {
-            return operation?.Parent?.Parent?.Syntax is MethodDeclarationSyntax methodSyntax &&
-                methodSyntax.Identifier.ValueText == "ReportAtAlternateLocation";
         }
     }
 }
