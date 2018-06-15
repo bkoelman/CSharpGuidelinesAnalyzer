@@ -88,17 +88,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static IEnumerable<IMethodSymbol> GetRegularMethodsInTypeHierarchy([NotNull] INamedTypeSymbol type,
             CancellationToken cancellationToken)
         {
-            INamedTypeSymbol currentType = type;
-            do
-            {
-                foreach (IMethodSymbol method in GetRegularMethodsInType(currentType, cancellationToken))
-                {
-                    yield return method;
-                }
+            return EnumerateSelfWithBaseTypes(type)
+                .SelectMany(currentType1 => GetRegularMethodsInType(currentType1, cancellationToken)).ToArray();
+        }
 
-                currentType = currentType.BaseType;
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<INamedTypeSymbol> EnumerateSelfWithBaseTypes([NotNull] INamedTypeSymbol type)
+        {
+            for (INamedTypeSymbol nextType = type; nextType != null; nextType = nextType.BaseType)
+            {
+                yield return nextType;
             }
-            while (currentType != null);
         }
 
         [NotNull]
@@ -138,39 +139,38 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
                 }
 
-                AnalyzeOverloads(methodGroup, longestOverload, activeType, context);
+                var info = new OverloadsInfo(methodGroup, longestOverload, context);
+
+                AnalyzeOverloads(info, activeType);
             }
         }
 
-        private void AnalyzeOverloads([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup,
-            [NotNull] IMethodSymbol longestOverload, [NotNull] INamedTypeSymbol activeType, SymbolAnalysisContext context)
+        private void AnalyzeOverloads(OverloadsInfo info, [NotNull] INamedTypeSymbol activeType)
         {
-            IEnumerable<IMethodSymbol> overloadsInActiveType = methodGroup.Where(method =>
-                !method.Equals(longestOverload) && method.ContainingType.Equals(activeType));
+            IEnumerable<IMethodSymbol> overloadsInActiveType = info.MethodGroup.Where(method =>
+                !method.Equals(info.LongestOverload) && method.ContainingType.Equals(activeType));
 
             foreach (IMethodSymbol overload in overloadsInActiveType)
             {
-                AnalyzeOverload(overload, methodGroup, longestOverload, context);
+                AnalyzeOverload(info, overload);
             }
         }
 
-        private void AnalyzeOverload([NotNull] IMethodSymbol overload,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] IMethodSymbol longestOverload,
-            SymbolAnalysisContext context)
+        private void AnalyzeOverload(OverloadsInfo info, [NotNull] IMethodSymbol overload)
         {
             if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
-                !overload.HidesBaseMember(context.CancellationToken))
+                !overload.HidesBaseMember(info.Context.CancellationToken))
             {
-                CompareOrderOfParameters(overload, longestOverload, context);
+                CompareOrderOfParameters(overload, info.LongestOverload, info.Context);
             }
 
-            var invocationWalker = new MethodInvocationWalker(methodGroup);
+            var invocationWalker = new MethodInvocationWalker(info.MethodGroup);
 
-            if (!InvokesAnotherOverload(overload, invocationWalker, context))
+            if (!InvokesAnotherOverload(overload, invocationWalker, info.Context))
             {
                 IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
 
-                context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
+                info.Context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
                     methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
             }
         }
@@ -345,6 +345,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         break;
                     }
                 }
+            }
+        }
+
+        private struct OverloadsInfo
+        {
+            [NotNull]
+            [ItemNotNull]
+            public IReadOnlyCollection<IMethodSymbol> MethodGroup { get; }
+
+            [NotNull]
+            public IMethodSymbol LongestOverload { get; }
+
+            public SymbolAnalysisContext Context { get; }
+
+            public OverloadsInfo([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup,
+                [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
+            {
+                MethodGroup = methodGroup;
+                LongestOverload = longestOverload;
+                Context = context;
             }
         }
     }

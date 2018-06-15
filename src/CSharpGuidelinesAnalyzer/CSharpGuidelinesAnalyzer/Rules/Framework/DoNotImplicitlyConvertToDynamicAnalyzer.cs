@@ -54,8 +54,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             ITypeSymbol sourceType = conversion.Operand.Type;
             ITypeSymbol destinationType = conversion.Type;
 
-            AnalyzeFromToConversion(sourceType, destinationType, objectHandleType, conversion.Syntax.GetLocation(),
-                context.ReportDiagnostic);
+            if (RequiresReport(sourceType, destinationType, objectHandleType))
+            {
+                ReportAt(sourceType, conversion.Syntax.GetLocation(), context.ReportDiagnostic);
+            }
         }
 
         private void AnalyzeCompoundAssignment(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
@@ -65,29 +67,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             ITypeSymbol sourceType = compoundAssignment.Value.Type;
             ITypeSymbol destinationType = compoundAssignment.Target.Type;
 
-            AnalyzeFromToConversion(sourceType, destinationType, objectHandleType, compoundAssignment.Value.Syntax.GetLocation(),
-                context.ReportDiagnostic);
+            if (RequiresReport(sourceType, destinationType, objectHandleType))
+            {
+                ReportAt(sourceType, compoundAssignment.Value.Syntax.GetLocation(), context.ReportDiagnostic);
+            }
         }
 
-        private void AnalyzeFromToConversion([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType,
-            [CanBeNull] INamedTypeSymbol objectHandleType, [NotNull] Location reportLocation,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
+        private bool RequiresReport([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType,
+            [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             if (!IsDynamic(destinationType))
             {
-                return;
+                return false;
             }
 
             if (sourceType == null || IsObject(sourceType) || IsObjectHandle(sourceType, objectHandleType))
             {
-                return;
+                return false;
             }
 
-            if (sourceType.TypeKind != TypeKind.Dynamic)
-            {
-                string sourceTypeName = sourceType.IsAnonymousType ? "(anonymous)" : sourceType.Name;
-                reportDiagnostic(Diagnostic.Create(Rule, reportLocation, sourceTypeName));
-            }
+            return sourceType.TypeKind != TypeKind.Dynamic;
         }
 
         private static bool IsDynamic([NotNull] ITypeSymbol type)
@@ -103,6 +102,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private bool IsObjectHandle([NotNull] ITypeSymbol type, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             return objectHandleType != null && objectHandleType.Equals(type);
+        }
+
+        private static void ReportAt([NotNull] ITypeSymbol sourceType, [NotNull] Location reportLocation,
+            [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            string sourceTypeName = sourceType.IsAnonymousType ? "(anonymous)" : sourceType.Name;
+            reportDiagnostic(Diagnostic.Create(Rule, reportLocation, sourceTypeName));
         }
     }
 }

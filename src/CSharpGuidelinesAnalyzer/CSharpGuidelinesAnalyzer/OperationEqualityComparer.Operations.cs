@@ -772,10 +772,10 @@ namespace CSharpGuidelinesAnalyzer
 
         private abstract class WrappingOperation : IOperation
         {
-            public void Accept([CanBeNull] OperationVisitor visitor) => throw new NotSupportedException();
+            public void Accept([CanBeNull] OperationVisitor visitor) => Accept<object, object>(null, null);
 
             [CanBeNull]
-            public TResult Accept<TArgument, TResult>([CanBeNull] OperationVisitor<TArgument, TResult> visitor,
+            public virtual TResult Accept<TArgument, TResult>([CanBeNull] OperationVisitor<TArgument, TResult> visitor,
                 [CanBeNull] TArgument argument) =>
                 throw new NotSupportedException();
 

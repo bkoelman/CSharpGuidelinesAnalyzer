@@ -99,17 +99,28 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
                 if (leftTarget != null && !(leftTarget is IInvocationOperation))
                 {
-                    if (binaryOperator.RightOperand is IBinaryOperation rightOperation &&
-                        NumericComparisonOperators.Contains(rightOperation.OperatorKind))
+                    if (DoReportForMatchingRightOperandInNullableComparison(binaryOperator.RightOperand, scanner, leftTarget))
                     {
-                        if (HaveSameTarget(leftTarget, rightOperation.LeftOperand, scanner) ||
-                            HaveSameTarget(leftTarget, rightOperation.RightOperand, scanner))
-                        {
-                            if (!IsEqualityComparisonWithNullableType(rightOperation))
-                            {
-                                return true;
-                            }
-                        }
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool DoReportForMatchingRightOperandInNullableComparison([NotNull] IOperation rightOperand,
+            [NotNull] NullCheckScanner scanner, [NotNull] IOperation leftTarget)
+        {
+            if (rightOperand is IBinaryOperation rightOperation &&
+                NumericComparisonOperators.Contains(rightOperation.OperatorKind))
+            {
+                if (HaveSameTarget(leftTarget, rightOperation.LeftOperand, scanner) ||
+                    HaveSameTarget(leftTarget, rightOperation.RightOperand, scanner))
+                {
+                    if (!IsEqualityComparisonWithNullableType(rightOperation))
+                    {
+                        return true;
                     }
                 }
             }

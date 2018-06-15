@@ -222,23 +222,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitForLoop([NotNull] IForLoopOperation operation)
             {
-                switch (section)
+                if (section == ForLoopSection.Before)
                 {
-                    case ForLoopSection.Before:
-                    {
-                        VisitArray(operation.Before);
-                        break;
-                    }
-                    case ForLoopSection.Condition:
-                    {
-                        Visit(operation.Condition);
-                        break;
-                    }
-                    case ForLoopSection.AtLoopBottom:
-                    {
-                        VisitArray(operation.AtLoopBottom);
-                        break;
-                    }
+                    VisitArray(operation.Before);
+                }
+                else if (section == ForLoopSection.Condition)
+                {
+                    Visit(operation.Condition);
+                }
+                else if (section == ForLoopSection.AtLoopBottom)
+                {
+                    VisitArray(operation.AtLoopBottom);
+                }
+                // ReSharper disable once RedundantIfElseBlock
+                else
+                {
+                    // No action required.
                 }
             }
 
