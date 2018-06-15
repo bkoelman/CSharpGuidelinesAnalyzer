@@ -69,8 +69,8 @@ namespace CSharpGuidelinesAnalyzer
                 {
                     NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
 
-                    return AnalyzeArguments(invocation.Instance, invocation.Arguments[0].Value,
-                        NullCheckMethod.NullableEqualsMethod, nullCheckOperand);
+                    return AnalyzeArguments(new ArgumentsInfo(invocation.Instance, invocation.Arguments[0].Value,
+                        NullCheckMethod.NullableEqualsMethod, nullCheckOperand));
                 }
             }
 
@@ -88,7 +88,8 @@ namespace CSharpGuidelinesAnalyzer
 
                 NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
 
-                return AnalyzeArguments(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value, nullCheckOperand);
+                return AnalyzeArguments(new ArgumentsInfo(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value,
+                    nullCheckOperand));
             }
 
             return null;
@@ -97,26 +98,37 @@ namespace CSharpGuidelinesAnalyzer
         [CanBeNull]
         private NullCheckMethod? TryGetNullCheckForDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
         {
-            bool isObjectReferenceEquals = invocation.TargetMethod.Equals(knownSymbols.StaticObjectReferenceEqualsMethod);
-            if (isObjectReferenceEquals)
+            if (IsObjectReferenceEquals(invocation))
             {
                 return NullCheckMethod.StaticObjectReferenceEqualsMethod;
             }
 
-            bool isStaticObjectEquals = invocation.TargetMethod.Equals(knownSymbols.StaticObjectEqualsMethod);
-            if (isStaticObjectEquals)
+            if (IsStaticObjectEquals(invocation))
             {
                 return NullCheckMethod.StaticObjectEqualsMethod;
             }
 
-            bool isEqualityComparerEquals =
-                invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.EqualityComparerEqualsMethod);
-            if (isEqualityComparerEquals)
+            if (IsEqualityComparerEquals(invocation))
             {
                 return NullCheckMethod.EqualityComparerEqualsMethod;
             }
 
             return null;
+        }
+
+        private bool IsObjectReferenceEquals([NotNull] IInvocationOperation invocation)
+        {
+            return invocation.TargetMethod.Equals(knownSymbols.StaticObjectReferenceEqualsMethod);
+        }
+
+        private bool IsStaticObjectEquals([NotNull] IInvocationOperation invocation)
+        {
+            return invocation.TargetMethod.Equals(knownSymbols.StaticObjectEqualsMethod);
+        }
+
+        private bool IsEqualityComparerEquals([NotNull] IInvocationOperation invocation)
+        {
+            return invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.EqualityComparerEqualsMethod);
         }
 
         [CanBeNull]
@@ -151,8 +163,8 @@ namespace CSharpGuidelinesAnalyzer
             NullCheckOperand parentNullCheckOperand = GetParentNullCheckOperand(binaryOperator);
             NullCheckOperand nullCheckOperandCombined = parentNullCheckOperand.CombineWith(operatorNullCheckOperand.Value);
 
-            return AnalyzeArguments(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckMethod.EqualityOperator,
-                nullCheckOperandCombined);
+            return AnalyzeArguments(new ArgumentsInfo(binaryOperator.LeftOperand, binaryOperator.RightOperand,
+                NullCheckMethod.EqualityOperator, nullCheckOperandCombined));
         }
 
         [CanBeNull]
@@ -185,42 +197,7 @@ namespace CSharpGuidelinesAnalyzer
             return operand;
         }
 
-        [CanBeNull]
-        private NullCheckScanResult? AnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
-            NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
-        {
-            IOperation leftArgumentNoConversion = leftArgument.SkipTypeConversions();
-            IOperation rightArgumentNoConversion = rightArgument.SkipTypeConversions();
-
-            return InnerAnalyzeArguments(leftArgumentNoConversion, rightArgumentNoConversion, nullCheckMethod, nullCheckOperand);
-        }
-
-        [CanBeNull]
-        private NullCheckScanResult? InnerAnalyzeArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
-            NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
-        {
-            bool leftIsNull = IsConstantNullOrDefault(leftArgument);
-            bool rightIsNull = IsConstantNullOrDefault(rightArgument);
-
-            if (rightIsNull)
-            {
-                if (!leftIsNull && IsNullableValueType(leftArgument))
-                {
-                    return new NullCheckScanResult(leftArgument, nullCheckMethod, nullCheckOperand);
-                }
-            }
-            else
-            {
-                if (leftIsNull && IsNullableValueType(rightArgument))
-                {
-                    return new NullCheckScanResult(rightArgument, nullCheckMethod, nullCheckOperand);
-                }
-            }
-
-            return null;
-        }
-
-        private bool IsConstantNullOrDefault([NotNull] IOperation operation)
+        private static bool IsConstantNullOrDefault([NotNull] IOperation operation)
         {
             if (operation.ConstantValue.HasValue && operation.ConstantValue.Value == null)
             {
@@ -228,6 +205,36 @@ namespace CSharpGuidelinesAnalyzer
             }
 
             return operation is IDefaultValueOperation;
+        }
+
+        [CanBeNull]
+        private NullCheckScanResult? AnalyzeArguments(ArgumentsInfo info)
+        {
+            IOperation leftArgumentNoConversion = info.LeftArgument.SkipTypeConversions();
+            IOperation rightArgumentNoConversion = info.RightArgument.SkipTypeConversions();
+
+            return InnerAnalyzeArguments(info.WithArguments(leftArgumentNoConversion, rightArgumentNoConversion));
+        }
+
+        [CanBeNull]
+        private NullCheckScanResult? InnerAnalyzeArguments(ArgumentsInfo info)
+        {
+            if (info.IsRightArgumentNull)
+            {
+                if (!info.IsLeftArgumentNull && IsNullableValueType(info.LeftArgument))
+                {
+                    return new NullCheckScanResult(info.LeftArgument, info.NullCheckMethod, info.NullCheckOperand);
+                }
+            }
+            else
+            {
+                if (info.IsLeftArgumentNull && IsNullableValueType(info.RightArgument))
+                {
+                    return new NullCheckScanResult(info.RightArgument, info.NullCheckMethod, info.NullCheckOperand);
+                }
+            }
+
+            return null;
         }
 
         private bool IsNullableValueType([NotNull] IOperation operation)
@@ -307,6 +314,39 @@ namespace CSharpGuidelinesAnalyzer
             {
                 INamedTypeSymbol equalityComparerType = KnownTypes.SystemCollectionsGenericEqualityComparerT(compilation);
                 return equalityComparerType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
+            }
+        }
+
+        private struct ArgumentsInfo
+        {
+            [NotNull]
+            public IOperation LeftArgument { get; }
+
+            public bool IsLeftArgumentNull => IsConstantNullOrDefault(LeftArgument);
+
+            [NotNull]
+            public IOperation RightArgument { get; }
+
+            public bool IsRightArgumentNull => IsConstantNullOrDefault(RightArgument);
+
+            public NullCheckMethod NullCheckMethod { get; }
+
+            public NullCheckOperand NullCheckOperand { get; }
+
+#pragma warning disable AV1561 // Signature contains more than 3 parameters
+            public ArgumentsInfo([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
+                NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
+            {
+                LeftArgument = leftArgument;
+                RightArgument = rightArgument;
+                NullCheckMethod = nullCheckMethod;
+                NullCheckOperand = nullCheckOperand;
+            }
+#pragma warning restore AV1561 // Signature contains more than 3 parameters
+
+            public ArgumentsInfo WithArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument)
+            {
+                return new ArgumentsInfo(leftArgument, rightArgument, NullCheckMethod, NullCheckOperand);
             }
         }
     }

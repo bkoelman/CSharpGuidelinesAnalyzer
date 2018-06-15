@@ -121,28 +121,43 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 ISymbol containingMember = context.OwningSymbol.GetContainingMember();
                 string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                Diagnostic diagnostic = CreateDiagnosticFor(operationName, location, containingMember, memberName);
+                (DiagnosticDescriptor rule, object[] messageArguments) =
+                    GetArgumentsForReport(operationName, containingMember, memberName);
+
+                Diagnostic diagnostic = Diagnostic.Create(rule, location, messageArguments);
                 context.ReportDiagnostic(diagnostic);
             }
         }
 
-        [NotNull]
-        private static Diagnostic CreateDiagnosticFor([NotNull] string operationName, [CanBeNull] Location location,
-            [NotNull] ISymbol containingMember, [NotNull] string memberName)
+        private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport(
+            [NotNull] string operationName, [NotNull] ISymbol containingMember, [NotNull] string memberName)
         {
             switch (operationName)
             {
                 case QueryOperationName:
                 {
-                    return Diagnostic.Create(QueryRule, location, containingMember.GetKind(), memberName);
+                    return (QueryRule, new object[]
+                    {
+                        containingMember.GetKind(),
+                        memberName
+                    });
                 }
                 case QueryableOperationName:
                 {
-                    return Diagnostic.Create(QueryableRule, location, containingMember.GetKind(), memberName);
+                    return (QueryableRule, new object[]
+                    {
+                        containingMember.GetKind(),
+                        memberName
+                    });
                 }
                 default:
                 {
-                    return Diagnostic.Create(OperationRule, location, containingMember.GetKind(), memberName, operationName);
+                    return (OperationRule, new object[]
+                    {
+                        containingMember.GetKind(),
+                        memberName,
+                        operationName
+                    });
                 }
             }
         }
@@ -208,6 +223,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     else if (sequenceTypeInfo.IsNonQueryableSequenceType(returnValueType))
                     {
                         ReturnStatements.Add(operation);
+                    }
+                    // ReSharper disable once RedundantIfElseBlock
+                    else
+                    {
+                        // No action required.
                     }
                 }
 

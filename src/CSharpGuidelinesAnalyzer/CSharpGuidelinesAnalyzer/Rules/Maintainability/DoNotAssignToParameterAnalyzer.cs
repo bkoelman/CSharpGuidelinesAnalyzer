@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -59,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
             {
-                InnerAnalyzeMethod(method, collector, context.Compilation, context.CancellationToken);
+                InnerAnalyzeMethod(context.Wrap(method), collector);
             }
         }
 
@@ -97,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            InnerAnalyzeMethod(accessorMethod, collector, context.Compilation, context.CancellationToken);
+            InnerAnalyzeMethod(context.Wrap(accessorMethod), collector);
         }
 
         private void FilterDuplicateLocations([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
@@ -113,9 +112,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private bool RemoveNextDuplicate([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
         {
-            foreach (var diagnostic in diagnostics)
+            foreach (Diagnostic diagnostic in diagnostics)
             {
-                var duplicates = diagnostics
+                Diagnostic[] duplicates = diagnostics
                     .Where(d => !ReferenceEquals(d, diagnostic) && d.Location == diagnostic.Location).ToArray();
 
                 if (duplicates.Any())
@@ -149,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
             {
-                InnerAnalyzeMethod(localFunction.Symbol, collector, context.Compilation, context.CancellationToken);
+                InnerAnalyzeMethod(context.Wrap(localFunction.Symbol), collector);
             }
         }
 
@@ -164,7 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
             {
-                InnerAnalyzeMethod(anonymousFunction.Symbol, collector, context.Compilation, context.CancellationToken);
+                InnerAnalyzeMethod(context.Wrap(anonymousFunction.Symbol), collector);
             }
         }
 
@@ -173,35 +172,33 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return method.IsAbstract || method.IsSynthesized() || !method.Parameters.Any();
         }
 
-        private void InnerAnalyzeMethod([NotNull] IMethodSymbol method, [NotNull] DiagnosticCollector collector,
-            [NotNull] Compilation compilation, CancellationToken cancellationToken)
+        private void InnerAnalyzeMethod(BaseAnalysisContext<IMethodSymbol> context, [NotNull] DiagnosticCollector collector)
         {
-            SyntaxNode bodySyntax = method.TryGetBodySyntaxForMethod(cancellationToken);
+            SyntaxNode bodySyntax = context.Target.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (bodySyntax == null)
             {
                 return;
             }
 
-            AnalyzeParametersInMethod(method.Parameters, bodySyntax, collector, compilation, cancellationToken);
+            AnalyzeParametersInMethod(context.WithTarget(context.Target.Parameters), bodySyntax, collector);
         }
 
-        private void AnalyzeParametersInMethod([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
-            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
+        private void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context,
+            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
-            IGrouping<bool, IParameterSymbol>[] parameterGrouping = parameters
+            IGrouping<bool, IParameterSymbol>[] parameterGrouping = context.Target
                 .Where(p => p.RefKind == RefKind.None && !p.IsSynthesized()).GroupBy(IsUserDefinedStruct).ToArray();
 
-            IParameterSymbol[] ordinaryParameters = parameterGrouping.Where(x => !x.Key).SelectMany(x => x).ToArray();
+            ICollection<IParameterSymbol> ordinaryParameters = parameterGrouping.Where(x => !x.Key).SelectMany(x => x).ToArray();
             if (ordinaryParameters.Any())
             {
-                AnalyzeOrdinaryParameters(ordinaryParameters, bodySyntax, collector, compilation);
+                AnalyzeOrdinaryParameters(context.WithTarget(ordinaryParameters), bodySyntax, collector);
             }
 
-            IParameterSymbol[] structParameters = parameterGrouping.Where(x => x.Key).SelectMany(x => x).ToArray();
+            ICollection<IParameterSymbol> structParameters = parameterGrouping.Where(x => x.Key).SelectMany(x => x).ToArray();
             if (structParameters.Any())
             {
-                AnalyzeStructParameters(structParameters, bodySyntax, collector, compilation, cancellationToken);
+                AnalyzeStructParameters(context.WithTarget(structParameters), bodySyntax, collector);
             }
         }
 
@@ -215,16 +212,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T || SimpleTypes.Contains(type.SpecialType);
         }
 
-        private void AnalyzeOrdinaryParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
-            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector, [NotNull] Compilation compilation)
+        private void AnalyzeOrdinaryParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
+            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
-            DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, compilation);
+            DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
             if (dataFlowAnalysis == null)
             {
                 return;
             }
 
-            foreach (IParameterSymbol parameter in parameters)
+            foreach (IParameterSymbol parameter in context.Target)
             {
                 if (dataFlowAnalysis.WrittenInside.Contains(parameter))
                 {
@@ -242,22 +239,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
         }
 
-        private void AnalyzeStructParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
-            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
+        private void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
+            [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
             // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow
             // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
 
-            SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
+            SemanticModel model = context.Compilation.GetSemanticModel(bodySyntax.SyntaxTree);
             IOperation bodyOperation = model.GetOperation(bodySyntax);
 
-            if (bodyOperation == null || bodyOperation.HasErrors(compilation, cancellationToken))
+            if (bodyOperation == null || bodyOperation.HasErrors(context.Compilation, context.CancellationToken))
             {
                 return;
             }
 
-            CollectAssignedStructParameters(parameters, bodyOperation, collector);
+            CollectAssignedStructParameters(context.Target, bodyOperation, collector);
         }
 
         private static void CollectAssignedStructParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,

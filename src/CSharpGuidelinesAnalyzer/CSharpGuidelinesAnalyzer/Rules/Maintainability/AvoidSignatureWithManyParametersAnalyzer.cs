@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (property.IsIndexer)
             {
-                AnalyzeParameters(property.Parameters, property, "Indexer", context.ReportDiagnostic);
+                AnalyzeParameters(context.Wrap(property.Parameters), property, "Indexer");
             }
         }
 
@@ -80,11 +80,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 string memberName = GetMemberName(method);
 
-                AnalyzeParameters(method.Parameters, method, memberName, context.ReportDiagnostic);
+                AnalyzeParameters(context.Wrap(method.Parameters), method, memberName);
 
                 if (MethodCanReturnValue(method))
                 {
-                    AnalyzeReturnValue(method.ReturnType, method, memberName, context.ReportDiagnostic);
+                    AnalyzeReturnType(context.Wrap(method.ReturnType), method, memberName);
                 }
             }
         }
@@ -140,8 +140,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     string typeName = $"Delegate '{type.Name}'";
 
-                    AnalyzeParameters(method.Parameters, type, typeName, context.ReportDiagnostic);
-                    AnalyzeReturnValue(method.ReturnType, type, typeName, context.ReportDiagnostic);
+                    AnalyzeParameters(context.Wrap(method.Parameters), type, typeName);
+                    AnalyzeReturnType(context.Wrap(method.ReturnType), type, typeName);
                 }
             }
         }
@@ -157,54 +157,56 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             string memberName = GetMemberName(operation.Symbol);
 
-            AnalyzeParameters(operation.Symbol.Parameters, operation.Symbol, memberName, context.ReportDiagnostic);
-            AnalyzeReturnValue(operation.Symbol.ReturnType, operation.Symbol, memberName, context.ReportDiagnostic);
+            AnalyzeParameters(context.Wrap(operation.Symbol.Parameters), operation.Symbol, memberName);
+            AnalyzeReturnType(context.Wrap(operation.Symbol.ReturnType), operation.Symbol, memberName);
         }
 
-        private void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [NotNull] ISymbol member,
-            [NotNull] string memberName, [NotNull] Action<Diagnostic> reportDiagnostic)
+        private void AnalyzeParameters(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context, [NotNull] ISymbol member,
+            [NotNull] string memberName)
         {
+            ImmutableArray<IParameterSymbol> parameters = context.Target;
+
             if (parameters.Length > MaxParameterCount)
             {
-                ReportParameterCount(member, memberName, parameters.Length, reportDiagnostic);
+                ReportParameterCount(context.WithTarget(member), memberName, parameters.Length);
             }
 
             foreach (IParameterSymbol parameter in parameters)
             {
                 if (parameter.Type.IsTupleType || TryGetSystemTupleElementCount(parameter.Type) != null)
                 {
-                    ReportTupleParameter(parameter, memberName, parameter.Name, reportDiagnostic);
+                    ReportTupleParameter(context.WithTarget(parameter), memberName, parameter.Name);
                 }
             }
         }
 
-        private static void ReportParameterCount([NotNull] ISymbol symbol, [NotNull] string name, int parameterCount,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void ReportParameterCount(BaseAnalysisContext<ISymbol> context, [NotNull] string name, int parameterCount)
         {
-            if (!symbol.IsSynthesized())
+            if (!context.Target.IsSynthesized())
             {
-                Diagnostic diagnostic = Diagnostic.Create(ParameterCountRule, symbol.Locations[0], name, parameterCount);
-                reportDiagnostic(diagnostic);
+                Diagnostic diagnostic = Diagnostic.Create(ParameterCountRule, context.Target.Locations[0], name, parameterCount);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
-        private static void ReportTupleParameter([NotNull] ISymbol symbol, [NotNull] string memberName,
-            [NotNull] string parameterName, [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void ReportTupleParameter(BaseAnalysisContext<IParameterSymbol> context, [NotNull] string memberName,
+            [NotNull] string parameterName)
         {
-            if (!symbol.IsSynthesized())
+            if (!context.Target.IsSynthesized())
             {
-                Diagnostic diagnostic = Diagnostic.Create(TupleParameterRule, symbol.Locations[0], memberName, parameterName);
-                reportDiagnostic(diagnostic);
+                Diagnostic diagnostic =
+                    Diagnostic.Create(TupleParameterRule, context.Target.Locations[0], memberName, parameterName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
-        private void AnalyzeReturnValue([NotNull] ITypeSymbol returnType, [NotNull] ISymbol member, [NotNull] string memberName,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
+        private void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, [NotNull] ISymbol member,
+            [NotNull] string memberName)
         {
-            int? elementCount = TryGetValueTupleElementCount(returnType) ?? TryGetSystemTupleElementCount(returnType);
+            int? elementCount = TryGetValueTupleElementCount(context.Target) ?? TryGetSystemTupleElementCount(context.Target);
             if (elementCount > 2)
             {
-                ReportTupleReturn(member, memberName, elementCount.Value, reportDiagnostic);
+                ReportTupleReturn(context.WithTarget(member), memberName, elementCount.Value);
             }
         }
 
@@ -228,13 +230,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return null;
         }
 
-        private static void ReportTupleReturn([NotNull] ISymbol symbol, [NotNull] string memberName, int tupleElementCount,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void ReportTupleReturn(BaseAnalysisContext<ISymbol> context, [NotNull] string memberName,
+            int tupleElementCount)
         {
-            if (!symbol.IsSynthesized())
+            if (!context.Target.IsSynthesized())
             {
-                Diagnostic diagnostic = Diagnostic.Create(TupleReturnRule, symbol.Locations[0], memberName, tupleElementCount);
-                reportDiagnostic(diagnostic);
+                Diagnostic diagnostic =
+                    Diagnostic.Create(TupleReturnRule, context.Target.Locations[0], memberName, tupleElementCount);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }
