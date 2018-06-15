@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             analyzer.Analyze();
         }
 
-        private sealed class IfStatementCollector : OperationWalker
+        private sealed class IfStatementCollector : ExplicitOperationWalker
         {
             [NotNull]
             public IDictionary<Location, IConditionalOperation> CollectedIfStatements { get; } =

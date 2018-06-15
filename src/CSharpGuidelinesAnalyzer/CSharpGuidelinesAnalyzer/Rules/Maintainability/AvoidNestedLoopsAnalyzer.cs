@@ -49,7 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private sealed class LoopBodyWalker : OperationWalker
+        private sealed class LoopBodyWalker : ExplicitOperationWalker
         {
             [CanBeNull]
             public Location LoopStatementLocation { get; private set; }

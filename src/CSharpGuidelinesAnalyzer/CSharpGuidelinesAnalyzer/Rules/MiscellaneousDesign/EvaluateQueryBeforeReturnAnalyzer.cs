@@ -151,7 +151,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         /// Scans for return statements, skipping over anonymous methods and local functions, whose compile-time type allows for deferred
         /// execution.
         /// </summary>
-        private sealed class ReturnStatementCollector : OperationWalker
+        private sealed class ReturnStatementCollector : ExplicitOperationWalker
         {
             [NotNull]
             private readonly SequenceTypeInfo sequenceTypeInfo;
@@ -196,8 +196,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public override void VisitReturn([NotNull] IReturnOperation operation)
             {
-                if (scopeDepth == 0 && !operation.IsImplicit && operation.ReturnedValue != null &&
-                    !ReturnsConstant(operation.ReturnedValue) && MethodSignatureTypeIsEnumerable(operation.ReturnedValue))
+                if (scopeDepth == 0 && operation.ReturnedValue != null && !ReturnsConstant(operation.ReturnedValue) &&
+                    MethodSignatureTypeIsEnumerable(operation.ReturnedValue))
                 {
                     ITypeSymbol returnValueType = operation.ReturnedValue.SkipTypeConversions().Type;
 

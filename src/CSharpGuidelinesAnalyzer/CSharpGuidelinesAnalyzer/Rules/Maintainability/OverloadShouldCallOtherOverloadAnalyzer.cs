@@ -271,7 +271,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return false;
         }
 
-        private sealed class MethodInvocationWalker : OperationWalker
+        private sealed class MethodInvocationWalker : ExplicitOperationWalker
         {
             [NotNull]
             [ItemNotNull]
