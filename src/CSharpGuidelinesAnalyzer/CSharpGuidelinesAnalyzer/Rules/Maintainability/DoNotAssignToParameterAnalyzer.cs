@@ -272,7 +272,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private sealed class AssignmentWalker : OperationWalker
+        private sealed class AssignmentWalker : ExplicitOperationWalker
         {
             [NotNull]
             private readonly IDictionary<IParameterSymbol, bool> seenAssignmentPerParameter =

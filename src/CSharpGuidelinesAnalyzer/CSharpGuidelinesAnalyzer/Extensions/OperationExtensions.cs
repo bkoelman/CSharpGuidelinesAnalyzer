@@ -92,7 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return visitor.Visit(operation, null);
         }
 
-        private sealed class OperationLocationVisitor : OperationVisitor<object, Location>
+        private sealed class OperationLocationVisitor : ExplicitOperationVisitor<object, Location>
         {
             private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy;
             private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy;

@@ -184,7 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 method.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
         }
 
-        private sealed class LocalAssignmentWalker : OperationWalker
+        private sealed class LocalAssignmentWalker : ExplicitOperationWalker
         {
             [NotNull]
             private readonly ILocalSymbol local;

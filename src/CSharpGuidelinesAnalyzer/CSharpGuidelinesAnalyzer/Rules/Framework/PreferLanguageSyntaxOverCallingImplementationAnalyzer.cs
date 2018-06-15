@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
         }
 
-        private sealed class NullCheckVisitor : OperationVisitor
+        private sealed class NullCheckVisitor : ExplicitOperationVisitor
         {
             [NotNull]
             private readonly NullCheckScanner scanner;
