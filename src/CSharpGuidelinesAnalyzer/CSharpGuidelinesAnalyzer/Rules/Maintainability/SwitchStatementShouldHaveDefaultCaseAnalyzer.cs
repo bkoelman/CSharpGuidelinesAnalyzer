@@ -17,8 +17,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1536";
 
-        private const string Title = "Incomplete switch statement requires a default case clause";
-        private const string MessageFormat = "Incomplete switch statement requires a default case clause.";
+        private const string Title = "Non-exhaustive switch statement requires a default case clause";
+        private const string MessageFormat = "Non-exhaustive switch statement requires a default case clause.";
         private const string Description = "Always add a default block after the last case in a switch statement.";
 
         [NotNull]
@@ -65,15 +65,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            AnalyzeSwitchCompleteness(switchStatement, systemBoolean, context);
+            AnalyzeSwitchExhaustiveness(switchStatement, systemBoolean, context);
         }
 
-        private void AnalyzeSwitchCompleteness([NotNull] ISwitchOperation switchStatement,
+        private void AnalyzeSwitchExhaustiveness([NotNull] ISwitchOperation switchStatement,
             [NotNull] INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
         {
             var analysisContext = new SwitchAnalysisContext(switchStatement, systemBoolean, context);
 
-            if (IsSwitchComplete(analysisContext) == false)
+            if (IsSwitchExhaustive(analysisContext) == false)
             {
                 Location location = switchStatement.TryGetLocationForKeyword() ?? switchStatement.Syntax.GetLocation();
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));
@@ -91,22 +91,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext)
+        private bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext)
         {
             IdentifierInfo identifierInfo = analysisContext.SwitchStatement.Value.TryGetIdentifierInfo();
 
-            return identifierInfo != null ? IsSwitchComplete(analysisContext, identifierInfo) : null;
+            return identifierInfo != null ? IsSwitchExhaustive(analysisContext, identifierInfo) : null;
         }
 
         [CanBeNull]
-        private bool? IsSwitchComplete([NotNull] SwitchAnalysisContext analysisContext, [NotNull] IdentifierInfo identifierInfo)
+        private bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext, [NotNull] IdentifierInfo identifierInfo)
         {
-            return IsSwitchCompleteForBooleanTypes(identifierInfo, analysisContext) ??
-                IsSwitchCompleteForEnumerationTypes(identifierInfo, analysisContext);
+            return IsSwitchExhaustiveForBooleanTypes(identifierInfo, analysisContext) ??
+                IsSwitchExhaustiveForEnumerationTypes(identifierInfo, analysisContext);
         }
 
         [CanBeNull]
-        private bool? IsSwitchCompleteForBooleanTypes([NotNull] IdentifierInfo identifierInfo,
+        private bool? IsSwitchExhaustiveForBooleanTypes([NotNull] IdentifierInfo identifierInfo,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
             bool isBoolean = identifierInfo.Type.SpecialType == SpecialType.System_Boolean;
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? IsSwitchCompleteForEnumerationTypes([NotNull] IdentifierInfo identifierInfo,
+        private bool? IsSwitchExhaustiveForEnumerationTypes([NotNull] IdentifierInfo identifierInfo,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
             bool isEnumeration = identifierInfo.Type.BaseType != null &&
@@ -197,7 +197,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     }
 
                     // Switch statements with non-constant case expressions are not supported
-                    // because they make completion analysis non-trivial.
+                    // because they make exhaustiveness analysis non-trivial.
                     return null;
                 }
 

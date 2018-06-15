@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_bool_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_bool_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_bool_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_bool_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Incomplete switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause.");
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_bool_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_bool_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_bool_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_nullable_bool_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -140,11 +140,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Incomplete switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause.");
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_flags_enum_and_is_incomplete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_flags_enum_and_is_non_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -191,7 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_enum_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -217,7 +217,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_enum_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -238,7 +238,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Incomplete switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause.");
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_enum_and_is_complete_it_must_be_skipped()
+        internal void When_switch_statement_type_is_nullable_enum_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -292,7 +292,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_enum_and_is_incomplete_it_must_be_reported()
+        internal void When_switch_statement_type_is_nullable_enum_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -314,7 +314,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Incomplete switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause.");
         }
 
         [Fact]

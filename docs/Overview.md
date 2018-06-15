@@ -80,7 +80,7 @@ This analyzer reports when `for`, `foreach`, `while` or `do-while` loops are nes
 This analyzer reports when a `case` or `default` clause in a switch statement does not have a block. The other keywords can be configured using Resharper.
 
 ### [AV1536](https://github.com/dennisdoomen/CSharpGuidelines/blob/a7edaf8d516b7a129e5e4967bd51e9012228e479/_pages/1500_MaintainabilityGuidelines.md#av1536): Always add a `default` block after the last `case` in a `switch` statement ![](/images/warn.png "severity: warning")
-This analyzer reports when a `switch` statement on a (nullable) `bool` or (nullable) non-flags `enum` type is incomplete and does not have a `default` clause.
+This analyzer reports when a non-exhaustive `switch` statement on a (nullable) `bool` or (nullable) non-flags `enum` type does not have a `default` clause.
 
 ### [AV1537](https://github.com/dennisdoomen/CSharpGuidelines/blob/a7edaf8d516b7a129e5e4967bd51e9012228e479/_pages/1500_MaintainabilityGuidelines.md#av1537): Finish every `if`-`else`-`if` statement with an `else` clause ![](/images/warn.png "severity: warning")
 This analyzer reports when an `if`-`else`-`if` construct does not end with an unconditional `else` clause.
