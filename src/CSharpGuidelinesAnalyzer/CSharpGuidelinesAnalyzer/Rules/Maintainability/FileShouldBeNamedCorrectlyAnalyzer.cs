@@ -3,6 +3,7 @@ using System.IO;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -66,7 +67,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (char.IsLower(fileName[0]))
             {
-                context.ReportDiagnostic(Diagnostic.Create(CasingRule, Location.None, fileName));
+                Location location = GetLocationForStartOfFile(context);
+                context.ReportDiagnostic(Diagnostic.Create(CasingRule, location, fileName));
             }
         }
 
@@ -74,7 +76,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (fileName.IndexOf('_') != -1)
             {
-                context.ReportDiagnostic(Diagnostic.Create(UnderscoreRule, Location.None, fileName));
+                Location location = GetLocationForStartOfFile(context);
+                context.ReportDiagnostic(Diagnostic.Create(UnderscoreRule, location, fileName));
             }
         }
 
@@ -82,8 +85,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (fileName.IndexOf('`') != -1)
             {
-                context.ReportDiagnostic(Diagnostic.Create(ArityRule, Location.None, fileName));
+                Location location = GetLocationForStartOfFile(context);
+                context.ReportDiagnostic(Diagnostic.Create(ArityRule, location, fileName));
             }
+        }
+
+        [NotNull]
+        private static Location GetLocationForStartOfFile(SyntaxTreeAnalysisContext context)
+        {
+            return context.Tree.GetLocation(new TextSpan(0, 0));
         }
     }
 }

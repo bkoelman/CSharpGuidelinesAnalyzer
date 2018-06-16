@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         internal void When_file_name_matches_rules_it_must_be_skipped()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
+            ParsedSourceCode source = new EmptySourceCodeBuilder()
                 .InFileNamed("MainForm.cs")
                 .Build();
 
@@ -25,8 +25,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         internal void When_file_name_starts_with_lowercase_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
+            ParsedSourceCode source = new EmptySourceCodeBuilder()
                 .InFileNamed("mainForm.cs")
+                .WithCode("[||]")
                 .Build();
 
             // Act and assert
@@ -38,8 +39,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         internal void When_file_name_contains_underscore_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
+            ParsedSourceCode source = new EmptySourceCodeBuilder()
                 .InFileNamed("Main_Form.cs")
+                .WithCode("[||]")
                 .Build();
 
             // Act and assert
@@ -51,8 +53,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         internal void When_file_name_contains_generic_arity_it_must_be_reported()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
+            ParsedSourceCode source = new EmptySourceCodeBuilder()
                 .InFileNamed("ValueContainer`1.cs")
+                .WithCode("[||]")
                 .Build();
 
             // Act and assert

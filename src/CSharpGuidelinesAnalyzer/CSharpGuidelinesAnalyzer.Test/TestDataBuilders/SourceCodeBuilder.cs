@@ -24,16 +24,20 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         [NotNull]
         [ItemNotNull]
-        private readonly HashSet<string> namespaceImports = new HashSet<string>
-        {
-            "System"
-        };
+        private readonly HashSet<string> namespaceImports;
 
         [NotNull]
         internal readonly CodeEditor Editor;
 
-        protected SourceCodeBuilder()
+        protected SourceCodeBuilder(bool includeSystemNamespaceImport)
         {
+            namespaceImports = includeSystemNamespaceImport
+                ? new HashSet<string>
+                {
+                    "System"
+                }
+                : new HashSet<string>();
+
             Editor = new CodeEditor(this);
         }
 

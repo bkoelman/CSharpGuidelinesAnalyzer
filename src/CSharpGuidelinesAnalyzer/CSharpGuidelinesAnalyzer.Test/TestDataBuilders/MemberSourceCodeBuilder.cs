@@ -11,6 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [ItemNotNull]
         private readonly List<string> members = new List<string>();
 
+        public MemberSourceCodeBuilder()
+            : base(true)
+        {
+        }
+
         protected override string GetSourceCode()
         {
             var builder = new StringBuilder();

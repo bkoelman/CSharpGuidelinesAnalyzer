@@ -11,6 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [ItemNotNull]
         private readonly List<string> types = new List<string>();
 
+        public TypeSourceCodeBuilder()
+            : base(true)
+        {
+        }
+
         protected override string GetSourceCode()
         {
             var builder = new StringBuilder();
