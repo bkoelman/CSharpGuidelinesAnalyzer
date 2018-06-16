@@ -181,6 +181,112 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_method_is_extern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    extern (int, string, object) M(int first, string second, double third, object fourth);
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_overrides_base_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        protected virtual extern (int, string, object) M(int first, string second, double third, object fourth);
+                    }
+
+                    class C : B
+                    {
+                        protected override (int, string, object) M(int first, string second, double third, object fourth) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_hides_base_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        protected virtual extern (int, string, object) M(int first, string second, double third, object fourth);
+                    }
+
+                    class C : B
+                    {
+                        protected new (int, string, object) M(int first, string second, double third, object fourth) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_implicitly_implements_interface_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface I
+                    {
+#pragma warning disable AV1561
+                        (int, string, object) M(int first, string second, double third, object fourth);
+#pragma warning restore AV1561
+                    }
+
+                    class C : I
+                    {
+                        public (int, string, object) M(int first, string second, double third, object fourth) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_explicitly_implements_interface_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface I
+                    {
+#pragma warning disable AV1561
+                        (int, string, object) M(int first, string second, double third, object fourth);
+#pragma warning restore AV1561
+                    }
+
+                    class C : I
+                    {
+                        (int, string, object) I.M(int first, string second, double third, object fourth) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange

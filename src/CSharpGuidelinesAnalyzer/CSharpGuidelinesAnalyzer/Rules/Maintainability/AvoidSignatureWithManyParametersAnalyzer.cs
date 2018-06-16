@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -66,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var property = (IPropertySymbol)context.Symbol;
 
-            if (property.IsIndexer)
+            if (property.IsIndexer && MemberRequiresAnalysis(property, context.CancellationToken))
             {
                 AnalyzeParameters(context.Wrap(property.Parameters), property, "Indexer");
             }
@@ -76,7 +77,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var method = (IMethodSymbol)context.Symbol;
 
-            if (!method.IsPropertyOrEventAccessor())
+            if (!method.IsPropertyOrEventAccessor() && MemberRequiresAnalysis(method, context.CancellationToken))
             {
                 string memberName = GetMemberName(method);
 
@@ -87,6 +88,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     AnalyzeReturnType(context.Wrap(method.ReturnType), method, memberName);
                 }
             }
+        }
+
+        private bool MemberRequiresAnalysis([NotNull] ISymbol member, CancellationToken cancellationToken)
+        {
+            return !member.IsExtern && !member.IsOverride && !member.HidesBaseMember(cancellationToken) &&
+                !member.IsInterfaceImplementation();
         }
 
         private static bool MethodCanReturnValue([NotNull] IMethodSymbol method)
