@@ -714,7 +714,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_name_contains_no_abbreviation_it_must_be_skipped()
+        internal void When_method_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -730,7 +730,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_name_contains_an_abbreviation_it_must_be_reported()
+        internal void When_method_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -747,13 +747,66 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_parameter_name_consists_of_single_letter_it_must_be_reported()
+        internal void When_method_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
                     void Method(object [|x|])
                     {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'x' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_lambda_parameter_name_contains_no_abbreviation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
+                    {
+                        Func<int, bool> func = someParameter => true;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_lambda_parameter_name_contains_an_abbreviation_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
+                    {
+                        Func<int, bool> func = [|chkAgree|] => true;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'chkAgree' should have a more descriptive name.");
+        }
+
+        [Fact]
+        internal void When_lambda_parameter_name_consists_of_single_letter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void Method()
+                    {
+                        Func<int, bool> func = [|x|] => true;
                     }
                 ")
                 .Build();
@@ -973,25 +1026,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Variable 's' should have a more descriptive name.");
-        }
-
-        [Fact]
-        internal void When_variable_name_consists_of_single_letter_inside_lambda_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(Enumerable).Assembly)
-                .Using(typeof(Enumerable).Namespace)
-                .InDefaultClass(@"
-                    int[] Method(int[] items)
-                    {
-                        return items.Where(i => i > 5).ToArray();
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]

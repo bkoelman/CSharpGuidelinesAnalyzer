@@ -509,6 +509,41 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
+        internal void When_lambda_parameter_name_contains_no_digits_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        Func<int, bool> f = p => true;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_lambda_parameter_name_contains_a_digit_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        Func<int, bool> f = [|p1|] => true;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'p1' contains one or more digits in its name.");
+        }
+
+        [Fact]
         internal void When_local_function_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange

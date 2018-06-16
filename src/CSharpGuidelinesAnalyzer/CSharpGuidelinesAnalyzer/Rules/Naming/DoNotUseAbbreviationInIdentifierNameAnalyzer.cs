@@ -128,21 +128,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            bool requiresReport = IsInLambdaExpression(parameter)
-                ? IsBlacklisted(parameter.Name)
-                : IsBlacklistedOrSingleLetter(parameter.Name);
-
-            if (requiresReport && !parameter.IsInterfaceImplementation())
+            if (IsBlacklistedOrSingleLetter(parameter.Name) && !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
 
             AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
-        }
-
-        private static bool IsInLambdaExpression([NotNull] IParameterSymbol parameter)
-        {
-            return parameter.ContainingSymbol is IMethodSymbol method && method.MethodKind == MethodKind.LambdaMethod;
         }
 
         private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
