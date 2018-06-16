@@ -63,6 +63,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_documentation_comments_are_not_well_formed_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        /// <missingClosingTag>
+                        internal class C
+                        {
+                            /// <missingEndOfTag
+                            public void M(int p) => throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_internal_class_is_undocumented_it_must_be_reported()
         {
             // Arrange
