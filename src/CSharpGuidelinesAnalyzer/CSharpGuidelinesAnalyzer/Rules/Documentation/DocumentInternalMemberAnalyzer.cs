@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -133,10 +134,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)));
             }
 
-            if (symbol is IMethodSymbol method && method.Parameters.Any())
+            if (symbol is IMethodSymbol method && method.Parameters.Any() && !InheritsDocumentation(documentationXml))
             {
                 AnalyzeParameters(method.Parameters, documentationXml, context);
             }
+        }
+
+        private static bool InheritsDocumentation([CanBeNull] string documentationXml)
+        {
+            if (documentationXml == null)
+            {
+                return false;
+            }
+
+            int tagIndex = documentationXml.IndexOf("<inheritdoc", StringComparison.Ordinal);
+            return tagIndex != -1;
         }
 
         private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,

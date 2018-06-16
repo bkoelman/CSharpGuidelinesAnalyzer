@@ -1003,6 +1003,79 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
+        internal void When_parameter_in_internal_method_is_documented_via_inheritance_using_open_close_tag_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <inheritdoc></inheritdoc>
+                            internal void M(int i)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_parameter_in_internal_method_is_documented_via_inheritance_using_self_closing_tag_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <inheritdoc />
+                            internal void M(int i)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void
+            When_parameter_in_internal_method_is_documented_via_inheritance_using_parameterized_self_closing_tag_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithDocumentationComments()
+                .InGlobalScope(@"
+                    namespace N.M
+                    {
+                        public class C
+                        {
+                            /// <inheritdoc cref=""some""/>
+                            internal void M(int i)
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_parameter_in_private_protected_method_is_undocumented_it_must_be_reported()
         {
             // Arrange
