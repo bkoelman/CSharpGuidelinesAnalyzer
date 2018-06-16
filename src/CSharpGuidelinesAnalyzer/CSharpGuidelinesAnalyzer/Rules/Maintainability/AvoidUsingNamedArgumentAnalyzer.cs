@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -32,28 +35,109 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeArgument), OperationKind.Argument);
+            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.Invocation);
         }
 
-        private void AnalyzeArgument(OperationAnalysisContext context)
+        private void AnalyzeInvocation(OperationAnalysisContext context)
         {
-            var argument = (IArgumentOperation)context.Operation;
+            var invocation = (IInvocationOperation)context.Operation;
 
-            if (!argument.IsImplicit && !argument.Parameter.Type.IsBooleanOrNullableBoolean())
+            IDictionary<IParameterSymbol, bool> parameterUsageMap = GetParameterUsageMap(invocation);
+
+            foreach (IArgumentOperation argument in invocation.Arguments)
             {
-                var syntax = argument.Syntax as ArgumentSyntax;
-                if (syntax?.NameColon != null)
+                if (RequiresReport(argument, invocation, parameterUsageMap))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, syntax.NameColon.GetLocation(), argument.Parameter.Name,
-                        FormatSymbol(argument.Parameter.ContainingSymbol)));
+                    ReportArgument(argument, context.ReportDiagnostic);
                 }
             }
         }
 
         [NotNull]
-        private string FormatSymbol([NotNull] ISymbol symbol)
+        private static IDictionary<IParameterSymbol, bool> GetParameterUsageMap([NotNull] IInvocationOperation invocation)
         {
-            return symbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            var parameterUsageMap = new Dictionary<IParameterSymbol, bool>();
+
+            foreach (IParameterSymbol parameter in invocation.TargetMethod.Parameters)
+            {
+                if (parameter.HasExplicitDefaultValue)
+                {
+                    parameterUsageMap.Add(parameter, false);
+                }
+            }
+
+            foreach (IArgumentOperation argumentInMap in invocation.Arguments.Where(argument =>
+                !argument.IsImplicit && parameterUsageMap.ContainsKey(argument.Parameter)))
+            {
+                parameterUsageMap[argumentInMap.Parameter] = true;
+            }
+
+            return parameterUsageMap;
+        }
+
+        private bool RequiresReport([NotNull] IArgumentOperation argument, [NotNull] IInvocationOperation invocation,
+            [NotNull] IDictionary<IParameterSymbol, bool> parameterUsageMap)
+        {
+            if (RequiresAnalysis(argument))
+            {
+                ICollection<IParameterSymbol> precedingParameters =
+                    GetPrecedingParameters(argument.Parameter, invocation.TargetMethod);
+
+                if (AreParametersUsed(precedingParameters, parameterUsageMap))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool RequiresAnalysis([NotNull] IArgumentOperation argument)
+        {
+            return !argument.IsImplicit && !argument.Parameter.Type.IsBooleanOrNullableBoolean() && IsNamedArgument(argument);
+        }
+
+        private bool IsNamedArgument([NotNull] IArgumentOperation argument)
+        {
+            var syntax = argument.Syntax as ArgumentSyntax;
+            return syntax?.NameColon != null;
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter,
+            [NotNull] IMethodSymbol method)
+        {
+            return method.Parameters.TakeWhile(x => !x.Equals(parameter)).ToList();
+        }
+
+        private bool AreParametersUsed([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
+            [NotNull] IDictionary<IParameterSymbol, bool> parameterUsageMap)
+        {
+            foreach (IParameterSymbol parameter in parameters)
+            {
+                if (!parameter.HasExplicitDefaultValue)
+                {
+                    continue;
+                }
+
+                if (!parameterUsageMap.ContainsKey(parameter) || !parameterUsageMap[parameter])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void ReportArgument([NotNull] IArgumentOperation argument, [NotNull] Action<Diagnostic> reportDiagnostic)
+        {
+            var syntax = (ArgumentSyntax)argument.Syntax;
+
+            string methodText =
+                argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+            reportDiagnostic(Diagnostic.Create(Rule, syntax.NameColon.GetLocation(), argument.Parameter.Name, methodText));
         }
     }
 }

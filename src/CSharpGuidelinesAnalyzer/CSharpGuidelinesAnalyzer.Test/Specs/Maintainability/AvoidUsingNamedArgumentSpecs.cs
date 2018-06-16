@@ -168,6 +168,118 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_using_only_unneeded_named_arguments_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int a, string b = null, double c = 0.4, float d = 0.7f)
+                    {
+                    }
+
+                    void N()
+                    {
+                        M(1, [|d:|] 3.0f, [|b:|] string.Empty, [|c:|] 2.0);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'd' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.",
+                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.",
+                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+        }
+
+        [Fact]
+        internal void When_using_some_unneeded_named_arguments_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int a, string b = null, double c = 0.4, float d = 0.7f)
+                    {
+                    }
+
+                    void N()
+                    {
+                        M(1, [|c:|] 2.0, [|b:|] string.Empty);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.",
+                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+        }
+
+        [Fact]
+        internal void When_using_one_unneeded_named_argument_after_regular_parameter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int a, string b = null, double c = 0.4, float d = 0.7f)
+                    {
+                    }
+
+                    void N()
+                    {
+                        M(1, d: 3.0f, [|b:|] string.Empty);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+        }
+
+        [Fact]
+        internal void When_using_one_unneeded_named_argument_after_optional_parameter_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int a, string b = null, double c = 0.4, float d = 0.7f)
+                    {
+                    }
+
+                    void N()
+                    {
+                        M(1, string.Empty, [|c:|] 2.0);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+        }
+
+        [Fact]
+        internal void When_using_only_needed_named_arguments_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M(int a, string b = null, double c = 0.4, float d = 0.7f)
+                    {
+                    }
+
+                    void N()
+                    {
+                        M(1, d: 3.0f, c: 2.0);
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AvoidUsingNamedArgumentAnalyzer();
