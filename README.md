@@ -52,8 +52,6 @@ Note that you can broaden the suppression scope by removing the `Target` and/or 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "AV1532:Loop statement contains nested loop", Justification = "<Pending>")]
 ```
 
-**Note:** Due to a [bug in Resharper](https://youtrack.jetbrains.com/issue/RSRP-461893) you may not see the **Suppress** context menu item. To make the option accessible, temporarily suspend Resharper.
-
 * In a custom .ruleset file, which contains Code Analysis settings:
 
 Right-click your project, select **Properties**, tab **Code Analysis**. Click **Open**, expand **CSharpGuidelinesAnalyzers** and uncheck the rules you want to disable. When you save changes, a .ruleset file is added to your project.
