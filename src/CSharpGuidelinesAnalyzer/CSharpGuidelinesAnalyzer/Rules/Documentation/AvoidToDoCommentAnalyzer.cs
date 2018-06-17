@@ -29,15 +29,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private const string TodoCommentToken = "TODO";
 
+        [NotNull]
+        private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeTodoCommentsAction = AnalyzeTodoComments;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxTreeAction(AnalyzeTodoComments);
+            context.RegisterSyntaxTreeAction(AnalyzeTodoCommentsAction);
         }
 
-        private void AnalyzeTodoComments(SyntaxTreeAnalysisContext context)
+        private static void AnalyzeTodoComments(SyntaxTreeAnalysisContext context)
         {
             SourceText text = context.Tree.GetText(context.CancellationToken);
             SyntaxNode root = context.Tree.GetRoot(context.CancellationToken);

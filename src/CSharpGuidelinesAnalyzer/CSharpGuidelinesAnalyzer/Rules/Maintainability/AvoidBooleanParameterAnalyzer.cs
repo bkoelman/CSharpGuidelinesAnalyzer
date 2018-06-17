@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -26,15 +27,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
+            context => context.SkipEmptyName(AnalyzeParameter);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
         }
 
-        private void AnalyzeParameter(SymbolAnalysisContext context)
+        private static void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
@@ -57,7 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 containingMember.IsSymbolAccessibleFromRoot();
         }
 
-        private void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
+        private static void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
         {
             ISymbol containingMember = parameter.ContainingSymbol;
 

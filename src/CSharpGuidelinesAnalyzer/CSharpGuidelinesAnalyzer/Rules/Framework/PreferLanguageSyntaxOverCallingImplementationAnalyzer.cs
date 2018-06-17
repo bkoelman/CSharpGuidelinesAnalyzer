@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -48,6 +49,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, NullCheckScanner> AnalyzePropertyReferenceAction =
+            (context, scanner) => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner));
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, NullCheckScanner> AnalyzeBinaryOperatorAction =
+            (context, scanner) => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner));
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -57,15 +66,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 var scanner = new NullCheckScanner(startContext.Compilation);
 
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzePropertyReference(c, scanner)),
+                startContext.RegisterOperationAction(c => AnalyzePropertyReferenceAction(c, scanner),
                     OperationKind.PropertyReference);
 
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeBinaryOperator(c, scanner)),
-                    OperationKind.BinaryOperator);
+                startContext.RegisterOperationAction(c => AnalyzeBinaryOperatorAction(c, scanner), OperationKind.BinaryOperator);
             });
         }
 
-        private void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+        private static void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
         {
             var propertyReference = (IPropertyReferenceOperation)context.Operation;
 
@@ -82,7 +90,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
         }
 
-        private void AnalyzeBinaryOperator(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+        private static void AnalyzeBinaryOperator(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
         {
             var binaryOperator = (IBinaryOperation)context.Operation;
 
@@ -92,7 +100,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
         }
 
-        private bool DoReportForNullableComparison([NotNull] IBinaryOperation binaryOperator, [NotNull] NullCheckScanner scanner)
+        private static bool DoReportForNullableComparison([NotNull] IBinaryOperation binaryOperator,
+            [NotNull] NullCheckScanner scanner)
         {
             if (IsLogicalAnd(binaryOperator))
             {
@@ -109,7 +118,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return false;
         }
 
-        private bool DoReportForMatchingRightOperandInNullableComparison([NotNull] IOperation rightOperand,
+        private static bool DoReportForMatchingRightOperandInNullableComparison([NotNull] IOperation rightOperand,
             [NotNull] NullCheckScanner scanner, [NotNull] IOperation leftTarget)
         {
             if (rightOperand is IBinaryOperation rightOperation &&
@@ -149,7 +158,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         }
 
         [CanBeNull]
-        private IOperation TryGetTargetInNotNullCheck([NotNull] IOperation operation, [NotNull] NullCheckScanner scanner)
+        private static IOperation TryGetTargetInNotNullCheck([NotNull] IOperation operation, [NotNull] NullCheckScanner scanner)
         {
             IOperation targetOperation = SkipNotOperators(operation);
 
@@ -173,7 +182,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return currentOperation;
         }
 
-        private bool HaveSameTarget([NotNull] IOperation leftOperation, [NotNull] IOperation rightOperation,
+        private static bool HaveSameTarget([NotNull] IOperation leftOperation, [NotNull] IOperation rightOperation,
             [NotNull] NullCheckScanner scanner)
         {
             IOperation innerRightOperation = SkipNullableValueProperty(rightOperation, scanner.NullableHasValueProperty);
@@ -182,7 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         }
 
         [NotNull]
-        private IOperation SkipNullableValueProperty([NotNull] IOperation operation,
+        private static IOperation SkipNullableValueProperty([NotNull] IOperation operation,
             [CanBeNull] IPropertySymbol nullableHasValueProperty)
         {
             if (nullableHasValueProperty != null && operation is IPropertyReferenceOperation propertyReference)
@@ -196,7 +205,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return operation;
         }
 
-        private bool IsEqualityComparisonWithNullableType([NotNull] IBinaryOperation binaryOperator)
+        private static bool IsEqualityComparisonWithNullableType([NotNull] IBinaryOperation binaryOperator)
         {
             if (IsEqualityComparison(binaryOperator.OperatorKind))
             {
@@ -214,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return operatorKind == BinaryOperatorKind.Equals || operatorKind == BinaryOperatorKind.NotEquals;
         }
 
-        private bool IsNullableValueType([NotNull] IOperation operation)
+        private static bool IsNullableValueType([NotNull] IOperation operation)
         {
             return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
         }

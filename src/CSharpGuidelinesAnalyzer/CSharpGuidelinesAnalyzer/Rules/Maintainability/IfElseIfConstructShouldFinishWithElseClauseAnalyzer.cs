@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -28,15 +29,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction =
+            context => context.SkipInvalid(AnalyzeCodeBlock);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationBlockAction(c => c.SkipInvalid(AnalyzeCodeBlock));
+            context.RegisterOperationBlockAction(AnalyzeCodeBlockAction);
         }
 
-        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
+        private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
             var collector = new IfStatementCollector();
             collector.VisitBlocks(context.OperationBlocks);

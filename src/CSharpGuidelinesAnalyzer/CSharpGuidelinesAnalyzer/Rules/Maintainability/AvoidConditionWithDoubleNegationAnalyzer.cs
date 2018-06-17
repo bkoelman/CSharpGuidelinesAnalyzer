@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -30,15 +31,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("no", "not");
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeUnaryOperatorAction =
+            context => context.SkipInvalid(AnalyzeUnaryOperator);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeUnaryOperator), OperationKind.UnaryOperator);
+            context.RegisterOperationAction(AnalyzeUnaryOperatorAction, OperationKind.UnaryOperator);
         }
 
-        private void AnalyzeUnaryOperator(OperationAnalysisContext context)
+        private static void AnalyzeUnaryOperator(OperationAnalysisContext context)
         {
             var unaryOperator = (IUnaryOperation)context.Operation;
 

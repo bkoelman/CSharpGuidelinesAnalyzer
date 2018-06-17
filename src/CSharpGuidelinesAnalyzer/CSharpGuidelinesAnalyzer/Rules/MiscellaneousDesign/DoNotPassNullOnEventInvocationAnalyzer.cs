@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -35,6 +36,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
+#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeInvocationAction =
+            (context, systemEventArgs) => context.SkipInvalid(_ => AnalyzeInvocation(context, systemEventArgs));
+#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -45,13 +52,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 INamedTypeSymbol systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
                 if (systemEventArgs != null)
                 {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, systemEventArgs)),
+                    startContext.RegisterOperationAction(c => AnalyzeInvocationAction(c, systemEventArgs),
                         OperationKind.Invocation);
                 }
             });
         }
 
-        private void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
+        private static void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
@@ -63,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             AnalyzeEventInvocation(invocation, context, systemEventArgs);
         }
 
-        private void AnalyzeEventInvocation([NotNull] IInvocationOperation invocation, OperationAnalysisContext context,
+        private static void AnalyzeEventInvocation([NotNull] IInvocationOperation invocation, OperationAnalysisContext context,
             [NotNull] INamedTypeSymbol systemEventArgs)
         {
             bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
@@ -115,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return null;
         }
 
-        private void AnalyzeSenderArgument([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
+        private static void AnalyzeSenderArgument([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
         {
             IArgumentOperation senderArgument = GetSenderArgument(invocation);
             if (senderArgument != null && IsNullConstant(senderArgument.Value))
@@ -125,15 +132,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IArgumentOperation GetSenderArgument([NotNull] IInvocationOperation invocation)
+        private static IArgumentOperation GetSenderArgument([NotNull] IInvocationOperation invocation)
         {
             IArgumentOperation argument = invocation.Arguments.FirstOrDefault(x => x.Parameter.Name == "sender");
 
             return argument != null && argument.Parameter.Type.SpecialType == SpecialType.System_Object ? argument : null;
         }
 
-        private void AnalyzeArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs,
-            OperationAnalysisContext context)
+        private static void AnalyzeArgsArgument([NotNull] IInvocationOperation invocation,
+            [NotNull] INamedTypeSymbol systemEventArgs, OperationAnalysisContext context)
         {
             IArgumentOperation argsArgument = GetArgsArgument(invocation, systemEventArgs);
             if (argsArgument != null && IsNullConstant(argsArgument.Value))
@@ -144,7 +151,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation,
+        private static IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation,
             [NotNull] INamedTypeSymbol systemEventArgs)
         {
             return invocation.Arguments.FirstOrDefault(x =>

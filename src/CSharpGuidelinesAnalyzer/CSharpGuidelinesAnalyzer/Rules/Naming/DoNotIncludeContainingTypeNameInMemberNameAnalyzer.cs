@@ -29,15 +29,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
+            context => context.SkipEmptyName(AnalyzeMember);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
         }
 
-        private void AnalyzeMember(SymbolAnalysisContext context)
+        private static void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (context.Symbol.IsSynthesized())
             {
@@ -53,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeMemberName(typeName, context);
         }
 
-        private void AnalyzeMemberName([NotNull] string containingTypeName, SymbolAnalysisContext context)
+        private static void AnalyzeMemberName([NotNull] string containingTypeName, SymbolAnalysisContext context)
         {
             string memberName = WithoutExplicitInterfacePrefix(context.Symbol.Name);
             if (memberName.Contains(containingTypeName))
@@ -64,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         [NotNull]
-        private string WithoutExplicitInterfacePrefix([NotNull] string name)
+        private static string WithoutExplicitInterfacePrefix([NotNull] string name)
         {
             int index = name.LastIndexOf(".", StringComparison.Ordinal);
             return index != -1 ? name.Substring(index) : name;

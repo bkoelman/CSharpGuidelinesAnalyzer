@@ -54,16 +54,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         [ItemNotNull]
         private static readonly HashSet<string> EmptyHashSet = new HashSet<string>();
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = c => c.SkipEmptyName(AnalyzeNamedType);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = c => c.SkipEmptyName(AnalyzeMember);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
         }
 
-        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             if (context.Symbol.AreDocumentationCommentsReported() && IsTypeAccessible(context.Symbol))
             {
@@ -76,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             return type.DeclaredAccessibility == Accessibility.Internal && type.IsSymbolAccessibleFromRoot();
         }
 
-        private void AnalyzeMember(SymbolAnalysisContext context)
+        private static void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (context.Symbol.AreDocumentationCommentsReported() && !context.Symbol.IsPropertyOrEventAccessor() &&
                 IsMemberAccessible(context.Symbol))

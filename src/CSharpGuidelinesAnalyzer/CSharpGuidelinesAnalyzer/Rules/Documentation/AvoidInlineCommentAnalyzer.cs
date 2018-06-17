@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
@@ -31,15 +32,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly ImmutableArray<string> ArrangeActAssertLines =
             ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
 
+        [NotNull]
+        private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCodeBlockAction(AnalyzeCodeBlock);
+            context.RegisterCodeBlockAction(AnalyzeCodeBlockAction);
         }
 
-        private void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
+        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
         {
             SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia())
                 .Where(IsComment).ToArray();
@@ -47,7 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             AnalyzeCommentTrivia(outerCommentTrivia, context);
         }
 
-        private void AnalyzeCommentTrivia([NotNull] SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
+        private static void AnalyzeCommentTrivia([NotNull] SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
         {
             foreach (SyntaxTrivia commentTrivia in context.CodeBlock.DescendantTrivia().Where(IsComment))
             {
@@ -77,28 +81,28 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 parentBlock.Parent is ElseClauseSyntax;
         }
 
-        private bool IsResharperDirective([NotNull] string commentText)
+        private static bool IsResharperDirective([NotNull] string commentText)
         {
             return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) ||
                 IsResharperFormatterConfiguration(commentText);
         }
 
-        private bool IsResharperSuppression([NotNull] string commentText)
+        private static bool IsResharperSuppression([NotNull] string commentText)
         {
             return commentText.Contains("// ReSharper disable ") || commentText.Contains("// ReSharper restore ");
         }
 
-        private bool IsResharperLanguageInjection([NotNull] string commentText)
+        private static bool IsResharperLanguageInjection([NotNull] string commentText)
         {
             return commentText.Contains("language=");
         }
 
-        private bool IsResharperFormatterConfiguration([NotNull] string commentText)
+        private static bool IsResharperFormatterConfiguration([NotNull] string commentText)
         {
             return commentText.Contains("// @formatter:");
         }
 
-        private bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
+        private static bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
         {
             return ArrangeActAssertLines.Any(line => line.Equals(commentText));
         }

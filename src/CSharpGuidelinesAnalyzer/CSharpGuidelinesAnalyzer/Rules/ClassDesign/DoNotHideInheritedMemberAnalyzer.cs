@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -28,15 +29,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Field,
             SymbolKind.Property, SymbolKind.Method, SymbolKind.Event, SymbolKind.NamedType);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
+            context => context.SkipEmptyName(AnalyzeMember);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
+            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
         }
 
-        private void AnalyzeMember(SymbolAnalysisContext context)
+        private static void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (context.Symbol is INamedTypeSymbol typeSymbol && typeSymbol.ContainingType == null)
             {

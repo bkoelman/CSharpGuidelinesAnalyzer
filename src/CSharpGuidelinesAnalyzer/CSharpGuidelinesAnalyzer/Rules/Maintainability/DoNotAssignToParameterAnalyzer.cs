@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -34,20 +35,39 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             SpecialType.System_UInt64, SpecialType.System_Decimal, SpecialType.System_Single, SpecialType.System_Double,
             SpecialType.System_IntPtr, SpecialType.System_UIntPtr, SpecialType.System_DateTime);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
+            context => context.SkipEmptyName(AnalyzeMethod);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzePropertyAction =
+            context => context.SkipEmptyName(AnalyzeProperty);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeEventAction = context => context.SkipEmptyName(AnalyzeEvent);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
+            context => context.SkipInvalid(AnalyzeLocalFunction);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousFunctionAction =
+            context => context.SkipInvalid(AnalyzeAnonymousFunction);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeProperty), SymbolKind.Property);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeEvent), SymbolKind.Event);
+            context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
+            context.RegisterSymbolAction(AnalyzePropertyAction, SymbolKind.Property);
+            context.RegisterSymbolAction(AnalyzeEventAction, SymbolKind.Event);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousFunction), OperationKind.AnonymousFunction);
+            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+            context.RegisterOperationAction(AnalyzeAnonymousFunctionAction, OperationKind.AnonymousFunction);
         }
 
-        private void AnalyzeMethod(SymbolAnalysisContext context)
+        private static void AnalyzeMethod(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;
 
@@ -62,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeProperty(SymbolAnalysisContext context)
+        private static void AnalyzeProperty(SymbolAnalysisContext context)
         {
             var property = (IPropertySymbol)context.Symbol;
 
@@ -75,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeEvent(SymbolAnalysisContext context)
+        private static void AnalyzeEvent(SymbolAnalysisContext context)
         {
             var evnt = (IEventSymbol)context.Symbol;
 
@@ -88,8 +108,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod, [NotNull] DiagnosticCollector collector,
-            SymbolAnalysisContext context)
+        private static void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod,
+            [NotNull] DiagnosticCollector collector, SymbolAnalysisContext context)
         {
             if (accessorMethod == null || ShouldSkip(accessorMethod))
             {
@@ -99,7 +119,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             InnerAnalyzeMethod(context.Wrap(accessorMethod), collector);
         }
 
-        private void FilterDuplicateLocations([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
+        private static void FilterDuplicateLocations([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
         {
             while (true)
             {
@@ -110,7 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private bool RemoveNextDuplicate([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
+        private static bool RemoveNextDuplicate([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
         {
             foreach (Diagnostic diagnostic in diagnostics)
             {
@@ -137,7 +157,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var localFunction = (ILocalFunctionOperation)context.Operation;
 
@@ -152,7 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeAnonymousFunction(OperationAnalysisContext context)
+        private static void AnalyzeAnonymousFunction(OperationAnalysisContext context)
         {
             var anonymousFunction = (IAnonymousFunctionOperation)context.Operation;
 
@@ -172,7 +192,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return method.IsAbstract || method.IsSynthesized() || !method.Parameters.Any();
         }
 
-        private void InnerAnalyzeMethod(BaseAnalysisContext<IMethodSymbol> context, [NotNull] DiagnosticCollector collector)
+        private static void InnerAnalyzeMethod(BaseAnalysisContext<IMethodSymbol> context,
+            [NotNull] DiagnosticCollector collector)
         {
             SyntaxNode bodySyntax = context.Target.TryGetBodySyntaxForMethod(context.CancellationToken);
             if (bodySyntax == null)
@@ -183,7 +204,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             AnalyzeParametersInMethod(context.WithTarget(context.Target.Parameters), bodySyntax, collector);
         }
 
-        private void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context,
+        private static void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context,
             [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
             IGrouping<bool, IParameterSymbol>[] parameterGrouping = context.Target
@@ -202,17 +223,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private bool IsUserDefinedStruct([NotNull] IParameterSymbol parameter)
+        private static bool IsUserDefinedStruct([NotNull] IParameterSymbol parameter)
         {
             return parameter.Type.TypeKind == TypeKind.Struct && !IsSimpleType(parameter.Type);
         }
 
-        private bool IsSimpleType([NotNull] ITypeSymbol type)
+        private static bool IsSimpleType([NotNull] ITypeSymbol type)
         {
             return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T || SimpleTypes.Contains(type.SpecialType);
         }
 
-        private void AnalyzeOrdinaryParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
+        private static void AnalyzeOrdinaryParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
             [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
@@ -231,7 +252,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
+        private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
         {
             SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
             DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
@@ -239,7 +260,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
         }
 
-        private void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
+        private static void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
             [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
             // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow

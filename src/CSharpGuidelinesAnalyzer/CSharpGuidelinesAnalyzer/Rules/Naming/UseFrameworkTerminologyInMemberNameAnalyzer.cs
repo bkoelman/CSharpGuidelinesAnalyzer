@@ -39,16 +39,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             { "NumberOfItems", "Count" }
         }.ToImmutableDictionary();
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
+            context => context.SkipEmptyName(AnalyzeMember);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
+            context => context.SkipInvalid(AnalyzeLocalFunction);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
+            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
         }
 
-        private void AnalyzeMember(SymbolAnalysisContext context)
+        private static void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsSynthesized())
             {
@@ -58,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeSymbol(context.Symbol, context.ReportDiagnostic);
         }
 
-        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var localFunction = (ILocalFunctionOperation)context.Operation;
 

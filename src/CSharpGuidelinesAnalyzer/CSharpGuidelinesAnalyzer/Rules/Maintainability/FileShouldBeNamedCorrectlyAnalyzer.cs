@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.IO;
 using JetBrains.Annotations;
@@ -41,15 +42,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(CasingRule, UnderscoreRule, ArityRule);
 
+        [NotNull]
+        private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeSyntaxTreeAction = AnalyzeSyntaxTree;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxTreeAction(AnalyzeSyntaxTree);
+            context.RegisterSyntaxTreeAction(AnalyzeSyntaxTreeAction);
         }
 
-        private void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
+        private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
         {
             string fileName = Path.GetFileName(context.Tree.FilePath);
 

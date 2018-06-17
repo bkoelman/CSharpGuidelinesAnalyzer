@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -27,15 +28,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private const string BlacklistWord = "and";
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeType), SymbolKind.NamedType);
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
         }
 
-        private void AnalyzeType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 

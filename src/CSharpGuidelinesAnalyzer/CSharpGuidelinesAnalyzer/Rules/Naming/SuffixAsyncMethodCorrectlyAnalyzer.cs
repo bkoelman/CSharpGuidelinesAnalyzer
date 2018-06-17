@@ -28,16 +28,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
+            context => context.SkipEmptyName(AnalyzeMethod);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
+            context => context.SkipInvalid(AnalyzeLocalFunction);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
+            context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
+            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
         }
 
-        private void AnalyzeMethod(SymbolAnalysisContext context)
+        private static void AnalyzeMethod(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;
 
@@ -47,7 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 

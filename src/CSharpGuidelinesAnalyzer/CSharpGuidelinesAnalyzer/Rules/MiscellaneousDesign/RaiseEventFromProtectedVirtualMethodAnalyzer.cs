@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -41,15 +42,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction =
+            context => context.SkipInvalid(AnalyzeInvocation);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.Invocation);
+            context.RegisterOperationAction(AnalyzeInvocationAction, OperationKind.Invocation);
         }
 
-        private void AnalyzeInvocation(OperationAnalysisContext context)
+        private static void AnalyzeInvocation(OperationAnalysisContext context)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
@@ -59,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
         }
 
-        private void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationOperation invocation)
+        private static void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationOperation invocation)
         {
             IEventSymbol evnt = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
             if (evnt != null)
@@ -70,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IEventSymbol TryGetEvent([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
+        private static IEventSymbol TryGetEvent([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
             OperationAnalysisContext context)
         {
             return TryGetEventForInvocation(operation) ??
@@ -79,14 +84,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IEventSymbol TryGetEventForInvocation([NotNull] IOperation operation)
+        private static IEventSymbol TryGetEventForInvocation([NotNull] IOperation operation)
         {
             var eventReference = operation as IEventReferenceOperation;
             return eventReference?.Event;
         }
 
         [CanBeNull]
-        private IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation,
+        private static IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation,
             [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
             if (operation is IConditionalAccessInstanceOperation)
@@ -99,8 +104,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
-            OperationAnalysisContext context)
+        private static IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation,
+            [CanBeNull] IMethodSymbol containingMethod, OperationAnalysisContext context)
         {
             return operation is ILocalReferenceOperation local && containingMethod != null
                 ? TryGetEventFromMethodStatements(containingMethod, local.Local, context)
@@ -108,7 +113,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod,
+        private static IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod,
             [NotNull] ILocalSymbol local, OperationAnalysisContext context)
         {
             IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
@@ -124,13 +129,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private IMethodSymbol TryGetContainingMethod([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
+        private static IMethodSymbol TryGetContainingMethod([NotNull] IInvocationOperation invocation,
+            OperationAnalysisContext context)
         {
             SemanticModel model = context.Compilation.GetSemanticModel(invocation.Syntax.SyntaxTree);
             return model.GetEnclosingSymbol(invocation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
         }
 
-        private void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
+        private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
             OperationAnalysisContext context)
         {
             if (method == null || method.MethodKind != MethodKind.Ordinary)

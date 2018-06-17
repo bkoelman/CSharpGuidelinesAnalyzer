@@ -27,15 +27,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction =
+            c => c.SkipInvalid(AnalyzeEventAssignment);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeEventAssignment), OperationKind.EventAssignment);
+            context.RegisterOperationAction(AnalyzeEventAssignmentAction, OperationKind.EventAssignment);
         }
 
-        private void AnalyzeEventAssignment(OperationAnalysisContext context)
+        private static void AnalyzeEventAssignment(OperationAnalysisContext context)
         {
             var assignment = (IEventAssignmentOperation)context.Operation;
 

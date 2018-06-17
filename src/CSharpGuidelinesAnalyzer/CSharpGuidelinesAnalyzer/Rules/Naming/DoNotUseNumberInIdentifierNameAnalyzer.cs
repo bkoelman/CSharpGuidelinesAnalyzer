@@ -49,6 +49,49 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             '9'
         };
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
+            context => context.SkipEmptyName(AnalyzeMember);
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
+            context => context.SkipEmptyName(AnalyzeParameter);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
+            context => context.SkipInvalid(AnalyzeLocalFunction);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction =
+            context => context.SkipInvalid(AnalyzeVariableDeclarator);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext>
+            AnalyzeTupleAction = context => context.SkipInvalid(AnalyzeTuple);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousObjectCreationAction =
+            context => context.SkipInvalid(AnalyzeAnonymousObjectCreation);
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeFromClauseAction = AnalyzeFromClause;
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeJoinClauseAction = AnalyzeJoinClause;
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeJoinIntoClauseAction = AnalyzeJoinIntoClause;
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeQueryContinuationAction = AnalyzeQueryContinuation;
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLetClauseAction = AnalyzeLetClause;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -61,29 +104,29 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private void RegisterForSymbols([NotNull] AnalysisContext context)
         {
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+            context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
         }
 
         private void RegisterForOperations([NotNull] AnalysisContext context)
         {
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeTuple), OperationKind.Tuple);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeAnonymousObjectCreation), OperationKind.AnonymousObjectCreation);
+            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+            context.RegisterOperationAction(AnalyzeVariableDeclaratorAction, OperationKind.VariableDeclarator);
+            context.RegisterOperationAction(AnalyzeTupleAction, OperationKind.Tuple);
+            context.RegisterOperationAction(AnalyzeAnonymousObjectCreationAction, OperationKind.AnonymousObjectCreation);
         }
 
         private void RegisterForSyntax([NotNull] AnalysisContext context)
         {
-            context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
-            context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
-            context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClause, SyntaxKind.JoinIntoClause);
-            context.RegisterSyntaxNodeAction(AnalyzeQueryContinuation, SyntaxKind.QueryContinuation);
-            context.RegisterSyntaxNodeAction(AnalyzeLetClause, SyntaxKind.LetClause);
+            context.RegisterSyntaxNodeAction(AnalyzeFromClauseAction, SyntaxKind.FromClause);
+            context.RegisterSyntaxNodeAction(AnalyzeJoinClauseAction, SyntaxKind.JoinClause);
+            context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClauseAction, SyntaxKind.JoinIntoClause);
+            context.RegisterSyntaxNodeAction(AnalyzeQueryContinuationAction, SyntaxKind.QueryContinuation);
+            context.RegisterSyntaxNodeAction(AnalyzeLetClauseAction, SyntaxKind.LetClause);
         }
 
-        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
@@ -98,7 +141,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private void AnalyzeMember(SymbolAnalysisContext context)
+        private static void AnalyzeMember(SymbolAnalysisContext context)
         {
             ISymbol member = context.Symbol;
 
@@ -116,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeTypeAsTuple(memberType, context.ReportDiagnostic);
         }
 
-        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var localFunction = (ILocalFunctionOperation)context.Operation;
 
@@ -129,7 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeTypeAsTuple(localFunction.Symbol.ReturnType, context.ReportDiagnostic);
         }
 
-        private void AnalyzeParameter(SymbolAnalysisContext context)
+        private static void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
@@ -147,7 +190,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
         }
 
-        private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
+        private static void AnalyzeVariableDeclarator(OperationAnalysisContext context)
         {
             var declarator = (IVariableDeclaratorOperation)context.Operation;
             ILocalSymbol variable = declarator.Symbol;
@@ -165,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeTypeAsTuple(variable.Type, context.ReportDiagnostic);
         }
 
-        private void AnalyzeTypeAsTuple([NotNull] ITypeSymbol type, [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void AnalyzeTypeAsTuple([NotNull] ITypeSymbol type, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             if (type.IsTupleType && type is INamedTypeSymbol tupleType)
             {
@@ -181,7 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private void AnalyzeTuple(OperationAnalysisContext context)
+        private static void AnalyzeTuple(OperationAnalysisContext context)
         {
             var tuple = (ITupleOperation)context.Operation;
 
@@ -198,7 +241,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         [CanBeNull]
-        private ILocalSymbol TryGetTupleElement([NotNull] IOperation elementOperation)
+        private static ILocalSymbol TryGetTupleElement([NotNull] IOperation elementOperation)
         {
             ILocalReferenceOperation localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
                 ? declarationExpression.Expression as ILocalReferenceOperation
@@ -207,7 +250,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return localReference != null && localReference.IsDeclaration ? localReference.Local : null;
         }
 
-        private void AnalyzeAnonymousObjectCreation(OperationAnalysisContext context)
+        private static void AnalyzeAnonymousObjectCreation(OperationAnalysisContext context)
         {
             var creationExpression = (IAnonymousObjectCreationOperation)context.Operation;
 
@@ -220,31 +263,31 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private void AnalyzeFromClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFromClause(SyntaxNodeAnalysisContext context)
         {
             var fromClause = (FromClauseSyntax)context.Node;
             AnalyzeRangeVariable(fromClause.Identifier, context);
         }
 
-        private void AnalyzeJoinClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeJoinClause(SyntaxNodeAnalysisContext context)
         {
             var joinClause = (JoinClauseSyntax)context.Node;
             AnalyzeRangeVariable(joinClause.Identifier, context);
         }
 
-        private void AnalyzeJoinIntoClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeJoinIntoClause(SyntaxNodeAnalysisContext context)
         {
             var joinIntoClause = (JoinIntoClauseSyntax)context.Node;
             AnalyzeRangeVariable(joinIntoClause.Identifier, context);
         }
 
-        private void AnalyzeQueryContinuation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeQueryContinuation(SyntaxNodeAnalysisContext context)
         {
             var queryContinuation = (QueryContinuationSyntax)context.Node;
             AnalyzeRangeVariable(queryContinuation.Identifier, context);
         }
 
-        private void AnalyzeLetClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLetClause(SyntaxNodeAnalysisContext context)
         {
             var letClause = (LetClauseSyntax)context.Node;
             AnalyzeRangeVariable(letClause.Identifier, context);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -27,15 +28,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLambdaExpressionAction =
+            context => context.SkipInvalid(AnalyzeLambdaExpression);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLambdaExpression), OperationKind.AnonymousFunction);
+            context.RegisterOperationAction(AnalyzeLambdaExpressionAction, OperationKind.AnonymousFunction);
         }
 
-        private void AnalyzeLambdaExpression(OperationAnalysisContext context)
+        private static void AnalyzeLambdaExpression(OperationAnalysisContext context)
         {
             var lambdaExpression = (IAnonymousFunctionOperation)context.Operation;
 
@@ -53,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             AnalyzeParameterUsage(lambdaExpression.Symbol.Parameters, bodySyntax, context);
         }
 
-        private void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
+        private static void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
             [NotNull] SyntaxNode bodySyntax, OperationAnalysisContext context)
         {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
@@ -71,13 +76,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private bool IsRegularParameter([NotNull] IParameterSymbol parameter)
+        private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
         {
             return !parameter.IsSynthesized() && !ConsistsOfUnderscoresOnly(parameter.Name);
         }
 
         [CanBeNull]
-        private DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
+        private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
         {
             SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
             DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
@@ -85,13 +90,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
         }
 
-        private bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)
+        private static bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)
         {
             return dataFlowAnalysis.ReadInside.Contains(parameter) || dataFlowAnalysis.WrittenInside.Contains(parameter) ||
                 dataFlowAnalysis.Captured.Contains(parameter);
         }
 
-        private bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
+        private static bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
         {
             foreach (char ch in identifierName)
             {

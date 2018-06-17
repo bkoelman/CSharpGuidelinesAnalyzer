@@ -27,15 +27,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
         }
 
-        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 

@@ -30,15 +30,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction =
+            context => context.SkipInvalid(AnalyzeInvocation);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeInvocation), OperationKind.Invocation);
+            context.RegisterOperationAction(AnalyzeInvocationAction, OperationKind.Invocation);
         }
 
-        private void AnalyzeInvocation(OperationAnalysisContext context)
+        private static void AnalyzeInvocation(OperationAnalysisContext context)
         {
             var invocation = (IInvocationOperation)context.Operation;
 
@@ -75,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return parameterUsageMap;
         }
 
-        private bool RequiresReport([NotNull] IArgumentOperation argument, [NotNull] IInvocationOperation invocation,
+        private static bool RequiresReport([NotNull] IArgumentOperation argument, [NotNull] IInvocationOperation invocation,
             [NotNull] IDictionary<IParameterSymbol, bool> parameterUsageMap)
         {
             if (RequiresAnalysis(argument))
@@ -92,12 +96,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return false;
         }
 
-        private bool RequiresAnalysis([NotNull] IArgumentOperation argument)
+        private static bool RequiresAnalysis([NotNull] IArgumentOperation argument)
         {
             return !argument.IsImplicit && !argument.Parameter.Type.IsBooleanOrNullableBoolean() && IsNamedArgument(argument);
         }
 
-        private bool IsNamedArgument([NotNull] IArgumentOperation argument)
+        private static bool IsNamedArgument([NotNull] IArgumentOperation argument)
         {
             var syntax = argument.Syntax as ArgumentSyntax;
             return syntax?.NameColon != null;
@@ -105,13 +109,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         [ItemNotNull]
-        private ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter,
+        private static ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter,
             [NotNull] IMethodSymbol method)
         {
             return method.Parameters.TakeWhile(x => !x.Equals(parameter)).ToList();
         }
 
-        private bool AreParametersUsed([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
+        private static bool AreParametersUsed([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
             [NotNull] IDictionary<IParameterSymbol, bool> parameterUsageMap)
         {
             foreach (IParameterSymbol parameter in parameters)
@@ -130,7 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return true;
         }
 
-        private void ReportArgument([NotNull] IArgumentOperation argument, [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void ReportArgument([NotNull] IArgumentOperation argument, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             var syntax = (ArgumentSyntax)argument.Syntax;
 

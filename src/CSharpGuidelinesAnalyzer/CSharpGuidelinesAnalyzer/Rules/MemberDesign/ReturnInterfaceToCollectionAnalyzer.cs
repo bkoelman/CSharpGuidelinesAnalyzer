@@ -31,15 +31,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
+            context => context.SkipEmptyName(AnalyzeMethod);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
+            context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
         }
 
-        private void AnalyzeMethod(SymbolAnalysisContext context)
+        private static void AnalyzeMethod(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;
 

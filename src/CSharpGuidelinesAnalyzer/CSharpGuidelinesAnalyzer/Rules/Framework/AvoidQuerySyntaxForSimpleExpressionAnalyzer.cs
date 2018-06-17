@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
@@ -27,15 +28,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeQueryExpressionAction = AnalyzeQueryExpression;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(AnalyzeQueryExpression, SyntaxKind.QueryExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeQueryExpressionAction, SyntaxKind.QueryExpression);
         }
 
-        private void AnalyzeQueryExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeQueryExpression(SyntaxNodeAnalysisContext context)
         {
             var queryExpression = (QueryExpressionSyntax)context.Node;
 

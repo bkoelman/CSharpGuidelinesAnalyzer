@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -34,15 +35,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using, OperationKind.YieldReturn,
             OperationKind.ExpressionStatement);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeStatementAction =
+            context => context.SkipInvalid(AnalyzeStatement);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeStatement), statementKinds);
+            context.RegisterOperationAction(AnalyzeStatementAction, statementKinds);
         }
 
-        private void AnalyzeStatement(OperationAnalysisContext context)
+        private static void AnalyzeStatement(OperationAnalysisContext context)
         {
             if (!context.Operation.IsStatement())
             {
@@ -60,7 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeForLoop([NotNull] IForLoopOperation forLoopOperation, OperationAnalysisContext context)
+        private static void AnalyzeForLoop([NotNull] IForLoopOperation forLoopOperation, OperationAnalysisContext context)
         {
             foreach (IOperation beforeOperation in forLoopOperation.Before)
             {
@@ -75,14 +80,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeForLoopSection(ForLoopSection section, [NotNull] IOperation operation,
+        private static void AnalyzeForLoopSection(ForLoopSection section, [NotNull] IOperation operation,
             OperationAnalysisContext context)
         {
             var statementWalker = new StatementWalker(section);
             AnalyzeVisitOperation(operation, statementWalker, context);
         }
 
-        private void AnalyzeVisitOperation([NotNull] IOperation operation, [NotNull] StatementWalker statementWalker,
+        private static void AnalyzeVisitOperation([NotNull] IOperation operation, [NotNull] StatementWalker statementWalker,
             OperationAnalysisContext context)
         {
             statementWalker.Visit(operation);
@@ -106,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [NotNull]
-        private string FormatIdentifierList([NotNull] [ItemNotNull] IList<string> variableNames)
+        private static string FormatIdentifierList([NotNull] [ItemNotNull] IList<string> variableNames)
         {
             var messageBuilder = new StringBuilder();
 

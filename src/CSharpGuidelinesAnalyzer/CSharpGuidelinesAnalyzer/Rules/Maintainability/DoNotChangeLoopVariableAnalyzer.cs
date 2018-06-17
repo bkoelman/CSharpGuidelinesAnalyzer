@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -26,15 +27,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeForStatementAction = AnalyzeForStatement;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeForStatementAction, SyntaxKind.ForStatement);
         }
 
-        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var forStatementSyntax = (ForStatementSyntax)context.Node;
 

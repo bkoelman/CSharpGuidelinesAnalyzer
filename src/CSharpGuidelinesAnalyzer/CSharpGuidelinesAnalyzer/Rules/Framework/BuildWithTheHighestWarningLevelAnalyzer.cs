@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -32,15 +33,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(WarningLevelRule, WarningAsErrorRule);
 
+        [NotNull]
+        private static readonly Action<CompilationAnalysisContext> AnalyzeCompilationOptionsAction = AnalyzeCompilationOptions;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationAction(AnalyzeCompilationOptions);
+            context.RegisterCompilationAction(AnalyzeCompilationOptionsAction);
         }
 
-        private void AnalyzeCompilationOptions(CompilationAnalysisContext context)
+        private static void AnalyzeCompilationOptions(CompilationAnalysisContext context)
         {
             CompilationOptions options = context.Compilation.Options;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -27,15 +28,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeSwitchCaseAction =
+            context => context.SkipInvalid(AnalyzeSwitchCase);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeSwitchCase), OperationKind.SwitchCase);
+            context.RegisterOperationAction(AnalyzeSwitchCaseAction, OperationKind.SwitchCase);
         }
 
-        private void AnalyzeSwitchCase(OperationAnalysisContext context)
+        private static void AnalyzeSwitchCase(OperationAnalysisContext context)
         {
             var switchCase = (ISwitchCaseOperation)context.Operation;
 

@@ -47,16 +47,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction =
+            context => context.SkipEmptyName(AnalyzeNamespace);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamespace), SymbolKind.Namespace);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
+            context.RegisterSymbolAction(AnalyzeNamespaceAction, SymbolKind.Namespace);
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
         }
 
-        private void AnalyzeNamespace(SymbolAnalysisContext context)
+        private static void AnalyzeNamespace(SymbolAnalysisContext context)
         {
             var namespaceSymbol = (INamespaceSymbol)context.Symbol;
 
@@ -95,7 +103,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 : assemblyName;
         }
 
-        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 

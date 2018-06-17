@@ -52,18 +52,34 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzePropertyAction =
+            context => context.SkipEmptyName(AnalyzeProperty);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
+            context => context.SkipEmptyName(AnalyzeMethod);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
+            c => c.SkipInvalid(AnalyzeLocalFunction);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeProperty), SymbolKind.Property);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMethod), SymbolKind.Method);
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLocalFunction), OperationKind.LocalFunction);
+            context.RegisterSymbolAction(AnalyzePropertyAction, SymbolKind.Property);
+            context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
         }
 
-        private void AnalyzeProperty(SymbolAnalysisContext context)
+        private static void AnalyzeProperty(SymbolAnalysisContext context)
         {
             var property = (IPropertySymbol)context.Symbol;
 
@@ -73,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeMethod(SymbolAnalysisContext context)
+        private static void AnalyzeMethod(SymbolAnalysisContext context)
         {
             var method = (IMethodSymbol)context.Symbol;
 
@@ -90,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private bool MemberRequiresAnalysis([NotNull] ISymbol member, CancellationToken cancellationToken)
+        private static bool MemberRequiresAnalysis([NotNull] ISymbol member, CancellationToken cancellationToken)
         {
             return !member.IsExtern && !member.IsOverride && !member.HidesBaseMember(cancellationToken) &&
                 !member.IsInterfaceImplementation();
@@ -136,7 +152,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return builder.ToString();
         }
 
-        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
@@ -158,7 +174,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return type.TypeKind == TypeKind.Delegate;
         }
 
-        private void AnalyzeLocalFunction(OperationAnalysisContext context)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
@@ -168,8 +184,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             AnalyzeReturnType(context.Wrap(operation.Symbol.ReturnType), operation.Symbol, memberName);
         }
 
-        private void AnalyzeParameters(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context, [NotNull] ISymbol member,
-            [NotNull] string memberName)
+        private static void AnalyzeParameters(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context,
+            [NotNull] ISymbol member, [NotNull] string memberName)
         {
             ImmutableArray<IParameterSymbol> parameters = context.Target;
 
@@ -207,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, [NotNull] ISymbol member,
+        private static void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, [NotNull] ISymbol member,
             [NotNull] string memberName)
         {
             int? elementCount = TryGetValueTupleElementCount(context.Target) ?? TryGetSystemTupleElementCount(context.Target);
@@ -224,7 +240,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private int? TryGetSystemTupleElementCount([NotNull] ITypeSymbol type)
+        private static int? TryGetSystemTupleElementCount([NotNull] ITypeSymbol type)
         {
             if (type.Name == "Tuple" && type.ToString().StartsWith("System.Tuple<", StringComparison.Ordinal))
             {

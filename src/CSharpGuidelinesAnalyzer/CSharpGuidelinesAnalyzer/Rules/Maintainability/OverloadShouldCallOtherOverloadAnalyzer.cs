@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -52,18 +53,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             MethodKind.ReducedExtension
         }.ToImmutableArray();
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                startContext.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeNamedType), SymbolKind.NamedType);
-            });
+            context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
         }
 
-        private void AnalyzeNamedType(SymbolAnalysisContext context)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
@@ -122,12 +124,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return method.TryGetBodySyntaxForMethod(cancellationToken) != null;
         }
 
-        private bool HasAtLeastTwoItems<T>([NotNull] [ItemCanBeNull] IEnumerable<T> source)
+        private static bool HasAtLeastTwoItems<T>([NotNull] [ItemCanBeNull] IEnumerable<T> source)
         {
             return source.Skip(1).Any();
         }
 
-        private void AnalyzeMethodGroup([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup,
+        private static void AnalyzeMethodGroup([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup,
             [NotNull] INamedTypeSymbol activeType, SymbolAnalysisContext context)
         {
             IMethodSymbol longestOverload = TryGetSingleLongestOverload(methodGroup);
@@ -145,7 +147,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeOverloads(OverloadsInfo info, [NotNull] INamedTypeSymbol activeType)
+        private static void AnalyzeOverloads(OverloadsInfo info, [NotNull] INamedTypeSymbol activeType)
         {
             IEnumerable<IMethodSymbol> overloadsInActiveType = info.MethodGroup.Where(method =>
                 !method.Equals(info.LongestOverload) && method.ContainingType.Equals(activeType));
@@ -156,7 +158,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private void AnalyzeOverload(OverloadsInfo info, [NotNull] IMethodSymbol overload)
+        private static void AnalyzeOverload(OverloadsInfo info, [NotNull] IMethodSymbol overload)
         {
             if (!overload.IsOverride && !overload.IsInterfaceImplementation() &&
                 !overload.HidesBaseMember(info.Context.CancellationToken))
@@ -176,7 +178,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private IMethodSymbol TryGetSingleLongestOverload([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
+        private static IMethodSymbol TryGetSingleLongestOverload(
+            [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
         {
             IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
                 methodGroup.GroupBy(mg => mg.Parameters.Length).OrderByDescending(x => x.Key).First();
@@ -185,14 +188,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 : null;
         }
 
-        private bool CanBeMadeVirtual([NotNull] IMethodSymbol method)
+        private static bool CanBeMadeVirtual([NotNull] IMethodSymbol method)
         {
             return !method.IsStatic && method.DeclaredAccessibility != Accessibility.Private && !method.ContainingType.IsSealed &&
                 method.ContainingType.TypeKind != TypeKind.Struct && !method.IsVirtual && !method.IsOverride &&
                 !method.ExplicitInterfaceImplementations.Any();
         }
 
-        private void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
+        private static void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
             SymbolAnalysisContext context)
         {
             List<IParameterSymbol> parametersInlongestOverload = longestOverload.Parameters.ToList();
@@ -258,7 +261,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return true;
         }
 
-        private bool InvokesAnotherOverload([NotNull] IMethodSymbol methodToAnalyze,
+        private static bool InvokesAnotherOverload([NotNull] IMethodSymbol methodToAnalyze,
             [NotNull] MethodInvocationWalker invocationWalker, SymbolAnalysisContext context)
         {
             IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);

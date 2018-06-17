@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -35,16 +36,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain", "Contains", "Require", "Requires", "Return", "Returns",
             "Starts", "Consists", "Targets");
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
+            context => context.SkipEmptyName(AnalyzeMember);
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
+            context => context.SkipEmptyName(AnalyzeParameter);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSymbolAction(c => c.SkipEmptyName(AnalyzeMember), MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
+            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+            context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
         }
 
-        private void AnalyzeMember(SymbolAnalysisContext context)
+        private static void AnalyzeMember(SymbolAnalysisContext context)
         {
             if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() || IsOperator(context.Symbol) ||
                 context.Symbol.IsOverride || context.Symbol.IsSynthesized())
@@ -64,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private bool IsOperator([NotNull] ISymbol symbol)
+        private static bool IsOperator([NotNull] ISymbol symbol)
         {
             var method = symbol as IMethodSymbol;
 
@@ -77,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return symbol.DeclaredAccessibility != Accessibility.Private && symbol.IsSymbolAccessibleFromRoot();
         }
 
-        private void AnalyzeParameter(SymbolAnalysisContext context)
+        private static void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
@@ -99,7 +108,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return IsMemberAccessible(containingMember);
         }
 
-        private bool IsWhitelisted([NotNull] string identifierName)
+        private static bool IsWhitelisted([NotNull] string identifierName)
         {
             return identifierName.StartsWithWordInList(WordsWhitelist);
         }

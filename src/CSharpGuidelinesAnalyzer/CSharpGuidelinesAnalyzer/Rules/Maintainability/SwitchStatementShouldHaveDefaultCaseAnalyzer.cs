@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -38,6 +39,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             null
         };
 
+#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeSwitchStatementAction =
+            (context, systemBoolean) => context.SkipInvalid(_ => AnalyzeSwitchStatement(context, systemBoolean));
+#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -48,13 +55,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
                 if (systemBoolean != null)
                 {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeSwitchStatement(c, systemBoolean)),
+                    startContext.RegisterOperationAction(c => AnalyzeSwitchStatementAction(c, systemBoolean),
                         OperationKind.Switch);
                 }
             });
         }
 
-        private void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)
+        private static void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)
         {
             var switchStatement = (ISwitchOperation)context.Operation;
 
@@ -68,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             AnalyzeSwitchExhaustiveness(switchStatement, systemBoolean, context);
         }
 
-        private void AnalyzeSwitchExhaustiveness([NotNull] ISwitchOperation switchStatement,
+        private static void AnalyzeSwitchExhaustiveness([NotNull] ISwitchOperation switchStatement,
             [NotNull] INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
         {
             var analysisContext = new SwitchAnalysisContext(switchStatement, systemBoolean, context);
@@ -91,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext)
+        private static bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext)
         {
             IdentifierInfo identifierInfo = analysisContext.SwitchStatement.Value.TryGetIdentifierInfo();
 
@@ -99,14 +106,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext, [NotNull] IdentifierInfo identifierInfo)
+        private static bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext,
+            [NotNull] IdentifierInfo identifierInfo)
         {
             return IsSwitchExhaustiveForBooleanTypes(identifierInfo, analysisContext) ??
                 IsSwitchExhaustiveForEnumerationTypes(identifierInfo, analysisContext);
         }
 
         [CanBeNull]
-        private bool? IsSwitchExhaustiveForBooleanTypes([NotNull] IdentifierInfo identifierInfo,
+        private static bool? IsSwitchExhaustiveForBooleanTypes([NotNull] IdentifierInfo identifierInfo,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
             bool isBoolean = identifierInfo.Type.SpecialType == SpecialType.System_Boolean;
@@ -125,7 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? IsSwitchExhaustiveForEnumerationTypes([NotNull] IdentifierInfo identifierInfo,
+        private static bool? IsSwitchExhaustiveForEnumerationTypes([NotNull] IdentifierInfo identifierInfo,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
             bool isEnumeration = identifierInfo.Type.BaseType != null &&
@@ -149,7 +157,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private bool? HasCaseClausesFor([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
+        private static bool? HasCaseClausesFor([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
             [NotNull] SwitchAnalysisContext analysisContext)
         {
             var collector = new CaseClauseCollector();

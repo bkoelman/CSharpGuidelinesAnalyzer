@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -26,15 +27,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLoopStatementAction =
+            context => context.SkipInvalid(AnalyzeLoopStatement);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeLoopStatement), OperationKind.Loop);
+            context.RegisterOperationAction(AnalyzeLoopStatementAction, OperationKind.Loop);
         }
 
-        private void AnalyzeLoopStatement(OperationAnalysisContext context)
+        private static void AnalyzeLoopStatement(OperationAnalysisContext context)
         {
             var loopStatement = (ILoopOperation)context.Operation;
 

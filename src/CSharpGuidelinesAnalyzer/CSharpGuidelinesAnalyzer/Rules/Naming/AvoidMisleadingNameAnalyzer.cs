@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -30,16 +31,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [ItemNotNull]
         private static readonly ImmutableArray<string> Blacklist = ImmutableArray.Create("b001", "lo", "I1", "lOl");
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction =
+            context => context.SkipInvalid(AnalyzeVariableDeclarator);
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
+            context => context.SkipEmptyName(AnalyzeParameter);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeVariableDeclarator), OperationKind.VariableDeclarator);
-            context.RegisterSyntaxNodeAction(c => c.SkipEmptyName(AnalyzeParameter), SyntaxKind.Parameter);
+            context.RegisterOperationAction(AnalyzeVariableDeclaratorAction, OperationKind.VariableDeclarator);
+            context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
         }
 
-        private void AnalyzeVariableDeclarator(OperationAnalysisContext context)
+        private static void AnalyzeVariableDeclarator(OperationAnalysisContext context)
         {
             var declarator = (IVariableDeclaratorOperation)context.Operation;
             ILocalSymbol variable = declarator.Symbol;
@@ -50,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private void AnalyzeParameter(SymbolAnalysisContext context)
+        private static void AnalyzeParameter(SymbolAnalysisContext context)
         {
             var parameter = (IParameterSymbol)context.Symbol;
 

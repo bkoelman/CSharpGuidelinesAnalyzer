@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -30,6 +31,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction =
+            (context, types) => context.SkipInvalid(_ => AnalyzeCatchClause(context, types));
+#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -41,8 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                 if (types.Any())
                 {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeCatchClause(c, types)),
-                        OperationKind.CatchClause);
+                    startContext.RegisterOperationAction(c => AnalyzeCatchClauseAction(c, types), OperationKind.CatchClause);
                 }
             });
         }
@@ -68,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
         }
 
-        private void AnalyzeCatchClause(OperationAnalysisContext context,
+        private static void AnalyzeCatchClause(OperationAnalysisContext context,
             [ItemNotNull] ImmutableArray<INamedTypeSymbol> exceptionTypes)
         {
             var catchClause = (ICatchClauseOperation)context.Operation;

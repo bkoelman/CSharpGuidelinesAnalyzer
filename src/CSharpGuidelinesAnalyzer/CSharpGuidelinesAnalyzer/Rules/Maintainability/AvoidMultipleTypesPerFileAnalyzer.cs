@@ -31,15 +31,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<SemanticModelAnalysisContext> AnalyzeSemanticModelAction = AnalyzeSemanticModel;
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterSemanticModelAction(AnalyzeSemanticModel);
+            context.RegisterSemanticModelAction(AnalyzeSemanticModelAction);
         }
 
-        private void AnalyzeSemanticModel(SemanticModelAnalysisContext context)
+        private static void AnalyzeSemanticModel(SemanticModelAnalysisContext context)
         {
             SyntaxNode syntaxRoot = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 

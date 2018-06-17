@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -31,6 +32,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction =
+            (context, taskInfo) => context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -42,13 +47,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
                 if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
                 {
-                    startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(taskInfo, c)),
-                        OperationKind.Invocation);
+                    startContext.RegisterOperationAction(c => AnalyzeInvocationAction(c, taskInfo), OperationKind.Invocation);
                 }
             });
         }
 
-        private void AnalyzeInvocation(TaskTypeInfo taskInfo, OperationAnalysisContext context)
+        private static void AnalyzeInvocation(OperationAnalysisContext context, TaskTypeInfo taskInfo)
         {
             var invocation = (IInvocationOperation)context.Operation;
 

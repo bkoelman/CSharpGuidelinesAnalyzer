@@ -64,6 +64,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string QueryOperationName = "<*>Query";
         private const string QueryableOperationName = "<*>Queryable";
 
+        [NotNull]
+        private static readonly Action<OperationBlockAnalysisContext, SequenceTypeInfo> AnalyzeCodeBlockAction =
+            (context, sequenceTypeInfo) => context.SkipInvalid(_ => AnalyzeCodeBlock(context, sequenceTypeInfo));
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -73,11 +77,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 var sequenceTypeInfo = new SequenceTypeInfo(startContext.Compilation);
 
-                startContext.RegisterOperationBlockAction(c => c.SkipInvalid(_ => AnalyzeCodeBlock(c, sequenceTypeInfo)));
+                startContext.RegisterOperationBlockAction(c => AnalyzeCodeBlockAction(c, sequenceTypeInfo));
             });
         }
 
-        private void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)
+        private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)
         {
             if (!IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
             {
@@ -97,7 +101,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 sequenceTypeInfo.IsEnumerable(method.ReturnType);
         }
 
-        private void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements,
+        private static void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements,
             OperationBlockAnalysisContext context)
         {
             if (returnStatements.Any())

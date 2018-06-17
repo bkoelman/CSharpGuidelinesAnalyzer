@@ -27,6 +27,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeConversionAction =
+            (context, objectHandleType) => context.SkipInvalid(_ => AnalyzeConversion(context, objectHandleType));
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeCompoundAssignmentAction =
+            (context, objectHandleType) => context.SkipInvalid(_ => AnalyzeCompoundAssignment(context, objectHandleType));
+#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -36,14 +46,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             {
                 INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
 
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeConversion(c, objectHandleType)),
-                    OperationKind.Conversion);
-                startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeCompoundAssignment(c, objectHandleType)),
+                startContext.RegisterOperationAction(c => AnalyzeConversionAction(c, objectHandleType), OperationKind.Conversion);
+                startContext.RegisterOperationAction(c => AnalyzeCompoundAssignmentAction(c, objectHandleType),
                     OperationKind.CompoundAssignment);
             });
         }
 
-        private void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
+        private static void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             var conversion = (IConversionOperation)context.Operation;
             if (!conversion.IsImplicit)
@@ -60,7 +69,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
         }
 
-        private void AnalyzeCompoundAssignment(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
+        private static void AnalyzeCompoundAssignment(OperationAnalysisContext context,
+            [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             var compoundAssignment = (ICompoundAssignmentOperation)context.Operation;
 
@@ -73,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
         }
 
-        private bool RequiresReport([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType,
+        private static bool RequiresReport([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType,
             [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             if (!IsDynamic(destinationType))
@@ -99,7 +109,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return type.SpecialType == SpecialType.System_Object;
         }
 
-        private bool IsObjectHandle([NotNull] ITypeSymbol type, [CanBeNull] INamedTypeSymbol objectHandleType)
+        private static bool IsObjectHandle([NotNull] ITypeSymbol type, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             return objectHandleType != null && objectHandleType.Equals(type);
         }
