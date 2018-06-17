@@ -60,6 +60,10 @@ Alternatively, navigate to your project in **Solution Explorer** and expand **Re
 
 To apply the custom ruleset to the entire solution, move the .ruleset file next to your .sln file and browse to it on the CodeAnalysis tab for each project.
 
+## Performance
+
+If you run these analyzers on a large codebase and are concerned about performance, consider disabling AV1568 and AV1739. These two are by far the most resource-intensive.
+
 ## Contribute!
 
 The analyzers in this project benefit a lot from testing on various codebases. Some of the best ways to contribute are to try things out, file bugs, and join in design conversations.
