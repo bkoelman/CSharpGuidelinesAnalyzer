@@ -173,6 +173,25 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_using_self_referencing_nameof_in_property_it_must_not_crash()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        object P { get; } = Create(nameof(P), x => x.Length > 0);
+
+                        static object Create(string name, Func<string, bool> f) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new UseUnderscoreForUnusedLambdaParameterAnalyzer();

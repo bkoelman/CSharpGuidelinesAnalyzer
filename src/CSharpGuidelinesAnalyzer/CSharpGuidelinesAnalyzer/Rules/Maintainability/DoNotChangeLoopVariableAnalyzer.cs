@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -58,8 +59,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (variableSymbol != null)
             {
-                DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(statementSyntax);
-                if (dataFlowAnalysis.Succeeded)
+                DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.SafeAnalyzeDataFlow(statementSyntax);
+                if (dataFlowAnalysis != null)
                 {
                     if (dataFlowAnalysis.WrittenInside.Contains(variableSymbol))
                     {

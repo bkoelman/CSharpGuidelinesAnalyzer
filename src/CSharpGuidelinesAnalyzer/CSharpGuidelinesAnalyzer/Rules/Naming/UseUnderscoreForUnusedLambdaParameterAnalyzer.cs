@@ -85,9 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
         {
             SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-            DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
-
-            return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
+            return model.SafeAnalyzeDataFlow(bodySyntax);
         }
 
         private static bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)

@@ -255,9 +255,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
         {
             SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-            DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
-
-            return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
+            return model.SafeAnalyzeDataFlow(bodySyntax);
         }
 
         private static void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context,
