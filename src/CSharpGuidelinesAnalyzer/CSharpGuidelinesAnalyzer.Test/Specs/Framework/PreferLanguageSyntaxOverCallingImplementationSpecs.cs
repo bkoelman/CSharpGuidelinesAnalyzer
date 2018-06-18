@@ -434,6 +434,29 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 "Remove null check in numeric comparison.");
         }
 
+        [Fact]
+        internal void
+            When_nullable_type_is_used_in_nameof_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M(string s)
+                        {
+                            if (s != nameof(Nullable<int>.HasValue))
+                            {
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new PreferLanguageSyntaxOverCallingImplementationAnalyzer();

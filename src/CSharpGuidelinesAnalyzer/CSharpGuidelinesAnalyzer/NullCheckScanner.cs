@@ -237,9 +237,9 @@ namespace CSharpGuidelinesAnalyzer
             return null;
         }
 
-        private bool IsNullableValueType([NotNull] IOperation operation)
+        private bool IsNullableValueType([CanBeNull] IOperation operation)
         {
-            return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
+            return operation != null && operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
         }
 
         private sealed class KnownSymbols
