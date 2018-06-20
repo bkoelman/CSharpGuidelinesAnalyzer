@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'CustomerAndOrder' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'CustomerAndOrder' contains the word 'and', which suggests it has multiple purposes.");
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'customer_and_order' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'customer_and_order' contains the word 'and', which suggests it has multiple purposes.");
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'CUSTOMER_AND_ORDER' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'CUSTOMER_AND_ORDER' contains the word 'and', which suggests it has multiple purposes.");
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'Match1And2Again3' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'Match1And2Again3' contains the word 'and', which suggests it has multiple purposes.");
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'MATCH1AND2AGAIN3' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'MATCH1AND2AGAIN3' contains the word 'and', which suggests it has multiple purposes.");
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'CustomerAndOrder' contains the word 'and', which suggests in has multiple purposes.");
+                "Type 'CustomerAndOrder' contains the word 'and', which suggests it has multiple purposes.");
         }
 
         [Fact]
