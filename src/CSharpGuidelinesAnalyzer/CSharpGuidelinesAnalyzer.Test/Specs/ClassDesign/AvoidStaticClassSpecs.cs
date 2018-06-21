@@ -80,6 +80,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
+        internal void When_static_class_contains_nonstatic_nested_type_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        class Nested
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_static_class_contains_static_nested_type_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class SomeExtensions
+                    {
+                        static class [|Nested|]
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Class 'Nested' should be non-static or its name should be suffixed with 'Extensions'.");
+        }
+
+        [Fact]
         internal void When_static_class_contains_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange

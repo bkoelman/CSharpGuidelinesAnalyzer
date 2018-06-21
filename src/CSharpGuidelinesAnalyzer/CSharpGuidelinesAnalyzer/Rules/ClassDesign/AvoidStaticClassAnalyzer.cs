@@ -72,8 +72,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private static void AnalyzeTypeMembers([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
         {
-            IEnumerable<ISymbol> accessibleMembers =
-                type.GetMembers().Where(IsPublicOrInternal).Where(x => !x.IsPropertyOrEventAccessor());
+            IEnumerable<ISymbol> accessibleMembers = type.GetMembers().Where(IsPublicOrInternal)
+                .Where(x => !IsNestedType(x) && !x.IsPropertyOrEventAccessor());
 
             foreach (ISymbol member in accessibleMembers)
             {
@@ -101,9 +101,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
                 member.Name));
         }
 
-        private static bool IsPublicOrInternal([NotNull] ISymbol method)
+        private static bool IsPublicOrInternal([NotNull] ISymbol member)
         {
-            return method.DeclaredAccessibility == Accessibility.Public || method.DeclaredAccessibility == Accessibility.Internal;
+            return member.DeclaredAccessibility == Accessibility.Public || member.DeclaredAccessibility == Accessibility.Internal;
+        }
+
+        private static bool IsNestedType([NotNull] ISymbol member)
+        {
+            return member is ITypeSymbol;
         }
     }
 }
