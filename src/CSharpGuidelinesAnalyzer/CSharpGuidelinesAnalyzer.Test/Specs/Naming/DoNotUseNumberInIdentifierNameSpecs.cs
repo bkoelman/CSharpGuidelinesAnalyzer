@@ -950,7 +950,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
                 .InDefaultClass(@"
-                    void Int16SaveInt32Or3DIntoInt64()
+                    void Int16SaveInt32Or3DIntoInt64WithUtf7InWin32()
                     {
                     }
                 ")

@@ -339,7 +339,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 string thisTokenText = tokens[index].Text;
                 string nextTokenText = tokens[index + 1].Text;
 
-                if (IsSystemInt(thisTokenText, nextTokenText) || IsDimensional(thisTokenText, nextTokenText))
+                if (IsWindowsOrSystemInt(thisTokenText, nextTokenText) || IsEncoding(thisTokenText, nextTokenText) ||
+                    IsDimensional(thisTokenText, nextTokenText))
                 {
                     tokens.RemoveRange(index, 2);
                     index--;
@@ -353,9 +354,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             return (thisTokenText == "2" || thisTokenText == "3" || thisTokenText == "4") && nextTokenText == "D";
         }
 
-        private static bool IsSystemInt([NotNull] string thisTokenText, [NotNull] string nextTokenText)
+        private static bool IsWindowsOrSystemInt([NotNull] string thisTokenText, [NotNull] string nextTokenText)
         {
-            return thisTokenText == "Int" && (nextTokenText == "16" || nextTokenText == "32" || nextTokenText == "64");
+            bool isTextMatch = string.Equals(thisTokenText, "int", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(thisTokenText, "win", StringComparison.OrdinalIgnoreCase);
+
+            return isTextMatch && (nextTokenText == "16" || nextTokenText == "32" || nextTokenText == "64");
+        }
+
+        private static bool IsEncoding([NotNull] string thisTokenText, [NotNull] string nextTokenText)
+        {
+            bool isTextMatch = string.Equals(thisTokenText, "utf", StringComparison.OrdinalIgnoreCase);
+
+            return isTextMatch &&
+                (nextTokenText == "7" || nextTokenText == "8" || nextTokenText == "16" || nextTokenText == "32");
         }
 
         private static bool ContainsDigit([NotNull] string text)
