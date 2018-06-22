@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -1058,6 +1059,31 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void
+            When_two_variables_are_declared_and_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(MemoryStream).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        int k;
+
+                        [|using|] (MemoryStream ms1 = new MemoryStream(), ms2 = new MemoryStream())
+                        {
+                            k = 3;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "'ms1' and 'ms2' are assigned in a single statement.");
+        }
+
+        [Fact]
         internal void When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_using_statement_it_must_be_skipped()
         {
             // Arrange
@@ -1274,7 +1300,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
-
 
         [Fact]
         internal void When_members_are_assigned_in_a_dynamic_object_creation_expression_it_must_be_skipped()
