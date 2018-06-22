@@ -891,6 +891,25 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_parameter_type_is_bool_in_IDisposable_pattern_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        protected virtual void Dispose(bool disposing)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AvoidBooleanParameterAnalyzer();

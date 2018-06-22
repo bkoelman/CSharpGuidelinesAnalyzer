@@ -67,10 +67,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             ISymbol containingMember = parameter.ContainingSymbol;
 
             if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) &&
-                !parameter.IsInterfaceImplementation())
+                !parameter.IsInterfaceImplementation() && !IsDisposablePattern(parameter))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
             }
+        }
+
+        private static bool IsDisposablePattern([NotNull] IParameterSymbol parameter)
+        {
+            if (parameter.Name == "disposing")
+            {
+                if (parameter.ContainingSymbol is IMethodSymbol containingMethod && containingMethod.Name == "Dispose")
+                {
+                    if (containingMethod.IsVirtual && containingMethod.DeclaredAccessibility == Accessibility.Protected)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
