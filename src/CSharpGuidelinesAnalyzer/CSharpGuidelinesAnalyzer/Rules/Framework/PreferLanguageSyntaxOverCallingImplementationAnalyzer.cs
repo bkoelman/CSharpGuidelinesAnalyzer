@@ -25,7 +25,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly ImmutableArray<BinaryOperatorKind> NumericComparisonOperators = new[]
         {
             BinaryOperatorKind.Equals,
-            BinaryOperatorKind.NotEquals,
             BinaryOperatorKind.LessThan,
             BinaryOperatorKind.LessThanOrEqual,
             BinaryOperatorKind.GreaterThan,
@@ -194,7 +193,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static IOperation SkipNullableValueProperty([NotNull] IOperation operation,
             [CanBeNull] IPropertySymbol nullableHasValueProperty)
         {
-            if (nullableHasValueProperty != null && operation is IPropertyReferenceOperation propertyReference)
+            if (nullableHasValueProperty != null &&
+                operation.SkipTypeConversions() is IPropertyReferenceOperation propertyReference)
             {
                 if (propertyReference.Property.OriginalDefinition.Equals(nullableHasValueProperty))
                 {
@@ -220,7 +220,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private static bool IsEqualityComparison(BinaryOperatorKind operatorKind)
         {
-            return operatorKind == BinaryOperatorKind.Equals || operatorKind == BinaryOperatorKind.NotEquals;
+            return operatorKind == BinaryOperatorKind.Equals;
         }
 
         private static bool IsNullableValueType([NotNull] IOperation operation)

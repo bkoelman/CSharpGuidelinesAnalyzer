@@ -219,7 +219,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                         {
                         }
 
-                        if ([|!EqualityComparer<int?>.Default.Equals(i, null) && i.Value != 8|])
+                        if ([|!EqualityComparer<int?>.Default.Equals(i, null) && i.Value == 8|])
                         {
                         }
                     }
@@ -402,7 +402,23 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                             {
                             }
 
+                            if (i != null && i.Value == j)
+                            {
+                            }
+
                             if (i != null && i != j)
+                            {
+                            }
+
+                            if (i != null && i.Value != j)
+                            {
+                            }
+
+                            if (i != null && i != 123)
+                            {
+                            }
+
+                            if (i != null && i.Value != 123)
                             {
                             }
 
@@ -410,7 +426,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                             {
                             }
 
+                            if ([|i != null && i.Value > j|])
+                            {
+                            }
+
                             if ([|i != null && i >= j|])
+                            {
+                            }
+
+                            if ([|i != null && i.Value >= j|])
                             {
                             }
 
@@ -418,7 +442,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                             {
                             }
 
+                            if ([|i != null && i.Value < j|])
+                            {
+                            }
+
                             if ([|i != null && i <= j|])
+                            {
+                            }
+
+                            if ([|i != null && i.Value <= j|])
                             {
                             }
                         }
@@ -428,6 +460,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
+                "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",
                 "Remove null check in numeric comparison.",
