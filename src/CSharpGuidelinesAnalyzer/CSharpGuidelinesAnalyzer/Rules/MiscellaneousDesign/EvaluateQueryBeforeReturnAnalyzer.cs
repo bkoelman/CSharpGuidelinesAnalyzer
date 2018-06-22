@@ -375,7 +375,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     EvaluationResult trueResult = owner.AnalyzeExpression(operation.WhenTrue);
 
-                    if (operation.WhenFalse == null)
+                    if (operation.WhenFalse == null || trueResult.IsDeferred)
                     {
                         Result.CopyFrom(trueResult);
                     }
@@ -390,9 +390,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 public override void VisitCoalesce([NotNull] ICoalesceOperation operation)
                 {
                     EvaluationResult valueResult = owner.AnalyzeExpression(operation.Value);
-                    EvaluationResult alternativeResult = owner.AnalyzeExpression(operation.WhenNull);
 
-                    Result.CopyFrom(EvaluationResult.Unify(valueResult, alternativeResult));
+                    if (valueResult.IsDeferred)
+                    {
+                        Result.CopyFrom(valueResult);
+                    }
+                    else
+                    {
+                        EvaluationResult alternativeResult = owner.AnalyzeExpression(operation.WhenNull);
+
+                        Result.CopyFrom(EvaluationResult.Unify(valueResult, alternativeResult));
+                    }
                 }
 
                 public override void VisitTranslatedQuery([NotNull] ITranslatedQueryOperation operation)
