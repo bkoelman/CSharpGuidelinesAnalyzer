@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -51,27 +52,33 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private static void AnalyzeMember(SymbolAnalysisContext context)
         {
-            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic);
+            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic, context.CancellationToken);
         }
 
         private static void AnalyzeLocalFunction(OperationAnalysisContext context)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
-            AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic);
+            AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic, context.CancellationToken);
         }
 
-        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic,
+            CancellationToken cancellationToken)
         {
-            if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod() || symbol.IsSynthesized())
-            {
-                return;
-            }
-
-            if (ContainsBlacklistedWord(symbol.Name))
+            if (RequiresAnalysis(symbol, cancellationToken) && ContainsBlacklistedWord(symbol.Name))
             {
                 reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name));
             }
+        }
+
+        private static bool RequiresAnalysis([NotNull] ISymbol symbol, CancellationToken cancellationToken)
+        {
+            if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod() || symbol.IsSynthesized())
+            {
+                return false;
+            }
+
+            return !symbol.IsOverride && !symbol.HidesBaseMember(cancellationToken) && !symbol.IsInterfaceImplementation();
         }
 
         private static bool ContainsBlacklistedWord([NotNull] string name)

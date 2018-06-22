@@ -224,6 +224,102 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
+        internal void When_method_overrides_base_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    abstract class B
+                    {
+#pragma warning disable AV1115
+                        protected abstract void ThisAndThat();
+#pragma warning restore AV1115
+                    }
+
+                    class C : B
+                    {
+                        protected override void ThisAndThat() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_hides_base_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+#pragma warning disable AV1115
+                        protected virtual void ThisAndThat() => throw null;
+#pragma warning restore AV1115
+                    }
+
+                    class C : B
+                    {
+                        protected new void ThisAndThat() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_implicitly_implements_interface_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface I
+                    {
+#pragma warning disable AV1115
+                        void ThisAndThat();
+#pragma warning restore AV1115
+                    }
+
+                    class C : I
+                    {
+                        public void ThisAndThat() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_explicitly_implements_interface_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    interface I
+                    {
+#pragma warning disable AV1115
+                        void ThisAndThat();
+#pragma warning restore AV1115
+                    }
+
+                    class C : I
+                    {
+                        void I.ThisAndThat() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_MSTest_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
