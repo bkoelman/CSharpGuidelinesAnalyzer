@@ -36,6 +36,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
+        [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
         private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeInvocationAction =
@@ -47,15 +50,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
+
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            INamedTypeSymbol systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
+            if (systemEventArgs != null)
             {
-                INamedTypeSymbol systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
-                if (systemEventArgs != null)
-                {
-                    startContext.RegisterOperationAction(c => AnalyzeInvocationAction(c, systemEventArgs),
-                        OperationKind.Invocation);
-                }
-            });
+                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, systemEventArgs),
+                    OperationKind.Invocation);
+            }
         }
 
         private static void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
@@ -134,7 +139,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private static IArgumentOperation GetSenderArgument([NotNull] IInvocationOperation invocation)
         {
-            IArgumentOperation argument = invocation.Arguments.FirstOrDefault(x => x.Parameter.Name == "sender");
+            IArgumentOperation argument =
+                invocation.Arguments.FirstOrDefault(nextArgument => nextArgument.Parameter.Name == "sender");
 
             return argument != null && argument.Parameter.Type.SpecialType == SpecialType.System_Object ? argument : null;
         }
@@ -154,8 +160,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation,
             [NotNull] INamedTypeSymbol systemEventArgs)
         {
-            return invocation.Arguments.FirstOrDefault(x =>
-                !string.IsNullOrEmpty(x.Parameter?.Name) && IsEventArgs(x.Parameter.Type, systemEventArgs));
+            return invocation.Arguments.FirstOrDefault(argument =>
+                !string.IsNullOrEmpty(argument.Parameter?.Name) && IsEventArgs(argument.Parameter.Type, systemEventArgs));
         }
 
         private static bool IsEventArgs([CanBeNull] ITypeSymbol type, [NotNull] INamedTypeSymbol systemEventArgs)

@@ -116,7 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private static bool IsIncomplete([NotNull] SyntaxNode syntaxNode)
         {
-            return syntaxNode.DescendantNodesAndSelf().Any(x => x.IsMissing);
+            return syntaxNode.DescendantNodesAndSelf().Any(node => node.IsMissing);
         }
     }
 }

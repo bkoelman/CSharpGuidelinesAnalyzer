@@ -22,7 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             var tokenizer = new WordsTokenizer(identifierName);
-            return tokenizer.GetWords().Where(w => IsListed(w, list)).ToArray();
+            return tokenizer.GetWords().Where(word => IsListed(word, list)).ToArray();
         }
 
         public static bool ContainsWordInTheMiddle([NotNull] this string identifierName, [NotNull] string word)

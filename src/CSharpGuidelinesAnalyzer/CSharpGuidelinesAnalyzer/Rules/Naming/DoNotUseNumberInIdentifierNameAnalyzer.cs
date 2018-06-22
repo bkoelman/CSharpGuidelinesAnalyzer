@@ -328,7 +328,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             RemoveWhitelistedTokens(tokens);
 
-            return string.Join(string.Empty, tokens.Select(t => t.Text));
+            return string.Join(string.Empty, tokens.Select(token => token.Text));
         }
 
         private static void RemoveWhitelistedTokens([NotNull] List<WordToken> tokens)

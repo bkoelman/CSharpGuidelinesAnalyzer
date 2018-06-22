@@ -379,7 +379,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
 
             return model.GetDiagnostics(operation.Syntax.Span, cancellationToken)
-                .Any(d => d.Severity == DiagnosticSeverity.Error);
+                .Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
         }
 
         public static bool IsStatement([NotNull] this IOperation operation)

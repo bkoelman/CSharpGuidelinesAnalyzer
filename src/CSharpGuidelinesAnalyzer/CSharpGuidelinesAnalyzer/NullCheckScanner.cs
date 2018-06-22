@@ -299,7 +299,7 @@ namespace CSharpGuidelinesAnalyzer
             private IMethodSymbol ResolveStaticObjectEquals([NotNull] Compilation compilation)
             {
                 INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
-                return objectType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault(m => m.IsStatic);
+                return objectType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault(method => method.IsStatic);
             }
 
             [CanBeNull]

@@ -33,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(c => c.SkipInvalid(AnalyzeOperation),
+            context.RegisterOperationAction(operationContext => operationContext.SkipInvalid(AnalyzeOperation),
                 (OperationKind[])Enum.GetValues(typeof(OperationKind)));
         }
 

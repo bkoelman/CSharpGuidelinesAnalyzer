@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
-            c => c.SkipInvalid(AnalyzeLocalFunction);
+            context => context.SkipInvalid(AnalyzeLocalFunction);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

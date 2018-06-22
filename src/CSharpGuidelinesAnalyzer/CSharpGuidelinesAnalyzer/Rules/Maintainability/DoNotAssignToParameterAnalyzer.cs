@@ -134,8 +134,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             foreach (Diagnostic diagnostic in diagnostics)
             {
-                Diagnostic[] duplicates = diagnostics
-                    .Where(d => !ReferenceEquals(d, diagnostic) && d.Location == diagnostic.Location).ToArray();
+                Diagnostic[] duplicates = diagnostics.Where(nextDiagnostic =>
+                    !ReferenceEquals(nextDiagnostic, diagnostic) && nextDiagnostic.Location == diagnostic.Location).ToArray();
 
                 if (duplicates.Any())
                 {
@@ -208,15 +208,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
             IGrouping<bool, IParameterSymbol>[] parameterGrouping = context.Target
-                .Where(p => p.RefKind == RefKind.None && !p.IsSynthesized()).GroupBy(IsUserDefinedStruct).ToArray();
+                .Where(parameter => parameter.RefKind == RefKind.None && !parameter.IsSynthesized()).GroupBy(IsUserDefinedStruct)
+                .ToArray();
 
-            ICollection<IParameterSymbol> ordinaryParameters = parameterGrouping.Where(x => !x.Key).SelectMany(x => x).ToArray();
+            ICollection<IParameterSymbol> ordinaryParameters =
+                parameterGrouping.Where(group => !group.Key).SelectMany(group => group).ToArray();
             if (ordinaryParameters.Any())
             {
                 AnalyzeOrdinaryParameters(context.WithTarget(ordinaryParameters), bodySyntax, collector);
             }
 
-            ICollection<IParameterSymbol> structParameters = parameterGrouping.Where(x => x.Key).SelectMany(x => x).ToArray();
+            ICollection<IParameterSymbol> structParameters =
+                parameterGrouping.Where(group => group.Key).SelectMany(group => group).ToArray();
             if (structParameters.Any())
             {
                 AnalyzeStructParameters(context.WithTarget(structParameters), bodySyntax, collector);

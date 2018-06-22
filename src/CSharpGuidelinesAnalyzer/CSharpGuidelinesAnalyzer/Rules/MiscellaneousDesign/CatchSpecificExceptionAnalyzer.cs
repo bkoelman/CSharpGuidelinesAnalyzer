@@ -31,6 +31,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
         private static readonly Action<OperationAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction =
@@ -42,19 +45,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                ImmutableArray<INamedTypeSymbol> types = ResolveExceptionTypes(startContext.Compilation);
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
 
-                if (types.Any())
-                {
-                    startContext.RegisterOperationAction(c => AnalyzeCatchClauseAction(c, types), OperationKind.CatchClause);
-                }
-            });
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            ImmutableArray<INamedTypeSymbol> types = ResolveExceptionTypes(startContext.Compilation);
+
+            if (types.Any())
+            {
+                startContext.RegisterOperationAction(context => AnalyzeCatchClauseAction(context, types),
+                    OperationKind.CatchClause);
+            }
         }
 
         [ItemNotNull]
-        private ImmutableArray<INamedTypeSymbol> ResolveExceptionTypes([NotNull] Compilation compilation)
+        private static ImmutableArray<INamedTypeSymbol> ResolveExceptionTypes([NotNull] Compilation compilation)
         {
             ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(3);
 
@@ -65,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
         }
 
-        private void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type,
+        private static void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type,
             [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
         {
             if (type != null)

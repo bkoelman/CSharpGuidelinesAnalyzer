@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
@@ -14,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         }
 
         public EmptySourceCodeBuilder()
-            : base(false)
+            : base(Enumerable.Empty<string>())
         {
         }
 

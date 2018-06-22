@@ -65,6 +65,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string QueryableOperationName = "<*>Queryable";
 
         [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
+        [NotNull]
         private static readonly Action<OperationBlockAnalysisContext, SequenceTypeInfo> AnalyzeCodeBlockAction =
             (context, sequenceTypeInfo) => context.SkipInvalid(_ => AnalyzeCodeBlock(context, sequenceTypeInfo));
 
@@ -73,12 +76,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                var sequenceTypeInfo = new SequenceTypeInfo(startContext.Compilation);
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
 
-                startContext.RegisterOperationBlockAction(c => AnalyzeCodeBlockAction(c, sequenceTypeInfo));
-            });
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            var sequenceTypeInfo = new SequenceTypeInfo(startContext.Compilation);
+
+            startContext.RegisterOperationBlockAction(context => AnalyzeCodeBlockAction(context, sequenceTypeInfo));
         }
 
         private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)

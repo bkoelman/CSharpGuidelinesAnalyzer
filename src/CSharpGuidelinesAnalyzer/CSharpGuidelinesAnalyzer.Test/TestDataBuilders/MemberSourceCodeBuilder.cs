@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         private readonly List<string> members = new List<string>();
 
         public MemberSourceCodeBuilder()
-            : base(true)
+            : base(DefaultNamespaceImports)
         {
         }
 

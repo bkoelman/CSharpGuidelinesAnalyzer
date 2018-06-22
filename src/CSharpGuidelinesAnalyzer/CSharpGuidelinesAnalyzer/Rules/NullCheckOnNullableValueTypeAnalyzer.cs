@@ -45,12 +45,13 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private void RegisterForOperations([NotNull] CompilationStartAnalysisContext startContext,
             [NotNull] NullCheckScanner scanner)
         {
-            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzePropertyReference(c, scanner)),
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner)),
                 OperationKind.PropertyReference);
-            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeInvocation(c, scanner)),
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeInvocation(context, scanner)),
                 OperationKind.Invocation);
-            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeIsPattern(c, scanner)), OperationKind.IsPattern);
-            startContext.RegisterOperationAction(c => c.SkipInvalid(_ => AnalyzeBinaryOperator(c, scanner)),
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeIsPattern(context, scanner)),
+                OperationKind.IsPattern);
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner)),
                 OperationKind.BinaryOperator);
         }
 

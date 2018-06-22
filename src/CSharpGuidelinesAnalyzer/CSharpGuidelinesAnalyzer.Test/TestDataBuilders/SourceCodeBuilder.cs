@@ -29,15 +29,15 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [NotNull]
         internal readonly CodeEditor Editor;
 
-        protected SourceCodeBuilder(bool includeSystemNamespaceImport)
+        [ItemNotNull]
+        protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
         {
-            namespaceImports = includeSystemNamespaceImport
-                ? new HashSet<string>
-                {
-                    "System"
-                }
-                : new HashSet<string>();
+            "System"
+        }.ToImmutableArray();
 
+        protected SourceCodeBuilder([NotNull] [ItemNotNull] IEnumerable<string> implicitNamespaceImports)
+        {
+            namespaceImports = new HashSet<string>(implicitNamespaceImports);
             Editor = new CodeEditor(this);
         }
 
@@ -87,7 +87,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return builder.ToString();
         }
 
-        private static void AppendCodeBlocks([NotNull][ItemNotNull] IEnumerable<string> codeBlocks, [NotNull] StringBuilder builder)
+        private static void AppendCodeBlocks([NotNull] [ItemNotNull] IEnumerable<string> codeBlocks,
+            [NotNull] StringBuilder builder)
         {
             bool isInFirstBlock = true;
             foreach (string codeBlock in codeBlocks)

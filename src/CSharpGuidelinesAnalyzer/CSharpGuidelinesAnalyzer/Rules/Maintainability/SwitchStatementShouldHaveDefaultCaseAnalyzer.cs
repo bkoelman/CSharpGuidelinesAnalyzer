@@ -39,6 +39,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             null
         };
 
+        [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
         private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeSwitchStatementAction =
@@ -50,15 +53,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
+
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
+            if (systemBoolean != null)
             {
-                INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
-                if (systemBoolean != null)
-                {
-                    startContext.RegisterOperationAction(c => AnalyzeSwitchStatementAction(c, systemBoolean),
-                        OperationKind.Switch);
-                }
-            });
+                startContext.RegisterOperationAction(context => AnalyzeSwitchStatementAction(context, systemBoolean),
+                    OperationKind.Switch);
+            }
         }
 
         private static void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)

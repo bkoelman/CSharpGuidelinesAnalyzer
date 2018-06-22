@@ -90,8 +90,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static IEnumerable<IMethodSymbol> GetRegularMethodsInTypeHierarchy([NotNull] INamedTypeSymbol type,
             CancellationToken cancellationToken)
         {
-            return EnumerateSelfWithBaseTypes(type)
-                .SelectMany(currentType1 => GetRegularMethodsInType(currentType1, cancellationToken)).ToArray();
+            return EnumerateSelfWithBaseTypes(type).SelectMany(nextType => GetRegularMethodsInType(nextType, cancellationToken))
+                .ToArray();
         }
 
         [NotNull]
@@ -182,7 +182,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
         {
             IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
-                methodGroup.GroupBy(mg => mg.Parameters.Length).OrderByDescending(x => x.Key).First();
+                methodGroup.GroupBy(group => group.Parameters.Length).OrderByDescending(group => group.Key).First();
             return overloadsWithHighestParameterCount.Skip(1).FirstOrDefault() == null
                 ? overloadsWithHighestParameterCount.First()
                 : null;
@@ -251,7 +251,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 string parameterName = parameters[parameterIndex].Name;
 
-                int indexInLongestOverload = parametersInLongestOverload.FindIndex(p => p.Name == parameterName);
+                int indexInLongestOverload = parametersInLongestOverload.FindIndex(parameter => parameter.Name == parameterName);
                 if (indexInLongestOverload != -1 && indexInLongestOverload != parameterIndex)
                 {
                     return false;

@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         [NotNull]
         private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction =
-            c => c.SkipInvalid(AnalyzeEventAssignment);
+            context => context.SkipInvalid(AnalyzeEventAssignment);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

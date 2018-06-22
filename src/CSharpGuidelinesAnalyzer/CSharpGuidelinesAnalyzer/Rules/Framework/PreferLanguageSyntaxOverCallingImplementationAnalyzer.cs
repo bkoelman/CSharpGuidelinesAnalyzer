@@ -49,6 +49,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
 
         [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
+        [NotNull]
         private static readonly Action<OperationAnalysisContext, NullCheckScanner> AnalyzePropertyReferenceAction =
             (context, scanner) => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner));
 
@@ -61,15 +64,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                var scanner = new NullCheckScanner(startContext.Compilation);
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
 
-                startContext.RegisterOperationAction(c => AnalyzePropertyReferenceAction(c, scanner),
-                    OperationKind.PropertyReference);
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            var scanner = new NullCheckScanner(startContext.Compilation);
 
-                startContext.RegisterOperationAction(c => AnalyzeBinaryOperatorAction(c, scanner), OperationKind.BinaryOperator);
-            });
+            startContext.RegisterOperationAction(context => AnalyzePropertyReferenceAction(context, scanner),
+                OperationKind.PropertyReference);
+
+            startContext.RegisterOperationAction(context => AnalyzeBinaryOperatorAction(context, scanner),
+                OperationKind.BinaryOperator);
         }
 
         private static void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)

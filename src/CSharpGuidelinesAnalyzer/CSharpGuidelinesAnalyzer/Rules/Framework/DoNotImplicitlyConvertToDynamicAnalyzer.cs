@@ -27,6 +27,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
+        [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
         private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeConversionAction =
@@ -42,14 +45,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
 
-                startContext.RegisterOperationAction(c => AnalyzeConversionAction(c, objectHandleType), OperationKind.Conversion);
-                startContext.RegisterOperationAction(c => AnalyzeCompoundAssignmentAction(c, objectHandleType),
-                    OperationKind.CompoundAssignment);
-            });
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
+
+            startContext.RegisterOperationAction(context => AnalyzeConversionAction(context, objectHandleType),
+                OperationKind.Conversion);
+            startContext.RegisterOperationAction(context => AnalyzeCompoundAssignmentAction(context, objectHandleType),
+                OperationKind.CompoundAssignment);
         }
 
         private static void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)

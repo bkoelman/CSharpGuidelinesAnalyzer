@@ -49,8 +49,9 @@ namespace CSharpGuidelinesAnalyzer
 
             public OperationEqualityVisitor()
             {
-                equalityComparerForOperations = new DelegatingEqualityComparer<IOperation>((x, y) => x.Accept(this, y));
-                equalityComparerForSymbols = new DelegatingEqualityComparer<ISymbol>((x, y) => x.Equals(y));
+                equalityComparerForOperations =
+                    new DelegatingEqualityComparer<IOperation>((left, right) => left.Accept(this, right));
+                equalityComparerForSymbols = new DelegatingEqualityComparer<ISymbol>((left, right) => left.Equals(right));
             }
 
             public override bool VisitAddressOf([NotNull] IAddressOfOperation operation1, [CanBeNull] IOperation argument)

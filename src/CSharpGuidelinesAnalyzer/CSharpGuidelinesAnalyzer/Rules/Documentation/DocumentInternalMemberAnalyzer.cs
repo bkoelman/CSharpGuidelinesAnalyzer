@@ -55,10 +55,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly HashSet<string> EmptyHashSet = new HashSet<string>();
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = c => c.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
+            context => context.SkipEmptyName(AnalyzeNamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = c => c.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
+            context => context.SkipEmptyName(AnalyzeMember);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

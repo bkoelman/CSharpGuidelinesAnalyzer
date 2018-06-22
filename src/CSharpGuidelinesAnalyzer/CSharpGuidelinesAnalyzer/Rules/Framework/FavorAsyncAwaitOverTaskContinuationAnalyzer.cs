@@ -33,6 +33,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
+        [NotNull]
         private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction =
             (context, taskInfo) => context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
 
@@ -41,15 +44,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                var taskInfo = new TaskTypeInfo(startContext.Compilation);
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        }
 
-                if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
-                {
-                    startContext.RegisterOperationAction(c => AnalyzeInvocationAction(c, taskInfo), OperationKind.Invocation);
-                }
-            });
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            var taskInfo = new TaskTypeInfo(startContext.Compilation);
+
+            if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
+            {
+                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, taskInfo),
+                    OperationKind.Invocation);
+            }
         }
 
         private static void AnalyzeInvocation(OperationAnalysisContext context, TaskTypeInfo taskInfo)
@@ -75,7 +81,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static Location GetInvocationLocation(OperationAnalysisContext context)
         {
             SimpleNameSyntax simpleNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf().OfType<SimpleNameSyntax>()
-                .First(x => x.Identifier.ValueText == "ContinueWith");
+                .First(syntax => syntax.Identifier.ValueText == "ContinueWith");
 
             return simpleNameSyntax.GetLocation();
         }

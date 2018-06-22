@@ -73,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static void AnalyzeTypeMembers([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
         {
             IEnumerable<ISymbol> accessibleMembers = type.GetMembers().Where(IsPublicOrInternal)
-                .Where(x => !IsNestedType(x) && !x.IsPropertyOrEventAccessor());
+                .Where(member => !IsNestedType(member) && !member.IsPropertyOrEventAccessor());
 
             foreach (ISymbol member in accessibleMembers)
             {
