@@ -59,19 +59,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private static void AnalyzeMemberName([NotNull] string containingTypeName, SymbolAnalysisContext context)
         {
-            string memberName = WithoutExplicitInterfacePrefix(context.Symbol.Name);
+            string memberName = context.Symbol.MemberNameWithoutExplicitInterfacePrefix();
             if (memberName.Contains(containingTypeName))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind,
                     context.Symbol.Name, containingTypeName));
             }
-        }
-
-        [NotNull]
-        private static string WithoutExplicitInterfacePrefix([NotNull] string name)
-        {
-            int index = name.LastIndexOf(".", StringComparison.Ordinal);
-            return index != -1 ? name.Substring(index) : name;
         }
     }
 }

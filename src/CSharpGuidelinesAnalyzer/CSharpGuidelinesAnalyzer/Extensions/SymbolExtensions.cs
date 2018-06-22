@@ -340,5 +340,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             return !symbol.Locations.Any();
         }
+
+        [NotNull]
+        public static string MemberNameWithoutExplicitInterfacePrefix([NotNull] this ISymbol symbol)
+        {
+            int index = symbol.Name.LastIndexOf(".", StringComparison.Ordinal);
+            return index != -1 ? symbol.Name.Substring(index + 1) : symbol.Name;
+        }
     }
 }

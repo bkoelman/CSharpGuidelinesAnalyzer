@@ -271,6 +271,38 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 "Event 'ValueChanged' should be raised from a regular method.");
         }
 
+        [Fact]
+        internal void When_event_invocation_method_is_explicit_interface_implementation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    namespace N
+                    {
+                        interface I
+                        {
+                            event EventHandler ValueChanged;
+
+                            void OnValueChanged();
+                        }
+
+                        class C : I
+                        {
+                            public event EventHandler ValueChanged;
+
+                            void I.OnValueChanged()
+                            {
+                                ValueChanged?.Invoke(this, EventArgs.Empty);
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new RaiseEventFromProtectedVirtualMethodAnalyzer();

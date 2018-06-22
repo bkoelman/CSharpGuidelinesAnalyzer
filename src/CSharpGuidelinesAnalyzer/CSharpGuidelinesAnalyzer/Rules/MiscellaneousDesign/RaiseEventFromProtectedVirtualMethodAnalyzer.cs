@@ -38,6 +38,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        private static readonly ImmutableArray<MethodKind> RegularMethodKinds = new[]
+        {
+            MethodKind.Ordinary,
+            MethodKind.ExplicitInterfaceImplementation
+        }.ToImmutableArray();
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
@@ -139,7 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
             OperationAnalysisContext context)
         {
-            if (method == null || method.MethodKind != MethodKind.Ordinary)
+            if (method == null || !RegularMethodKinds.Contains(method.MethodKind))
             {
                 Location location = method != null && !method.IsSynthesized()
                     ? method.Locations[0]
@@ -163,7 +169,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             OperationAnalysisContext context)
         {
             string nameExpected = string.Concat("On", evnt.Name);
-            if (method.Name != nameExpected)
+            string nameActual = method.MemberNameWithoutExplicitInterfacePrefix();
+
+            if (nameActual != nameExpected)
             {
                 context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, evnt.Name, nameExpected));
                 return true;
@@ -175,7 +183,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
             OperationAnalysisContext context)
         {
-            if (!method.ContainingType.IsSealed && !method.IsStatic)
+            if (!method.ContainingType.IsSealed && !method.IsStatic &&
+                method.MethodKind != MethodKind.ExplicitInterfaceImplementation)
             {
                 if (!method.IsVirtual || !IsProtected(method))
                 {
