@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
@@ -12,6 +13,669 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
     public sealed class AvoidMemberWithManyStatementsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         protected override string DiagnosticId => AvoidMemberWithManyStatementsAnalyzer.DiagnosticId;
+
+        #region Different places where code blocks may occur
+
+        [Fact]
+        internal void When_method_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int [|M|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Func<int> [|M|](string s) =>
+                        () =>
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_operator_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public static C operator[|++|](C c)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.operator ++(C)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_implicit_conversion_operator_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public static implicit operator [|C|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.implicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_explicit_conversion_operator_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public static explicit operator [|C|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.explicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_explicit_conversion_operator_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public static explicit operator [|C|](int i) => M(() =>
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        });
+
+                        static C M(Action a) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.explicit operator C(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_constructor_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public [|C|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact(Skip = "https://github.com/dotnet/roslyn/issues/26520")]
+        internal void When_constructor_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public [|C|](Task t) =>
+                            t.ContinueWith(x =>
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            });
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.C(Task)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_constructor_initializer_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class B
+                    {
+                        protected B(Func<int> f) => throw null;
+                    }
+
+                    class C : B
+                    {
+                        [|C|](string s)
+                            : base(() =>
+                            {
+                                ; ; ; ;
+                                throw null;
+                            })
+                        {
+                                ; ; ;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_static_constructor_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        static [|C|]()
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact(Skip = "https://github.com/dotnet/roslyn/issues/26520")]
+        internal void When_static_constructor_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        static Task t;
+
+                        static [|C|]() =>
+                            t.ContinueWith(x =>
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            });
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_destructor_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        ~[|C|]()
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact(Skip = "https://github.com/dotnet/roslyn/issues/26520")]
+        internal void When_destructor_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    class C
+                    {
+                        static Task t;
+
+                        ~[|C|]() =>
+                            t.ContinueWith(x =>
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            });
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_property_initializer_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Func<int> [|P|] { get; } = () =>
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Initializer for 'C.P' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_property_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Func<int> [|P|] =>
+                            () =>
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            };
+                        }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_property_getter_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        string P
+                        {
+                            [|get|]
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_property_getter_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Func<int> P
+                        {
+                            [|get|] =>
+                                () =>
+                                {
+                                    ; ; ; ;
+                                    ; ; ;
+                                    throw null;
+                                };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_property_setter_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        string P
+                        {
+                            [|set|]
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_property_setter_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Func<int> P
+                        {
+                            [|set|] =>
+                                value = () =>
+                                {
+                                    ; ; ; ;
+                                    ; ; ;
+                                    throw null;
+                                };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_indexer_expression_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Func<int> [|this|][int index] =>
+                            () =>
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            };
+                        }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_indexer_getter_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        string this[int index]
+                        {
+                            [|get|]
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_indexer_setter_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        string this[int index]
+                        {
+                            [|set|]
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Property accessor 'C.this[int].set' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_event_initializer_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        event EventHandler [|E|] = M(() =>
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        });
+
+                        static EventHandler M(Action a) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Initializer for 'C.E' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_event_adder_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        event EventHandler E
+                        {
+                            [|add|]
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            }
+                            remove
+                            {
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Event accessor 'C.E.add' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_event_remover_body_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        event EventHandler E
+                        {
+                            add
+                            {
+                                throw null;
+                            }
+                            [|remove|]
+                            {
+                                ; ; ; ;
+                                ; ; ;
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Event accessor 'C.E.remove' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_field_initializer_contains_eight_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        Action [|f|] = () =>
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Initializer for 'C.f' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        #endregion
+
+        #region Different kinds of statements
 
         [Fact]
         internal void When_method_contains_eight_empty_statements_it_must_be_reported()
@@ -251,10 +915,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
-                        void [|M|]()
+                        void [|M|](List<(int, string)> source)
                         {
                             foreach (var level1 in new string[0])
                                 foreach (var level2 in new string[0])
@@ -264,7 +929,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                             foreach (var level5 in new string[0])
                                                 foreach (var level6 in new string[0])
                                                     foreach (var level7 in new string[0])
-                                                        foreach (var level8 in new string[0])
+                                                        foreach (var (x, y) in source)
                                                         {
                                                         }
                                         }
@@ -275,7 +940,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(List<(int, string)>)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -283,10 +948,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
                     class C
                     {
-                        void M()
+                        void M(List<(int, string)> source)
                         {
                             foreach (var level1 in new string[0])
                                 foreach (var level2 in new string[0])
@@ -295,7 +961,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                         {
                                             foreach (var level5 in new string[0])
                                                 foreach (var level6 in new string[0])
-                                                    foreach (var level7 in new string[0])
+                                                    foreach (var (x, y) in source)
                                                     {
                                                     }
                                         }
@@ -816,13 +1482,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                 case 1:
                                 {
                                     ; ; ;
-                                    break;
+                                    goto default;
                                 }
                                 default:
-                                {
                                     ; ;
                                     break;
-                                }
                             }
                         }
                     }
@@ -849,13 +1513,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                 case 1:
                                 {
                                     ; ;
-                                    break;
+                                    goto default;
                                 }
                                 default:
-                                {
                                     ; ;
                                     break;
-                                }
                             }
                         }
                     }
@@ -1075,7 +1737,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                             using (d)
                                 using (d)
                                     using (d)
-                                        using (d)
+                                        using (IDisposable x = null, d = null)
                                         {
                                         }
                         }
@@ -1109,7 +1771,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
                             using (d)
                                 using (d)
-                                    using (var x = d)
+                                    using (IDisposable x = null, d = null)
                                     {
                                     }
                         }
@@ -1122,7 +1784,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_property_getter_contains_eight_return_statements_it_must_be_reported()
+        internal void When_method_contains_eight_return_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1130,20 +1792,17 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .InGlobalScope(@"
                     class C
                     {
-                        public int [|P|]
+                        public int [|M|]()
                         {
-                            get
-                            {
-                                return 1;
-                                return 2;
-                                return 3;
-                                return 4;
+                            return 1;
+                            return 2;
+                            return 3;
+                            return 4;
 
-                                return 5;
-                                return 6;
-                                return 7;
-                                return 8;
-                            }
+                            return 5;
+                            return 6;
+                            return 7;
+                            return 8;
                         }
                     }
                 ")
@@ -1151,7 +1810,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'C.P' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
         [Fact]
@@ -1256,11 +1915,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         void [|M|]()
                         {
                             lock (guard)
-                            {
                                 lock (guard)
-                                {
                                     lock (guard)
-                                    {
                                         lock (guard)
                                         {
 
@@ -1277,9 +1933,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                                 }
                                             }
                                         }
-                                    }
-                                }
-                            }
                         }
                     }
                 ")
@@ -1303,11 +1956,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         void M()
                         {
                             lock (guard)
-                            {
                                 lock (guard)
-                                {
                                     lock (guard)
-                                    {
                                         lock (guard)
                                         {
 
@@ -1321,9 +1971,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                                                 }
                                             }
                                         }
-                                    }
-                                }
-                            }
                         }
                     }
                 ")
@@ -1662,22 +2309,57 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_six_statements_and_an_invocation_with_lambda_expression_it_must_be_skipped()
+        internal void When_method_contains_eight_continue_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class C
+                    class C
                     {
-                        public void M()
+                        void [|M|]()
                         {
-                            ; ; ; ; ; ;
+                            while (true)
+                            {
+                                continue;
+                                continue;
+                                continue;
+                                continue;
 
-                            Other(() => Empty());
+                                continue;
+                                continue;
+                                continue;
+                            }
                         }
+                    }
+                ")
+                .Build();
 
-                        protected abstract void Other(Action action);
-                        protected abstract void Empty();
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_continue_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            while (true)
+                            {
+                                continue;
+                                continue;
+                                continue;
+                                continue;
+
+                                continue;
+                                continue;
+                            }
+                        }
                     }
                 ")
                 .Build();
@@ -1687,25 +2369,27 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_contains_six_statements_and_an_invocation_with_lambda_statement_block_it_must_be_reported()
+        internal void When_method_contains_eight_break_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    public abstract class C
+                    class C
                     {
-                        public void [|M|]()
+                        void [|M|]()
                         {
-                            ; ; ; ; ; ;
-
-                            Other(() =>
+                            while (true)
                             {
-                                Empty();
-                            });
-                        }
+                                break;
+                                break;
+                                break;
+                                break;
 
-                        protected abstract void Other(Action action);
-                        protected abstract void Empty();
+                                break;
+                                break;
+                                break;
+                            }
+                        }
                     }
                 ")
                 .Build();
@@ -1714,6 +2398,258 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
+
+        [Fact]
+        internal void When_method_contains_seven_break_statements_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            while (true)
+                            {
+                                break;
+                                break;
+                                break;
+                                break;
+
+                                break;
+                                break;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        #endregion
+
+        #region Reading through nested constructs
+
+        [Fact]
+        internal void When_method_contains_eight_statements_with_local_function_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            void L()
+                            {
+                                ; ;
+                                ; ;
+                            }
+
+                            ; ;
+                            ; ;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_statements_with_local_function_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            void L()
+                            {
+                                ; ;
+                                ; ;
+                            }
+
+                            ; ;
+                            ;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_statements_with_lambda_block_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            ; ;
+                            ; ;
+
+                            Action<int> action = i =>
+                            {
+                                ; ;
+                                ;
+                            };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_statements_with_lambda_block_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+                            ; ;
+
+                            Action<int> action = i =>
+                            {
+                                ; ;
+                            };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_statements_with_parenthesized_lambda_block_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            ; ;
+                            ; ;
+
+                            Action action = () =>
+                            {
+                                ; ;
+                                ;
+                            };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_statements_with_parenthesized_lambda_block_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+                            ; ;
+
+                            Action action = () =>
+                            {
+                                ; ;
+                            };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_contains_eight_statements_with_anonymous_method_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void [|M|]()
+                        {
+                            ; ;
+                            ; ;
+
+                            Action action = delegate
+                            {
+                                ; ;
+                                ;
+                            };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        internal void When_method_contains_seven_statements_with_anonymous_method_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        void M()
+                        {
+                            ; ;
+                            ; ;
+
+                            Action action = delegate
+                            {
+                                ; ;
+                            };
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        #endregion
 
         [Fact]
         internal void When_method_contains_mixed_set_of_statements_it_must_be_reported()
@@ -1824,130 +2760,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements.");
-        }
-
-        [Fact]
-        internal void When_local_function_contains_eight_empty_statements_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M()
-                        {
-                            ; ;
-
-                            void [|L|]()
-                            {
-                                ; ;
-                                ; ;
-                                ; ;
-                                ; ;
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "Local function 'L()' contains 8 statements, which exceeds the maximum of 7 statements.");
-        }
-
-        [Fact]
-        internal void When_local_function_contains_seven_empty_statements_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M()
-                        {
-                            ; ;
-
-                            void L()
-                            {
-                                ; ;
-                                ; ;
-                                ; ;
-                                ;
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_nested_local_function_contains_eight_empty_statements_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M()
-                        {
-                            ; ;
-
-                            void X()
-                            {
-                                ; ;
-
-                                void [|L|]()
-                                {
-                                    ; ;
-                                    ; ;
-                                    ; ;
-                                    ; ;
-                                }
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "Local function 'L()' contains 8 statements, which exceeds the maximum of 7 statements.");
-        }
-
-        [Fact]
-        internal void When_nested_local_function_contains_seven_empty_statements_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    class C
-                    {
-                        void M()
-                        {
-                            ; ;
-
-                            void X()
-                            {
-                                ; ;
-
-                                void L()
-                                {
-                                    ; ;
-                                    ; ;
-                                    ; ;
-                                    ;
-                                }
-                            }
-                        }
-                    }
-                ")
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

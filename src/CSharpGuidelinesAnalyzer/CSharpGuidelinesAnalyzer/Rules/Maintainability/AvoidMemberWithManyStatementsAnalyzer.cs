@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -49,49 +50,71 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
         {
-            var statementWalker = new StatementWalker(context.ReportDiagnostic, context.CancellationToken);
+            var statementWalker = new StatementWalker(context.CancellationToken);
             statementWalker.VisitBlocks(context.OperationBlocks);
 
-            context.CancellationToken.ThrowIfCancellationRequested();
-
-            CompleteBodyAnalysis(context.OwningSymbol, statementWalker.StatementCount, context.ReportDiagnostic);
-        }
-
-        private static void CompleteBodyAnalysis([NotNull] ISymbol containingSymbol, int statementCount,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
-        {
-            if (statementCount > MaxStatementCount)
+            if (statementWalker.StatementCount > MaxStatementCount)
             {
-                ReportMember(containingSymbol, reportDiagnostic, statementCount);
+                ReportMember(context.OwningSymbol, statementWalker.StatementCount, context);
             }
         }
 
-        private static void ReportMember([NotNull] ISymbol memberSymbol, [NotNull] Action<Diagnostic> reportDiagnostic,
-            int statementCount)
+        private static void ReportMember([NotNull] ISymbol member, int statementCount, OperationBlockAnalysisContext context)
         {
-            ISymbol containingMember = memberSymbol.GetContainingMember();
-
-            if (!containingMember.IsSynthesized())
+            if (!member.IsSynthesized())
             {
-                string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-                Location location = containingMember.Locations[0];
+                Location location = GetMemberLocation(member, context.Compilation, context.CancellationToken);
+                string memberKind = GetMemberKind(member, context.CancellationToken);
+                string memberName = member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                reportDiagnostic(Diagnostic.Create(Rule, location, containingMember.GetKind(), memberName, statementCount));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, location, memberKind, memberName, statementCount));
             }
+        }
+
+        [NotNull]
+        private static string GetMemberKind([NotNull] ISymbol member, CancellationToken cancellationToken)
+        {
+            Guard.NotNull(member, nameof(member));
+
+            foreach (SyntaxNode syntax in member.DeclaringSyntaxReferences.Select(reference =>
+                reference.GetSyntax(cancellationToken)))
+            {
+                if (syntax is VariableDeclaratorSyntax || syntax is PropertyDeclarationSyntax)
+                {
+                    return "Initializer for";
+                }
+            }
+
+            return member.GetKind();
+        }
+
+        [NotNull]
+        private static Location GetMemberLocation([NotNull] ISymbol member, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
+        {
+            foreach (ArrowExpressionClauseSyntax arrowExpressionClause in member.DeclaringSyntaxReferences
+                .Select(reference => reference.GetSyntax(cancellationToken)).OfType<ArrowExpressionClauseSyntax>())
+            {
+                SemanticModel semanticModel = compilation.GetSemanticModel(arrowExpressionClause.SyntaxTree);
+
+                ISymbol parentSymbol = semanticModel.GetDeclaredSymbol(arrowExpressionClause.Parent);
+                if (parentSymbol != null && parentSymbol.Locations.Any())
+                {
+                    return parentSymbol.Locations[0];
+                }
+            }
+
+            return member.Locations[0];
         }
 
         private sealed class StatementWalker : OperationWalker
         {
-            [NotNull]
-            private readonly Action<Diagnostic> reportDiagnostic;
-
             private CancellationToken cancellationToken;
 
             public int StatementCount { get; private set; }
 
-            public StatementWalker([NotNull] Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+            public StatementWalker(CancellationToken cancellationToken)
             {
-                this.reportDiagnostic = reportDiagnostic;
                 this.cancellationToken = cancellationToken;
             }
 
@@ -99,6 +122,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 foreach (IOperation block in blocks)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     Visit(block);
                 }
             }
@@ -207,16 +232,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 IncrementStatementCount(operation);
                 base.VisitWhileLoop(operation);
-            }
-
-            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
-            {
-                var statementWalker = new StatementWalker(reportDiagnostic, cancellationToken);
-                statementWalker.Visit(operation.Body);
-
-                cancellationToken.ThrowIfCancellationRequested();
-
-                CompleteBodyAnalysis(operation.Symbol, statementWalker.StatementCount, reportDiagnostic);
             }
 
             private void IncrementStatementCount([CanBeNull] IOperation operation)

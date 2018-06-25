@@ -280,18 +280,36 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             if (symbol.Kind == SymbolKind.Method && symbol is IMethodSymbol method)
             {
-                if (method.MethodKind == MethodKind.Constructor || method.MethodKind == MethodKind.StaticConstructor)
-                {
-                    return "Constructor";
-                }
-
-                if (method.MethodKind == MethodKind.LocalFunction)
-                {
-                    return "Local function";
-                }
+                return GetMethodKind(method);
             }
 
             return symbol.Kind.ToString();
+        }
+
+        [NotNull]
+        private static string GetMethodKind([NotNull] IMethodSymbol method)
+        {
+            switch (method.MethodKind)
+            {
+                case MethodKind.PropertyGet:
+                case MethodKind.PropertySet:
+                {
+                    return "Property accessor";
+                }
+                case MethodKind.EventAdd:
+                case MethodKind.EventRemove:
+                {
+                    return "Event accessor";
+                }
+                case MethodKind.LocalFunction:
+                {
+                    return "Local function";
+                }
+                default:
+                {
+                    return method.Kind.ToString();
+                }
+            }
         }
 
 #pragma warning disable AV1500 // Member or local function contains more than 7 statements
