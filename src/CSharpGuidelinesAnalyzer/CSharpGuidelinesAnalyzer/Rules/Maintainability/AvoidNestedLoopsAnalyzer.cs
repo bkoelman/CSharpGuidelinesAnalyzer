@@ -73,6 +73,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 LoopStatementLocation = operation.TryGetLocationForKeyword();
             }
+
+            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
+            {
+            }
         }
     }
 }
