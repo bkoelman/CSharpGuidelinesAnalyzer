@@ -278,6 +278,11 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(symbol, nameof(symbol));
 
+            if (symbol.Kind == SymbolKind.Local)
+            {
+                return "Variable";
+            }
+
             if (symbol.Kind == SymbolKind.Method && symbol is IMethodSymbol method)
             {
                 return GetMethodKind(method);

@@ -4,8 +4,9 @@ using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -32,41 +33,46 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("no", "not");
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeUnaryOperatorAction =
-            context => context.SkipInvalid(AnalyzeUnaryOperator);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeNotExpressionAction = AnalyzeNotExpression;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(AnalyzeUnaryOperatorAction, OperationKind.UnaryOperator);
+            context.RegisterSyntaxNodeAction(AnalyzeNotExpressionAction, SyntaxKind.LogicalNotExpression);
         }
 
-        private static void AnalyzeUnaryOperator(OperationAnalysisContext context)
+        private static void AnalyzeNotExpression(SyntaxNodeAnalysisContext context)
         {
-            var unaryOperator = (IUnaryOperation)context.Operation;
+            var notExpression = (PrefixUnaryExpressionSyntax)context.Node;
 
-            if (IsOperatorNot(unaryOperator))
+            ISymbol symbol = TryGetNegatingSymbol(notExpression.Operand, context.SemanticModel);
+            if (symbol != null)
             {
-                IdentifierInfo identifierInfo = unaryOperator.Operand.TryGetIdentifierInfo();
-                if (identifierInfo != null && ContainsNegatingWord(identifierInfo))
-                {
-                    string kind = identifierInfo.Kind.ToLowerInvariant();
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, unaryOperator.Syntax.GetLocation(), kind,
-                        identifierInfo.Name.ShortName));
-                }
+                context.ReportDiagnostic(Diagnostic.Create(Rule, notExpression.GetLocation(), symbol.GetKind().ToLowerInvariant(),
+                    symbol.Name));
             }
         }
 
-        private static bool IsOperatorNot([NotNull] IUnaryOperation unaryOperator)
+        [CanBeNull]
+        private static ISymbol TryGetNegatingSymbol([CanBeNull] ExpressionSyntax operand, [NotNull] SemanticModel model)
         {
-            return unaryOperator.OperatorKind == UnaryOperatorKind.Not;
+            if (operand != null)
+            {
+                ISymbol symbol = model.GetSymbolInfo(operand).Symbol;
+                if (symbol != null && ContainsNegatingWord(symbol.Name))
+                {
+                    return symbol;
+                }
+            }
+
+            return null;
         }
 
-        private static bool ContainsNegatingWord([NotNull] IdentifierInfo info)
+        private static bool ContainsNegatingWord([NotNull] string name)
         {
-            return info.Name.ShortName.GetWordsInList(NegatingWords).Any();
+            return name.GetWordsInList(NegatingWords).Any();
         }
     }
 }
