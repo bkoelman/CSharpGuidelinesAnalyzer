@@ -4,9 +4,9 @@ using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -30,37 +30,44 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLambdaExpressionAction =
-            context => context.SkipInvalid(AnalyzeLambdaExpression);
+        private static readonly SyntaxKind[] AnonymousFunctionKinds =
+        {
+            SyntaxKind.SimpleLambdaExpression,
+            SyntaxKind.ParenthesizedLambdaExpression,
+            SyntaxKind.AnonymousMethodExpression
+        };
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeAnonymousFunctionAction = AnalyzeAnonymousFunction;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(AnalyzeLambdaExpressionAction, OperationKind.AnonymousFunction);
+            context.RegisterSyntaxNodeAction(AnalyzeAnonymousFunctionAction, AnonymousFunctionKinds);
         }
 
-        private static void AnalyzeLambdaExpression(OperationAnalysisContext context)
+        private static void AnalyzeAnonymousFunction(SyntaxNodeAnalysisContext context)
         {
-            var lambdaExpression = (IAnonymousFunctionOperation)context.Operation;
+            var anonymousFunction = (AnonymousFunctionExpressionSyntax)context.Node;
 
-            if (!lambdaExpression.Symbol.Parameters.Any(IsRegularParameter))
+            if (anonymousFunction.Body == null)
             {
                 return;
             }
 
-            SyntaxNode bodySyntax = lambdaExpression.Symbol.TryGetBodySyntaxForMethod(context.CancellationToken);
-            if (bodySyntax == null)
+            if (context.SemanticModel.GetSymbolInfo(anonymousFunction, context.CancellationToken).Symbol is IMethodSymbol method)
             {
-                return;
+                if (method.Parameters.Any(IsRegularParameter))
+                {
+                    AnalyzeParameterUsage(method.Parameters, anonymousFunction.Body, context);
+                }
             }
-
-            AnalyzeParameterUsage(lambdaExpression.Symbol.Parameters, bodySyntax, context);
         }
 
         private static void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
-            [NotNull] SyntaxNode bodySyntax, OperationAnalysisContext context)
+            [NotNull] SyntaxNode bodySyntax, SyntaxNodeAnalysisContext context)
         {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
             if (dataFlowAnalysis == null)
@@ -72,9 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (IsRegularParameter(parameter) && !IsParameterUsed(parameter, dataFlowAnalysis))
                 {
-                    string functionKind = context.Operation.Syntax is AnonymousMethodExpressionSyntax
-                        ? "anonymous method"
-                        : "lambda";
+                    string functionKind = context.Node is AnonymousMethodExpressionSyntax ? "anonymous method" : "lambda";
                     context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], functionKind, parameter.Name));
                 }
             }
