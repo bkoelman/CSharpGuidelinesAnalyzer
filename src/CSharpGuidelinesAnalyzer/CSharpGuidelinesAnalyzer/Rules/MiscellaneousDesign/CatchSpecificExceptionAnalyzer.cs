@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 {
@@ -36,8 +36,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction =
-            (context, types) => context.SkipInvalid(_ => AnalyzeCatchClause(context, types));
+        private static readonly Action<SyntaxNodeAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction =
+            AnalyzeCatchClause;
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
         public override void Initialize([NotNull] AnalysisContext context)
@@ -54,8 +54,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (types.Any())
             {
-                startContext.RegisterOperationAction(context => AnalyzeCatchClauseAction(context, types),
-                    OperationKind.CatchClause);
+                startContext.RegisterSyntaxNodeAction(context => AnalyzeCatchClauseAction(context, types),
+                    SyntaxKind.CatchClause);
             }
         }
 
@@ -80,24 +80,25 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
         }
 
-        private static void AnalyzeCatchClause(OperationAnalysisContext context,
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context,
             [ItemNotNull] ImmutableArray<INamedTypeSymbol> exceptionTypes)
         {
-            var catchClause = (ICatchClauseOperation)context.Operation;
+            var catchClause = (CatchClauseSyntax)context.Node;
 
-            if (catchClause.Filter != null)
+            if (catchClause.Filter == null)
             {
-                return;
-            }
-
-            if (catchClause.ExceptionType == null || exceptionTypes.Contains(catchClause.ExceptionType))
-            {
-                Location location = catchClause.TryGetLocationForKeyword();
-                if (location != null)
+                ISymbol exceptionType = TryGetExceptionType(catchClause.Declaration, context.SemanticModel);
+                if (exceptionType == null || exceptionTypes.Contains(exceptionType))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, catchClause.CatchKeyword.GetLocation()));
                 }
             }
+        }
+
+        [CanBeNull]
+        private static ISymbol TryGetExceptionType([CanBeNull] CatchDeclarationSyntax declaration, [NotNull] SemanticModel model)
+        {
+            return declaration != null ? model.GetSymbolInfo(declaration.Type).Symbol : null;
         }
     }
 }
