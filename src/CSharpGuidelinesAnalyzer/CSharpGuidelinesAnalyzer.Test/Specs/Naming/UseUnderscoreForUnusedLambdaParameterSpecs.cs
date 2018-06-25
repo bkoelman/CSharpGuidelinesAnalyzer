@@ -10,6 +10,105 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => UseUnderscoreForUnusedLambdaParameterAnalyzer.DiagnosticId;
 
         [Fact]
+        internal void When_anonymous_method_parameter_is_unused_in_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        N(delegate(int [|x|])
+                        {
+                            return true;
+                        });
+                    }
+
+                    void N(Func<int, bool> f)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Unused anonymous method parameter 'x' should be renamed to underscore(s).");
+        }
+
+        [Fact]
+        internal void When_anonymous_method_parameters_are_unused_in_body_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        N(delegate(int [|x|], int [|y|])
+                        {
+                            return true;
+                        });
+                    }
+
+                    void N(Func<int, int, bool> f)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Unused anonymous method parameter 'x' should be renamed to underscore(s).",
+                "Unused anonymous method parameter 'y' should be renamed to underscore(s).");
+        }
+
+        [Fact]
+        internal void When_unused_anonymous_method_parameter_is_named_underscore_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        N(delegate(int _)
+                        {
+                            return true;
+                        });
+                    }
+
+                    void N(Func<int, bool> f)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_unused_anonymous_method_parameters_are_named_with_underscores_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        N(delegate(int _, int __)
+                        {
+                            return true;
+                        });
+                    }
+
+                    void N(Func<int, int, bool> f)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_lambda_parameter_is_unused_in_body_it_must_be_reported()
         {
             // Arrange

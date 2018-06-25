@@ -4,6 +4,7 @@ using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -15,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         public const string DiagnosticId = "AV1739";
 
         private const string Title = "Unused lambda parameter should be renamed to underscore(s)";
-        private const string MessageFormat = "Unused lambda parameter '{0}' should be renamed to underscore(s).";
+        private const string MessageFormat = "Unused {0} parameter '{1}' should be renamed to underscore(s).";
         private const string Description = "Use an underscore for irrelevant lambda parameters.";
 
         [NotNull]
@@ -71,7 +72,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (IsRegularParameter(parameter) && !IsParameterUsed(parameter, dataFlowAnalysis))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                    string functionKind = context.Operation.Syntax is AnonymousMethodExpressionSyntax
+                        ? "anonymous method"
+                        : "lambda";
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], functionKind, parameter.Name));
                 }
             }
         }
@@ -79,19 +83,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
         {
             return !parameter.IsSynthesized() && !ConsistsOfUnderscoresOnly(parameter.Name);
-        }
-
-        [CanBeNull]
-        private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
-        {
-            SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-            return model.SafeAnalyzeDataFlow(bodySyntax);
-        }
-
-        private static bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)
-        {
-            return dataFlowAnalysis.ReadInside.Contains(parameter) || dataFlowAnalysis.WrittenInside.Contains(parameter) ||
-                dataFlowAnalysis.Captured.Contains(parameter);
         }
 
         private static bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
@@ -105,6 +96,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
 
             return true;
+        }
+
+        [CanBeNull]
+        private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
+        {
+            SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
+            return model.SafeAnalyzeDataFlow(bodySyntax);
+        }
+
+        private static bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)
+        {
+            return dataFlowAnalysis.ReadInside.Contains(parameter) || dataFlowAnalysis.WrittenInside.Contains(parameter) ||
+                dataFlowAnalysis.Captured.Contains(parameter);
         }
     }
 }
