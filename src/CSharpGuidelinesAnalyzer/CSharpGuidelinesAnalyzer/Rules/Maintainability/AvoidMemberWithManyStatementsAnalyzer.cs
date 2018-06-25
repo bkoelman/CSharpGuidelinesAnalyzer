@@ -5,9 +5,9 @@ using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -37,38 +37,39 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
-        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction =
-            context => context.SkipInvalid(AnalyzeCodeBlock);
+        private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationBlockAction(AnalyzeCodeBlockAction);
+            context.RegisterCodeBlockAction(AnalyzeCodeBlockAction);
         }
 
-        private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
+        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
         {
+            if (context.OwningSymbol is INamedTypeSymbol || context.OwningSymbol.IsSynthesized())
+            {
+                return;
+            }
+
             var statementWalker = new StatementWalker(context.CancellationToken);
-            statementWalker.VisitBlocks(context.OperationBlocks);
+            statementWalker.Visit(context.CodeBlock);
 
             if (statementWalker.StatementCount > MaxStatementCount)
             {
-                ReportMember(context.OwningSymbol, statementWalker.StatementCount, context);
+                ReportAtContainingSymbol(statementWalker.StatementCount, context);
             }
         }
 
-        private static void ReportMember([NotNull] ISymbol member, int statementCount, OperationBlockAnalysisContext context)
+        private static void ReportAtContainingSymbol(int statementCount, CodeBlockAnalysisContext context)
         {
-            if (!member.IsSynthesized())
-            {
-                Location location = GetMemberLocation(member, context.Compilation, context.CancellationToken);
-                string memberKind = GetMemberKind(member, context.CancellationToken);
-                string memberName = member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            string kind = GetMemberKind(context.OwningSymbol, context.CancellationToken);
+            string memberName = context.OwningSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = GetMemberLocation(context.OwningSymbol, context.SemanticModel, context.CancellationToken);
 
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location, memberKind, memberName, statementCount));
-            }
+            context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind, memberName, statementCount));
         }
 
         [NotNull]
@@ -89,14 +90,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [NotNull]
-        private static Location GetMemberLocation([NotNull] ISymbol member, [NotNull] Compilation compilation,
+        private static Location GetMemberLocation([NotNull] ISymbol member, [NotNull] SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
             foreach (ArrowExpressionClauseSyntax arrowExpressionClause in member.DeclaringSyntaxReferences
                 .Select(reference => reference.GetSyntax(cancellationToken)).OfType<ArrowExpressionClauseSyntax>())
             {
-                SemanticModel semanticModel = compilation.GetSemanticModel(arrowExpressionClause.SyntaxTree);
-
                 ISymbol parentSymbol = semanticModel.GetDeclaredSymbol(arrowExpressionClause.Parent);
                 if (parentSymbol != null && parentSymbol.Locations.Any())
                 {
@@ -107,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return member.Locations[0];
         }
 
-        private sealed class StatementWalker : OperationWalker
+        private sealed class StatementWalker : CSharpSyntaxWalker
         {
             private CancellationToken cancellationToken;
 
@@ -118,128 +117,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 this.cancellationToken = cancellationToken;
             }
 
-            public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
+            public override void Visit([NotNull] SyntaxNode node)
             {
-                foreach (IOperation block in blocks)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
 
-                    Visit(block);
-                }
-            }
-
-            public override void VisitBlock([NotNull] IBlockOperation operation)
-            {
-                SyntaxNode parentSyntax = operation.Syntax?.Parent;
-
-                if (parentSyntax is CheckedStatementSyntax || parentSyntax is UnsafeStatementSyntax)
-                {
-                    // IOperation API support for checked/unsafe statements is currently unavailable.
-                    StatementCount++;
-                }
-
-                base.VisitBlock(operation);
-            }
-
-            public override void VisitVariableDeclaration([NotNull] IVariableDeclarationOperation operation)
-            {
-                if (operation.Syntax?.Parent is FixedStatementSyntax)
-                {
-                    // IOperation API support for fixed statements is currently unavailable.
-                    StatementCount++;
-                }
-
-                base.VisitVariableDeclaration(operation);
-            }
-
-            public override void VisitBranch([NotNull] IBranchOperation operation)
-            {
-                IncrementStatementCount(operation);
-            }
-
-            public override void VisitEmpty([NotNull] IEmptyOperation operation)
-            {
-                IncrementStatementCount(operation);
-            }
-
-            public override void VisitExpressionStatement([NotNull] IExpressionStatementOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitExpressionStatement(operation);
-            }
-
-            public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitForEachLoop(operation);
-            }
-
-            public override void VisitForLoop([NotNull] IForLoopOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitForLoop(operation);
-            }
-
-            public override void VisitConditional([NotNull] IConditionalOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitConditional(operation);
-            }
-
-            public override void VisitLock([NotNull] ILockOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitLock(operation);
-            }
-
-            public override void VisitReturn([NotNull] IReturnOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitReturn(operation);
-            }
-
-            public override void VisitSwitch([NotNull] ISwitchOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitSwitch(operation);
-            }
-
-            public override void VisitThrow([NotNull] IThrowOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitThrow(operation);
-            }
-
-            public override void VisitTry([NotNull] ITryOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitTry(operation);
-            }
-
-            public override void VisitUsing([NotNull] IUsingOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitUsing(operation);
-            }
-
-            public override void VisitVariableDeclarationGroup([NotNull] IVariableDeclarationGroupOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitVariableDeclarationGroup(operation);
-            }
-
-            public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
-            {
-                IncrementStatementCount(operation);
-                base.VisitWhileLoop(operation);
-            }
-
-            private void IncrementStatementCount([CanBeNull] IOperation operation)
-            {
-                if (operation != null && !operation.IsImplicit && operation.IsStatement())
+                if (IsStatement(node))
                 {
                     StatementCount++;
                 }
+
+                base.Visit(node);
+            }
+
+            private bool IsStatement([NotNull] SyntaxNode node)
+            {
+                return !node.IsMissing && node is StatementSyntax && !IsExcludedStatement(node);
+            }
+
+            private bool IsExcludedStatement([NotNull] SyntaxNode node)
+            {
+                return node is BlockSyntax || node is LabeledStatementSyntax || node is LocalFunctionStatementSyntax;
             }
         }
     }
