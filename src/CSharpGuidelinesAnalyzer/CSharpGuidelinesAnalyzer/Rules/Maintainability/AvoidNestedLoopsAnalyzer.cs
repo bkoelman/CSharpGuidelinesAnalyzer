@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Immutable;
-using CSharpGuidelinesAnalyzer.Extensions;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -28,25 +29,42 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLoopStatementAction =
-            context => context.SkipInvalid(AnalyzeLoopStatement);
+        private static readonly SyntaxKind[] LoopStatementKinds =
+        {
+            SyntaxKind.WhileStatement,
+            SyntaxKind.DoStatement,
+            SyntaxKind.ForStatement,
+            SyntaxKind.ForEachStatement,
+            SyntaxKind.ForEachVariableStatement
+        };
+
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLoopStatementAction = AnalyzeLoopStatement;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(AnalyzeLoopStatementAction, OperationKind.Loop);
+            context.RegisterSyntaxNodeAction(AnalyzeLoopStatementAction, LoopStatementKinds);
         }
 
-        private static void AnalyzeLoopStatement(OperationAnalysisContext context)
+        [NotNull]
+        private static readonly LoopBodyLocator BodyLocator = new LoopBodyLocator();
+
+        private static void AnalyzeLoopStatement(SyntaxNodeAnalysisContext context)
         {
-            var loopStatement = (ILoopOperation)context.Operation;
+            StatementSyntax loopBody = BodyLocator.Visit(context.Node);
+            if (loopBody != null)
+            {
+                AnalyzeLoopBody(loopBody, context);
+            }
+        }
 
-            var walker = new LoopBodyWalker();
-            walker.Visit(loopStatement.Body);
-
-            context.CancellationToken.ThrowIfCancellationRequested();
+        private static void AnalyzeLoopBody([NotNull] StatementSyntax loopBody, SyntaxNodeAnalysisContext context)
+        {
+            var walker = new LoopLocationWalker(context.CancellationToken);
+            walker.Visit(loopBody);
 
             if (walker.LoopStatementLocation != null)
             {
@@ -54,27 +72,96 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private sealed class LoopBodyWalker : ExplicitOperationWalker
+        private sealed class LoopBodyLocator : CSharpSyntaxVisitor<StatementSyntax>
         {
+            [NotNull]
+            public override StatementSyntax VisitWhileStatement([NotNull] WhileStatementSyntax node)
+            {
+                return node.Statement;
+            }
+
+            [NotNull]
+            public override StatementSyntax VisitDoStatement([NotNull] DoStatementSyntax node)
+            {
+                return node.Statement;
+            }
+
+            [CanBeNull]
+            public override StatementSyntax VisitForStatement([NotNull] ForStatementSyntax node)
+            {
+                return node.Statement;
+            }
+
+            [CanBeNull]
+            public override StatementSyntax VisitForEachStatement([NotNull] ForEachStatementSyntax node)
+            {
+                return node.Statement;
+            }
+
+            [CanBeNull]
+            public override StatementSyntax VisitForEachVariableStatement([NotNull] ForEachVariableStatementSyntax node)
+            {
+                return node.Statement;
+            }
+        }
+
+        private sealed class LoopLocationWalker : CSharpSyntaxWalker
+        {
+            private CancellationToken cancellationToken;
+
             [CanBeNull]
             public Location LoopStatementLocation { get; private set; }
 
-            public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
+            public LoopLocationWalker(CancellationToken cancellationToken)
             {
-                LoopStatementLocation = operation.TryGetLocationForKeyword();
+                this.cancellationToken = cancellationToken;
             }
 
-            public override void VisitForLoop([NotNull] IForLoopOperation operation)
+            public override void Visit([NotNull] SyntaxNode node)
             {
-                LoopStatementLocation = operation.TryGetLocationForKeyword();
+                cancellationToken.ThrowIfCancellationRequested();
+
+                base.Visit(node);
             }
 
-            public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
+            public override void VisitWhileStatement([NotNull] WhileStatementSyntax node)
             {
-                LoopStatementLocation = operation.TryGetLocationForKeyword();
+                LoopStatementLocation = node.WhileKeyword.GetLocation();
             }
 
-            public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
+            public override void VisitDoStatement([NotNull] DoStatementSyntax node)
+            {
+                LoopStatementLocation = node.DoKeyword.GetLocation();
+            }
+
+            public override void VisitForStatement([NotNull] ForStatementSyntax node)
+            {
+                LoopStatementLocation = node.ForKeyword.GetLocation();
+            }
+
+            public override void VisitForEachStatement([NotNull] ForEachStatementSyntax node)
+            {
+                LoopStatementLocation = node.ForEachKeyword.GetLocation();
+            }
+
+            public override void VisitForEachVariableStatement([NotNull] ForEachVariableStatementSyntax node)
+            {
+                LoopStatementLocation = node.ForEachKeyword.GetLocation();
+            }
+
+            public override void VisitLocalFunctionStatement([NotNull] LocalFunctionStatementSyntax node)
+            {
+            }
+
+            public override void VisitSimpleLambdaExpression([NotNull] SimpleLambdaExpressionSyntax node)
+            {
+            }
+
+            public override void VisitParenthesizedLambdaExpression([NotNull] ParenthesizedLambdaExpressionSyntax node)
+            {
+            }
+
+            public override void VisitAnonymousMethodExpression([NotNull] AnonymousMethodExpressionSyntax node)
             {
             }
         }
