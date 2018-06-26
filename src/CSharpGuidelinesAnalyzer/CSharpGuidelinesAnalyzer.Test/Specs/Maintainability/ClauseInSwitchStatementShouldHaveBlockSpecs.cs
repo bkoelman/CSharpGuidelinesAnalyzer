@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                         {
                             case ""A"":
                             case ""B"":
-                                ret;
+                                #;
                         }
                     }
                 ")

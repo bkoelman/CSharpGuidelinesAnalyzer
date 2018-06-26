@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
-using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 {
@@ -29,39 +28,35 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeSwitchCaseAction =
-            context => context.SkipInvalid(AnalyzeSwitchCase);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeSwitchSectionAction = AnalyzeSwitchSection;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterOperationAction(AnalyzeSwitchCaseAction, OperationKind.SwitchCase);
+            context.RegisterSyntaxNodeAction(AnalyzeSwitchSectionAction, SyntaxKind.SwitchSection);
         }
 
-        private static void AnalyzeSwitchCase(OperationAnalysisContext context)
+        private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
         {
-            var switchCase = (ISwitchCaseOperation)context.Operation;
+            var switchSection = (SwitchSectionSyntax)context.Node;
 
-            if (switchCase.Body.Length > 0)
+            if (switchSection.Statements.Count > 0 && !SectionHasBlock(switchSection))
             {
-                if (!(switchCase.Body[0] is IBlockOperation))
-                {
-                    ReportAtLastClause(switchCase, context);
-                }
+                ReportAtLastLabel(switchSection, context);
             }
         }
 
-        private static void ReportAtLastClause([NotNull] ISwitchCaseOperation switchCase, OperationAnalysisContext context)
+        private static bool SectionHasBlock([NotNull] SwitchSectionSyntax switchSection)
         {
-            ICaseClauseOperation lastClause = switchCase.Clauses.Last();
+            return switchSection.Statements[0] is BlockSyntax;
+        }
 
-            Location location = lastClause.TryGetLocationForKeyword();
-            if (location != null)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location));
-            }
+        private static void ReportAtLastLabel([NotNull] SwitchSectionSyntax switchSection, SyntaxNodeAnalysisContext context)
+        {
+            SwitchLabelSyntax lastLabel = switchSection.Labels.Last();
+            context.ReportDiagnostic(Diagnostic.Create(Rule, lastLabel.Keyword.GetLocation()));
         }
     }
 }
