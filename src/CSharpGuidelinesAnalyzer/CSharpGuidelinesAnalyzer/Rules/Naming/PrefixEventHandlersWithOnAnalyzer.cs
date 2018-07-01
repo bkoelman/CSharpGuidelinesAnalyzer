@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -41,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private static void AnalyzeEventAssignment(OperationAnalysisContext context)
         {
-            var assignment = (IEventAssignmentOperation)context.Operation;
+            var assignment = new PortableEventAssignmentOperation((IEventAssignmentOperation)context.Operation);
 
             if (!assignment.Adds)
             {
@@ -58,16 +59,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         private static void AnalyzeEventAssignmentMethod([NotNull] IMethodReferenceOperation binding,
-            [NotNull] IEventAssignmentOperation assignment, OperationAnalysisContext context)
+            [NotNull] PortableEventAssignmentOperation assignment, OperationAnalysisContext context)
         {
-            string eventTargetName = GetEventTargetName(assignment.EventReference, binding.Method);
-            string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.EventReference.Event.Name);
-
-            string handlerNameActual = binding.Method.Name;
-            if (handlerNameActual != handlerNameExpected)
+            if (assignment.EventReference != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(),
-                    handlerNameActual, assignment.EventReference.Event.Name, handlerNameExpected));
+                string eventTargetName = GetEventTargetName(assignment.EventReference, binding.Method);
+                string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.EventReference.Event.Name);
+
+                string handlerNameActual = binding.Method.Name;
+                if (handlerNameActual != handlerNameExpected)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(),
+                        handlerNameActual, assignment.EventReference.Event.Name, handlerNameExpected));
+                }
             }
         }
 
@@ -125,6 +129,41 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             bool isEventLocal = eventContainingType.Equals(targetMethod.ContainingType);
             return isEventLocal ? string.Empty : eventContainingType.Name;
+        }
+
+        private sealed class PortableEventAssignmentOperation
+        {
+            [NotNull]
+            private readonly IEventAssignmentOperation operation;
+
+            public PortableEventAssignmentOperation([NotNull] IEventAssignmentOperation operation)
+            {
+                Guard.NotNull(operation, nameof(operation));
+
+                this.operation = operation;
+                EventReference = TryGetEventReference(operation);
+            }
+
+            [CanBeNull]
+            public IEventReferenceOperation EventReference { get; }
+
+            [NotNull]
+            public IOperation HandlerValue => operation.HandlerValue;
+
+            public bool Adds => operation.Adds;
+
+            [CanBeNull]
+            private static IEventReferenceOperation TryGetEventReference([NotNull] IEventAssignmentOperation operation)
+            {
+                // Breaking change in Microoft.CodeAnalysis v2.9:
+                // type of IEventAssignmentOperation.EventReference was changed from IEventReferenceOperation to IOperation.
+                PropertyInfo propertyInfo = typeof(IEventAssignmentOperation).GetRuntimeProperty("EventReference");
+                object propertyValue = propertyInfo.GetMethod.Invoke(operation, Array.Empty<object>());
+
+                return typeof(IEventReferenceOperation).GetTypeInfo().IsAssignableFrom(propertyValue.GetType().GetTypeInfo())
+                    ? (IEventReferenceOperation)propertyValue
+                    : null;
+            }
         }
     }
 }
