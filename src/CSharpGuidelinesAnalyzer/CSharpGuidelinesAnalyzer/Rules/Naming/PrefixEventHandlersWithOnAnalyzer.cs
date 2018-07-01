@@ -134,31 +134,39 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private sealed class PortableEventAssignmentOperation
         {
             [NotNull]
-            private readonly IEventAssignmentOperation operation;
+            private static readonly MethodInfo EventReferencePropertyGetMethod = ResolveEventReferencePropertyGetMethod();
+
+            [NotNull]
+            private readonly IEventAssignmentOperation innerOperation;
+
+            [CanBeNull]
+            public IEventReferenceOperation EventReference => InvokeEventReferencePropertyGetMethod();
+
+            [NotNull]
+            public IOperation HandlerValue => innerOperation.HandlerValue;
+
+            public bool Adds => innerOperation.Adds;
 
             public PortableEventAssignmentOperation([NotNull] IEventAssignmentOperation operation)
             {
                 Guard.NotNull(operation, nameof(operation));
-
-                this.operation = operation;
-                EventReference = TryGetEventReference(operation);
+                innerOperation = operation;
             }
 
-            [CanBeNull]
-            public IEventReferenceOperation EventReference { get; }
-
             [NotNull]
-            public IOperation HandlerValue => operation.HandlerValue;
-
-            public bool Adds => operation.Adds;
-
-            [CanBeNull]
-            private static IEventReferenceOperation TryGetEventReference([NotNull] IEventAssignmentOperation operation)
+            private static MethodInfo ResolveEventReferencePropertyGetMethod()
             {
                 // Breaking change in Microoft.CodeAnalysis v2.9:
                 // type of IEventAssignmentOperation.EventReference was changed from IEventReferenceOperation to IOperation.
+
                 PropertyInfo propertyInfo = typeof(IEventAssignmentOperation).GetRuntimeProperty("EventReference");
-                object propertyValue = propertyInfo.GetMethod.Invoke(operation, Array.Empty<object>());
+                return propertyInfo.GetMethod;
+            }
+
+            [CanBeNull]
+            private IEventReferenceOperation InvokeEventReferencePropertyGetMethod()
+            {
+                object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, Array.Empty<object>());
 
                 return typeof(IEventReferenceOperation).GetTypeInfo().IsAssignableFrom(propertyValue.GetType().GetTypeInfo())
                     ? (IEventReferenceOperation)propertyValue
