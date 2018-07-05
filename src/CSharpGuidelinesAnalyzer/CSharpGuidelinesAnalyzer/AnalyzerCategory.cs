@@ -4,7 +4,7 @@ namespace CSharpGuidelinesAnalyzer
 {
     internal sealed class AnalyzerCategory
     {
-        private const string CommitHash = "f317fda591167ba937a8dadf6723a0e8e412b705";
+        private const string CommitHash = "1a90b74c95225a0f7e4d0e7a341fd027e17c2320";
 
         [NotNull]
         public string DisplayName { get; }
