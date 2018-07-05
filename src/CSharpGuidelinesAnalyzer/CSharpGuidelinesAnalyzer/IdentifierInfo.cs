@@ -10,17 +10,12 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public ITypeSymbol Type { get; }
 
-        [NotNull]
-        public string Kind { get; }
-
-        public IdentifierInfo(IdentifierName name, [NotNull] ITypeSymbol type, [NotNull] string kind)
+        public IdentifierInfo(IdentifierName name, [NotNull] ITypeSymbol type)
         {
             Guard.NotNull(type, nameof(type));
-            Guard.NotNullNorWhiteSpace(kind, nameof(kind));
 
             Name = name;
             Type = type;
-            Kind = kind;
         }
     }
 }

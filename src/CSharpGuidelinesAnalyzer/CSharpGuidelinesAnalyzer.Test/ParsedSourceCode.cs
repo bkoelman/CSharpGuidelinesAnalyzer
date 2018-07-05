@@ -3,7 +3,7 @@ using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test
 {
-    public sealed class ParsedSourceCode
+    internal sealed class ParsedSourceCode
     {
         [NotNull]
         public AnalyzerTestContext TestContext { get; }

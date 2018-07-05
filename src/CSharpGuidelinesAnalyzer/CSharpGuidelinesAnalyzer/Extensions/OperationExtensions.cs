@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.Local.Name,
                     operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
-                return new IdentifierInfo(name, operation.Local.Type, "Variable");
+                return new IdentifierInfo(name, operation.Local.Type);
             }
 
             [NotNull]
@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 var name = new IdentifierName(operation.Parameter.Name,
                     /* CSharpShortErrorMessageFormat returns 'int', ie. without parameter name */
                     operation.Parameter.Name);
-                return new IdentifierInfo(name, operation.Parameter.Type, operation.Parameter.Kind.ToString());
+                return new IdentifierInfo(name, operation.Parameter.Type);
             }
 
             [NotNull]
@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.Member.Name,
                     operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
-                return new IdentifierInfo(name, memberType, operation.Member.Kind.ToString());
+                return new IdentifierInfo(name, memberType);
             }
 
             [NotNull]
@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.TargetMethod.Name,
                     operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
-                return new IdentifierInfo(name, operation.TargetMethod.ReturnType, operation.TargetMethod.GetKind());
+                return new IdentifierInfo(name, operation.TargetMethod.ReturnType);
             }
         }
 
