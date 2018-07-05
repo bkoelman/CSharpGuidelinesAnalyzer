@@ -9,6 +9,7 @@ namespace CSharpGuidelinesAnalyzer.Test
             [NotNull] [ItemNotNull] params string[] messages)
         {
             Guard.NotNull(source, nameof(source));
+            Guard.NotNull(messages, nameof(messages));
 
             AssertDiagnostics(source.TestContext, messages);
         }
