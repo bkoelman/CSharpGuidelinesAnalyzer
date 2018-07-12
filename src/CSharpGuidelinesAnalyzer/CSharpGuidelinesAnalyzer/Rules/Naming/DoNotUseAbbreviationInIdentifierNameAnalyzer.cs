@@ -239,11 +239,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             var creationExpression = (IAnonymousObjectCreationOperation)context.Operation;
 
-            foreach (IPropertySymbol property in creationExpression.Type.GetMembers().OfType<IPropertySymbol>())
+            if (!creationExpression.IsImplicit)
             {
-                if (IsBlacklistedOrSingleLetter(property.Name))
+                foreach (IPropertySymbol property in creationExpression.Type.GetMembers().OfType<IPropertySymbol>())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name));
+                    if (IsBlacklistedOrSingleLetter(property.Name))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name));
+                    }
                 }
             }
         }
