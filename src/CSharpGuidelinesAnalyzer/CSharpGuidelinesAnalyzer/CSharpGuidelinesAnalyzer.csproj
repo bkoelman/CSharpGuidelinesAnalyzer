@@ -53,16 +53,4 @@
     <Message Importance="High" Text="Setting PackageVersion to $(PackageVersion)" />
   </Target>
   -->
-  <Target Name="CopyExternalAnnotations" BeforeTargets="BeforeBuild" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
-    <PropertyGroup>
-      <ExternalAnnotationsVersion>10.2.55</ExternalAnnotationsVersion>
-      <ExternalAnnotationsSourceDir>"$(USERPROFILE)\.nuget\packages\JetBrains.ExternalAnnotations\$(ExternalAnnotationsVersion)\DotFiles\ExternalAnnotations\*.xml"</ExternalAnnotationsSourceDir>
-      <ExternalAnnotationsTargetDir>"$(LOCALAPPDATA)\JetBrains\Installations\ReSharperPlatformVs15\ExternalAnnotations"</ExternalAnnotationsTargetDir>
-    </PropertyGroup>
-
-    <Message Importance="High" Text="Copying External Annotations from: $(ExternalAnnotationsSourceDir) to: $(ExternalAnnotationsTargetDir)" />
-    <Exec Command="xcopy $(ExternalAnnotationsSourceDir) $(ExternalAnnotationsTargetDir) /s /i /r /y /q /d" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
-    </Exec>
-  </Target>
 </Project>
