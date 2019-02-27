@@ -38,10 +38,10 @@
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.0.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.29" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.55" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
-    <PackageReference Include="ResharperCodeContractNullability" Version="1.0.9" PrivateAssets="all" />
+    <PackageReference Include="ResharperCodeContractNullability" Version="1.0.10" PrivateAssets="all" />
   </ItemGroup>
   <!--
     To bypass the NuGet cache during install/uninstall debugging, uncomment the target below.
@@ -55,7 +55,7 @@
   -->
   <Target Name="CopyExternalAnnotations" BeforeTargets="BeforeBuild" Condition="'$(BuildingInsideVisualStudio)' != 'true'">
     <PropertyGroup>
-      <ExternalAnnotationsVersion>10.2.29</ExternalAnnotationsVersion>
+      <ExternalAnnotationsVersion>10.2.55</ExternalAnnotationsVersion>
       <ExternalAnnotationsSourceDir>"$(USERPROFILE)\.nuget\packages\JetBrains.ExternalAnnotations\$(ExternalAnnotationsVersion)\DotFiles\ExternalAnnotations\*.xml"</ExternalAnnotationsSourceDir>
       <ExternalAnnotationsTargetDir>"$(LOCALAPPDATA)\JetBrains\Installations\ReSharperPlatformVs15\ExternalAnnotations"</ExternalAnnotationsTargetDir>
     </PropertyGroup>
