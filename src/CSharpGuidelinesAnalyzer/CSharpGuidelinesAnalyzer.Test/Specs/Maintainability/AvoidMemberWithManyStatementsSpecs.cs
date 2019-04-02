@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
-        [Fact(Skip = "https://github.com/dotnet/roslyn/issues/26520")]
+        [Fact]
         internal void When_constructor_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
@@ -259,7 +259,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
-        [Fact(Skip = "https://github.com/dotnet/roslyn/issues/26520")]
+        [Fact]
         internal void When_static_constructor_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
@@ -309,7 +309,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
 
-        [Fact(Skip = "https://github.com/dotnet/roslyn/issues/26520")]
+        [Fact]
         internal void When_destructor_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
