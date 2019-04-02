@@ -38,10 +38,10 @@
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.0.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.55" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
-    <PackageReference Include="ResharperCodeContractNullability" Version="1.0.10" PrivateAssets="all" />
+    <PackageReference Include="ResharperCodeContractNullability" Version="2.0.0" PrivateAssets="all" />
   </ItemGroup>
   <!--
     To bypass the NuGet cache during install/uninstall debugging, uncomment the target below.
