@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using FluentAssertions;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
@@ -2761,6 +2762,139 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source,
                 "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements.");
         }
+
+        #region Non-default configuration
+
+        [Fact]
+        internal void When_method_body_contains_seventeen_statements_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxStatementCount", "16"))
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int [|M|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ; ;
+                            ; ; ; ;
+                            ; ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements.");
+        }
+
+        [Fact]
+        public void When_settings_are_corrupt_it_must_use_default_value()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings("*** BAD XML ***")
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int [|M|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        public void When_setting_is_missing_it_must_use_default_value()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "OtherUnusedSetting", "SomeValue"))
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int [|M|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        public void When_setting_value_is_missing_it_must_use_default_value()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxStatementCount", null))
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int [|M|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+        }
+
+        [Fact]
+        public void When_setting_value_is_out_of_range_it_must_fail()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxStatementCount", "-1"))
+                .InGlobalScope(@"
+                    class C
+                    {
+                        int [|M|](string s)
+                        {
+                            ; ; ; ;
+                            ; ; ;
+                            throw null;
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act
+            Action action = () => VerifyGuidelineDiagnostic(source);
+
+            // Assert
+            action.Should().Throw<Exception>()
+                .WithMessage("*Value for AV1500:MaxStatementCount configuration setting must be in range 0-255.*");
+        }
+
+        #endregion
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
