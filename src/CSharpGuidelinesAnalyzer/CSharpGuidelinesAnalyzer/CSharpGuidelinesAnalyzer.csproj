@@ -7,16 +7,16 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
-    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
+    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>3.0.1-pre</Version>
+    <Version>3.1.0</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 Update 5 or higher.</Description>
-    <PackageReleaseNotes>Updated for CSharpGuidelines v5.3.0 and C# v7.3. Major performance improvements and numerous bugfixes. New analyzers: AV1210, AV1506, AV1562, AV2202, AV2220. Removed: AV2215.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added configuration support for MaxStatementCount in AV1500 and MaxParameterCount in AV1561.</PackageReleaseNotes>
     <Copyright>Apache License, Version 2.0</Copyright>
     <PackageTags>csharp c# coding guidelines analyzer</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
@@ -37,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
-    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.0.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.55" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
