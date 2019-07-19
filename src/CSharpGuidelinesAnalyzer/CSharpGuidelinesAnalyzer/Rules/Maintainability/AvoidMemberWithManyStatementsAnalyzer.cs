@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
+using CSharpGuidelinesAnalyzer.Settings;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -16,15 +17,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         public const string DiagnosticId = "AV1500";
 
-        private const int MaxStatementCount = 7;
-        private const string MaxStatementCountText = "7";
+        private const int DefaultMaxStatementCount = 7;
 
-        private const string Title = "Member or local function contains more than " + MaxStatementCountText + " statements";
-
-        private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of " +
-            MaxStatementCountText + " statements.";
-
-        private const string Description = "Methods should not exceed " + MaxStatementCountText + " statements.";
+        private const string Title = "Member or local function contains too many statements";
+        private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of {3} statements.";
+        private const string Description = "Methods should not exceed a predefined number of statements.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -37,17 +34,35 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
-        private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
+        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCodeBlockAction(AnalyzeCodeBlockAction);
+            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
         }
 
-        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
+        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        {
+            Guard.NotNull(startContext, nameof(startContext));
+
+            int maxStatementCount = GetMaxStatementCountFromSettings(startContext.Options, startContext.CancellationToken);
+
+            startContext.RegisterCodeBlockAction(actionContext => AnalyzeCodeBlock(actionContext, maxStatementCount));
+        }
+
+        private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerOptions options,
+            CancellationToken cancellationToken)
+        {
+            AnalyzerSettingsRegistry registry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
+
+            var settingKey = new AnalyzerSettingKey(DiagnosticId, "MaxStatementCount");
+            return registry.TryGetInt32(settingKey, 0, 255) ?? DefaultMaxStatementCount;
+        }
+
+        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, int maxStatementCount)
         {
             if (context.OwningSymbol is INamedTypeSymbol || context.OwningSymbol.IsSynthesized())
             {
@@ -57,19 +72,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             var statementWalker = new StatementWalker(context.CancellationToken);
             statementWalker.Visit(context.CodeBlock);
 
-            if (statementWalker.StatementCount > MaxStatementCount)
+            if (statementWalker.StatementCount > maxStatementCount)
             {
-                ReportAtContainingSymbol(statementWalker.StatementCount, context);
+                ReportAtContainingSymbol(statementWalker.StatementCount, maxStatementCount, context);
             }
         }
 
-        private static void ReportAtContainingSymbol(int statementCount, CodeBlockAnalysisContext context)
+        private static void ReportAtContainingSymbol(int statementCount, int maxStatementCount, CodeBlockAnalysisContext context)
         {
             string kind = GetMemberKind(context.OwningSymbol, context.CancellationToken);
             string memberName = context.OwningSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             Location location = GetMemberLocation(context.OwningSymbol, context.SemanticModel, context.CancellationToken);
 
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind, memberName, statementCount));
+            context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind, memberName, statementCount, maxStatementCount));
         }
 
         [NotNull]

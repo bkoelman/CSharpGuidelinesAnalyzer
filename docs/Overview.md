@@ -49,6 +49,8 @@ This analyzer reports when a method return type is `IEnumerable` or `IEnumerable
 ### [AV1500](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/1500_MaintainabilityGuidelines.md#av1500): Methods should not exceed 7 statements ![](/images/warn.png "severity: warning")
 This analyzer reports when a method body (such as a method, property getter or local function) contains more than 7 statements.
 
+**Note:** This rule can be customized using a [configuration file](/docs/Configuration.md) by setting **MaxStatementCount** to a value in range 0-255.
+
 ### [AV1502](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/1500_MaintainabilityGuidelines.md#av1502): Avoid conditions with double negatives ![](/images/warn.png "severity: warning")
 This analyzer reports when the logical not operator is applied on an argument that has the word "No" or "Not" in its name.
 
@@ -99,6 +101,8 @@ This analyzer reports when a method, constructor, local function, indexer or del
 - declares more than three parameters
 - declares a tuple parameter
 - returns a tuple with more than 2 elements.
+
+**Note:** This rule can be customized using a [configuration file](/docs/Configuration.md) by setting **MaxParameterCount** to a value in range 0-255.
 
 ### [AV1562](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/1500_MaintainabilityGuidelines.md#av1562): Don't use ref or out parameters ![](/images/warn.png "severity: warning")
 This analyzer reports when:

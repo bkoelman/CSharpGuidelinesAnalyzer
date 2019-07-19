@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using FluentAssertions;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
@@ -715,6 +717,107 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             VerifyGuidelineDiagnostic(source,
                 "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
         }
+
+        #region Non-default configuration
+
+        [Fact]
+        internal void When_method_contains_nine_parameters_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxParameterCount", "8"))
+                .InDefaultClass(@"
+                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters.");
+        }
+
+        [Fact]
+        internal void When_settings_are_corrupt_it_must_use_default_value()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .WithSettings("*** BAD XML ***")
+                .InDefaultClass(@"
+                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 3 parameters.");
+        }
+
+        [Fact]
+        internal void When_setting_is_missing_it_must_use_default_value()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "OtherUnusedSetting", "SomeValue"))
+                .InDefaultClass(@"
+                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 3 parameters.");
+        }
+
+        [Fact]
+        internal void When_setting_value_is_missing_it_must_use_default_value()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxParameterCount", null))
+                .InDefaultClass(@"
+                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 3 parameters.");
+        }
+
+        [Fact]
+        internal void When_setting_value_is_out_of_range_it_must_fail()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxParameterCount", "-1"))
+                .InDefaultClass(@"
+                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act
+            Action action = () => VerifyGuidelineDiagnostic(source);
+
+            // Assert
+            action.Should().Throw<Exception>()
+                .WithMessage("*Value for AV1561:MaxParameterCount configuration setting must be in range 0-255.*");
+        }
+
+        #endregion
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
