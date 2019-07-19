@@ -3,20 +3,20 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/q37dldfggtcwf6u4/branch/master?svg=true)](https://ci.appveyor.com/project/bkoelman/csharpguidelinesanalyzer/branch/master)
 [![codecov](https://codecov.io/gh/bkoelman/CSharpGuidelinesAnalyzer/branch/master/graph/badge.svg)](https://codecov.io/gh/bkoelman/CSharpGuidelinesAnalyzer)
 
-This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines). 
+This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines).
 
-Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), for which [a layer file is provided](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md).
-See [Overview](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Overview.md) for the list of supported rules.
+Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), for which [a layer file is provided](/docs/Resharper%20Settings.md).
+See [Overview](/docs/Overview.md) for the list of supported rules.
 
 ![Analyzer in action](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/gh-pages/images/analyzer-in-action.png)
 
 ## Get started
 
-The latest version requires [Visual Studio 2017 with Update 5](https://www.visualstudio.com/) or higher. To get instant feedback on all files in your solution, activate [Full Solution Analysis](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Full%20Solution%20Analysis.md).
+The latest version requires [Visual Studio 2017 with Update 5](https://www.visualstudio.com/) or higher. To get instant feedback on all files in your solution, activate [Full Solution Analysis](/docs/Full%20Solution%20Analysis.md).
 
 * From the NuGet package manager console:
 
-  `Install-Package CSharpGuidelinesAnalyzer` 
+  `Install-Package CSharpGuidelinesAnalyzer`
 
   or, if you are using Visual Studio 2017 with Update 3:
 
@@ -28,7 +28,7 @@ The latest version requires [Visual Studio 2017 with Update 5](https://www.visua
 
 * Rebuild your solution
 
-* Optional: [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/blob/master/docs/Resharper%20Settings.md)
+* Optional: [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](/docs/Resharper%20Settings.md)
 
 ## Suppressing rules
 Rule warnings can be suppressed at various scopes, ranging from per line to at the project or solution level.
