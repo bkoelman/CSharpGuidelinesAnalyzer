@@ -30,6 +30,9 @@ The latest version requires [Visual Studio 2017 with Update 5](https://www.visua
 
 * Optional: [Reference CSharpGuidelines.Layer.DotSettings in your existing Resharper preferences](/docs/Resharper%20Settings.md)
 
+## Rule configuration
+The behavior of a few rules can optionally be customized using a configuration file. See [documentation](docs/Configuration.md) for details.
+
 ## Suppressing rules
 Rule warnings can be suppressed at various scopes, ranging from per line to at the project or solution level.
 
