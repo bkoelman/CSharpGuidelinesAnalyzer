@@ -7,9 +7,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
-    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
+    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>3.1.0</Version>
+    <Version>3.1.1-pre</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -37,6 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.55" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
