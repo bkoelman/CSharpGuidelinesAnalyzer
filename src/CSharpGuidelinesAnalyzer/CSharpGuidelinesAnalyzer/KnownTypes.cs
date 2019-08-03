@@ -78,6 +78,22 @@ namespace CSharpGuidelinesAnalyzer
         }
 
         [CanBeNull]
+        public static INamedTypeSymbol SystemThreadingTasksValueTask([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemThreadingTasksValueTaskT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask`1");
+        }
+
+        [CanBeNull]
         public static INamedTypeSymbol SystemCollectionsGenericEqualityComparerT([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));

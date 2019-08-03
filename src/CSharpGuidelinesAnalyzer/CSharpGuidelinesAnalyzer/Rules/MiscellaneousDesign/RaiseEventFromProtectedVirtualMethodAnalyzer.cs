@@ -75,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             IEventSymbol evnt = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
             if (evnt != null)
             {
-                IMethodSymbol containingMethod = TryGetContainingMethod(invocation, context);
+                IMethodSymbol containingMethod = invocation.TryGetContainingMethod(context.Compilation);
                 AnalyzeContainingMethod(containingMethod, evnt, context);
             }
         }
@@ -132,14 +132,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
 
             return null;
-        }
-
-        [CanBeNull]
-        private static IMethodSymbol TryGetContainingMethod([NotNull] IInvocationOperation invocation,
-            OperationAnalysisContext context)
-        {
-            SemanticModel model = context.Compilation.GetSemanticModel(invocation.Syntax.SyntaxTree);
-            return model.GetEnclosingSymbol(invocation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
         }
 
         private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,

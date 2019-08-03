@@ -510,5 +510,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             return currentOperation;
         }
+
+        [CanBeNull]
+        public static IMethodSymbol TryGetContainingMethod([NotNull] this IOperation operation, [NotNull] Compilation compilation)
+        {
+            SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
+            return model.GetEnclosingSymbol(operation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
+        }
     }
 }

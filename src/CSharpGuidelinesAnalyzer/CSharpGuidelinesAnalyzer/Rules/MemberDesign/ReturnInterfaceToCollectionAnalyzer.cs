@@ -58,7 +58,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 return;
             }
 
-            if (IsArray(method.ReturnType) || IsClassOrStructThatImplementsIEnumerable(method))
+            if (IsArray(method.ReturnType) || IsClassOrStructThatImplementsIEnumerable(method.ReturnType))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
                     method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
@@ -81,9 +81,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             return type.TypeKind == TypeKind.Array;
         }
 
-        private static bool IsClassOrStructThatImplementsIEnumerable([NotNull] IMethodSymbol method)
+        private static bool IsClassOrStructThatImplementsIEnumerable([NotNull] ITypeSymbol type)
         {
-            return IsClassOrStruct(method.ReturnType) && TypeImplementsIEnumerable(method.ReturnType);
+            return IsClassOrStruct(type) && TypeImplementsIEnumerable(type);
         }
 
         private static bool IsClassOrStruct([NotNull] ITypeSymbol type)

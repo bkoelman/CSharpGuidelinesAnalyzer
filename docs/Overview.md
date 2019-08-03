@@ -22,6 +22,9 @@ This analyzer reports when a member has the word "And" in its name.
 ### [AV1130](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/1100_MemberDesignGuidelines.md#av1130): Return an `IEnumerable<T>` or `ICollection<T>` instead of a concrete collection class ![](/images/warn.png "severity: warning")
 This analyzer reports when a method return type is a `class` or `struct` that implements `IEnumerable` and is not an immutable collection.
 
+### [AV1135](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/1100_MemberDesignGuidelines.md#av1135): Properties, arguments and return values representing strings or collections should never be `null` ![](/images/warn.png "severity: warning")
+This analyzer reports when `null` is returned from a method, local function, lambda expression or property getter which has a return type of string, collection or task.
+
 ## Category: Miscellaneous Design
 
 ### [AV1210](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/1200_MiscellaneousDesignGuidelines.md#av1210): Don't swallow errors by catching generic exceptions ![](/images/warn.png "severity: warning")
