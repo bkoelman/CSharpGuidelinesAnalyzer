@@ -211,7 +211,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                     // Switch statements with non-constant case expressions are not supported
                     // because they make exhaustiveness analysis non-trivial.
+
+#pragma warning disable AV1135 // Do not return null for strings, collections or tasks
                     return null;
+#pragma warning restore AV1135 // Do not return null for strings, collections or tasks
                 }
 
                 return caseClauseValues;

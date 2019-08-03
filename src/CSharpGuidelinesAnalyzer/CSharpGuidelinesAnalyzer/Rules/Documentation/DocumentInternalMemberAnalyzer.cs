@@ -187,7 +187,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             }
             catch (XmlException)
             {
+#pragma warning disable AV1135 // Do not return null for strings, collections or tasks
                 return null;
+#pragma warning restore AV1135 // Do not return null for strings, collections or tasks
             }
         }
 

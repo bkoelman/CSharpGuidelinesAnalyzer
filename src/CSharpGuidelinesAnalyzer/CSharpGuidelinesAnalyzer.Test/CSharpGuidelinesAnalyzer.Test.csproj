@@ -12,7 +12,7 @@
     <None Remove="CSharpGuidelinesAnalyzer.Test.csproj.DotSettings" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.1.0">
+    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
