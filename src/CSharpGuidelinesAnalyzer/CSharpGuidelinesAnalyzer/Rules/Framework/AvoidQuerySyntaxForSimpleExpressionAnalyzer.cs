@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private const string Title = "Simple query should be replaced by extension method call";
         private const string MessageFormat = "Simple query should be replaced by extension method call.";
-        private const string Description = "Avoid LINQ for simple expressions.";
+        private const string Description = "Avoid LINQ query syntax for simple expressions.";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

@@ -164,7 +164,7 @@ This analyzer reports when:
 
 Note: this analyzer requires [Full Solution Analysis](/docs/Full%20Solution%20Analysis.md) enabled.
 
-### [AV2220](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/2200_FrameworkGuidelines.md#av2220): Avoid LINQ for simple expressions ![](/images/info.png "severity: info")
+### [AV2220](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/2200_FrameworkGuidelines.md#av2220): Avoid LINQ query syntax for simple expressions ![](/images/info.png "severity: info")
 This analyzer reports when a query (LINQ expression) can be changed into a single method call.
 
 ### [AV2230](https://github.com/dennisdoomen/CSharpGuidelines/blob/1a90b74c95225a0f7e4d0e7a341fd027e17c2320/_pages/2200_FrameworkGuidelines.md#av2230): Only use the `dynamic` keyword when talking to a dynamic object ![](/images/warn.png "severity: warning")
