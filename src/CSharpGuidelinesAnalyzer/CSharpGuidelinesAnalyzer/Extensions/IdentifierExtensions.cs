@@ -13,10 +13,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static ICollection<WordToken> GetWordsInList([NotNull] this string identifierName,
             [NotNull] [ItemNotNull] ICollection<string> list)
         {
-            Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
+            Guard.NotNull(identifierName, nameof(identifierName));
             Guard.NotNullNorEmpty(list, nameof(list));
 
-            if (!QuickScanMayContainWordsListed(identifierName, list))
+            if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWordsListed(identifierName, list))
             {
                 return ImmutableArray<WordToken>.Empty;
             }
@@ -27,10 +27,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static bool ContainsWordInTheMiddle([NotNull] this string identifierName, [NotNull] string word)
         {
-            Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
+            Guard.NotNull(identifierName, nameof(identifierName));
             Guard.NotNullNorWhiteSpace(word, nameof(word));
 
-            if (!QuickScanMayContainWord(identifierName, word))
+            if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWord(identifierName, word))
             {
                 return false;
             }
@@ -58,10 +58,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static bool StartsWithWordInList([NotNull] this string identifierName,
             [NotNull] [ItemNotNull] ICollection<string> list)
         {
-            Guard.NotNullNorWhiteSpace(identifierName, nameof(identifierName));
+            Guard.NotNull(identifierName, nameof(identifierName));
             Guard.NotNullNorEmpty(list, nameof(list));
 
-            if (!QuickScanMayContainWordsListed(identifierName, list))
+            if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWordsListed(identifierName, list))
             {
                 return false;
             }
