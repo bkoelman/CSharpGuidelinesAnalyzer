@@ -102,7 +102,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_private_nonvirtual_in_sealed_class_it_must_be_skipped()
+        internal void When_event_invocation_method_is_private_non_virtual_in_sealed_class_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()

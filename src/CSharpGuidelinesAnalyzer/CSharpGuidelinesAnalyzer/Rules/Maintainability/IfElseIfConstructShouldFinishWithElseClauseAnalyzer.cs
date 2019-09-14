@@ -218,7 +218,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
                 {
                     Location location = ifStatementToRemove.TryGetLocationForKeyword();
-                    ifStatements.Remove(location);
+                    if (location != null)
+                    {
+                        ifStatements.Remove(location);
+                    }
                 }
             }
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using CSharpGuidelinesAnalyzer.Settings;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;

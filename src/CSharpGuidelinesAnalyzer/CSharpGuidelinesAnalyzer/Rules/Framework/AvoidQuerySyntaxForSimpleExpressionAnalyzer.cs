@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
 
             if (ProjectsIntoGroup(queryExpression.Body.SelectOrGroup) ||
-                ProjectsIntoAnynomousType(queryExpression.Body.SelectOrGroup))
+                ProjectsIntoAnonymousType(queryExpression.Body.SelectOrGroup))
             {
                 complexity++;
             }
@@ -86,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return selectOrGroupClause is GroupClauseSyntax;
         }
 
-        private static bool ProjectsIntoAnynomousType([NotNull] SelectOrGroupClauseSyntax selectOrGroupClause)
+        private static bool ProjectsIntoAnonymousType([NotNull] SelectOrGroupClauseSyntax selectOrGroupClause)
         {
             return selectOrGroupClause is SelectClauseSyntax selectClause &&
                 selectClause.Expression is AnonymousObjectCreationExpressionSyntax;
@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 return orderByClause.Orderings.Count;
             }
 
-            return bodyClause is LetClauseSyntax _ ? 2 : 1;
+            return bodyClause is LetClauseSyntax ? 2 : 1;
         }
 
         private static bool IsIncomplete([NotNull] SyntaxNode syntaxNode)

@@ -156,7 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             [NotNull]
             private static MethodInfo ResolveEventReferencePropertyGetMethod()
             {
-                // Breaking change in Microoft.CodeAnalysis v2.9:
+                // Breaking change in Microsoft.CodeAnalysis v2.9:
                 // type of IEventAssignmentOperation.EventReference was changed from IEventReferenceOperation to IOperation.
 
                 PropertyInfo propertyInfo = typeof(IEventAssignmentOperation).GetRuntimeProperty("EventReference");

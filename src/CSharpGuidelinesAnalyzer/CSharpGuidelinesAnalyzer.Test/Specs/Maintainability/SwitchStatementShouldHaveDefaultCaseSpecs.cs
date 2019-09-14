@@ -402,7 +402,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_switch_statement_contains_a_nonconstant_case_expression_it_must_be_skipped()
+        internal void When_switch_statement_contains_a_non_constant_case_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()

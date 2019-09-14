@@ -198,9 +198,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload,
             SymbolAnalysisContext context)
         {
-            List<IParameterSymbol> parametersInlongestOverload = longestOverload.Parameters.ToList();
+            List<IParameterSymbol> parametersInLongestOverload = longestOverload.Parameters.ToList();
 
-            if (!AreParametersDeclaredInSameOrder(method, parametersInlongestOverload))
+            if (!AreParametersDeclaredInSameOrder(method, parametersInLongestOverload))
             {
                 context.ReportDiagnostic(Diagnostic.Create(OrderRule, method.Locations[0],
                     method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
@@ -218,10 +218,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
         {
             List<IParameterSymbol> regularParametersInMethod = method.Parameters.Where(IsRegularParameter).ToList();
-            List<IParameterSymbol> regularParametersInlongestOverload =
+            List<IParameterSymbol> regularParametersInLongestOverload =
                 parametersInLongestOverload.Where(IsRegularParameter).ToList();
 
-            return AreParametersDeclaredInSameOrder(regularParametersInMethod, regularParametersInlongestOverload);
+            return AreParametersDeclaredInSameOrder(regularParametersInMethod, regularParametersInLongestOverload);
         }
 
         private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
@@ -233,10 +233,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
         {
             List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
-            List<IParameterSymbol> defaultParametersInlongestOverload =
+            List<IParameterSymbol> defaultParametersInLongestOverload =
                 parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
 
-            return AreParametersDeclaredInSameOrder(defaultParametersInMethod, defaultParametersInlongestOverload);
+            return AreParametersDeclaredInSameOrder(defaultParametersInMethod, defaultParametersInLongestOverload);
         }
 
         private static bool IsParameterWithDefaultValue([NotNull] IParameterSymbol parameter)

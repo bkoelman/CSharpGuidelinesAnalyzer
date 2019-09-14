@@ -165,7 +165,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_static_class_contains_public_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal void When_static_class_contains_public_non_extension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -185,7 +185,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         }
 
         [Fact]
-        internal void When_static_class_contains_internal_nonextension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal void When_static_class_contains_internal_non_extension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
