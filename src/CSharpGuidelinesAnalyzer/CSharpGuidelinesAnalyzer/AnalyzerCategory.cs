@@ -38,6 +38,9 @@ namespace CSharpGuidelinesAnalyzer
         public static readonly AnalyzerCategory Documentation =
             new AnalyzerCategory("Documentation", "2300_DocumentationGuidelines.md");
 
+        [NotNull]
+        public static readonly AnalyzerCategory Layout = new AnalyzerCategory("Layout", "2400_LayoutGuidelines.md");
+
         private AnalyzerCategory([NotNull] string displayName, [NotNull] string documentName)
         {
             DisplayName = displayName;

@@ -190,3 +190,7 @@ This analyzer reports when a comment is found inside a method body, except when 
 
 ### [AV2318](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/2300_DocumentationGuidelines.md#av2318): Don't use comments for tracking work to be done later ![](/images/info.png "severity: info")
 This analyzer reports when a comment starts with the word "TODO".
+
+## Category: Layout
+### [AV2407](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/2400_LayoutGuidelines.md#av2407): Do not use #region ![](/images/warn.png "severity: warning")
+This analyzer reports when a `#region` directive is found.
