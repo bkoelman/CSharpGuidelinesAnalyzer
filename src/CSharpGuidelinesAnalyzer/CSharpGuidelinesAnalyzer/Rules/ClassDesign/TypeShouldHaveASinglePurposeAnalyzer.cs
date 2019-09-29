@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             SyntaxToken identifier = IdentifierResolver.Visit(context.Node);
-            if (identifier == default)
+            if (identifier == default || string.IsNullOrEmpty(identifier.ValueText))
             {
                 return;
             }
