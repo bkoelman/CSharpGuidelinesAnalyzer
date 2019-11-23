@@ -31,10 +31,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Is", "Was", "Were", "Has",
-            "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support",
-            "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain", "Contains", "Require", "Requires", "Return", "Returns",
-            "Starts", "Consists", "Targets");
+        private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Be", "Is", "Was", "Were",
+            "Has", "Have", "Can", "Could", "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows",
+            "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain", "Contains", "Require", "Requires", "Return",
+            "Returns", "Starts", "Consists", "Targets");
 
         [NotNull]
         private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
