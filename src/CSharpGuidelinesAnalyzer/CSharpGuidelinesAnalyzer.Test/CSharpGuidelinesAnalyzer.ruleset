@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Custom rules for CSharpGuidelinesAnalyzer" ToolsVersion="10.0">
+  <Rules AnalyzerId="CSharpGuidelinesAnalyzer" RuleNamespace="CSharpGuidelinesAnalyzer">
+    <Rule Id="AV2407" Action="None" />
+  </Rules>
+</RuleSet>
