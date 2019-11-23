@@ -1,5 +1,6 @@
 ﻿using CSharpGuidelinesAnalyzer.Rules.ClassDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
@@ -288,6 +289,26 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                     static class SomeExtensions
                     {
                         static SomeExtensions()
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_static_class_contains_entry_point_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithOutputKind(OutputKind.WindowsApplication)
+                .InGlobalScope(@"
+                    static class Program
+                    {
+                        static void Main(string[] args)
                         {
                         }
                     }

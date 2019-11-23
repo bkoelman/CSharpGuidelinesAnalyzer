@@ -370,5 +370,14 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             int index = symbol.Name.LastIndexOf(".", StringComparison.Ordinal);
             return index != -1 ? symbol.Name.Substring(index + 1) : symbol.Name;
         }
+
+        public static bool IsEntryPoint([NotNull] this IMethodSymbol method, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
+        {
+            IMethodSymbol entryPoint =
+                method.MethodKind == MethodKind.Ordinary ? compilation.GetEntryPoint(cancellationToken) : null;
+
+            return Equals(method, entryPoint);
+        }
     }
 }

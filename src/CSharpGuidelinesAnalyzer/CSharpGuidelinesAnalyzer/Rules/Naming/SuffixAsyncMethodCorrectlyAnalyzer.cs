@@ -69,16 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             CancellationToken cancellationToken)
         {
             return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() &&
-                !IsEntryPoint(method, compilation, cancellationToken);
-        }
-
-        private static bool IsEntryPoint([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
-        {
-            IMethodSymbol entryPoint =
-                method.MethodKind == MethodKind.Ordinary ? compilation.GetEntryPoint(cancellationToken) : null;
-
-            return Equals(method, entryPoint);
+                !method.IsEntryPoint(compilation, cancellationToken);
         }
 
         private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)

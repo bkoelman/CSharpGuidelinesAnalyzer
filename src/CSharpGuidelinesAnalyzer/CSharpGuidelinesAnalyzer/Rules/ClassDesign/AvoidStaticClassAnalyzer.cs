@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -62,12 +63,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
             if (!type.Name.EndsWith("Extensions", StringComparison.Ordinal))
             {
-                context.ReportDiagnostic(Diagnostic.Create(TypeRule, type.Locations[0], type.Name));
+                if (!TypeContainsEntryPoint(type, context.Compilation, context.CancellationToken))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(TypeRule, type.Locations[0], type.Name));
+                }
             }
             else
             {
                 AnalyzeTypeMembers(type, context);
             }
+        }
+
+        private static bool TypeContainsEntryPoint([NotNull] INamedTypeSymbol type, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
+        {
+            return type.GetMembers().OfType<IMethodSymbol>().Any(method => method.IsEntryPoint(compilation, cancellationToken));
         }
 
         private static void AnalyzeTypeMembers([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
