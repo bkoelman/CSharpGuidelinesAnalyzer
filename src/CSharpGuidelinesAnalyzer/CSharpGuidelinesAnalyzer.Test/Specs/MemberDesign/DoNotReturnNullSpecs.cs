@@ -252,7 +252,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         internal void When_returning_null_for_async_return_type_ValueTask_of_Exception_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
+                .WithReference(typeof(ValueTask<>).Assembly)
                 .Using(typeof(ValueTask<>).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -294,7 +294,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         internal void When_returning_null_for_async_return_type_ValueTask_of_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
+                .WithReference(typeof(ValueTask<>).Assembly)
                 .Using(typeof(ValueTask<>).Namespace)
                 .InGlobalScope(@"
                     class C
