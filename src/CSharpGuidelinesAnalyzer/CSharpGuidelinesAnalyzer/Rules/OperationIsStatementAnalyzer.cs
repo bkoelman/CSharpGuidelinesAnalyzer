@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV0000";
+        public const string DiagnosticId = "AV0000000000000000";
 
         private const string Title = "Operation should be a statement";
         private const string MessageFormat = "Operation '{0}' should be a statement";

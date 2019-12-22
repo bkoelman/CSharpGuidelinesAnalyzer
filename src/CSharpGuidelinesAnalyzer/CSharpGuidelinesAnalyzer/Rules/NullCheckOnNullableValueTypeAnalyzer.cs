@@ -11,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV0000";
+        public const string DiagnosticId = "AV00000000";
 
         private const string Title = "Expression of nullable value type is checked for null or not-null";
         private const string MessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";

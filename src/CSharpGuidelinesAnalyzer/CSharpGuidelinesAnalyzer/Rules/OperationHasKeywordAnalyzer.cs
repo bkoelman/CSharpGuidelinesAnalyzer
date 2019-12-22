@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV0000";
+        public const string DiagnosticId = "AV000000000000";
 
         private const string Title = "Operation should have a keyword";
         private const string MessageFormat = "Operation should have a keyword";
