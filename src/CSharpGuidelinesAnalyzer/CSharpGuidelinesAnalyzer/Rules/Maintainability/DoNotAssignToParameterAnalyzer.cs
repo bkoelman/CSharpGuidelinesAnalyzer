@@ -76,36 +76,33 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
-            {
-                InnerAnalyzeMethod(context.Wrap(method), collector);
-            }
+            using var collector = new DiagnosticCollector(context.ReportDiagnostic);
+
+            InnerAnalyzeMethod(context.Wrap(method), collector);
         }
 
         private static void AnalyzeProperty(SymbolAnalysisContext context)
         {
             var property = (IPropertySymbol)context.Symbol;
 
-            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
-            {
-                AnalyzeAccessorMethod(property.GetMethod, collector, context);
-                AnalyzeAccessorMethod(property.SetMethod, collector, context);
+            using var collector = new DiagnosticCollector(context.ReportDiagnostic);
 
-                FilterDuplicateLocations(collector.Diagnostics);
-            }
+            AnalyzeAccessorMethod(property.GetMethod, collector, context);
+            AnalyzeAccessorMethod(property.SetMethod, collector, context);
+
+            FilterDuplicateLocations(collector.Diagnostics);
         }
 
         private static void AnalyzeEvent(SymbolAnalysisContext context)
         {
             var @event = (IEventSymbol)context.Symbol;
 
-            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
-            {
-                AnalyzeAccessorMethod(@event.AddMethod, collector, context);
-                AnalyzeAccessorMethod(@event.RemoveMethod, collector, context);
+            using var collector = new DiagnosticCollector(context.ReportDiagnostic);
 
-                FilterDuplicateLocations(collector.Diagnostics);
-            }
+            AnalyzeAccessorMethod(@event.AddMethod, collector, context);
+            AnalyzeAccessorMethod(@event.RemoveMethod, collector, context);
+
+            FilterDuplicateLocations(collector.Diagnostics);
         }
 
         private static void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod,
@@ -166,10 +163,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
-            {
-                InnerAnalyzeMethod(context.Wrap(localFunction.Symbol), collector);
-            }
+            using var collector = new DiagnosticCollector(context.ReportDiagnostic);
+
+            InnerAnalyzeMethod(context.Wrap(localFunction.Symbol), collector);
         }
 
         private static void AnalyzeAnonymousFunction(OperationAnalysisContext context)
@@ -181,10 +177,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
-            {
-                InnerAnalyzeMethod(context.Wrap(anonymousFunction.Symbol), collector);
-            }
+            using var collector = new DiagnosticCollector(context.ReportDiagnostic);
+
+            InnerAnalyzeMethod(context.Wrap(anonymousFunction.Symbol), collector);
         }
 
         private static bool ShouldSkip([NotNull] IMethodSymbol method)
