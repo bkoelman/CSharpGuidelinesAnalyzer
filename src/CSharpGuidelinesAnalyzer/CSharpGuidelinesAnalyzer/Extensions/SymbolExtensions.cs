@@ -116,9 +116,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(parameter, nameof(parameter));
 
-            foreach (ISymbol ifaceMember in parameter.ContainingType.AllInterfaces.SelectMany(iface => iface.GetMembers()))
+            foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
             {
-                ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+                ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
                 if (parameter.ContainingSymbol.Equals(implementer))
                 {
@@ -134,10 +134,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             if (!(member is IFieldSymbol))
             {
-                foreach (TSymbol ifaceMember in member.ContainingType.AllInterfaces.SelectMany(iface =>
-                    iface.GetMembers().OfType<TSymbol>()))
+                foreach (TSymbol interfaceMember in member.ContainingType.AllInterfaces.SelectMany(@interface =>
+                    @interface.GetMembers().OfType<TSymbol>()))
                 {
-                    ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(ifaceMember);
+                    ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
                     if (member.Equals(implementer))
                     {
@@ -333,9 +333,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 {
                     return property.Type;
                 }
-                case IEventSymbol evnt:
+                case IEventSymbol @event:
                 {
-                    return evnt.Type;
+                    return @event.Type;
                 }
                 case IMethodSymbol method:
                 {

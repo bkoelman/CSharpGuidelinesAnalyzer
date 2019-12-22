@@ -340,9 +340,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private void ScanExplicitInterfaceInvocation([NotNull] IInvocationOperation operation,
                 [NotNull] IMethodSymbol methodToFind)
             {
-                foreach (IMethodSymbol ifaceMethod in methodToFind.ExplicitInterfaceImplementations)
+                foreach (IMethodSymbol interfaceMethod in methodToFind.ExplicitInterfaceImplementations)
                 {
-                    if (operation.TargetMethod.OriginalDefinition.Equals(ifaceMethod.OriginalDefinition))
+                    if (operation.TargetMethod.OriginalDefinition.Equals(interfaceMethod.OriginalDefinition))
                     {
                         HasFoundInvocation = true;
                         break;

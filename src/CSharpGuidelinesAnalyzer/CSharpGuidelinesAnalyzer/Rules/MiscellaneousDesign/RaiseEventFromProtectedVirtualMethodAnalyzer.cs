@@ -72,11 +72,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationOperation invocation)
         {
-            IEventSymbol evnt = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
-            if (evnt != null)
+            IEventSymbol @event = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
+            if (@event != null)
             {
                 IMethodSymbol containingMethod = invocation.TryGetContainingMethod(context.Compilation);
-                AnalyzeContainingMethod(containingMethod, evnt, context);
+                AnalyzeContainingMethod(containingMethod, @event, context);
             }
         }
 
@@ -134,7 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return null;
         }
 
-        private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
+        private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol @event,
             OperationAnalysisContext context)
         {
             if (method == null || !RegularMethodKinds.Contains(method.MethodKind))
@@ -143,36 +143,36 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     ? method.Locations[0]
                     : context.Operation.Syntax.GetLocation();
 
-                context.ReportDiagnostic(Diagnostic.Create(KindRule, location, evnt.Name));
+                context.ReportDiagnostic(Diagnostic.Create(KindRule, location, @event.Name));
             }
             else
             {
                 if (!method.IsSynthesized())
                 {
-                    if (!AnalyzeMethodName(method, evnt, context))
+                    if (!AnalyzeMethodName(method, @event, context))
                     {
-                        AnalyzeMethodSignature(method, evnt, context);
+                        AnalyzeMethodSignature(method, @event, context);
                     }
                 }
             }
         }
 
-        private static bool AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
+        private static bool AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event,
             OperationAnalysisContext context)
         {
-            string nameExpected = string.Concat("On", evnt.Name);
+            string nameExpected = string.Concat("On", @event.Name);
             string nameActual = method.MemberNameWithoutExplicitInterfacePrefix();
 
             if (nameActual != nameExpected)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, evnt.Name, nameExpected));
+                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name, nameExpected));
                 return true;
             }
 
             return false;
         }
 
-        private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol evnt,
+        private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event,
             OperationAnalysisContext context)
         {
             if (!method.ContainingType.IsSealed && !method.IsStatic &&
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 if (!method.IsVirtual || !IsProtected(method))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ModifiersRule, method.Locations[0], method.Name, evnt.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(ModifiersRule, method.Locations[0], method.Name, @event.Name));
                 }
             }
         }

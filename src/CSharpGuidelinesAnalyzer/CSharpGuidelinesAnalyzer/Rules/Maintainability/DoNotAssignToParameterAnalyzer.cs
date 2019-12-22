@@ -97,12 +97,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static void AnalyzeEvent(SymbolAnalysisContext context)
         {
-            var evnt = (IEventSymbol)context.Symbol;
+            var @event = (IEventSymbol)context.Symbol;
 
             using (var collector = new DiagnosticCollector(context.ReportDiagnostic))
             {
-                AnalyzeAccessorMethod(evnt.AddMethod, collector, context);
-                AnalyzeAccessorMethod(evnt.RemoveMethod, collector, context);
+                AnalyzeAccessorMethod(@event.AddMethod, collector, context);
+                AnalyzeAccessorMethod(@event.RemoveMethod, collector, context);
 
                 FilterDuplicateLocations(collector.Diagnostics);
             }

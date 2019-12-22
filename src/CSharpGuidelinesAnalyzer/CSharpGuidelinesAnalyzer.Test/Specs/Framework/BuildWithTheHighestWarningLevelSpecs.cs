@@ -67,7 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         // Note: at warning level 0, analyzers do not even run. So a test for that is omitted here.
 
         [Fact]
-        internal void When_warnaserror_is_enabled_it_must_be_skipped()
+        internal void When_compiling_with_warnings_as_errors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_warnaserror_is_disabled_it_must_be_reported()
+        internal void When_compiling_with_warnings_not_as_errors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
