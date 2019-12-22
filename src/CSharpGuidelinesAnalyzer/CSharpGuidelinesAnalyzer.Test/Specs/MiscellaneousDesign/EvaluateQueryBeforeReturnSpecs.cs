@@ -824,7 +824,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             IQueryable result = Enumerable.Empty<int>().AsQueryable().Where(x => true);
                             [|return|] result;
@@ -849,7 +849,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<IEnumerable> M()
+                        public IEnumerable<IEnumerable> M()
                         {
                             IQueryable result = Enumerable.Empty<int>().AsQueryable().Where(x => true);
                             [|yield return|] result;
@@ -874,7 +874,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             IQueryable<int> result = Enumerable.Empty<int>().AsQueryable().Where(x => true);
                             [|return|] result;
@@ -899,7 +899,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<IEnumerable> M()
+                        public IEnumerable<IEnumerable> M()
                         {
                             IQueryable<int> result = Enumerable.Empty<int>().AsQueryable().Where(x => true);
                             [|yield return|] result;
@@ -924,7 +924,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             IOrderedQueryable result = Enumerable.Empty<int>().AsQueryable().Where(x => true).OrderBy(x => x);
                             [|return|] result;
@@ -949,7 +949,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<IEnumerable> M()
+                        public IEnumerable<IEnumerable> M()
                         {
                             IOrderedQueryable result = Enumerable.Empty<int>().AsQueryable().Where(x => true).OrderBy(x => x);
                             [|yield return|] result;
@@ -974,7 +974,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             IOrderedQueryable<int> result = Enumerable.Empty<int>().AsQueryable().Where(x => true).OrderBy(x => x);
                             [|return|] result;
@@ -999,7 +999,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<IEnumerable> M()
+                        public IEnumerable<IEnumerable> M()
                         {
                             IOrderedQueryable<int> result = Enumerable.Empty<int>().AsQueryable().Where(x => true).OrderBy(x => x);
                             [|yield return|] result;
@@ -1115,7 +1115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M(IList<int> source)
+                        public IEnumerable M(IList<int> source)
                         {
                             [|return|] source.Where(x => true);
                         }
@@ -1139,7 +1139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M(IList<IEnumerable<char>> source)
+                        public IEnumerable M(IList<IEnumerable<char>> source)
                         {
                             [|return|] source.Select(x => x.Where(y => true));
                         }
@@ -1163,7 +1163,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M(IList<int> source)
+                        public IEnumerable M(IList<int> source)
                         {
                             [|return|] source.ToArray().Where(x => true);
                         }
@@ -1187,7 +1187,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             [|return|] new int[0].GroupBy(x => x);
                         }
@@ -1210,7 +1210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IEnumerable<int> source)
+                        public IEnumerable<int> M(IEnumerable<int> source)
                         {
                             [|return|] (IList<int>)source.Skip(2);
                         }
@@ -1233,7 +1233,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             var result = Enumerable.Empty<int>().Select(x =>
                             {
@@ -1292,7 +1292,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             [|return|]
                                 from item in Enumerable.Empty<int>()
@@ -1318,7 +1318,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             [|return|] ((
                                 from item in Enumerable.Empty<int>()
@@ -1344,7 +1344,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             [|return|]
                                 from item in Enumerable.Empty<int>()
@@ -1371,7 +1371,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<IGrouping<int, int>> M()
+                        public IEnumerable<IGrouping<int, int>> M()
                         {
                             [|return|]
                                 from item in Enumerable.Empty<int>()
@@ -1401,7 +1401,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             var result = source.Where(x => true);
                             [|return|] result;
@@ -1448,7 +1448,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             IEnumerable<int> result = Enumerable.Empty<int>();
                             result = source.Where(x => true);
@@ -1499,7 +1499,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             var result1 = Enumerable.Empty<int>();
                             result1 = source.Select(x => x);
@@ -1528,7 +1528,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             var result =
                                 from item in Enumerable.Empty<int>()
@@ -1612,7 +1612,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             var result1 = source.Select(x => x);
                             var result2 = result1;
@@ -1640,7 +1640,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source, bool condition)
+                        public IEnumerable<int> M(IList<int> source, bool condition)
                         {
                             var result1 = source.Select(x => x);
                             var result2 = result1;
@@ -1678,7 +1678,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source, bool condition)
+                        public IEnumerable<int> M(IList<int> source, bool condition)
                         {
                             var result = source.Where(x => true);
                             [|return|] condition ? result : source;
@@ -1703,7 +1703,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source, bool condition)
+                        public IEnumerable<int> M(IList<int> source, bool condition)
                         {
                             var result = source.Where(x => true);
                             [|return|] condition ? source : result;
@@ -1728,7 +1728,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source, bool condition)
+                        public IEnumerable<int> M(IList<int> source, bool condition)
                         {
                             [|return|] (condition ? (source.Where(x => true)) : (null));
                         }
@@ -1775,7 +1775,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             int[] result = source.ToArray();
                             [|return|] result?.Select(x => x);
@@ -1823,7 +1823,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             IEnumerable<int> result = source.Select(x => x);
                             [|return|] result ?? new List<int>();
@@ -1847,7 +1847,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(IList<int> source)
+                        public IEnumerable<int> M(IList<int> source)
                         {
                             [|return|] source ?? new int[0].Select(x => x);
                         }
@@ -1921,7 +1921,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable M()
+                        public IEnumerable M()
                         {
                             IEnumerable result = new[] { 1, 2, 3 }.Where(x => true);
                             [|return|] result;
@@ -2274,7 +2274,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M()
+                        public IEnumerable<int> M()
                         {
                             IEnumerable<int> temp;
 
@@ -2329,7 +2329,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .InGlobalScope(@"
                     class C
                     {
-                        IEnumerable<int> M(ref IEnumerable<int> source)
+                        public IEnumerable<int> M(ref IEnumerable<int> source)
                         {
                             [|return|] source = new List<int>
                             {
@@ -2357,7 +2357,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         private IEnumerable<int> f;
 
-                        IEnumerable<int> M()
+                        public IEnumerable<int> M()
                         {
                             [|return|] f = new List<int>
                             {
@@ -2385,7 +2385,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     {
                         private IEnumerable<int> P { get; set; }
 
-                        IEnumerable<int> M()
+                        public IEnumerable<int> M()
                         {
                             [|return|] P = new List<int>
                             {
@@ -2431,6 +2431,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                     class C
                     {
                         public event EventHandler SomethingChanged = delegate { };
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_private_method_returns_the_result_of_Where_invocation_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        private IEnumerable<int> M(IEnumerable<int> source)
+                        {
+                            return source.Where(x => true);
+                        }
                     }
                 ")
                 .Build();

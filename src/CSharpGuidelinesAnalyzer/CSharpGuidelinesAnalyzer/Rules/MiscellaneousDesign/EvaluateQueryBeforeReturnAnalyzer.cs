@@ -88,7 +88,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)
         {
-            if (!IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
+            if (context.OwningSymbol.DeclaredAccessibility != Accessibility.Public ||
+                !IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
             {
                 return;
             }

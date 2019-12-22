@@ -42,7 +42,7 @@ This analyzer reports when:
 - 'args' argument is null when raising an event.
 
 ### [AV1250](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1200_MiscellaneousDesignGuidelines.md#av1250): Evaluate the result of a LINQ expression before returning it ![](/images/warn.png "severity: warning")
-This analyzer reports when a method return type is `IEnumerable` or `IEnumerable<T>` and it returns:
+This analyzer reports when the return type of a public method is `IEnumerable` or `IEnumerable<T>` and it returns:
 - the result of a method call that uses deferred execution (for example: `Where`, `Select`, `Concat`)
 - the result of a query (LINQ expression)
 - an expression of type `IQueryable` or `IQueryable<T>`.
