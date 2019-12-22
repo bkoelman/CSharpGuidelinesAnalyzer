@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
-                if (parameter.ContainingSymbol.Equals(implementer))
+                if (parameter.ContainingSymbol.IsEqualTo(implementer))
                 {
                     return true;
                 }
@@ -378,7 +378,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             IMethodSymbol entryPoint =
                 method.MethodKind == MethodKind.Ordinary ? compilation.GetEntryPoint(cancellationToken) : null;
 
-            return Equals(method, entryPoint);
+            return method.IsEqualTo(entryPoint);
+        }
+
+        public static bool IsEqualTo([CanBeNull] this ISymbol first, [CanBeNull] ISymbol second)
+        {
+            return Equals(first, second);
         }
     }
 }

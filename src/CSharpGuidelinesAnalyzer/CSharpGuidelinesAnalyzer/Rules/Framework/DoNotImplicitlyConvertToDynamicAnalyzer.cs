@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private static bool IsObjectHandle([NotNull] ITypeSymbol type, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
-            return objectHandleType != null && objectHandleType.Equals(type);
+            return objectHandleType != null && objectHandleType.IsEqualTo(type);
         }
 
         private static void ReportAt([NotNull] ITypeSymbol sourceType, [NotNull] Location reportLocation,

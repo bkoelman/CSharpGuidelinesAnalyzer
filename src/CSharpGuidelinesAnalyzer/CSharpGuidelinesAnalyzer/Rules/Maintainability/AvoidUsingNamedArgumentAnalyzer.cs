@@ -112,7 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter,
             [NotNull] IMethodSymbol method)
         {
-            return method.Parameters.TakeWhile(nextParameter => !nextParameter.Equals(parameter)).ToList();
+            return method.Parameters.TakeWhile(nextParameter => !nextParameter.IsEqualTo(parameter)).ToList();
         }
 
         private static bool AreParametersUsed([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,

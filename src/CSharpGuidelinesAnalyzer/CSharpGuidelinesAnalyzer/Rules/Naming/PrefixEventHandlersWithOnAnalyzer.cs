@@ -127,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             INamedTypeSymbol eventContainingType = eventReference.Event.ContainingType;
 
-            bool isEventLocal = eventContainingType.Equals(targetMethod.ContainingType);
+            bool isEventLocal = eventContainingType.IsEqualTo(targetMethod.ContainingType);
             return isEventLocal ? string.Empty : eventContainingType.Name;
         }
 

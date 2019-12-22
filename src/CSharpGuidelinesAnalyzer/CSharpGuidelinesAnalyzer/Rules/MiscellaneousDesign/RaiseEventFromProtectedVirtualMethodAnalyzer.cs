@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
             {
-                if (operation.Target is ILocalReferenceOperation targetLocal && local.Equals(targetLocal.Local))
+                if (operation.Target is ILocalReferenceOperation targetLocal && local.IsEqualTo(targetLocal.Local))
                 {
                     TrySetEvent(operation.Value);
                 }
@@ -218,7 +218,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
-                if (local.Equals(operation.Symbol))
+                if (local.IsEqualTo(operation.Symbol))
                 {
                     IVariableInitializerOperation initializer = operation.GetVariableInitializer();
                     if (initializer != null)

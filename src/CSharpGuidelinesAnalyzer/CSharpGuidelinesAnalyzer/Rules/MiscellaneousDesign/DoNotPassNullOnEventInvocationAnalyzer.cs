@@ -169,7 +169,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             ITypeSymbol nextType = type;
             while (nextType != null)
             {
-                if (nextType.Equals(systemEventArgs))
+                if (nextType.IsEqualTo(systemEventArgs))
                 {
                     return true;
                 }

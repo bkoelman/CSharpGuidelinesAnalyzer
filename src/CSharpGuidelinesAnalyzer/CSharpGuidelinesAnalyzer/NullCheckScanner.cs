@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(propertyReference, nameof(propertyReference));
 
-            if (propertyReference.Property.OriginalDefinition.Equals(knownSymbols.NullableHasValueProperty) &&
+            if (propertyReference.Property.OriginalDefinition.IsEqualTo(knownSymbols.NullableHasValueProperty) &&
                 IsNullableValueType(propertyReference.Instance))
             {
                 NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(propertyReference);
@@ -64,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer
         {
             if (invocation.Instance != null)
             {
-                bool isNullableEquals = invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.NullableEqualsMethod);
+                bool isNullableEquals = invocation.TargetMethod.OriginalDefinition.IsEqualTo(knownSymbols.NullableEqualsMethod);
                 if (isNullableEquals)
                 {
                     NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
@@ -118,17 +118,17 @@ namespace CSharpGuidelinesAnalyzer
 
         private bool IsObjectReferenceEquals([NotNull] IInvocationOperation invocation)
         {
-            return invocation.TargetMethod.Equals(knownSymbols.StaticObjectReferenceEqualsMethod);
+            return invocation.TargetMethod.IsEqualTo(knownSymbols.StaticObjectReferenceEqualsMethod);
         }
 
         private bool IsStaticObjectEquals([NotNull] IInvocationOperation invocation)
         {
-            return invocation.TargetMethod.Equals(knownSymbols.StaticObjectEqualsMethod);
+            return invocation.TargetMethod.IsEqualTo(knownSymbols.StaticObjectEqualsMethod);
         }
 
         private bool IsEqualityComparerEquals([NotNull] IInvocationOperation invocation)
         {
-            return invocation.TargetMethod.OriginalDefinition.Equals(knownSymbols.EqualityComparerEqualsMethod);
+            return invocation.TargetMethod.OriginalDefinition.IsEqualTo(knownSymbols.EqualityComparerEqualsMethod);
         }
 
         [CanBeNull]

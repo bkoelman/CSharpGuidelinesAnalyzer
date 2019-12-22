@@ -214,7 +214,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 foreach (IFieldSymbol tupleElement in tupleType.TupleElements)
                 {
-                    bool isDefaultTupleElement = tupleElement.Equals(tupleElement.CorrespondingTupleField);
+                    bool isDefaultTupleElement = tupleElement.IsEqualTo(tupleElement.CorrespondingTupleField);
 
                     if (!isDefaultTupleElement && ContainsDigitsNonWhitelisted(tupleElement.Name))
                     {

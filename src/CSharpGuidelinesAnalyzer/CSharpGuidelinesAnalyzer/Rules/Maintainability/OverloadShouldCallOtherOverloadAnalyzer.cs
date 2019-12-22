@@ -135,7 +135,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             IMethodSymbol longestOverload = TryGetSingleLongestOverload(methodGroup);
             if (longestOverload != null)
             {
-                if (longestOverload.ContainingType.Equals(activeType) && CanBeMadeVirtual(longestOverload))
+                if (longestOverload.ContainingType.IsEqualTo(activeType) && CanBeMadeVirtual(longestOverload))
                 {
                     IMethodSymbol methodToReport = longestOverload.PartialImplementationPart ?? longestOverload;
                     context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
@@ -150,7 +150,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static void AnalyzeOverloads(OverloadsInfo info, [NotNull] INamedTypeSymbol activeType)
         {
             IEnumerable<IMethodSymbol> overloadsInActiveType = info.MethodGroup.Where(method =>
-                !method.Equals(info.LongestOverload) && method.ContainingType.Equals(activeType));
+                !method.IsEqualTo(info.LongestOverload) && method.ContainingType.IsEqualTo(activeType));
 
             foreach (IMethodSymbol overload in overloadsInActiveType)
             {
@@ -310,7 +310,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 foreach (IMethodSymbol methodToFind in methodGroup)
                 {
-                    if (!methodToFind.Equals(containingMethod))
+                    if (!methodToFind.IsEqualTo(containingMethod))
                     {
                         VerifyInvocation(operation, methodToFind);
                     }
@@ -330,7 +330,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
                 else
                 {
-                    if (methodToFind.OriginalDefinition.Equals(operation.TargetMethod.OriginalDefinition))
+                    if (methodToFind.OriginalDefinition.IsEqualTo(operation.TargetMethod.OriginalDefinition))
                     {
                         HasFoundInvocation = true;
                     }
@@ -342,7 +342,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 foreach (IMethodSymbol interfaceMethod in methodToFind.ExplicitInterfaceImplementations)
                 {
-                    if (operation.TargetMethod.OriginalDefinition.Equals(interfaceMethod.OriginalDefinition))
+                    if (operation.TargetMethod.OriginalDefinition.IsEqualTo(interfaceMethod.OriginalDefinition))
                     {
                         HasFoundInvocation = true;
                         break;

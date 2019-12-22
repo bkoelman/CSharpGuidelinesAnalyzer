@@ -62,12 +62,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             var invocation = (IInvocationOperation)context.Operation;
 
-            if (invocation.TargetMethod.ContainingType.Equals(taskInfo.TaskType) ||
-                invocation.TargetMethod.ContainingType.ConstructedFrom.Equals(taskInfo.GenericTaskType))
+            if (invocation.TargetMethod.ContainingType.IsEqualTo(taskInfo.TaskType) ||
+                invocation.TargetMethod.ContainingType.ConstructedFrom.IsEqualTo(taskInfo.GenericTaskType))
             {
                 IMethodSymbol openTypedTargetMethod = invocation.TargetMethod.OriginalDefinition;
 
-                if (taskInfo.ContinueWithMethodGroup.Any(method => method.Equals(openTypedTargetMethod)))
+                if (taskInfo.ContinueWithMethodGroup.Any(method => method.IsEqualTo(openTypedTargetMethod)))
                 {
                     Location location = GetInvocationLocation(context);
 

@@ -202,7 +202,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             if (nullableHasValueProperty != null &&
                 operation.SkipTypeConversions() is IPropertyReferenceOperation propertyReference)
             {
-                if (propertyReference.Property.OriginalDefinition.Equals(nullableHasValueProperty))
+                if (propertyReference.Property.OriginalDefinition.IsEqualTo(nullableHasValueProperty))
                 {
                     return propertyReference.Instance;
                 }

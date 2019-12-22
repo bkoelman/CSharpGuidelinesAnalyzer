@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer
                 var leftSymbol = (ISymbol)leftValue;
                 var rightSymbol = (ISymbol)rightValue;
 
-                return Equals(leftSymbol, rightSymbol);
+                return leftSymbol.IsEqualTo(rightSymbol);
             }
 
             if (OperationInterface.IsAssignableFrom(type.GetTypeInfo()))

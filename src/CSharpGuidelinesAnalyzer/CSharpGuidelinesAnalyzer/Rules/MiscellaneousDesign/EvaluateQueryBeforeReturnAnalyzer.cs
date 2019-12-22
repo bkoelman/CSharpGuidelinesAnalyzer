@@ -527,7 +527,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitVariableDeclarator(operation);
 
-                    if (currentLocal.Equals(operation.Symbol) && EndsBeforeMaxLocation(operation))
+                    if (currentLocal.IsEqualTo(operation.Symbol) && EndsBeforeMaxLocation(operation))
                     {
                         IVariableInitializerOperation initializer = operation.GetVariableInitializer();
                         if (initializer != null)
@@ -541,7 +541,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 {
                     base.VisitSimpleAssignment(operation);
 
-                    if (operation.Target is ILocalReferenceOperation targetLocal && currentLocal.Equals(targetLocal.Local) &&
+                    if (operation.Target is ILocalReferenceOperation targetLocal && currentLocal.IsEqualTo(targetLocal.Local) &&
                         EndsBeforeMaxLocation(operation))
                     {
                         AnalyzeAssignmentValue(operation.Value);
@@ -556,7 +556,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     {
                         foreach (IOperation element in tupleOperation.Elements)
                         {
-                            if (element is ILocalReferenceOperation targetLocal && currentLocal.Equals(targetLocal.Local))
+                            if (element is ILocalReferenceOperation targetLocal && currentLocal.IsEqualTo(targetLocal.Local))
                             {
                                 UpdateResult(EvaluationResult.Unknown);
                             }

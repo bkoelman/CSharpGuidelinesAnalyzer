@@ -200,7 +200,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 foreach (IFieldSymbol tupleElement in tupleType.TupleElements)
                 {
-                    bool isDefaultTupleElement = tupleElement.Equals(tupleElement.CorrespondingTupleField);
+                    bool isDefaultTupleElement = tupleElement.IsEqualTo(tupleElement.CorrespondingTupleField);
                     if (!isDefaultTupleElement && IsBlacklistedOrSingleLetter(tupleElement.Name))
                     {
                         reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));

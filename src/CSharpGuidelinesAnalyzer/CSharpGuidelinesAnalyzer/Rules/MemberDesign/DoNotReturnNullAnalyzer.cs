@@ -115,7 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private static bool IsTask([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
         {
-            return taskTypes.Any(taskType => taskType.Equals(type.OriginalDefinition));
+            return taskTypes.Any(taskType => taskType.IsEqualTo(type.OriginalDefinition));
         }
 
         private static void ReportReturnStatement([NotNull] IReturnOperation returnOperation, OperationAnalysisContext context)
