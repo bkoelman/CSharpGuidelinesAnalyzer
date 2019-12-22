@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
 
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    using (XmlReader xmlReader = XmlReader.Create(stream))
+                    using (var xmlReader = XmlReader.Create(stream))
                     {
                         return readAction(xmlReader);
                     }
@@ -90,7 +90,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
         {
             using (var stream = new MemoryStream())
             {
-                using (XmlWriter writer = XmlWriter.Create(stream, new XmlWriterSettings
+                using (var writer = XmlWriter.Create(stream, new XmlWriterSettings
                 {
                     Encoding = encoding,
                     Indent = true

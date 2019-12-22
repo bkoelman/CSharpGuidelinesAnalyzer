@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                Location location = Location.Create(context.Tree, TextSpan.FromBounds(start + index, start + message.Length));
+                var location = Location.Create(context.Tree, TextSpan.FromBounds(start + index, start + message.Length));
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));
             }
 

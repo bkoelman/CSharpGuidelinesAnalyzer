@@ -22,8 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
             return settings.IsEmpty ? AnalyzerSettingsRegistry.ImmutableEmpty : settings;
         }
 
-        private static void ParseSettingElement([NotNull] XmlReader reader,
-            [NotNull] AnalyzerSettingsRegistry registry)
+        private static void ParseSettingElement([NotNull] XmlReader reader, [NotNull] AnalyzerSettingsRegistry registry)
         {
             string rule = reader.GetAttribute("rule");
             string name = reader.GetAttribute("name");

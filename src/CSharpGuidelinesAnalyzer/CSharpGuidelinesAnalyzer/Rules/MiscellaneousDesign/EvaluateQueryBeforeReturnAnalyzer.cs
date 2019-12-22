@@ -133,7 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 (DiagnosticDescriptor rule, object[] messageArguments) =
                     GetArgumentsForReport(operationName, containingMember, memberName);
 
-                Diagnostic diagnostic = Diagnostic.Create(rule, location, messageArguments);
+                var diagnostic = Diagnostic.Create(rule, location, messageArguments);
                 context.ReportDiagnostic(diagnostic);
             }
         }

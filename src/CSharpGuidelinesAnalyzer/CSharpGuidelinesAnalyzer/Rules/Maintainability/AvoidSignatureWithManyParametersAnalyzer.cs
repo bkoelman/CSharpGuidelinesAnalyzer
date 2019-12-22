@@ -248,8 +248,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (!info.Context.Target.IsSynthesized())
             {
-                Diagnostic diagnostic = Diagnostic.Create(ParameterCountRule, info.Context.Target.Locations[0], name,
-                    parameterCount, info.MaxParameterCount);
+                var diagnostic = Diagnostic.Create(ParameterCountRule, info.Context.Target.Locations[0], name, parameterCount,
+                    info.MaxParameterCount);
                 info.Context.ReportDiagnostic(diagnostic);
             }
         }
@@ -259,8 +259,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (!context.Target.IsSynthesized())
             {
-                Diagnostic diagnostic =
-                    Diagnostic.Create(TupleParameterRule, context.Target.Locations[0], memberName, parameterName);
+                var diagnostic = Diagnostic.Create(TupleParameterRule, context.Target.Locations[0], memberName, parameterName);
                 context.ReportDiagnostic(diagnostic);
             }
         }
@@ -300,8 +299,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (!context.Target.IsSynthesized())
             {
-                Diagnostic diagnostic =
-                    Diagnostic.Create(TupleReturnRule, context.Target.Locations[0], memberName, tupleElementCount);
+                var diagnostic = Diagnostic.Create(TupleReturnRule, context.Target.Locations[0], memberName, tupleElementCount);
                 context.ReportDiagnostic(diagnostic);
             }
         }

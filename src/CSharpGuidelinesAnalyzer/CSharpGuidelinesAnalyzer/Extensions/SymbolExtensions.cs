@@ -116,7 +116,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(parameter, nameof(parameter));
 
-            foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
+            foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface =>
+                @interface.GetMembers()))
             {
                 ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 

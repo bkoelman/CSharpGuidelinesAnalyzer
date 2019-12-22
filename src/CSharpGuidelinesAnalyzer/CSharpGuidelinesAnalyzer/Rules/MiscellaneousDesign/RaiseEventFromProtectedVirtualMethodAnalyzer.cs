@@ -165,7 +165,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (nameActual != nameExpected)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name, nameExpected));
+                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name,
+                    nameExpected));
                 return true;
             }
 

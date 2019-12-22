@@ -471,8 +471,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void
-            When_nullable_type_is_used_in_nameof_it_must_be_skipped()
+        internal void When_nullable_type_is_used_in_nameof_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
