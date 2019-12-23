@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\..\CSharpGuidelinesAnalyzer.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

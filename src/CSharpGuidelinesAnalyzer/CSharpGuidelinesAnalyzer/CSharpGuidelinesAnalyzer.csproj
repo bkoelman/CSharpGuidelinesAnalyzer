@@ -41,6 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\..\CSharpGuidelinesAnalyzer.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>

@@ -28,8 +28,6 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public TTarget Target { get; }
 
-#pragma warning disable AV1561 // Signature contains more than 3 parameters
-#pragma warning disable AV1500 // Member or local function contains more than 7 statements
         public BaseAnalysisContext([NotNull] Compilation compilation, [NotNull] AnalyzerOptions options,
             CancellationToken cancellationToken, [NotNull] Action<Diagnostic> reportDiagnostic, [NotNull] TTarget target)
         {
@@ -43,8 +41,6 @@ namespace CSharpGuidelinesAnalyzer
             reportDiagnosticCallback = reportDiagnostic;
             Target = target;
         }
-#pragma warning restore AV1500 // Member or local function contains more than 7 statements
-#pragma warning restore AV1561 // Signature contains more than 3 parameters
 
         public void ReportDiagnostic([NotNull] Diagnostic diagnostic)
         {

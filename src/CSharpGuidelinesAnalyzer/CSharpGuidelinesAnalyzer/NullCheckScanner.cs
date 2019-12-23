@@ -333,7 +333,6 @@ namespace CSharpGuidelinesAnalyzer
 
             public NullCheckOperand NullCheckOperand { get; }
 
-#pragma warning disable AV1561 // Signature contains more than 3 parameters
             public ArgumentsInfo([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
                 NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
             {
@@ -342,7 +341,6 @@ namespace CSharpGuidelinesAnalyzer
                 NullCheckMethod = nullCheckMethod;
                 NullCheckOperand = nullCheckOperand;
             }
-#pragma warning restore AV1561 // Signature contains more than 3 parameters
 
             public ArgumentsInfo WithArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument)
             {
