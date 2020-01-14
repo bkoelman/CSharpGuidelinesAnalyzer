@@ -1099,20 +1099,20 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         bool I.M()
                         {
-                            var iface = (I)this;
-                            return iface.M(string.Empty);
+                            var @interface = (I)this;
+                            return @interface.M(string.Empty);
                         }
 
                         bool I.M(string value)
                         {
-                            var iface = (I)this;
-                            return iface.M(-1, value);
+                            var @interface = (I)this;
+                            return @interface.M(-1, value);
                         }
 
                         bool I.M(int index, string value)
                         {
-                            var iface = (I)this;
-                            return iface.M(value, index, false);
+                            var @interface = (I)this;
+                            return @interface.M(value, index, false);
                         }
 
                         bool I.M(string value, int index, bool flag)
@@ -1144,20 +1144,20 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         bool I<bool>.M()
                         {
-                            var iface = (I<bool>)this;
-                            return iface.M(string.Empty);
+                            var @interface = (I<bool>)this;
+                            return @interface.M(string.Empty);
                         }
 
                         bool I<bool>.M(string value)
                         {
-                            var iface = (I<bool>)this;
-                            return iface.M(-1, value);
+                            var @interface = (I<bool>)this;
+                            return @interface.M(-1, value);
                         }
 
                         bool I<bool>.M(int index, string value)
                         {
-                            var iface = (I<bool>)this;
-                            return iface.M(value, index, 0);
+                            var @interface = (I<bool>)this;
+                            return @interface.M(value, index, 0);
                         }
 
                         bool I<bool>.M<U>(string value, int index, U extra)

@@ -131,14 +131,13 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [ItemNotNull]
         private static IEnumerable<string> GetLinesInText([NotNull] string text)
         {
-            using (var reader = new StringReader(text))
-            {
-                string line;
+            using var reader = new StringReader(text);
 
-                while ((line = reader.ReadLine()) != null)
-                {
-                    yield return line;
-                }
+            string line;
+
+            while ((line = reader.ReadLine()) != null)
+            {
+                yield return line;
             }
         }
 
