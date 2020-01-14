@@ -15,11 +15,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1507";
-
         private const string Title = "File contains multiple types";
         private const string MessageFormat = "File '{0}' contains additional type '{1}'.";
         private const string Description = "Limit the contents of a source code file to one type.";
+
+        public const string DiagnosticId = "AV1507";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -28,11 +28,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<SemanticModelAnalysisContext> AnalyzeSemanticModelAction = AnalyzeSemanticModel;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

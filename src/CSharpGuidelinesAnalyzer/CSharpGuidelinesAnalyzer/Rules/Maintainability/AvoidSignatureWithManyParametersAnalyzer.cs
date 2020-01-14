@@ -14,8 +14,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1561";
-
         private const int DefaultMaxParameterCount = 3;
 
         private const string Title = "Signature contains too many parameters";
@@ -29,6 +27,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements.";
 
         private const string Description = "Don't declare signatures with more than a predefined number of parameters.";
+
+        public const string DiagnosticId = "AV1561";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -47,10 +47,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor TupleReturnRule = new DiagnosticDescriptor(DiagnosticId, Title,
             TupleReturnMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -71,6 +67,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly Action<OperationAnalysisContext, int> AnalyzeLocalFunctionAction = (context, maxParameterCount) =>
             context.SkipInvalid(_ => AnalyzeLocalFunction(context, maxParameterCount));
 
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -87,10 +87,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             startContext.RegisterSymbolAction(actionContext => AnalyzePropertyAction(actionContext, maxParameterCount),
                 SymbolKind.Property);
+
             startContext.RegisterSymbolAction(actionContext => AnalyzeMethodAction(actionContext, maxParameterCount),
                 SymbolKind.Method);
+
             startContext.RegisterSymbolAction(actionContext => AnalyzeNamedTypeAction(actionContext, maxParameterCount),
                 SymbolKind.NamedType);
+
             startContext.RegisterOperationAction(actionContext => AnalyzeLocalFunctionAction(actionContext, maxParameterCount),
                 OperationKind.LocalFunction);
         }
@@ -112,6 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(property.Parameters),
                     maxParameterCount);
+
                 AnalyzeParameters(info, property, "Indexer");
             }
         }
@@ -126,6 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters),
                     maxParameterCount);
+
                 AnalyzeParameters(info, method, memberName);
 
                 if (MethodCanReturnValue(method))
@@ -194,12 +199,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static void AnalyzeDelegate([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context, int maxParameterCount)
         {
             IMethodSymbol method = type.DelegateInvokeMethod;
+
             if (method != null)
             {
                 string typeName = $"Delegate '{type.Name}'";
 
                 var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters),
                     maxParameterCount);
+
                 AnalyzeParameters(info, type, typeName);
 
                 AnalyzeReturnType(context.Wrap(method.ReturnType), type, typeName);
@@ -219,6 +226,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(operation.Symbol.Parameters),
                 maxParameterCount);
+
             AnalyzeParameters(info, operation.Symbol, memberName);
 
             AnalyzeReturnType(context.Wrap(operation.Symbol.ReturnType), operation.Symbol, memberName);
@@ -250,6 +258,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 var diagnostic = Diagnostic.Create(ParameterCountRule, info.Context.Target.Locations[0], name, parameterCount,
                     info.MaxParameterCount);
+
                 info.Context.ReportDiagnostic(diagnostic);
             }
         }
@@ -268,6 +277,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] string memberName)
         {
             int? elementCount = TryGetValueTupleElementCount(context.Target) ?? TryGetSystemTupleElementCount(context.Target);
+
             if (elementCount > 2)
             {
                 ReportTupleReturn(context.WithTarget(member), memberName, elementCount.Value);

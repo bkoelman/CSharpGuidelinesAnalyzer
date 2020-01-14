@@ -9,12 +9,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class BuildWithTheHighestWarningLevelAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2210";
-
         private const string Title = "Compiler warnings are not treated as errors or warning level is too low";
         private const string WarningLevelMessageFormat = "Build with warning level 4.";
         private const string WarningAsErrorMessageFormat = "Build with -warnaserror.";
         private const string Description = "Build with the highest warning level.";
+
+        public const string DiagnosticId = "AV2210";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
@@ -29,12 +29,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             WarningAsErrorMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<CompilationAnalysisContext> AnalyzeCompilationOptionsAction = AnalyzeCompilationOptions;
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(WarningLevelRule, WarningAsErrorRule);
-
-        [NotNull]
-        private static readonly Action<CompilationAnalysisContext> AnalyzeCompilationOptionsAction = AnalyzeCompilationOptions;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

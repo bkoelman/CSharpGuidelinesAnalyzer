@@ -12,8 +12,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1505";
-
         private const string Title = "Namespace should match with assembly name";
         private const string NamespaceMessageFormat = "Namespace '{0}' does not match with assembly name '{1}'.";
 
@@ -24,6 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'.";
 
         private const string Description = "Name assemblies after their contained namespace.";
+
+        public const string DiagnosticId = "AV1505";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -43,17 +43,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             GlobalTypeMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction = context =>
+            context.SkipEmptyName(AnalyzeNamespace);
+
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction =
-            context => context.SkipEmptyName(AnalyzeNamespace);
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -120,26 +120,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace =
                 ImmutableArray.Create("JetBrains", "Annotations");
 
+            [NotNull]
+            private static readonly char[] DotSeparator =
+            {
+                '.'
+            };
+
             [ItemNotNull]
             private readonly ImmutableArray<string> assemblyNameParts;
 
             [NotNull]
             private readonly string reportAssemblyName;
 
-            private SymbolAnalysisContext context;
-
             [NotNull]
             [ItemNotNull]
             private readonly Stack<string> namespaceNames = new Stack<string>();
 
-            [NotNull]
-            private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
+            private SymbolAnalysisContext context;
 
             [NotNull]
-            private static readonly char[] DotSeparator =
-            {
-                '.'
-            };
+            private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
 
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName,
                 SymbolAnalysisContext context)
@@ -235,6 +235,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 }
 
                 int commonLength = Math.Min(currentNamespaceParts.Length, assemblyNameParts.Length);
+
                 for (int index = 0; index < commonLength; index++)
                 {
                     if (currentNamespaceParts[index] != assemblyNameParts[index])

@@ -14,11 +14,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1522";
-
         private const string Title = "Assign each property, field, parameter or variable in a separate statement";
         private const string MessageFormat = "{0} are assigned in a single statement.";
         private const string Description = "Assign each variable in a separate statement.";
+
+        public const string DiagnosticId = "AV1522";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -27,17 +27,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeStatementAction = context =>
+            context.SkipInvalid(AnalyzeStatement);
 
         private readonly ImmutableArray<OperationKind> statementKinds = ImmutableArray.Create(
             OperationKind.VariableDeclarationGroup, OperationKind.Switch, OperationKind.Conditional, OperationKind.Loop,
             OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using, OperationKind.YieldReturn,
             OperationKind.ExpressionStatement);
 
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeStatementAction =
-            context => context.SkipInvalid(AnalyzeStatement);
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -146,18 +146,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             private readonly ForLoopSection section;
 
+            [NotNull]
+            [ItemNotNull]
+            public ICollection<string> IdentifiersAssigned { get; } = new HashSet<string>();
+
             public StatementWalker(ForLoopSection section)
             {
                 this.section = section;
             }
 
-            [NotNull]
-            [ItemNotNull]
-            public ICollection<string> IdentifiersAssigned { get; } = new HashSet<string>();
-
             public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
                 IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+
                 if (initializer != null)
                 {
                     IdentifiersAssigned.Add(operation.Symbol.Name);
@@ -191,6 +192,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private void RegisterAssignment([NotNull] IOperation operation)
             {
                 IdentifierInfo identifierInfo = operation.TryGetIdentifierInfo();
+
                 if (identifierInfo != null)
                 {
                     IdentifiersAssigned.Add(identifierInfo.Name.LongName);

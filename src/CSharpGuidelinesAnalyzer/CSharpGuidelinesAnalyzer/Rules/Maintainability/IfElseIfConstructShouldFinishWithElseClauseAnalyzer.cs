@@ -13,11 +13,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1537";
-
         private const string Title = "If-else-if construct should end with an unconditional else clause";
         private const string MessageFormat = "If-else-if construct should end with an unconditional else clause.";
         private const string Description = "Finish every if-else-if statement with an else clause.";
+
+        public const string DiagnosticId = "AV1537";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -26,12 +26,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction = context =>
+            context.SkipInvalid(AnalyzeCodeBlock);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction =
-            context => context.SkipInvalid(AnalyzeCodeBlock);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -69,6 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 if (operation.IsStatement())
                 {
                     Location location = operation.TryGetLocationForKeyword();
+
                     if (location != null)
                     {
                         CollectedIfStatements.Add(location, operation);
@@ -175,6 +176,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                             owner.context.CancellationToken.ThrowIfCancellationRequested();
 
                             IOperation falseBlock = ifStatement.WhenFalse;
+
                             if (!AnalyzeFalseBlock(falseBlock))
                             {
                                 break;
@@ -218,6 +220,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
                 {
                     Location location = ifStatementToRemove.TryGetLocationForKeyword();
+
                     if (location != null)
                     {
                         ifStatements.Remove(location);

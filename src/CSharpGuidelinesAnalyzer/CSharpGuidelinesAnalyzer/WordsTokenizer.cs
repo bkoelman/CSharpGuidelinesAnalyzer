@@ -101,6 +101,7 @@ namespace CSharpGuidelinesAnalyzer
             if (kind == WordTokenKind.UpperCaseWord)
             {
                 bool nextCharIsLowerCaseLetter = position < text.Length && IsLowerCaseLetter(text[position]);
+
                 if (nextCharIsLowerCaseLetter)
                 {
                     PutBackLastUpperCaseLetterThatBelongsToNextWord();

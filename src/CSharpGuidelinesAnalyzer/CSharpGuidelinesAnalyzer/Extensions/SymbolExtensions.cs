@@ -25,6 +25,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Type comparerType = typeof(ISymbol).GetTypeInfo().Assembly.GetType("Microsoft.CodeAnalysis.SymbolEqualityComparer");
             FieldInfo includeField = comparerType?.GetTypeInfo().GetDeclaredField("IncludeNullability");
+
             if (includeField != null && includeField.GetValue(null) is IEqualityComparer<ISymbol> comparer)
             {
                 return comparer;
@@ -110,6 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static bool IsPropertyOrEventAccessor([CanBeNull] this ISymbol symbol)
         {
             var method = symbol as IMethodSymbol;
+
             switch (method?.MethodKind)
             {
                 case MethodKind.PropertyGet:
@@ -169,6 +171,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
             SyntaxNode bodySyntax = TryGetBodySyntaxForMethod(method, cancellationToken);
+
             if (bodySyntax != null)
             {
                 SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
@@ -193,6 +196,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 .Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray())
             {
                 SyntaxNode bodySyntax = TryGetDeclarationBody(syntaxNode);
+
                 if (bodySyntax != null)
                 {
                     return bodySyntax;
@@ -268,6 +272,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         public static bool IsSymbolAccessibleFromRoot([CanBeNull] this ISymbol symbol)
         {
             ISymbol container = symbol;
+
             while (container != null)
             {
                 if (container.DeclaredAccessibility == Accessibility.Private)

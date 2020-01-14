@@ -13,8 +13,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1008";
-
         private const string Title = "Class should not be static";
 
         private const string TypeMessageFormat =
@@ -24,6 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             "Extension method container class '{0}' contains {1} member '{2}', which is not an extension method.";
 
         private const string Description = "Avoid static classes.";
+
+        public const string DiagnosticId = "AV1008";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
@@ -37,12 +37,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             MemberMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(TypeRule, MemberRule);
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -107,6 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             }
 
             string accessibility = member.DeclaredAccessibility.ToText().ToLowerInvariant();
+
             context.ReportDiagnostic(Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility,
                 member.Name));
         }

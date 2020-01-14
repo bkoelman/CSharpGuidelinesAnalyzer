@@ -9,14 +9,14 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [NotNull]
         private string text = string.Empty;
 
-        protected override string GetSourceCode()
-        {
-            return text;
-        }
-
         public EmptySourceCodeBuilder()
             : base(Enumerable.Empty<string>())
         {
+        }
+
+        protected override string GetSourceCode()
+        {
+            return text;
         }
 
         [NotNull]

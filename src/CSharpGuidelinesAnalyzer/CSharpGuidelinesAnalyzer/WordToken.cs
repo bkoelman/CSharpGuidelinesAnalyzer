@@ -33,7 +33,10 @@ namespace CSharpGuidelinesAnalyzer
             return Text.GetHashCode() ^ Kind.GetHashCode();
         }
 
-        public override string ToString() => Kind + ": " + Text;
+        public override string ToString()
+        {
+            return Kind + ": " + Text;
+        }
 
         public static bool operator ==(WordToken left, WordToken right)
         {

@@ -46,6 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             for (int index = 1; index < tokenSet.Count - 1; index++)
             {
                 WordToken token = tokenSet[index];
+
                 if (string.Equals(word, token.Text, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;

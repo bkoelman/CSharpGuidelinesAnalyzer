@@ -13,8 +13,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1250";
-
         private const string Title = "Evaluate LINQ query before returning it";
 
         private const string OperationMessageFormat =
@@ -23,6 +21,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string QueryMessageFormat = "{0} '{1}' returns the result of a query, which uses deferred execution.";
         private const string QueryableMessageFormat = "{0} '{1}' returns an IQueryable, which uses deferred execution.";
         private const string Description = "Evaluate the result of a LINQ expression before returning it.";
+
+        private const string QueryOperationName = "<*>Query";
+        private const string QueryableOperationName = "<*>Queryable";
+
+        public const string DiagnosticId = "AV1250";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
@@ -42,10 +45,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
-
-        [ItemNotNull]
         private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any",
             "Cast", "Concat", "Contains", "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join", "OfType",
             "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse", "Select", "SelectMany", "SequenceEqual", "Skip",
@@ -61,15 +60,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly ImmutableArray<string> LinqOperatorsTransparent =
             ImmutableArray.Create("AsEnumerable", "AsQueryable");
 
-        private const string QueryOperationName = "<*>Query";
-        private const string QueryableOperationName = "<*>Queryable";
-
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         [NotNull]
         private static readonly Action<OperationBlockAnalysisContext, SequenceTypeInfo> AnalyzeCodeBlockAction =
             (context, sequenceTypeInfo) => context.SkipInvalid(_ => AnalyzeCodeBlock(context, sequenceTypeInfo));
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -126,6 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             OperationBlockAnalysisContext context)
         {
             Location location = returnStatement.TryGetLocationForKeyword();
+
             if (location != null)
             {
                 ISymbol containingMember = context.OwningSymbol.GetContainingMember();
@@ -530,6 +531,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     if (currentLocal.IsEqualTo(operation.Symbol) && EndsBeforeMaxLocation(operation))
                     {
                         IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+
                         if (initializer != null)
                         {
                             AnalyzeAssignmentValue(initializer.Value);
@@ -597,6 +599,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private sealed class EvaluationResult
         {
+            [NotNull]
+            public static readonly EvaluationResult Query = new EvaluationResult(EvaluationState.Deferred, QueryOperationName);
+
+            [NotNull]
+            public static readonly EvaluationResult Unknown = new EvaluationResult(EvaluationState.Unknown, null);
+
             private EvaluationState evaluationState;
 
             [CanBeNull]
@@ -620,12 +628,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             public bool IsConclusive => evaluationState != EvaluationState.Initial;
 
             public bool IsDeferred => evaluationState == EvaluationState.Deferred;
-
-            [NotNull]
-            public static readonly EvaluationResult Query = new EvaluationResult(EvaluationState.Deferred, QueryOperationName);
-
-            [NotNull]
-            public static readonly EvaluationResult Unknown = new EvaluationResult(EvaluationState.Unknown, null);
 
             public EvaluationResult()
             {

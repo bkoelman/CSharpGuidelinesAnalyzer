@@ -14,11 +14,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1555";
-
         private const string Title = "Avoid using non-(nullable-)boolean named arguments";
         private const string MessageFormat = "Parameter '{0}' in the call to '{1}' is invoked with a named argument.";
         private const string Description = "Avoid using named arguments.";
+
+        public const string DiagnosticId = "AV1555";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -27,12 +27,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context =>
+            context.SkipInvalid(AnalyzeInvocation);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction =
-            context => context.SkipInvalid(AnalyzeInvocation);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

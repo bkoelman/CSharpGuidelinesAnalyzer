@@ -12,8 +12,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1225";
-
         private const string Title =
             "Method that raises an event should be protected virtual and be named 'On' followed by event name";
 
@@ -21,6 +19,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string ModifiersMessageFormat = "Method '{0}' raises event '{1}', so it should be protected and virtual.";
         private const string NameMessageFormat = "Method '{0}' raises event '{1}', so it should be named '{2}'.";
         private const string Description = "Use a protected virtual method to raise each event.";
+
+        public const string DiagnosticId = "AV1225";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
@@ -44,13 +44,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             MethodKind.ExplicitInterfaceImplementation
         }.ToImmutableArray();
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context =>
+            context.SkipInvalid(AnalyzeInvocation);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction =
-            context => context.SkipInvalid(AnalyzeInvocation);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -73,6 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationOperation invocation)
         {
             IEventSymbol @event = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
+
             if (@event != null)
             {
                 IMethodSymbol containingMethod = invocation.TryGetContainingMethod(context.Compilation);
@@ -123,6 +124,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             [NotNull] ILocalSymbol local, OperationAnalysisContext context)
         {
             IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
+
             if (body != null)
             {
                 var walker = new LocalAssignmentWalker(local);
@@ -167,6 +169,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name,
                     nameExpected));
+
                 return true;
             }
 
@@ -221,6 +224,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 if (local.IsEqualTo(operation.Symbol))
                 {
                     IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+
                     if (initializer != null)
                     {
                         TrySetEvent(initializer.Value);

@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2310";
-
         private const string Title = "Code block should not contain inline comment";
         private const string MessageFormat = "Code block should not contain inline comment.";
         private const string Description = "Avoid inline comments.";
+
+        public const string DiagnosticId = "AV2310";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
@@ -26,14 +26,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             Category.DisplayName, DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [ItemNotNull]
         private static readonly ImmutableArray<string> ArrangeActAssertLines =
             ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
 
         [NotNull]
         private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

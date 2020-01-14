@@ -11,11 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1535";
-
         private const string Title = "Missing block in case or default clause of switch statement";
         private const string MessageFormat = "Missing block in case or default clause of switch statement.";
         private const string Description = "Always add a block after the keywords if, else, do, while, for, foreach and case.";
+
+        public const string DiagnosticId = "AV1535";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -24,11 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeSwitchSectionAction = AnalyzeSwitchSection;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

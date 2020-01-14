@@ -13,8 +13,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1135";
-
         private const string Title = "Do not return null for strings, collections or tasks";
 
         private const string MessageFormat =
@@ -23,15 +21,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private const string Description =
             "Properties, arguments and return values representing strings or collections should never be null.";
 
+        public const string DiagnosticId = "AV1135";
+
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         private static readonly ImmutableArray<OperationKind> ReturnOperationKinds =
             ImmutableArray.Create(OperationKind.Return, OperationKind.YieldReturn);
@@ -44,6 +41,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly Action<OperationAnalysisContext, IList<INamedTypeSymbol>> AnalyzeReturnAction =
             (context, taskTypes) => context.SkipInvalid(_ => AnalyzeReturn(context, taskTypes));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

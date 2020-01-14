@@ -11,11 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1715";
-
         private const string Title = "Name of public or internal boolean identifier should start with a verb";
         private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb.";
         private const string Description = "Properly name properties.";
+
+        public const string DiagnosticId = "AV1715";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -23,9 +23,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
@@ -37,12 +34,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             "Returns", "Starts", "Consists", "Targets");
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
-            context => context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
+            context.SkipEmptyName(AnalyzeMember);
 
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
-            context => context.SkipEmptyName(AnalyzeParameter);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
+            context.SkipEmptyName(AnalyzeParameter);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -62,6 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
 
             ITypeSymbol type = context.Symbol.GetSymbolType();
+
             if (!type.IsBooleanOrNullableBoolean())
             {
                 return;

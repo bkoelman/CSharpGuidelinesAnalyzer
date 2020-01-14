@@ -15,13 +15,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1500";
-
         private const int DefaultMaxStatementCount = 7;
 
         private const string Title = "Member or local function contains too many statements";
         private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of {3} statements.";
         private const string Description = "Methods should not exceed a predefined number of statements.";
+
+        public const string DiagnosticId = "AV1500";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -30,11 +30,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -112,6 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 .Select(reference => reference.GetSyntax(cancellationToken)).OfType<ArrowExpressionClauseSyntax>())
             {
                 ISymbol parentSymbol = semanticModel.GetDeclaredSymbol(arrowExpressionClause.Parent);
+
                 if (parentSymbol != null && parentSymbol.Locations.Any())
                 {
                     return parentSymbol.Locations[0];

@@ -18,6 +18,174 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return visitor.Visit(identifier, null);
         }
 
+        [CanBeNull]
+        public static Location TryGetLocationForKeyword([NotNull] this IOperation operation,
+            DoWhileLoopLookupKeywordStrategy doWhileLoopLookupStrategy = DoWhileLoopLookupKeywordStrategy.PreferDoKeyword,
+            TryFinallyLookupKeywordStrategy tryFinallyLookupKeywordStrategy = TryFinallyLookupKeywordStrategy.PreferTryKeyword)
+        {
+            if (operation.IsImplicit)
+            {
+                return null;
+            }
+
+            var visitor = new OperationLocationVisitor(doWhileLoopLookupStrategy, tryFinallyLookupKeywordStrategy);
+            return visitor.Visit(operation, null);
+        }
+
+        public static bool HasErrors([NotNull] this IOperation operation, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken = default)
+        {
+            Guard.NotNull(operation, nameof(operation));
+            Guard.NotNull(compilation, nameof(compilation));
+
+            if (operation.Syntax == null)
+            {
+                return true;
+            }
+
+            SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
+
+            return model.GetDiagnostics(operation.Syntax.Span, cancellationToken)
+                .Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
+        }
+
+        public static bool IsStatement([NotNull] this IOperation operation)
+        {
+            if (operation.Type != null || HasConstantValue(operation))
+            {
+                return false;
+            }
+
+            if (operation is IBlockOperation || operation is ILabeledOperation)
+            {
+                return false;
+            }
+
+            if (operation.Parent is IBlockOperation)
+            {
+                return true;
+            }
+
+            return OperationIsStatementBecauseItExistsInBodyOfParent(operation);
+        }
+
+        private static bool OperationIsStatementBecauseItExistsInBodyOfParent([NotNull] IOperation operation)
+        {
+            return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) ||
+                OperationExistsInBodyOfWhileLoop(operation) || OperationExistsInBodyOfIfStatement(operation) ||
+                OperationExistsInBodyOfTryFinallyStatement(operation) || OperationExistsInBodyOfCatchClause(operation) ||
+                OperationExistsInBodyOfCaseClause(operation) || OperationExistsInBodyOfLockStatement(operation) ||
+                OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
+        }
+
+        private static bool OperationExistsInBodyOfForLoop([NotNull] IOperation operation)
+        {
+            return operation.Parent is IForLoopOperation parentForLoop &&
+                IsOperationInBodyOfParent(operation, parentForLoop.Body);
+        }
+
+        private static bool OperationExistsInBodyOfForEachLoop([NotNull] IOperation operation)
+        {
+            return operation.Parent is IForEachLoopOperation parentForEachLoop &&
+                IsOperationInBodyOfParent(operation, parentForEachLoop.Body);
+        }
+
+        private static bool OperationExistsInBodyOfWhileLoop([NotNull] IOperation operation)
+        {
+            return operation.Parent is IWhileLoopOperation parentWhileLoop &&
+                IsOperationInBodyOfParent(operation, parentWhileLoop.Body);
+        }
+
+        private static bool OperationExistsInBodyOfIfStatement([NotNull] IOperation operation)
+        {
+            if (operation.Parent is IConditionalOperation parentConditional && parentConditional.IsStatement())
+            {
+                if (IsOperationInBodyOfParent(operation, parentConditional.WhenTrue) ||
+                    IsOperationInBodyOfParent(operation, parentConditional.WhenFalse))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool OperationExistsInBodyOfTryFinallyStatement([NotNull] IOperation operation)
+        {
+            if (operation.Parent is ITryOperation parentTry)
+            {
+                if (IsOperationInBodyOfParent(operation, parentTry.Body) ||
+                    IsOperationInBodyOfParent(operation, parentTry.Finally))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool OperationExistsInBodyOfCatchClause([NotNull] IOperation operation)
+        {
+            return operation.Parent is ICatchClauseOperation parentCatchClause &&
+                IsOperationInBodyOfParent(operation, parentCatchClause.Handler);
+        }
+
+        private static bool OperationExistsInBodyOfCaseClause([NotNull] IOperation operation)
+        {
+            return operation.Parent is ISwitchCaseOperation parentSwitchCase && parentSwitchCase.Body.Contains(operation);
+        }
+
+        private static bool OperationExistsInBodyOfLockStatement([NotNull] IOperation operation)
+        {
+            return operation.Parent is ILockOperation parentLock && IsOperationInBodyOfParent(operation, parentLock.Body);
+        }
+
+        private static bool OperationExistsInBodyOfLabel([NotNull] IOperation operation)
+        {
+            return operation.Parent is ILabeledOperation parentLabel &&
+                IsOperationInBodyOfParent(operation, parentLabel.Operation);
+        }
+
+        private static bool OperationExistsInBodyOfUsingStatement([NotNull] IOperation operation)
+        {
+            return operation.Parent is IUsingOperation parentUsing && IsOperationInBodyOfParent(operation, parentUsing.Body);
+        }
+
+        private static bool HasConstantValue([NotNull] IOperation operation)
+        {
+            return operation.ConstantValue.HasValue && operation.ConstantValue.Value == null;
+        }
+
+        private static bool IsOperationInBodyOfParent([NotNull] IOperation operation, [NotNull] IOperation parentOperationBody)
+        {
+            if (parentOperationBody is IBlockOperation bodyBlockOperation)
+            {
+                return bodyBlockOperation.Operations.Contains(operation);
+            }
+
+            return operation.Equals(parentOperationBody);
+        }
+
+        [NotNull]
+        public static IOperation SkipTypeConversions([NotNull] this IOperation operation)
+        {
+            IOperation currentOperation = operation;
+
+            while (currentOperation is IConversionOperation conversion)
+            {
+                currentOperation = conversion.Operand;
+            }
+
+            return currentOperation;
+        }
+
+        [CanBeNull]
+        public static IMethodSymbol TryGetContainingMethod([NotNull] this IOperation operation, [NotNull] Compilation compilation)
+        {
+            SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
+            return model.GetEnclosingSymbol(operation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
+        }
+
         private sealed class IdentifierVisitor : OperationVisitor<object, IdentifierInfo>
         {
             [NotNull]
@@ -26,6 +194,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.Local.Name,
                     operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+
                 return new IdentifierInfo(name, operation.Local.Type);
             }
 
@@ -36,6 +205,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 var name = new IdentifierName(operation.Parameter.Name,
                     /* CSharpShortErrorMessageFormat returns 'int', ie. without parameter name */
                     operation.Parameter.Name);
+
                 return new IdentifierInfo(name, operation.Parameter.Type);
             }
 
@@ -66,6 +236,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.Member.Name,
                     operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+
                 return new IdentifierInfo(name, memberType);
             }
 
@@ -74,22 +245,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 var name = new IdentifierName(operation.TargetMethod.Name,
                     operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+
                 return new IdentifierInfo(name, operation.TargetMethod.ReturnType);
             }
-        }
-
-        [CanBeNull]
-        public static Location TryGetLocationForKeyword([NotNull] this IOperation operation,
-            DoWhileLoopLookupKeywordStrategy doWhileLoopLookupStrategy = DoWhileLoopLookupKeywordStrategy.PreferDoKeyword,
-            TryFinallyLookupKeywordStrategy tryFinallyLookupKeywordStrategy = TryFinallyLookupKeywordStrategy.PreferTryKeyword)
-        {
-            if (operation.IsImplicit)
-            {
-                return null;
-            }
-
-            var visitor = new OperationLocationVisitor(doWhileLoopLookupStrategy, tryFinallyLookupKeywordStrategy);
-            return visitor.Visit(operation, null);
         }
 
         private sealed class OperationLocationVisitor : ExplicitOperationVisitor<object, Location>
@@ -258,6 +416,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 }
 
                 FinallyClauseSyntax finallySyntax = TryGetFinallySyntax(operation);
+
                 if (finallySyntax != null)
                 {
                     return finallySyntax.FinallyKeyword.GetLocation();
@@ -270,6 +429,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             private static FinallyClauseSyntax TryGetFinallySyntax([NotNull] ITryOperation operation)
             {
                 var finallySyntax = operation.Finally.Syntax as FinallyClauseSyntax;
+
                 if (finallySyntax == null)
                 {
                     // Bug workaround for https://github.com/dotnet/roslyn/issues/27208
@@ -363,159 +523,6 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             {
                 return operation.Symbol.Locations.FirstOrDefault();
             }
-        }
-
-        public static bool HasErrors([NotNull] this IOperation operation, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken = default)
-        {
-            Guard.NotNull(operation, nameof(operation));
-            Guard.NotNull(compilation, nameof(compilation));
-
-            if (operation.Syntax == null)
-            {
-                return true;
-            }
-
-            SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
-
-            return model.GetDiagnostics(operation.Syntax.Span, cancellationToken)
-                .Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
-        }
-
-        public static bool IsStatement([NotNull] this IOperation operation)
-        {
-            if (operation.Type != null || HasConstantValue(operation))
-            {
-                return false;
-            }
-
-            if (operation is IBlockOperation || operation is ILabeledOperation)
-            {
-                return false;
-            }
-
-            if (operation.Parent is IBlockOperation)
-            {
-                return true;
-            }
-
-            return OperationIsStatementBecauseItExistsInBodyOfParent(operation);
-        }
-
-        private static bool OperationIsStatementBecauseItExistsInBodyOfParent([NotNull] IOperation operation)
-        {
-            return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) ||
-                OperationExistsInBodyOfWhileLoop(operation) || OperationExistsInBodyOfIfStatement(operation) ||
-                OperationExistsInBodyOfTryFinallyStatement(operation) || OperationExistsInBodyOfCatchClause(operation) ||
-                OperationExistsInBodyOfCaseClause(operation) || OperationExistsInBodyOfLockStatement(operation) ||
-                OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
-        }
-
-        private static bool OperationExistsInBodyOfForLoop([NotNull] IOperation operation)
-        {
-            return operation.Parent is IForLoopOperation parentForLoop &&
-                IsOperationInBodyOfParent(operation, parentForLoop.Body);
-        }
-
-        private static bool OperationExistsInBodyOfForEachLoop([NotNull] IOperation operation)
-        {
-            return operation.Parent is IForEachLoopOperation parentForEachLoop &&
-                IsOperationInBodyOfParent(operation, parentForEachLoop.Body);
-        }
-
-        private static bool OperationExistsInBodyOfWhileLoop([NotNull] IOperation operation)
-        {
-            return operation.Parent is IWhileLoopOperation parentWhileLoop &&
-                IsOperationInBodyOfParent(operation, parentWhileLoop.Body);
-        }
-
-        private static bool OperationExistsInBodyOfIfStatement([NotNull] IOperation operation)
-        {
-            if (operation.Parent is IConditionalOperation parentConditional && parentConditional.IsStatement())
-            {
-                if (IsOperationInBodyOfParent(operation, parentConditional.WhenTrue) ||
-                    IsOperationInBodyOfParent(operation, parentConditional.WhenFalse))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool OperationExistsInBodyOfTryFinallyStatement([NotNull] IOperation operation)
-        {
-            if (operation.Parent is ITryOperation parentTry)
-            {
-                if (IsOperationInBodyOfParent(operation, parentTry.Body) ||
-                    IsOperationInBodyOfParent(operation, parentTry.Finally))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool OperationExistsInBodyOfCatchClause([NotNull] IOperation operation)
-        {
-            return operation.Parent is ICatchClauseOperation parentCatchClause &&
-                IsOperationInBodyOfParent(operation, parentCatchClause.Handler);
-        }
-
-        private static bool OperationExistsInBodyOfCaseClause([NotNull] IOperation operation)
-        {
-            return operation.Parent is ISwitchCaseOperation parentSwitchCase && parentSwitchCase.Body.Contains(operation);
-        }
-
-        private static bool OperationExistsInBodyOfLockStatement([NotNull] IOperation operation)
-        {
-            return operation.Parent is ILockOperation parentLock && IsOperationInBodyOfParent(operation, parentLock.Body);
-        }
-
-        private static bool OperationExistsInBodyOfLabel([NotNull] IOperation operation)
-        {
-            return operation.Parent is ILabeledOperation parentLabel &&
-                IsOperationInBodyOfParent(operation, parentLabel.Operation);
-        }
-
-        private static bool OperationExistsInBodyOfUsingStatement([NotNull] IOperation operation)
-        {
-            return operation.Parent is IUsingOperation parentUsing && IsOperationInBodyOfParent(operation, parentUsing.Body);
-        }
-
-        private static bool HasConstantValue([NotNull] IOperation operation)
-        {
-            return operation.ConstantValue.HasValue && operation.ConstantValue.Value == null;
-        }
-
-        private static bool IsOperationInBodyOfParent([NotNull] IOperation operation, [NotNull] IOperation parentOperationBody)
-        {
-            if (parentOperationBody is IBlockOperation bodyBlockOperation)
-            {
-                return bodyBlockOperation.Operations.Contains(operation);
-            }
-
-            return operation.Equals(parentOperationBody);
-        }
-
-        [NotNull]
-        public static IOperation SkipTypeConversions([NotNull] this IOperation operation)
-        {
-            IOperation currentOperation = operation;
-            while (currentOperation is IConversionOperation conversion)
-            {
-                currentOperation = conversion.Operand;
-            }
-
-            return currentOperation;
-        }
-
-        [CanBeNull]
-        public static IMethodSymbol TryGetContainingMethod([NotNull] this IOperation operation, [NotNull] Compilation compilation)
-        {
-            SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
-            return model.GetEnclosingSymbol(operation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
         }
     }
 }

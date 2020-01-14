@@ -13,11 +13,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidConditionWithDoubleNegationAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1502";
-
         private const string Title = "Logical not operator is applied on a member which has a negation in its name";
         private const string MessageFormat = "Logical not operator is applied on {0} '{1}', which has a negation in its name.";
         private const string Description = "Avoid conditions with double negatives.";
+
+        public const string DiagnosticId = "AV1502";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -27,13 +27,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [ItemNotNull]
         private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("no", "not");
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeNotExpressionAction = AnalyzeNotExpression;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -48,6 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             var notExpression = (PrefixUnaryExpressionSyntax)context.Node;
 
             ISymbol symbol = TryGetNegatingSymbol(notExpression.Operand, context.SemanticModel);
+
             if (symbol != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, notExpression.GetLocation(), symbol.GetKind().ToLowerInvariant(),
@@ -61,6 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (operand != null)
             {
                 ISymbol symbol = model.GetSymbolInfo(operand).Symbol;
+
                 if (symbol != null && ContainsNegatingWord(symbol.Name))
                 {
                     return symbol;

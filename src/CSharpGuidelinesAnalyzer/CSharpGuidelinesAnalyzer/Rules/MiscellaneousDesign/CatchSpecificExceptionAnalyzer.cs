@@ -12,8 +12,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1210";
-
         private const string Title = "Catch a specific exception instead of Exception, SystemException or ApplicationException";
 
         private const string MessageFormat =
@@ -21,15 +19,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private const string Description = "Don't swallow errors by catching generic exceptions";
 
+        public const string DiagnosticId = "AV1210";
+
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -39,6 +36,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly Action<SyntaxNodeAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction =
             AnalyzeCatchClause;
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -88,6 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             if (catchClause.Filter == null)
             {
                 ISymbol exceptionType = TryGetExceptionType(catchClause.Declaration, context.SemanticModel);
+
                 if (exceptionType == null || exceptionTypes.Contains(exceptionType))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, catchClause.CatchKeyword.GetLocation()));

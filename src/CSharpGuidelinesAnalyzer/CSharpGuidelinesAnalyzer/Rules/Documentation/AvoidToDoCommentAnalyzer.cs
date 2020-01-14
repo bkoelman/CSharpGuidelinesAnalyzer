@@ -11,11 +11,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2318";
-
         private const string Title = "Work-tracking TODO comment should be removed";
         private const string MessageFormat = "Work-tracking TODO comment should be removed.";
         private const string Description = "Don't use comments for tracking work to be done later.";
+        private const string TodoCommentToken = "TODO";
+
+        public const string DiagnosticId = "AV2318";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
@@ -24,13 +25,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        private const string TodoCommentToken = "TODO";
-
         [NotNull]
         private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeTodoCommentsAction = AnalyzeTodoComments;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -107,6 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             private void ReportTodoCommentFromSingleLine([NotNull] string message, int start)
             {
                 int index = GetCommentStartingIndex(message);
+
                 if (index >= message.Length)
                 {
                     return;
@@ -183,6 +183,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             private void ProcessLastLine(TextSpan fullSpan, TextLine endLine, int postfixLength)
             {
                 int length = fullSpan.End - endLine.Start;
+
                 if (length >= postfixLength)
                 {
                     length -= postfixLength;
@@ -197,6 +198,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 for (int index = 0; index < message.Length; index++)
                 {
                     char ch = message[index];
+
                     if (!SyntaxFacts.IsWhitespace(ch) && ch != '*' && ch != '/')
                     {
                         return index;

@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1530";
-
         private const string Title = "Loop variable should not be written to in loop body";
         private const string MessageFormat = "Loop variable '{0}' should not be written to in loop body.";
         private const string Description = "Don't change a loop variable inside a for loop.";
+
+        public const string DiagnosticId = "AV1530";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -25,11 +25,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeForStatementAction = AnalyzeForStatement;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -60,6 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (variableSymbol != null)
             {
                 DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.SafeAnalyzeDataFlow(statementSyntax);
+
                 if (dataFlowAnalysis != null)
                 {
                     if (dataFlowAnalysis.WrittenInside.Contains(variableSymbol))

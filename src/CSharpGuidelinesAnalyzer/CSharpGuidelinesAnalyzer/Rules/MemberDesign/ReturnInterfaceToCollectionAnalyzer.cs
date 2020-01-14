@@ -11,8 +11,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class ReturnInterfaceToCollectionAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1130";
-
         private const string Title =
             "Return type in method signature should be a collection interface instead of a concrete type";
 
@@ -21,6 +19,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private const string Description = "Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class.";
 
+        public const string DiagnosticId = "AV1130";
+
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
@@ -28,12 +28,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context =>
+            context.SkipEmptyName(AnalyzeMethod);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
-            context => context.SkipEmptyName(AnalyzeMethod);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

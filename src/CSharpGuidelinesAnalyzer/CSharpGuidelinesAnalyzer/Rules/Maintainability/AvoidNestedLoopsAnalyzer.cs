@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1532";
-
         private const string Title = "Loop statement contains nested loop";
         private const string MessageFormat = "Loop statement contains nested loop.";
         private const string Description = "Avoid nested loops.";
+
+        public const string DiagnosticId = "AV1532";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -24,9 +24,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
         private static readonly SyntaxKind[] LoopStatementKinds =
@@ -41,6 +38,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLoopStatementAction = AnalyzeLoopStatement;
 
+        [NotNull]
+        private static readonly LoopBodyLocator BodyLocator = new LoopBodyLocator();
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -49,12 +52,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             context.RegisterSyntaxNodeAction(AnalyzeLoopStatementAction, LoopStatementKinds);
         }
 
-        [NotNull]
-        private static readonly LoopBodyLocator BodyLocator = new LoopBodyLocator();
-
         private static void AnalyzeLoopStatement(SyntaxNodeAnalysisContext context)
         {
             StatementSyntax loopBody = BodyLocator.Visit(context.Node);
+
             if (loopBody != null)
             {
                 AnalyzeLoopBody(loopBody, context);

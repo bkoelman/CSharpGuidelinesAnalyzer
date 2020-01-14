@@ -8,6 +8,9 @@ namespace CSharpGuidelinesAnalyzer
 {
     internal sealed class DiagnosticCollector : IDisposable
     {
+        [NotNull]
+        private readonly Action<Diagnostic> reportDiagnostic;
+
         [CanBeNull]
         [ItemNotNull]
         private List<Diagnostic> diagnostics;
@@ -26,9 +29,6 @@ namespace CSharpGuidelinesAnalyzer
                 return diagnostics;
             }
         }
-
-        [NotNull]
-        private readonly Action<Diagnostic> reportDiagnostic;
 
         public DiagnosticCollector([NotNull] Action<Diagnostic> reportDiagnostic)
         {

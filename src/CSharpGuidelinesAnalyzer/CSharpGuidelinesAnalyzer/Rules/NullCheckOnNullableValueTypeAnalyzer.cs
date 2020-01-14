@@ -11,13 +11,13 @@ namespace CSharpGuidelinesAnalyzer.Rules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV00000000";
-
         private const string Title = "Expression of nullable value type is checked for null or not-null";
         private const string MessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";
 
         private const string Description =
             "Internal analyzer that reports when an expression of type nullable value type is checked for null or not-null.";
+
+        public const string DiagnosticId = "AV00000000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
@@ -47,10 +47,13 @@ namespace CSharpGuidelinesAnalyzer.Rules
         {
             startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner)),
                 OperationKind.PropertyReference);
+
             startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeInvocation(context, scanner)),
                 OperationKind.Invocation);
+
             startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeIsPattern(context, scanner)),
                 OperationKind.IsPattern);
+
             startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner)),
                 OperationKind.BinaryOperator);
         }

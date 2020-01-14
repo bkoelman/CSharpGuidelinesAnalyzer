@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1755";
-
         private const string Title = "Name of async method should end with Async or TaskAsync";
         private const string MessageFormat = "Name of async {0} '{1}' should end with Async or TaskAsync.";
         private const string Description = "Postfix asynchronous methods with Async or TaskAsync.";
+
+        public const string DiagnosticId = "AV1755";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -25,16 +25,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context =>
+            context.SkipEmptyName(AnalyzeMethod);
+
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
+            context.SkipInvalid(AnalyzeLocalFunction);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
-            context => context.SkipEmptyName(AnalyzeMethod);
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
-            context => context.SkipInvalid(AnalyzeLocalFunction);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

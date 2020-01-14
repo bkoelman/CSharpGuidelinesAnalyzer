@@ -13,11 +13,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1568";
-
         private const string Title = "Parameter value should not be overwritten in method body";
         private const string MessageFormat = "The value of parameter '{0}' is overwritten in its method body.";
         private const string Description = "Don't use parameters as temporary variables.";
+
+        public const string DiagnosticId = "AV1568";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -26,9 +26,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         private static readonly ImmutableArray<SpecialType> SimpleTypes = ImmutableArray.Create(SpecialType.System_Boolean,
             SpecialType.System_Char, SpecialType.System_SByte, SpecialType.System_Byte, SpecialType.System_Int16,
             SpecialType.System_UInt16, SpecialType.System_Int32, SpecialType.System_UInt32, SpecialType.System_Int64,
@@ -36,23 +33,26 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             SpecialType.System_IntPtr, SpecialType.System_UIntPtr, SpecialType.System_DateTime);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction =
-            context => context.SkipEmptyName(AnalyzeMethod);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context =>
+            context.SkipEmptyName(AnalyzeMethod);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzePropertyAction =
-            context => context.SkipEmptyName(AnalyzeProperty);
+        private static readonly Action<SymbolAnalysisContext> AnalyzePropertyAction = context =>
+            context.SkipEmptyName(AnalyzeProperty);
 
         [NotNull]
         private static readonly Action<SymbolAnalysisContext> AnalyzeEventAction = context => context.SkipEmptyName(AnalyzeEvent);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
-            context => context.SkipInvalid(AnalyzeLocalFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
+            context.SkipInvalid(AnalyzeLocalFunction);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousFunctionAction =
-            context => context.SkipInvalid(AnalyzeAnonymousFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousFunctionAction = context =>
+            context.SkipInvalid(AnalyzeAnonymousFunction);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -191,6 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] DiagnosticCollector collector)
         {
             SyntaxNode bodySyntax = context.Target.TryGetBodySyntaxForMethod(context.CancellationToken);
+
             if (bodySyntax == null)
             {
                 return;
@@ -208,6 +209,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             ICollection<IParameterSymbol> ordinaryParameters =
                 parameterGrouping.Where(group => !group.Key).SelectMany(group => group).ToArray();
+
             if (ordinaryParameters.Any())
             {
                 AnalyzeOrdinaryParameters(context.WithTarget(ordinaryParameters), bodySyntax, collector);
@@ -215,6 +217,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             ICollection<IParameterSymbol> structParameters =
                 parameterGrouping.Where(group => group.Key).SelectMany(group => group).ToArray();
+
             if (structParameters.Any())
             {
                 AnalyzeStructParameters(context.WithTarget(structParameters), bodySyntax, collector);
@@ -235,6 +238,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] SyntaxNode bodySyntax, [NotNull] DiagnosticCollector collector)
         {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
+
             if (dataFlowAnalysis == null)
             {
                 return;

@@ -7,12 +7,6 @@ namespace CSharpGuidelinesAnalyzer
         private const string CommitHash = "7a66f7468da6ce1477753a02e416e04bc9a44e45";
 
         [NotNull]
-        public string DisplayName { get; }
-
-        [NotNull]
-        private readonly string helpCategoryUri;
-
-        [NotNull]
         public static readonly AnalyzerCategory ClassDesign =
             new AnalyzerCategory("Class Design", "1000_ClassDesignGuidelines.md");
 
@@ -40,6 +34,12 @@ namespace CSharpGuidelinesAnalyzer
 
         [NotNull]
         public static readonly AnalyzerCategory Layout = new AnalyzerCategory("Layout", "2400_LayoutGuidelines.md");
+
+        [NotNull]
+        private readonly string helpCategoryUri;
+
+        [NotNull]
+        public string DisplayName { get; }
 
         private AnalyzerCategory([NotNull] string displayName, [NotNull] string documentName)
         {

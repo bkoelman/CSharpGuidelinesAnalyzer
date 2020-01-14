@@ -16,11 +16,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1536";
-
         private const string Title = "Non-exhaustive switch statement requires a default case clause";
         private const string MessageFormat = "Non-exhaustive switch statement requires a default case clause.";
         private const string Description = "Always add a default block after the last case in a switch statement.";
+
+        public const string DiagnosticId = "AV1536";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -28,9 +28,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
         [ItemCanBeNull]
@@ -48,6 +45,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             (context, systemBoolean) => context.SkipInvalid(_ => AnalyzeSwitchStatement(context, systemBoolean));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -59,6 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
         {
             INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
+
             if (systemBoolean != null)
             {
                 startContext.RegisterOperationAction(context => AnalyzeSwitchStatementAction(context, systemBoolean),
@@ -143,6 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             bool isEnumeration = identifierInfo.Type.BaseType != null &&
                 identifierInfo.Type.BaseType.SpecialType == SpecialType.System_Enum;
+
             bool isNullableEnumeration = identifierInfo.Type.IsNullableEnumeration();
 
             if (isEnumeration || isNullableEnumeration)
@@ -199,6 +201,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 IEnumerable<ISingleValueCaseClauseOperation> caseClauses =
                     analysisContext.SwitchStatement.Cases.SelectMany(@case =>
                         @case.Clauses.OfType<ISingleValueCaseClauseOperation>());
+
                 foreach (ISingleValueCaseClauseOperation caseClause in caseClauses)
                 {
                     analysisContext.CancellationToken.ThrowIfCancellationRequested();
@@ -227,6 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 var memberSyntax = conversion?.Syntax as MemberAccessExpressionSyntax;
 
                 IFieldSymbol field = analysisContext.GetFieldOrNull(memberSyntax);
+
                 if (field != null)
                 {
                     caseClauseValues.Add(field);

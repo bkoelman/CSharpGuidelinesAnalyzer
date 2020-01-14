@@ -9,11 +9,11 @@ namespace CSharpGuidelinesAnalyzer.Settings
     public sealed class AnalyzerSettingsRegistry
     {
         [NotNull]
-        private readonly IDictionary<AnalyzerSettingKey, string> settings;
-
-        [NotNull]
         internal static readonly AnalyzerSettingsRegistry ImmutableEmpty =
             new AnalyzerSettingsRegistry(ImmutableDictionary<AnalyzerSettingKey, string>.Empty);
+
+        [NotNull]
+        private readonly IDictionary<AnalyzerSettingKey, string> settings;
 
         internal bool IsEmpty => !settings.Any();
 

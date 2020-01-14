@@ -11,8 +11,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1506";
-
         private const string Title = "File should be named in Pascal casing without underscores or generic arity.";
 
         private const string CasingMessageFormat = "File '{0}' should be named using Pascal casing.";
@@ -20,6 +18,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string ArityMessageFormat = "File '{0}' should be named without generic arity.";
 
         private const string Description = "Name a source file to the type it contains.";
+
+        public const string DiagnosticId = "AV1506";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -38,12 +38,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor ArityRule = new DiagnosticDescriptor(DiagnosticId, Title, ArityMessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeSyntaxTreeAction = AnalyzeSyntaxTree;
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
             ImmutableArray.Create(CasingRule, UnderscoreRule, ArityRule);
-
-        [NotNull]
-        private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeSyntaxTreeAction = AnalyzeSyntaxTree;
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

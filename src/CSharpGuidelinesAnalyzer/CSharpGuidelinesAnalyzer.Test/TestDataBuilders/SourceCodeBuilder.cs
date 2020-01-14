@@ -19,8 +19,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         private static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty,
             Array.Empty<TextSpan>(), LanguageNames.CSharp, new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
 
-        [NotNull]
-        private AnalyzerTestContext testContext = DefaultTestContext;
+        [ItemNotNull]
+        protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
+        {
+            "System"
+        }.ToImmutableArray();
 
         [NotNull]
         [ItemNotNull]
@@ -29,11 +32,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         [NotNull]
         internal readonly CodeEditor Editor;
 
-        [ItemNotNull]
-        protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
-        {
-            "System"
-        }.ToImmutableArray();
+        [NotNull]
+        private AnalyzerTestContext testContext = DefaultTestContext;
 
         protected SourceCodeBuilder([NotNull] [ItemNotNull] IEnumerable<string> implicitNamespaceImports)
         {
@@ -91,6 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             [NotNull] StringBuilder builder)
         {
             bool isInFirstBlock = true;
+
             foreach (string codeBlock in codeBlocks)
             {
                 if (isInFirstBlock)
@@ -109,6 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         private static void AppendCodeBlock([NotNull] string codeBlock, [NotNull] StringBuilder builder)
         {
             bool isOnFirstLineInBlock = true;
+
             foreach (string line in GetLinesInText(codeBlock))
             {
                 if (isOnFirstLineInBlock)
@@ -132,6 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             using (var reader = new StringReader(text))
             {
                 string line;
+
                 while ((line = reader.ReadLine()) != null)
                 {
                     yield return line;

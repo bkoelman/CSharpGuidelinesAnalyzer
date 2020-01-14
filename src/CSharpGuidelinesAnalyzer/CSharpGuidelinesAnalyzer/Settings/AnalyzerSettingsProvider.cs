@@ -23,6 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
             Guard.NotNull(options, nameof(options));
 
             AdditionalText settingsFileOrNull = options.AdditionalFiles.FirstOrDefault(file => IsSettingsFile(file.Path));
+
             if (settingsFileOrNull != null)
             {
                 SourceText fileText = settingsFileOrNull.GetText(cancellationToken);
@@ -82,7 +83,11 @@ namespace CSharpGuidelinesAnalyzer.Settings
             Guard.NotNull(registry, nameof(registry));
 
             Encoding encoding = CreateEncoding();
-            return GetStringForXml(encoding, writer => { AnalyzerSettingsXmlConverter.WriteXml(registry, writer); });
+
+            return GetStringForXml(encoding, writer =>
+            {
+                AnalyzerSettingsXmlConverter.WriteXml(registry, writer);
+            });
         }
 
         [NotNull]

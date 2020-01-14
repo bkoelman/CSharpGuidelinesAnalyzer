@@ -11,11 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1562";
-
         private const string Title = "Do not declare a parameter as ref or out";
         private const string MessageFormat = "Parameter '{0}' is declared as ref or out.";
         private const string Description = "Don't use ref or out parameters.";
+
+        public const string DiagnosticId = "AV1562";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -24,12 +24,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
+            context.SkipEmptyName(AnalyzeParameter);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
-            context => context.SkipEmptyName(AnalyzeParameter);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

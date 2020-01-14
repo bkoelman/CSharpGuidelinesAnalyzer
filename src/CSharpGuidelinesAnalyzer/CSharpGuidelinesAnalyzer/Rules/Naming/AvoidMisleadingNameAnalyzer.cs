@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidMisleadingNameAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1712";
-
         private const string Title = "Identifier name is difficult to read";
         private const string MessageFormat = "{0} '{1}' has a name that is difficult to read.";
         private const string Description = "Avoid short names or names that can be mistaken for other names.";
+
+        public const string DiagnosticId = "AV1712";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -26,18 +26,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             Category.DisplayName, DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [ItemNotNull]
         private static readonly ImmutableArray<string> Blacklist = ImmutableArray.Create("b001", "lo", "I1", "lOl");
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction =
-            context => context.SkipInvalid(AnalyzeVariableDeclarator);
+        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context =>
+            context.SkipInvalid(AnalyzeVariableDeclarator);
 
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
-            context => context.SkipEmptyName(AnalyzeParameter);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
+            context.SkipEmptyName(AnalyzeParameter);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

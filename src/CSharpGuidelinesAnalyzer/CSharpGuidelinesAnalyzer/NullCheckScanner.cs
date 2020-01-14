@@ -65,6 +65,7 @@ namespace CSharpGuidelinesAnalyzer
             if (invocation.Instance != null)
             {
                 bool isNullableEquals = invocation.TargetMethod.OriginalDefinition.IsEqualTo(knownSymbols.NullableEqualsMethod);
+
                 if (isNullableEquals)
                 {
                     NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
@@ -81,6 +82,7 @@ namespace CSharpGuidelinesAnalyzer
         private NullCheckScanResult? AnalyzeDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
         {
             NullCheckMethod? nullCheckMethod = TryGetNullCheckForDoubleArgumentInvocation(invocation);
+
             if (nullCheckMethod != null)
             {
                 IArgumentOperation leftArgument = invocation.Arguments[0];
@@ -155,6 +157,7 @@ namespace CSharpGuidelinesAnalyzer
             Guard.NotNull(binaryOperator, nameof(binaryOperator));
 
             NullCheckOperand? operatorNullCheckOperand = TryGetBinaryOperatorNullCheckOperand(binaryOperator);
+
             if (operatorNullCheckOperand == null)
             {
                 return null;
@@ -188,6 +191,7 @@ namespace CSharpGuidelinesAnalyzer
             var operand = NullCheckOperand.IsNull;
 
             IOperation currentOperation = operation.Parent;
+
             while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
             {
                 operand = operand.Toggle();

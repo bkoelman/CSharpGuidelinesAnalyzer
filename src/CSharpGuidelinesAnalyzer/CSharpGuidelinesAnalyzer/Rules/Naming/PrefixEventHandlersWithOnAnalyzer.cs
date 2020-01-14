@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1738";
-
         private const string Title = "Event handlers should be named according to the pattern '(InstanceName)On(EventName)'";
         private const string MessageFormat = "{0} '{1}' that handles event '{2}' should be renamed to '{3}'.";
         private const string Description = "Prefix an event handler with \"On\".";
+
+        public const string DiagnosticId = "AV1738";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -25,12 +25,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction = context =>
+            context.SkipInvalid(AnalyzeEventAssignment);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction =
-            context => context.SkipInvalid(AnalyzeEventAssignment);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -67,6 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.EventReference.Event.Name);
 
                 string handlerNameActual = binding.Method.Name;
+
                 if (handlerNameActual != handlerNameExpected)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(),
@@ -88,9 +89,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static string GetInstanceEventTargetName([NotNull] IOperation eventInstance)
         {
             bool isEventLocal = eventInstance is IInstanceReferenceOperation;
+
             if (!isEventLocal)
             {
                 IdentifierInfo info = eventInstance.TryGetIdentifierInfo();
+
                 if (info != null)
                 {
                     return MakeCamelCaseWithoutUnderscorePrefix(info.Name.ShortName);

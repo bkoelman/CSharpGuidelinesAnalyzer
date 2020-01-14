@@ -12,11 +12,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1115";
-
         private const string Title = "Member or local function contains the word 'and', which suggests doing multiple things";
         private const string MessageFormat = "{0} '{1}' contains the word 'and', which suggests doing multiple things.";
         private const string Description = "A property, method or local function should do only one thing.";
+        private const string BlacklistWord = "and";
+
+        public const string DiagnosticId = "AV1115";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
@@ -25,21 +26,19 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-        private const string BlacklistWord = "and";
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
+            context.SkipEmptyName(AnalyzeMember);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
-            context => context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
+            context.SkipInvalid(AnalyzeLocalFunction);
 
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
-            context => context.SkipInvalid(AnalyzeLocalFunction);
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

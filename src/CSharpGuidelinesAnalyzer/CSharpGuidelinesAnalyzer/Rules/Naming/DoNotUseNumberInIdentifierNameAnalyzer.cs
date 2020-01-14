@@ -15,11 +15,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1704";
-
         private const string Title = "Identifier contains one or more digits in its name";
         private const string MessageFormat = "{0} '{1}' contains one or more digits in its name.";
         private const string Description = "Don't include numbers in variables, parameters and type members.";
+
+        public const string DiagnosticId = "AV1704";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -27,9 +27,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -50,32 +47,32 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         };
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
-            context => context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
+            context.SkipEmptyName(AnalyzeMember);
 
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction =
-            context => context.SkipEmptyName(AnalyzeParameter);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
+            context.SkipEmptyName(AnalyzeParameter);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
-            context => context.SkipInvalid(AnalyzeLocalFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
+            context.SkipInvalid(AnalyzeLocalFunction);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction =
-            context => context.SkipInvalid(AnalyzeVariableDeclarator);
+        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context =>
+            context.SkipInvalid(AnalyzeVariableDeclarator);
 
         [NotNull]
         private static readonly Action<OperationAnalysisContext>
             AnalyzeTupleAction = context => context.SkipInvalid(AnalyzeTuple);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousObjectCreationAction =
-            context => context.SkipInvalid(AnalyzeAnonymousObjectCreation);
+        private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousObjectCreationAction = context =>
+            context.SkipInvalid(AnalyzeAnonymousObjectCreation);
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeFromClauseAction = AnalyzeFromClause;
@@ -91,6 +88,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLetClauseAction = AnalyzeLetClause;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

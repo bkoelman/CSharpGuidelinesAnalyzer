@@ -13,11 +13,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1739";
-
         private const string Title = "Unused lambda parameter should be renamed to underscore(s)";
         private const string MessageFormat = "Unused {0} parameter '{1}' should be renamed to underscore(s).";
         private const string Description = "Use an underscore for irrelevant lambda parameters.";
+
+        public const string DiagnosticId = "AV1739";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -25,9 +25,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         [NotNull]
         private static readonly SyntaxKind[] AnonymousFunctionKinds =
@@ -39,6 +36,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeAnonymousFunctionAction = AnalyzeAnonymousFunction;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -70,6 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             [NotNull] SyntaxNode bodySyntax, SyntaxNodeAnalysisContext context)
         {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
+
             if (dataFlowAnalysis == null)
             {
                 return;

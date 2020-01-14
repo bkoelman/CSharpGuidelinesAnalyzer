@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1711";
-
         private const string Title = "Name members and local functions similarly to members of .NET Framework classes";
         private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'.";
         private const string Description = "Name members similarly to members of related .NET Framework classes.";
+
+        public const string DiagnosticId = "AV1711";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -24,9 +24,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -40,12 +37,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }.ToImmutableDictionary();
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
-            context => context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
+            context.SkipEmptyName(AnalyzeMember);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction =
-            context => context.SkipInvalid(AnalyzeLocalFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
+            context.SkipInvalid(AnalyzeLocalFunction);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

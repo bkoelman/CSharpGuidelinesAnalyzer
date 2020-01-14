@@ -11,11 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2230";
-
         private const string Title = "An expression is implicitly converted to dynamic";
         private const string MessageFormat = "An expression of type '{0}' is implicitly converted to dynamic.";
         private const string Description = "Only use the dynamic keyword when talking to a dynamic object.";
+
+        public const string DiagnosticId = "AV2230";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
@@ -24,9 +24,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
@@ -34,11 +31,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [NotNull]
         private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeConversionAction =
             (context, objectHandleType) => context.SkipInvalid(_ => AnalyzeConversion(context, objectHandleType));
+#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
+#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
         private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeCompoundAssignmentAction =
             (context, objectHandleType) => context.SkipInvalid(_ => AnalyzeCompoundAssignment(context, objectHandleType));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -54,6 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             startContext.RegisterOperationAction(context => AnalyzeConversionAction(context, objectHandleType),
                 OperationKind.Conversion);
+
             startContext.RegisterOperationAction(context => AnalyzeCompoundAssignmentAction(context, objectHandleType),
                 OperationKind.CompoundAssignment);
         }
@@ -61,6 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             var conversion = (IConversionOperation)context.Operation;
+
             if (!conversion.IsImplicit)
             {
                 return;

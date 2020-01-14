@@ -12,13 +12,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1235";
-
         private const string SenderTitle = "'sender' argument is null in non-static event invocation";
         private const string SenderMessageFormat = "'sender' argument is null in non-static event invocation.";
         private const string ArgsTitle = "Argument for second parameter is null in event invocation";
         private const string ArgsMessageFormat = "'{0}' argument is null in event invocation.";
         private const string Description = "Don't pass null as the sender argument when raising an event.";
+
+        public const string DiagnosticId = "AV1235";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
@@ -33,9 +33,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             ArgsMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
-
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
@@ -44,6 +41,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeInvocationAction =
             (context, systemEventArgs) => context.SkipInvalid(_ => AnalyzeInvocation(context, systemEventArgs));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -56,6 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
         {
             INamedTypeSymbol systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
+
             if (systemEventArgs != null)
             {
                 startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, systemEventArgs),
@@ -79,6 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             [NotNull] INamedTypeSymbol systemEventArgs)
         {
             bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
+
             if (targetsStaticEvent != null)
             {
                 if (invocation.TargetMethod.MethodKind == MethodKind.DelegateInvoke)
@@ -118,6 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             if (operation is IConditionalAccessInstanceOperation)
             {
                 SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
+
                 if (model.GetSymbolInfo(operation.Syntax).Symbol is IEventSymbol eventSymbol)
                 {
                     return eventSymbol.IsStatic;
@@ -130,6 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static void AnalyzeSenderArgument([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
         {
             IArgumentOperation senderArgument = GetSenderArgument(invocation);
+
             if (senderArgument != null && IsNullConstant(senderArgument.Value))
             {
                 context.ReportDiagnostic(Diagnostic.Create(SenderRule, senderArgument.Syntax.GetLocation()));
@@ -149,6 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             [NotNull] INamedTypeSymbol systemEventArgs, OperationAnalysisContext context)
         {
             IArgumentOperation argsArgument = GetArgsArgument(invocation, systemEventArgs);
+
             if (argsArgument != null && IsNullConstant(argsArgument.Value))
             {
                 context.ReportDiagnostic(Diagnostic.Create(ArgsRule, argsArgument.Syntax.GetLocation(),
@@ -167,6 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static bool IsEventArgs([CanBeNull] ITypeSymbol type, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             ITypeSymbol nextType = type;
+
             while (nextType != null)
             {
                 if (nextType.IsEqualTo(systemEventArgs))

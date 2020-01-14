@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2220";
-
         private const string Title = "Simple query should be replaced by extension method call";
         private const string MessageFormat = "Simple query should be replaced by extension method call.";
         private const string Description = "Avoid LINQ query syntax for simple expressions.";
+
+        public const string DiagnosticId = "AV2220";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
@@ -25,11 +25,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeQueryExpressionAction = AnalyzeQueryExpression;
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

@@ -10,11 +10,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotHideInheritedMemberAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1010";
-
         private const string Title = "Member hides inherited member";
         private const string MessageFormat = "'{0}' hides inherited member.";
         private const string Description = "Don't suppress compiler warnings using the new keyword.";
+
+        public const string DiagnosticId = "AV1010";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
@@ -23,15 +23,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Field,
             SymbolKind.Property, SymbolKind.Method, SymbolKind.Event, SymbolKind.NamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
-            context => context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
+            context.SkipEmptyName(AnalyzeMember);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

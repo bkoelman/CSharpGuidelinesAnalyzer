@@ -13,14 +13,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2235";
-
         private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
 
         private const string MessageFormat =
             "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
 
         private const string Description = "Favor async/await over Task continuations.";
+
+        public const string DiagnosticId = "AV2235";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
@@ -29,15 +29,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction =
-            (context, taskInfo) => context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
+        private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction = (context, taskInfo) =>
+            context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

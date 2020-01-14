@@ -14,8 +14,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1551";
-
         private const string Title = "Method overload should call another overload";
         private const string InvokeMessageFormat = "Overloaded method '{0}' should call another overload.";
         private const string MakeVirtualMessageFormat = "Method overload with the most parameters should be virtual.";
@@ -24,6 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             "Parameter order in '{0}' does not match with the parameter order of the longest overload.";
 
         private const string Description = "Call the more overloaded method from other overloads.";
+
+        public const string DiagnosticId = "AV1551";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
@@ -42,10 +42,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title, OrderMessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
-
         private static readonly ImmutableArray<MethodKind> RegularMethodKinds = new[]
         {
             MethodKind.Ordinary,
@@ -54,8 +50,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }.ToImmutableArray();
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -133,6 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] INamedTypeSymbol activeType, SymbolAnalysisContext context)
         {
             IMethodSymbol longestOverload = TryGetSingleLongestOverload(methodGroup);
+
             if (longestOverload != null)
             {
                 if (longestOverload.ContainingType.IsEqualTo(activeType) && CanBeMadeVirtual(longestOverload))
@@ -183,6 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
                 methodGroup.GroupBy(group => group.Parameters.Length).OrderByDescending(group => group.Key).First();
+
             return overloadsWithHighestParameterCount.Skip(1).FirstOrDefault() == null
                 ? overloadsWithHighestParameterCount.First()
                 : null;
@@ -218,6 +220,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
         {
             List<IParameterSymbol> regularParametersInMethod = method.Parameters.Where(IsRegularParameter).ToList();
+
             List<IParameterSymbol> regularParametersInLongestOverload =
                 parametersInLongestOverload.Where(IsRegularParameter).ToList();
 
@@ -233,6 +236,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
         {
             List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
+
             List<IParameterSymbol> defaultParametersInLongestOverload =
                 parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
 
@@ -252,6 +256,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 string parameterName = parameters[parameterIndex].Name;
 
                 int indexInLongestOverload = parametersInLongestOverload.FindIndex(parameter => parameter.Name == parameterName);
+
                 if (indexInLongestOverload != -1 && indexInLongestOverload != parameterIndex)
                 {
                     return false;
@@ -265,6 +270,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull] MethodInvocationWalker invocationWalker, SymbolAnalysisContext context)
         {
             IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
+
             if (operation != null)
             {
                 invocationWalker.AnalyzeBlock(operation, methodToAnalyze);
@@ -280,10 +286,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [ItemNotNull]
             private readonly IReadOnlyCollection<IMethodSymbol> methodGroup;
 
-            public bool HasFoundInvocation { get; private set; }
-
             [CanBeNull]
             private IMethodSymbol containingMethod;
+
+            public bool HasFoundInvocation { get; private set; }
 
             public MethodInvocationWalker([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
             {

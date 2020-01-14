@@ -11,11 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1745";
-
         private const string Title = "Name of extension method container class should end with 'Extensions'";
         private const string MessageFormat = "Name of extension method container class '{0}' should end with 'Extensions'.";
         private const string Description = "Group extension methods in a class suffixed with Extensions.";
+
+        public const string DiagnosticId = "AV1745";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -24,12 +24,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
+        [NotNull]
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

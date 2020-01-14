@@ -13,14 +13,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2202";
-
         private const string Title = "Prefer language syntax over explicit calls to underlying implementations";
 
         private const string NullableHasValueMessageFormat = "Replace call to Nullable<T>.HasValue with null check.";
         private const string NullableComparisonMessageFormat = "Remove null check in numeric comparison.";
 
         private const string Description = "Prefer language syntax over explicit calls to underlying implementations.";
+
+        public const string DiagnosticId = "AV2202";
 
         private static readonly ImmutableArray<BinaryOperatorKind> NumericComparisonOperators = new[]
         {
@@ -44,10 +44,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             NullableComparisonMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
-
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
@@ -58,6 +54,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         [NotNull]
         private static readonly Action<OperationAnalysisContext, NullCheckScanner> AnalyzeBinaryOperatorAction =
             (context, scanner) => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner));
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -83,6 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             var propertyReference = (IPropertyReferenceOperation)context.Operation;
 
             NullCheckScanResult? scanResult = scanner.ScanPropertyReference(propertyReference);
+
             if (scanResult != null && scanResult.Value.Method == NullCheckMethod.NullableHasValueMethod)
             {
                 if (propertyReference.Parent is IBinaryOperation binaryOperator &&
@@ -111,6 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             if (IsLogicalAnd(binaryOperator))
             {
                 IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
+
                 if (leftTarget != null && !(leftTarget is IInvocationOperation))
                 {
                     if (DoReportForMatchingRightOperandInNullableComparison(binaryOperator.RightOperand, scanner, leftTarget))
@@ -179,6 +181,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static IOperation SkipNotOperators([NotNull] IOperation operation)
         {
             IOperation currentOperation = operation;
+
             while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
             {
                 currentOperation = unaryOperation.Operand;

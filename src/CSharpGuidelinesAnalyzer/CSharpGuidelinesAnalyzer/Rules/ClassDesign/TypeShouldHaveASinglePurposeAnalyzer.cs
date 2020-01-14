@@ -12,11 +12,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1000";
-
         private const string Title = "Type name contains the word 'and', which suggests it has multiple purposes";
         private const string MessageFormat = "Type '{0}' contains the word 'and', which suggests it has multiple purposes.";
         private const string Description = "A class or interface should have a single purpose.";
+        private const string BlacklistWord = "and";
+
+        public const string DiagnosticId = "AV1000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
@@ -24,11 +25,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        private const string BlacklistWord = "and";
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeTypeDeclarationAction = AnalyzeTypeDeclaration;
@@ -46,6 +42,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         [NotNull]
         private static readonly TypeIdentifierResolver IdentifierResolver = new TypeIdentifierResolver();
 
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
         public override void Initialize([NotNull] AnalysisContext context)
         {
             context.EnableConcurrentExecution();
@@ -57,6 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             SyntaxToken identifier = IdentifierResolver.Visit(context.Node);
+
             if (identifier == default || string.IsNullOrEmpty(identifier.ValueText))
             {
                 return;

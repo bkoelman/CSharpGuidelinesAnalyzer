@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV000000000000";
-
         private const string Title = "Operation should have a keyword";
         private const string MessageFormat = "Operation should have a keyword";
         private const string Description = "Internal analyzer that reports the keyword location for an IOperation instance.";
+
+        public const string DiagnosticId = "AV000000000000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
@@ -69,6 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
             DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
         {
             Location location = context.Operation.TryGetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
+
             if (location != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, location));

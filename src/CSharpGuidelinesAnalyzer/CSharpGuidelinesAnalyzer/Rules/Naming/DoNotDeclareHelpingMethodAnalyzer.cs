@@ -12,11 +12,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DoNotDeclareHelpingMethodAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV1708";
-
         private const string Title = "Type name contains term that should be avoided";
         private const string MessageFormat = "Name of type '{0}' contains the term '{1}'.";
         private const string Description = "Name types using nouns, noun phrases or adjective phrases.";
+
+        public const string DiagnosticId = "AV1708";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
@@ -26,15 +26,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        [ItemNotNull]
         private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Utility", "Utilities", "Facility",
             "Facilities", "Helper", "Helpers", "Common", "Shared");
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -54,6 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
 
             ICollection<WordToken> wordsListed = type.Name.GetWordsInList(WordsBlacklist);
+
             if (wordsListed.Any())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, wordsListed.First().Text));

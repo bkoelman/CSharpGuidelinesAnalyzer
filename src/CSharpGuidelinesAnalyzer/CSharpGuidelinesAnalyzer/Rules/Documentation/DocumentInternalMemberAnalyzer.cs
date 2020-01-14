@@ -14,8 +14,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "AV2305";
-
         private const string Title = "Missing XML comment for internally visible type, member or parameter";
 
         private const string MissingTypeOrMemberMessageFormat =
@@ -24,6 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'.";
         private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature.";
         private const string Description = "Document all public, protected and internal types and members.";
+
+        public const string DiagnosticId = "AV2305";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
@@ -43,10 +43,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             ExtraParameterMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
             Category.GetHelpLinkUri(DiagnosticId));
 
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
-
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
@@ -55,12 +51,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly HashSet<string> EmptyHashSet = new HashSet<string>();
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction =
-            context => context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
+            context.SkipEmptyName(AnalyzeNamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction =
-            context => context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
+            context.SkipEmptyName(AnalyzeMember);
+
+        [ItemNotNull]
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
+            ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -115,6 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static bool HasInternalTypeInHierarchy([NotNull] ISymbol symbol)
         {
             ISymbol container = symbol;
+
             while (container != null)
             {
                 if (container.DeclaredAccessibility == Accessibility.Internal)
@@ -136,6 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             }
 
             string documentationXml = symbol.GetDocumentationCommentXml(null, false, context.CancellationToken);
+
             if (string.IsNullOrEmpty(documentationXml))
             {
                 context.ReportDiagnostic(Diagnostic.Create(MissingTypeOrMemberRule, symbol.Locations[0],
