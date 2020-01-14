@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if DEBUG
+using System.Collections.Generic;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Rules;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
@@ -1300,3 +1301,4 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
     }
 }
+#endif
