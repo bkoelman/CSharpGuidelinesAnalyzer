@@ -740,11 +740,35 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_settings_are_corrupt_it_must_use_default_value()
+        internal void When_constructor_contains_nine_parameters_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxParameterCount", "8"))
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters.");
+        }
+
+        [Fact]
+        internal void When_method_contains_nine_parameters_with_constructor_override_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithSettings("*** BAD XML ***")
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxParameterCount", "8")
+                    .Including(DiagnosticId, "MaxConstructorParameterCount", "4"))
                 .InDefaultClass(@"
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
@@ -754,49 +778,115 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters.");
+        }
+
+        [Fact]
+        internal void When_constructor_contains_nine_parameters_with_constructor_override_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxParameterCount", "4")
+                    .Including(DiagnosticId, "MaxConstructorParameterCount", "8"))
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters.");
+        }
+
+        [Fact]
+        internal void When_settings_are_corrupt_it_must_use_default_values()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithSettings("*** BAD XML ***")
+                .InGlobalScope(@"
+                    class C
+                    {
+                        public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
+
+                        void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 3 parameters.",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
-        internal void When_setting_is_missing_it_must_use_default_value()
+        internal void When_settings_are_missing_it_must_use_default_values()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithSettings(new AnalyzerSettingsBuilder()
                     .Including(DiagnosticId, "OtherUnusedSetting", "SomeValue"))
-                .InDefaultClass(@"
-                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                .InGlobalScope(@"
+                    class C
                     {
+                        public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
+
+                        void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 3 parameters.",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
-        internal void When_setting_value_is_missing_it_must_use_default_value()
+        internal void When_setting_values_are_missing_it_must_use_default_values()
         {
             // Arrange
-            ParsedSourceCode source = new MemberSourceCodeBuilder()
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .WithSettings(new AnalyzerSettingsBuilder()
-                    .Including(DiagnosticId, "MaxParameterCount", null))
-                .InDefaultClass(@"
-                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    .Including(DiagnosticId, "MaxParameterCount", null)
+                    .Including(DiagnosticId, "MaxConstructorParameterCount", null))
+                .InGlobalScope(@"
+                    class C
                     {
+                        public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
+
+                        void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                        {
+                        }
                     }
                 ")
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 3 parameters.",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 3 parameters.");
         }
 
         [Fact]
-        internal void When_setting_value_is_out_of_range_it_must_fail()
+        internal void When_parameter_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -815,6 +905,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Assert
             action.Should().Throw<Exception>()
                 .WithMessage("*Value for AV1561:MaxParameterCount configuration setting must be in range 0-255.*");
+        }
+
+        [Fact]
+        internal void When_constructor_parameter_setting_value_is_out_of_range_it_must_fail()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .WithSettings(new AnalyzerSettingsBuilder()
+                    .Including(DiagnosticId, "MaxConstructorParameterCount", "-1"))
+                .InDefaultClass(@"
+                    void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
+                    {
+                    }
+                ")
+                .Build();
+
+            // Act
+            Action action = () => VerifyGuidelineDiagnostic(source);
+
+            // Assert
+            action.Should().Throw<Exception>()
+                .WithMessage("*Value for AV1561:MaxConstructorParameterCount configuration setting must be in range 0-255.*");
         }
 
         #endregion

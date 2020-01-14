@@ -105,7 +105,8 @@ This analyzer reports when a method, constructor, local function, indexer or del
 - declares a tuple parameter
 - returns a tuple with more than 2 elements.
 
-**Note:** This rule can be customized using a [configuration file](/docs/Configuration.md) by setting **MaxParameterCount** to a value in range 0-255.
+**Note:** This rule can be customized using a [configuration file](/docs/Configuration.md) by setting **MaxParameterCount** and/or **MaxConstructorParameterCount** to a value in range 0-255.
+When **MaxConstructorParameterCount** is omitted, the value from **MaxParameterCount** (or its default) is used for constructors.
 
 ### [AV1562](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1500_MaintainabilityGuidelines.md#av1562): Don't use ref or out parameters ![](/images/warn.png "severity: warning")
 This analyzer reports when:

@@ -7,6 +7,7 @@ The behavior of rules can be customized by adding a file named `CSharpGuidelines
 <cSharpGuidelinesAnalyzerSettings>
   <setting rule="AV1500" name="MaxStatementCount" value="12" />
   <setting rule="AV1561" name="MaxParameterCount" value="5" />
+  <setting rule="AV1561" name="MaxConstructorParameterCount" value="8" />
 </cSharpGuidelinesAnalyzerSettings>
 ```
 

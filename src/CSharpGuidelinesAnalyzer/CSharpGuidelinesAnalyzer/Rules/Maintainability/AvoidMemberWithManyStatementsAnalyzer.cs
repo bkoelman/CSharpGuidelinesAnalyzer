@@ -33,6 +33,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
+        [NotNull]
+        private static readonly AnalyzerSettingKey MaxStatementCountKey =
+            new AnalyzerSettingKey(DiagnosticId, "MaxStatementCount");
+
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -58,8 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             AnalyzerSettingsRegistry registry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
 
-            var settingKey = new AnalyzerSettingKey(DiagnosticId, "MaxStatementCount");
-            return registry.TryGetInt32(settingKey, 0, 255) ?? DefaultMaxStatementCount;
+            return registry.TryGetInt32(MaxStatementCountKey, 0, 255) ?? DefaultMaxStatementCount;
         }
 
         private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, int maxStatementCount)
