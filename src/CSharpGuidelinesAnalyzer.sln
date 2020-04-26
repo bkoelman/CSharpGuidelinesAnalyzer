@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidelinesAnalyzer.Vsix", "CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.Vsix\CSharpGuidelinesAnalyzer.Vsix.csproj", "{CBD344C6-15E1-4337-AC0A-49E72D7B31C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidelinesAnalyzer", "CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.csproj", "{560612BD-75DC-40B3-A070-A913B925B60F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpGuidelinesAnalyzer", "CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.csproj", "{560612BD-75DC-40B3-A070-A913B925B60F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpGuidelinesAnalyzer.Test", "CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.Test\CSharpGuidelinesAnalyzer.Test.csproj", "{E3AFF0DD-B4CB-4054-BBB1-1F240B5803DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpGuidelinesAnalyzer.Test", "CSharpGuidelinesAnalyzer\CSharpGuidelinesAnalyzer.Test\CSharpGuidelinesAnalyzer.Test.csproj", "{E3AFF0DD-B4CB-4054-BBB1-1F240B5803DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE42E8A7-2390-4DC1-99BE-2595C24CCC63}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
