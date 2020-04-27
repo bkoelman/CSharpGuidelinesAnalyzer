@@ -55,6 +55,16 @@ Note that you can broaden the suppression scope by removing the `Target` and/or 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "AV1532:Loop statement contains nested loop", Justification = "<Pending>")]
 ```
 
+* In an .editorconfig file, which contains [rule severities](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2019#set-rule-severity-in-an-editorconfig-file):
+
+```ini
+root = true
+
+[*.cs]
+dotnet_diagnostic.av1115.severity = error
+dotnet_diagnostic.av1130.severity = suggestion
+```
+
 * In a custom .ruleset file, which contains Code Analysis settings:
 
 Right-click your project, select **Properties**, tab **Code Analysis**. Click **Open**, expand **CSharpGuidelinesAnalyzers** and uncheck the rules you want to disable. When you save changes, a .ruleset file is added to your project.

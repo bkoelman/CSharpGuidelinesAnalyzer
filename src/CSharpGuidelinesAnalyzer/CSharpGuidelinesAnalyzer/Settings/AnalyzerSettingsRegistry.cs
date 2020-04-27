@@ -41,15 +41,16 @@ namespace CSharpGuidelinesAnalyzer.Settings
         {
             Guard.NotNull(key, nameof(key));
 
-            if (settings.ContainsKey(key) && int.TryParse(settings[key], out int value))
+            if (settings.ContainsKey(key) && !string.IsNullOrEmpty(settings[key]))
             {
-                if (value < minValue || value > maxValue)
+                if (int.TryParse(settings[key], out int value) && value >= minValue && value <= maxValue)
                 {
-                    throw new ArgumentOutOfRangeException(
-                        $"Value for {key} configuration setting must be in range {minValue}-{maxValue}.", (Exception)null);
+                    return value;
                 }
 
-                return value;
+                throw new ArgumentOutOfRangeException(
+                    $"Value for '{key}' in '{AnalyzerSettingsProvider.SettingsFileName}' must be in range {minValue}-{maxValue}.",
+                    (Exception)null);
             }
 
             return null;

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using CSharpGuidelinesAnalyzer.Settings;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -118,29 +117,13 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         }
 
         [NotNull]
-        public static TBuilder WithSettings<TBuilder>([NotNull] this TBuilder source,
-            [NotNull] AnalyzerSettingsBuilder settingsBuilder)
+        public static TBuilder WithOptions<TBuilder>([NotNull] this TBuilder source,
+            [NotNull] AnalyzerOptionsBuilder builder)
             where TBuilder : SourceCodeBuilder
         {
-            Guard.NotNull(settingsBuilder, nameof(settingsBuilder));
+            Guard.NotNull(builder, nameof(builder));
 
-            AnalyzerSettingsRegistry registry = settingsBuilder.Build();
-            AnalyzerOptions options = AnalyzerSettingsBuilder.ToOptions(registry);
-
-            source.Editor.UpdateTestContext(context => context.WithOptions(options));
-
-            return source;
-        }
-
-        [NotNull]
-        public static TBuilder WithSettings<TBuilder>([NotNull] this TBuilder source,
-            [NotNull] string settingsText)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(settingsText, nameof(settingsText));
-
-            AnalyzerOptions options = AnalyzerSettingsBuilder.ToOptions(settingsText);
-
+            AnalyzerOptions options = builder.Build();
             source.Editor.UpdateTestContext(context => context.WithOptions(options));
 
             return source;

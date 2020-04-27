@@ -1,47 +1,34 @@
-﻿using System.Collections.Immutable;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Settings;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
-    internal sealed class AnalyzerSettingsBuilder : ITestDataBuilder<AnalyzerSettingsRegistry>
+    internal sealed class XmlSettingsBuilder : ITestDataBuilder<AdditionalText>
     {
         [NotNull]
         private readonly AnalyzerSettingsRegistry registry = new AnalyzerSettingsRegistry();
 
-        public AnalyzerSettingsRegistry Build()
+        public AdditionalText Build()
         {
-            return registry;
+            string content = AnalyzerSettingsProvider.ToFileContent(registry);
+            return new FakeAdditionalText(content);
         }
 
         [NotNull]
-        public AnalyzerSettingsBuilder Including([NotNull] string rule, [NotNull] string name, [CanBeNull] string value)
+        public XmlSettingsBuilder Including([NotNull] string rule, [NotNull] string name, [CanBeNull] string value)
         {
             registry.Add(rule, name, value);
             return this;
         }
 
         [NotNull]
-        public static AnalyzerOptions ToOptions([NotNull] AnalyzerSettingsRegistry registry)
+        public static AdditionalText FromContent([NotNull] string content)
         {
-            Guard.NotNull(registry, nameof(registry));
-
-            string content = AnalyzerSettingsProvider.ToFileContent(registry);
-            return ToOptions(content);
-        }
-
-        [NotNull]
-        public static AnalyzerOptions ToOptions([NotNull] string settingsText)
-        {
-            Guard.NotNull(settingsText, nameof(settingsText));
-
-            AdditionalText additionalText = new FakeAdditionalText(settingsText);
-            return new AnalyzerOptions(ImmutableArray.Create(additionalText));
+            return new FakeAdditionalText(content);
         }
 
         private sealed class FakeAdditionalText : AdditionalText

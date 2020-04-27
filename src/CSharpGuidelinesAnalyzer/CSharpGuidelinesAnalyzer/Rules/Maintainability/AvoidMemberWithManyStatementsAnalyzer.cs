@@ -52,21 +52,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             Guard.NotNull(startContext, nameof(startContext));
 
-            int maxStatementCount = GetMaxStatementCountFromSettings(startContext.Options, startContext.CancellationToken);
+            var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
-            startContext.RegisterCodeBlockAction(actionContext => AnalyzeCodeBlock(actionContext, maxStatementCount));
+            startContext.RegisterCodeBlockAction(actionContext => AnalyzeCodeBlock(actionContext, settingsReader));
         }
 
-        private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerOptions options,
-            CancellationToken cancellationToken)
+        private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerSettingsReader settingsReader,
+            [NotNull] SyntaxTree syntaxTree)
         {
-            AnalyzerSettingsRegistry registry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
+            Guard.NotNull(settingsReader, nameof(settingsReader));
+            Guard.NotNull(syntaxTree, nameof(syntaxTree));
 
-            return registry.TryGetInt32(MaxStatementCountKey, 0, 255) ?? DefaultMaxStatementCount;
+            return settingsReader.TryGetInt32(syntaxTree, MaxStatementCountKey, 0, 255) ?? DefaultMaxStatementCount;
         }
 
-        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, int maxStatementCount)
+        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
         {
+            int maxStatementCount = GetMaxStatementCountFromSettings(settingsReader, context.CodeBlock.SyntaxTree);
+
             if (context.OwningSymbol is INamedTypeSymbol || context.OwningSymbol.IsSynthesized())
             {
                 return;

@@ -1,14 +1,23 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Text;
+using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Settings
 {
     internal sealed class AnalyzerSettingKey
     {
         [NotNull]
+        [ItemNotNull]
+        private readonly Lazy<string> lazyNameInSnakeCase;
+
+        [NotNull]
         public string Rule { get; }
 
         [NotNull]
         public string Name { get; }
+
+        [NotNull]
+        public string NameInSnakeCase => lazyNameInSnakeCase.Value;
 
         public AnalyzerSettingKey([NotNull] string rule, [NotNull] string name)
         {
@@ -17,6 +26,34 @@ namespace CSharpGuidelinesAnalyzer.Settings
 
             Rule = rule;
             Name = name;
+
+            lazyNameInSnakeCase = new Lazy<string>(GetNameInSnakeCase);
+        }
+
+        [NotNull]
+        private string GetNameInSnakeCase()
+        {
+            var builder = new StringBuilder();
+
+            for (int index = 0; index < Name.Length; index++)
+            {
+                char ch = Name[index];
+
+                if (char.IsUpper(ch))
+                {
+                    if (index > 0)
+                    {
+                        builder.Append('_');
+                    }
+
+                    builder.Append(char.ToLowerInvariant(ch));
+                    continue;
+                }
+
+                builder.Append(ch);
+            }
+
+            return builder.ToString();
         }
 
         public override bool Equals(object obj)

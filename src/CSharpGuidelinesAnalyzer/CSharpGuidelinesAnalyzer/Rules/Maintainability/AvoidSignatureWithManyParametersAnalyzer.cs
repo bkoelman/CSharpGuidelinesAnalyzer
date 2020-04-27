@@ -52,20 +52,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext, ParameterSettings> AnalyzePropertyAction = (context, settings) =>
-            context.SkipEmptyName(_ => AnalyzeProperty(context, settings));
+        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzePropertyAction =
+            (context, settingsReader) => context.SkipEmptyName(_ => AnalyzeProperty(context, settingsReader));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext, ParameterSettings> AnalyzeMethodAction = (context, settings) =>
-            context.SkipEmptyName(_ => AnalyzeMethod(context, settings));
+        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeMethodAction =
+            (context, settingsReader) => context.SkipEmptyName(_ => AnalyzeMethod(context, settingsReader));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext, ParameterSettings> AnalyzeNamedTypeAction = (context, settings) =>
-            context.SkipEmptyName(_ => AnalyzeNamedType(context, settings));
+        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeNamedTypeAction =
+            (context, settingsReader) => context.SkipEmptyName(_ => AnalyzeNamedType(context, settingsReader));
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, ParameterSettings> AnalyzeLocalFunctionAction =
-            (context, settings) => context.SkipInvalid(_ => AnalyzeLocalFunction(context, settings));
+        private static readonly Action<OperationAnalysisContext, AnalyzerSettingsReader> AnalyzeLocalFunctionAction =
+            (context, settingsReader) => context.SkipInvalid(_ => AnalyzeLocalFunction(context, settingsReader));
 
         [NotNull]
         private static readonly AnalyzerSettingKey MaxParameterCountKey =
@@ -91,45 +91,50 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             Guard.NotNull(startContext, nameof(startContext));
 
-            ParameterSettings settings = GetParameterSettings(startContext.Options, startContext.CancellationToken);
+            var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
-            startContext.RegisterSymbolAction(actionContext => AnalyzePropertyAction(actionContext, settings),
+            startContext.RegisterSymbolAction(actionContext => AnalyzePropertyAction(actionContext, settingsReader),
                 SymbolKind.Property);
 
-            startContext.RegisterSymbolAction(actionContext => AnalyzeMethodAction(actionContext, settings), SymbolKind.Method);
+            startContext.RegisterSymbolAction(actionContext => AnalyzeMethodAction(actionContext, settingsReader),
+                SymbolKind.Method);
 
-            startContext.RegisterSymbolAction(actionContext => AnalyzeNamedTypeAction(actionContext, settings),
+            startContext.RegisterSymbolAction(actionContext => AnalyzeNamedTypeAction(actionContext, settingsReader),
                 SymbolKind.NamedType);
 
-            startContext.RegisterOperationAction(actionContext => AnalyzeLocalFunctionAction(actionContext, settings),
+            startContext.RegisterOperationAction(actionContext => AnalyzeLocalFunctionAction(actionContext, settingsReader),
                 OperationKind.LocalFunction);
         }
 
         [NotNull]
-        private static ParameterSettings GetParameterSettings([NotNull] AnalyzerOptions options,
-            CancellationToken cancellationToken)
+        private static ParameterSettings GetParameterSettings([NotNull] AnalyzerSettingsReader settingsReader,
+            [NotNull] SyntaxTree syntaxTree)
         {
-            AnalyzerSettingsRegistry registry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
+            int maxParameterCount =
+                settingsReader.TryGetInt32(syntaxTree, MaxParameterCountKey, 0, 255) ?? DefaultMaxParameterCount;
 
-            int maxParameterCount = registry.TryGetInt32(MaxParameterCountKey, 0, 255) ?? DefaultMaxParameterCount;
-            int maxConstructorParameterCount = registry.TryGetInt32(MaxConstructorParameterCountKey, 0, 255) ?? maxParameterCount;
+            int maxConstructorParameterCount = settingsReader.TryGetInt32(syntaxTree, MaxConstructorParameterCountKey, 0, 255) ??
+                maxParameterCount;
 
             return new ParameterSettings(maxParameterCount, maxConstructorParameterCount);
         }
 
-        private static void AnalyzeProperty(SymbolAnalysisContext context, [NotNull] ParameterSettings settings)
+        private static void AnalyzeProperty(SymbolAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
         {
             var property = (IPropertySymbol)context.Symbol;
 
             if (property.IsIndexer && MemberRequiresAnalysis(property, context.CancellationToken))
             {
+                ParameterSettings settings =
+                    GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
+
                 var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(property.Parameters), settings);
 
                 AnalyzeParameters(info, property, "Indexer");
             }
         }
 
-        private static void AnalyzeMethod(SymbolAnalysisContext context, [NotNull] ParameterSettings settings)
+        private static void AnalyzeMethod(SymbolAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
         {
             var method = (IMethodSymbol)context.Symbol;
 
@@ -137,6 +142,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 string memberName = GetMemberName(method);
                 bool isConstructor = IsConstructor(method);
+
+                ParameterSettings settings =
+                    GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
 
                 var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters), settings,
                     isConstructor);
@@ -195,12 +203,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return builder.ToString();
         }
 
-        private static void AnalyzeNamedType(SymbolAnalysisContext context, [NotNull] ParameterSettings settings)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
             if (IsDelegate(type))
             {
+                ParameterSettings settings =
+                    GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
+
                 AnalyzeDelegate(type, context, settings);
             }
         }
@@ -227,11 +238,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return type.TypeKind == TypeKind.Delegate;
         }
 
-        private static void AnalyzeLocalFunction(OperationAnalysisContext context, [NotNull] ParameterSettings settings)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context,
+            [NotNull] AnalyzerSettingsReader settingsReader)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
             string memberName = GetMemberName(operation.Symbol);
+
+            ParameterSettings settings = GetParameterSettings(settingsReader, context.Operation.Syntax.SyntaxTree);
 
             var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(operation.Symbol.Parameters),
                 settings);
