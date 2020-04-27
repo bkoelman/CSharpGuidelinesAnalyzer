@@ -2,3 +2,6 @@ root = true
 
 [*.cs]
 dotnet_diagnostic.CA2202.severity = none
+
+dotnet_diagnostic.av1500.max_statement_count = 12
+dotnet_diagnostic.av1561.max_parameter_count = 5
