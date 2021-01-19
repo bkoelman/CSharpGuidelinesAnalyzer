@@ -22,9 +22,11 @@ dotnet_diagnostic.av1115.severity = error
 dotnet_diagnostic.av1130.severity = suggestion
 ```
 
+> Note: A [bug](https://youtrack.jetbrains.com/issue/RIDER-53508) in JetBrains Rider prevents reading these settings from .editorconfig. If you're using Rider, use the legacy format instead (see below).
+
 # Legacy configuration support
 
-Note: The method described here still exists for compatibility with earlier versions (editorconfig takes precedence), but will be removed in a future version.
+Note: The method described here still exists for compatibility with earlier versions (editorconfig takes precedence), but will likely be removed in a future version.
 
 The behavior of rules can be customized by adding a file named `CSharpGuidelinesAnalyzer.config` to your C# project with the following structure:
 
