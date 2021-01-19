@@ -12,6 +12,9 @@ dotnet_diagnostic.av1561.max_constructor_parameter_count = 8
 ```
 
 Editorconfig settings are inherited from parent directories (unless `root = true`), which enables you to vary rule configuration per directory.
+
+> Note: A [bug](https://youtrack.jetbrains.com/issue/RIDER-53508) in JetBrains Rider prevents reading these settings from .editorconfig. If you're using Rider, use the legacy format instead (see below).
+
 Aside from rule-specific settings, you can set [severities](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2019#set-rule-severity-in-an-editorconfig-file) for all rules in this file too:
 
 ```ini
@@ -21,8 +24,6 @@ root = true
 dotnet_diagnostic.av1115.severity = error
 dotnet_diagnostic.av1130.severity = suggestion
 ```
-
-> Note: A [bug](https://youtrack.jetbrains.com/issue/RIDER-53508) in JetBrains Rider prevents reading these settings from .editorconfig. If you're using Rider, use the legacy format instead (see below).
 
 # Legacy configuration support
 
