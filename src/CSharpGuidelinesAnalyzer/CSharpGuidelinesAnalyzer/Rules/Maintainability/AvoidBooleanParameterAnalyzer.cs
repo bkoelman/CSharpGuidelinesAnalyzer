@@ -21,12 +21,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
-            context.SkipEmptyName(AnalyzeParameter);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -58,16 +57,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             ISymbol containingMember = parameter.ContainingSymbol;
 
-            return containingMember.DeclaredAccessibility != Accessibility.Private &&
-                containingMember.IsSymbolAccessibleFromRoot();
+            return containingMember.DeclaredAccessibility != Accessibility.Private && containingMember.IsSymbolAccessibleFromRoot();
         }
 
         private static void AnalyzeBooleanParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
         {
             ISymbol containingMember = parameter.ContainingSymbol;
 
-            if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) &&
-                !parameter.IsInterfaceImplementation() && !IsDisposablePattern(parameter))
+            if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) && !parameter.IsInterfaceImplementation() &&
+                !IsDisposablePattern(parameter))
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type));
             }

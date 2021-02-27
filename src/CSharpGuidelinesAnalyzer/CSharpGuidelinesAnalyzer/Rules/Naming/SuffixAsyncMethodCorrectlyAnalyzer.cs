@@ -22,16 +22,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context =>
-            context.SkipEmptyName(AnalyzeMethod);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
-            context.SkipInvalid(AnalyzeLocalFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -65,11 +63,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private static bool RequiresReport([NotNull] IMethodSymbol method, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
+        private static bool RequiresReport([NotNull] IMethodSymbol method, [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
-            return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() &&
-                !method.IsUnitTestMethod() && !method.IsEntryPoint(compilation, cancellationToken);
+            return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() && !method.IsUnitTestMethod() &&
+                !method.IsEntryPoint(compilation, cancellationToken);
         }
 
         private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)

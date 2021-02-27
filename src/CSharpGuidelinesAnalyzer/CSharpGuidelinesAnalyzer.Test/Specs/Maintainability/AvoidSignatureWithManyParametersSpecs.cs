@@ -886,8 +886,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'AV1561:MaxParameterCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
+                .WithMessage("*Value for 'AV1561:MaxParameterCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
@@ -910,8 +909,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'dotnet_diagnostic.av1561.max_parameter_count' in '.editorconfig' must be in range 0-255.*");
+                .WithMessage("*Value for 'dotnet_diagnostic.av1561.max_parameter_count' in '.editorconfig' must be in range 0-255.*");
         }
 
         [Fact]
@@ -934,8 +932,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'AV1561:MaxConstructorParameterCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
+                .WithMessage("*Value for 'AV1561:MaxConstructorParameterCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
@@ -958,8 +955,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'dotnet_diagnostic.av1561.max_constructor_parameter_count' in '.editorconfig' must be in range 0-255.*");
+                .WithMessage("*Value for 'dotnet_diagnostic.av1561.max_constructor_parameter_count' in '.editorconfig' must be in range 0-255.*");
         }
 
         #endregion

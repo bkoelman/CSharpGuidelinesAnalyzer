@@ -25,8 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -47,28 +47,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         };
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
-            context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
-            context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
 
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
-            context.SkipEmptyName(AnalyzeParameter);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
-            context.SkipInvalid(AnalyzeLocalFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context =>
-            context.SkipInvalid(AnalyzeVariableDeclarator);
+        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context => context.SkipInvalid(AnalyzeVariableDeclarator);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext>
-            AnalyzeTupleAction = context => context.SkipInvalid(AnalyzeTuple);
+        private static readonly Action<OperationAnalysisContext> AnalyzeTupleAction = context => context.SkipInvalid(AnalyzeTuple);
 
         [NotNull]
         private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousObjectCreationAction = context =>
@@ -165,8 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(localFunction.Symbol.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0],
-                    localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0], localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
             }
 
             AnalyzeTypeAsTuple(localFunction.Symbol.ReturnType, context.ReportDiagnostic);
@@ -181,8 +174,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            if (ContainsDigitsNonWhitelisted(parameter.Name) && !parameter.ContainingSymbol.IsOverride &&
-                !parameter.IsInterfaceImplementation())
+            if (ContainsDigitsNonWhitelisted(parameter.Name) && !parameter.ContainingSymbol.IsOverride && !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
             }
@@ -234,8 +226,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                 if (tupleElement != null && ContainsDigitsNonWhitelisted(tupleElement.Name))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element",
-                        tupleElement.Name));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
                 }
             }
         }
@@ -307,8 +298,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(rangeVariableName))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable",
-                    rangeVariableName));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable", rangeVariableName));
             }
         }
 
@@ -369,8 +359,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             bool isTextMatch = string.Equals(thisTokenText, "utf", StringComparison.OrdinalIgnoreCase);
 
-            return isTextMatch &&
-                (nextTokenText == "7" || nextTokenText == "8" || nextTokenText == "16" || nextTokenText == "32");
+            return isTextMatch && (nextTokenText == "7" || nextTokenText == "8" || nextTokenText == "16" || nextTokenText == "32");
         }
 
         private static bool ContainsDigit([NotNull] string text)

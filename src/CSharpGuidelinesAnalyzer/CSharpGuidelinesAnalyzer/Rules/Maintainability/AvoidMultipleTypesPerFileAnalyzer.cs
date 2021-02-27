@@ -25,8 +25,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<SemanticModelAnalysisContext> AnalyzeSemanticModelAction = AnalyzeSemanticModel;
@@ -61,8 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 SyntaxNode firstTypeSyntax = walker.TopLevelTypeDeclarations.First();
                 string firstTypeName = GetTypeName(firstTypeSyntax);
 
-                foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1)
-                    .Where(typeSyntax => GetTypeName(typeSyntax) != firstTypeName))
+                foreach (SyntaxNode extraTypeSyntax in walker.TopLevelTypeDeclarations.Skip(1).Where(typeSyntax => GetTypeName(typeSyntax) != firstTypeName))
                 {
                     ReportType(context, extraTypeSyntax);
                 }
@@ -142,9 +141,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private bool IsTypeDeclaration([NotNull] SyntaxNode node)
             {
-                return node.IsKind(SyntaxKind.ClassDeclaration) || node.IsKind(SyntaxKind.StructDeclaration) ||
-                    node.IsKind(SyntaxKind.EnumDeclaration) || node.IsKind(SyntaxKind.InterfaceDeclaration) ||
-                    node.IsKind(SyntaxKind.DelegateDeclaration);
+                return node.IsKind(SyntaxKind.ClassDeclaration) || node.IsKind(SyntaxKind.StructDeclaration) || node.IsKind(SyntaxKind.EnumDeclaration) ||
+                    node.IsKind(SyntaxKind.InterfaceDeclaration) || node.IsKind(SyntaxKind.DelegateDeclaration);
             }
         }
     }

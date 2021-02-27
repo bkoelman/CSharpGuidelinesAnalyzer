@@ -16,8 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             var mostSpecificInterfaces = new List<Type>(operationInterfaces);
 
-            foreach (Type parentInterface in operationInterfaces.SelectMany(@interface =>
-                GetPublicOperationInterfaces(@interface, false)))
+            foreach (Type parentInterface in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, false)))
             {
                 mostSpecificInterfaces.Remove(parentInterface);
             }
@@ -42,20 +41,17 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         private static bool IsPublicOperationInterface([NotNull] Type type)
         {
-            return type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsPublic &&
-                type.Name.EndsWith("Operation", StringComparison.Ordinal);
+            return type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsPublic && type.Name.EndsWith("Operation", StringComparison.Ordinal);
         }
 
         [NotNull]
         [ItemNotNull]
-        public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties(
-            [NotNull] [ItemNotNull] this IEnumerable<Type> operationInterfaces)
+        public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties([NotNull] [ItemNotNull] this IEnumerable<Type> operationInterfaces)
         {
             var properties = new HashSet<PropertyInfo>();
 
-            foreach (PropertyInfo property in operationInterfaces
-                .SelectMany(@interface => GetPublicOperationInterfaces(@interface, true)).SelectMany(operationInterface =>
-                    operationInterface.GetTypeInfo().DeclaredProperties))
+            foreach (PropertyInfo property in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, true))
+                .SelectMany(operationInterface => operationInterface.GetTypeInfo().DeclaredProperties))
             {
                 properties.Add(property);
             }

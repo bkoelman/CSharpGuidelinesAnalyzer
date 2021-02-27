@@ -23,19 +23,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
-            context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context =>
-            context.SkipInvalid(AnalyzeLocalFunction);
+        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -61,8 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic, context.CancellationToken);
         }
 
-        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic,
-            CancellationToken cancellationToken)
+        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
         {
             if (RequiresAnalysis(symbol, cancellationToken) && ContainsBlacklistedWord(symbol.Name))
             {

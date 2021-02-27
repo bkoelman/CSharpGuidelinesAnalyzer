@@ -21,12 +21,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
-            context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

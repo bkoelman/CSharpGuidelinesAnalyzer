@@ -14,12 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Do not return null for strings, collections or tasks";
-
-        private const string MessageFormat =
-            "null is returned from {0} '{1}' which has return type of string, collection or task.";
-
-        private const string Description =
-            "Properties, arguments and return values representing strings or collections should never be null.";
+        private const string MessageFormat = "null is returned from {0} '{1}' which has return type of string, collection or task.";
+        private const string Description = "Properties, arguments and return values representing strings or collections should never be null.";
 
         public const string DiagnosticId = "AV1135";
 
@@ -27,19 +23,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-        private static readonly ImmutableArray<OperationKind> ReturnOperationKinds =
-            ImmutableArray.Create(OperationKind.Return, OperationKind.YieldReturn);
+        private static readonly ImmutableArray<OperationKind> ReturnOperationKinds = ImmutableArray.Create(OperationKind.Return, OperationKind.YieldReturn);
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, IList<INamedTypeSymbol>> AnalyzeReturnAction =
-            (context, taskTypes) => context.SkipInvalid(_ => AnalyzeReturn(context, taskTypes));
+        private static readonly Action<OperationAnalysisContext, IList<INamedTypeSymbol>> AnalyzeReturnAction = (context, taskTypes) =>
+            context.SkipInvalid(_ => AnalyzeReturn(context, taskTypes));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
         [ItemNotNull]
@@ -79,8 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             }
         }
 
-        private static void AnalyzeReturn(OperationAnalysisContext context,
-            [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+        private static void AnalyzeReturn(OperationAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
         {
             var returnOperation = (IReturnOperation)context.Operation;
 
@@ -98,8 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static bool ReturnsStringOrCollectionOrTask([NotNull] IReturnOperation returnOperation,
             [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
         {
-            return ImplementsIEnumerable(returnOperation.ReturnedValue.Type) ||
-                IsTask(returnOperation.ReturnedValue.Type, taskTypes);
+            return ImplementsIEnumerable(returnOperation.ReturnedValue.Type) || IsTask(returnOperation.ReturnedValue.Type, taskTypes);
         }
 
         private static bool ImplementsIEnumerable([NotNull] ITypeSymbol type)
@@ -127,8 +120,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 Location location = returnOperation.ReturnedValue.Syntax.GetLocation();
                 string kind = method.GetKind().ToLowerInvariant();
 
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind,
-                    method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind, method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
             }
         }
     }

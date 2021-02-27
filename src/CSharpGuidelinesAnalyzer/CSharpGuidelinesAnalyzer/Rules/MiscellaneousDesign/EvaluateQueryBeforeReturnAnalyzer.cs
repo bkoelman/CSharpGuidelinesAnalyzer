@@ -14,14 +14,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Evaluate LINQ query before returning it";
-
-        private const string OperationMessageFormat =
-            "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution.";
-
+        private const string OperationMessageFormat = "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution.";
         private const string QueryMessageFormat = "{0} '{1}' returns the result of a query, which uses deferred execution.";
         private const string QueryableMessageFormat = "{0} '{1}' returns an IQueryable, which uses deferred execution.";
         private const string Description = "Evaluate the result of a LINQ expression before returning it.";
-
         private const string QueryOperationName = "<*>Query";
         private const string QueryableOperationName = "<*>Queryable";
 
@@ -31,45 +27,39 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor OperationRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            OperationMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor OperationRule = new DiagnosticDescriptor(DiagnosticId, Title, OperationMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryMessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor QueryableRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            QueryableMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor QueryableRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryableMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any",
-            "Cast", "Concat", "Contains", "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join", "OfType",
-            "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse", "Select", "SelectMany", "SequenceEqual", "Skip",
-            "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where", "Zip");
+        private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any", "Cast", "Concat", "Contains",
+            "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join", "OfType", "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse",
+            "Select", "SelectMany", "SequenceEqual", "Skip", "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where", "Zip");
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("Average", "Count",
-            "Distinct", "ElementAt", "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault",
-            "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum", "ToArray", "ToImmutableArray", "ToDictionary",
-            "ToList", "ToLookup");
+        private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("Average", "Count", "Distinct", "ElementAt",
+            "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault", "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum",
+            "ToArray", "ToImmutableArray", "ToDictionary", "ToList", "ToLookup");
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> LinqOperatorsTransparent =
-            ImmutableArray.Create("AsEnumerable", "AsQueryable");
+        private static readonly ImmutableArray<string> LinqOperatorsTransparent = ImmutableArray.Create("AsEnumerable", "AsQueryable");
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         [NotNull]
-        private static readonly Action<OperationBlockAnalysisContext, SequenceTypeInfo> AnalyzeCodeBlockAction =
-            (context, sequenceTypeInfo) => context.SkipInvalid(_ => AnalyzeCodeBlock(context, sequenceTypeInfo));
+        private static readonly Action<OperationBlockAnalysisContext, SequenceTypeInfo> AnalyzeCodeBlockAction = (context, sequenceTypeInfo) =>
+            context.SkipInvalid(_ => AnalyzeCodeBlock(context, sequenceTypeInfo));
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -88,8 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)
         {
-            if (context.OwningSymbol.DeclaredAccessibility != Accessibility.Public ||
-                !IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
+            if (context.OwningSymbol.DeclaredAccessibility != Accessibility.Public || !IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
             {
                 return;
             }
@@ -100,15 +89,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             AnalyzeReturnStatements(collector.ReturnStatements, context);
         }
 
-        private static bool IsInMethodThatReturnsEnumerable([NotNull] ISymbol owningSymbol,
-            [NotNull] SequenceTypeInfo sequenceTypeInfo)
+        private static bool IsInMethodThatReturnsEnumerable([NotNull] ISymbol owningSymbol, [NotNull] SequenceTypeInfo sequenceTypeInfo)
         {
-            return owningSymbol is IMethodSymbol method && !method.ReturnsVoid &&
-                sequenceTypeInfo.IsEnumerable(method.ReturnType);
+            return owningSymbol is IMethodSymbol method && !method.ReturnsVoid && sequenceTypeInfo.IsEnumerable(method.ReturnType);
         }
 
-        private static void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements,
-            OperationBlockAnalysisContext context)
+        private static void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements, OperationBlockAnalysisContext context)
         {
             if (returnStatements.Any())
             {
@@ -132,16 +118,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 ISymbol containingMember = context.OwningSymbol.GetContainingMember();
                 string memberName = containingMember.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                (DiagnosticDescriptor rule, object[] messageArguments) =
-                    GetArgumentsForReport(operationName, containingMember, memberName);
+                (DiagnosticDescriptor rule, object[] messageArguments) = GetArgumentsForReport(operationName, containingMember, memberName);
 
                 var diagnostic = Diagnostic.Create(rule, location, messageArguments);
                 context.ReportDiagnostic(diagnostic);
             }
         }
 
-        private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport(
-            [NotNull] string operationName, [NotNull] ISymbol containingMember, [NotNull] string memberName)
+        private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport([NotNull] string operationName,
+            [NotNull] ISymbol containingMember, [NotNull] string memberName)
         {
             switch (operationName)
             {
@@ -174,8 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         /// <summary>
-        /// Scans for return statements, skipping over anonymous methods and local functions, whose compile-time type allows for deferred
-        /// execution.
+        /// Scans for return statements, skipping over anonymous methods and local functions, whose compile-time type allows for deferred execution.
         /// </summary>
         private sealed class ReturnStatementCollector : ExplicitOperationWalker
         {
@@ -264,8 +248,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             private readonly OperationBlockAnalysisContext context;
 
             [NotNull]
-            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache =
-                new Dictionary<ILocalSymbol, EvaluationResult>();
+            private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
 
             public ReturnValueAnalyzer(OperationBlockAnalysisContext context)
             {
@@ -320,8 +303,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                     if (operation.Instance == null)
                     {
-                        if (IsExecutionDeferred(operation) || IsExecutionImmediate(operation) ||
-                            IsExecutionTransparent(operation))
+                        if (IsExecutionDeferred(operation) || IsExecutionImmediate(operation) || IsExecutionTransparent(operation))
                         {
                             return;
                         }
@@ -440,8 +422,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     Result.SetUnknown();
                 }
 
-                public override void VisitObjectOrCollectionInitializer(
-                    [NotNull] IObjectOrCollectionInitializerOperation operation)
+                public override void VisitObjectOrCollectionInitializer([NotNull] IObjectOrCollectionInitializerOperation operation)
                 {
                     Result.SetImmediate();
                 }
@@ -496,8 +477,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 [NotNull]
                 private readonly ReturnValueAnalyzer owner;
 
-                public VariableAssignmentWalker([NotNull] ILocalSymbol local, [NotNull] Location maxLocation,
-                    [NotNull] ReturnValueAnalyzer owner)
+                public VariableAssignmentWalker([NotNull] ILocalSymbol local, [NotNull] Location maxLocation, [NotNull] ReturnValueAnalyzer owner)
                 {
                     Guard.NotNull(local, nameof(local));
                     Guard.NotNull(maxLocation, nameof(maxLocation));
@@ -739,8 +719,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
             }
 
-            private void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type,
-                [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
+            private void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type, [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
             {
                 if (type != null)
                 {

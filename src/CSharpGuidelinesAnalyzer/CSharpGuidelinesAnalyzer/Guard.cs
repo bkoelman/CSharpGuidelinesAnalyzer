@@ -25,8 +25,7 @@ namespace CSharpGuidelinesAnalyzer
 
         [AssertionMethod]
         [ContractAnnotation("value: null => halt")]
-        public static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value,
-            [NotNull] [InvokerParameterName] string name)
+        public static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value, [NotNull] [InvokerParameterName] string name)
         {
             NotNull(value, name);
 

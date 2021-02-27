@@ -23,8 +23,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly SyntaxKind[] AnonymousFunctionKinds =
@@ -66,8 +66,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private static void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
-            [NotNull] SyntaxNode bodySyntax, SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [NotNull] SyntaxNode bodySyntax,
+            SyntaxNodeAnalysisContext context)
         {
             DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
 

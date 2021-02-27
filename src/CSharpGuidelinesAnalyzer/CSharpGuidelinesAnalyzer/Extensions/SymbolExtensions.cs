@@ -16,9 +16,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     {
         [ItemNotNull]
         private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
-            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
-            "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethod", "Xunit.FactAttribute", "Xunit.TheoryAttribute",
-            "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute", "MbUnit.Framework.TestAttribute");
+            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethod",
+            "Xunit.FactAttribute", "Xunit.TheoryAttribute", "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute",
+            "MbUnit.Framework.TestAttribute");
 
         [NotNull]
         [ItemNotNull]
@@ -133,8 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             Guard.NotNull(parameter, nameof(parameter));
 
-            foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface =>
-                @interface.GetMembers()))
+            foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
             {
                 ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
@@ -152,8 +151,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             if (!(member is IFieldSymbol))
             {
-                foreach (TSymbol interfaceMember in member.ContainingType.AllInterfaces.SelectMany(@interface =>
-                    @interface.GetMembers().OfType<TSymbol>()))
+                foreach (TSymbol interfaceMember in member.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers().OfType<TSymbol>()))
                 {
                     ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
@@ -168,8 +166,8 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        public static IOperation TryGetOperationBlockForMethod([NotNull] this IMethodSymbol method,
-            [NotNull] Compilation compilation, CancellationToken cancellationToken)
+        public static IOperation TryGetOperationBlockForMethod([NotNull] this IMethodSymbol method, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
         {
             SyntaxNode bodySyntax = TryGetBodySyntaxForMethod(method, cancellationToken);
 
@@ -188,13 +186,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        public static SyntaxNode TryGetBodySyntaxForMethod([NotNull] this IMethodSymbol method,
-            CancellationToken cancellationToken)
+        public static SyntaxNode TryGetBodySyntaxForMethod([NotNull] this IMethodSymbol method, CancellationToken cancellationToken)
         {
             Guard.NotNull(method, nameof(method));
 
-            foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences
-                .Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray())
+            foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken))
+                .ToArray())
             {
                 SyntaxNode bodySyntax = TryGetDeclarationBody(syntaxNode);
 
@@ -244,12 +241,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         }
 
         [CanBeNull]
-        private static SyntaxNode TryGetBodyForPartialMethodSyntax([NotNull] IMethodSymbol method,
-            CancellationToken cancellationToken)
+        private static SyntaxNode TryGetBodyForPartialMethodSyntax([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
         {
-            return method.PartialImplementationPart != null
-                ? TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken)
-                : null;
+            return method.PartialImplementationPart != null ? TryGetBodySyntaxForMethod(method.PartialImplementationPart, cancellationToken) : null;
         }
 
         public static bool IsUnitTestMethod([CanBeNull] this ISymbol symbol)
@@ -388,11 +382,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return index != -1 ? symbol.Name.Substring(index + 1) : symbol.Name;
         }
 
-        public static bool IsEntryPoint([NotNull] this IMethodSymbol method, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
+        public static bool IsEntryPoint([NotNull] this IMethodSymbol method, [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
-            IMethodSymbol entryPoint =
-                method.MethodKind == MethodKind.Ordinary ? compilation.GetEntryPoint(cancellationToken) : null;
+            IMethodSymbol entryPoint = method.MethodKind == MethodKind.Ordinary ? compilation.GetEntryPoint(cancellationToken) : null;
 
             return method.IsEqualTo(entryPoint);
         }

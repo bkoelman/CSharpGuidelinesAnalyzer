@@ -14,9 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
     {
         private const string Title = "Expression of nullable value type is checked for null or not-null";
         private const string MessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";
-
-        private const string Description =
-            "Internal analyzer that reports when an expression of type nullable value type is checked for null or not-null.";
+        private const string Description = "Internal analyzer that reports when an expression of type nullable value type is checked for null or not-null.";
 
         public const string DiagnosticId = "AV00000000";
 
@@ -24,8 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -43,20 +41,16 @@ namespace CSharpGuidelinesAnalyzer.Rules
             });
         }
 
-        private void RegisterForOperations([NotNull] CompilationStartAnalysisContext startContext,
-            [NotNull] NullCheckScanner scanner)
+        private void RegisterForOperations([NotNull] CompilationStartAnalysisContext startContext, [NotNull] NullCheckScanner scanner)
         {
             startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner)),
                 OperationKind.PropertyReference);
 
-            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeInvocation(context, scanner)),
-                OperationKind.Invocation);
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeInvocation(context, scanner)), OperationKind.Invocation);
 
-            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeIsPattern(context, scanner)),
-                OperationKind.IsPattern);
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeIsPattern(context, scanner)), OperationKind.IsPattern);
 
-            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner)),
-                OperationKind.BinaryOperator);
+            startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner)), OperationKind.BinaryOperator);
         }
 
         private void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
@@ -91,8 +85,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
             ReportForScanResult(scanResult, context.ReportDiagnostic);
         }
 
-        private void ReportForScanResult([CanBeNull] NullCheckScanResult? scanResult,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
+        private void ReportForScanResult([CanBeNull] NullCheckScanResult? scanResult, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             if (scanResult != null)
             {

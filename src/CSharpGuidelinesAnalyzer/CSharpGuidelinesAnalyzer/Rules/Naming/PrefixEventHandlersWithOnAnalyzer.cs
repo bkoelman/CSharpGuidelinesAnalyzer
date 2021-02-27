@@ -22,12 +22,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction = context =>
-            context.SkipInvalid(AnalyzeEventAssignment);
+        private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction = context => context.SkipInvalid(AnalyzeEventAssignment);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -58,8 +57,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             }
         }
 
-        private static void AnalyzeEventAssignmentMethod([NotNull] IMethodReferenceOperation binding,
-            [NotNull] PortableEventAssignmentOperation assignment, OperationAnalysisContext context)
+        private static void AnalyzeEventAssignmentMethod([NotNull] IMethodReferenceOperation binding, [NotNull] PortableEventAssignmentOperation assignment,
+            OperationAnalysisContext context)
         {
             if (assignment.EventReference != null)
             {
@@ -70,15 +69,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                 if (handlerNameActual != handlerNameExpected)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(),
-                        handlerNameActual, assignment.EventReference.Event.Name, handlerNameExpected));
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(), handlerNameActual,
+                        assignment.EventReference.Event.Name, handlerNameExpected));
                 }
             }
         }
 
         [NotNull]
-        private static string GetEventTargetName([NotNull] IEventReferenceOperation eventReference,
-            [NotNull] IMethodSymbol targetMethod)
+        private static string GetEventTargetName([NotNull] IEventReferenceOperation eventReference, [NotNull] IMethodSymbol targetMethod)
         {
             return eventReference.Instance != null
                 ? GetInstanceEventTargetName(eventReference.Instance)
@@ -125,8 +123,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         [NotNull]
-        private static string GetStaticEventTargetName([NotNull] IEventReferenceOperation eventReference,
-            [NotNull] IMethodSymbol targetMethod)
+        private static string GetStaticEventTargetName([NotNull] IEventReferenceOperation eventReference, [NotNull] IMethodSymbol targetMethod)
         {
             INamedTypeSymbol eventContainingType = eventReference.Event.ContainingType;
 

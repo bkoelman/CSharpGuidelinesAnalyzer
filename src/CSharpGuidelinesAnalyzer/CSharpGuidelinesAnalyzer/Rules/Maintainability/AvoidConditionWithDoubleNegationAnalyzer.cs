@@ -23,8 +23,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("no", "not");
@@ -51,8 +51,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (symbol != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, notExpression.GetLocation(), symbol.GetKind().ToLowerInvariant(),
-                    symbol.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, notExpression.GetLocation(), symbol.GetKind().ToLowerInvariant(), symbol.Name));
             }
         }
 

@@ -13,10 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Catch a specific exception instead of Exception, SystemException or ApplicationException";
-
-        private const string MessageFormat =
-            "Catch a specific exception instead of Exception, SystemException or ApplicationException.";
-
+        private const string MessageFormat = "Catch a specific exception instead of Exception, SystemException or ApplicationException.";
         private const string Description = "Don't swallow errors by catching generic exceptions";
 
         public const string DiagnosticId = "AV1210";
@@ -25,16 +22,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction =
-            AnalyzeCatchClause;
+        private static readonly Action<SyntaxNodeAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction = AnalyzeCatchClause;
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
         [ItemNotNull]
@@ -54,8 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (types.Any())
             {
-                startContext.RegisterSyntaxNodeAction(context => AnalyzeCatchClauseAction(context, types),
-                    SyntaxKind.CatchClause);
+                startContext.RegisterSyntaxNodeAction(context => AnalyzeCatchClauseAction(context, types), SyntaxKind.CatchClause);
             }
         }
 
@@ -71,8 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
         }
 
-        private static void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type,
-            [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
+        private static void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type, [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
         {
             if (type != null)
             {
@@ -80,8 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
         }
 
-        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context,
-            [ItemNotNull] ImmutableArray<INamedTypeSymbol> exceptionTypes)
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, [ItemNotNull] ImmutableArray<INamedTypeSymbol> exceptionTypes)
         {
             var catchClause = (CatchClauseSyntax)context.Node;
 

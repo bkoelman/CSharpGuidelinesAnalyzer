@@ -22,19 +22,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         private static readonly ImmutableArray<string> Blacklist = ImmutableArray.Create("b001", "lo", "I1", "lOl");
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context =>
-            context.SkipInvalid(AnalyzeVariableDeclarator);
+        private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context => context.SkipInvalid(AnalyzeVariableDeclarator);
 
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context =>
-            context.SkipEmptyName(AnalyzeParameter);
+        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

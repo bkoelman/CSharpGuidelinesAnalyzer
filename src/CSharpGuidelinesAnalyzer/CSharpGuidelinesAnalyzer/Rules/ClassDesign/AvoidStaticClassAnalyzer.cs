@@ -15,12 +15,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     {
         private const string Title = "Class should not be static";
 
-        private const string TypeMessageFormat =
-            "Class '{0}' should be non-static or its name should be suffixed with 'Extensions'.";
-
-        private const string MemberMessageFormat =
-            "Extension method container class '{0}' contains {1} member '{2}', which is not an extension method.";
-
+        private const string TypeMessageFormat = "Class '{0}' should be non-static or its name should be suffixed with 'Extensions'.";
+        private const string MemberMessageFormat = "Extension method container class '{0}' contains {1} member '{2}', which is not an extension method.";
         private const string Description = "Avoid static classes.";
 
         public const string DiagnosticId = "AV1008";
@@ -29,17 +25,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MemberMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title, MemberMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
-            context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
 
         [ItemNotNull]
         private static readonly ImmutableArray<string> PlatformInvokeWrapperTypeNames =
@@ -83,8 +77,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             return PlatformInvokeWrapperTypeNames.Contains(type.Name);
         }
 
-        private static bool TypeContainsEntryPoint([NotNull] INamedTypeSymbol type, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken)
+        private static bool TypeContainsEntryPoint([NotNull] INamedTypeSymbol type, [NotNull] Compilation compilation, CancellationToken cancellationToken)
         {
             return type.GetMembers().OfType<IMethodSymbol>().Any(method => method.IsEntryPoint(compilation, cancellationToken));
         }
@@ -100,8 +93,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             }
         }
 
-        private static void AnalyzeAccessibleMember([NotNull] ISymbol member, [NotNull] INamedTypeSymbol containingType,
-            SymbolAnalysisContext context)
+        private static void AnalyzeAccessibleMember([NotNull] ISymbol member, [NotNull] INamedTypeSymbol containingType, SymbolAnalysisContext context)
         {
             context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -117,8 +109,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
             string accessibility = member.DeclaredAccessibility.ToText().ToLowerInvariant();
 
-            context.ReportDiagnostic(Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility,
-                member.Name));
+            context.ReportDiagnostic(Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility, member.Name));
         }
 
         private static bool IsPublicOrInternal([NotNull] ISymbol member)

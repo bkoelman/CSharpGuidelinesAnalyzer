@@ -11,12 +11,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class ReturnInterfaceToCollectionAnalyzer : DiagnosticAnalyzer
     {
-        private const string Title =
-            "Return type in method signature should be a collection interface instead of a concrete type";
-
-        private const string MessageFormat =
-            "Return type in signature for '{0}' should be a collection interface instead of a concrete type.";
-
+        private const string Title = "Return type in method signature should be a collection interface instead of a concrete type";
+        private const string MessageFormat = "Return type in signature for '{0}' should be a collection interface instead of a concrete type.";
         private const string Description = "Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class.";
 
         public const string DiagnosticId = "AV1130";
@@ -25,12 +21,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context =>
-            context.SkipEmptyName(AnalyzeMethod);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -60,8 +55,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
             if (IsArray(method.ReturnType) || IsClassOrStructThatImplementsIEnumerable(method.ReturnType))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
-                    method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                context.ReportDiagnostic(
+                    Diagnostic.Create(Rule, method.Locations[0], method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
             }
         }
 
@@ -72,8 +67,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private static bool IsImmutable([NotNull] ITypeSymbol type)
         {
-            return type.Name.StartsWith("Immutable", StringComparison.Ordinal) ||
-                type.Name.StartsWith("IImmutable", StringComparison.Ordinal);
+            return type.Name.StartsWith("Immutable", StringComparison.Ordinal) || type.Name.StartsWith("IImmutable", StringComparison.Ordinal);
         }
 
         private static bool IsArray([NotNull] ITypeSymbol type)

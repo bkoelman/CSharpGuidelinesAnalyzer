@@ -31,8 +31,7 @@ namespace CSharpGuidelinesAnalyzer
             {
                 NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(propertyReference);
 
-                return new NullCheckScanResult(propertyReference.Instance, NullCheckMethod.NullableHasValueMethod,
-                    nullCheckOperand.Toggle());
+                return new NullCheckScanResult(propertyReference.Instance, NullCheckMethod.NullableHasValueMethod, nullCheckOperand.Toggle());
             }
 
             return null;
@@ -70,8 +69,8 @@ namespace CSharpGuidelinesAnalyzer
                 {
                     NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
 
-                    return AnalyzeArguments(new ArgumentsInfo(invocation.Instance, invocation.Arguments[0].Value,
-                        NullCheckMethod.NullableEqualsMethod, nullCheckOperand));
+                    return AnalyzeArguments(new ArgumentsInfo(invocation.Instance, invocation.Arguments[0].Value, NullCheckMethod.NullableEqualsMethod,
+                        nullCheckOperand));
                 }
             }
 
@@ -90,8 +89,7 @@ namespace CSharpGuidelinesAnalyzer
 
                 NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
 
-                return AnalyzeArguments(new ArgumentsInfo(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value,
-                    nullCheckOperand));
+                return AnalyzeArguments(new ArgumentsInfo(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value, nullCheckOperand));
             }
 
             return null;
@@ -166,8 +164,8 @@ namespace CSharpGuidelinesAnalyzer
             NullCheckOperand parentNullCheckOperand = GetParentNullCheckOperand(binaryOperator);
             NullCheckOperand nullCheckOperandCombined = parentNullCheckOperand.CombineWith(operatorNullCheckOperand.Value);
 
-            return AnalyzeArguments(new ArgumentsInfo(binaryOperator.LeftOperand, binaryOperator.RightOperand,
-                NullCheckMethod.EqualityOperator, nullCheckOperandCombined));
+            return AnalyzeArguments(new ArgumentsInfo(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckMethod.EqualityOperator,
+                nullCheckOperandCombined));
         }
 
         [CanBeNull]
@@ -337,8 +335,8 @@ namespace CSharpGuidelinesAnalyzer
 
             public NullCheckOperand NullCheckOperand { get; }
 
-            public ArgumentsInfo([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument,
-                NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
+            public ArgumentsInfo([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument, NullCheckMethod nullCheckMethod,
+                NullCheckOperand nullCheckOperand)
             {
                 LeftArgument = leftArgument;
                 RightArgument = rightArgument;

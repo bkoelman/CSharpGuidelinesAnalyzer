@@ -14,13 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     {
         private const string Title = "Namespace should match with assembly name";
         private const string NamespaceMessageFormat = "Namespace '{0}' does not match with assembly name '{1}'.";
-
-        private const string TypeInNamespaceMessageFormat =
-            "Type '{0}' is declared in namespace '{1}', which does not match with assembly name '{2}'.";
-
-        private const string GlobalTypeMessageFormat =
-            "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'.";
-
+        private const string TypeInNamespaceMessageFormat = "Type '{0}' is declared in namespace '{1}', which does not match with assembly name '{2}'.";
+        private const string GlobalTypeMessageFormat = "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'.";
         private const string Description = "Name assemblies after their contained namespace.";
 
         public const string DiagnosticId = "AV1505";
@@ -29,31 +24,25 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor NamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            NamespaceMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor NamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title, NamespaceMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor TypeInNamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TypeInNamespaceMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor TypeInNamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeInNamespaceMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor GlobalTypeRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            GlobalTypeMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor GlobalTypeRule = new DiagnosticDescriptor(DiagnosticId, Title, GlobalTypeMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction = context =>
-            context.SkipEmptyName(AnalyzeNamespace);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction = context => context.SkipEmptyName(AnalyzeNamespace);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
-            context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -98,9 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return string.Empty;
             }
 
-            return assemblyName.EndsWith(".Core", StringComparison.Ordinal)
-                ? assemblyName.Substring(0, assemblyName.Length - ".Core".Length)
-                : assemblyName;
+            return assemblyName.EndsWith(".Core", StringComparison.Ordinal) ? assemblyName.Substring(0, assemblyName.Length - ".Core".Length) : assemblyName;
         }
 
         private static void AnalyzeNamedType(SymbolAnalysisContext context)
@@ -109,16 +96,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (type.ContainingNamespace.IsGlobalNamespace && !type.IsSynthesized())
             {
-                context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name,
-                    type.ContainingAssembly.Name));
+                context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, type.ContainingAssembly.Name));
             }
         }
 
         private sealed class TypesInNamespaceVisitor : SymbolVisitor
         {
             [ItemNotNull]
-            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace =
-                ImmutableArray.Create("JetBrains", "Annotations");
+            private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace = ImmutableArray.Create("JetBrains", "Annotations");
 
             [NotNull]
             private static readonly char[] DotSeparator =
@@ -141,8 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             [NotNull]
             private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
 
-            public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName,
-                SymbolAnalysisContext context)
+            public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName, SymbolAnalysisContext context)
             {
                 Guard.NotNull(assemblyName, nameof(assemblyName));
                 Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
@@ -161,8 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequirePartialMatchWithAssemblyName) && !symbol.IsSynthesized())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName,
-                        reportAssemblyName));
+                    context.ReportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName, reportAssemblyName));
                 }
 
                 VisitChildren(symbol);
@@ -185,11 +168,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
             {
-                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName) &&
-                    !symbol.IsSynthesized())
+                if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName) && !symbol.IsSynthesized())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name,
-                        CurrentNamespaceName, reportAssemblyName));
+                    context.ReportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name, CurrentNamespaceName,
+                        reportAssemblyName));
                 }
             }
 
@@ -225,11 +207,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
 
             [CanBeNull]
-            private bool? IsMatchOnNamespaceParts([NotNull] [ItemNotNull] string[] currentNamespaceParts,
-                NamespaceMatchMode matchMode)
+            private bool? IsMatchOnNamespaceParts([NotNull] [ItemNotNull] string[] currentNamespaceParts, NamespaceMatchMode matchMode)
             {
-                if (matchMode == NamespaceMatchMode.RequireCompleteMatchWithAssemblyName &&
-                    assemblyNameParts.Length > currentNamespaceParts.Length)
+                if (matchMode == NamespaceMatchMode.RequireCompleteMatchWithAssemblyName && assemblyNameParts.Length > currentNamespaceParts.Length)
                 {
                     return false;
                 }

@@ -28,8 +28,8 @@ namespace CSharpGuidelinesAnalyzer
         [NotNull]
         public TTarget Target { get; }
 
-        public BaseAnalysisContext([NotNull] Compilation compilation, [NotNull] AnalyzerOptions options,
-            CancellationToken cancellationToken, [NotNull] Action<Diagnostic> reportDiagnostic, [NotNull] TTarget target)
+        public BaseAnalysisContext([NotNull] Compilation compilation, [NotNull] AnalyzerOptions options, CancellationToken cancellationToken,
+            [NotNull] Action<Diagnostic> reportDiagnostic, [NotNull] TTarget target)
         {
             Guard.NotNull(compilation, nameof(compilation));
             Guard.NotNull(options, nameof(options));

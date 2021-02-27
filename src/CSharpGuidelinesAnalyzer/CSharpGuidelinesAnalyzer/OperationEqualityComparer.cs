@@ -52,8 +52,8 @@ namespace CSharpGuidelinesAnalyzer
             return leftInterfaces.SequenceEqual(rightInterfaces) && AreOperationPropertiesEqual(leftInterfaces, left, right);
         }
 
-        private bool AreOperationPropertiesEqual([NotNull] [ItemNotNull] IReadOnlyCollection<Type> interfaces,
-            [NotNull] IOperation left, [NotNull] IOperation right)
+        private bool AreOperationPropertiesEqual([NotNull] [ItemNotNull] IReadOnlyCollection<Type> interfaces, [NotNull] IOperation left,
+            [NotNull] IOperation right)
         {
             foreach (PropertyInfo property in interfaces.DeepGetOperationProperties())
             {
@@ -86,8 +86,8 @@ namespace CSharpGuidelinesAnalyzer
             return AreValuesEqual(property.PropertyType, leftValue, rightValue);
         }
 
-        private bool AreOptionalSequenceValuesEqual([NotNull] Type elementType,
-            [CanBeNull] [ItemNotNull] IEnumerable leftSequence, [CanBeNull] [ItemNotNull] IEnumerable rightSequence)
+        private bool AreOptionalSequenceValuesEqual([NotNull] Type elementType, [CanBeNull] [ItemNotNull] IEnumerable leftSequence,
+            [CanBeNull] [ItemNotNull] IEnumerable rightSequence)
         {
             if (ReferenceEquals(leftSequence, rightSequence))
             {
@@ -105,8 +105,7 @@ namespace CSharpGuidelinesAnalyzer
             return AreSequenceValuesEqual(elementType, leftEnumerator, rightEnumerator);
         }
 
-        private bool AreSequenceValuesEqual([NotNull] Type elementType, [NotNull] IEnumerator leftEnumerator,
-            [NotNull] IEnumerator rightEnumerator)
+        private bool AreSequenceValuesEqual([NotNull] Type elementType, [NotNull] IEnumerator leftEnumerator, [NotNull] IEnumerator rightEnumerator)
         {
             while (true)
             {

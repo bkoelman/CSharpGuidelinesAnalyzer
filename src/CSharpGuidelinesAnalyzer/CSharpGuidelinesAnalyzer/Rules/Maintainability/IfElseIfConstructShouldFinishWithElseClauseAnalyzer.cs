@@ -23,12 +23,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction = context =>
-            context.SkipInvalid(AnalyzeCodeBlock);
+        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction = context => context.SkipInvalid(AnalyzeCodeBlock);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -103,8 +102,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private OperationBlockAnalysisContext context;
 
-            public IfStatementAnalyzer([NotNull] IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze,
-                OperationBlockAnalysisContext context)
+            public IfStatementAnalyzer([NotNull] IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
             {
                 Guard.NotNull(ifStatementsToAnalyze, nameof(ifStatementsToAnalyze));
 
@@ -158,8 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 [NotNull]
                 private IConditionalOperation ifStatement;
 
-                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner,
-                    [NotNull] IConditionalOperation topIfStatement)
+                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation topIfStatement)
                 {
                     this.owner = owner;
 
@@ -192,9 +189,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                         return HandleMissingElseClause();
                     }
 
-                    return !(falseBlock is IConditionalOperation ifElseStatement)
-                        ? HandleUnconditionalElse()
-                        : HandleElseIf(ifElseStatement);
+                    return !(falseBlock is IConditionalOperation ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
                 }
 
                 private bool HandleMissingElseClause()
@@ -216,8 +211,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     return true;
                 }
 
-                private void Remove([NotNull] IConditionalOperation ifStatementToRemove,
-                    [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
+                private void Remove([NotNull] IConditionalOperation ifStatementToRemove, [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
                 {
                     Location location = ifStatementToRemove.TryGetLocationForKeyword();
 

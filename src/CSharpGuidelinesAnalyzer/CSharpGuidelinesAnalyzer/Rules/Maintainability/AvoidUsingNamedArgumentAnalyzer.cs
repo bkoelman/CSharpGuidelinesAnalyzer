@@ -24,12 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context =>
-            context.SkipInvalid(AnalyzeInvocation);
+        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context => context.SkipInvalid(AnalyzeInvocation);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -84,8 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (RequiresAnalysis(argument))
             {
-                ICollection<IParameterSymbol> precedingParameters =
-                    GetPrecedingParameters(argument.Parameter, invocation.TargetMethod);
+                ICollection<IParameterSymbol> precedingParameters = GetPrecedingParameters(argument.Parameter, invocation.TargetMethod);
 
                 if (AreParametersUsed(precedingParameters, parameterUsageMap))
                 {
@@ -109,8 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         [NotNull]
         [ItemNotNull]
-        private static ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter,
-            [NotNull] IMethodSymbol method)
+        private static ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method)
         {
             return method.Parameters.TakeWhile(nextParameter => !nextParameter.IsEqualTo(parameter)).ToList();
         }
@@ -137,9 +134,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static void ReportArgument([NotNull] IArgumentOperation argument, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             var syntax = (ArgumentSyntax)argument.Syntax;
-
-            string methodText =
-                argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            string methodText = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
             reportDiagnostic(Diagnostic.Create(Rule, syntax.NameColon.GetLocation(), argument.Parameter.Name, methodText));
         }

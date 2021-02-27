@@ -24,17 +24,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeStatementAction = context =>
-            context.SkipInvalid(AnalyzeStatement);
+        private static readonly Action<OperationAnalysisContext> AnalyzeStatementAction = context => context.SkipInvalid(AnalyzeStatement);
 
-        private readonly ImmutableArray<OperationKind> statementKinds = ImmutableArray.Create(
-            OperationKind.VariableDeclarationGroup, OperationKind.Switch, OperationKind.Conditional, OperationKind.Loop,
-            OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using, OperationKind.YieldReturn,
-            OperationKind.ExpressionStatement);
+        private readonly ImmutableArray<OperationKind> statementKinds = ImmutableArray.Create(OperationKind.VariableDeclarationGroup, OperationKind.Switch,
+            OperationKind.Conditional, OperationKind.Loop, OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using,
+            OperationKind.YieldReturn, OperationKind.ExpressionStatement);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -80,15 +78,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static void AnalyzeForLoopSection(ForLoopSection section, [NotNull] IOperation operation,
-            OperationAnalysisContext context)
+        private static void AnalyzeForLoopSection(ForLoopSection section, [NotNull] IOperation operation, OperationAnalysisContext context)
         {
             var statementWalker = new StatementWalker(section);
             AnalyzeVisitOperation(operation, statementWalker, context);
         }
 
-        private static void AnalyzeVisitOperation([NotNull] IOperation operation, [NotNull] StatementWalker statementWalker,
-            OperationAnalysisContext context)
+        private static void AnalyzeVisitOperation([NotNull] IOperation operation, [NotNull] StatementWalker statementWalker, OperationAnalysisContext context)
         {
             statementWalker.Visit(operation);
 
@@ -106,8 +102,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static Location GetLocation([NotNull] IOperation operation)
         {
-            return operation.TryGetLocationForKeyword(DoWhileLoopLookupKeywordStrategy.PreferWhileKeyword) ??
-                operation.Syntax.GetLocation();
+            return operation.TryGetLocationForKeyword(DoWhileLoopLookupKeywordStrategy.PreferWhileKeyword) ?? operation.Syntax.GetLocation();
         }
 
         [NotNull]

@@ -22,8 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeQueryExpressionAction = AnalyzeQueryExpression;
@@ -65,8 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 complexity++;
             }
 
-            if (ProjectsIntoGroup(queryExpression.Body.SelectOrGroup) ||
-                ProjectsIntoAnonymousType(queryExpression.Body.SelectOrGroup))
+            if (ProjectsIntoGroup(queryExpression.Body.SelectOrGroup) || ProjectsIntoAnonymousType(queryExpression.Body.SelectOrGroup))
             {
                 complexity++;
             }
@@ -88,8 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private static bool ProjectsIntoAnonymousType([NotNull] SelectOrGroupClauseSyntax selectOrGroupClause)
         {
-            return selectOrGroupClause is SelectClauseSyntax selectClause &&
-                selectClause.Expression is AnonymousObjectCreationExpressionSyntax;
+            return selectOrGroupClause is SelectClauseSyntax selectClause && selectClause.Expression is AnonymousObjectCreationExpressionSyntax;
         }
 
         private static int GetComplexityForClauses([NotNull] QueryExpressionSyntax queryExpression)

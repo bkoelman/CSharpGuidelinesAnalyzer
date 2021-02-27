@@ -17,15 +17,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const int DefaultMaxParameterCount = 3;
 
         private const string Title = "Signature contains too many parameters";
-
-        private const string ParameterCountMessageFormat =
-            "{0} contains {1} parameters, which exceeds the maximum of {2} parameters.";
-
+        private const string ParameterCountMessageFormat = "{0} contains {1} parameters, which exceeds the maximum of {2} parameters.";
         private const string TupleParameterMessageFormat = "{0} contains tuple parameter '{1}'.";
-
-        private const string TupleReturnMessageFormat =
-            "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements.";
-
+        private const string TupleReturnMessageFormat = "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements.";
         private const string Description = "Don't declare signatures with more than a predefined number of parameters.";
 
         public const string DiagnosticId = "AV1561";
@@ -34,46 +28,41 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor ParameterCountRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ParameterCountMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor ParameterCountRule = new DiagnosticDescriptor(DiagnosticId, Title, ParameterCountMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor TupleParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TupleParameterMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor TupleParameterRule = new DiagnosticDescriptor(DiagnosticId, Title, TupleParameterMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor TupleReturnRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            TupleReturnMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor TupleReturnRule = new DiagnosticDescriptor(DiagnosticId, Title, TupleReturnMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzePropertyAction =
-            (context, settingsReader) => context.SkipEmptyName(_ => AnalyzeProperty(context, settingsReader));
+        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzePropertyAction = (context, settingsReader) =>
+            context.SkipEmptyName(_ => AnalyzeProperty(context, settingsReader));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeMethodAction =
-            (context, settingsReader) => context.SkipEmptyName(_ => AnalyzeMethod(context, settingsReader));
+        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeMethodAction = (context, settingsReader) =>
+            context.SkipEmptyName(_ => AnalyzeMethod(context, settingsReader));
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeNamedTypeAction =
-            (context, settingsReader) => context.SkipEmptyName(_ => AnalyzeNamedType(context, settingsReader));
+        private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeNamedTypeAction = (context, settingsReader) =>
+            context.SkipEmptyName(_ => AnalyzeNamedType(context, settingsReader));
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, AnalyzerSettingsReader> AnalyzeLocalFunctionAction =
-            (context, settingsReader) => context.SkipInvalid(_ => AnalyzeLocalFunction(context, settingsReader));
+        private static readonly Action<OperationAnalysisContext, AnalyzerSettingsReader> AnalyzeLocalFunctionAction = (context, settingsReader) =>
+            context.SkipInvalid(_ => AnalyzeLocalFunction(context, settingsReader));
 
         [NotNull]
-        private static readonly AnalyzerSettingKey MaxParameterCountKey =
-            new AnalyzerSettingKey(DiagnosticId, "MaxParameterCount");
+        private static readonly AnalyzerSettingKey MaxParameterCountKey = new AnalyzerSettingKey(DiagnosticId, "MaxParameterCount");
 
         [NotNull]
-        private static readonly AnalyzerSettingKey MaxConstructorParameterCountKey =
-            new AnalyzerSettingKey(DiagnosticId, "MaxConstructorParameterCount");
+        private static readonly AnalyzerSettingKey MaxConstructorParameterCountKey = new AnalyzerSettingKey(DiagnosticId, "MaxConstructorParameterCount");
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
@@ -93,28 +82,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
-            startContext.RegisterSymbolAction(actionContext => AnalyzePropertyAction(actionContext, settingsReader),
-                SymbolKind.Property);
-
-            startContext.RegisterSymbolAction(actionContext => AnalyzeMethodAction(actionContext, settingsReader),
-                SymbolKind.Method);
-
-            startContext.RegisterSymbolAction(actionContext => AnalyzeNamedTypeAction(actionContext, settingsReader),
-                SymbolKind.NamedType);
-
-            startContext.RegisterOperationAction(actionContext => AnalyzeLocalFunctionAction(actionContext, settingsReader),
-                OperationKind.LocalFunction);
+            startContext.RegisterSymbolAction(actionContext => AnalyzePropertyAction(actionContext, settingsReader), SymbolKind.Property);
+            startContext.RegisterSymbolAction(actionContext => AnalyzeMethodAction(actionContext, settingsReader), SymbolKind.Method);
+            startContext.RegisterSymbolAction(actionContext => AnalyzeNamedTypeAction(actionContext, settingsReader), SymbolKind.NamedType);
+            startContext.RegisterOperationAction(actionContext => AnalyzeLocalFunctionAction(actionContext, settingsReader), OperationKind.LocalFunction);
         }
 
         [NotNull]
-        private static ParameterSettings GetParameterSettings([NotNull] AnalyzerSettingsReader settingsReader,
-            [NotNull] SyntaxTree syntaxTree)
+        private static ParameterSettings GetParameterSettings([NotNull] AnalyzerSettingsReader settingsReader, [NotNull] SyntaxTree syntaxTree)
         {
-            int maxParameterCount =
-                settingsReader.TryGetInt32(syntaxTree, MaxParameterCountKey, 0, 255) ?? DefaultMaxParameterCount;
-
-            int maxConstructorParameterCount = settingsReader.TryGetInt32(syntaxTree, MaxConstructorParameterCountKey, 0, 255) ??
-                maxParameterCount;
+            int maxParameterCount = settingsReader.TryGetInt32(syntaxTree, MaxParameterCountKey, 0, 255) ?? DefaultMaxParameterCount;
+            int maxConstructorParameterCount = settingsReader.TryGetInt32(syntaxTree, MaxConstructorParameterCountKey, 0, 255) ?? maxParameterCount;
 
             return new ParameterSettings(maxParameterCount, maxConstructorParameterCount);
         }
@@ -125,9 +103,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (property.IsIndexer && MemberRequiresAnalysis(property, context.CancellationToken))
             {
-                ParameterSettings settings =
-                    GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
-
+                ParameterSettings settings = GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
                 var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(property.Parameters), settings);
 
                 AnalyzeParameters(info, property, "Indexer");
@@ -143,11 +119,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 string memberName = GetMemberName(method);
                 bool isConstructor = IsConstructor(method);
 
-                ParameterSettings settings =
-                    GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
-
-                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters), settings,
-                    isConstructor);
+                ParameterSettings settings = GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
+                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters), settings, isConstructor);
 
                 AnalyzeParameters(info, method, memberName);
 
@@ -160,8 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool MemberRequiresAnalysis([NotNull] ISymbol member, CancellationToken cancellationToken)
         {
-            return !member.IsExtern && !member.IsOverride && !member.HidesBaseMember(cancellationToken) &&
-                !member.IsInterfaceImplementation();
+            return !member.IsExtern && !member.IsOverride && !member.HidesBaseMember(cancellationToken) && !member.IsInterfaceImplementation();
         }
 
         private static bool MethodCanReturnValue([NotNull] IMethodSymbol method)
@@ -209,15 +181,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (IsDelegate(type))
             {
-                ParameterSettings settings =
-                    GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
+                ParameterSettings settings = GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
 
                 AnalyzeDelegate(type, context, settings);
             }
         }
 
-        private static void AnalyzeDelegate([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context,
-            [NotNull] ParameterSettings settings)
+        private static void AnalyzeDelegate([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context, [NotNull] ParameterSettings settings)
         {
             IMethodSymbol method = type.DelegateInvokeMethod;
 
@@ -238,25 +208,21 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return type.TypeKind == TypeKind.Delegate;
         }
 
-        private static void AnalyzeLocalFunction(OperationAnalysisContext context,
-            [NotNull] AnalyzerSettingsReader settingsReader)
+        private static void AnalyzeLocalFunction(OperationAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
         {
             var operation = (ILocalFunctionOperation)context.Operation;
 
             string memberName = GetMemberName(operation.Symbol);
 
             ParameterSettings settings = GetParameterSettings(settingsReader, context.Operation.Syntax.SyntaxTree);
-
-            var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(operation.Symbol.Parameters),
-                settings);
+            var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(operation.Symbol.Parameters), settings);
 
             AnalyzeParameters(info, operation.Symbol, memberName);
 
             AnalyzeReturnType(context.Wrap(operation.Symbol.ReturnType), operation.Symbol, memberName);
         }
 
-        private static void AnalyzeParameters(ParameterCountInfo<ImmutableArray<IParameterSymbol>> info, [NotNull] ISymbol member,
-            [NotNull] string memberName)
+        private static void AnalyzeParameters(ParameterCountInfo<ImmutableArray<IParameterSymbol>> info, [NotNull] ISymbol member, [NotNull] string memberName)
         {
             ImmutableArray<IParameterSymbol> parameters = info.Context.Target;
 
@@ -279,15 +245,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (!info.Context.Target.IsSynthesized())
             {
-                var diagnostic = Diagnostic.Create(ParameterCountRule, info.Context.Target.Locations[0], name, parameterCount,
-                    info.MaxParameterCount);
-
+                var diagnostic = Diagnostic.Create(ParameterCountRule, info.Context.Target.Locations[0], name, parameterCount, info.MaxParameterCount);
                 info.Context.ReportDiagnostic(diagnostic);
             }
         }
 
-        private static void ReportTupleParameter(BaseAnalysisContext<IParameterSymbol> context, [NotNull] string memberName,
-            [NotNull] string parameterName)
+        private static void ReportTupleParameter(BaseAnalysisContext<IParameterSymbol> context, [NotNull] string memberName, [NotNull] string parameterName)
         {
             if (!context.Target.IsSynthesized())
             {
@@ -296,8 +259,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, [NotNull] ISymbol member,
-            [NotNull] string memberName)
+        private static void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, [NotNull] ISymbol member, [NotNull] string memberName)
         {
             int? elementCount = TryGetValueTupleElementCount(context.Target) ?? TryGetSystemTupleElementCount(context.Target);
 
@@ -327,8 +289,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             return null;
         }
 
-        private static void ReportTupleReturn(BaseAnalysisContext<ISymbol> context, [NotNull] string memberName,
-            int tupleElementCount)
+        private static void ReportTupleReturn(BaseAnalysisContext<ISymbol> context, [NotNull] string memberName, int tupleElementCount)
         {
             if (!context.Target.IsSynthesized())
             {
@@ -360,8 +321,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             private readonly bool isConstructor;
 
-            public ParameterCountInfo(BaseAnalysisContext<TTarget> context, [NotNull] ParameterSettings settings,
-                bool isConstructor = false)
+            public ParameterCountInfo(BaseAnalysisContext<TTarget> context, [NotNull] ParameterSettings settings, bool isConstructor = false)
             {
                 Guard.NotNull(settings, nameof(settings));
 

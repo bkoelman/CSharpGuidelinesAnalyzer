@@ -27,15 +27,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
         [NotNull]
-        private static readonly AnalyzerSettingKey MaxStatementCountKey =
-            new AnalyzerSettingKey(DiagnosticId, "MaxStatementCount");
+        private static readonly AnalyzerSettingKey MaxStatementCountKey = new AnalyzerSettingKey(DiagnosticId, "MaxStatementCount");
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -57,8 +56,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             startContext.RegisterCodeBlockAction(actionContext => AnalyzeCodeBlock(actionContext, settingsReader));
         }
 
-        private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerSettingsReader settingsReader,
-            [NotNull] SyntaxTree syntaxTree)
+        private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerSettingsReader settingsReader, [NotNull] SyntaxTree syntaxTree)
         {
             Guard.NotNull(settingsReader, nameof(settingsReader));
             Guard.NotNull(syntaxTree, nameof(syntaxTree));
@@ -98,8 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             Guard.NotNull(member, nameof(member));
 
-            foreach (SyntaxNode syntax in member.DeclaringSyntaxReferences.Select(reference =>
-                reference.GetSyntax(cancellationToken)))
+            foreach (SyntaxNode syntax in member.DeclaringSyntaxReferences.Select(reference => reference.GetSyntax(cancellationToken)))
             {
                 if (syntax is VariableDeclaratorSyntax || syntax is PropertyDeclarationSyntax)
                 {
@@ -111,8 +108,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [NotNull]
-        private static Location GetMemberLocation([NotNull] ISymbol member, [NotNull] SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static Location GetMemberLocation([NotNull] ISymbol member, [NotNull] SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             foreach (ArrowExpressionClauseSyntax arrowExpressionClause in member.DeclaringSyntaxReferences
                 .Select(reference => reference.GetSyntax(cancellationToken)).OfType<ArrowExpressionClauseSyntax>())

@@ -21,22 +21,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeConversionAction =
-            (context, objectHandleType) => context.SkipInvalid(_ => AnalyzeConversion(context, objectHandleType));
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeConversionAction = (context, objectHandleType) =>
+            context.SkipInvalid(_ => AnalyzeConversion(context, objectHandleType));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeCompoundAssignmentAction =
-            (context, objectHandleType) => context.SkipInvalid(_ => AnalyzeCompoundAssignment(context, objectHandleType));
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeCompoundAssignmentAction = (context, objectHandleType) =>
+            context.SkipInvalid(_ => AnalyzeCompoundAssignment(context, objectHandleType));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
         [ItemNotNull]
@@ -54,11 +54,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
 
-            startContext.RegisterOperationAction(context => AnalyzeConversionAction(context, objectHandleType),
-                OperationKind.Conversion);
+            startContext.RegisterOperationAction(context => AnalyzeConversionAction(context, objectHandleType), OperationKind.Conversion);
 
-            startContext.RegisterOperationAction(context => AnalyzeCompoundAssignmentAction(context, objectHandleType),
-                OperationKind.CompoundAssignment);
+            startContext.RegisterOperationAction(context => AnalyzeCompoundAssignmentAction(context, objectHandleType), OperationKind.CompoundAssignment);
         }
 
         private static void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
@@ -79,8 +77,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
         }
 
-        private static void AnalyzeCompoundAssignment(OperationAnalysisContext context,
-            [CanBeNull] INamedTypeSymbol objectHandleType)
+        private static void AnalyzeCompoundAssignment(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
         {
             var compoundAssignment = (ICompoundAssignmentOperation)context.Operation;
 
@@ -124,8 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             return objectHandleType != null && objectHandleType.IsEqualTo(type);
         }
 
-        private static void ReportAt([NotNull] ITypeSymbol sourceType, [NotNull] Location reportLocation,
-            [NotNull] Action<Diagnostic> reportDiagnostic)
+        private static void ReportAt([NotNull] ITypeSymbol sourceType, [NotNull] Location reportLocation, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             string sourceTypeName = sourceType.IsAnonymousType ? "(anonymous)" : sourceType.Name;
             reportDiagnostic(Diagnostic.Create(Rule, reportLocation, sourceTypeName));

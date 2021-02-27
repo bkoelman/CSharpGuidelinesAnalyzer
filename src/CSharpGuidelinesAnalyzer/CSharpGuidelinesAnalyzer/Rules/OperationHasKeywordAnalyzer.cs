@@ -22,8 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -61,12 +61,11 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         private static bool IsReportAtAlternateLocation([NotNull] IOperation operation)
         {
-            return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax methodSyntax &&
-                methodSyntax.Identifier.ValueText == "ReportAtAlternateLocation";
+            return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax methodSyntax && methodSyntax.Identifier.ValueText == "ReportAtAlternateLocation";
         }
 
-        private static void AnalyzeLocationForOperation(OperationAnalysisContext context,
-            DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
+        private static void AnalyzeLocationForOperation(OperationAnalysisContext context, DoWhileLoopLookupKeywordStrategy doWhileStrategy,
+            TryFinallyLookupKeywordStrategy tryFinallyStrategy)
         {
             Location location = context.Operation.TryGetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
 

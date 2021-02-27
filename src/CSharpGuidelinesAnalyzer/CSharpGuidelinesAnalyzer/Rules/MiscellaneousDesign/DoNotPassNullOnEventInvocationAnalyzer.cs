@@ -24,22 +24,20 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor SenderRule = new DiagnosticDescriptor(DiagnosticId, SenderTitle,
-            SenderMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor SenderRule = new DiagnosticDescriptor(DiagnosticId, SenderTitle, SenderMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor ArgsRule = new DiagnosticDescriptor(DiagnosticId, ArgsTitle,
-            ArgsMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor ArgsRule = new DiagnosticDescriptor(DiagnosticId, ArgsTitle, ArgsMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeInvocationAction =
-            (context, systemEventArgs) => context.SkipInvalid(_ => AnalyzeInvocation(context, systemEventArgs));
+        private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeInvocationAction = (context, systemEventArgs) =>
+            context.SkipInvalid(_ => AnalyzeInvocation(context, systemEventArgs));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
         [ItemNotNull]
@@ -59,8 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (systemEventArgs != null)
             {
-                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, systemEventArgs),
-                    OperationKind.Invocation);
+                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, systemEventArgs), OperationKind.Invocation);
             }
         }
 
@@ -98,8 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private static bool? IsStaticEvent([NotNull] IOperation operation, [NotNull] Compilation compilation)
         {
-            return IsStaticEventInvocation(operation) ??
-                IsStaticEventInvocationUsingNullConditionalAccessOperator(operation, compilation);
+            return IsStaticEventInvocation(operation) ?? IsStaticEventInvocationUsingNullConditionalAccessOperator(operation, compilation);
         }
 
         [CanBeNull]
@@ -114,8 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation,
-            [NotNull] Compilation compilation)
+        private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation, [NotNull] Compilation compilation)
         {
             if (operation is IConditionalAccessInstanceOperation)
             {
@@ -143,27 +138,24 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [CanBeNull]
         private static IArgumentOperation GetSenderArgument([NotNull] IInvocationOperation invocation)
         {
-            IArgumentOperation argument =
-                invocation.Arguments.FirstOrDefault(nextArgument => nextArgument.Parameter.Name == "sender");
+            IArgumentOperation argument = invocation.Arguments.FirstOrDefault(nextArgument => nextArgument.Parameter.Name == "sender");
 
             return argument != null && argument.Parameter.Type.SpecialType == SpecialType.System_Object ? argument : null;
         }
 
-        private static void AnalyzeArgsArgument([NotNull] IInvocationOperation invocation,
-            [NotNull] INamedTypeSymbol systemEventArgs, OperationAnalysisContext context)
+        private static void AnalyzeArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs,
+            OperationAnalysisContext context)
         {
             IArgumentOperation argsArgument = GetArgsArgument(invocation, systemEventArgs);
 
             if (argsArgument != null && IsNullConstant(argsArgument.Value))
             {
-                context.ReportDiagnostic(Diagnostic.Create(ArgsRule, argsArgument.Syntax.GetLocation(),
-                    argsArgument.Parameter.Name));
+                context.ReportDiagnostic(Diagnostic.Create(ArgsRule, argsArgument.Syntax.GetLocation(), argsArgument.Parameter.Name));
             }
         }
 
         [CanBeNull]
-        private static IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation,
-            [NotNull] INamedTypeSymbol systemEventArgs)
+        private static IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs)
         {
             return invocation.Arguments.FirstOrDefault(argument =>
                 !string.IsNullOrEmpty(argument.Parameter?.Name) && IsEventArgs(argument.Parameter.Type, systemEventArgs));

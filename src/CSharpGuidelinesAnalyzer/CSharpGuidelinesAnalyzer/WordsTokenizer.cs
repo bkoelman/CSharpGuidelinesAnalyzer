@@ -172,8 +172,7 @@ namespace CSharpGuidelinesAnalyzer
 
                 if (iterationCount >= 1000)
                 {
-                    throw new Exception(
-                        $"Internal error: infinite loop detected while tokenizing text '{text}' at position {position}.");
+                    throw new Exception($"Internal error: infinite loop detected while tokenizing text '{text}' at position {position}.");
                 }
             }
         }

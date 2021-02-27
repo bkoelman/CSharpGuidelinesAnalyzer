@@ -41,8 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
                 }
 
                 throw new ArgumentOutOfRangeException(
-                    $"Value for '{keyName.ToLowerInvariant()}' in '{EditorConfigFileName}' must be in range {minValue}-{maxValue}.",
-                    (Exception)null);
+                    $"Value for '{keyName.ToLowerInvariant()}' in '{EditorConfigFileName}' must be in range {minValue}-{maxValue}.", (Exception)null);
             }
 
             return settingsRegistry.TryGetInt32(key, minValue, maxValue);
@@ -67,19 +66,17 @@ namespace CSharpGuidelinesAnalyzer.Settings
                 typeof(AnalyzerOptions).GetRuntimeProperty("AnalyzerConfigOptionsProvider");
 
             [CanBeNull]
-            private static readonly MethodInfo GetOptionsMethod =
-                AnalyzerConfigOptionsProviderProperty?.PropertyType.GetRuntimeMethod("GetOptions", new[]
-                {
-                    typeof(SyntaxTree)
-                });
+            private static readonly MethodInfo GetOptionsMethod = AnalyzerConfigOptionsProviderProperty?.PropertyType.GetRuntimeMethod("GetOptions", new[]
+            {
+                typeof(SyntaxTree)
+            });
 
             [CanBeNull]
-            private static readonly MethodInfo TryGetValueMethod = GetOptionsMethod?.ReturnType.GetRuntimeMethod("TryGetValue",
-                new[]
-                {
-                    typeof(string),
-                    typeof(string).MakeByRefType()
-                });
+            private static readonly MethodInfo TryGetValueMethod = GetOptionsMethod?.ReturnType.GetRuntimeMethod("TryGetValue", new[]
+            {
+                typeof(string),
+                typeof(string).MakeByRefType()
+            });
 
             [CanBeNull]
             private readonly object providerInstance;

@@ -22,12 +22,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [ItemNotNull]
-        private static readonly ImmutableArray<string> ArrangeActAssertLines =
-            ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
+        private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
 
         [NotNull]
         private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
@@ -45,8 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
         {
-            SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia())
-                .Where(IsComment).ToArray();
+            SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia()).Where(IsComment).ToArray();
 
             AnalyzeCommentTrivia(outerCommentTrivia, context);
         }
@@ -77,14 +75,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static bool IsCommentInEmptyElseClause(SyntaxTrivia commentTrivia)
         {
-            return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() &&
-                parentBlock.Parent is ElseClauseSyntax;
+            return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() && parentBlock.Parent is ElseClauseSyntax;
         }
 
         private static bool IsResharperDirective([NotNull] string commentText)
         {
-            return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) ||
-                IsResharperFormatterConfiguration(commentText);
+            return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) || IsResharperFormatterConfiguration(commentText);
         }
 
         private static bool IsResharperSuppression([NotNull] string commentText)

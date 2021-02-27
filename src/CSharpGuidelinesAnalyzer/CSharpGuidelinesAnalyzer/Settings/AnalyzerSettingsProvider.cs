@@ -17,8 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
         public const string SettingsFileName = "CSharpGuidelinesAnalyzer.config";
 
         [NotNull]
-        internal static AnalyzerSettingsRegistry LoadSettings([NotNull] AnalyzerOptions options,
-            CancellationToken cancellationToken)
+        internal static AnalyzerSettingsRegistry LoadSettings([NotNull] AnalyzerOptions options, CancellationToken cancellationToken)
         {
             Guard.NotNull(options, nameof(options));
 
@@ -35,8 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
         }
 
         [NotNull]
-        private static AnalyzerSettingsRegistry SafeReadSourceText([NotNull] SourceText fileText,
-            CancellationToken cancellationToken)
+        private static AnalyzerSettingsRegistry SafeReadSourceText([NotNull] SourceText fileText, CancellationToken cancellationToken)
         {
             try
             {
@@ -57,8 +55,8 @@ namespace CSharpGuidelinesAnalyzer.Settings
         }
 
         [NotNull]
-        private static TResult ReadSourceText<TResult>([NotNull] SourceText sourceText,
-            [NotNull] Func<XmlReader, TResult> readAction, CancellationToken cancellationToken)
+        private static TResult ReadSourceText<TResult>([NotNull] SourceText sourceText, [NotNull] Func<XmlReader, TResult> readAction,
+            CancellationToken cancellationToken)
         {
             using var stream = new MemoryStream();
             using var writer = new StreamWriter(stream);

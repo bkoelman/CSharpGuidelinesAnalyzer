@@ -14,10 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
-
-        private const string MessageFormat =
-            "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
-
+        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
         private const string Description = "Favor async/await over Task continuations.";
 
         public const string DiagnosticId = "AV2235";
@@ -26,8 +23,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -53,8 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
             {
-                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, taskInfo),
-                    OperationKind.Invocation);
+                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, taskInfo), OperationKind.Invocation);
             }
         }
 
@@ -110,11 +106,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             [ItemNotNull]
             private ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup()
             {
-                ImmutableArray<ISymbol> taskContinueWithMethodGroup =
-                    TaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
-
-                ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup =
-                    GenericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+                ImmutableArray<ISymbol> taskContinueWithMethodGroup = TaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+                ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = GenericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
 
                 return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
             }

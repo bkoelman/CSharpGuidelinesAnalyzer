@@ -2982,8 +2982,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'AV1500:MaxStatementCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
+                .WithMessage("*Value for 'AV1500:MaxStatementCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
@@ -3012,8 +3011,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'dotnet_diagnostic.av1500.max_statement_count' in '.editorconfig' must be in range 0-255.*");
+                .WithMessage("*Value for 'dotnet_diagnostic.av1500.max_statement_count' in '.editorconfig' must be in range 0-255.*");
         }
 
         [Fact]
@@ -3042,8 +3040,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'AV1500:MaxStatementCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
+                .WithMessage("*Value for 'AV1500:MaxStatementCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
@@ -3072,8 +3069,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Assert
             action.Should().Throw<Exception>()
-                .WithMessage(
-                    "*Value for 'dotnet_diagnostic.av1500.max_statement_count' in '.editorconfig' must be in range 0-255.*");
+                .WithMessage("*Value for 'dotnet_diagnostic.av1500.max_statement_count' in '.editorconfig' must be in range 0-255.*");
         }
 
         #endregion

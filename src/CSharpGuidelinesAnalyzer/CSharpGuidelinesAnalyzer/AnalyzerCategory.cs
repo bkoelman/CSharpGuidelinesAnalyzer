@@ -7,20 +7,16 @@ namespace CSharpGuidelinesAnalyzer
         private const string CommitHash = "7a66f7468da6ce1477753a02e416e04bc9a44e45";
 
         [NotNull]
-        public static readonly AnalyzerCategory ClassDesign =
-            new AnalyzerCategory("Class Design", "1000_ClassDesignGuidelines.md");
+        public static readonly AnalyzerCategory ClassDesign = new AnalyzerCategory("Class Design", "1000_ClassDesignGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory MemberDesign =
-            new AnalyzerCategory("Member Design", "1100_MemberDesignGuidelines.md");
+        public static readonly AnalyzerCategory MemberDesign = new AnalyzerCategory("Member Design", "1100_MemberDesignGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory MiscellaneousDesign =
-            new AnalyzerCategory("Miscellaneous Design", "1200_MiscellaneousDesignGuidelines.md");
+        public static readonly AnalyzerCategory MiscellaneousDesign = new AnalyzerCategory("Miscellaneous Design", "1200_MiscellaneousDesignGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory Maintainability =
-            new AnalyzerCategory("Maintainability", "1500_MaintainabilityGuidelines.md");
+        public static readonly AnalyzerCategory Maintainability = new AnalyzerCategory("Maintainability", "1500_MaintainabilityGuidelines.md");
 
         [NotNull]
         public static readonly AnalyzerCategory Naming = new AnalyzerCategory("Naming", "1700_NamingGuidelines.md");
@@ -29,8 +25,7 @@ namespace CSharpGuidelinesAnalyzer
         public static readonly AnalyzerCategory Framework = new AnalyzerCategory("Framework", "2200_FrameworkGuidelines.md");
 
         [NotNull]
-        public static readonly AnalyzerCategory Documentation =
-            new AnalyzerCategory("Documentation", "2300_DocumentationGuidelines.md");
+        public static readonly AnalyzerCategory Documentation = new AnalyzerCategory("Documentation", "2300_DocumentationGuidelines.md");
 
         [NotNull]
         public static readonly AnalyzerCategory Layout = new AnalyzerCategory("Layout", "2400_LayoutGuidelines.md");

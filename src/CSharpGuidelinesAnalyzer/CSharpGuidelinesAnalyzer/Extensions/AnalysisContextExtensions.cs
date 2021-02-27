@@ -16,8 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
         }
 
-        public static void SkipInvalid(this OperationBlockAnalysisContext context,
-            [NotNull] Action<OperationBlockAnalysisContext> action)
+        public static void SkipInvalid(this OperationBlockAnalysisContext context, [NotNull] Action<OperationBlockAnalysisContext> action)
         {
             if (!context.OperationBlocks.Any(block => block.HasErrors(context.Compilation, context.CancellationToken)))
             {

@@ -10,8 +10,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     internal static class IdentifierExtensions
     {
         [NotNull]
-        public static ICollection<WordToken> GetWordsInList([NotNull] this string identifierName,
-            [NotNull] [ItemNotNull] ICollection<string> list)
+        public static ICollection<WordToken> GetWordsInList([NotNull] this string identifierName, [NotNull] [ItemNotNull] ICollection<string> list)
         {
             Guard.NotNull(identifierName, nameof(identifierName));
             Guard.NotNullNorEmpty(list, nameof(list));
@@ -56,8 +55,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return false;
         }
 
-        public static bool StartsWithWordInList([NotNull] this string identifierName,
-            [NotNull] [ItemNotNull] ICollection<string> list)
+        public static bool StartsWithWordInList([NotNull] this string identifierName, [NotNull] [ItemNotNull] ICollection<string> list)
         {
             Guard.NotNull(identifierName, nameof(identifierName));
             Guard.NotNullNorEmpty(list, nameof(list));
@@ -73,8 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return words.Any() && IsListed(words.First(), list);
         }
 
-        private static bool QuickScanMayContainWordsListed([NotNull] string text,
-            [NotNull] [ItemNotNull] IEnumerable<string> list)
+        private static bool QuickScanMayContainWordsListed([NotNull] string text, [NotNull] [ItemNotNull] IEnumerable<string> list)
         {
             return list.Any(word => QuickScanMayContainWord(text, word));
         }

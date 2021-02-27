@@ -32,8 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return visitor.Visit(operation, null);
         }
 
-        public static bool HasErrors([NotNull] this IOperation operation, [NotNull] Compilation compilation,
-            CancellationToken cancellationToken = default)
+        public static bool HasErrors([NotNull] this IOperation operation, [NotNull] Compilation compilation, CancellationToken cancellationToken = default)
         {
             Guard.NotNull(operation, nameof(operation));
             Guard.NotNull(compilation, nameof(compilation));
@@ -45,8 +44,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
             SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
 
-            return model.GetDiagnostics(operation.Syntax.Span, cancellationToken)
-                .Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
+            return model.GetDiagnostics(operation.Syntax.Span, cancellationToken).Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
         }
 
         public static bool IsStatement([NotNull] this IOperation operation)
@@ -71,37 +69,32 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         private static bool OperationIsStatementBecauseItExistsInBodyOfParent([NotNull] IOperation operation)
         {
-            return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) ||
-                OperationExistsInBodyOfWhileLoop(operation) || OperationExistsInBodyOfIfStatement(operation) ||
-                OperationExistsInBodyOfTryFinallyStatement(operation) || OperationExistsInBodyOfCatchClause(operation) ||
-                OperationExistsInBodyOfCaseClause(operation) || OperationExistsInBodyOfLockStatement(operation) ||
-                OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
+            return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) || OperationExistsInBodyOfWhileLoop(operation) ||
+                OperationExistsInBodyOfIfStatement(operation) || OperationExistsInBodyOfTryFinallyStatement(operation) ||
+                OperationExistsInBodyOfCatchClause(operation) || OperationExistsInBodyOfCaseClause(operation) ||
+                OperationExistsInBodyOfLockStatement(operation) || OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
         }
 
         private static bool OperationExistsInBodyOfForLoop([NotNull] IOperation operation)
         {
-            return operation.Parent is IForLoopOperation parentForLoop &&
-                IsOperationInBodyOfParent(operation, parentForLoop.Body);
+            return operation.Parent is IForLoopOperation parentForLoop && IsOperationInBodyOfParent(operation, parentForLoop.Body);
         }
 
         private static bool OperationExistsInBodyOfForEachLoop([NotNull] IOperation operation)
         {
-            return operation.Parent is IForEachLoopOperation parentForEachLoop &&
-                IsOperationInBodyOfParent(operation, parentForEachLoop.Body);
+            return operation.Parent is IForEachLoopOperation parentForEachLoop && IsOperationInBodyOfParent(operation, parentForEachLoop.Body);
         }
 
         private static bool OperationExistsInBodyOfWhileLoop([NotNull] IOperation operation)
         {
-            return operation.Parent is IWhileLoopOperation parentWhileLoop &&
-                IsOperationInBodyOfParent(operation, parentWhileLoop.Body);
+            return operation.Parent is IWhileLoopOperation parentWhileLoop && IsOperationInBodyOfParent(operation, parentWhileLoop.Body);
         }
 
         private static bool OperationExistsInBodyOfIfStatement([NotNull] IOperation operation)
         {
             if (operation.Parent is IConditionalOperation parentConditional && parentConditional.IsStatement())
             {
-                if (IsOperationInBodyOfParent(operation, parentConditional.WhenTrue) ||
-                    IsOperationInBodyOfParent(operation, parentConditional.WhenFalse))
+                if (IsOperationInBodyOfParent(operation, parentConditional.WhenTrue) || IsOperationInBodyOfParent(operation, parentConditional.WhenFalse))
                 {
                     return true;
                 }
@@ -114,8 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             if (operation.Parent is ITryOperation parentTry)
             {
-                if (IsOperationInBodyOfParent(operation, parentTry.Body) ||
-                    IsOperationInBodyOfParent(operation, parentTry.Finally))
+                if (IsOperationInBodyOfParent(operation, parentTry.Body) || IsOperationInBodyOfParent(operation, parentTry.Finally))
                 {
                     return true;
                 }
@@ -126,8 +118,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         private static bool OperationExistsInBodyOfCatchClause([NotNull] IOperation operation)
         {
-            return operation.Parent is ICatchClauseOperation parentCatchClause &&
-                IsOperationInBodyOfParent(operation, parentCatchClause.Handler);
+            return operation.Parent is ICatchClauseOperation parentCatchClause && IsOperationInBodyOfParent(operation, parentCatchClause.Handler);
         }
 
         private static bool OperationExistsInBodyOfCaseClause([NotNull] IOperation operation)
@@ -142,8 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         private static bool OperationExistsInBodyOfLabel([NotNull] IOperation operation)
         {
-            return operation.Parent is ILabeledOperation parentLabel &&
-                IsOperationInBodyOfParent(operation, parentLabel.Operation);
+            return operation.Parent is ILabeledOperation parentLabel && IsOperationInBodyOfParent(operation, parentLabel.Operation);
         }
 
         private static bool OperationExistsInBodyOfUsingStatement([NotNull] IOperation operation)
@@ -189,18 +179,15 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         private sealed class IdentifierVisitor : OperationVisitor<object, IdentifierInfo>
         {
             [NotNull]
-            public override IdentifierInfo VisitLocalReference([NotNull] ILocalReferenceOperation operation,
-                [CanBeNull] object argument)
+            public override IdentifierInfo VisitLocalReference([NotNull] ILocalReferenceOperation operation, [CanBeNull] object argument)
             {
-                var name = new IdentifierName(operation.Local.Name,
-                    operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                var name = new IdentifierName(operation.Local.Name, operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
 
                 return new IdentifierInfo(name, operation.Local.Type);
             }
 
             [NotNull]
-            public override IdentifierInfo VisitParameterReference([NotNull] IParameterReferenceOperation operation,
-                [CanBeNull] object argument)
+            public override IdentifierInfo VisitParameterReference([NotNull] IParameterReferenceOperation operation, [CanBeNull] object argument)
             {
                 var name = new IdentifierName(operation.Parameter.Name,
                     /* CSharpShortErrorMessageFormat returns 'int', ie. without parameter name */
@@ -210,32 +197,27 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override IdentifierInfo VisitFieldReference([NotNull] IFieldReferenceOperation operation,
-                [CanBeNull] object argument)
+            public override IdentifierInfo VisitFieldReference([NotNull] IFieldReferenceOperation operation, [CanBeNull] object argument)
             {
                 return CreateForMemberReferenceExpression(operation, operation.Field.Type);
             }
 
             [NotNull]
-            public override IdentifierInfo VisitEventReference([NotNull] IEventReferenceOperation operation,
-                [CanBeNull] object argument)
+            public override IdentifierInfo VisitEventReference([NotNull] IEventReferenceOperation operation, [CanBeNull] object argument)
             {
                 return CreateForMemberReferenceExpression(operation, operation.Event.Type);
             }
 
             [NotNull]
-            public override IdentifierInfo VisitPropertyReference([NotNull] IPropertyReferenceOperation operation,
-                [CanBeNull] object argument)
+            public override IdentifierInfo VisitPropertyReference([NotNull] IPropertyReferenceOperation operation, [CanBeNull] object argument)
             {
                 return CreateForMemberReferenceExpression(operation, operation.Property.Type);
             }
 
             [NotNull]
-            private IdentifierInfo CreateForMemberReferenceExpression([NotNull] IMemberReferenceOperation operation,
-                [NotNull] ITypeSymbol memberType)
+            private IdentifierInfo CreateForMemberReferenceExpression([NotNull] IMemberReferenceOperation operation, [NotNull] ITypeSymbol memberType)
             {
-                var name = new IdentifierName(operation.Member.Name,
-                    operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                var name = new IdentifierName(operation.Member.Name, operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
 
                 return new IdentifierInfo(name, memberType);
             }
@@ -255,8 +237,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy;
             private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy;
 
-            public OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy,
-                TryFinallyLookupKeywordStrategy tryFinallyStrategy)
+            public OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
             {
                 this.doWhileStrategy = doWhileStrategy;
                 this.tryFinallyStrategy = tryFinallyStrategy;
@@ -462,24 +443,21 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             [NotNull]
-            public override Location VisitSingleValueCaseClause([NotNull] ISingleValueCaseClauseOperation operation,
-                [CanBeNull] object argument)
+            public override Location VisitSingleValueCaseClause([NotNull] ISingleValueCaseClauseOperation operation, [CanBeNull] object argument)
             {
                 var syntax = (SwitchLabelSyntax)operation.Syntax;
                 return syntax.Keyword.GetLocation();
             }
 
             [NotNull]
-            public override Location VisitDefaultCaseClause([NotNull] IDefaultCaseClauseOperation operation,
-                [CanBeNull] object argument)
+            public override Location VisitDefaultCaseClause([NotNull] IDefaultCaseClauseOperation operation, [CanBeNull] object argument)
             {
                 var syntax = (SwitchLabelSyntax)operation.Syntax;
                 return syntax.Keyword.GetLocation();
             }
 
             [NotNull]
-            public override Location VisitPatternCaseClause([NotNull] IPatternCaseClauseOperation operation,
-                [CanBeNull] object argument)
+            public override Location VisitPatternCaseClause([NotNull] IPatternCaseClauseOperation operation, [CanBeNull] object argument)
             {
                 var syntax = (SwitchLabelSyntax)operation.Syntax;
                 return syntax.Keyword.GetLocation();
@@ -509,8 +487,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override Location VisitNameOf([NotNull] INameOfOperation operation, [CanBeNull] object argument)
             {
-                if (operation.Syntax is InvocationExpressionSyntax invocationSyntax &&
-                    invocationSyntax.Expression is IdentifierNameSyntax expressionSyntax)
+                if (operation.Syntax is InvocationExpressionSyntax invocationSyntax && invocationSyntax.Expression is IdentifierNameSyntax expressionSyntax)
                 {
                     return expressionSyntax.GetLocation();
                 }

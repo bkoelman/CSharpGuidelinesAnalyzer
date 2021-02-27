@@ -22,8 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeForStatementAction = AnalyzeForStatement;
@@ -52,8 +52,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static void AnalyzeLoopVariable(SyntaxNodeAnalysisContext context,
-            [NotNull] VariableDeclaratorSyntax variableDeclaratorSyntax, [NotNull] StatementSyntax statementSyntax)
+        private static void AnalyzeLoopVariable(SyntaxNodeAnalysisContext context, [NotNull] VariableDeclaratorSyntax variableDeclaratorSyntax,
+            [NotNull] StatementSyntax statementSyntax)
         {
             ISymbol variableSymbol = context.SemanticModel.GetDeclaredSymbol(variableDeclaratorSyntax);
 
@@ -65,8 +65,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     if (dataFlowAnalysis.WrittenInside.Contains(variableSymbol))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, variableDeclaratorSyntax.Identifier.GetLocation(),
-                            variableSymbol.Name));
+                        context.ReportDiagnostic(Diagnostic.Create(Rule, variableDeclaratorSyntax.Identifier.GetLocation(), variableSymbol.Name));
                     }
                 }
             }

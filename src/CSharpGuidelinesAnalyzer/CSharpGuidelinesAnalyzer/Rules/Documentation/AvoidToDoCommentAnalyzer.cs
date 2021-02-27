@@ -22,8 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeTodoCommentsAction = AnalyzeTodoComments;
@@ -123,14 +123,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             private static bool StartsWithTodoCommentToken([NotNull] string message, int index)
             {
-                return string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length,
-                    StringComparison.OrdinalIgnoreCase) == 0;
+                return string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length, StringComparison.OrdinalIgnoreCase) == 0;
             }
 
             private static bool HasIdentifierCharacterAfterTodoCommentToken([NotNull] string message, int index)
             {
-                return message.Length > index + TodoCommentToken.Length &&
-                    SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]);
+                return message.Length > index + TodoCommentToken.Length && SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]);
             }
 
             private void ProcessCommentOnSingleOrMultipleLines(SyntaxTrivia trivia, int postfixLength)

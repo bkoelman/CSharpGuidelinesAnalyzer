@@ -20,15 +20,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Field,
             SymbolKind.Property, SymbolKind.Method, SymbolKind.Event, SymbolKind.NamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
-            context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

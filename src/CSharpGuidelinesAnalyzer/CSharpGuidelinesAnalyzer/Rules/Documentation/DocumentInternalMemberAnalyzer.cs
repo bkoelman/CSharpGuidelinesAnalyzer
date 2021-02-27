@@ -15,10 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Missing XML comment for internally visible type, member or parameter";
-
-        private const string MissingTypeOrMemberMessageFormat =
-            "Missing XML comment for internally visible type or member '{0}'.";
-
+        private const string MissingTypeOrMemberMessageFormat = "Missing XML comment for internally visible type or member '{0}'.";
         private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'.";
         private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature.";
         private const string Description = "Document all public, protected and internal types and members.";
@@ -29,19 +26,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MissingTypeOrMemberMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId, Title, MissingTypeOrMemberMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor MissingParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            MissingParameterMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor MissingParameterRule = new DiagnosticDescriptor(DiagnosticId, Title, MissingParameterMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor ExtraParameterRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ExtraParameterMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor ExtraParameterRule = new DiagnosticDescriptor(DiagnosticId, Title, ExtraParameterMessageFormat,
+            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
             ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -51,12 +45,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private static readonly HashSet<string> EmptyHashSet = new HashSet<string>();
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context =>
-            context.SkipEmptyName(AnalyzeNamedType);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
 
         [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context =>
-            context.SkipEmptyName(AnalyzeMember);
+        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
@@ -86,8 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol.AreDocumentationCommentsReported() && !context.Symbol.IsPropertyOrEventAccessor() &&
-                IsMemberAccessible(context.Symbol))
+            if (context.Symbol.AreDocumentationCommentsReported() && !context.Symbol.IsPropertyOrEventAccessor() && IsMemberAccessible(context.Symbol))
             {
                 AnalyzeSymbol(context.Symbol, context);
             }
@@ -100,16 +91,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static bool IsMemberInternal([NotNull] ISymbol member)
         {
-            bool isInternal = member.DeclaredAccessibility == Accessibility.Internal ||
-                member.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
+            bool isInternal = member.DeclaredAccessibility == Accessibility.Internal || member.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
 
             return isInternal && member.IsSymbolAccessibleFromRoot();
         }
 
         private static bool IsMemberPublicInInternalTypeHierarchy([NotNull] ISymbol member)
         {
-            return member.DeclaredAccessibility == Accessibility.Public && member.IsSymbolAccessibleFromRoot() &&
-                HasInternalTypeInHierarchy(member);
+            return member.DeclaredAccessibility == Accessibility.Public && member.IsSymbolAccessibleFromRoot() && HasInternalTypeInHierarchy(member);
         }
 
         private static bool HasInternalTypeInHierarchy([NotNull] ISymbol symbol)
@@ -161,8 +150,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             return tagIndex != -1;
         }
 
-        private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
-            [CanBeNull] string documentationXml, SymbolAnalysisContext context)
+        private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [CanBeNull] string documentationXml,
+            SymbolAnalysisContext context)
         {
             context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -227,8 +216,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     {
                         if (!parameter.IsSynthesized())
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0],
-                                parameter.Name));
+                            context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0], parameter.Name));
                         }
                     }
                     else
@@ -239,8 +227,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             }
         }
 
-        private static void AnalyzeExtraParameters([NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation,
-            SymbolAnalysisContext context)
+        private static void AnalyzeExtraParameters([NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
         {
             if (context.Symbol.IsSynthesized())
             {
@@ -251,8 +238,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                context.ReportDiagnostic(Diagnostic.Create(ExtraParameterRule, context.Symbol.Locations[0],
-                    parameterNameInDocumentation));
+                context.ReportDiagnostic(Diagnostic.Create(ExtraParameterRule, context.Symbol.Locations[0], parameterNameInDocumentation));
             }
         }
     }

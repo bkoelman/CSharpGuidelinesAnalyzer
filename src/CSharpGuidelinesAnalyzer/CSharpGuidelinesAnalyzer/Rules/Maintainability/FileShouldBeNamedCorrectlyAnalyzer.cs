@@ -25,25 +25,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor CasingRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            CasingMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor CasingRule = new DiagnosticDescriptor(DiagnosticId, Title, CasingMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor UnderscoreRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            UnderscoreMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
-
-        [NotNull]
-        private static readonly DiagnosticDescriptor ArityRule = new DiagnosticDescriptor(DiagnosticId, Title, ArityMessageFormat,
+        private static readonly DiagnosticDescriptor UnderscoreRule = new DiagnosticDescriptor(DiagnosticId, Title, UnderscoreMessageFormat,
             Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+        [NotNull]
+        private static readonly DiagnosticDescriptor ArityRule = new DiagnosticDescriptor(DiagnosticId, Title, ArityMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
         private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeSyntaxTreeAction = AnalyzeSyntaxTree;
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(CasingRule, UnderscoreRule, ArityRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(CasingRule, UnderscoreRule, ArityRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {

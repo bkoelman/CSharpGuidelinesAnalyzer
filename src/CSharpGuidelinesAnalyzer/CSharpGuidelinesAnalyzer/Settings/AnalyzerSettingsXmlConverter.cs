@@ -46,8 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
             writer.WriteEndElement();
         }
 
-        private static void WriteSettingElement([NotNull] AnalyzerSettingKey settingKey, [NotNull] string settingValue,
-            [NotNull] XmlWriter writer)
+        private static void WriteSettingElement([NotNull] AnalyzerSettingKey settingKey, [NotNull] string settingValue, [NotNull] XmlWriter writer)
         {
             writer.WriteStartElement("setting");
 

@@ -9,8 +9,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
     public sealed class AnalyzerSettingsRegistry
     {
         [NotNull]
-        internal static readonly AnalyzerSettingsRegistry ImmutableEmpty =
-            new AnalyzerSettingsRegistry(ImmutableDictionary<AnalyzerSettingKey, string>.Empty);
+        internal static readonly AnalyzerSettingsRegistry ImmutableEmpty = new AnalyzerSettingsRegistry(ImmutableDictionary<AnalyzerSettingKey, string>.Empty);
 
         [NotNull]
         private readonly IDictionary<AnalyzerSettingKey, string> settings;
@@ -49,8 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
                 }
 
                 throw new ArgumentOutOfRangeException(
-                    $"Value for '{key}' in '{AnalyzerSettingsProvider.SettingsFileName}' must be in range {minValue}-{maxValue}.",
-                    (Exception)null);
+                    $"Value for '{key}' in '{AnalyzerSettingsProvider.SettingsFileName}' must be in range {minValue}-{maxValue}.", (Exception)null);
             }
 
             return null;

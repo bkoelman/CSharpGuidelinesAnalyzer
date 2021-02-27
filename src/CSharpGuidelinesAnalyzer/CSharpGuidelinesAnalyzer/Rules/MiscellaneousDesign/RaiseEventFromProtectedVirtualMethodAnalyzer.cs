@@ -12,9 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAnalyzer
     {
-        private const string Title =
-            "Method that raises an event should be protected virtual and be named 'On' followed by event name";
-
+        private const string Title = "Method that raises an event should be protected virtual and be named 'On' followed by event name";
         private const string KindMessageFormat = "Event '{0}' should be raised from a regular method.";
         private const string ModifiersMessageFormat = "Method '{0}' raises event '{1}', so it should be protected and virtual.";
         private const string NameMessageFormat = "Method '{0}' raises event '{1}', so it should be named '{2}'.";
@@ -26,17 +24,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
         [NotNull]
-        private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title, KindMessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title, KindMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title,
-            ModifiersMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true, Description,
-            Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title, ModifiersMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         [NotNull]
-        private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat,
-            Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat, Category.DisplayName,
+            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
         private static readonly ImmutableArray<MethodKind> RegularMethodKinds = new[]
         {
@@ -45,12 +42,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }.ToImmutableArray();
 
         [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context =>
-            context.SkipInvalid(AnalyzeInvocation);
+        private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context => context.SkipInvalid(AnalyzeInvocation);
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-            ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
         {
@@ -82,8 +77,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private static IEventSymbol TryGetEvent([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
-            OperationAnalysisContext context)
+        private static IEventSymbol TryGetEvent([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod, OperationAnalysisContext context)
         {
             return TryGetEventForInvocation(operation) ??
                 TryGetEventForNullConditionalAccessInvocation(operation, context.Compilation, context.CancellationToken) ??
@@ -98,8 +92,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private static IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation,
-            [NotNull] Compilation compilation, CancellationToken cancellationToken)
+        private static IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation, [NotNull] Compilation compilation,
+            CancellationToken cancellationToken)
         {
             if (operation is IConditionalAccessInstanceOperation)
             {
@@ -111,8 +105,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private static IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation,
-            [CanBeNull] IMethodSymbol containingMethod, OperationAnalysisContext context)
+        private static IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
+            OperationAnalysisContext context)
         {
             return operation is ILocalReferenceOperation local && containingMethod != null
                 ? TryGetEventFromMethodStatements(containingMethod, local.Local, context)
@@ -120,8 +114,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private static IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod,
-            [NotNull] ILocalSymbol local, OperationAnalysisContext context)
+        private static IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod, [NotNull] ILocalSymbol local,
+            OperationAnalysisContext context)
         {
             IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
 
@@ -136,14 +130,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return null;
         }
 
-        private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol @event,
-            OperationAnalysisContext context)
+        private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol @event, OperationAnalysisContext context)
         {
             if (method == null || !RegularMethodKinds.Contains(method.MethodKind))
             {
-                Location location = method != null && !method.IsSynthesized()
-                    ? method.Locations[0]
-                    : context.Operation.Syntax.GetLocation();
+                Location location = method != null && !method.IsSynthesized() ? method.Locations[0] : context.Operation.Syntax.GetLocation();
 
                 context.ReportDiagnostic(Diagnostic.Create(KindRule, location, @event.Name));
             }
@@ -159,16 +150,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             }
         }
 
-        private static bool AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event,
-            OperationAnalysisContext context)
+        private static bool AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event, OperationAnalysisContext context)
         {
             string nameExpected = string.Concat("On", @event.Name);
             string nameActual = method.MemberNameWithoutExplicitInterfacePrefix();
 
             if (nameActual != nameExpected)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name,
-                    nameExpected));
+                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name, nameExpected));
 
                 return true;
             }
@@ -176,11 +165,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             return false;
         }
 
-        private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event,
-            OperationAnalysisContext context)
+        private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event, OperationAnalysisContext context)
         {
-            if (!method.ContainingType.IsSealed && !method.IsStatic &&
-                method.MethodKind != MethodKind.ExplicitInterfaceImplementation)
+            if (!method.ContainingType.IsSealed && !method.IsStatic && method.MethodKind != MethodKind.ExplicitInterfaceImplementation)
             {
                 if (!method.IsVirtual || !IsProtected(method))
                 {
@@ -191,8 +178,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static bool IsProtected([NotNull] IMethodSymbol method)
         {
-            return method.DeclaredAccessibility == Accessibility.Protected ||
-                method.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
+            return method.DeclaredAccessibility == Accessibility.Protected || method.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
         }
 
         private sealed class LocalAssignmentWalker : ExplicitOperationWalker
