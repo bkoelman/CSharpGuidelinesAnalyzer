@@ -42,6 +42,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             context.SkipEmptyName(AnalyzeNamedType);
 
         [ItemNotNull]
+        private static readonly ImmutableArray<string> PlatformInvokeWrapperTypeNames =
+            ImmutableArray.Create("NativeMethods", "SafeNativeMethods", "UnsafeNativeMethods");
+
+        [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(TypeRule, MemberRule);
 
         public override void Initialize([NotNull] AnalysisContext context)
@@ -56,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
-            if (!type.IsStatic || type.IsSynthesized())
+            if (!type.IsStatic || type.IsSynthesized() || IsPlatformInvokeWrapper(type))
             {
                 return;
             }
@@ -72,6 +76,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             {
                 AnalyzeTypeMembers(type, context);
             }
+        }
+
+        private static bool IsPlatformInvokeWrapper([NotNull] INamedTypeSymbol type)
+        {
+            return PlatformInvokeWrapperTypeNames.Contains(type.Name);
         }
 
         private static bool TypeContainsEntryPoint([NotNull] INamedTypeSymbol type, [NotNull] Compilation compilation,

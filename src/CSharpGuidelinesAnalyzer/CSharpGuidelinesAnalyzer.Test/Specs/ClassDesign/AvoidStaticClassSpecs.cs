@@ -319,6 +319,37 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_static_class_is_platform_invoke_wrapper_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    static class NativeMethods
+                    {
+                    }
+
+                    static class SafeNativeMethods
+                    {
+                    }
+
+                    static class UnsafeNativeMethods
+                    {
+                    }
+
+                    public class Wrapper
+                    {
+                        private static class NativeMethods
+                        {
+                        } 
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new AvoidStaticClassAnalyzer();
