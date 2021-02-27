@@ -227,6 +227,50 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
             VerifyGuidelineDiagnostic(source);
         }
 
+        [Fact]
+        internal void When_parameterized_test_method_name_does_not_end_with_Async_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(Task).Namespace)
+                .InGlobalScope(@"
+                    namespace Xunit
+                    {
+                        public class TheoryAttribute : Attribute
+                        {
+                        }
+
+                        [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+                        public class InlineDataAttribute : Attribute
+                        {
+                            public InlineDataAttribute(params object[] data)
+                            {
+                            }
+                        }
+                    }
+
+                    namespace App
+                    {
+                        using Xunit;
+
+                        class UnitTests
+                        {
+                            [InlineData(""A"")]
+                            [InlineData(""B"")]
+                            [Theory]
+                            public async Task When_some_condition_it_must_work(string value)
+                            {
+                                _ = value;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
             return new SuffixAsyncMethodCorrectlyAnalyzer();
