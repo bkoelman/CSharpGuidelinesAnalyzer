@@ -15,9 +15,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     internal static class SymbolExtensions
     {
         [ItemNotNull]
-        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames =
-            ImmutableArray.Create("Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Xunit.FactAttribute",
-                "NUnit.Framework.TestAttribute", "MbUnit.Framework.TestAttribute");
+        private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
+            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute",
+            "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethod", "Xunit.FactAttribute", "Xunit.TheoryAttribute",
+            "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute", "MbUnit.Framework.TestAttribute");
 
         [NotNull]
         [ItemNotNull]
