@@ -30,6 +30,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             [NotNull]
             private readonly FakeAnalyzerConfigOptions options = new FakeAnalyzerConfigOptions();
 
+            [NotNull]
+            public override AnalyzerConfigOptions GlobalOptions => options;
+
             public void Add([NotNull] string key, [CanBeNull] string value)
             {
                 options.Settings.Add(key, value);

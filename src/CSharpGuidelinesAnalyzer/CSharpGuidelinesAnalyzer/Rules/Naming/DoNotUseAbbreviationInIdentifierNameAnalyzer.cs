@@ -126,7 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (IsBlacklistedOrSingleLetter(type.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind, type.Name));
+                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind.Format(), type.Name));
             }
         }
 
