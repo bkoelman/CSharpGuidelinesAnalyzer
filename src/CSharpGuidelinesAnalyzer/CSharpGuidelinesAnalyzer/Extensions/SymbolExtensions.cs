@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     {
         [ItemNotNull]
         private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
-            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethod",
+            "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethodAttribute",
             "Xunit.FactAttribute", "Xunit.TheoryAttribute", "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute",
             "MbUnit.Framework.TestAttribute");
 
