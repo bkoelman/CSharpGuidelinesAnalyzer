@@ -22,9 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
                     xmlSettings
                 }.ToImmutableArray();
 
-            return editorConfigSettings != null
-                ? new AnalyzerOptions(textArray, editorConfigSettings)
-                : new AnalyzerOptions(textArray);
+            return editorConfigSettings != null ? new AnalyzerOptions(textArray, editorConfigSettings) : new AnalyzerOptions(textArray);
         }
 
         [NotNull]

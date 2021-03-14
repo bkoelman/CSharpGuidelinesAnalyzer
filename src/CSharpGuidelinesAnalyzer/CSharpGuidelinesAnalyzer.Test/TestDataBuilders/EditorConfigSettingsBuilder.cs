@@ -53,8 +53,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             private sealed class FakeAnalyzerConfigOptions : AnalyzerConfigOptions
             {
                 [NotNull]
-                public IDictionary<string, string> Settings { get; } =
-                    new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+                public IDictionary<string, string> Settings { get; } = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
                 public override bool TryGetValue([NotNull] string key, [CanBeNull] out string value)
                 {

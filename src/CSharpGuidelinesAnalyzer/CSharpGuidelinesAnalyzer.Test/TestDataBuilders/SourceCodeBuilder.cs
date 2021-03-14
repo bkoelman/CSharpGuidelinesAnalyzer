@@ -16,8 +16,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         [NotNull]
-        private static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty,
-            Array.Empty<TextSpan>(), LanguageNames.CSharp, new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
+        private static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty, Array.Empty<TextSpan>(), LanguageNames.CSharp,
+            new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
 
         [ItemNotNull]
         protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
@@ -87,8 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return builder.ToString();
         }
 
-        private static void AppendCodeBlocks([NotNull] [ItemNotNull] IEnumerable<string> codeBlocks,
-            [NotNull] StringBuilder builder)
+        private static void AppendCodeBlocks([NotNull] [ItemNotNull] IEnumerable<string> codeBlocks, [NotNull] StringBuilder builder)
         {
             bool isInFirstBlock = true;
 

@@ -117,8 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         }
 
         [NotNull]
-        public static TBuilder WithOptions<TBuilder>([NotNull] this TBuilder source,
-            [NotNull] AnalyzerOptionsBuilder builder)
+        public static TBuilder WithOptions<TBuilder>([NotNull] this TBuilder source, [NotNull] AnalyzerOptionsBuilder builder)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(builder, nameof(builder));
