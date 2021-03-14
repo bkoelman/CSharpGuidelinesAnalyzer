@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="OpenCover" Version="4.7.922" />
     <PackageReference Include="ReportGenerator" Version="4.8.6" />
-    <PackageReference Include="ResharperCodeContractNullability" Version="2.0.0" PrivateAssets="all" />
+    <PackageReference Include="ResharperCodeContractNullability" Version="2.0.2" PrivateAssets="all" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
