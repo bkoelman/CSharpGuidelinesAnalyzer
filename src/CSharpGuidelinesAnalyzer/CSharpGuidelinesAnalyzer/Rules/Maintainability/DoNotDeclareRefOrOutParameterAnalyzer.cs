@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -23,6 +24,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
             DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+        [CanBeNull]
+        private static readonly PropertyInfo IsRefLikeTypeProperty = typeof(ITypeSymbol).GetRuntimeProperty("IsRefLikeType");
 
         [NotNull]
         private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
@@ -68,12 +72,22 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static void AnalyzeRefParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
         {
+            if (IsRefStruct(parameter.Type))
+            {
+                return;
+            }
+
             ISymbol containingMember = parameter.ContainingSymbol;
 
             if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) && !parameter.IsInterfaceImplementation())
             {
                 context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
             }
+        }
+
+        private static bool IsRefStruct([NotNull] ITypeSymbol type)
+        {
+            return IsRefLikeTypeProperty != null && type.TypeKind == TypeKind.Struct && (bool)IsRefLikeTypeProperty.GetValue(type);
         }
     }
 }

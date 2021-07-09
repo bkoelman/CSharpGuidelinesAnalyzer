@@ -114,6 +114,27 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_method_parameter_has_ref_modifier_to_ref_struct_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    ref struct S
+                    {
+                    }
+
+                    class C
+                    {
+                        void M(ref S s) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_constructor_parameter_has_no_modifier_it_must_be_skipped()
         {
             // Arrange
