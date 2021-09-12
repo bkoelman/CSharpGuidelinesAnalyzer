@@ -48,8 +48,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.95" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.100" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="2.0.2" PrivateAssets="all" />
   </ItemGroup>
