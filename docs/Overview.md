@@ -163,7 +163,7 @@ This analyzer reports when:
 
 ### [AV2210](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/2200_FrameworkGuidelines.md#av2210): Build with the highest warning level ![](/images/warn.png "severity: warning")
 This analyzer reports when:
-- the compiler warning level is below 4 in the build settings
+- the compiler warning level is below [9999](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings#warninglevel) in the build settings
 - warnings are not treated as errors in the build settings.
 
 Note: this analyzer requires [Full Solution Analysis](/docs/Full%20Solution%20Analysis.md) enabled.

@@ -100,14 +100,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 GenericTaskType = KnownTypes.SystemThreadingTasksTaskT(compilation);
                 TaskType = KnownTypes.SystemThreadingTasksTask(compilation);
 
-                ContinueWithMethodGroup = GetTaskContinueWithMethodGroup();
+                ContinueWithMethodGroup = GetTaskContinueWithMethodGroup(TaskType, GenericTaskType);
             }
 
             [ItemNotNull]
-            private ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup()
+            private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup([CanBeNull] INamedTypeSymbol taskType,
+                [CanBeNull] INamedTypeSymbol genericTaskType)
             {
-                ImmutableArray<ISymbol> taskContinueWithMethodGroup = TaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
-                ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = GenericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+                ImmutableArray<ISymbol> taskContinueWithMethodGroup = taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+                ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
 
                 return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
             }

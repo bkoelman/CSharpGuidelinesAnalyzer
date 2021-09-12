@@ -10,11 +10,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         protected override string DiagnosticId => BuildWithTheHighestWarningLevelAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_warning_level_is_set_to_four_it_must_be_skipped()
+        internal void When_warning_level_is_9999_with_warnings_as_errors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .CompileAtWarningLevel(4)
+                .CompileAtWarningLevel(9999)
                 .CompileWithWarningAsError()
                 .Build();
 
@@ -23,66 +23,25 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_warning_level_is_set_to_three_it_must_be_reported()
+        internal void When_warning_level_is_below_9999_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .CompileAtWarningLevel(3)
+                .CompileAtWarningLevel(5)
                 .CompileWithWarningAsError()
                 .Build();
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Build with warning level 4.");
+                "Build with warning level 9999.");
         }
 
         [Fact]
-        internal void When_warning_level_is_set_to_two_it_must_be_reported()
+        internal void When_compiling_with_warnings_not_as_errors_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .CompileAtWarningLevel(2)
-                .CompileWithWarningAsError()
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "Build with warning level 4.");
-        }
-
-        [Fact]
-        internal void When_warning_level_is_set_to_one_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .CompileAtWarningLevel(1)
-                .CompileWithWarningAsError()
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source,
-                "Build with warning level 4.");
-        }
-
-        // Note: at warning level 0, analyzers do not even run. So a test for that is omitted here.
-
-        [Fact]
-        internal void When_compiling_with_warnings_as_errors_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .CompileWithWarningAsError()
-                .Build();
-
-            // Act and assert
-            VerifyGuidelineDiagnostic(source);
-        }
-
-        [Fact]
-        internal void When_compiling_with_warnings_not_as_errors_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .CompileAtWarningLevel(9999)
                 .Build();
 
             // Act and assert
