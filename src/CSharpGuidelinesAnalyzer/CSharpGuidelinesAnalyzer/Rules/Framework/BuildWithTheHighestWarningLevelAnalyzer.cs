@@ -10,9 +10,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     public sealed class BuildWithTheHighestWarningLevelAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Compiler warnings are not treated as errors or warning level is too low";
-        private const string WarningLevelMessageFormat = "Build with warning level 4.";
+        private const string WarningLevelMessageFormat = "Build with warning level 9999.";
         private const string WarningAsErrorMessageFormat = "Build with -warnaserror.";
         private const string Description = "Build with the highest warning level.";
+
+        // The highest warning level used to be 4, until C# 9 added warning level 5. Microsoft now recommends to use 9999, which should include all
+        // future warning levels. See https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/errors-warnings#warninglevel.
+        private const int MaxWarningLevel = 9999;
 
         public const string DiagnosticId = "AV2210";
 
@@ -50,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 context.ReportDiagnostic(Diagnostic.Create(WarningAsErrorRule, Location.None));
             }
 
-            if (options.WarningLevel < 4)
+            if (options.WarningLevel < MaxWarningLevel)
             {
                 context.ReportDiagnostic(Diagnostic.Create(WarningLevelRule, Location.None));
             }
