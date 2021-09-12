@@ -7,16 +7,16 @@
 
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
-    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
+    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>3.7.0</Version>
+    <Version>3.7.1-pre</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/bkoelman/CSharpGuidelinesAnalyzer</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>Reports diagnostics for C# coding guidelines that are not already covered by Resharper. Requires Visual Studio 2017 Update 5 or higher.</Description>
-    <PackageReleaseNotes>See https://github.com/bkoelman/CSharpGuidelinesAnalyzer/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>See https://github.com/bkoelman/CSharpGuidelinesAnalyzer/releases.</PackageReleaseNotes>
     <Copyright>Apache License, Version 2.0</Copyright>
     <PackageTags>csharp c# coding guidelines analyzer</PackageTags>
     <NoPackageAnalysis>true</NoPackageAnalysis>
@@ -42,6 +42,10 @@
 
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.100" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
