@@ -14,7 +14,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Class should not be static";
-
         private const string TypeMessageFormat = "Class '{0}' should be non-static or its name should be suffixed with 'Extensions'.";
         private const string MemberMessageFormat = "Extension method container class '{0}' contains {1} member '{2}', which is not an extension method.";
         private const string Description = "Avoid static classes.";
