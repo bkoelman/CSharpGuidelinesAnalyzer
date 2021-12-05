@@ -1,5 +1,6 @@
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
@@ -378,6 +379,44 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 "Namespace 'WrongRoot.JetBrains' does not match with assembly name 'Company.ProductName'.",
                 "Namespace 'WrongRoot.JetBrains.Annotations' does not match with assembly name 'Company.ProductName'.",
                 "Type 'C' is declared in namespace 'WrongRoot.JetBrains.Annotations', which does not match with assembly name 'Company.ProductName'.");
+        }
+
+        [Fact]
+        internal void When_top_level_program_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InAssemblyNamed("Some.Scope.Example")
+                .WithOutputKind(OutputKind.ConsoleApplication)
+                .InGlobalScope(@"
+                    System.Console.WriteLine("""");
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_explicit_program_in_global_namespace_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InAssemblyNamed("Some.Scope.Example")
+                .WithOutputKind(OutputKind.ConsoleApplication)
+                .InGlobalScope(@"
+                    static class [|Program|]
+                    {
+                        static void Main()
+                        {
+                            System.Console.WriteLine("""");
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source, "Type 'Program' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'.");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

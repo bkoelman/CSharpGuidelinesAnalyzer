@@ -12,6 +12,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyzer
     {
+        // Copied from Microsoft.CodeAnalysis.WellKnownMemberNames, which provides these in later versions.
+        private const string TopLevelStatementsEntryPointTypeName = "Program";
+        private const string TopLevelStatementsEntryPointMethodName = "<Main>$";
+
         private const string Title = "Namespace should match with assembly name";
         private const string NamespaceMessageFormat = "Namespace '{0}' does not match with assembly name '{1}'.";
         private const string TypeInNamespaceMessageFormat = "Type '{0}' is declared in namespace '{1}', which does not match with assembly name '{2}'.";
@@ -94,10 +98,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var type = (INamedTypeSymbol)context.Symbol;
 
-            if (type.ContainingNamespace.IsGlobalNamespace && !type.IsSynthesized())
+            if (type.ContainingNamespace.IsGlobalNamespace && !type.IsSynthesized() && !IsTopLevelStatementsContainer(type))
             {
                 context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, type.ContainingAssembly.Name));
             }
+        }
+
+        private static bool IsTopLevelStatementsContainer([NotNull] INamedTypeSymbol type)
+        {
+            return type.Name == TopLevelStatementsEntryPointTypeName && type.GetMembers(TopLevelStatementsEntryPointMethodName).Any();
         }
 
         private sealed class TypesInNamespaceVisitor : SymbolVisitor
