@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     {
         private const string Title = "Do not return null for strings, collections or tasks";
         private const string MessageFormat = "null is returned from {0} '{1}' which has return type of string, collection or task";
-        private const string Description = "Properties, arguments and return values representing strings or collections should never be null.";
+        private const string Description = "Properties, arguments and return values representing strings, collections or tasks should never be null.";
 
         public const string DiagnosticId = "AV1135";
 
