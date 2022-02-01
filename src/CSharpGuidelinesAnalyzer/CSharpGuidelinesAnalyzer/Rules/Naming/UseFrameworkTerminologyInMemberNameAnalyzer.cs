@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Name members and local functions similarly to members of .NET Framework classes";
-        private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'.";
+        private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'";
         private const string Description = "Name members similarly to members of related .NET Framework classes.";
 
         public const string DiagnosticId = "AV1711";

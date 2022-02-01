@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Parameter value should not be overwritten in method body";
-        private const string MessageFormat = "The value of parameter '{0}' is overwritten in its method body.";
+        private const string MessageFormat = "The value of parameter '{0}' is overwritten in its method body";
         private const string Description = "Don't use parameters as temporary variables.";
 
         public const string DiagnosticId = "AV1568";

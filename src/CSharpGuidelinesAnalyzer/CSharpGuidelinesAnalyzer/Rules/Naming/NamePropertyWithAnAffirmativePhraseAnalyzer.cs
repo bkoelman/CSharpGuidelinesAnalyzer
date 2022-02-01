@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Name of public or internal boolean identifier should start with a verb";
-        private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb.";
+        private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb";
         private const string Description = "Properly name properties.";
 
         public const string DiagnosticId = "AV1715";

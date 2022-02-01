@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of type 'Helpers' contains the term 'Helpers'.");
+                "Name of type 'Helpers' contains the term 'Helpers'");
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of type 'StringUtility' contains the term 'Utility'.");
+                "Name of type 'StringUtility' contains the term 'Utility'");
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of type 'WebHelpers' contains the term 'Helpers'.");
+                "Name of type 'WebHelpers' contains the term 'Helpers'");
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of type 'CommonState' contains the term 'Common'.");
+                "Name of type 'CommonState' contains the term 'Common'");
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of type 'IUtilityObjects' contains the term 'Utility'.");
+                "Name of type 'IUtilityObjects' contains the term 'Utility'");
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of type 'ServiceFacilitiesUtilityCallback' contains the term 'Facilities'.");
+                "Name of type 'ServiceFacilitiesUtilityCallback' contains the term 'Facilities'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

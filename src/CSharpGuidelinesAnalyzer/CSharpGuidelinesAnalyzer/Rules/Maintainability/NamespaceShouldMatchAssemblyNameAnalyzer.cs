@@ -17,9 +17,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string TopLevelStatementsEntryPointMethodName = "<Main>$";
 
         private const string Title = "Namespace should match with assembly name";
-        private const string NamespaceMessageFormat = "Namespace '{0}' does not match with assembly name '{1}'.";
-        private const string TypeInNamespaceMessageFormat = "Type '{0}' is declared in namespace '{1}', which does not match with assembly name '{2}'.";
-        private const string GlobalTypeMessageFormat = "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'.";
+        private const string NamespaceMessageFormat = "Namespace '{0}' does not match with assembly name '{1}'";
+        private const string TypeInNamespaceMessageFormat = "Type '{0}' is declared in namespace '{1}', which does not match with assembly name '{2}'";
+        private const string GlobalTypeMessageFormat = "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'";
         private const string Description = "Name assemblies after their contained namespace.";
 
         public const string DiagnosticId = "AV1505";

@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Loop statement contains nested loop";
-        private const string MessageFormat = "Loop statement contains nested loop.";
+        private const string MessageFormat = "Loop statement contains nested loop";
         private const string Description = "Avoid nested loops.";
 
         public const string DiagnosticId = "AV1532";

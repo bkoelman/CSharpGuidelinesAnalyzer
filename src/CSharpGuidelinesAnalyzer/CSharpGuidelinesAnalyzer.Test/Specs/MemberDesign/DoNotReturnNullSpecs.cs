@@ -80,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -142,7 +142,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -184,7 +184,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -287,7 +287,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -309,7 +309,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -371,7 +371,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -393,7 +393,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -413,7 +413,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -436,7 +436,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from property accessor 'C.P.get' which has return type of string, collection or task.");
+                "null is returned from property accessor 'C.P.get' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -459,7 +459,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from property accessor 'C.this[int].get' which has return type of string, collection or task.");
+                "null is returned from property accessor 'C.this[int].get' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -484,7 +484,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from local function 'L()' which has return type of string, collection or task.");
+                "null is returned from local function 'L()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -501,7 +501,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'C.M()' which has return type of string, collection or task.");
+                "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -521,7 +521,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'lambda expression' which has return type of string, collection or task.");
+                "null is returned from method 'lambda expression' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -544,7 +544,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'lambda expression' which has return type of string, collection or task.");
+                "null is returned from method 'lambda expression' which has return type of string, collection or task");
         }
 
         [Fact]
@@ -567,7 +567,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "null is returned from method 'lambda expression' which has return type of string, collection or task.");
+                "null is returned from method 'lambda expression' which has return type of string, collection or task");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

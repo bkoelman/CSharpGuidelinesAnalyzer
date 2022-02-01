@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Member or local function contains the word 'and', which suggests doing multiple things";
-        private const string MessageFormat = "{0} '{1}' contains the word 'and', which suggests doing multiple things.";
+        private const string MessageFormat = "{0} '{1}' contains the word 'and', which suggests doing multiple things";
         private const string Description = "A property, method or local function should do only one thing.";
         private const string BlacklistWord = "and";
 

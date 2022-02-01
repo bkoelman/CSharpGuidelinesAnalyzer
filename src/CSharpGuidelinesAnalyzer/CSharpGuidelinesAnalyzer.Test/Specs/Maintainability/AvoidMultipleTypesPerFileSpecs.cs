@@ -70,9 +70,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'Example.cs' contains additional type 'N1.C2'.",
-                "File 'Example.cs' contains additional type 'C3'.",
-                "File 'Example.cs' contains additional type 'N2.N3.C4'.");
+                "File 'Example.cs' contains additional type 'N1.C2'",
+                "File 'Example.cs' contains additional type 'C3'",
+                "File 'Example.cs' contains additional type 'N2.N3.C4'");
         }
 
         [Fact]
@@ -177,9 +177,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'Example.cs' contains additional type 'N1.S2'.",
-                "File 'Example.cs' contains additional type 'S3'.",
-                "File 'Example.cs' contains additional type 'N2.N3.S4'.");
+                "File 'Example.cs' contains additional type 'N1.S2'",
+                "File 'Example.cs' contains additional type 'S3'",
+                "File 'Example.cs' contains additional type 'N2.N3.S4'");
         }
 
         [Fact]
@@ -275,9 +275,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'Example.cs' contains additional type 'N1.E2'.",
-                "File 'Example.cs' contains additional type 'E3'.",
-                "File 'Example.cs' contains additional type 'N2.N3.E4'.");
+                "File 'Example.cs' contains additional type 'N1.E2'",
+                "File 'Example.cs' contains additional type 'E3'",
+                "File 'Example.cs' contains additional type 'N2.N3.E4'");
         }
 
         [Fact]
@@ -332,9 +332,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'Example.cs' contains additional type 'N1.I2'.",
-                "File 'Example.cs' contains additional type 'I3'.",
-                "File 'Example.cs' contains additional type 'N2.N3.I4'.");
+                "File 'Example.cs' contains additional type 'N1.I2'",
+                "File 'Example.cs' contains additional type 'I3'",
+                "File 'Example.cs' contains additional type 'N2.N3.I4'");
         }
 
         [Fact]
@@ -414,9 +414,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'Example.cs' contains additional type 'N1.D2'.",
-                "File 'Example.cs' contains additional type 'D3'.",
-                "File 'Example.cs' contains additional type 'N2.N3.D4'.");
+                "File 'Example.cs' contains additional type 'N1.D2'",
+                "File 'Example.cs' contains additional type 'D3'",
+                "File 'Example.cs' contains additional type 'N2.N3.D4'");
         }
 
         [Fact]

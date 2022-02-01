@@ -52,8 +52,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop statement contains nested loop.",
-                "Loop statement contains nested loop.");
+                "Loop statement contains nested loop",
+                "Loop statement contains nested loop");
         }
 
         [Fact]
@@ -98,8 +98,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop statement contains nested loop.",
-                "Loop statement contains nested loop.");
+                "Loop statement contains nested loop",
+                "Loop statement contains nested loop");
         }
 
         [Fact]
@@ -146,8 +146,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop statement contains nested loop.",
-                "Loop statement contains nested loop.");
+                "Loop statement contains nested loop",
+                "Loop statement contains nested loop");
         }
 
         [Fact]
@@ -192,8 +192,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop statement contains nested loop.",
-                "Loop statement contains nested loop.");
+                "Loop statement contains nested loop",
+                "Loop statement contains nested loop");
         }
 
         [Fact]
@@ -242,8 +242,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop statement contains nested loop.",
-                "Loop statement contains nested loop.");
+                "Loop statement contains nested loop",
+                "Loop statement contains nested loop");
         }
 
         [Fact]

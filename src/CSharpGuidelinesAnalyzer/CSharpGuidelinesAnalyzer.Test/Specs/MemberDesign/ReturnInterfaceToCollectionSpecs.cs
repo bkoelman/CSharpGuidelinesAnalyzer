@@ -70,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'C.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'C.M()' should be a collection interface instead of a concrete type");
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'C.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'C.M()' should be a collection interface instead of a concrete type");
         }
 
         [Fact]
@@ -272,7 +272,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'B.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'B.M()' should be a collection interface instead of a concrete type");
         }
 
         [Fact]
@@ -302,7 +302,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'B.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'B.M()' should be a collection interface instead of a concrete type");
         }
 
         [Fact]
@@ -329,7 +329,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type");
         }
 
         [Fact]
@@ -356,7 +356,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type");
         }
 
         [Fact]

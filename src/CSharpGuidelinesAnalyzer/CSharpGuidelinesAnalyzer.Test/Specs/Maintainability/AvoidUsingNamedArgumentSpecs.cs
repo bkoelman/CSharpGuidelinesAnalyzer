@@ -28,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 's' in the call to 'Test.M(int, string)' is invoked with a named argument.");
+                "Parameter 's' in the call to 'Test.M(int, string)' is invoked with a named argument");
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 's' in the call to 'Test.M(int, string, int)' is invoked with a named argument.");
+                "Parameter 's' in the call to 'Test.M(int, string, int)' is invoked with a named argument");
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'o' in the call to 'L(int, object)' is invoked with a named argument.");
+                "Parameter 'o' in the call to 'L(int, object)' is invoked with a named argument");
         }
 
         [Fact]
@@ -187,9 +187,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'd' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.",
-                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.",
-                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+                "Parameter 'd' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument",
+                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument",
+                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
@@ -211,8 +211,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.",
-                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument",
+                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+                "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
@@ -256,7 +256,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument.");
+                "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]

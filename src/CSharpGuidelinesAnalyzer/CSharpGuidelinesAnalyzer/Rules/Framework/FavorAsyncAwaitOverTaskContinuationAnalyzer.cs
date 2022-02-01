@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
-        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression.";
+        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression";
         private const string Description = "Favor async/await over Task continuations.";
 
         public const string DiagnosticId = "AV2235";

@@ -32,7 +32,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'mainForm.cs' should be named using Pascal casing.");
+                "File 'mainForm.cs' should be named using Pascal casing");
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'Main_Form.cs' should be named without underscores.");
+                "File 'Main_Form.cs' should be named without underscores");
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "File 'ValueContainer`1.cs' should be named without generic arity.");
+                "File 'ValueContainer`1.cs' should be named without generic arity");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

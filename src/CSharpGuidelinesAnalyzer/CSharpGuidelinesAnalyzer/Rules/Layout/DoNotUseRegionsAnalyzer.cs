@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Layout
     public sealed class DoNotUseRegionsAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Region should be removed";
-        private const string MessageFormat = "Region should be removed.";
+        private const string MessageFormat = "Region should be removed";
         private const string Description = "Do not use #region.";
 
         public const string DiagnosticId = "AV2407";

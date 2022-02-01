@@ -82,7 +82,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -157,7 +157,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'k' and 'j' are assigned in a single statement.");
+                "'k' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -235,7 +235,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -254,7 +254,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i', 'j' and 'k' are assigned in a single statement.");
+                "'i', 'j' and 'k' are assigned in a single statement");
         }
 
         [Fact]
@@ -283,7 +283,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement.");
+                "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement");
         }
 
         [Fact]
@@ -312,7 +312,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'decl1', 'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement.");
+                "'decl1', 'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement");
         }
 
         [Fact]
@@ -335,7 +335,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -381,7 +381,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -404,7 +404,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -427,7 +427,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -498,7 +498,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -521,7 +521,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -569,7 +569,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -592,7 +592,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -640,7 +640,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -664,7 +664,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -714,7 +714,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -737,7 +737,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -792,8 +792,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.",
-                "'x' and 'y' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement",
+                "'x' and 'y' are assigned in a single statement");
         }
 
         [Fact]
@@ -825,7 +825,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -892,8 +892,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.",
-                "'x' and 'y' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement",
+                "'x' and 'y' are assigned in a single statement");
         }
 
         [Fact]
@@ -913,7 +913,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -934,7 +934,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -958,7 +958,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'o' and 'p' are assigned in a single statement.");
+                "'o' and 'p' are assigned in a single statement");
         }
 
         [Fact]
@@ -1004,7 +1004,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -1029,7 +1029,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -1055,7 +1055,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -1080,7 +1080,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'ms1' and 'ms2' are assigned in a single statement.");
+                "'ms1' and 'ms2' are assigned in a single statement");
         }
 
         [Fact]
@@ -1126,7 +1126,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -1147,7 +1147,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -1195,7 +1195,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
@@ -1216,7 +1216,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'i' and 'j' are assigned in a single statement.");
+                "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]

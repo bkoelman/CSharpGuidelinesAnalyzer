@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on method 'IsNoActiveCustomer', which has a negation in its name.");
+                "Logical not operator is applied on method 'IsNoActiveCustomer', which has a negation in its name");
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on local function 'IsNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on local function 'IsNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on local function 'IsNoActiveCustomer', which has a negation in its name.");
+                "Logical not operator is applied on local function 'IsNoActiveCustomer', which has a negation in its name");
         }
 
         [Fact]
@@ -275,7 +275,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on property 'IsNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on property 'IsNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -300,7 +300,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on property 'IsNoActiveCustomer', which has a negation in its name.");
+                "Logical not operator is applied on property 'IsNoActiveCustomer', which has a negation in its name");
         }
 
         [Fact]
@@ -351,7 +351,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on field 'isNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on field 'isNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -376,7 +376,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on field 'isNoActiveCustomer', which has a negation in its name.");
+                "Logical not operator is applied on field 'isNoActiveCustomer', which has a negation in its name");
         }
 
         [Fact]
@@ -423,7 +423,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on parameter 'isNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on parameter 'isNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -446,7 +446,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on parameter 'isNoActiveCustomer', which has a negation in its name.");
+                "Logical not operator is applied on parameter 'isNoActiveCustomer', which has a negation in its name");
         }
 
         [Fact]
@@ -493,7 +493,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on variable 'isNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on variable 'isNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -518,7 +518,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on variable 'isNoActiveCustomer', which has a negation in its name.");
+                "Logical not operator is applied on variable 'isNoActiveCustomer', which has a negation in its name");
         }
 
         [Fact]
@@ -563,7 +563,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name");
         }
 
         [Fact]
@@ -595,7 +595,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name.");
+                "Logical not operator is applied on method 'IsNotVisible', which has a negation in its name");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

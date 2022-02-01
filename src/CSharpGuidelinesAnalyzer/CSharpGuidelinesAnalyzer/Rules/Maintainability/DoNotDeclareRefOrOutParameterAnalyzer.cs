@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Do not declare a parameter as ref or out";
-        private const string MessageFormat = "Parameter '{0}' is declared as ref or out.";
+        private const string MessageFormat = "Parameter '{0}' is declared as ref or out";
         private const string Description = "Don't use ref or out parameters.";
 
         public const string DiagnosticId = "AV1562";

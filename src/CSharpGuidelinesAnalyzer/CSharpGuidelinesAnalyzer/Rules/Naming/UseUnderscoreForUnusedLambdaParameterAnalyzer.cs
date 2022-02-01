@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Unused lambda parameter should be renamed to underscore(s)";
-        private const string MessageFormat = "Unused {0} parameter '{1}' should be renamed to underscore(s).";
+        private const string MessageFormat = "Unused {0} parameter '{1}' should be renamed to underscore(s)";
         private const string Description = "Use an underscore for irrelevant lambda parameters.";
 
         public const string DiagnosticId = "AV1739";

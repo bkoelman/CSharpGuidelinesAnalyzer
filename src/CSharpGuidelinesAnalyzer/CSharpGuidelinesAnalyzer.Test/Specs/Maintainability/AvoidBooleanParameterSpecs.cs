@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -206,7 +206,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -233,7 +233,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -260,7 +260,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -287,7 +287,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -314,7 +314,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -344,7 +344,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -374,7 +374,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -405,7 +405,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -436,7 +436,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -461,7 +461,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -486,7 +486,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -511,7 +511,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -536,7 +536,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -566,7 +566,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -597,7 +597,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -627,7 +627,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool'.");
+                "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
@@ -658,7 +658,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b' is of type 'bool?'.");
+                "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
@@ -701,11 +701,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b1' is of type 'bool'.",
-                "Parameter 'b2' is of type 'bool'.",
-                "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.",
-                "Parameter 'b5' is of type 'bool'.");
+                "Parameter 'b1' is of type 'bool'",
+                "Parameter 'b2' is of type 'bool'",
+                "Parameter 'b3' is of type 'bool'",
+                "Parameter 'b4' is of type 'bool'",
+                "Parameter 'b5' is of type 'bool'");
         }
 
         [Fact]
@@ -748,11 +748,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b1' is of type 'bool'.",
-                "Parameter 'b2' is of type 'bool'.",
-                "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.",
-                "Parameter 'b5' is of type 'bool'.");
+                "Parameter 'b1' is of type 'bool'",
+                "Parameter 'b2' is of type 'bool'",
+                "Parameter 'b3' is of type 'bool'",
+                "Parameter 'b4' is of type 'bool'",
+                "Parameter 'b5' is of type 'bool'");
         }
 
         [Fact]
@@ -795,11 +795,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b1' is of type 'bool'.",
-                "Parameter 'b2' is of type 'bool'.",
-                "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.",
-                "Parameter 'b5' is of type 'bool'.");
+                "Parameter 'b1' is of type 'bool'",
+                "Parameter 'b2' is of type 'bool'",
+                "Parameter 'b3' is of type 'bool'",
+                "Parameter 'b4' is of type 'bool'",
+                "Parameter 'b5' is of type 'bool'");
         }
 
         [Fact]
@@ -842,11 +842,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b1' is of type 'bool'.",
-                "Parameter 'b2' is of type 'bool'.",
-                "Parameter 'b3' is of type 'bool'.",
-                "Parameter 'b4' is of type 'bool'.",
-                "Parameter 'b5' is of type 'bool'.");
+                "Parameter 'b1' is of type 'bool'",
+                "Parameter 'b2' is of type 'bool'",
+                "Parameter 'b3' is of type 'bool'",
+                "Parameter 'b4' is of type 'bool'",
+                "Parameter 'b5' is of type 'bool'");
         }
 
         [Fact]

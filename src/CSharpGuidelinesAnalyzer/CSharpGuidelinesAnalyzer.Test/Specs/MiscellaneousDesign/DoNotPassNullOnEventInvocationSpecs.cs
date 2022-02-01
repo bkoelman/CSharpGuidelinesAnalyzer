@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'sender' argument is null in non-static event invocation.");
+                "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'sender' argument is null in non-static event invocation.");
+                "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'sender' argument is null in non-static event invocation.");
+                "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'sender' argument is null in non-static event invocation.");
+                "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
@@ -240,7 +240,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'e' argument is null in event invocation.");
+                "'e' argument is null in event invocation");
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'e' argument is null in event invocation.");
+                "'e' argument is null in event invocation");
         }
 
         [Fact]
@@ -290,7 +290,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'e' argument is null in event invocation.");
+                "'e' argument is null in event invocation");
         }
 
         [Fact]
@@ -313,7 +313,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'e' argument is null in event invocation.");
+                "'e' argument is null in event invocation");
         }
 
         [Fact]
@@ -367,7 +367,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'eventArguments' argument is null in event invocation.");
+                "'eventArguments' argument is null in event invocation");
         }
 
         [Fact]
@@ -414,7 +414,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'e' argument is null in event invocation.");
+                "'e' argument is null in event invocation");
         }
 
         [Fact]
@@ -437,7 +437,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'e' argument is null in event invocation.");
+                "'e' argument is null in event invocation");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

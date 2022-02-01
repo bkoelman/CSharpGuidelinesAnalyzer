@@ -106,8 +106,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C'.",
-                "Missing XML comment for internally visible type or member 'N.M.C.X'.");
+                "Missing XML comment for internally visible type or member 'N.M.C'",
+                "Missing XML comment for internally visible type or member 'N.M.C.X'");
         }
 
         [Fact]
@@ -182,8 +182,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C'.",
-                "Missing XML comment for internally visible type or member 'N.M.C.X'.");
+                "Missing XML comment for internally visible type or member 'N.M.C'",
+                "Missing XML comment for internally visible type or member 'N.M.C.X'");
         }
 
         [Fact]
@@ -229,7 +229,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.E'.");
+                "Missing XML comment for internally visible type or member 'N.M.E'");
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.E.X'.");
+                "Missing XML comment for internally visible type or member 'N.M.E.X'");
         }
 
         [Fact]
@@ -296,7 +296,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.I'.");
+                "Missing XML comment for internally visible type or member 'N.M.I'");
         }
 
         [Fact]
@@ -336,7 +336,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.D'.");
+                "Missing XML comment for internally visible type or member 'N.M.D'");
         }
 
         [Fact]
@@ -416,7 +416,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.F'");
         }
 
         [Fact]
@@ -439,7 +439,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.F'");
         }
 
         [Fact]
@@ -507,7 +507,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.F'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.F'");
         }
 
         [Fact]
@@ -551,7 +551,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.P'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.P'");
         }
 
         [Fact]
@@ -574,7 +574,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.P'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.P'");
         }
 
         [Fact]
@@ -642,7 +642,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.P'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.P'");
         }
 
         [Fact]
@@ -686,7 +686,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.E'");
         }
 
         [Fact]
@@ -709,7 +709,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.E'");
         }
 
         [Fact]
@@ -777,7 +777,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.E'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.E'");
         }
 
         [Fact]
@@ -823,7 +823,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.M()'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.M()'");
         }
 
         [Fact]
@@ -848,7 +848,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.M()'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.M()'");
         }
 
         [Fact]
@@ -922,7 +922,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible type or member 'N.M.C.M()'.");
+                "Missing XML comment for internally visible type or member 'N.M.C.M()'");
         }
 
         [Fact]
@@ -971,7 +971,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible parameter 'i'.");
+                "Missing XML comment for internally visible parameter 'i'");
         }
 
         [Fact]
@@ -1120,7 +1120,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Missing XML comment for internally visible parameter 'i'.");
+                "Missing XML comment for internally visible parameter 'i'");
         }
 
         [Fact]
@@ -1224,7 +1224,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'z' in XML comment not found in method signature.");
+                "Parameter 'z' in XML comment not found in method signature");
         }
 
         [Fact]
@@ -1251,7 +1251,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'z' in XML comment not found in method signature.");
+                "Parameter 'z' in XML comment not found in method signature");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

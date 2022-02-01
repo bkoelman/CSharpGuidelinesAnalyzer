@@ -37,7 +37,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.operator ++(C)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.operator ++(C)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.implicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.implicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.explicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.explicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.explicit operator C(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.explicit operator C(int)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -203,7 +203,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.C(Task)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.C(Task)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -257,7 +257,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -284,7 +284,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -307,7 +307,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -334,7 +334,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -357,7 +357,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Initializer for 'C.P' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Initializer for 'C.P' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -381,7 +381,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -407,7 +407,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -434,7 +434,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -460,7 +460,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -487,7 +487,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -511,7 +511,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -537,7 +537,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -563,7 +563,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property accessor 'C.this[int].set' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Property accessor 'C.this[int].set' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -588,7 +588,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Initializer for 'C.E' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Initializer for 'C.E' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -618,7 +618,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event accessor 'C.E.add' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Event accessor 'C.E.add' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -648,7 +648,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event accessor 'C.E.remove' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Event accessor 'C.E.remove' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -671,7 +671,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Initializer for 'C.f' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Initializer for 'C.f' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         #endregion
@@ -699,7 +699,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -757,7 +757,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -816,7 +816,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -878,7 +878,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -941,7 +941,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(List<(int, string)>)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(List<(int, string)>)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1003,7 +1003,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1085,7 +1085,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1203,7 +1203,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1348,7 +1348,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1424,7 +1424,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1496,7 +1496,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1555,7 +1555,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1651,7 +1651,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1748,7 +1748,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1811,7 +1811,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1872,7 +1872,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -1941,7 +1941,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2018,7 +2018,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2099,7 +2099,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2190,7 +2190,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2272,7 +2272,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2337,7 +2337,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2397,7 +2397,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2458,7 +2458,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2513,7 +2513,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2567,7 +2567,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2621,7 +2621,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2722,8 +2722,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M1()' contains 8 statements, which exceeds the maximum of 7 statements.",
-                "Method 'C.M2(int, string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M1()' contains 8 statements, which exceeds the maximum of 7 statements",
+                "Method 'C.M2(int, string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2760,7 +2760,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         #region Non-default configuration
@@ -2790,7 +2790,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements.");
+                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements");
         }
 
         [Fact]
@@ -2818,7 +2818,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements.");
+                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements");
         }
 
         [Fact]
@@ -2848,7 +2848,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements.");
+                "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements");
         }
 
         [Fact]
@@ -2873,7 +2873,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2901,7 +2901,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2927,7 +2927,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
@@ -2953,7 +2953,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements.");
+                "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]

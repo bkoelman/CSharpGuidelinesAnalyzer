@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Avoid using non-(nullable-)boolean named arguments";
-        private const string MessageFormat = "Parameter '{0}' in the call to '{1}' is invoked with a named argument.";
+        private const string MessageFormat = "Parameter '{0}' in the call to '{1}' is invoked with a named argument";
         private const string Description = "Avoid using named arguments.";
 
         public const string DiagnosticId = "AV1555";

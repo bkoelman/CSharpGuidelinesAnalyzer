@@ -29,7 +29,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.F' hides inherited member.");
+                "'C.F' hides inherited member");
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.P' hides inherited member.");
+                "'C.P' hides inherited member");
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.M(int)' hides inherited member.");
+                "'C.M(int)' hides inherited member");
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.Changed' hides inherited member.");
+                "'C.Changed' hides inherited member");
         }
 
         [Fact]
@@ -298,7 +298,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.Changed' hides inherited member.");
+                "'C.Changed' hides inherited member");
         }
 
         [Fact]
@@ -325,7 +325,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.S' hides inherited member.");
+                "'C.S' hides inherited member");
         }
 
         [Fact]
@@ -352,7 +352,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.S' hides inherited member.");
+                "'C.S' hides inherited member");
         }
 
         [Fact]
@@ -378,7 +378,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.P' hides inherited member.");
+                "'C.P' hides inherited member");
         }
 
         [Fact]
@@ -404,7 +404,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.P' hides inherited member.");
+                "'C.P' hides inherited member");
         }
 
         [Fact]
@@ -430,7 +430,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.F' hides inherited member.");
+                "'C.F' hides inherited member");
         }
 
         [Fact]
@@ -456,7 +456,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.F' hides inherited member.");
+                "'C.F' hides inherited member");
         }
 
         [Fact]
@@ -481,7 +481,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.Changed' hides inherited member.");
+                "'C.Changed' hides inherited member");
         }
 
         [Fact]
@@ -506,7 +506,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "'C.Changed' hides inherited member.");
+                "'C.Changed' hides inherited member");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

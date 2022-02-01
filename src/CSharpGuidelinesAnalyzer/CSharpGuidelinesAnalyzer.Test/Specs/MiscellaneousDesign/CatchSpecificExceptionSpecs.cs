@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Catch a specific exception instead of Exception, SystemException or ApplicationException.");
+                "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         [Fact]
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Catch a specific exception instead of Exception, SystemException or ApplicationException.");
+                "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         [Fact]
@@ -213,7 +213,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Catch a specific exception instead of Exception, SystemException or ApplicationException.");
+                "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         [Fact]
@@ -262,7 +262,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Catch a specific exception instead of Exception, SystemException or ApplicationException.");
+                "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

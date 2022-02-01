@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Class 'C5' contains one or more digits in its name.");
+                "Class 'C5' contains one or more digits in its name");
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Struct 'S22' contains one or more digits in its name.");
+                "Struct 'S22' contains one or more digits in its name");
         }
 
         [Fact]
@@ -106,7 +106,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Enum 'E3' contains one or more digits in its name.");
+                "Enum 'E3' contains one or more digits in its name");
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Interface 'I9' contains one or more digits in its name.");
+                "Interface 'I9' contains one or more digits in its name");
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D5' contains one or more digits in its name.");
+                "Delegate 'D5' contains one or more digits in its name");
         }
 
         [Fact]
@@ -197,7 +197,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'f3' contains one or more digits in its name.");
+                "Field 'f3' contains one or more digits in its name");
         }
 
         [Fact]
@@ -226,7 +226,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'P6' contains one or more digits in its name.");
+                "Property 'P6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -273,9 +273,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'B1' contains one or more digits in its name.",
-                "Property 'A1' contains one or more digits in its name.",
-                "Property 'B1' contains one or more digits in its name.");
+                "Field 'B1' contains one or more digits in its name",
+                "Property 'A1' contains one or more digits in its name",
+                "Property 'B1' contains one or more digits in its name");
         }
 
         [Fact]
@@ -298,7 +298,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'P6' contains one or more digits in its name.");
+                "Property 'P6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -321,7 +321,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'P6' contains one or more digits in its name.");
+                "Property 'P6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -350,7 +350,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'Value9Changed' contains one or more digits in its name.");
+                "Event 'Value9Changed' contains one or more digits in its name");
         }
 
         [Fact]
@@ -383,7 +383,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M6' contains one or more digits in its name.");
+                "Method 'M6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -408,7 +408,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M6' contains one or more digits in its name.");
+                "Method 'M6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -433,7 +433,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M6' contains one or more digits in its name.");
+                "Method 'M6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -472,7 +472,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L6' contains one or more digits in its name.");
+                "Local function 'L6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -505,7 +505,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p1' contains one or more digits in its name.");
+                "Parameter 'p1' contains one or more digits in its name");
         }
 
         [Fact]
@@ -540,7 +540,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p1' contains one or more digits in its name.");
+                "Parameter 'p1' contains one or more digits in its name");
         }
 
         [Fact]
@@ -579,7 +579,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p1' contains one or more digits in its name.");
+                "Parameter 'p1' contains one or more digits in its name");
         }
 
         [Fact]
@@ -604,7 +604,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p7' contains one or more digits in its name.");
+                "Parameter 'p7' contains one or more digits in its name");
         }
 
         [Fact]
@@ -629,7 +629,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p7' contains one or more digits in its name.");
+                "Parameter 'p7' contains one or more digits in its name");
         }
 
         [Fact]
@@ -664,7 +664,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'str12' contains one or more digits in its name.");
+                "Variable 'str12' contains one or more digits in its name");
         }
 
         [Fact]
@@ -715,12 +715,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Range variable 'a1' contains one or more digits in its name.",
-                "Range variable 'b2' contains one or more digits in its name.",
-                "Range variable 'c3' contains one or more digits in its name.",
-                "Range variable 'd4' contains one or more digits in its name.",
-                "Range variable 'e5' contains one or more digits in its name.",
-                "Range variable 'f6' contains one or more digits in its name.");
+                "Range variable 'a1' contains one or more digits in its name",
+                "Range variable 'b2' contains one or more digits in its name",
+                "Range variable 'c3' contains one or more digits in its name",
+                "Range variable 'd4' contains one or more digits in its name",
+                "Range variable 'e5' contains one or more digits in its name",
+                "Range variable 'f6' contains one or more digits in its name");
         }
 
         [Fact]
@@ -772,20 +772,20 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Tuple element 'p1' contains one or more digits in its name.",
-                "Tuple element 'p2' contains one or more digits in its name.",
-                "Tuple element 'e1' contains one or more digits in its name.",
-                "Tuple element 'e2' contains one or more digits in its name.",
-                "Tuple element 'e3' contains one or more digits in its name.",
-                "Tuple element 'e4' contains one or more digits in its name.",
-                "Tuple element 'e5' contains one or more digits in its name.",
-                "Tuple element 'e6' contains one or more digits in its name.",
-                "Variable 'e7' contains one or more digits in its name.",
-                "Variable 'e8' contains one or more digits in its name.",
-                "Tuple element 'l1' contains one or more digits in its name.",
-                "Tuple element 'l2' contains one or more digits in its name.",
-                "Tuple element 'm1' contains one or more digits in its name.",
-                "Tuple element 'm2' contains one or more digits in its name.");
+                "Tuple element 'p1' contains one or more digits in its name",
+                "Tuple element 'p2' contains one or more digits in its name",
+                "Tuple element 'e1' contains one or more digits in its name",
+                "Tuple element 'e2' contains one or more digits in its name",
+                "Tuple element 'e3' contains one or more digits in its name",
+                "Tuple element 'e4' contains one or more digits in its name",
+                "Tuple element 'e5' contains one or more digits in its name",
+                "Tuple element 'e6' contains one or more digits in its name",
+                "Variable 'e7' contains one or more digits in its name",
+                "Variable 'e8' contains one or more digits in its name",
+                "Tuple element 'l1' contains one or more digits in its name",
+                "Tuple element 'l2' contains one or more digits in its name",
+                "Tuple element 'm1' contains one or more digits in its name",
+                "Tuple element 'm2' contains one or more digits in its name");
         }
 
         [Fact]
@@ -810,10 +810,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'A1' contains one or more digits in its name.",
-                "Property 'B1' contains one or more digits in its name.",
-                "Tuple element 'A1' contains one or more digits in its name.",
-                "Tuple element 'B1' contains one or more digits in its name.");
+                "Property 'A1' contains one or more digits in its name",
+                "Property 'B1' contains one or more digits in its name",
+                "Tuple element 'A1' contains one or more digits in its name",
+                "Tuple element 'B1' contains one or more digits in its name");
         }
 
         [Fact]
@@ -974,7 +974,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'ConvertDigit9IntoInt32' contains one or more digits in its name.");
+                "Method 'ConvertDigit9IntoInt32' contains one or more digits in its name");
         }
 
         [Fact]
@@ -991,7 +991,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'GetMatrix3Demo' contains one or more digits in its name.");
+                "Method 'GetMatrix3Demo' contains one or more digits in its name");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "If-else-if construct should end with an unconditional else clause";
-        private const string MessageFormat = "If-else-if construct should end with an unconditional else clause.";
+        private const string MessageFormat = "If-else-if construct should end with an unconditional else clause";
         private const string Description = "Finish every if-else-if statement with an else clause.";
 
         public const string DiagnosticId = "AV1537";

@@ -11,11 +11,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
     {
-        private const string Title = "File should be named in Pascal casing without underscores or generic arity.";
+        private const string Title = "File should be named in Pascal casing without underscores or generic arity";
 
-        private const string CasingMessageFormat = "File '{0}' should be named using Pascal casing.";
-        private const string UnderscoreMessageFormat = "File '{0}' should be named without underscores.";
-        private const string ArityMessageFormat = "File '{0}' should be named without generic arity.";
+        private const string CasingMessageFormat = "File '{0}' should be named using Pascal casing";
+        private const string UnderscoreMessageFormat = "File '{0}' should be named without underscores";
+        private const string ArityMessageFormat = "File '{0}' should be named without generic arity";
 
         private const string Description = "Name a source file to the type it contains.";
 

@@ -62,7 +62,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of extension method container class 'Container' should end with 'Extensions'.");
+                "Name of extension method container class 'Container' should end with 'Extensions'");
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of extension method container class 'Container' should end with 'Extensions'.");
+                "Name of extension method container class 'Container' should end with 'Extensions'");
         }
 
         [Fact]

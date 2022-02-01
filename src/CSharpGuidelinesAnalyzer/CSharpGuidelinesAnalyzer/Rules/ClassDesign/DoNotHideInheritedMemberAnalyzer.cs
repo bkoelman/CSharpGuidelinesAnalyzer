@@ -11,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     public sealed class DoNotHideInheritedMemberAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Member hides inherited member";
-        private const string MessageFormat = "'{0}' hides inherited member.";
+        private const string MessageFormat = "'{0}' hides inherited member";
         private const string Description = "Don't suppress compiler warnings using the new keyword.";
 
         public const string DiagnosticId = "AV1010";

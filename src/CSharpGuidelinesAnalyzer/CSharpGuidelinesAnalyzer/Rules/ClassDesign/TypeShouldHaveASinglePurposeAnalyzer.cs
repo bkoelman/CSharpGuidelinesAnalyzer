@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
     public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Type name contains the word 'and', which suggests it has multiple purposes";
-        private const string MessageFormat = "Type '{0}' contains the word 'and', which suggests it has multiple purposes.";
+        private const string MessageFormat = "Type '{0}' contains the word 'and', which suggests it has multiple purposes";
         private const string Description = "A class or interface should have a single purpose.";
         private const string BlacklistWord = "and";
 

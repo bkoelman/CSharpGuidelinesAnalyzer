@@ -30,7 +30,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'GetEmployee' contains the name of its containing type 'Employee'.");
+                "Method 'GetEmployee' contains the name of its containing type 'Employee'");
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'N.M.IEmployee.GetEmployee' contains the name of its containing type 'Employee'.");
+                "Method 'N.M.IEmployee.GetEmployee' contains the name of its containing type 'Employee'");
         }
 
         [Fact]
@@ -140,7 +140,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'IsCustomerActive' contains the name of its containing type 'Customer'.");
+                "Field 'IsCustomerActive' contains the name of its containing type 'Customer'");
         }
 
         [Fact]
@@ -175,7 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'IsOrderDeleted' contains the name of its containing type 'Order'.");
+                "Property 'IsOrderDeleted' contains the name of its containing type 'Order'");
         }
 
         [Fact]
@@ -193,7 +193,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'IsOrderDeleted' contains the name of its containing type 'Order'.");
+                "Property 'IsOrderDeleted' contains the name of its containing type 'Order'");
         }
 
         [Fact]
@@ -238,7 +238,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'RegistrationCompleted' contains the name of its containing type 'Registration'.");
+                "Event 'RegistrationCompleted' contains the name of its containing type 'Registration'");
         }
 
         [Fact]
@@ -284,7 +284,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'WindowStateVisible' contains the name of its containing type 'WindowState'.");
+                "Field 'WindowStateVisible' contains the name of its containing type 'WindowState'");
         }
 
         [Fact]

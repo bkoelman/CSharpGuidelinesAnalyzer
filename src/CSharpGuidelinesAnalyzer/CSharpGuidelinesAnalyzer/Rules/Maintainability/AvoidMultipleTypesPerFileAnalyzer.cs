@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "File contains multiple types";
-        private const string MessageFormat = "File '{0}' contains additional type '{1}'.";
+        private const string MessageFormat = "File '{0}' contains additional type '{1}'";
         private const string Description = "Limit the contents of a source code file to one type.";
 
         public const string DiagnosticId = "AV1507";

@@ -14,9 +14,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Evaluate LINQ query before returning it";
-        private const string OperationMessageFormat = "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution.";
-        private const string QueryMessageFormat = "{0} '{1}' returns the result of a query, which uses deferred execution.";
-        private const string QueryableMessageFormat = "{0} '{1}' returns an IQueryable, which uses deferred execution.";
+        private const string OperationMessageFormat = "{0} '{1}' returns the result of a call to '{2}', which uses deferred execution";
+        private const string QueryMessageFormat = "{0} '{1}' returns the result of a query, which uses deferred execution";
+        private const string QueryableMessageFormat = "{0} '{1}' returns an IQueryable, which uses deferred execution";
         private const string Description = "Evaluate the result of a LINQ expression before returning it.";
         private const string QueryOperationName = "<*>Query";
         private const string QueryableOperationName = "<*>Queryable";

@@ -17,9 +17,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const int DefaultMaxParameterCount = 3;
 
         private const string Title = "Signature contains too many parameters";
-        private const string ParameterCountMessageFormat = "{0} contains {1} parameters, which exceeds the maximum of {2} parameters.";
-        private const string TupleParameterMessageFormat = "{0} contains tuple parameter '{1}'.";
-        private const string TupleReturnMessageFormat = "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements.";
+        private const string ParameterCountMessageFormat = "{0} contains {1} parameters, which exceeds the maximum of {2} parameters";
+        private const string TupleParameterMessageFormat = "{0} contains tuple parameter '{1}'";
+        private const string TupleReturnMessageFormat = "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements";
         private const string Description = "Don't declare signatures with more than a predefined number of parameters.";
 
         public const string DiagnosticId = "AV1561";

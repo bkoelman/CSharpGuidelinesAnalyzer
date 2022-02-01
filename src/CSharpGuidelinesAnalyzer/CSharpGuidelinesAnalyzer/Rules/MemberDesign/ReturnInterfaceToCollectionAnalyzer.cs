@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
     public sealed class ReturnInterfaceToCollectionAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Return type in method signature should be a collection interface instead of a concrete type";
-        private const string MessageFormat = "Return type in signature for '{0}' should be a collection interface instead of a concrete type.";
+        private const string MessageFormat = "Return type in signature for '{0}' should be a collection interface instead of a concrete type";
         private const string Description = "Return an IEnumerable<T> or ICollection<T> instead of a concrete collection class.";
 
         public const string DiagnosticId = "AV1130";

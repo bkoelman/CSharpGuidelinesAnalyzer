@@ -15,9 +15,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Method overload should call another overload";
-        private const string InvokeMessageFormat = "Overloaded method '{0}' should call another overload.";
-        private const string MakeVirtualMessageFormat = "Method overload with the most parameters should be virtual.";
-        private const string OrderMessageFormat = "Parameter order in '{0}' does not match with the parameter order of the longest overload.";
+        private const string InvokeMessageFormat = "Overloaded method '{0}' should call another overload";
+        private const string MakeVirtualMessageFormat = "Method overload with the most parameters should be virtual";
+        private const string OrderMessageFormat = "Parameter order in '{0}' does not match with the parameter order of the longest overload";
         private const string Description = "Call the more overloaded method from other overloads.";
 
         public const string DiagnosticId = "AV1551";

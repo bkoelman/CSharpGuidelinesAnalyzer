@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Work-tracking TODO comment should be removed";
-        private const string MessageFormat = "Work-tracking TODO comment should be removed.";
+        private const string MessageFormat = "Work-tracking TODO comment should be removed";
         private const string Description = "Don't use comments for tracking work to be done later.";
         private const string TodoCommentToken = "TODO";
 

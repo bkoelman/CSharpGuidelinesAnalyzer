@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop variable 'i' should not be written to in loop body.");
+                "Loop variable 'i' should not be written to in loop body");
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop variable 'i' should not be written to in loop body.");
+                "Loop variable 'i' should not be written to in loop body");
         }
 
         [Fact]
@@ -132,8 +132,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Loop variable 'i' should not be written to in loop body.",
-                "Loop variable 'j' should not be written to in loop body.");
+                "Loop variable 'i' should not be written to in loop body",
+                "Loop variable 'j' should not be written to in loop body");
         }
 
         [Fact]

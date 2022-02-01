@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Simple query should be replaced by extension method call";
-        private const string MessageFormat = "Simple query should be replaced by extension method call.";
+        private const string MessageFormat = "Simple query should be replaced by extension method call";
         private const string Description = "Avoid LINQ query syntax for simple expressions.";
 
         public const string DiagnosticId = "AV2220";

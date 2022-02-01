@@ -28,7 +28,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -294,7 +294,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -338,7 +338,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]
@@ -424,7 +424,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Simple query should be replaced by extension method call.");
+                "Simple query should be replaced by extension method call");
         }
 
         [Fact]

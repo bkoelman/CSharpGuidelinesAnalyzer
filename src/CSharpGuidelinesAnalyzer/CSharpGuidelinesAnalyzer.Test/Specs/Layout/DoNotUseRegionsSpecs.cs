@@ -47,8 +47,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Region should be removed.",
-                "Region should be removed.");
+                "Region should be removed",
+                "Region should be removed");
         }
 
         [Fact]
@@ -91,11 +91,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Region should be removed.",
-                "Region should be removed.",
-                "Region should be removed.",
-                "Region should be removed.",
-                "Region should be removed.");
+                "Region should be removed",
+                "Region should be removed",
+                "Region should be removed",
+                "Region should be removed",
+                "Region should be removed");
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Region should be removed.");
+                "Region should be removed");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

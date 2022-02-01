@@ -13,9 +13,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     {
         private const string SenderTitle = "'sender' argument is null in non-static event invocation";
-        private const string SenderMessageFormat = "'sender' argument is null in non-static event invocation.";
+        private const string SenderMessageFormat = "'sender' argument is null in non-static event invocation";
         private const string ArgsTitle = "Argument for second parameter is null in event invocation";
-        private const string ArgsMessageFormat = "'{0}' argument is null in event invocation.";
+        private const string ArgsMessageFormat = "'{0}' argument is null in event invocation";
         private const string Description = "Don't pass null as the sender argument when raising an event.";
 
         public const string DiagnosticId = "AV1235";

@@ -15,9 +15,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Missing XML comment for internally visible type, member or parameter";
-        private const string MissingTypeOrMemberMessageFormat = "Missing XML comment for internally visible type or member '{0}'.";
-        private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'.";
-        private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature.";
+        private const string MissingTypeOrMemberMessageFormat = "Missing XML comment for internally visible type or member '{0}'";
+        private const string MissingParameterMessageFormat = "Missing XML comment for internally visible parameter '{0}'";
+        private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature";
         private const string Description = "Document all public, protected and internal types and members.";
 
         public const string DiagnosticId = "AV2305";

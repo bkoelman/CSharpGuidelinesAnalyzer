@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "An expression is implicitly converted to dynamic";
-        private const string MessageFormat = "An expression of type '{0}' is implicitly converted to dynamic.";
+        private const string MessageFormat = "An expression of type '{0}' is implicitly converted to dynamic";
         private const string Description = "Only use the dynamic keyword when talking to a dynamic object.";
 
         public const string DiagnosticId = "AV2230";

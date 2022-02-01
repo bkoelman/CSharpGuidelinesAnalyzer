@@ -13,8 +13,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
     public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Catch a specific exception instead of Exception, SystemException or ApplicationException";
-        private const string MessageFormat = "Catch a specific exception instead of Exception, SystemException or ApplicationException.";
-        private const string Description = "Don't swallow errors by catching generic exceptions";
+        private const string MessageFormat = "Catch a specific exception instead of Exception, SystemException or ApplicationException";
+        private const string Description = "Don't swallow errors by catching generic exceptions.";
 
         public const string DiagnosticId = "AV1210";
 

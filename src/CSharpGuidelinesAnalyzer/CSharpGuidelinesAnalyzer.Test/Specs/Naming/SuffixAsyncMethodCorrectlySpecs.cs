@@ -66,7 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of async method 'C.Some()' should end with Async or TaskAsync.");
+                "Name of async method 'C.Some()' should end with Async or TaskAsync");
         }
 
         [Fact]
@@ -148,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Name of async local function 'Some()' should end with Async or TaskAsync.");
+                "Name of async local function 'Some()' should end with Async or TaskAsync");
         }
 
         [Fact]

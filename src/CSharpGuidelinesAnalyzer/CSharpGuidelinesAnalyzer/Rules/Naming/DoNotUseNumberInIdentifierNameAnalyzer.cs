@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Identifier contains one or more digits in its name";
-        private const string MessageFormat = "{0} '{1}' contains one or more digits in its name.";
+        private const string MessageFormat = "{0} '{1}' contains one or more digits in its name";
         private const string Description = "Don't include numbers in variables, parameters and type members.";
 
         public const string DiagnosticId = "AV1704";
