@@ -20,7 +20,7 @@ This analyzer reports when a member has the `new` modifier in its signature.
 This analyzer reports when a member has the word "And" in its name.
 
 ### [AV1130](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1100_MemberDesignGuidelines.md#av1130): Return an `IEnumerable<T>` or `ICollection<T>` instead of a concrete collection class ![](/images/warn.png "severity: warning")
-This analyzer reports when a method return type is a `class` or `struct` that implements `IEnumerable` and is not an immutable collection.
+This analyzer reports when the return type of a public or internal method implements `IEnumerable` and is changeable (for example: `List<string>` or `ICollection<int>`). Instead, return `IEnumerable<T>`, `IReadOnlyCollection<T>`, `IReadOnlyList<T>`, `IReadOnlySet<T>`, `IReadOnlyDictionary<TKey, TValue>` or an immutable collection.
 
 ### [AV1135](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1100_MemberDesignGuidelines.md#av1135): Properties, arguments and return values representing strings or collections should never be `null` ![](/images/warn.png "severity: warning")
 This analyzer reports when `null` is returned from a method, local function, lambda expression or property getter which has a return type of string, collection or task.

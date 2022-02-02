@@ -102,6 +102,54 @@ namespace CSharpGuidelinesAnalyzer
         }
 
         [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericIEnumerableT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericIAsyncEnumerableT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.IAsyncEnumerable`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericIReadOnlyCollectionT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlyCollection`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericIReadOnlyListT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlyList`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericIReadOnlySetT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlySet`1");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlyDictionary`2");
+        }
+
+        [CanBeNull]
         public static INamedTypeSymbol SystemRuntimeRemotingObjectHandle([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
