@@ -487,7 +487,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override Location VisitNameOf([NotNull] INameOfOperation operation, [CanBeNull] object argument)
             {
-                if (operation.Syntax is InvocationExpressionSyntax invocationSyntax && invocationSyntax.Expression is IdentifierNameSyntax expressionSyntax)
+                if (operation.Syntax is InvocationExpressionSyntax { Expression: IdentifierNameSyntax expressionSyntax })
                 {
                     return expressionSyntax.GetLocation();
                 }

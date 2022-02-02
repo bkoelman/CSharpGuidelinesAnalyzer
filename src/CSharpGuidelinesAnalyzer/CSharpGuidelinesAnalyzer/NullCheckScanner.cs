@@ -190,7 +190,7 @@ namespace CSharpGuidelinesAnalyzer
 
             IOperation currentOperation = operation.Parent;
 
-            while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
+            while (currentOperation is IUnaryOperation { OperatorKind: UnaryOperatorKind.Not })
             {
                 operand = operand.Toggle();
                 currentOperation = currentOperation.Parent;
@@ -319,7 +319,7 @@ namespace CSharpGuidelinesAnalyzer
             }
         }
 
-        private struct ArgumentsInfo
+        private readonly struct ArgumentsInfo
         {
             [NotNull]
             public IOperation LeftArgument { get; }

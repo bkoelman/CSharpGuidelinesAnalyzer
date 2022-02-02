@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer
     /// <typeparam name="TTarget">
     /// The target for analysis. Typically a syntax node, symbol or operation.
     /// </typeparam>
-    internal struct BaseAnalysisContext<TTarget>
+    internal readonly struct BaseAnalysisContext<TTarget>
     {
         [NotNull]
         private readonly Action<Diagnostic> reportDiagnosticCallback;

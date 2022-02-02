@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer
 {
-    public struct WordToken : IEquatable<WordToken>
+    public readonly struct WordToken : IEquatable<WordToken>
     {
         [NotNull]
         public string Text { get; }

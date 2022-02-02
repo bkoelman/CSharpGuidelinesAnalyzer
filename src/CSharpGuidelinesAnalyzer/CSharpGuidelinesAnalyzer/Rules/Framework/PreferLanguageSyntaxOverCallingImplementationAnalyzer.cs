@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             NullCheckScanResult? scanResult = scanner.ScanPropertyReference(propertyReference);
 
-            if (scanResult != null && scanResult.Value.Method == NullCheckMethod.NullableHasValueMethod)
+            if (scanResult is { Method: NullCheckMethod.NullableHasValueMethod })
             {
                 if (propertyReference.Parent is IBinaryOperation binaryOperator && DoReportForNullableComparison(binaryOperator, scanner))
                 {
@@ -159,7 +159,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             var visitor = new NullCheckVisitor(scanner);
             visitor.Visit(targetOperation);
 
-            return visitor.ScanResult != null && visitor.ScanResult.Value.Operand == NullCheckOperand.IsNotNull ? visitor.ScanResult.Value.Target : null;
+            return visitor.ScanResult is { Operand: NullCheckOperand.IsNotNull } ? visitor.ScanResult.Value.Target : null;
         }
 
         [NotNull]
@@ -167,7 +167,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             IOperation currentOperation = operation;
 
-            while (currentOperation is IUnaryOperation unaryOperation && unaryOperation.OperatorKind == UnaryOperatorKind.Not)
+            while (currentOperation is IUnaryOperation { OperatorKind: UnaryOperatorKind.Not } unaryOperation)
             {
                 currentOperation = unaryOperation.Operand;
             }

@@ -51,7 +51,6 @@ namespace CSharpGuidelinesAnalyzer
 
             string ruleNumber = ruleId.Substring(2);
             return $"https://github.com/dennisdoomen/CSharpGuidelines/blob/{CommitHash}/_rules/{ruleNumber}.md";
-
         }
     }
 }

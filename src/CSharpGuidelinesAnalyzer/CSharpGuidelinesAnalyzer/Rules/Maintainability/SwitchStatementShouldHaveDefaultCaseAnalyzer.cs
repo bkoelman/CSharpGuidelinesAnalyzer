@@ -137,7 +137,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [CanBeNull]
         private static bool? IsSwitchExhaustiveForEnumerationTypes([NotNull] IdentifierInfo identifierInfo, [NotNull] SwitchAnalysisContext analysisContext)
         {
-            bool isEnumeration = identifierInfo.Type.BaseType != null && identifierInfo.Type.BaseType.SpecialType == SpecialType.System_Enum;
+            bool isEnumeration = identifierInfo.Type.BaseType is { SpecialType: SpecialType.System_Enum };
 
             bool isNullableEnumeration = identifierInfo.Type.IsNullableEnumeration();
 

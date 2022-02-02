@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
         private static void AnalyzeMember(SymbolAnalysisContext context)
         {
-            if (context.Symbol is INamedTypeSymbol typeSymbol && typeSymbol.ContainingType == null)
+            if (context.Symbol is INamedTypeSymbol { ContainingType: null })
             {
                 return;
             }

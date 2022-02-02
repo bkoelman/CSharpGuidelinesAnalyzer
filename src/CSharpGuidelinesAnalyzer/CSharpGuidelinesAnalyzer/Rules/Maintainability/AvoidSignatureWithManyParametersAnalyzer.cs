@@ -310,7 +310,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private struct ParameterCountInfo<TTarget>
+        private readonly struct ParameterCountInfo<TTarget>
         {
             public BaseAnalysisContext<TTarget> Context { get; }
 

@@ -95,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
                         syntaxTree
                     });
 
-                    var parameters = new object[]
+                    object[] parameters =
                     {
                         key,
                         null

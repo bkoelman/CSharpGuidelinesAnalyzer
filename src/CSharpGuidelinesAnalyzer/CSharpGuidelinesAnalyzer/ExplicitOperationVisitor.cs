@@ -11,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer
     {
         public override void Visit([CanBeNull] IOperation operation)
         {
-            if (operation != null && !operation.IsImplicit)
+            if (operation is { IsImplicit: false })
             {
                 operation.Accept(this);
             }
@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer
         [CanBeNull]
         public override TResult Visit([CanBeNull] IOperation operation, [CanBeNull] TArgument argument)
         {
-            if (operation != null && !operation.IsImplicit)
+            if (operation is { IsImplicit: false })
             {
                 return operation.Accept(this, argument);
             }

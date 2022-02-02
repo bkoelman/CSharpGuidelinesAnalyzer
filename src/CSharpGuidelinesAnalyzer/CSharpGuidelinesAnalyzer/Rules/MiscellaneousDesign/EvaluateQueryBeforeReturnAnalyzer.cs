@@ -91,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static bool IsInMethodThatReturnsEnumerable([NotNull] ISymbol owningSymbol, [NotNull] SequenceTypeInfo sequenceTypeInfo)
         {
-            return owningSymbol is IMethodSymbol method && !method.ReturnsVoid && sequenceTypeInfo.IsEnumerable(method.ReturnType);
+            return owningSymbol is IMethodSymbol { ReturnsVoid: false } method && sequenceTypeInfo.IsEnumerable(method.ReturnType);
         }
 
         private static void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements, OperationBlockAnalysisContext context)

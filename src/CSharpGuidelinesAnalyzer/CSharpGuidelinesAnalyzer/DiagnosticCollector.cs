@@ -42,11 +42,7 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNull(diagnostic, nameof(diagnostic));
 
-            if (diagnostics == null)
-            {
-                diagnostics = new List<Diagnostic>();
-            }
-
+            diagnostics ??= new List<Diagnostic>();
             diagnostics.Add(diagnostic);
         }
 

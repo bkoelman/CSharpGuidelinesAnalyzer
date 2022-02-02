@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         private static bool IsReportAtAlternateLocation([NotNull] IOperation operation)
         {
-            return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax methodSyntax && methodSyntax.Identifier.ValueText == "ReportAtAlternateLocation";
+            return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax { Identifier: { ValueText: "ReportAtAlternateLocation" } };
         }
 
         private static void AnalyzeLocationForOperation(OperationAnalysisContext context, DoWhileLoopLookupKeywordStrategy doWhileStrategy,

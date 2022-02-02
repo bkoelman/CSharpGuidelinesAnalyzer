@@ -283,7 +283,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         public static bool IsDeconstructor([CanBeNull] this ISymbol symbol)
         {
-            return symbol is IMethodSymbol method && method.Name == "Deconstruct";
+            return symbol is IMethodSymbol { Name: "Deconstruct" };
         }
 
         [NotNull]

@@ -87,7 +87,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private static bool ProjectsIntoAnonymousType([NotNull] SelectOrGroupClauseSyntax selectOrGroupClause)
         {
-            return selectOrGroupClause is SelectClauseSyntax selectClause && selectClause.Expression is AnonymousObjectCreationExpressionSyntax;
+            return selectOrGroupClause is SelectClauseSyntax { Expression: AnonymousObjectCreationExpressionSyntax _ };
         }
 
         private static int GetComplexityForClauses([NotNull] QueryExpressionSyntax queryExpression)

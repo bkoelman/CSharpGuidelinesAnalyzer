@@ -75,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             if (parameter.Name == "disposing")
             {
-                if (parameter.ContainingSymbol is IMethodSymbol containingMethod && containingMethod.Name == "Dispose")
+                if (parameter.ContainingSymbol is IMethodSymbol { Name: "Dispose" } containingMethod)
                 {
                     if (containingMethod.IsVirtual && containingMethod.DeclaredAccessibility == Accessibility.Protected)
                     {

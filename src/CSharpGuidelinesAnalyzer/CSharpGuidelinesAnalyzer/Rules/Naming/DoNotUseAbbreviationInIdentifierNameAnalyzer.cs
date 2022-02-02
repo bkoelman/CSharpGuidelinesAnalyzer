@@ -225,7 +225,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 ? declarationExpression.Expression as ILocalReferenceOperation
                 : elementOperation as ILocalReferenceOperation;
 
-            return localReference != null && localReference.IsDeclaration ? localReference.Local : null;
+            return localReference is { IsDeclaration: true } ? localReference.Local : null;
         }
 
         private static void AnalyzeAnonymousObjectCreation(OperationAnalysisContext context)
