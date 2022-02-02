@@ -54,8 +54,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Replace call to Nullable<T>.HasValue with null check.",
-                "Replace call to Nullable<T>.HasValue with null check.");
+                "Replace call to Nullable<T>.HasValue with null check",
+                "Replace call to Nullable<T>.HasValue with null check");
         }
 
         [Fact]
@@ -180,13 +180,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.");
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison");
         }
 
         [Fact]
@@ -228,12 +228,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.");
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison");
         }
 
         [Fact]
@@ -281,12 +281,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.");
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison");
         }
 
         [Fact]
@@ -335,12 +335,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.");
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison");
         }
 
         [Fact]
@@ -460,14 +460,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.",
-                "Remove null check in numeric comparison.");
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison",
+                "Remove null check in numeric comparison");
         }
 
         [Fact]

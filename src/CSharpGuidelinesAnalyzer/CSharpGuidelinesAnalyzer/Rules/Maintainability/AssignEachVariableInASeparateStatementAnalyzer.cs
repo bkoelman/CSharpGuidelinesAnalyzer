@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Assign each property, field, parameter or variable in a separate statement";
-        private const string MessageFormat = "{0} are assigned in a single statement.";
+        private const string MessageFormat = "{0} are assigned in a single statement";
         private const string Description = "Assign each variable in a separate statement.";
 
         public const string DiagnosticId = "AV1522";

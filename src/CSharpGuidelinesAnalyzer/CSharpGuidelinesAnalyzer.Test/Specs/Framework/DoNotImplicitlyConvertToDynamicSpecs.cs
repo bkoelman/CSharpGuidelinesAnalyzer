@@ -187,13 +187,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "An expression of type 'String' is implicitly converted to dynamic.",
-                "An expression of type 'Decimal' is implicitly converted to dynamic.",
-                "An expression of type 'Int32' is implicitly converted to dynamic.",
-                "An expression of type 'Char' is implicitly converted to dynamic.",
-                "An expression of type 'Double' is implicitly converted to dynamic.",
-                "An expression of type 'Byte' is implicitly converted to dynamic.",
-                "An expression of type 'Single' is implicitly converted to dynamic.");
+                "An expression of type 'String' is implicitly converted to dynamic",
+                "An expression of type 'Decimal' is implicitly converted to dynamic",
+                "An expression of type 'Int32' is implicitly converted to dynamic",
+                "An expression of type 'Char' is implicitly converted to dynamic",
+                "An expression of type 'Double' is implicitly converted to dynamic",
+                "An expression of type 'Byte' is implicitly converted to dynamic",
+                "An expression of type 'Single' is implicitly converted to dynamic");
         }
 
         [Fact]
@@ -290,14 +290,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "An expression of type 'String' is implicitly converted to dynamic.",
-                "An expression of type 'Decimal' is implicitly converted to dynamic.",
-                "An expression of type 'Int32' is implicitly converted to dynamic.",
-                "An expression of type 'Char' is implicitly converted to dynamic.",
-                "An expression of type 'Double' is implicitly converted to dynamic.",
-                "An expression of type 'Byte' is implicitly converted to dynamic.",
-                "An expression of type 'DateTime' is implicitly converted to dynamic.",
-                "An expression of type '(anonymous)' is implicitly converted to dynamic.");
+                "An expression of type 'String' is implicitly converted to dynamic",
+                "An expression of type 'Decimal' is implicitly converted to dynamic",
+                "An expression of type 'Int32' is implicitly converted to dynamic",
+                "An expression of type 'Char' is implicitly converted to dynamic",
+                "An expression of type 'Double' is implicitly converted to dynamic",
+                "An expression of type 'Byte' is implicitly converted to dynamic",
+                "An expression of type 'DateTime' is implicitly converted to dynamic",
+                "An expression of type '(anonymous)' is implicitly converted to dynamic");
         }
 
         [Fact]

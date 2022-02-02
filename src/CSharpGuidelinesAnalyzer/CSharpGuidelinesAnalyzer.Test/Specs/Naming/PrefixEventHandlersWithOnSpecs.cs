@@ -210,7 +210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'HandleTopLeftValueChanged' that handles event 'ValueChanged' should be renamed to 'TopLeftOnValueChanged'.");
+                "Method 'HandleTopLeftValueChanged' that handles event 'ValueChanged' should be renamed to 'TopLeftOnValueChanged'");
         }
 
         [Fact]
@@ -320,7 +320,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'.");
+                "Method 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'");
         }
 
         [Fact]
@@ -379,7 +379,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'.");
+                "Local function 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

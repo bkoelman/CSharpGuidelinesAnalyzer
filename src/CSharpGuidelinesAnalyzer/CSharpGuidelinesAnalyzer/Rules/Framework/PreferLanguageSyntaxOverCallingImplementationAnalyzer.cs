@@ -14,8 +14,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
     public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Prefer language syntax over explicit calls to underlying implementations";
-        private const string NullableHasValueMessageFormat = "Replace call to Nullable<T>.HasValue with null check.";
-        private const string NullableComparisonMessageFormat = "Remove null check in numeric comparison.";
+        private const string NullableHasValueMessageFormat = "Replace call to Nullable<T>.HasValue with null check";
+        private const string NullableComparisonMessageFormat = "Remove null check in numeric comparison";
         private const string Description = "Prefer language syntax over explicit calls to underlying implementations.";
 
         public const string DiagnosticId = "AV2202";

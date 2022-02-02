@@ -31,7 +31,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Unused anonymous method parameter 'x' should be renamed to underscore(s).");
+                "Unused anonymous method parameter 'x' should be renamed to underscore(s)");
         }
 
         [Fact]
@@ -56,8 +56,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Unused anonymous method parameter 'x' should be renamed to underscore(s).",
-                "Unused anonymous method parameter 'y' should be renamed to underscore(s).");
+                "Unused anonymous method parameter 'x' should be renamed to underscore(s)",
+                "Unused anonymous method parameter 'y' should be renamed to underscore(s)");
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Unused lambda parameter 'x' should be renamed to underscore(s).");
+                "Unused lambda parameter 'x' should be renamed to underscore(s)");
         }
 
         [Fact]
@@ -152,8 +152,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Unused lambda parameter 'x' should be renamed to underscore(s).",
-                "Unused lambda parameter 'y' should be renamed to underscore(s).");
+                "Unused lambda parameter 'x' should be renamed to underscore(s)",
+                "Unused lambda parameter 'y' should be renamed to underscore(s)");
         }
 
         [Fact]

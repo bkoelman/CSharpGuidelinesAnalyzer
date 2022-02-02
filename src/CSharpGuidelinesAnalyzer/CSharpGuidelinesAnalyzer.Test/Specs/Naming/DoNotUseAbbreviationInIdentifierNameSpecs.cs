@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Class 'OkBtnContainer' should have a more descriptive name.");
+                "Class 'OkBtnContainer' should have a more descriptive name");
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Class 'C' should have a more descriptive name.");
+                "Class 'C' should have a more descriptive name");
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Struct 'OkBtnContainer' should have a more descriptive name.");
+                "Struct 'OkBtnContainer' should have a more descriptive name");
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Struct 'S' should have a more descriptive name.");
+                "Struct 'S' should have a more descriptive name");
         }
 
         [Fact]
@@ -140,7 +140,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Enum 'NextBtnAction' should have a more descriptive name.");
+                "Enum 'NextBtnAction' should have a more descriptive name");
         }
 
         [Fact]
@@ -157,7 +157,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Enum 'E' should have a more descriptive name.");
+                "Enum 'E' should have a more descriptive name");
         }
 
         [Fact]
@@ -190,7 +190,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Interface 'IOkBtnContainer' should have a more descriptive name.");
+                "Interface 'IOkBtnContainer' should have a more descriptive name");
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Interface 'I' should have a more descriptive name.");
+                "Interface 'I' should have a more descriptive name");
         }
 
         [Fact]
@@ -236,7 +236,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'BtnClick' should have a more descriptive name.");
+                "Delegate 'BtnClick' should have a more descriptive name");
         }
 
         [Fact]
@@ -251,7 +251,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' should have a more descriptive name.");
+                "Delegate 'D' should have a more descriptive name");
         }
 
         [Fact]
@@ -280,7 +280,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'txtData' should have a more descriptive name.");
+                "Field 'txtData' should have a more descriptive name");
         }
 
         [Fact]
@@ -295,7 +295,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'i' should have a more descriptive name.");
+                "Field 'i' should have a more descriptive name");
         }
 
         [Fact]
@@ -324,7 +324,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'ChkActive' should have a more descriptive name.");
+                "Property 'ChkActive' should have a more descriptive name");
         }
 
         [Fact]
@@ -339,7 +339,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'X' should have a more descriptive name.");
+                "Property 'X' should have a more descriptive name");
         }
 
         [Fact]
@@ -363,9 +363,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'B' should have a more descriptive name.",
-                "Property 'A' should have a more descriptive name.",
-                "Property 'B' should have a more descriptive name.");
+                "Field 'B' should have a more descriptive name",
+                "Property 'A' should have a more descriptive name",
+                "Property 'B' should have a more descriptive name");
         }
 
         [Fact]
@@ -388,7 +388,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'CmbItemCount' should have a more descriptive name.");
+                "Property 'CmbItemCount' should have a more descriptive name");
         }
 
         [Fact]
@@ -411,7 +411,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'X' should have a more descriptive name.");
+                "Property 'X' should have a more descriptive name");
         }
 
         [Fact]
@@ -434,7 +434,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'PrgValue' should have a more descriptive name.");
+                "Property 'PrgValue' should have a more descriptive name");
         }
 
         [Fact]
@@ -457,7 +457,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'P' should have a more descriptive name.");
+                "Property 'P' should have a more descriptive name");
         }
 
         [Fact]
@@ -486,7 +486,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'TxtChanged' should have a more descriptive name.");
+                "Event 'TxtChanged' should have a more descriptive name");
         }
 
         [Fact]
@@ -501,7 +501,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'E' should have a more descriptive name.");
+                "Event 'E' should have a more descriptive name");
         }
 
         [Fact]
@@ -534,7 +534,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'MakeRptVisible' should have a more descriptive name.");
+                "Method 'MakeRptVisible' should have a more descriptive name");
         }
 
         [Fact]
@@ -551,7 +551,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' should have a more descriptive name.");
+                "Method 'M' should have a more descriptive name");
         }
 
         [Fact]
@@ -576,7 +576,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'MakeRptVisible' should have a more descriptive name.");
+                "Method 'MakeRptVisible' should have a more descriptive name");
         }
 
         [Fact]
@@ -601,7 +601,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' should have a more descriptive name.");
+                "Method 'M' should have a more descriptive name");
         }
 
         [Fact]
@@ -626,7 +626,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'FldCount' should have a more descriptive name.");
+                "Method 'FldCount' should have a more descriptive name");
         }
 
         [Fact]
@@ -651,7 +651,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' should have a more descriptive name.");
+                "Method 'M' should have a more descriptive name");
         }
 
         [Fact]
@@ -690,7 +690,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'MakeRptVisible' should have a more descriptive name.");
+                "Local function 'MakeRptVisible' should have a more descriptive name");
         }
 
         [Fact]
@@ -710,7 +710,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' should have a more descriptive name.");
+                "Local function 'L' should have a more descriptive name");
         }
 
         [Fact]
@@ -743,7 +743,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'tvHistory' should have a more descriptive name.");
+                "Parameter 'tvHistory' should have a more descriptive name");
         }
 
         [Fact]
@@ -760,7 +760,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'x' should have a more descriptive name.");
+                "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
@@ -795,7 +795,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'chkAgree' should have a more descriptive name.");
+                "Parameter 'chkAgree' should have a more descriptive name");
         }
 
         [Fact]
@@ -813,7 +813,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'x' should have a more descriptive name.");
+                "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
@@ -838,7 +838,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'btnCount' should have a more descriptive name.");
+                "Parameter 'btnCount' should have a more descriptive name");
         }
 
         [Fact]
@@ -863,7 +863,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'x' should have a more descriptive name.");
+                "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
@@ -888,7 +888,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'btnCount' should have a more descriptive name.");
+                "Parameter 'btnCount' should have a more descriptive name");
         }
 
         [Fact]
@@ -913,7 +913,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'x' should have a more descriptive name.");
+                "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
@@ -952,7 +952,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'tvHistory' should have a more descriptive name.");
+                "Parameter 'tvHistory' should have a more descriptive name");
         }
 
         [Fact]
@@ -972,7 +972,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'x' should have a more descriptive name.");
+                "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
@@ -1007,7 +1007,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'str' should have a more descriptive name.");
+                "Variable 'str' should have a more descriptive name");
         }
 
         [Fact]
@@ -1025,7 +1025,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 's' should have a more descriptive name.");
+                "Variable 's' should have a more descriptive name");
         }
 
         [Fact]
@@ -1068,12 +1068,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Range variable 'a' should have a more descriptive name.",
-                "Range variable 'b' should have a more descriptive name.",
-                "Range variable 'c' should have a more descriptive name.",
-                "Range variable 'd' should have a more descriptive name.",
-                "Range variable 'e' should have a more descriptive name.",
-                "Range variable 'f' should have a more descriptive name.");
+                "Range variable 'a' should have a more descriptive name",
+                "Range variable 'b' should have a more descriptive name",
+                "Range variable 'c' should have a more descriptive name",
+                "Range variable 'd' should have a more descriptive name",
+                "Range variable 'e' should have a more descriptive name",
+                "Range variable 'f' should have a more descriptive name");
         }
 
         [Fact]
@@ -1103,20 +1103,20 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Tuple element 'p' should have a more descriptive name.",
-                "Tuple element 'q' should have a more descriptive name.",
-                "Tuple element 'a' should have a more descriptive name.",
-                "Tuple element 'b' should have a more descriptive name.",
-                "Tuple element 'c' should have a more descriptive name.",
-                "Tuple element 'd' should have a more descriptive name.",
-                "Tuple element 'e' should have a more descriptive name.",
-                "Tuple element 'f' should have a more descriptive name.",
-                "Variable 'g' should have a more descriptive name.",
-                "Variable 'h' should have a more descriptive name.",
-                "Tuple element 'l' should have a more descriptive name.",
-                "Tuple element 'm' should have a more descriptive name.",
-                "Tuple element 'x' should have a more descriptive name.",
-                "Tuple element 'y' should have a more descriptive name.");
+                "Tuple element 'p' should have a more descriptive name",
+                "Tuple element 'q' should have a more descriptive name",
+                "Tuple element 'a' should have a more descriptive name",
+                "Tuple element 'b' should have a more descriptive name",
+                "Tuple element 'c' should have a more descriptive name",
+                "Tuple element 'd' should have a more descriptive name",
+                "Tuple element 'e' should have a more descriptive name",
+                "Tuple element 'f' should have a more descriptive name",
+                "Variable 'g' should have a more descriptive name",
+                "Variable 'h' should have a more descriptive name",
+                "Tuple element 'l' should have a more descriptive name",
+                "Tuple element 'm' should have a more descriptive name",
+                "Tuple element 'x' should have a more descriptive name",
+                "Tuple element 'y' should have a more descriptive name");
         }
 
         [Fact]
@@ -1141,10 +1141,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'A' should have a more descriptive name.",
-                "Property 'B' should have a more descriptive name.",
-                "Tuple element 'A' should have a more descriptive name.",
-                "Tuple element 'B' should have a more descriptive name.");
+                "Property 'A' should have a more descriptive name",
+                "Property 'B' should have a more descriptive name",
+                "Tuple element 'A' should have a more descriptive name",
+                "Tuple element 'B' should have a more descriptive name");
         }
 
         [Fact]
@@ -1167,7 +1167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'ex' should have a more descriptive name.");
+                "Variable 'ex' should have a more descriptive name");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
         [NotNull]
         private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Hidden, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+            DiagnosticSeverity.Hidden, false, Description);
 
         [ItemNotNull]
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Identifier contains an abbreviation or is too short";
-        private const string MessageFormat = "{0} '{1}' should have a more descriptive name.";
+        private const string MessageFormat = "{0} '{1}' should have a more descriptive name";
         private const string Description = "Don't use abbreviations.";
 
         public const string DiagnosticId = "AV1706";

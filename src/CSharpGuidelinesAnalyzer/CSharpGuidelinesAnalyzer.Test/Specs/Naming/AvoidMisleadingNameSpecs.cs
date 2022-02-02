@@ -26,7 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'b001' has a name that is difficult to read.");
+                "Variable 'b001' has a name that is difficult to read");
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b001' has a name that is difficult to read.");
+                "Parameter 'b001' has a name that is difficult to read");
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'b001' has a name that is difficult to read.");
+                "Parameter 'b001' has a name that is difficult to read");
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'lo' has a name that is difficult to read.");
+                "Variable 'lo' has a name that is difficult to read");
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'lo' has a name that is difficult to read.");
+                "Parameter 'lo' has a name that is difficult to read");
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'lo' has a name that is difficult to read.");
+                "Parameter 'lo' has a name that is difficult to read");
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'I1' has a name that is difficult to read.");
+                "Variable 'I1' has a name that is difficult to read");
         }
 
         [Fact]
@@ -153,7 +153,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'I1' has a name that is difficult to read.");
+                "Parameter 'I1' has a name that is difficult to read");
         }
 
         [Fact]
@@ -173,7 +173,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'I1' has a name that is difficult to read.");
+                "Parameter 'I1' has a name that is difficult to read");
         }
 
         [Fact]
@@ -191,7 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Variable 'lOl' has a name that is difficult to read.");
+                "Variable 'lOl' has a name that is difficult to read");
         }
 
         [Fact]
@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'lOl' has a name that is difficult to read.");
+                "Parameter 'lOl' has a name that is difficult to read");
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'lOl' has a name that is difficult to read.");
+                "Parameter 'lOl' has a name that is difficult to read");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

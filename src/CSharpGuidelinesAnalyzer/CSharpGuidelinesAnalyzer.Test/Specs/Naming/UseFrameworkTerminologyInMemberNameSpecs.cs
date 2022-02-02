@@ -23,7 +23,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'AddItem' should be renamed to 'Add'.");
+                "Method 'AddItem' should be renamed to 'Add'");
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'Delete' should be renamed to 'Remove'.");
+                "Method 'Delete' should be renamed to 'Remove'");
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'AddItem' should be renamed to 'Add'.");
+                "Local function 'AddItem' should be renamed to 'Add'");
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'Delete' should be renamed to 'Remove'.");
+                "Local function 'Delete' should be renamed to 'Remove'");
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Property 'NumberOfItems' should be renamed to 'Count'.");
+                "Property 'NumberOfItems' should be renamed to 'Count'");
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'NumberOfItems' should be renamed to 'Count'.");
+                "Field 'NumberOfItems' should be renamed to 'Count'");
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Field 'NumberOfItems' should be renamed to 'Count'.");
+                "Field 'NumberOfItems' should be renamed to 'Count'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

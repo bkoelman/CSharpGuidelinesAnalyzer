@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
     public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Code block should not contain inline comment";
-        private const string MessageFormat = "Code block should not contain inline comment.";
+        private const string MessageFormat = "Code block should not contain inline comment";
         private const string Description = "Avoid inline comments.";
 
         public const string DiagnosticId = "AV2310";

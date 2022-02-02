@@ -42,7 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' contains 4 parameters, which exceeds the maximum of 3 parameters.");
+                "Method 'M' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' contains tuple parameter 'p'.");
+                "Method 'M' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' contains tuple parameter 'p'.");
+                "Method 'M' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
+                "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
@@ -179,7 +179,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
+                "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
@@ -324,7 +324,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains 4 parameters, which exceeds the maximum of 3 parameters.");
+                "Constructor for 'C' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
@@ -344,7 +344,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains tuple parameter 'p'.");
+                "Constructor for 'C' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -364,7 +364,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains tuple parameter 'p'.");
+                "Constructor for 'C' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -399,7 +399,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Indexer contains 4 parameters, which exceeds the maximum of 3 parameters.");
+                "Indexer contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
@@ -418,7 +418,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Indexer contains tuple parameter 'p'.");
+                "Indexer contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -437,7 +437,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Indexer contains tuple parameter 'p'.");
+                "Indexer contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -466,7 +466,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' contains 4 parameters, which exceeds the maximum of 3 parameters.");
+                "Delegate 'D' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
@@ -481,7 +481,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' contains tuple parameter 'p'.");
+                "Delegate 'D' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -496,7 +496,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' contains tuple parameter 'p'.");
+                "Delegate 'D' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -525,7 +525,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
+                "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
@@ -554,7 +554,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
+                "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
@@ -593,7 +593,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' contains 4 parameters, which exceeds the maximum of 3 parameters.");
+                "Local function 'L' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
@@ -613,7 +613,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' contains tuple parameter 'p'.");
+                "Local function 'L' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -633,7 +633,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' contains tuple parameter 'p'.");
+                "Local function 'L' contains tuple parameter 'p'");
         }
 
         [Fact]
@@ -674,7 +674,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
+                "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
@@ -715,7 +715,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements.");
+                "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         #region Non-default configuration
@@ -744,8 +744,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters.",
-                "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters.");
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters");
         }
 
         [Fact]
@@ -772,8 +772,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters.",
-                "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters.");
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters");
         }
 
         [Fact]
@@ -801,8 +801,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters.",
-                "Method 'M' contains 9 parameters, which exceeds the maximum of 6 parameters.");
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 6 parameters");
         }
 
         [Fact]
@@ -830,8 +830,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters.",
-                "Method 'M' contains 9 parameters, which exceeds the maximum of 6 parameters.");
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 6 parameters");
         }
 
         [Fact]
@@ -862,8 +862,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 3 parameters.",
-                "Method 'M' contains 9 parameters, which exceeds the maximum of 4 parameters.");
+                "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 3 parameters",
+                "Method 'M' contains 9 parameters, which exceeds the maximum of 4 parameters");
         }
 
         [Fact]

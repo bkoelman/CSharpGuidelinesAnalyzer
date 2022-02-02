@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class DoNotDeclareHelpingMethodAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Type name contains term that should be avoided";
-        private const string MessageFormat = "Name of type '{0}' contains the term '{1}'.";
+        private const string MessageFormat = "Name of type '{0}' contains the term '{1}'";
         private const string Description = "Name types using nouns, noun phrases or adjective phrases.";
 
         public const string DiagnosticId = "AV1708";

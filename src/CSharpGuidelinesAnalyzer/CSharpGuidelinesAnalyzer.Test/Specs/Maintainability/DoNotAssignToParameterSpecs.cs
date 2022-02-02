@@ -75,7 +75,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -145,7 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -180,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -215,7 +215,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -250,7 +250,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -285,7 +285,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -330,7 +330,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -401,7 +401,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -427,7 +427,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -453,7 +453,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -479,7 +479,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -505,7 +505,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -531,7 +531,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -560,7 +560,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 's' is overwritten in its method body.");
+                "The value of parameter 's' is overwritten in its method body");
         }
 
         [Fact]
@@ -584,7 +584,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -608,7 +608,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -730,7 +730,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -818,7 +818,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -869,7 +869,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -920,7 +920,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -961,7 +961,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -1004,7 +1004,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -1050,7 +1050,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -1091,7 +1091,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -1132,7 +1132,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'value' is overwritten in its method body.");
+                "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
@@ -1167,7 +1167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'value' is overwritten in its method body.");
+                "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
@@ -1217,7 +1217,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'key' is overwritten in its method body.");
+                "The value of parameter 'key' is overwritten in its method body");
         }
 
         [Fact]
@@ -1243,8 +1243,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'key1' is overwritten in its method body.",
-                "The value of parameter 'key2' is overwritten in its method body.");
+                "The value of parameter 'key1' is overwritten in its method body",
+                "The value of parameter 'key2' is overwritten in its method body");
         }
 
         [Fact]
@@ -1281,7 +1281,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'key' is overwritten in its method body.");
+                "The value of parameter 'key' is overwritten in its method body");
         }
 
         [Fact]
@@ -1332,8 +1332,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'value' is overwritten in its method body.",
-                "The value of parameter 'value' is overwritten in its method body.");
+                "The value of parameter 'value' is overwritten in its method body",
+                "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
@@ -1370,8 +1370,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'value' is overwritten in its method body.",
-                "The value of parameter 'value' is overwritten in its method body.");
+                "The value of parameter 'value' is overwritten in its method body",
+                "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
@@ -1412,7 +1412,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
@@ -1455,7 +1455,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "The value of parameter 'p' is overwritten in its method body.");
+                "The value of parameter 'p' is overwritten in its method body");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

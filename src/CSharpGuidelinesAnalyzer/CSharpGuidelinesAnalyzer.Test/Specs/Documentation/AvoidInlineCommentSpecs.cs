@@ -25,7 +25,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Code block should not contain inline comment.");
+                "Code block should not contain inline comment");
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Code block should not contain inline comment.");
+                "Code block should not contain inline comment");
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Code block should not contain inline comment.");
+                "Code block should not contain inline comment");
         }
 
         [Fact]
@@ -163,8 +163,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Code block should not contain inline comment.",
-                "Code block should not contain inline comment.");
+                "Code block should not contain inline comment",
+                "Code block should not contain inline comment");
         }
 
         [Fact]

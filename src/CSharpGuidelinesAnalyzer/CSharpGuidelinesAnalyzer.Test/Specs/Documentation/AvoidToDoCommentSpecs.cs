@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -139,7 +139,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -213,7 +213,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -232,11 +232,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -255,11 +255,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.",
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed",
+                "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
@@ -276,7 +276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Work-tracking TODO comment should be removed.");
+                "Work-tracking TODO comment should be removed");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

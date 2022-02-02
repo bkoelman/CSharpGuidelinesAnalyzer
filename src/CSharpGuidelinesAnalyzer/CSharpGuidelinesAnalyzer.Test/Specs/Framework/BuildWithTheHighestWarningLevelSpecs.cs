@@ -33,7 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Build with warning level 9999.");
+                "Build with warning level 9999");
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Build with -warnaserror.");
+                "Build with -warnaserror");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

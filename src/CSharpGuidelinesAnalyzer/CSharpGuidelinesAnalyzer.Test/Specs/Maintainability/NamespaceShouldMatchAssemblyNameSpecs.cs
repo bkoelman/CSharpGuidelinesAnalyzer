@@ -60,9 +60,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Namespace 'Some.WrongScope' does not match with assembly name 'Some.Scope.Example'.",
-                "Namespace 'Some.WrongScope.Example' does not match with assembly name 'Some.Scope.Example'.",
-                "Namespace 'Some.WrongScope.Example.Deeper' does not match with assembly name 'Some.Scope.Example'.");
+                "Namespace 'Some.WrongScope' does not match with assembly name 'Some.Scope.Example'",
+                "Namespace 'Some.WrongScope.Example' does not match with assembly name 'Some.Scope.Example'",
+                "Namespace 'Some.WrongScope.Example.Deeper' does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Namespace 'Some.Scope2' does not match with assembly name 'Some.Scope.Example'.");
+                "Namespace 'Some.Scope2' does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Namespace 'Some.Scope' does not match with assembly name 'Some.Scope2.Example'.");
+                "Namespace 'Some.Scope' does not match with assembly name 'Some.Scope2.Example'");
         }
 
         [Fact]
@@ -173,8 +173,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'TooHigh' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope.Example'.",
-                "Type 'AlsoTooHigh' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope.Example'.");
+                "Type 'TooHigh' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope.Example'",
+                "Type 'AlsoTooHigh' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
@@ -198,8 +198,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Namespace 'Some.Scope' does not match with assembly name 'Some.Scope2'.",
-                "Type 'WrongSpace' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope2'.");
+                "Namespace 'Some.Scope' does not match with assembly name 'Some.Scope2'",
+                "Type 'WrongSpace' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope2'");
         }
 
         [Fact]
@@ -223,8 +223,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Namespace 'Some.Scope2' does not match with assembly name 'Some.Scope'.",
-                "Type 'WrongSpace' is declared in namespace 'Some.Scope2', which does not match with assembly name 'Some.Scope'.");
+                "Namespace 'Some.Scope2' does not match with assembly name 'Some.Scope'",
+                "Type 'WrongSpace' is declared in namespace 'Some.Scope2', which does not match with assembly name 'Some.Scope'");
         }
 
         [Fact]
@@ -242,7 +242,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'C' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'.");
+                "Type 'C' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
@@ -260,7 +260,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'C' is declared in global namespace, which does not match with assembly name 'Core'.");
+                "Type 'C' is declared in global namespace, which does not match with assembly name 'Core'");
         }
 
         [Fact]
@@ -298,7 +298,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Type 'C' is declared in global namespace, which does not match with assembly name 'Company.Core'.");
+                "Type 'C' is declared in global namespace, which does not match with assembly name 'Company.Core'");
         }
 
         [Fact]
@@ -375,10 +375,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Namespace 'WrongRoot' does not match with assembly name 'Company.ProductName'.",
-                "Namespace 'WrongRoot.JetBrains' does not match with assembly name 'Company.ProductName'.",
-                "Namespace 'WrongRoot.JetBrains.Annotations' does not match with assembly name 'Company.ProductName'.",
-                "Type 'C' is declared in namespace 'WrongRoot.JetBrains.Annotations', which does not match with assembly name 'Company.ProductName'.");
+                "Namespace 'WrongRoot' does not match with assembly name 'Company.ProductName'",
+                "Namespace 'WrongRoot.JetBrains' does not match with assembly name 'Company.ProductName'",
+                "Namespace 'WrongRoot.JetBrains.Annotations' does not match with assembly name 'Company.ProductName'",
+                "Type 'C' is declared in namespace 'WrongRoot.JetBrains.Annotations', which does not match with assembly name 'Company.ProductName'");
         }
 
         [Fact]
@@ -416,7 +416,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, "Type 'Program' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'.");
+            VerifyGuidelineDiagnostic(source, "Type 'Program' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

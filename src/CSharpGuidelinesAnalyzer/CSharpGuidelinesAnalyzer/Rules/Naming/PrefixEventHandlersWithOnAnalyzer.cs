@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Event handlers should be named according to the pattern '(InstanceName)On(EventName)'";
-        private const string MessageFormat = "{0} '{1}' that handles event '{2}' should be renamed to '{3}'.";
+        private const string MessageFormat = "{0} '{1}' that handles event '{2}' should be renamed to '{3}'";
         private const string Description = "Prefix an event handler with \"On\".";
 
         public const string DiagnosticId = "AV1738";

@@ -71,7 +71,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual.");
+                "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual");
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual.");
+                "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual");
         }
 
         [Fact]
@@ -165,7 +165,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
+                "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'");
         }
 
         [Fact]
@@ -189,7 +189,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
+                "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'");
         }
 
         [Fact]
@@ -218,7 +218,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'RaiseOnValueChanged' raises event 'ValueChanged', so it should be named 'OnValueChanged'.");
+                "Method 'RaiseOnValueChanged' raises event 'ValueChanged', so it should be named 'OnValueChanged'");
         }
 
         [Fact]
@@ -242,7 +242,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'ValueChanged' should be raised from a regular method.");
+                "Event 'ValueChanged' should be raised from a regular method");
         }
 
         [Fact]
@@ -268,7 +268,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Event 'ValueChanged' should be raised from a regular method.");
+                "Event 'ValueChanged' should be raised from a regular method");
         }
 
         [Fact]

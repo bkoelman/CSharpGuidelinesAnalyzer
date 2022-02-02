@@ -41,7 +41,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -170,7 +170,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -191,7 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -230,7 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -251,7 +251,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -280,7 +280,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -295,7 +295,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -322,7 +322,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -349,7 +349,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -374,7 +374,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -399,7 +399,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'p' is declared as ref or out.");
+                "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
@@ -419,8 +419,8 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Parameter 'c' is declared as ref or out.",
-                "Parameter 'd' is declared as ref or out.");
+                "Parameter 'c' is declared as ref or out",
+                "Parameter 'd' is declared as ref or out");
         }
 
         [Fact]

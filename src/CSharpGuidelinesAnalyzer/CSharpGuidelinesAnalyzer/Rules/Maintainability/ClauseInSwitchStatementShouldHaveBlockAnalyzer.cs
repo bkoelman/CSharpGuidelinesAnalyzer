@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Missing block in case or default clause of switch statement";
-        private const string MessageFormat = "Missing block in case or default clause of switch statement.";
+        private const string MessageFormat = "Missing block in case or default clause of switch statement";
         private const string Description = "Always add a block after the keywords if, else, do, while, for, foreach and case.";
 
         public const string DiagnosticId = "AV1535";

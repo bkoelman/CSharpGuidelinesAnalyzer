@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Loop variable should not be written to in loop body";
-        private const string MessageFormat = "Loop variable '{0}' should not be written to in loop body.";
+        private const string MessageFormat = "Loop variable '{0}' should not be written to in loop body";
         private const string Description = "Don't change a loop variable inside a for loop.";
 
         public const string DiagnosticId = "AV1530";

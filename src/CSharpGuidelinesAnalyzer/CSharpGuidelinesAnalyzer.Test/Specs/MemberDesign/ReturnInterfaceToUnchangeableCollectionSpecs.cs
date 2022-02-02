@@ -8,9 +8,9 @@ using Xunit;
 
 namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 {
-    public sealed class ReturnInterfaceToCollectionSpecs : CSharpGuidelinesAnalysisTestFixture
+    public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuidelinesAnalysisTestFixture
     {
-        protected override string DiagnosticId => ReturnInterfaceToCollectionAnalyzer.DiagnosticId;
+        protected override string DiagnosticId => ReturnInterfaceToUnchangeableCollectionAnalyzer.DiagnosticId;
 
         [Fact]
         internal void When_method_returns_void_it_must_be_skipped()
@@ -18,9 +18,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        void M()
+                        public void M()
                         {
                         }
                     }
@@ -37,9 +37,50 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        string M()
+                        public string M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_array_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public int[] [|M|]()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
+        }
+
+        [Fact]
+        internal void When_private_method_returns_array_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        private int[] M()
                         {
                             throw new NotImplementedException();
                         }
@@ -58,9 +99,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        List<string> [|M|]()
+                        public List<string> [|M|]()
                         {
                             throw new NotImplementedException();
                         }
@@ -70,18 +111,44 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'C.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_method_returns_array_it_must_be_reported()
+        internal void When_public_method_in_private_class_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class Outer
                     {
-                        int[] [|M|]()
+                        private class C
+                        {
+                            public List<string> M()
+                            {
+                                throw new NotImplementedException();
+                            }
+                        }
+                    }
+
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_generic_IList_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IList<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IList<string> [|M|]()
                         {
                             throw new NotImplementedException();
                         }
@@ -91,19 +158,67 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'C.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_method_returns_generic_ICollection_it_must_be_skipped()
+        internal void When_method_returns_generic_ICollection_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(ICollection<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        ICollection<string> M()
+                        public ICollection<string> [|M|]()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
+        }
+
+        [Fact]
+        internal void When_method_returns_custom_collection_type_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(List<>).Namespace)
+                .InGlobalScope(@"
+                    public class CustomCollection : List<string>
+                    {
+                    }
+
+                    public class C
+                    {
+                        public CustomCollection [|M|]()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
+        }
+
+        [Fact]
+        internal void When_method_returns_IEnumerable_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IEnumerable).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IEnumerable M()
                         {
                             throw new NotImplementedException();
                         }
@@ -116,15 +231,123 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_method_returns_IEnumerable_it_must_be_skipped()
+        internal void When_method_returns_generic_IEnumerable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof(IEnumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        IEnumerable M()
+                        public IEnumerable<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_generic_IAsyncEnumerable_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(IAsyncEnumerable<>).Assembly)
+                .Using(typeof(IAsyncEnumerable<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IAsyncEnumerable<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_generic_IReadOnlyCollection_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IReadOnlyCollection<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IReadOnlyCollection<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_generic_IReadOnlyList_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IReadOnlyList<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IReadOnlyList<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+#if NET5_0_OR_GREATER
+        [Fact]
+        internal void When_method_returns_generic_IReadOnlySet_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IReadOnlySet<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IReadOnlySet<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+#endif
+
+        [Fact]
+        internal void When_method_returns_generic_IReadOnlyDictionary_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(IReadOnlyDictionary<,>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IReadOnlyDictionary<string, int> M()
                         {
                             throw new NotImplementedException();
                         }
@@ -144,9 +367,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .WithReference(typeof(ImmutableArray<>).Assembly)
                 .Using(typeof(ImmutableArray<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        ImmutableArray<int> M()
+                        public ImmutableArray<int> M()
                         {
                             throw new NotImplementedException();
                         }
@@ -166,9 +389,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .WithReference(typeof(IImmutableList<>).Assembly)
                 .Using(typeof(IImmutableList<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        IImmutableList<int> M()
+                        public IImmutableList<int> M()
                         {
                             throw new NotImplementedException();
                         }
@@ -188,9 +411,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .WithReference(typeof(ImmutableStack<>).Assembly)
                 .Using(typeof(ImmutableStack<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        ImmutableStack<int> M()
+                        public ImmutableStack<int> M()
                         {
                             throw new NotImplementedException();
                         }
@@ -210,9 +433,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .WithReference(typeof(ImmutableDictionary<,>).Assembly)
                 .Using(typeof(ImmutableDictionary<,>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        ImmutableDictionary<int, string> M()
+                        public ImmutableDictionary<int, string> M()
                         {
                             throw new NotImplementedException();
                         }
@@ -234,9 +457,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .InGlobalScope(@"
                     using HS = System.Collections.Immutable.ImmutableHashSet<int>;
 
-                    class C
+                    public class C
                     {
-                        HS M()
+                        public HS M()
                         {
                             throw new NotImplementedException();
                         }
@@ -272,7 +495,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'B.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'B.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
@@ -302,7 +525,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'B.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'B.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
@@ -329,7 +552,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'I.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
@@ -356,7 +579,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Return type in signature for 'I.M()' should be a collection interface instead of a concrete type.");
+                "Return type in signature for 'I.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
@@ -366,9 +589,9 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(List<>).Namespace)
                 .InGlobalScope(@"
-                    class C
+                    public class C
                     {
-                        List<string> P { get; set; }
+                        public List<string> P { get; set; }
                     }
                 ")
                 .Build();
@@ -379,7 +602,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
         {
-            return new ReturnInterfaceToCollectionAnalyzer();
+            return new ReturnInterfaceToUnchangeableCollectionAnalyzer();
         }
     }
 }

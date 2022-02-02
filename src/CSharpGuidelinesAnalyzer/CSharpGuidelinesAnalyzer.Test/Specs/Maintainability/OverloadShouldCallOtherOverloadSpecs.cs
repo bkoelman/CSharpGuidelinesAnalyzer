@@ -116,7 +116,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method overload with the most parameters should be virtual.");
+                "Method overload with the most parameters should be virtual");
         }
 
         [Fact]
@@ -145,7 +145,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method overload with the most parameters should be virtual.");
+                "Method overload with the most parameters should be virtual");
         }
 
         [Fact]
@@ -265,7 +265,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Overloaded method 'C.M()' should call another overload.");
+                "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
@@ -293,7 +293,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Overloaded method 'B.M()' should call another overload.");
+                "Overloaded method 'B.M()' should call another overload");
         }
 
         [Fact]
@@ -366,7 +366,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Overloaded method 'C.M()' should call another overload.");
+                "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
@@ -481,7 +481,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Overloaded method 'C.M()' should call another overload.");
+                "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
@@ -520,7 +520,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Overloaded method 'C.M()' should call another overload.");
+                "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
@@ -577,7 +577,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             VerifyGuidelineDiagnostic(source,
-                "Overloaded method 'C.M()' should call another overload.");
+                "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
@@ -714,7 +714,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             VerifyGuidelineDiagnostic(source,
-                "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload.");
+                "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
@@ -753,7 +753,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             VerifyGuidelineDiagnostic(source,
-                "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload.");
+                "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
@@ -832,7 +832,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             VerifyGuidelineDiagnostic(source,
-                "Parameter order in 'C.M(int, string, params object[])' does not match with the parameter order of the longest overload.");
+                "Parameter order in 'C.M(int, string, params object[])' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
@@ -901,7 +901,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             VerifyGuidelineDiagnostic(source,
-                "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload.");
+                "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
@@ -1036,7 +1036,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             VerifyGuidelineDiagnostic(source,
-                "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload.");
+                "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]

@@ -835,7 +835,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -860,7 +860,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -885,7 +885,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -910,7 +910,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -935,7 +935,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -960,7 +960,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -985,7 +985,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
@@ -1010,7 +1010,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns an IQueryable, which uses deferred execution.");
+                "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         #endregion
@@ -1125,7 +1125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1149,7 +1149,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<IEnumerable<char>>)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<IEnumerable<char>>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1173,7 +1173,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1197,7 +1197,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a call to 'GroupBy', which uses deferred execution.");
+                "Method 'C.M()' returns the result of a call to 'GroupBy', which uses deferred execution");
         }
 
         [Fact]
@@ -1220,7 +1220,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
+                "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
@@ -1253,7 +1253,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M()' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1305,7 +1305,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
@@ -1331,7 +1331,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
@@ -1358,7 +1358,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
@@ -1384,7 +1384,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a query, which uses deferred execution.");
+                "Method 'C.M()' returns the result of a query, which uses deferred execution");
         }
 
         #endregion
@@ -1412,7 +1412,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1460,7 +1460,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1515,7 +1515,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1543,7 +1543,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
@@ -1627,7 +1627,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1660,7 +1660,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         #endregion
@@ -1689,7 +1689,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1714,7 +1714,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1738,7 +1738,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -1786,7 +1786,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1834,7 +1834,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1857,7 +1857,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution.");
+                "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
@@ -1932,7 +1932,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a call to 'Where', which uses deferred execution.");
+                "Method 'C.M()' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
@@ -2289,7 +2289,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution.");
+                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
@@ -2342,7 +2342,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M(ref IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution.");
+                "Method 'C.M(ref IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
@@ -2370,7 +2370,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution.");
+                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
@@ -2398,7 +2398,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution.");
+                "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         #endregion

@@ -72,7 +72,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Non-exhaustive switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
@@ -140,7 +140,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Non-exhaustive switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
@@ -238,7 +238,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Non-exhaustive switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
@@ -314,7 +314,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Non-exhaustive switch statement requires a default case clause.");
+                "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]

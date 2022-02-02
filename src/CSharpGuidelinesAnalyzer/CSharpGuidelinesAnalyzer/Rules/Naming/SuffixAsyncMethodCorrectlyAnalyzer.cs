@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Name of async method should end with Async or TaskAsync";
-        private const string MessageFormat = "Name of async {0} '{1}' should end with Async or TaskAsync.";
+        private const string MessageFormat = "Name of async {0} '{1}' should end with Async or TaskAsync";
         private const string Description = "Postfix asynchronous methods with Async or TaskAsync.";
 
         public const string DiagnosticId = "AV1755";

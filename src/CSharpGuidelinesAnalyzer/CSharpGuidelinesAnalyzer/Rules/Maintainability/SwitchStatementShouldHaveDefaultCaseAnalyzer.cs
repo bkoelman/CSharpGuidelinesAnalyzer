@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Non-exhaustive switch statement requires a default case clause";
-        private const string MessageFormat = "Non-exhaustive switch statement requires a default case clause.";
+        private const string MessageFormat = "Non-exhaustive switch statement requires a default case clause";
         private const string Description = "Always add a default block after the last case in a switch statement.";
 
         public const string DiagnosticId = "AV1536";

@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
     public sealed class AvoidMisleadingNameAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Identifier name is difficult to read";
-        private const string MessageFormat = "{0} '{1}' has a name that is difficult to read.";
+        private const string MessageFormat = "{0} '{1}' has a name that is difficult to read";
         private const string Description = "Avoid short names or names that can be mistaken for other names.";
 
         public const string DiagnosticId = "AV1712";
