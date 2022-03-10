@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -47,7 +48,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var notExpression = (PrefixUnaryExpressionSyntax)context.Node;
 
-            ISymbol symbol = TryGetNegatingSymbol(notExpression.Operand, context.SemanticModel);
+            ISymbol symbol = TryGetNegatingSymbol(notExpression.Operand, context.SemanticModel, context.CancellationToken);
 
             if (symbol != null)
             {
@@ -56,11 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         }
 
         [CanBeNull]
-        private static ISymbol TryGetNegatingSymbol([CanBeNull] ExpressionSyntax operand, [NotNull] SemanticModel model)
+        private static ISymbol TryGetNegatingSymbol([CanBeNull] ExpressionSyntax operand, [NotNull] SemanticModel model, CancellationToken cancellationToken)
         {
             if (operand != null)
             {
-                ISymbol symbol = model.GetSymbolInfo(operand).Symbol;
+                ISymbol symbol = model.GetSymbolInfo(operand, cancellationToken).Symbol;
 
                 if (symbol != null && ContainsNegatingWord(symbol.Name))
                 {

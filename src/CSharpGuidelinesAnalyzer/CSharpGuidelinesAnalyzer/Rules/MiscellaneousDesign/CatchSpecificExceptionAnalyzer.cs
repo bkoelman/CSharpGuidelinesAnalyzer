@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -80,7 +81,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (catchClause.Filter == null)
             {
-                ISymbol exceptionType = TryGetExceptionType(catchClause.Declaration, context.SemanticModel);
+                ISymbol exceptionType = TryGetExceptionType(catchClause.Declaration, context.SemanticModel, context.CancellationToken);
 
                 if (exceptionType == null || exceptionTypes.Contains(exceptionType))
                 {
@@ -90,9 +91,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         }
 
         [CanBeNull]
-        private static ISymbol TryGetExceptionType([CanBeNull] CatchDeclarationSyntax declaration, [NotNull] SemanticModel model)
+        private static ISymbol TryGetExceptionType([CanBeNull] CatchDeclarationSyntax declaration, [NotNull] SemanticModel model,
+            CancellationToken cancellationToken)
         {
-            return declaration != null ? model.GetSymbolInfo(declaration.Type).Symbol : null;
+            return declaration != null ? model.GetSymbolInfo(declaration.Type, cancellationToken).Symbol : null;
         }
     }
 }
