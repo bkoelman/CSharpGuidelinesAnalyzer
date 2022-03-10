@@ -119,6 +119,9 @@ This analyzer reports when a public or internal member declares a parameter of t
 ### [AV1568](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1500_MaintainabilityGuidelines.md#av1568): Don't use parameters as temporary variables ![](/images/info.png "severity: info")
 This analyzer reports when a by-value (not `ref`, `in` or `out`) parameter is written to.
 
+### [AV1580](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1500_MaintainabilityGuidelines.md#av1580): Write code that is easy to debug ![](/images/warn.png "severity: warning")
+This analyzer reports using nested method calls.
+
 ## Category: Naming
 
 ### [AV1704](https://github.com/dennisdoomen/CSharpGuidelines/blob/7a66f7468da6ce1477753a02e416e04bc9a44e45/_pages/1700_NamingGuidelines.md#av1704): Don't include numbers in variables, parameters and type members ![](/images/info.png "severity: info")
