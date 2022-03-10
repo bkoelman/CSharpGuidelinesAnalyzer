@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private const string MessageFormat = "Return type in signature for '{0}' should be an interface to an unchangeable collection";
         private const string Description = "Return interfaces to unchangeable collections.";
 
-        public const string DiagnosticId = "AV1130";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1130";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;

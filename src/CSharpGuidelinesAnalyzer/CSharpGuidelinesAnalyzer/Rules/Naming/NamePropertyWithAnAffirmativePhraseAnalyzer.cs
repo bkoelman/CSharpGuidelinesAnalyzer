@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb";
         private const string Description = "Properly name properties.";
 
-        public const string DiagnosticId = "AV1715";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1715";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

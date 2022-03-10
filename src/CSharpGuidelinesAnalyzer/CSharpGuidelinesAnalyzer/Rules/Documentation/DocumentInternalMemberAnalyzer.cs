@@ -20,7 +20,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string ExtraParameterMessageFormat = "Parameter '{0}' in XML comment not found in method signature";
         private const string Description = "Document all public, protected and internal types and members.";
 
-        public const string DiagnosticId = "AV2305";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2305";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;

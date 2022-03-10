@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string Description = "A class or interface should have a single purpose.";
         private const string BlacklistWord = "and";
 
-        public const string DiagnosticId = "AV1000";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;

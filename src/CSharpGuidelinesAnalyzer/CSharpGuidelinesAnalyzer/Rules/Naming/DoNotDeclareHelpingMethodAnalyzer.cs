@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "Name of type '{0}' contains the term '{1}'";
         private const string Description = "Name types using nouns, noun phrases or adjective phrases.";
 
-        public const string DiagnosticId = "AV1708";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1708";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

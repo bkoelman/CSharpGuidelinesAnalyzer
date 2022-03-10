@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private const string MessageFormat = "Operation '{0}' should be a statement";
         private const string Description = "Internal analyzer that reports when an IOperation instance represents a statement.";
 
-        public const string DiagnosticId = "AV0000000000000000";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "0000000000000000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

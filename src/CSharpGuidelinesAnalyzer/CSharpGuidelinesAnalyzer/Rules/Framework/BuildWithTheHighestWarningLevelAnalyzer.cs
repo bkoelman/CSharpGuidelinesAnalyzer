@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private const string Description = "Build with the highest warning level";
 
-        public const string DiagnosticId = "AV2210";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2210";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

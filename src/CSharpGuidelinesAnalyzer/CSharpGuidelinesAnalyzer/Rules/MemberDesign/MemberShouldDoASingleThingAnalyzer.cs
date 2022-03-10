@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private const string Description = "A property, method or local function should do only one thing.";
         private const string BlacklistWord = "and";
 
-        public const string DiagnosticId = "AV1115";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1115";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;

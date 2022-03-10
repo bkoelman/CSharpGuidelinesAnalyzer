@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string QueryOperationName = "<*>Query";
         private const string QueryableOperationName = "<*>Queryable";
 
-        public const string DiagnosticId = "AV1250";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1250";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;

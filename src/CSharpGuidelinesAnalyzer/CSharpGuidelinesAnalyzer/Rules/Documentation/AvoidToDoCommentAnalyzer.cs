@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string Description = "Don't use comments for tracking work to be done later.";
         private const string TodoCommentToken = "TODO";
 
-        public const string DiagnosticId = "AV2318";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2318";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;

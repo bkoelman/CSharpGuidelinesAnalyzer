@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string MessageFormat = "An expression of type '{0}' is implicitly converted to dynamic";
         private const string Description = "Only use the dynamic keyword when talking to a dynamic object.";
 
-        public const string DiagnosticId = "AV2230";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2230";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

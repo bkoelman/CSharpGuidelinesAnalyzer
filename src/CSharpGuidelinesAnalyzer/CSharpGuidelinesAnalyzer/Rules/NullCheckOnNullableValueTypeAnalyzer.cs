@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private const string MessageFormat = "Expression of nullable value type '{0}' is checked for {1} using {2}";
         private const string Description = "Internal analyzer that reports when an expression of type nullable value type is checked for null or not-null.";
 
-        public const string DiagnosticId = "AV00000000";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "00000000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

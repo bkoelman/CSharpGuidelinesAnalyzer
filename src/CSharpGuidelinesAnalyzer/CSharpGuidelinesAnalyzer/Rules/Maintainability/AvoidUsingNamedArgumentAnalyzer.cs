@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Parameter '{0}' in the call to '{1}' is invoked with a named argument";
         private const string Description = "Avoid using named arguments.";
 
-        public const string DiagnosticId = "AV1555";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1555";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

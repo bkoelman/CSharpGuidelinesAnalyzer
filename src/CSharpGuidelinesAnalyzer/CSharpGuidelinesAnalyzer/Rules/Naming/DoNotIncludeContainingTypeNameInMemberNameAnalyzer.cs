@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "{0} '{1}' contains the name of its containing type '{2}'";
         private const string Description = "Don't repeat the name of a class or enumeration in its members.";
 
-        public const string DiagnosticId = "AV1710";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1710";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

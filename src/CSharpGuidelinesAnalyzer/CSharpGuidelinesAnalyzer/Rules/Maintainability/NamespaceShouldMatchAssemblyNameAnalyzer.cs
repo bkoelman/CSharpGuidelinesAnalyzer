@@ -22,7 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string GlobalTypeMessageFormat = "Type '{0}' is declared in global namespace, which does not match with assembly name '{1}'";
         private const string Description = "Name assemblies after their contained namespace.";
 
-        public const string DiagnosticId = "AV1505";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1505";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

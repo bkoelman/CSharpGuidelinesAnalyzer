@@ -19,7 +19,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "File '{0}' contains additional type '{1}'";
         private const string Description = "Limit the contents of a source code file to one type.";
 
-        public const string DiagnosticId = "AV1507";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1507";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

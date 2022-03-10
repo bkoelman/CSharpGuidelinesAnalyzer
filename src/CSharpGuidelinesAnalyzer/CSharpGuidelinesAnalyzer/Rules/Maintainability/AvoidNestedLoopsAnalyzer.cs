@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Loop statement contains nested loop";
         private const string Description = "Avoid nested loops.";
 
-        public const string DiagnosticId = "AV1532";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1532";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

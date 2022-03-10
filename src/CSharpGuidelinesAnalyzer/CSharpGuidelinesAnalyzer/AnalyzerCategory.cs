@@ -7,6 +7,8 @@ namespace CSharpGuidelinesAnalyzer
     {
         private const string CommitHash = "4ad2ebe71296a1d6e70d2f22f7b997edcd9e257d";
 
+        public const string RulePrefix = "AV";
+
         [NotNull]
         public static readonly AnalyzerCategory ClassDesign = new AnalyzerCategory("Class Design");
 
@@ -44,9 +46,9 @@ namespace CSharpGuidelinesAnalyzer
         {
             Guard.NotNullNorWhiteSpace(ruleId, nameof(ruleId));
 
-            if (!ruleId.StartsWith("AV", StringComparison.Ordinal) || ruleId.Length != 6)
+            if (!ruleId.StartsWith(RulePrefix, StringComparison.Ordinal) || ruleId.Length != 6)
             {
-                throw new InvalidOperationException($"Rule '{ruleId}' does not match the format AVnnnn.");
+                throw new InvalidOperationException($"Rule '{ruleId}' does not match the format {RulePrefix}nnnn.");
             }
 
             string ruleNumber = ruleId.Substring(2);

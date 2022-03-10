@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Missing block in case or default clause of switch statement";
         private const string Description = "Always add a block after the keywords if, else, do, while, for, foreach and case.";
 
-        public const string DiagnosticId = "AV1535";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1535";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

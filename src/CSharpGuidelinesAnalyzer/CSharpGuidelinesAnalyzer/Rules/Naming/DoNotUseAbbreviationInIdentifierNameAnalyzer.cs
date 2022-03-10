@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "{0} '{1}' should have a more descriptive name";
         private const string Description = "Don't use abbreviations.";
 
-        public const string DiagnosticId = "AV1706";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1706";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

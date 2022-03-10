@@ -19,7 +19,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "{0} '{1}' contains one or more digits in its name";
         private const string Description = "Don't include numbers in variables, parameters and type members.";
 
-        public const string DiagnosticId = "AV1704";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1704";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "The value of parameter '{0}' is overwritten in its method body";
         private const string Description = "Don't use parameters as temporary variables.";
 
-        public const string DiagnosticId = "AV1568";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1568";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

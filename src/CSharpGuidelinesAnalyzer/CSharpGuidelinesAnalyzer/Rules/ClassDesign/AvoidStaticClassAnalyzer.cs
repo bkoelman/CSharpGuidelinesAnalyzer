@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string MemberMessageFormat = "Extension method container class '{0}' contains {1} member '{2}', which is not an extension method";
         private const string Description = "Avoid static classes.";
 
-        public const string DiagnosticId = "AV1008";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1008";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;

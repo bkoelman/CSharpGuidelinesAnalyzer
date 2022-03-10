@@ -20,7 +20,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Non-exhaustive switch statement requires a default case clause";
         private const string Description = "Always add a default block after the last case in a switch statement.";
 
-        public const string DiagnosticId = "AV1536";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1536";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

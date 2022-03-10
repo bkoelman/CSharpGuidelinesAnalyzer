@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Layout
         private const string MessageFormat = "Region should be removed";
         private const string Description = "Do not use #region.";
 
-        public const string DiagnosticId = "AV2407";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2407";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Layout;

@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string NullableComparisonMessageFormat = "Remove null check in numeric comparison";
         private const string Description = "Prefer language syntax over explicit calls to underlying implementations.";
 
-        public const string DiagnosticId = "AV2202";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2202";
 
         private static readonly ImmutableArray<BinaryOperatorKind> NumericComparisonOperators = new[]
         {

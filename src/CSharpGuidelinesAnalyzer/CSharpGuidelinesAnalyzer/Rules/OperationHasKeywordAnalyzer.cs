@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules
         private const string MessageFormat = "Operation should have a keyword";
         private const string Description = "Internal analyzer that reports the keyword location for an IOperation instance.";
 
-        public const string DiagnosticId = "AV000000000000";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "000000000000";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

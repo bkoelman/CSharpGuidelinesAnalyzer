@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "{0} '{1}' that handles event '{2}' should be renamed to '{3}'";
         private const string Description = "Prefix an event handler with \"On\".";
 
-        public const string DiagnosticId = "AV1738";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1738";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

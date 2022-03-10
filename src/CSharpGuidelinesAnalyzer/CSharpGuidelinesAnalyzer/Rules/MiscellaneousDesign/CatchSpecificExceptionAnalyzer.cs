@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string MessageFormat = "Catch a specific exception instead of Exception, SystemException or ApplicationException";
         private const string Description = "Don't swallow errors by catching generic exceptions.";
 
-        public const string DiagnosticId = "AV1210";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1210";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;

@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string NameMessageFormat = "Method '{0}' raises event '{1}', so it should be named '{2}'";
         private const string Description = "Use a protected virtual method to raise each event.";
 
-        public const string DiagnosticId = "AV1225";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1225";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;

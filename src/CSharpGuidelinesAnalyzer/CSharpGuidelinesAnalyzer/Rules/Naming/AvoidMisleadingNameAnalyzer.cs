@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "{0} '{1}' has a name that is difficult to read";
         private const string Description = "Avoid short names or names that can be mistaken for other names.";
 
-        public const string DiagnosticId = "AV1712";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1712";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

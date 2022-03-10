@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'";
         private const string Description = "Name members similarly to members of related .NET Framework classes.";
 
-        public const string DiagnosticId = "AV1711";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1711";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Parameter '{0}' is of type '{1}'";
         private const string Description = "Avoid signatures that take a bool parameter.";
 
-        public const string DiagnosticId = "AV1564";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1564";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

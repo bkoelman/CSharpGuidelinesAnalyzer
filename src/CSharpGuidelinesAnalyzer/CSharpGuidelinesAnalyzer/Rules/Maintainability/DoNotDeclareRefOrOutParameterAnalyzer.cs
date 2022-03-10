@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Parameter '{0}' is declared as ref or out";
         private const string Description = "Don't use ref or out parameters.";
 
-        public const string DiagnosticId = "AV1562";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1562";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

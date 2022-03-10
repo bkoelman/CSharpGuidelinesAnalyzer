@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
         private const string MessageFormat = "'{0}' hides inherited member";
         private const string Description = "Don't suppress compiler warnings using the new keyword.";
 
-        public const string DiagnosticId = "AV1010";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1010";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;

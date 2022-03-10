@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "Name of async {0} '{1}' should end with Async or TaskAsync";
         private const string Description = "Postfix asynchronous methods with Async or TaskAsync.";
 
-        public const string DiagnosticId = "AV1755";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1755";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

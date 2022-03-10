@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Loop variable '{0}' should not be written to in loop body";
         private const string Description = "Don't change a loop variable inside a for loop.";
 
-        public const string DiagnosticId = "AV1530";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1530";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "If-else-if construct should end with an unconditional else clause";
         private const string Description = "Finish every if-else-if statement with an else clause.";
 
-        public const string DiagnosticId = "AV1537";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1537";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "Logical not operator is applied on {0} '{1}', which has a negation in its name";
         private const string Description = "Avoid conditions with double negatives.";
 
-        public const string DiagnosticId = "AV1502";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1502";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

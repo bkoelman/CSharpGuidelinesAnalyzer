@@ -15,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private const string MessageFormat = "Name of extension method container class '{0}' should end with 'Extensions'";
         private const string Description = "Group extension methods in a class suffixed with Extensions.";
 
-        public const string DiagnosticId = "AV1745";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1745";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;

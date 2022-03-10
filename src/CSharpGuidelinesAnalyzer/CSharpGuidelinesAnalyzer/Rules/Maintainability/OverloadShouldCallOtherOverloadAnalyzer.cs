@@ -20,7 +20,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string OrderMessageFormat = "Parameter order in '{0}' does not match with the parameter order of the longest overload";
         private const string Description = "Call the more overloaded method from other overloads.";
 
-        public const string DiagnosticId = "AV1551";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1551";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

@@ -22,7 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string TupleReturnMessageFormat = "{0} returns a tuple with {1} elements, which exceeds the maximum of 2 elements";
         private const string Description = "Don't declare signatures with more than a predefined number of parameters.";
 
-        public const string DiagnosticId = "AV1561";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1561";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

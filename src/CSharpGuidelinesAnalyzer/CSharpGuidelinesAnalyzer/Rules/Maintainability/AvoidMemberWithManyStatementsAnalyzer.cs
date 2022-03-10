@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "{0} '{1}' contains {2} statements, which exceeds the maximum of {3} statements";
         private const string Description = "Methods should not exceed a predefined number of statements.";
 
-        public const string DiagnosticId = "AV1500";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1500";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

@@ -17,7 +17,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression";
         private const string Description = "Favor async/await over Task continuations.";
 
-        public const string DiagnosticId = "AV2235";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2235";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;

@@ -16,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
         private const string MessageFormat = "Code block should not contain inline comment";
         private const string Description = "Avoid inline comments.";
 
-        public const string DiagnosticId = "AV2310";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2310";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;

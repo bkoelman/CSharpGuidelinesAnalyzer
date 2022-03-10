@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private const string MessageFormat = "{0} are assigned in a single statement";
         private const string Description = "Assign each variable in a separate statement.";
 
-        public const string DiagnosticId = "AV1522";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1522";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

@@ -19,7 +19,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private const string Description = "Name a source file to the type it contains.";
 
-        public const string DiagnosticId = "AV1506";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1506";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;

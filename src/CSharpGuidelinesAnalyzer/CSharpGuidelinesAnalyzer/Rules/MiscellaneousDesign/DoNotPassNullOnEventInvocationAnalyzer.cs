@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         private const string ArgsMessageFormat = "'{0}' argument is null in event invocation";
         private const string Description = "Don't pass null as the sender argument when raising an event.";
 
-        public const string DiagnosticId = "AV1235";
+        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1235";
 
         [NotNull]
         private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
