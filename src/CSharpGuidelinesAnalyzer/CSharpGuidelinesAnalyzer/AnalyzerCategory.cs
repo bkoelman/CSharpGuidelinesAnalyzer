@@ -5,8 +5,6 @@ namespace CSharpGuidelinesAnalyzer
 {
     internal sealed class AnalyzerCategory
     {
-        private const string CommitHash = "4ad2ebe71296a1d6e70d2f22f7b997edcd9e257d";
-
         public const string RulePrefix = "AV";
 
         [NotNull]
@@ -52,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer
             }
 
             string ruleNumber = ruleId.Substring(2);
-            return $"https://github.com/dennisdoomen/CSharpGuidelines/blob/{CommitHash}/_rules/{ruleNumber}.md";
+            return $"https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/{ruleNumber}.md";
         }
     }
 }
