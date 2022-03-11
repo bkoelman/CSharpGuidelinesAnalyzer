@@ -210,25 +210,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Performance
         {
             if (type is INamedTypeSymbol namedType)
             {
-                namedType = UnwrapNullable(namedType);
-                return valueTaskTypes.Contains(namedType.ConstructedFrom);
-            }
-
-            return false;
-        }
-
-        [NotNull]
-        private static INamedTypeSymbol UnwrapNullable([NotNull] INamedTypeSymbol type)
-        {
-            if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
-            {
-                if (type.TypeArguments[0] is INamedTypeSymbol innerType)
+                if (namedType.UnwrapNullableValueType() is INamedTypeSymbol unwrappedType)
                 {
-                    return innerType;
+                    return valueTaskTypes.Any(valueTaskType => valueTaskType.IsEqualTo(unwrappedType.ConstructedFrom));
                 }
             }
 
-            return type;
+            return false;
         }
 
         private sealed class AssignmentInfo

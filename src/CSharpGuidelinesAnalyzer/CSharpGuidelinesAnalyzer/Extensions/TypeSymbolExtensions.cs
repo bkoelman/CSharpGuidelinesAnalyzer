@@ -12,6 +12,22 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             return type.SpecialType == SpecialType.System_Boolean || IsNullableBoolean(type);
         }
 
+        [NotNull]
+        public static ITypeSymbol UnwrapNullableValueType([NotNull] this ITypeSymbol type)
+        {
+            if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            {
+                var namedType = (INamedTypeSymbol)type;
+
+                if (namedType.TypeArguments[0] is INamedTypeSymbol innerType)
+                {
+                    return innerType;
+                }
+            }
+
+            return type;
+        }
+
         public static bool IsNullableBoolean([NotNull] this ITypeSymbol type)
         {
             Guard.NotNull(type, nameof(type));

@@ -96,6 +96,9 @@ This analyzer reports when:
 - the longest overloaded method (the one with the most parameters) is not virtual
 - the order of parameters in an overloaded method does not match with the parameter order of the longest overload.
 
+### [AV1553](https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/1553.md): Only use optional parameters to replace overloads ![](/images/warn.png "severity: warning")
+This analyzer reports when an optional parameter of type string, collection or task has default value `null`.
+
 ### [AV1554](https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/1554.md): Do not use optional parameters in interface methods or their concrete implementations ![](/images/warn.png "severity: warning")
 This analyzer reports when an interface method or an abstract/virtual/override method contains an optional parameter.
 
