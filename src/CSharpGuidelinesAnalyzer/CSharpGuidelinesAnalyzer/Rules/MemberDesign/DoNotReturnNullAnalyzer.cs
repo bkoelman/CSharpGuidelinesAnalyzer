@@ -92,18 +92,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private static bool ReturnsStringOrCollectionOrTask([NotNull] IReturnOperation returnOperation,
             [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
         {
-            return ImplementsIEnumerable(returnOperation.ReturnedValue.Type) || IsTask(returnOperation.ReturnedValue.Type, taskTypes);
-        }
-
-        private static bool ImplementsIEnumerable([NotNull] ITypeSymbol type)
-        {
-            return IsEnumerableInterface(type) || type.AllInterfaces.Any(IsEnumerableInterface);
-        }
-
-        private static bool IsEnumerableInterface([NotNull] ITypeSymbol type)
-        {
-            return type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
-                type.SpecialType == SpecialType.System_Collections_IEnumerable;
+            return returnOperation.ReturnedValue.Type.IsOrImplementsIEnumerable() || IsTask(returnOperation.ReturnedValue.Type, taskTypes);
         }
 
         private static bool IsTask([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)

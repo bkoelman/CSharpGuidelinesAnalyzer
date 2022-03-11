@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Extensions
@@ -44,6 +45,28 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             }
 
             return false;
+        }
+
+        public static bool ImplementsIEnumerable([NotNull] this ITypeSymbol type)
+        {
+            Guard.NotNull(type, nameof(type));
+
+            return type.AllInterfaces.Any(IsEnumerableInterface);
+        }
+
+        public static bool IsOrImplementsIEnumerable([NotNull] this ITypeSymbol type)
+        {
+            Guard.NotNull(type, nameof(type));
+
+            return IsEnumerableInterface(type) || type.AllInterfaces.Any(IsEnumerableInterface);
+        }
+
+        public static bool IsEnumerableInterface([NotNull] this ITypeSymbol type)
+        {
+            Guard.NotNull(type, nameof(type));
+
+            return type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
+                type.SpecialType == SpecialType.System_Collections_IEnumerable;
         }
     }
 }

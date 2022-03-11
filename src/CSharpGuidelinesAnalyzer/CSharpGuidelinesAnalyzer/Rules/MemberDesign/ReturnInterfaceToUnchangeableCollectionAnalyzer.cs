@@ -121,7 +121,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
 
         private static bool IsChangeableCollection([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
         {
-            if (!TypeImplementsIEnumerable(type))
+            if (!type.ImplementsIEnumerable())
             {
                 return false;
             }
@@ -132,16 +132,6 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             }
 
             return true;
-        }
-
-        private static bool TypeImplementsIEnumerable([NotNull] ITypeSymbol type)
-        {
-            return type.AllInterfaces.Any(IsIEnumerable);
-        }
-
-        private static bool IsIEnumerable([NotNull] INamedTypeSymbol type)
-        {
-            return type.SpecialType == SpecialType.System_Collections_IEnumerable;
         }
     }
 }

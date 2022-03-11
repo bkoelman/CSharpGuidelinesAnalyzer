@@ -729,8 +729,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             public bool IsEnumerable([NotNull] ITypeSymbol type)
             {
-                return type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
-                    type.SpecialType == SpecialType.System_Collections_IEnumerable;
+                return type.IsEnumerableInterface();
             }
 
             public bool IsQueryable([NotNull] ITypeSymbol type)
