@@ -176,7 +176,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
                 IOperation operation = model.GetOperation(bodySyntax);
 
-                if (!operation.HasErrors(compilation, cancellationToken))
+                if (operation != null && !operation.HasErrors(compilation, cancellationToken))
                 {
                     return operation;
                 }

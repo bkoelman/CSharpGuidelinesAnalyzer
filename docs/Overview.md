@@ -157,6 +157,11 @@ This analyzer reports when all public and internal methods of a static class are
 ### [AV1755](https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/1755.md): Postfix asynchronous methods with `Async` or `TaskAsync` ![](/images/warn.png "severity: warning")
 This analyzer reports when the name of an `async` method does not end with "Async".
 
+## Category: Performance
+
+### [AV1840](https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/1840.md): Await `ValueTask` and `ValueTask<T>` directly and exactly once ![](/images/warn.png "severity: warning")
+This analyzer reports when an expression of type `ValueTask` or `ValueTask<T>` is being assigned or used as argument without `await`.
+
 ## Category: Framework
 
 ### [AV2202](https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/2202.md): Prefer language syntax over explicit calls to underlying implementations ![](/images/warn.png "severity: warning")
@@ -194,5 +199,6 @@ This analyzer reports when a comment is found inside a method body, except when 
 This analyzer reports when a comment starts with the word "TODO".
 
 ## Category: Layout
+
 ### [AV2407](https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/2407.md): Do not use #region ![](/images/warn.png "severity: warning")
 This analyzer reports when a `#region` directive is found.

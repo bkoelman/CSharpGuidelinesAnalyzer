@@ -94,6 +94,22 @@ namespace CSharpGuidelinesAnalyzer
         }
 
         [CanBeNull]
+        public static INamedTypeSymbol SystemRuntimeCompilerServicesConfiguredValueTaskAwaitable([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable");
+        }
+
+        [CanBeNull]
+        public static INamedTypeSymbol SystemRuntimeCompilerServicesConfiguredValueTaskAwaitableT([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable`1");
+        }
+
+        [CanBeNull]
         public static INamedTypeSymbol SystemCollectionsGenericEqualityComparerT([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
