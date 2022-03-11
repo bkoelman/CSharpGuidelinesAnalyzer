@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
@@ -51,6 +52,98 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Argument for parameter 'outer' in method call to 'Example.A(object)' calls nested method 'Example.B(object)'");
+        }
+
+        [Fact]
+        internal void When_method_calls_are_nested_from_constructor_this_initializer_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class Example
+                    {
+                        public Example()
+                            : this(GetDefaultText())
+                        {
+                        }
+
+                        public Example(string text) => throw null;
+
+                        static string GetDefaultText() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_calls_are_nested_from_constructor_base_initializer_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class Base
+                    {
+                        public Base(string text) => throw null;
+                    }
+
+                    class Derived : Base
+                    {
+                        public Derived()
+                            : base(GetDefaultText())
+                        {
+                        }
+
+                        static string GetDefaultText() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_calls_are_nested_from_field_initializer_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .InGlobalScope(@"
+                    class C
+                    {
+                        string _value = Convert(GetDefaultText());
+
+                        static string Convert(string source) => throw null;
+                        static string GetDefaultText() => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_extension_method_calls_are_nested_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(Enumerable).Namespace)
+                .Using(typeof(IEnumerable<>).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        var query = GetItems().Skip(1).Take(1).Select(item => item.First()).ToArray();
+                    }
+
+                    IEnumerable<string> GetItems() => throw null;
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]

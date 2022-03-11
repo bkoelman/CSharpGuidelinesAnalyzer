@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -42,11 +43,67 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var argument = (IArgumentOperation)context.Operation;
 
+            if (IsThisArgumentInExtensionMethod(argument) || IsInFieldOrConstructorInitializer(argument))
+            {
+                return;
+            }
+
             if (argument.Value is IInvocationOperation invocation)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, invocation.Syntax.GetLocation(), argument.Parameter.Name,
-                    argument.Parameter.ContainingSymbol, invocation.TargetMethod));
+                string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                context.ReportDiagnostic(Diagnostic.Create(Rule, invocation.Syntax.GetLocation(), argument.Parameter.Name, outerName, innerName));
             }
+        }
+
+        private static bool IsThisArgumentInExtensionMethod([NotNull] IArgumentOperation argument)
+        {
+            if (argument.Parameter.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
+            {
+                IParameterSymbol thisParameter = method.Parameters.FirstOrDefault();
+
+                if (thisParameter != null && argument.Parameter.IsEqualTo(thisParameter))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsInFieldOrConstructorInitializer([NotNull] IArgumentOperation argument)
+        {
+            IOperation parent = argument.Parent;
+
+            while (parent != null)
+            {
+                if (parent is IFieldInitializerOperation)
+                {
+                    return true;
+                }
+
+                // IConstructorBodyOperation is unavailable in the version of Microsoft.CodeAnalysis we depend on.
+                if (parent.GetType().ToString() == "Microsoft.CodeAnalysis.Operations.ConstructorBodyOperation" &&
+                    IsConstructor(argument.Parameter.ContainingSymbol))
+                {
+                    return true;
+                }
+
+                parent = parent.Parent;
+            }
+
+            return false;
+        }
+
+        private static bool IsConstructor([NotNull] ISymbol symbol)
+        {
+            if (symbol is IMethodSymbol method)
+            {
+                return method.MethodKind == MethodKind.Constructor || method.MethodKind == MethodKind.StaticConstructor;
+            }
+
+            return false;
         }
     }
 }
