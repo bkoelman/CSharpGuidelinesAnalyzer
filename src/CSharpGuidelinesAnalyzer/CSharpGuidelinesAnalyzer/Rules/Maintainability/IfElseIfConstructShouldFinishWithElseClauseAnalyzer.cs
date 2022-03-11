@@ -194,7 +194,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 private bool HandleMissingElseClause()
                 {
-                    owner.context.ReportDiagnostic(Diagnostic.Create(Rule, topIfKeywordLocation));
+                    var diagnostic = Diagnostic.Create(Rule, topIfKeywordLocation);
+                    owner.context.ReportDiagnostic(diagnostic);
+
                     Remove(ifStatement, owner.ifStatementsLeftToAnalyze);
                     return false;
                 }

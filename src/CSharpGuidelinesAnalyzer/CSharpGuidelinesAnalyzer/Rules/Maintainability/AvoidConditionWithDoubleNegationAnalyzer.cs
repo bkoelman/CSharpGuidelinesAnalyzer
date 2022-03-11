@@ -52,7 +52,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (symbol != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, notExpression.GetLocation(), symbol.GetKind().ToLowerInvariant(), symbol.Name));
+                Location location = notExpression.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location, symbol.GetKind().ToLowerInvariant(), symbol.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

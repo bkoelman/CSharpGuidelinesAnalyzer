@@ -81,7 +81,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 if (IsRegularParameter(parameter) && !IsParameterUsed(parameter, dataFlowAnalysis))
                 {
                     string functionKind = context.Node is AnonymousMethodExpressionSyntax ? "anonymous method" : "lambda";
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], functionKind, parameter.Name));
+
+                    var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], functionKind, parameter.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

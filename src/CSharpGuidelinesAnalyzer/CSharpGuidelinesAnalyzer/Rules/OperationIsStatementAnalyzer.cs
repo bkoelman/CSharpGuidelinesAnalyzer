@@ -45,7 +45,9 @@ namespace CSharpGuidelinesAnalyzer.Rules
                 Location location = locationForKeyword ?? context.Operation.Syntax.GetLocation();
 
                 string keywordText = GetTextAt(location);
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location, keywordText));
+
+                var diagnostic = Diagnostic.Create(Rule, location, keywordText);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

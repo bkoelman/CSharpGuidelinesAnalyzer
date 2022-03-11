@@ -75,7 +75,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             if (WordsReplacementMap.ContainsKey(symbol.Name))
             {
-                reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name, WordsReplacementMap[symbol.Name]));
+                var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name, WordsReplacementMap[symbol.Name]);
+                reportDiagnostic(diagnostic);
             }
         }
     }

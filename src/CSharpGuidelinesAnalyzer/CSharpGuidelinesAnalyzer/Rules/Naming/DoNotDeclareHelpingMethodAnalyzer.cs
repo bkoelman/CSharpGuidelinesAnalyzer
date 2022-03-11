@@ -52,11 +52,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 return;
             }
 
-            ICollection<WordToken> wordsListed = type.Name.GetWordsInList(WordsBlacklist);
+            IReadOnlyCollection<WordToken> wordsListed = type.Name.GetWordsInList(WordsBlacklist);
 
             if (wordsListed.Any())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name, wordsListed.First().Text));
+                var diagnostic = Diagnostic.Create(Rule, type.Locations[0], type.Name, wordsListed.First().Text);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

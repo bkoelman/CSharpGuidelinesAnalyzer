@@ -65,7 +65,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 {
                     if (dataFlowAnalysis.WrittenInside.Contains(variableSymbol))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, variableDeclaratorSyntax.Identifier.GetLocation(), variableSymbol.Name));
+                        Location location = variableDeclaratorSyntax.Identifier.GetLocation();
+
+                        var diagnostic = Diagnostic.Create(Rule, location, variableSymbol.Name);
+                        context.ReportDiagnostic(diagnostic);
                     }
                 }
             }

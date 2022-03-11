@@ -71,8 +71,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
-            reportDiagnostic(Diagnostic.Create(Rule, method.Locations[0], method.GetKind().ToLowerInvariant(),
-                method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+            string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+            var diagnostic = Diagnostic.Create(Rule, method.Locations[0], method.GetKind().ToLowerInvariant(), name);
+            reportDiagnostic(diagnostic);
         }
     }
 }

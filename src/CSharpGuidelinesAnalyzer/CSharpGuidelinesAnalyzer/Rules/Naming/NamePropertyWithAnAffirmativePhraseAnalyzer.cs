@@ -116,8 +116,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 ? parameterSymbol.ContainingSymbol.DeclaredAccessibility
                 : symbol.DeclaredAccessibility;
 
-            context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], accessibility.ToText().ToLowerInvariant(),
-                symbol.GetKind().ToLowerInvariant(), symbol.Name));
+            string accessibilityText = accessibility.ToText().ToLowerInvariant();
+            string kindText = symbol.GetKind().ToLowerInvariant();
+
+            var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], accessibilityText, kindText, symbol.Name);
+            context.ReportDiagnostic(diagnostic);
         }
     }
 }

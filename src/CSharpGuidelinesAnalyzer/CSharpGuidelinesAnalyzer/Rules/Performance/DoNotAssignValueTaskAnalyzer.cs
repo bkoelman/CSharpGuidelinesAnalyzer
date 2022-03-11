@@ -169,7 +169,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Performance
                 if (leftSymbol != null)
                 {
                     Location location = assignmentExpression.OperatorToken.GetLocation();
-                    var assignmentInfo = new AssignmentInfo(leftSymbol.ToString(), location, operation.Type);
+                    string leftName = leftSymbol.ToString();
+                    var assignmentInfo = new AssignmentInfo(leftName, location, operation.Type);
 
                     AnalyzeRightHandSideType(assignmentInfo, valueTaskTypes, context);
                 }
@@ -181,7 +182,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Performance
         {
             if (IsValueTask(assignmentInfo.RightType, valueTaskTypes))
             {
-                context.ReportDiagnostic(Diagnostic.Create(AssignmentRule, assignmentInfo.OperatorLocation, assignmentInfo.LeftName));
+                var diagnostic = Diagnostic.Create(AssignmentRule, assignmentInfo.OperatorLocation, assignmentInfo.LeftName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -201,7 +203,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Performance
                     ISymbol method = argumentOperation.Parameter.ContainingSymbol.OriginalDefinition;
                     string containerName = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                    context.ReportDiagnostic(Diagnostic.Create(ArgumentRule, location, parameterName, containerName));
+                    var diagnostic = Diagnostic.Create(ArgumentRule, location, parameterName, containerName);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

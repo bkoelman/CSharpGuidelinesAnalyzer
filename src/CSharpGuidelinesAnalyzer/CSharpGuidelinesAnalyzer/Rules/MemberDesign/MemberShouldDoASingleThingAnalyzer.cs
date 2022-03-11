@@ -63,7 +63,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         {
             if (RequiresAnalysis(symbol, cancellationToken) && ContainsBlacklistedWord(symbol.Name))
             {
-                reportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name));
+                var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name);
+                reportDiagnostic(diagnostic);
             }
         }
 

@@ -1,2 +1,3 @@
 [*.cs]
+dotnet_diagnostic.AV1580.severity = none
 dotnet_diagnostic.AV2407.severity = none

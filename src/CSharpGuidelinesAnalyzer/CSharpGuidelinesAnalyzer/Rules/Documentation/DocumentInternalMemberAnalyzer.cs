@@ -129,8 +129,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             if (string.IsNullOrEmpty(documentationXml))
             {
-                context.ReportDiagnostic(Diagnostic.Create(MissingTypeOrMemberRule, symbol.Locations[0],
-                    symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat)));
+                string name = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+
+                var diagnostic = Diagnostic.Create(MissingTypeOrMemberRule, symbol.Locations[0], name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             if (symbol is IMethodSymbol method && method.Parameters.Any() && !InheritsDocumentation(documentationXml))
@@ -216,7 +218,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     {
                         if (!parameter.IsSynthesized())
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(MissingParameterRule, parameter.Locations[0], parameter.Name));
+                            var diagnostic = Diagnostic.Create(MissingParameterRule, parameter.Locations[0], parameter.Name);
+                            context.ReportDiagnostic(diagnostic);
                         }
                     }
                     else
@@ -238,7 +241,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                context.ReportDiagnostic(Diagnostic.Create(ExtraParameterRule, context.Symbol.Locations[0], parameterNameInDocumentation));
+                var diagnostic = Diagnostic.Create(ExtraParameterRule, context.Symbol.Locations[0], parameterNameInDocumentation);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

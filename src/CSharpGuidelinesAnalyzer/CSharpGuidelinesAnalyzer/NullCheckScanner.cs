@@ -30,8 +30,9 @@ namespace CSharpGuidelinesAnalyzer
                 IsNullableValueType(propertyReference.Instance))
             {
                 NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(propertyReference);
+                NullCheckOperand toggledOperand = nullCheckOperand.Toggle();
 
-                return new NullCheckScanResult(propertyReference.Instance, NullCheckMethod.NullableHasValueMethod, nullCheckOperand.Toggle());
+                return new NullCheckScanResult(propertyReference.Instance, NullCheckMethod.NullableHasValueMethod, toggledOperand);
             }
 
             return null;
@@ -215,7 +216,8 @@ namespace CSharpGuidelinesAnalyzer
             IOperation leftArgumentNoConversion = info.LeftArgument.SkipTypeConversions();
             IOperation rightArgumentNoConversion = info.RightArgument.SkipTypeConversions();
 
-            return InnerAnalyzeArguments(info.WithArguments(leftArgumentNoConversion, rightArgumentNoConversion));
+            ArgumentsInfo arguments = info.WithArguments(leftArgumentNoConversion, rightArgumentNoConversion);
+            return InnerAnalyzeArguments(arguments);
         }
 
         [CanBeNull]

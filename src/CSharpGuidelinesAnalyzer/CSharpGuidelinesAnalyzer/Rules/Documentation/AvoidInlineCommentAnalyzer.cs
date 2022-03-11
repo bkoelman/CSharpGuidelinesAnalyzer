@@ -61,7 +61,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
                     if (!IsResharperDirective(commentText) && !IsArrangeActAssertUnitTestPattern(commentText))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, commentTrivia.GetLocation()));
+                        Location location = commentTrivia.GetLocation();
+
+                        var diagnostic = Diagnostic.Create(Rule, location);
+                        context.ReportDiagnostic(diagnostic);
                     }
                 }
             }

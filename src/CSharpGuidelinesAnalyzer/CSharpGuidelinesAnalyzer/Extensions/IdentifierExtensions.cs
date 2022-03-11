@@ -10,7 +10,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
     internal static class IdentifierExtensions
     {
         [NotNull]
-        public static ICollection<WordToken> GetWordsInList([NotNull] this string identifierName, [NotNull] [ItemNotNull] ICollection<string> list)
+        public static IReadOnlyCollection<WordToken> GetWordsInList([NotNull] this string identifierName, [NotNull] [ItemNotNull] ICollection<string> list)
         {
             Guard.NotNull(identifierName, nameof(identifierName));
             Guard.NotNullNorEmpty(list, nameof(list));
@@ -68,7 +68,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             var tokenizer = new WordsTokenizer(identifierName);
 
             WordToken[] words = tokenizer.GetWords().Take(1).ToArray();
-            return words.Any() && IsListed(words.First(), list);
+            return words.Any() && IsListed(words[0], list);
         }
 
         private static bool QuickScanMayContainWordsListed([NotNull] string text, [NotNull] [ItemNotNull] IEnumerable<string> list)

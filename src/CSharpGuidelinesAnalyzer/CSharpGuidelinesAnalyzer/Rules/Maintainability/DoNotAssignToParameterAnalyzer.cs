@@ -73,7 +73,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             using var collector = new DiagnosticCollector(context.ReportDiagnostic);
 
-            InnerAnalyzeMethod(context.Wrap(method), collector);
+            BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(method);
+            InnerAnalyzeMethod(methodContext, collector);
         }
 
         private static void AnalyzeProperty(SymbolAnalysisContext context)
@@ -108,7 +109,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            InnerAnalyzeMethod(context.Wrap(accessorMethod), collector);
+            BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(accessorMethod);
+            InnerAnalyzeMethod(methodContext, collector);
         }
 
         private static void FilterDuplicateLocations([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
@@ -159,7 +161,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             using var collector = new DiagnosticCollector(context.ReportDiagnostic);
 
-            InnerAnalyzeMethod(context.Wrap(localFunction.Symbol), collector);
+            BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(localFunction.Symbol);
+            InnerAnalyzeMethod(methodContext, collector);
         }
 
         private static void AnalyzeAnonymousFunction(OperationAnalysisContext context)
@@ -173,7 +176,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             using var collector = new DiagnosticCollector(context.ReportDiagnostic);
 
-            InnerAnalyzeMethod(context.Wrap(anonymousFunction.Symbol), collector);
+            BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(anonymousFunction.Symbol);
+            InnerAnalyzeMethod(methodContext, collector);
         }
 
         private static bool ShouldSkip([NotNull] IMethodSymbol method)
@@ -190,7 +194,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            AnalyzeParametersInMethod(context.WithTarget(context.Target.Parameters), bodySyntax, collector);
+            BaseAnalysisContext<ImmutableArray<IParameterSymbol>> analysisContext = context.WithTarget(context.Target.Parameters);
+            AnalyzeParametersInMethod(analysisContext, bodySyntax, collector);
         }
 
         private static void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context, [NotNull] SyntaxNode bodySyntax,
@@ -203,14 +208,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (ordinaryParameters.Any())
             {
-                AnalyzeOrdinaryParameters(context.WithTarget(ordinaryParameters), bodySyntax, collector);
+                BaseAnalysisContext<ICollection<IParameterSymbol>> analysisContext = context.WithTarget(ordinaryParameters);
+                AnalyzeOrdinaryParameters(analysisContext, bodySyntax, collector);
             }
 
             ICollection<IParameterSymbol> structParameters = parameterGrouping.Where(group => group.Key).SelectMany(group => group).ToArray();
 
             if (structParameters.Any())
             {
-                AnalyzeStructParameters(context.WithTarget(structParameters), bodySyntax, collector);
+                BaseAnalysisContext<ICollection<IParameterSymbol>> analysisContext = context.WithTarget(structParameters);
+                AnalyzeStructParameters(analysisContext, bodySyntax, collector);
             }
         }
 
@@ -238,7 +245,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (dataFlowAnalysis.WrittenInside.Contains(parameter))
                 {
-                    collector.Add(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                    var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name);
+                    collector.Add(diagnostic);
                 }
             }
         }
@@ -275,7 +283,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             foreach (IParameterSymbol parameter in walker.ParametersAssigned)
             {
-                collector.Add(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name);
+                collector.Add(diagnostic);
             }
         }
 

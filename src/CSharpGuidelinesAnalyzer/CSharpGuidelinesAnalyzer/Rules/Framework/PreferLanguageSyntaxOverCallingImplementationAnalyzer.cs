@@ -83,7 +83,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                     return;
                 }
 
-                context.ReportDiagnostic(Diagnostic.Create(NullableHasValueRule, propertyReference.Syntax.GetLocation()));
+                Location location = propertyReference.Syntax.GetLocation();
+
+                var diagnostic = Diagnostic.Create(NullableHasValueRule, location);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -93,7 +96,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (DoReportForNullableComparison(binaryOperator, scanner))
             {
-                context.ReportDiagnostic(Diagnostic.Create(NullableComparisonRule, binaryOperator.Syntax.GetLocation()));
+                Location location = binaryOperator.Syntax.GetLocation();
+
+                var diagnostic = Diagnostic.Create(NullableComparisonRule, location);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

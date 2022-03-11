@@ -67,8 +67,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
                 {
                     Location location = GetInvocationLocation(context);
 
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, location,
-                        context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                    string name = context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                    var diagnostic = Diagnostic.Create(Rule, location, name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

@@ -52,8 +52,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                 string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                Location location = invocation.Syntax.GetLocation();
 
-                context.ReportDiagnostic(Diagnostic.Create(Rule, invocation.Syntax.GetLocation(), argument.Parameter.Name, outerName, innerName));
+                var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

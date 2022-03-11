@@ -90,9 +90,11 @@ namespace CSharpGuidelinesAnalyzer.Rules
             if (scanResult != null)
             {
                 IOperation operation = scanResult.Value.Target;
+                Location location = operation.Syntax.GetLocation();
+                string nullText = scanResult.Value.Operand == NullCheckOperand.IsNull ? "null" : "not-null";
 
-                reportDiagnostic(Diagnostic.Create(Rule, operation.Syntax.GetLocation(), operation.Syntax.ToString(),
-                    scanResult.Value.Operand == NullCheckOperand.IsNull ? "null" : "not-null", scanResult.Value.Method));
+                var diagnostic = Diagnostic.Create(Rule, location, operation.Syntax.ToString(), nullText, scanResult.Value.Method);
+                reportDiagnostic(diagnostic);
             }
         }
     }

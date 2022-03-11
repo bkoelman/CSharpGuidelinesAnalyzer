@@ -46,7 +46,8 @@ namespace CSharpGuidelinesAnalyzer.Settings
                         builder.Append('_');
                     }
 
-                    builder.Append(char.ToLowerInvariant(ch));
+                    char lowerCaseChar = char.ToLowerInvariant(ch);
+                    builder.Append(lowerCaseChar);
                     continue;
                 }
 

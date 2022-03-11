@@ -127,7 +127,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 if (longestOverload.ContainingType.IsEqualTo(activeType) && CanBeMadeVirtual(longestOverload))
                 {
                     IMethodSymbol methodToReport = longestOverload.PartialImplementationPart ?? longestOverload;
-                    context.ReportDiagnostic(Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]));
+
+                    var diagnostic = Diagnostic.Create(MakeVirtualRule, methodToReport.Locations[0]);
+                    context.ReportDiagnostic(diagnostic);
                 }
 
                 var info = new OverloadsInfo(methodGroup, longestOverload, context);
@@ -159,9 +161,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (!InvokesAnotherOverload(overload, invocationWalker, info.Context))
             {
                 IMethodSymbol methodToReport = overload.PartialImplementationPart ?? overload;
+                string name = methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                info.Context.ReportDiagnostic(Diagnostic.Create(InvokeRule, methodToReport.Locations[0],
-                    methodToReport.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                var diagnostic = Diagnostic.Create(InvokeRule, methodToReport.Locations[0], name);
+                info.Context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -186,8 +189,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (!AreParametersDeclaredInSameOrder(method, parametersInLongestOverload))
             {
-                context.ReportDiagnostic(Diagnostic.Create(OrderRule, method.Locations[0],
-                    method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                var diagnostic = Diagnostic.Create(OrderRule, method.Locations[0], name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

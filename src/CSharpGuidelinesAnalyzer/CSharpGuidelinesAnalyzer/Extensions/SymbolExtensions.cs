@@ -255,7 +255,9 @@ namespace CSharpGuidelinesAnalyzer.Extensions
         {
             foreach (AttributeData attribute in method.GetAttributes())
             {
-                if (UnitTestFrameworkMethodAttributeNames.Contains(attribute.AttributeClass.ToString()))
+                string attributeClassName = attribute.AttributeClass.ToString();
+
+                if (UnitTestFrameworkMethodAttributeNames.Contains(attributeClassName))
                 {
                     return true;
                 }

@@ -100,7 +100,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (type.ContainingNamespace.IsGlobalNamespace && !type.IsSynthesized() && !IsTopLevelStatementsContainer(type))
             {
-                context.ReportDiagnostic(Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, type.ContainingAssembly.Name));
+                var diagnostic = Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, type.ContainingAssembly.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -133,7 +134,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             private SymbolAnalysisContext context;
 
             [NotNull]
-            private string CurrentNamespaceName => string.Join(".", namespaceNames.Reverse());
+            private string CurrentNamespaceName
+            {
+                get
+                {
+                    IEnumerable<string> reversed = namespaceNames.Reverse();
+                    return string.Join(".", reversed);
+                }
+            }
 
             public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName, SymbolAnalysisContext context)
             {
@@ -154,7 +162,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
                 if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequirePartialMatchWithAssemblyName) && !symbol.IsSynthesized())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName, reportAssemblyName));
+                    var diagnostic = Diagnostic.Create(NamespaceRule, symbol.Locations[0], CurrentNamespaceName, reportAssemblyName);
+                    context.ReportDiagnostic(diagnostic);
                 }
 
                 VisitChildren(symbol);
@@ -179,8 +188,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName) && !symbol.IsSynthesized())
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name, CurrentNamespaceName,
-                        reportAssemblyName));
+                    var diagnostic = Diagnostic.Create(TypeInNamespaceRule, symbol.Locations[0], symbol.Name, CurrentNamespaceName, reportAssemblyName);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
 

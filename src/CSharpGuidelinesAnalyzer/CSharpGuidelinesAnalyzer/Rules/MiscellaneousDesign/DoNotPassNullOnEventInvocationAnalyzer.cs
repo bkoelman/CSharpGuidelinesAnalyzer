@@ -131,7 +131,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (senderArgument != null && IsNullConstant(senderArgument.Value))
             {
-                context.ReportDiagnostic(Diagnostic.Create(SenderRule, senderArgument.Syntax.GetLocation()));
+                Location location = senderArgument.Syntax.GetLocation();
+
+                var diagnostic = Diagnostic.Create(SenderRule, location);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -150,7 +153,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (argsArgument != null && IsNullConstant(argsArgument.Value))
             {
-                context.ReportDiagnostic(Diagnostic.Create(ArgsRule, argsArgument.Syntax.GetLocation(), argsArgument.Parameter.Name));
+                Location location = argsArgument.Syntax.GetLocation();
+
+                var diagnostic = Diagnostic.Create(ArgsRule, location, argsArgument.Parameter.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

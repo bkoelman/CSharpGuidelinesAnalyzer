@@ -181,9 +181,10 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             public override IdentifierInfo VisitLocalReference([NotNull] ILocalReferenceOperation operation, [CanBeNull] object argument)
             {
-                var name = new IdentifierName(operation.Local.Name, operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                string longName = operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                var identifierName = new IdentifierName(operation.Local.Name, longName);
 
-                return new IdentifierInfo(name, operation.Local.Type);
+                return new IdentifierInfo(identifierName, operation.Local.Type);
             }
 
             [NotNull]
@@ -217,18 +218,19 @@ namespace CSharpGuidelinesAnalyzer.Extensions
             [NotNull]
             private IdentifierInfo CreateForMemberReferenceExpression([NotNull] IMemberReferenceOperation operation, [NotNull] ITypeSymbol memberType)
             {
-                var name = new IdentifierName(operation.Member.Name, operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                string longName = operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                var identifierName = new IdentifierName(operation.Member.Name, longName);
 
-                return new IdentifierInfo(name, memberType);
+                return new IdentifierInfo(identifierName, memberType);
             }
 
             [NotNull]
             public override IdentifierInfo VisitInvocation([NotNull] IInvocationOperation operation, [CanBeNull] object argument)
             {
-                var name = new IdentifierName(operation.TargetMethod.Name,
-                    operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat));
+                string longName = operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                var identifierName = new IdentifierName(operation.TargetMethod.Name, longName);
 
-                return new IdentifierInfo(name, operation.TargetMethod.ReturnType);
+                return new IdentifierInfo(identifierName, operation.TargetMethod.ReturnType);
             }
         }
 

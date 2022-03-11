@@ -45,7 +45,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             }
 
             [NotNull]
+#pragma warning disable AV1554 // Method contains optional parameter in type hierarchy
             public override SourceText GetText(CancellationToken cancellationToken = new CancellationToken())
+#pragma warning restore AV1554 // Method contains optional parameter in type hierarchy
             {
                 return sourceText;
             }

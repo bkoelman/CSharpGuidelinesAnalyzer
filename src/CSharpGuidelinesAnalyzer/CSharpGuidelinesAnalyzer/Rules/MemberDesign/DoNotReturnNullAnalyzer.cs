@@ -108,8 +108,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             {
                 Location location = returnOperation.ReturnedValue.Syntax.GetLocation();
                 string kind = method.GetKind().ToLowerInvariant();
+                string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind, method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                var diagnostic = Diagnostic.Create(Rule, location, kind, name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

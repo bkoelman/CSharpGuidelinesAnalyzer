@@ -64,7 +64,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
             if (ContainsBlacklistedWord(identifier.ValueText))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, identifier.GetLocation(), identifier.ValueText));
+                Location location = identifier.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location, identifier.ValueText);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

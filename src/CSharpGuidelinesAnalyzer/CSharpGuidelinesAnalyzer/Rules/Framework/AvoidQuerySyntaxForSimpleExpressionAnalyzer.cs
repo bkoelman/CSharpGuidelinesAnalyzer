@@ -52,7 +52,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (complexity <= 1 && !IsIncomplete(queryExpression))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, queryExpression.GetLocation()));
+                Location location = queryExpression.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

@@ -43,7 +43,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Layout
             var trivia = (RegionDirectiveTriviaSyntax)context.Node;
 
             Location location = trivia.GetLocation();
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+
+            var diagnostic = Diagnostic.Create(Rule, location);
+            context.ReportDiagnostic(diagnostic);
         }
     }
 }

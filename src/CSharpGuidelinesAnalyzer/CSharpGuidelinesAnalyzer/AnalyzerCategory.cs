@@ -21,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer
 
         [NotNull]
         public static readonly AnalyzerCategory Naming = new AnalyzerCategory("Naming");
-        
+
         [NotNull]
         public static readonly AnalyzerCategory Performance = new AnalyzerCategory("Performance");
 

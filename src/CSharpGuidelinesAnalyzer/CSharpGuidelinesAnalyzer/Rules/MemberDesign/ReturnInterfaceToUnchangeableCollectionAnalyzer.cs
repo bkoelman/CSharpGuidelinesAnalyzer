@@ -59,24 +59,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         [ItemNotNull]
         private static ISet<INamedTypeSymbol> ResolveUnchangeableCollectionInterfaces([NotNull] Compilation compilation)
         {
-            var unchangeableCollectionInterfaces = new HashSet<INamedTypeSymbol>();
-
-            IncludeIfNotNull(KnownTypes.SystemCollectionsGenericIEnumerableT(compilation), unchangeableCollectionInterfaces);
-            IncludeIfNotNull(KnownTypes.SystemCollectionsGenericIAsyncEnumerableT(compilation), unchangeableCollectionInterfaces);
-            IncludeIfNotNull(KnownTypes.SystemCollectionsGenericIReadOnlyCollectionT(compilation), unchangeableCollectionInterfaces);
-            IncludeIfNotNull(KnownTypes.SystemCollectionsGenericIReadOnlyListT(compilation), unchangeableCollectionInterfaces);
-            IncludeIfNotNull(KnownTypes.SystemCollectionsGenericIReadOnlySetT(compilation), unchangeableCollectionInterfaces);
-            IncludeIfNotNull(KnownTypes.SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue(compilation), unchangeableCollectionInterfaces);
-
-            return unchangeableCollectionInterfaces;
-        }
-
-        private static void IncludeIfNotNull([CanBeNull] INamedTypeSymbol typeToInclude, [NotNull] [ItemNotNull] ISet<INamedTypeSymbol> types)
-        {
-            if (typeToInclude != null)
+            INamedTypeSymbol[] types =
             {
-                types.Add(typeToInclude);
-            }
+                KnownTypes.SystemCollectionsGenericIEnumerableT(compilation),
+                KnownTypes.SystemCollectionsGenericIAsyncEnumerableT(compilation),
+                KnownTypes.SystemCollectionsGenericIReadOnlyCollectionT(compilation),
+                KnownTypes.SystemCollectionsGenericIReadOnlyListT(compilation),
+                KnownTypes.SystemCollectionsGenericIReadOnlySetT(compilation),
+                KnownTypes.SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue(compilation)
+            };
+
+            return types.Where(type => type != null).ToImmutableHashSet();
         }
 
         private static void AnalyzeMethod(SymbolAnalysisContext context, [NotNull] [ItemNotNull] ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
@@ -93,8 +86,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 if (!method.IsPropertyOrEventAccessor() && !method.IsOverride && !method.IsInterfaceImplementation() &&
                     !method.HidesBaseMember(context.CancellationToken))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0],
-                        method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                    string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                    var diagnostic = Diagnostic.Create(Rule, method.Locations[0], name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

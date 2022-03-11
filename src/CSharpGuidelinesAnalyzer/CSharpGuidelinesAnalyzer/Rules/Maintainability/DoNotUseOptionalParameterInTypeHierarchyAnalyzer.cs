@@ -55,7 +55,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     SyntaxReference syntaxReference = parameter.DeclaringSyntaxReferences.First();
                     var location = Location.Create(syntaxReference.SyntaxTree, syntaxReference.Span);
 
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, location, containerName, parameter.Name));
+                    var diagnostic = Diagnostic.Create(Rule, location, containerName, parameter.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

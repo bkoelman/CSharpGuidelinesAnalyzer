@@ -2,7 +2,6 @@
 <Project>
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <WarningLevel>9999</WarningLevel>
 
     <!-- Required for code coverage -->
     <DebugType>full</DebugType>
@@ -10,5 +9,9 @@
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <NoWarn>$(NoWarn);AV2210</NoWarn>
   </PropertyGroup>
 </Project>

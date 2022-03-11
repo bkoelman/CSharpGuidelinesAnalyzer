@@ -71,7 +71,8 @@ namespace CSharpGuidelinesAnalyzer.Rules
 
             if (location != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+                var diagnostic = Diagnostic.Create(Rule, location);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

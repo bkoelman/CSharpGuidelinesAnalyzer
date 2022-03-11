@@ -56,7 +56,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static void ReportAtLastLabel([NotNull] SwitchSectionSyntax switchSection, SyntaxNodeAnalysisContext context)
         {
             SwitchLabelSyntax lastLabel = switchSection.Labels.Last();
-            context.ReportDiagnostic(Diagnostic.Create(Rule, lastLabel.Keyword.GetLocation()));
+            Location location = lastLabel.Keyword.GetLocation();
+
+            var diagnostic = Diagnostic.Create(Rule, location);
+            context.ReportDiagnostic(diagnostic);
         }
     }
 }

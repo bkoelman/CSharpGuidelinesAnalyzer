@@ -88,7 +88,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             string memberName = context.OwningSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             Location location = GetMemberLocation(context.OwningSymbol, context.SemanticModel, context.CancellationToken);
 
-            context.ReportDiagnostic(Diagnostic.Create(Rule, location, kind, memberName, statementCount, maxStatementCount));
+            var diagnostic = Diagnostic.Create(Rule, location, kind, memberName, statementCount, maxStatementCount);
+            context.ReportDiagnostic(diagnostic);
         }
 
         [NotNull]

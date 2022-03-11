@@ -54,8 +54,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
             if (!context.Symbol.IsOverride && context.Symbol.HidesBaseMember(context.CancellationToken))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0],
-                    context.Symbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                string memberName = context.Symbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                var diagnostic = Diagnostic.Create(Rule, context.Symbol.Locations[0], memberName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

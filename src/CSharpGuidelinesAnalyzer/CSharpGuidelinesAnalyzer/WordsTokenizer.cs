@@ -65,7 +65,9 @@ namespace CSharpGuidelinesAnalyzer
 
             if (IsUpperCaseLetter(ch))
             {
-                return IsLowerCaseLetter(PeekChar())
+                char? nextChar = PeekChar();
+
+                return IsLowerCaseLetter(nextChar)
                     ? CreateTokenFromScan(startIndex, WordTokenKind.PascalCaseWord)
                     : CreateTokenFromScan(startIndex, WordTokenKind.UpperCaseWord);
             }
@@ -113,12 +115,18 @@ namespace CSharpGuidelinesAnalyzer
 
         private void ConsumeWhile(WordTokenKind kind)
         {
-            while (IsTokenKind(PeekChar(), kind))
+            while (HasNextCharOfKind(kind))
             {
                 position++;
             }
 
             position++;
+        }
+
+        private bool HasNextCharOfKind(WordTokenKind kind)
+        {
+            char? nextChar = PeekChar();
+            return IsTokenKind(nextChar, kind);
         }
 
         private static bool IsTokenKind([CanBeNull] char? ch, WordTokenKind kind)

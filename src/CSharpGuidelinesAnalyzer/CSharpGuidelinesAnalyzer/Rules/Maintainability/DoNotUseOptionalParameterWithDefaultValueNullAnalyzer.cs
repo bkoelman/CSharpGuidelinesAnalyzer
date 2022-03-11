@@ -81,10 +81,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 if (parameter.Type.IsOrImplementsIEnumerable() || IsTask(parameter.Type, taskTypes))
                 {
                     SyntaxReference syntaxReference = parameter.DeclaringSyntaxReferences.First();
+                    string typeName = parameter.Type.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                     var location = Location.Create(syntaxReference.SyntaxTree, syntaxReference.Span);
 
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, location, parameter.Name,
-                        parameter.Type.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat)));
+                    var diagnostic = Diagnostic.Create(Rule, location, parameter.Name, typeName);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

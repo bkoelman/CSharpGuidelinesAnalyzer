@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
+using TypeInfo = System.Reflection.TypeInfo;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming
 {
@@ -69,8 +70,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                 if (handlerNameActual != handlerNameExpected)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, binding.Syntax.GetLocation(), binding.Method.GetKind(), handlerNameActual,
-                        assignment.EventReference.Event.Name, handlerNameExpected));
+                    Location location = binding.Syntax.GetLocation();
+                    string kindText = binding.Method.GetKind();
+
+                    var diagnostic = Diagnostic.Create(Rule, location, kindText, handlerNameActual, assignment.EventReference.Event.Name, handlerNameExpected);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }
@@ -166,11 +170,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             [CanBeNull]
             private IEventReferenceOperation InvokeEventReferencePropertyGetMethod()
             {
-                object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, Array.Empty<object>());
+                object[] emptyObjectArray = Array.Empty<object>();
 
-                return typeof(IEventReferenceOperation).GetTypeInfo().IsAssignableFrom(propertyValue.GetType().GetTypeInfo())
-                    ? (IEventReferenceOperation)propertyValue
-                    : null;
+                object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, emptyObjectArray);
+                TypeInfo propertyType = propertyValue.GetType().GetTypeInfo();
+
+                return typeof(IEventReferenceOperation).GetTypeInfo().IsAssignableFrom(propertyType) ? (IEventReferenceOperation)propertyValue : null;
             }
         }
     }

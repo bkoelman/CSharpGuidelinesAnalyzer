@@ -131,7 +131,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(type.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind.Format(), type.Name));
+                var diagnostic = Diagnostic.Create(Rule, type.Locations[0], type.TypeKind.Format(), type.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -146,7 +147,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(member.Name) && !member.IsOverride && !member.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
+                var diagnostic = Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             ITypeSymbol memberType = member.GetSymbolType();
@@ -159,7 +161,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(localFunction.Symbol.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0], localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
+                var diagnostic = Diagnostic.Create(Rule, localFunction.Symbol.Locations[0], localFunction.Symbol.GetKind(), localFunction.Symbol.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             AnalyzeTypeAsTuple(localFunction.Symbol.ReturnType, context.ReportDiagnostic);
@@ -176,7 +179,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(parameter.Name) && !parameter.ContainingSymbol.IsOverride && !parameter.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
+                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
@@ -194,7 +198,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(variable.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
+                var diagnostic = Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             AnalyzeTypeAsTuple(variable.Type, context.ReportDiagnostic);
@@ -210,7 +215,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                     if (!isDefaultTupleElement && ContainsDigitsNonWhitelisted(tupleElement.Name))
                     {
-                        reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
+                        var diagnostic = Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name);
+                        reportDiagnostic(diagnostic);
                     }
                 }
             }
@@ -226,7 +232,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                 if (tupleElement != null && ContainsDigitsNonWhitelisted(tupleElement.Name))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
+                    var diagnostic = Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }
@@ -251,7 +258,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 {
                     if (ContainsDigitsNonWhitelisted(property.Name))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name));
+                        var diagnostic = Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name);
+                        context.ReportDiagnostic(diagnostic);
                     }
                 }
             }
@@ -298,7 +306,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (ContainsDigitsNonWhitelisted(rangeVariableName))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable", rangeVariableName));
+                Location location = identifierToken.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location, "Range variable", rangeVariableName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -321,7 +332,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             RemoveWhitelistedTokens(tokens);
 
-            return string.Join(string.Empty, tokens.Select(token => token.Text));
+            IEnumerable<string> texts = tokens.Select(token => token.Text);
+            return string.Join(string.Empty, texts);
         }
 
         private static void RemoveWhitelistedTokens([NotNull] List<WordToken> tokens)

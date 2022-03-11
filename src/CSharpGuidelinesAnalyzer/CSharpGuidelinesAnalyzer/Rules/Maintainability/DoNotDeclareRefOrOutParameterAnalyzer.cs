@@ -81,7 +81,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) && !parameter.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name));
+                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

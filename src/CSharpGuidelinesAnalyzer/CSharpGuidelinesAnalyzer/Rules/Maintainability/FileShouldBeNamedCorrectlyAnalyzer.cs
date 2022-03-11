@@ -69,7 +69,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (char.IsLower(fileName[0]))
             {
                 Location location = GetLocationForStartOfFile(context);
-                context.ReportDiagnostic(Diagnostic.Create(CasingRule, location, fileName));
+
+                var diagnostic = Diagnostic.Create(CasingRule, location, fileName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -78,7 +80,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (fileName.IndexOf('_') != -1)
             {
                 Location location = GetLocationForStartOfFile(context);
-                context.ReportDiagnostic(Diagnostic.Create(UnderscoreRule, location, fileName));
+
+                var diagnostic = Diagnostic.Create(UnderscoreRule, location, fileName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -87,7 +91,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (fileName.IndexOf('`') != -1)
             {
                 Location location = GetLocationForStartOfFile(context);
-                context.ReportDiagnostic(Diagnostic.Create(ArityRule, location, fileName));
+
+                var diagnostic = Diagnostic.Create(ArityRule, location, fileName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

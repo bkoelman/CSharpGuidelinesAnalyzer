@@ -49,7 +49,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (IsExtensionMethodContainer(type) && !type.Name.EndsWith("Extensions", StringComparison.Ordinal))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.Name));
+                var diagnostic = Diagnostic.Create(Rule, type.Locations[0], type.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

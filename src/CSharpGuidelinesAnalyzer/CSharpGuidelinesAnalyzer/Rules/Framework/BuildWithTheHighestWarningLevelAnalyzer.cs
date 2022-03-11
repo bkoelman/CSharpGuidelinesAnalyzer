@@ -43,7 +43,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             if (context.Compilation.Options.GeneralDiagnosticOption != ReportDiagnostic.Error)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, Location.None));
+                var diagnostic = Diagnostic.Create(Rule, Location.None);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

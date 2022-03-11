@@ -55,7 +55,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
             WriteNamespaceImports(sourceBuilder);
 
-            sourceBuilder.Append(GetSourceCode());
+            string sourceCode = GetSourceCode();
+            sourceBuilder.Append(sourceCode);
 
             return sourceBuilder.ToString();
         }
@@ -102,7 +103,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
                     builder.AppendLine();
                 }
 
-                AppendCodeBlock(codeBlock.TrimEnd(), builder);
+                string trimmed = codeBlock.TrimEnd();
+                AppendCodeBlock(trimmed, builder);
             }
         }
 

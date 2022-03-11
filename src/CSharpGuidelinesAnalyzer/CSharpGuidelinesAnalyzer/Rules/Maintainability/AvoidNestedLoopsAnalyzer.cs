@@ -69,7 +69,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (walker.LoopStatementLocation != null)
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, walker.LoopStatementLocation));
+                var diagnostic = Diagnostic.Create(Rule, walker.LoopStatementLocation);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

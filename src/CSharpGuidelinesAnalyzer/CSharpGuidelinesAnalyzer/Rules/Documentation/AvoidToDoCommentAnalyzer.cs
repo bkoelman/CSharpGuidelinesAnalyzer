@@ -100,7 +100,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 int index = message.IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal);
                 int start = trivia.FullSpan.Start + index;
 
-                ReportTodoCommentFromSingleLine(message.Substring(index), start);
+                string substring = message.Substring(index);
+                ReportTodoCommentFromSingleLine(substring, start);
             }
 
             private void ReportTodoCommentFromSingleLine([NotNull] string message, int start)
@@ -117,8 +118,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     return;
                 }
 
-                var location = Location.Create(context.Tree, TextSpan.FromBounds(start + index, start + message.Length));
-                context.ReportDiagnostic(Diagnostic.Create(Rule, location));
+                TextSpan span = TextSpan.FromBounds(start + index, start + message.Length);
+                var location = Location.Create(context.Tree, span);
+
+                var diagnostic = Diagnostic.Create(Rule, location);
+                context.ReportDiagnostic(diagnostic);
             }
 
             private static bool StartsWithTodoCommentToken([NotNull] string message, int index)
@@ -164,7 +168,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
             private void ProcessFirstLine(TextSpan fullSpan, TextLine startLine)
             {
-                string firstMessage = text.ToString(TextSpan.FromBounds(fullSpan.Start, startLine.End));
+                TextSpan span = TextSpan.FromBounds(fullSpan.Start, startLine.End);
+                string firstMessage = text.ToString(span);
+
                 ReportTodoCommentFromSingleLine(firstMessage, fullSpan.Start);
             }
 

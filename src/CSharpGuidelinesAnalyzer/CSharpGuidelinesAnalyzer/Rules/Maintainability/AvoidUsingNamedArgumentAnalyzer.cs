@@ -135,8 +135,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var syntax = (ArgumentSyntax)argument.Syntax;
             string methodText = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = syntax.NameColon.GetLocation();
 
-            reportDiagnostic(Diagnostic.Create(Rule, syntax.NameColon.GetLocation(), argument.Parameter.Name, methodText));
+            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, methodText);
+            reportDiagnostic(diagnostic);
         }
     }
 }

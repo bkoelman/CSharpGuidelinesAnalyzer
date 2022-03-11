@@ -120,7 +120,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (IsBlacklistedOrSingleLetter(type.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, type.Locations[0], type.TypeKind.Format(), type.Name));
+                var diagnostic = Diagnostic.Create(Rule, type.Locations[0], type.TypeKind.Format(), type.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -135,7 +136,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (IsBlacklistedOrSingleLetter(member.Name) && !member.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name));
+                var diagnostic = Diagnostic.Create(Rule, member.Locations[0], member.GetKind(), member.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             ITypeSymbol memberType = member.GetSymbolType();
@@ -148,7 +150,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (IsBlacklistedOrSingleLetter(localFunction.Symbol.Name))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, localFunction.Symbol.Locations[0], localFunction.Symbol.GetKind(), localFunction.Symbol.Name));
+                var diagnostic = Diagnostic.Create(Rule, localFunction.Symbol.Locations[0], localFunction.Symbol.GetKind(), localFunction.Symbol.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             AnalyzeTypeAsTuple(localFunction.Symbol.ReturnType, context.ReportDiagnostic);
@@ -165,7 +168,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (IsBlacklistedOrSingleLetter(parameter.Name) && !parameter.IsInterfaceImplementation())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
+                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name);
+                context.ReportDiagnostic(diagnostic);
             }
 
             AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
@@ -180,7 +184,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
             {
                 if (IsBlacklistedOrSingleLetter(variable.Name))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
+                    var diagnostic = Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
 
@@ -197,7 +202,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                     if (!isDefaultTupleElement && IsBlacklistedOrSingleLetter(tupleElement.Name))
                     {
-                        reportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
+                        var diagnostic = Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name);
+                        reportDiagnostic(diagnostic);
                     }
                 }
             }
@@ -213,7 +219,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
                 if (tupleElement != null && IsBlacklistedOrSingleLetter(tupleElement.Name))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name));
+                    var diagnostic = Diagnostic.Create(Rule, tupleElement.Locations[0], "Tuple element", tupleElement.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }
@@ -238,7 +245,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
                 {
                     if (IsBlacklistedOrSingleLetter(property.Name))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name));
+                        var diagnostic = Diagnostic.Create(Rule, property.Locations[0], "Property", property.Name);
+                        context.ReportDiagnostic(diagnostic);
                     }
                 }
             }
@@ -280,7 +288,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (!string.IsNullOrEmpty(rangeVariableName) && IsBlacklistedOrSingleLetter(rangeVariableName))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, identifierToken.GetLocation(), "Range variable", rangeVariableName));
+                Location location = identifierToken.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location, "Range variable", rangeVariableName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

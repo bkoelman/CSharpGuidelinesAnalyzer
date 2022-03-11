@@ -58,21 +58,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         [ItemNotNull]
         private static ImmutableArray<INamedTypeSymbol> ResolveExceptionTypes([NotNull] Compilation compilation)
         {
-            ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(3);
-
-            AddTypeToBuilder(KnownTypes.SystemException(compilation), builder);
-            AddTypeToBuilder(KnownTypes.SystemSystemException(compilation), builder);
-            AddTypeToBuilder(KnownTypes.SystemApplicationException(compilation), builder);
-
-            return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
-        }
-
-        private static void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type, [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
-        {
-            if (type != null)
+            INamedTypeSymbol[] types =
             {
-                builder.Add(type);
-            }
+                KnownTypes.SystemException(compilation),
+                KnownTypes.SystemSystemException(compilation),
+                KnownTypes.SystemApplicationException(compilation)
+            };
+
+            return types.Where(type => type != null).ToImmutableArray();
         }
 
         private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, [ItemNotNull] ImmutableArray<INamedTypeSymbol> exceptionTypes)
@@ -85,7 +78,10 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                 if (exceptionType == null || exceptionTypes.Contains(exceptionType))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(Rule, catchClause.CatchKeyword.GetLocation()));
+                    Location location = catchClause.CatchKeyword.GetLocation();
+
+                    var diagnostic = Diagnostic.Create(Rule, location);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

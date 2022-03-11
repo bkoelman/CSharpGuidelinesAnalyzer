@@ -62,7 +62,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
             {
                 if (!TypeContainsEntryPoint(type, context.Compilation, context.CancellationToken))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(TypeRule, type.Locations[0], type.Name));
+                    var diagnostic = Diagnostic.Create(TypeRule, type.Locations[0], type.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
             else
@@ -108,7 +109,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.ClassDesign
 
             string accessibility = member.DeclaredAccessibility.ToText().ToLowerInvariant();
 
-            context.ReportDiagnostic(Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility, member.Name));
+            var diagnostic = Diagnostic.Create(MemberRule, member.Locations[0], containingType.Name, accessibility, member.Name);
+            context.ReportDiagnostic(diagnostic);
         }
 
         private static bool IsPublicOrInternal([NotNull] ISymbol member)

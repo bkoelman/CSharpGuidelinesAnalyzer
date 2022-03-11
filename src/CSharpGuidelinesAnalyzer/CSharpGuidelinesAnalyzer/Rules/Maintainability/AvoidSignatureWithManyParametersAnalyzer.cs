@@ -104,7 +104,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (property.IsIndexer && MemberRequiresAnalysis(property, context.CancellationToken))
             {
                 ParameterSettings settings = GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
-                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(property.Parameters), settings);
+                BaseAnalysisContext<ImmutableArray<IParameterSymbol>> parametersContext = context.Wrap(property.Parameters);
+                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(parametersContext, settings);
 
                 AnalyzeParameters(info, property, "Indexer");
             }
@@ -120,13 +121,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 bool isConstructor = IsConstructor(method);
 
                 ParameterSettings settings = GetParameterSettings(settingsReader, context.Symbol.DeclaringSyntaxReferences[0].SyntaxTree);
-                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters), settings, isConstructor);
+                BaseAnalysisContext<ImmutableArray<IParameterSymbol>> parametersContext = context.Wrap(method.Parameters);
+                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(parametersContext, settings, isConstructor);
 
                 AnalyzeParameters(info, method, memberName);
 
                 if (MethodCanReturnValue(method))
                 {
-                    AnalyzeReturnType(context.Wrap(method.ReturnType), method, memberName);
+                    BaseAnalysisContext<ITypeSymbol> typeContext = context.Wrap(method.ReturnType);
+                    AnalyzeReturnType(typeContext, method, memberName);
                 }
             }
         }
@@ -166,8 +169,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static string GetNameForMethod([NotNull] IMethodSymbol method)
         {
             var builder = new StringBuilder();
+            string kind = method.GetKind();
 
-            builder.Append(method.GetKind());
+            builder.Append(kind);
             builder.Append(" '");
             builder.Append(method.Name);
             builder.Append("'");
@@ -195,11 +199,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 string typeName = $"Delegate '{type.Name}'";
 
-                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(method.Parameters), settings);
+                BaseAnalysisContext<ImmutableArray<IParameterSymbol>> parametersContext = context.Wrap(method.Parameters);
+                var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(parametersContext, settings);
 
                 AnalyzeParameters(info, type, typeName);
 
-                AnalyzeReturnType(context.Wrap(method.ReturnType), type, typeName);
+                BaseAnalysisContext<ITypeSymbol> typeContext = context.Wrap(method.ReturnType);
+                AnalyzeReturnType(typeContext, type, typeName);
             }
         }
 
@@ -215,11 +221,14 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             string memberName = GetMemberName(operation.Symbol);
 
             ParameterSettings settings = GetParameterSettings(settingsReader, context.Operation.Syntax.SyntaxTree);
-            var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(context.Wrap(operation.Symbol.Parameters), settings);
+
+            BaseAnalysisContext<ImmutableArray<IParameterSymbol>> parametersContext = context.Wrap(operation.Symbol.Parameters);
+            var info = new ParameterCountInfo<ImmutableArray<IParameterSymbol>>(parametersContext, settings);
 
             AnalyzeParameters(info, operation.Symbol, memberName);
 
-            AnalyzeReturnType(context.Wrap(operation.Symbol.ReturnType), operation.Symbol, memberName);
+            BaseAnalysisContext<ITypeSymbol> typeContext = context.Wrap(operation.Symbol.ReturnType);
+            AnalyzeReturnType(typeContext, operation.Symbol, memberName);
         }
 
         private static void AnalyzeParameters(ParameterCountInfo<ImmutableArray<IParameterSymbol>> info, [NotNull] ISymbol member, [NotNull] string memberName)
@@ -228,7 +237,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (parameters.Length > info.MaxParameterCount)
             {
-                ParameterCountInfo<ISymbol> memberInfo = info.ChangeContext(info.Context.WithTarget(member));
+                BaseAnalysisContext<ISymbol> contextWithTarget = info.Context.WithTarget(member);
+                ParameterCountInfo<ISymbol> memberInfo = info.ChangeContext(contextWithTarget);
                 ReportParameterCount(memberInfo, memberName, parameters.Length);
             }
 
@@ -236,7 +246,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 if (parameter.Type.IsTupleType || TryGetSystemTupleElementCount(parameter.Type) != null)
                 {
-                    ReportTupleParameter(info.Context.WithTarget(parameter), memberName, parameter.Name);
+                    BaseAnalysisContext<IParameterSymbol> contextWithTarget = info.Context.WithTarget(parameter);
+                    ReportTupleParameter(contextWithTarget, memberName, parameter.Name);
                 }
             }
         }
@@ -265,7 +276,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (elementCount > 2)
             {
-                ReportTupleReturn(context.WithTarget(member), memberName, elementCount.Value);
+                BaseAnalysisContext<ISymbol> contextWithTarget = context.WithTarget(member);
+                ReportTupleReturn(contextWithTarget, memberName, elementCount.Value);
             }
         }
 

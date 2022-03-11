@@ -349,7 +349,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                         return;
                     }
 
-                    var assignmentWalker = new VariableAssignmentWalker(operation.Local, operation.Syntax.GetLocation(), owner);
+                    Location location = operation.Syntax.GetLocation();
+
+                    var assignmentWalker = new VariableAssignmentWalker(operation.Local, location, owner);
                     assignmentWalker.VisitBlockBody();
 
                     Result.CopyFrom(assignmentWalker.Result);
@@ -372,7 +374,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     {
                         EvaluationResult falseResult = owner.AnalyzeExpression(operation.WhenFalse);
 
-                        Result.CopyFrom(EvaluationResult.Unify(trueResult, falseResult));
+                        EvaluationResult unified = EvaluationResult.Unify(trueResult, falseResult);
+                        Result.CopyFrom(unified);
                     }
                 }
 
@@ -388,7 +391,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                     {
                         EvaluationResult alternativeResult = owner.AnalyzeExpression(operation.WhenNull);
 
-                        Result.CopyFrom(EvaluationResult.Unify(valueResult, alternativeResult));
+                        EvaluationResult unified = EvaluationResult.Unify(valueResult, alternativeResult);
+                        Result.CopyFrom(unified);
                     }
                 }
 
@@ -697,34 +701,28 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             [ItemNotNull]
             private ImmutableArray<INamedTypeSymbol> GetQueryableTypes([NotNull] Compilation compilation)
             {
-                ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(4);
+                INamedTypeSymbol[] types =
+                {
+                    KnownTypes.SystemLinqIQueryableT(compilation),
+                    KnownTypes.SystemLinqIOrderedQueryableT(compilation),
+                    KnownTypes.SystemLinqIQueryable(compilation),
+                    KnownTypes.SystemLinqIOrderedQueryable(compilation)
+                };
 
-                AddTypeToBuilder(KnownTypes.SystemLinqIQueryableT(compilation), builder);
-                AddTypeToBuilder(KnownTypes.SystemLinqIOrderedQueryableT(compilation), builder);
-                AddTypeToBuilder(KnownTypes.SystemLinqIQueryable(compilation), builder);
-                AddTypeToBuilder(KnownTypes.SystemLinqIOrderedQueryable(compilation), builder);
-
-                return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
+                return types.Where(type => type != null).ToImmutableArray();
             }
 
             [ItemNotNull]
             private ImmutableArray<INamedTypeSymbol> GetOtherSequenceTypes([NotNull] Compilation compilation)
             {
-                ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>(3);
-
-                AddTypeToBuilder(KnownTypes.SystemLinqIOrderedEnumerableT(compilation), builder);
-                AddTypeToBuilder(KnownTypes.SystemLinqIGroupingTKeyTElement(compilation), builder);
-                AddTypeToBuilder(KnownTypes.SystemLinqILookupTKeyTElement(compilation), builder);
-
-                return !builder.Any() ? ImmutableArray<INamedTypeSymbol>.Empty : builder.ToImmutable();
-            }
-
-            private void AddTypeToBuilder([CanBeNull] INamedTypeSymbol type, [NotNull] [ItemNotNull] ImmutableArray<INamedTypeSymbol>.Builder builder)
-            {
-                if (type != null)
+                INamedTypeSymbol[] types =
                 {
-                    builder.Add(type);
-                }
+                    KnownTypes.SystemLinqIOrderedEnumerableT(compilation),
+                    KnownTypes.SystemLinqIGroupingTKeyTElement(compilation),
+                    KnownTypes.SystemLinqILookupTKeyTElement(compilation)
+                };
+
+                return types.Where(type => type != null).ToImmutableArray();
             }
 
             public bool IsEnumerable([NotNull] ITypeSymbol type)

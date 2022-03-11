@@ -63,7 +63,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (memberName.Contains(containingTypeName))
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind, context.Symbol.Name, containingTypeName));
+                var diagnostic = Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind, context.Symbol.Name, containingTypeName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

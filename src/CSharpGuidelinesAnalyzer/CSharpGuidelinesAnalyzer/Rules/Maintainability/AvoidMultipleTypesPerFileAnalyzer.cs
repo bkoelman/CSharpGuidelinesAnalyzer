@@ -97,7 +97,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
                 string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
 
-                context.ReportDiagnostic(Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName));
+                var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 

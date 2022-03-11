@@ -136,7 +136,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 Location location = method != null && !method.IsSynthesized() ? method.Locations[0] : context.Operation.Syntax.GetLocation();
 
-                context.ReportDiagnostic(Diagnostic.Create(KindRule, location, @event.Name));
+                var diagnostic = Diagnostic.Create(KindRule, location, @event.Name);
+                context.ReportDiagnostic(diagnostic);
             }
             else
             {
@@ -157,7 +158,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             if (nameActual != nameExpected)
             {
-                context.ReportDiagnostic(Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name, nameExpected));
+                var diagnostic = Diagnostic.Create(NameRule, method.Locations[0], method.Name, @event.Name, nameExpected);
+                context.ReportDiagnostic(diagnostic);
 
                 return true;
             }
@@ -171,7 +173,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
             {
                 if (!method.IsVirtual || !IsProtected(method))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ModifiersRule, method.Locations[0], method.Name, @event.Name));
+                    var diagnostic = Diagnostic.Create(ModifiersRule, method.Locations[0], method.Name, @event.Name);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }

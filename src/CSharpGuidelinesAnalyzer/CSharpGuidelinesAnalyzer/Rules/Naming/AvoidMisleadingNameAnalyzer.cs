@@ -53,7 +53,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (Blacklist.Contains(variable.Name) && !variable.IsSynthesized())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name));
+                var diagnostic = Diagnostic.Create(Rule, variable.Locations[0], "Variable", variable.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
 
@@ -63,7 +64,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
             if (Blacklist.Contains(parameter.Name) && !parameter.IsSynthesized())
             {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name));
+                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name);
+                context.ReportDiagnostic(diagnostic);
             }
         }
     }

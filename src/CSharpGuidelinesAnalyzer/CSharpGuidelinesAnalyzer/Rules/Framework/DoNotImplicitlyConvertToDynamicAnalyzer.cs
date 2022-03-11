@@ -73,7 +73,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (RequiresReport(sourceType, destinationType, objectHandleType))
             {
-                ReportAt(sourceType, conversion.Syntax.GetLocation(), context.ReportDiagnostic);
+                Location location = conversion.Syntax.GetLocation();
+                ReportAt(sourceType, location, context.ReportDiagnostic);
             }
         }
 
@@ -86,7 +87,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
             if (RequiresReport(sourceType, destinationType, objectHandleType))
             {
-                ReportAt(sourceType, compoundAssignment.Value.Syntax.GetLocation(), context.ReportDiagnostic);
+                Location location = compoundAssignment.Value.Syntax.GetLocation();
+                ReportAt(sourceType, location, context.ReportDiagnostic);
             }
         }
 
@@ -124,7 +126,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private static void ReportAt([NotNull] ITypeSymbol sourceType, [NotNull] Location reportLocation, [NotNull] Action<Diagnostic> reportDiagnostic)
         {
             string sourceTypeName = sourceType.IsAnonymousType ? "(anonymous)" : sourceType.Name;
-            reportDiagnostic(Diagnostic.Create(Rule, reportLocation, sourceTypeName));
+
+            var diagnostic = Diagnostic.Create(Rule, reportLocation, sourceTypeName);
+            reportDiagnostic(diagnostic);
         }
     }
 }

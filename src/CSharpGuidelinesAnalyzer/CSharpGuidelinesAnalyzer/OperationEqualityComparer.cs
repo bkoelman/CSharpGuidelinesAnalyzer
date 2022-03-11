@@ -73,10 +73,13 @@ namespace CSharpGuidelinesAnalyzer
 
         private bool ArePropertyValuesEqual([NotNull] PropertyInfo property, [NotNull] object left, [NotNull] object right)
         {
-            object leftValue = property.GetMethod.Invoke(left, Array.Empty<object>());
-            object rightValue = property.GetMethod.Invoke(right, Array.Empty<object>());
+            object[] emptyObjectArray = Array.Empty<object>();
 
-            if (EnumerableInterface.IsAssignableFrom(property.PropertyType.GetTypeInfo()))
+            object leftValue = property.GetMethod.Invoke(left, emptyObjectArray);
+            object rightValue = property.GetMethod.Invoke(right, emptyObjectArray);
+            ReflectionTypeInfo propertyType = property.PropertyType.GetTypeInfo();
+
+            if (EnumerableInterface.IsAssignableFrom(propertyType))
             {
                 Type elementType = property.PropertyType.GetSequenceElementType();
 
@@ -130,7 +133,9 @@ namespace CSharpGuidelinesAnalyzer
 
         private bool AreValuesEqual([NotNull] Type type, [CanBeNull] object leftValue, [CanBeNull] object rightValue)
         {
-            if (SymbolInterface.IsAssignableFrom(type.GetTypeInfo()))
+            ReflectionTypeInfo typeInfo = type.GetTypeInfo();
+
+            if (SymbolInterface.IsAssignableFrom(typeInfo))
             {
                 var leftSymbol = (ISymbol)leftValue;
                 var rightSymbol = (ISymbol)rightValue;
@@ -138,7 +143,7 @@ namespace CSharpGuidelinesAnalyzer
                 return leftSymbol.IsEqualTo(rightSymbol);
             }
 
-            if (OperationInterface.IsAssignableFrom(type.GetTypeInfo()))
+            if (OperationInterface.IsAssignableFrom(typeInfo))
             {
                 return Equals((IOperation)leftValue, (IOperation)rightValue);
             }
