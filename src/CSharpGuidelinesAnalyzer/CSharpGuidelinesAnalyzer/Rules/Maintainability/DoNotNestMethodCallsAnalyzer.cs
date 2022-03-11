@@ -12,8 +12,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Method argument calls a nested method";
-        private const string MessageFormat = "Argument for parameter '{0}' in method call to '{1}' calls nested method '{2}'.";
-        private const string Description = "Write code that is easy to debug";
+        private const string MessageFormat = "Argument for parameter '{0}' in method call to '{1}' calls nested method '{2}'";
+        private const string Description = "Write code that is easy to debug.";
 
         public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1580";
 

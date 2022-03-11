@@ -50,7 +50,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Argument for parameter 'outer' in method call to 'Example.A(object)' calls nested method 'Example.B(object)'.");
+                "Argument for parameter 'outer' in method call to 'Example.A(object)' calls nested method 'Example.B(object)'");
         }
 
         [Fact]
