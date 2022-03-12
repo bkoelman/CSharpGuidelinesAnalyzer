@@ -100,7 +100,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         [NotNull]
         private static Location GetLocationForStartOfFile(SyntaxTreeAnalysisContext context)
         {
-            return context.Tree.GetLocation(new TextSpan(0, 0));
+            var span = new TextSpan(0, 0);
+            return context.Tree.GetLocation(span);
         }
     }
 }

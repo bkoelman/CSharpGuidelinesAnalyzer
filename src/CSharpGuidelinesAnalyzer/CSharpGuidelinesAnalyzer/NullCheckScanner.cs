@@ -69,9 +69,9 @@ namespace CSharpGuidelinesAnalyzer
                 if (isNullableEquals)
                 {
                     NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
+                    var info = new ArgumentsInfo(invocation.Instance, invocation.Arguments[0].Value, NullCheckMethod.NullableEqualsMethod, nullCheckOperand);
 
-                    return AnalyzeArguments(new ArgumentsInfo(invocation.Instance, invocation.Arguments[0].Value, NullCheckMethod.NullableEqualsMethod,
-                        nullCheckOperand));
+                    return AnalyzeArguments(info);
                 }
             }
 
@@ -89,8 +89,9 @@ namespace CSharpGuidelinesAnalyzer
                 IArgumentOperation rightArgument = invocation.Arguments[1];
 
                 NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(invocation);
+                var info = new ArgumentsInfo(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value, nullCheckOperand);
 
-                return AnalyzeArguments(new ArgumentsInfo(leftArgument.Value, rightArgument.Value, nullCheckMethod.Value, nullCheckOperand));
+                return AnalyzeArguments(info);
             }
 
             return null;
@@ -164,9 +165,9 @@ namespace CSharpGuidelinesAnalyzer
 
             NullCheckOperand parentNullCheckOperand = GetParentNullCheckOperand(binaryOperator);
             NullCheckOperand nullCheckOperandCombined = parentNullCheckOperand.CombineWith(operatorNullCheckOperand.Value);
+            var info = new ArgumentsInfo(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckMethod.EqualityOperator, nullCheckOperandCombined);
 
-            return AnalyzeArguments(new ArgumentsInfo(binaryOperator.LeftOperand, binaryOperator.RightOperand, NullCheckMethod.EqualityOperator,
-                nullCheckOperandCombined));
+            return AnalyzeArguments(info);
         }
 
         [CanBeNull]

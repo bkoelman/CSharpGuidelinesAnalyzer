@@ -44,7 +44,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
 
         private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
         {
-            SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(context.CodeBlock.GetTrailingTrivia()).Where(IsComment).ToArray();
+            SyntaxTriviaList trailingTrivia = context.CodeBlock.GetTrailingTrivia();
+            SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(trailingTrivia).Where(IsComment).ToArray();
 
             AnalyzeCommentTrivia(outerCommentTrivia, context);
         }

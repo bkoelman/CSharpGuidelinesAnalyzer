@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -56,7 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
             PortableExecutableReference reference = MetadataReference.CreateFromFile(assembly.Location);
 
-            source.Editor.UpdateTestContext(context => context.WithReferences(context.References.Add(reference)));
+            source.Editor.UpdateTestContext(context =>
+            {
+                ImmutableHashSet<MetadataReference> references = context.References.Add(reference);
+                return context.WithReferences(references);
+            });
 
             return source;
         }

@@ -89,11 +89,13 @@ namespace CSharpGuidelinesAnalyzer.Settings
         {
             using var stream = new MemoryStream();
 
-            using var writer = XmlWriter.Create(stream, new XmlWriterSettings
+            var writerSettings = new XmlWriterSettings
             {
                 Encoding = encoding,
                 Indent = true
-            });
+            };
+
+            using var writer = XmlWriter.Create(stream, writerSettings);
 
             writeAction(writer);
             writer.Flush();

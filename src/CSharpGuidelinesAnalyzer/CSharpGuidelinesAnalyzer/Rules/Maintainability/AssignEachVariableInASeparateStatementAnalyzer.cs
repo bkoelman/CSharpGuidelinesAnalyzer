@@ -92,7 +92,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
             if (statementWalker.IdentifiersAssigned.Count > 1)
             {
-                string identifiers = FormatIdentifierList(statementWalker.IdentifiersAssigned.ToList());
+                List<string> identifiersAssigned = statementWalker.IdentifiersAssigned.ToList();
+                string identifiers = FormatIdentifierList(identifiersAssigned);
                 Location location = GetLocation(operation);
 
                 var diagnostic = Diagnostic.Create(Rule, location, identifiers);

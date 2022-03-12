@@ -149,7 +149,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                 }
                 else
                 {
-                    ProcessCommentOnMultipleLines(fullSpan, new LineRange(startLine, endLine), postfixLength);
+                    var lineRange = new LineRange(startLine, endLine);
+                    ProcessCommentOnMultipleLines(fullSpan, lineRange, postfixLength);
                 }
             }
 
@@ -193,7 +194,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Documentation
                     length -= postfixLength;
                 }
 
-                string lastMessage = text.ToString(new TextSpan(endLine.Start, length));
+                var span = new TextSpan(endLine.Start, length);
+                string lastMessage = text.ToString(span);
+
                 ReportTodoCommentFromSingleLine(lastMessage, endLine.Start);
             }
 

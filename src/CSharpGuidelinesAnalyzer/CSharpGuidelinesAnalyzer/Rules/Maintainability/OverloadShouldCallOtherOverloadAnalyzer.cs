@@ -74,7 +74,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             {
                 context.CancellationToken.ThrowIfCancellationRequested();
 
-                AnalyzeMethodGroup(methodGroup.ToArray(), type, context);
+                IMethodSymbol[] methodGroupArray = methodGroup.ToArray();
+                AnalyzeMethodGroup(methodGroupArray, type, context);
             }
         }
 
