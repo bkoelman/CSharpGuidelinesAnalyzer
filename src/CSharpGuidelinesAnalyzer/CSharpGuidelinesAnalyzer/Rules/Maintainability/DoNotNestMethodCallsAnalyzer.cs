@@ -48,14 +48,17 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 return;
             }
 
-            if (argument.Value is IInvocationOperation invocation)
-            {
-                string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-                string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-                Location location = invocation.Syntax.GetLocation();
+            IOperation argumentValue = argument.Value.SkipTypeConversions();
 
-                var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
-                context.ReportDiagnostic(diagnostic);
+            if (argumentValue is IInvocationOperation invocation)
+            {
+                string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                ReportAt(argument, innerName, context);
+            }
+            else if (argumentValue is IObjectCreationOperation objectCreation)
+            {
+                string innerName = objectCreation.Constructor.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                ReportAt(argument, innerName, context);
             }
         }
 
@@ -106,6 +109,15 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
 
             return false;
+        }
+
+        private static void ReportAt([NotNull] IArgumentOperation argument, [NotNull] string innerName, OperationAnalysisContext context)
+        {
+            string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = argument.Value.Syntax.GetLocation();
+
+            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
+            context.ReportDiagnostic(diagnostic);
         }
     }
 }

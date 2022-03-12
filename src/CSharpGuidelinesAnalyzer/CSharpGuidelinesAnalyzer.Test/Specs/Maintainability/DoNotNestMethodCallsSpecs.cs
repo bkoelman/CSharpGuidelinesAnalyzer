@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -224,6 +225,30 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_constructor_call_contains_nested_constructor_call_it_must_be_reported()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(StringBuilder).Namespace)
+                .InGlobalScope(@"
+                    class Example
+                    {
+                        public Example(StringBuilder builder) => throw null;
+
+                        void M()
+                        {
+                            new Example([|new StringBuilder()|]);
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source,
+                "Argument for parameter 'builder' in method call to 'Example.Example(StringBuilder)' calls nested method 'StringBuilder.StringBuilder()'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
