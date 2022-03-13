@@ -86,6 +86,34 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_using_optional_parameter_in_implicitly_implemented_method_from_external_assembly_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReferenceToExternalAssemblyFor(@"
+                    public interface I
+                    {
+                        void M(int p = 5);
+                    }
+                ")
+                .InGlobalScope(@"
+                    abstract class B : I
+                    {
+                        public abstract void M(int q = 8);
+                    }
+
+                    class C : I
+                    {
+                        public void M(int q = 8) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_using_optional_parameter_in_explicitly_implemented_interface_method_it_must_be_reported()
         {
             // Arrange
@@ -110,22 +138,45 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
+        internal void When_using_optional_parameter_in_explicitly_implemented_interface_method_from_external_assembly_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReferenceToExternalAssemblyFor(@"
+                    public interface I
+                    {
+                        void M(int p = 5);
+                    }
+                ")
+                .InGlobalScope(@"
+                    class C : I
+                    {
+                        void I.M(int q = 8) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_using_optional_parameter_in_abstract_virtual_or_overridden_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
-                    abstract class AbstractBase
+                    abstract class A
                     {
                         protected abstract void M([|int p = 5|]);
                     }
 
-                    class ConcreteBase
+                    class B
                     {
                         protected virtual void M([|int q = 8|]) => throw null;
                     }
 
-                    class ConcreteDerived : ConcreteBase
+                    class D : B
                     {
                         protected override void M([|int r = 12|]) => throw null;
                     }
@@ -134,9 +185,32 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Method 'AbstractBase.M(int)' contains optional parameter 'p'",
-                "Method 'ConcreteBase.M(int)' contains optional parameter 'q'",
-                "Method 'ConcreteDerived.M(int)' contains optional parameter 'r'");
+                "Method 'A.M(int)' contains optional parameter 'p'",
+                "Method 'B.M(int)' contains optional parameter 'q'",
+                "Method 'D.M(int)' contains optional parameter 'r'");
+        }
+
+        [Fact]
+        internal void When_using_optional_parameter_in_overridden_method_from_external_assembly_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReferenceToExternalAssemblyFor(@"
+                    public abstract class B
+                    {
+                        protected abstract void M(int p = 5);
+                    }
+                ")
+                .InGlobalScope(@"
+                    class C : B
+                    {
+                        protected override void M(int q = 8) => throw null;
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

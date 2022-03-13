@@ -46,19 +46,58 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             if (parameter.IsOptional)
             {
                 INamedTypeSymbol type = parameter.ContainingType;
-                ISymbol method = parameter.ContainingSymbol;
+
+                if (!(parameter.ContainingSymbol is IMethodSymbol method))
+                {
+                    return;
+                }
 
                 if (type.TypeKind == TypeKind.Interface || method.IsInterfaceImplementation() || method.IsAbstract || method.IsVirtual || method.IsOverride)
                 {
-                    string containerName = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                    if (!IsOverrideFromExternalAssembly(method) && !IsInterfaceImplementationFromExternalAssembly(method))
+                    {
+                        string containerName = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                    SyntaxReference syntaxReference = parameter.DeclaringSyntaxReferences.First();
-                    var location = Location.Create(syntaxReference.SyntaxTree, syntaxReference.Span);
+                        SyntaxReference syntaxReference = parameter.DeclaringSyntaxReferences.First();
+                        var location = Location.Create(syntaxReference.SyntaxTree, syntaxReference.Span);
 
-                    var diagnostic = Diagnostic.Create(Rule, location, containerName, parameter.Name);
-                    context.ReportDiagnostic(diagnostic);
+                        var diagnostic = Diagnostic.Create(Rule, location, containerName, parameter.Name);
+                        context.ReportDiagnostic(diagnostic);
+                    }
                 }
             }
+        }
+
+        private static bool IsOverrideFromExternalAssembly([NotNull] IMethodSymbol method)
+        {
+            IMethodSymbol baseMethod = method.OverriddenMethod;
+
+            while (baseMethod != null)
+            {
+                if (!baseMethod.ContainingAssembly.Equals(method.ContainingAssembly))
+                {
+                    return true;
+                }
+
+                baseMethod = baseMethod.OverriddenMethod;
+            }
+
+            return false;
+        }
+
+        private static bool IsInterfaceImplementationFromExternalAssembly([NotNull] IMethodSymbol method)
+        {
+            foreach (ISymbol interfaceMethod in method.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
+            {
+                ISymbol implementer = method.ContainingType.FindImplementationForInterfaceMember(interfaceMethod);
+
+                if (method.Equals(implementer))
+                {
+                    return !method.ContainingAssembly.Equals(interfaceMethod.ContainingAssembly);
+                }
+            }
+
+            return false;
         }
     }
 }

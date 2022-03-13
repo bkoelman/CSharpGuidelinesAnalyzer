@@ -1,8 +1,13 @@
 ﻿using System.Collections.Immutable;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Emit;
 using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
@@ -64,6 +69,54 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             });
 
             return source;
+        }
+
+        [NotNull]
+        public static TBuilder WithReferenceToExternalAssemblyFor<TBuilder>([NotNull] this TBuilder source, [NotNull] string code)
+            where TBuilder : SourceCodeBuilder
+        {
+            Guard.NotNull(source, nameof(source));
+            Guard.NotNull(code, nameof(code));
+
+            Stream assemblyStream = GetInMemoryAssemblyStreamForCode(code, "TempAssembly");
+            PortableExecutableReference reference = MetadataReference.CreateFromStream(assemblyStream);
+
+            source.Editor.UpdateTestContext(context =>
+            {
+                ImmutableHashSet<MetadataReference> references = context.References.Add(reference);
+                return context.WithReferences(references);
+            });
+
+            return source;
+        }
+
+        [NotNull]
+        private static Stream GetInMemoryAssemblyStreamForCode([NotNull] string code, [NotNull] string assemblyName,
+            [NotNull] [ItemNotNull] params MetadataReference[] references)
+        {
+            SyntaxTree tree = CSharpSyntaxTree.ParseText(code);
+            ImmutableArray<SyntaxTree> trees = ImmutableArray.Create(tree);
+            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+
+            CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, trees).WithOptions(options);
+            compilation = compilation.AddReferences(SourceCodeBuilder.DefaultTestContext.References);
+            compilation = compilation.AddReferences(references);
+
+            var stream = new MemoryStream();
+
+            EmitResult emitResult = compilation.Emit(stream);
+            ValidateCompileErrors(emitResult);
+
+            stream.Seek(0, SeekOrigin.Begin);
+
+            return stream;
+        }
+
+        private static void ValidateCompileErrors([NotNull] EmitResult emitResult)
+        {
+            Diagnostic[] compilerErrors = emitResult.Diagnostics.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
+            compilerErrors.Should().BeEmpty("external assembly should not have compile errors");
+            emitResult.Success.Should().BeTrue();
         }
 
         [NotNull]

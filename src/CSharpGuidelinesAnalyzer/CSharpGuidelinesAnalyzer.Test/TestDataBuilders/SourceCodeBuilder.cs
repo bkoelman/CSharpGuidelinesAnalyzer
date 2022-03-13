@@ -15,15 +15,15 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     /// <summary />
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
-        [NotNull]
-        private static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty, Array.Empty<TextSpan>(), LanguageNames.CSharp,
-            new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
-
         [ItemNotNull]
         protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
         {
             "System"
         }.ToImmutableArray();
+
+        [NotNull]
+        public static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty, Array.Empty<TextSpan>(), LanguageNames.CSharp,
+            new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
 
         [NotNull]
         [ItemNotNull]
