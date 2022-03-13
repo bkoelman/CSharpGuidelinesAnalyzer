@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         private static void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [NotNull] SyntaxNode bodySyntax,
             SyntaxNodeAnalysisContext context)
         {
-            DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
+            DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.SemanticModel);
 
             if (dataFlowAnalysis == null)
             {
@@ -107,10 +107,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         }
 
         [CanBeNull]
-        private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
+        private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] SemanticModel semanticModel)
         {
-            SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-            return model.SafeAnalyzeDataFlow(bodySyntax);
+            return semanticModel.SafeAnalyzeDataFlow(bodySyntax);
         }
 
         private static bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)

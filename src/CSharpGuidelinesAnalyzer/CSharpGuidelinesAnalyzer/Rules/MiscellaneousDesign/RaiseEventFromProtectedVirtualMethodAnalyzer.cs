@@ -97,7 +97,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
         {
             if (operation is IConditionalAccessInstanceOperation)
             {
-                SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
+                SemanticModel model = operation.GetSemanticModel(compilation);
                 return model.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
             }
 
