@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -219,6 +220,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                     {
                         string[] items = new[] { string.Empty };
                         items.Where(item => item.Any());
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_constructor_call_contains_collection_initializer_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new MemberSourceCodeBuilder()
+                .Using(typeof(List<>).Namespace)
+                .Using(typeof(DateTime).Namespace)
+                .InDefaultClass(@"
+                    void M()
+                    {
+                        var items = new List<DateTime>
+                        {
+                            new DateTime(1, 1, 1)
+                        };
                     }
                 ")
                 .Build();

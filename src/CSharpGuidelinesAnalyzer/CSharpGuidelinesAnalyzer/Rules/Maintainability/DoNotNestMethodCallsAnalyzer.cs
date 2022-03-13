@@ -43,7 +43,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var argument = (IArgumentOperation)context.Operation;
 
-            if (IsThisArgumentInExtensionMethod(argument) || IsInFieldOrConstructorInitializer(argument))
+            if (IsThisArgumentInExtensionMethod(argument) || IsInFieldOrConstructorInitializer(argument) || IsObjectOrCollectionInitializer(argument))
             {
                 return;
             }
@@ -109,6 +109,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
 
             return false;
+        }
+
+        private static bool IsObjectOrCollectionInitializer([NotNull] IArgumentOperation argument)
+        {
+            return argument.Parent?.Parent is IObjectOrCollectionInitializerOperation;
         }
 
         private static void ReportAt([NotNull] IArgumentOperation argument, [NotNull] string innerName, OperationAnalysisContext context)
