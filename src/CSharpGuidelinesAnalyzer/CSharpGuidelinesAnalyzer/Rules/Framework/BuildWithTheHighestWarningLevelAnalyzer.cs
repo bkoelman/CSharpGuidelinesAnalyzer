@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         private const string MessageFormat =
             "Pass -warnaserror to the compiler or add <TreatWarningsAsErrors>True</TreatWarningsAsErrors> to your project file";
 
-        private const string Description = "Build with the highest warning level";
+        private const string Description = "Build with the highest warning level.";
 
         public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2210";
 

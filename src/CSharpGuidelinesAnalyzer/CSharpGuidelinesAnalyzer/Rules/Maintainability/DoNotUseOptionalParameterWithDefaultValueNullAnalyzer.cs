@@ -14,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
     public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : DiagnosticAnalyzer
     {
         private const string Title = "Do not use optional parameters with default value null for strings, collections or tasks";
-        private const string MessageFormat = "Optional parameter '{0}' of type '{1}' has default value 'null'.";
+        private const string MessageFormat = "Optional parameter '{0}' of type '{1}' has default value 'null'";
         private const string Description = "Only use optional parameters to replace overloads.";
 
         public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1553";

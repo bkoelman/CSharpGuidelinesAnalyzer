@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'string' has default value 'null'.");
+                "Optional parameter 'p' of type 'string' has default value 'null'");
         }
 
         [Fact]
@@ -80,7 +80,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'List<int>' has default value 'null'.");
+                "Optional parameter 'p' of type 'List<int>' has default value 'null'");
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'IEnumerable' has default value 'null'.");
+                "Optional parameter 'p' of type 'IEnumerable' has default value 'null'");
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'int[]' has default value 'null'.");
+                "Optional parameter 'p' of type 'int[]' has default value 'null'");
         }
 
         [Fact]
@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'Task' has default value 'null'.");
+                "Optional parameter 'p' of type 'Task' has default value 'null'");
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'Task<int>' has default value 'null'.");
+                "Optional parameter 'p' of type 'Task<int>' has default value 'null'");
         }
 
         [Fact]
@@ -175,7 +175,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'ValueTask?' has default value 'null'.");
+                "Optional parameter 'p' of type 'ValueTask?' has default value 'null'");
         }
 
         [Fact]
@@ -195,7 +195,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
 
             // Act and assert
             VerifyGuidelineDiagnostic(source,
-                "Optional parameter 'p' of type 'ValueTask<int>?' has default value 'null'.");
+                "Optional parameter 'p' of type 'ValueTask<int>?' has default value 'null'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
