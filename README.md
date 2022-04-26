@@ -92,3 +92,14 @@ After each commit, a new prerelease NuGet package is automatically published to 
 * Open the NuGet package manager console (**Tools**, **NuGet Package Manager**, **Package Manager Console**)
     * Select **AppVeyor CSharpGuidelinesAnalyzer** as package source
     * Run command: `Install-Package CSharpGuidelinesAnalyzer -pre`
+
+## Building from source
+
+Clone the repository and open `CSharpGuidelinesAnalyzer.sln` in Visual Studio.
+You can now build and run the tests.
+
+To debug an analyzer, set a breakpoint and press F5. This launches a second (experimental) Visual Studio instance with the debugger attached. In the experimental instance, open a project and observe your breakpoint get hit.
+
+Note: When using Visual Studio 2022 or higher, breakpoints don't get hit unless you change the following setting **in the experimental instance**:
+
+* Tools > Options > Text Editor > C# > Advanced > Uncheck 'Run code analysis in separate process'
