@@ -16,6 +16,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
         private const string MessageFormat = "Return type in signature for '{0}' should be an interface to an unchangeable collection";
         private const string Description = "Return interfaces to unchangeable collections.";
 
+        private const string DependencyInjectionServiceCollectionTypeName = "Microsoft.Extensions.DependencyInjection.IServiceCollection";
+
         public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1130";
 
         [NotNull]
@@ -88,10 +90,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 if (!method.IsPropertyOrEventAccessor() && !method.IsOverride && !method.IsInterfaceImplementation() &&
                     !method.HidesBaseMember(context.CancellationToken))
                 {
-                    string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                    if (!IsWhitelisted(method))
+                    {
+                        string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                    var diagnostic = Diagnostic.Create(Rule, method.Locations[0], name);
-                    context.ReportDiagnostic(diagnostic);
+                        var diagnostic = Diagnostic.Create(Rule, method.Locations[0], name);
+                        context.ReportDiagnostic(diagnostic);
+                    }
                 }
             }
         }
@@ -126,6 +131,18 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             return type is INamedTypeSymbol { IsGenericType: true } genericType
                 ? !unchangeableCollectionInterfaces.Contains(genericType.ConstructedFrom)
                 : !unchangeableCollectionInterfaces.Contains(type);
+        }
+
+        private static bool IsWhitelisted([NotNull] IMethodSymbol method)
+        {
+            return IsDependencyInjectionRegistrationMethod(method);
+        }
+
+        private static bool IsDependencyInjectionRegistrationMethod([NotNull] IMethodSymbol method)
+        {
+            return method.Name.StartsWith("Add", StringComparison.Ordinal) && method.IsExtensionMethod &&
+                method.ReturnType.ToString() == DependencyInjectionServiceCollectionTypeName && method.Parameters.Length >= 1 &&
+                method.Parameters[0].Type.ToString() == DependencyInjectionServiceCollectionTypeName;
         }
     }
 }

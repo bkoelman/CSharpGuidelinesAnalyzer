@@ -628,6 +628,43 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
+        internal void When_method_is_extension_on_ServiceCollection_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(ICollection<>).Namespace)
+                .InGlobalScope(@"
+                    namespace Microsoft.Extensions.DependencyInjection
+                    {
+                        public class ServiceDescriptor
+                        {
+                        }
+
+                        public interface IServiceCollection : ICollection<ServiceDescriptor>, IEnumerable<ServiceDescriptor>, IList<ServiceDescriptor>
+                        {
+                        }
+                    }
+
+                    namespace Test
+                    {
+                        using Microsoft.Extensions.DependencyInjection;
+
+                        public static class ServiceCollectionExtensions
+                        {
+                            public static IServiceCollection AddSome(this IServiceCollection services)
+                            {
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_property_type_is_generic_List_it_must_be_skipped()
         {
             // Arrange
