@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Rules.MemberDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -252,6 +253,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
+        internal void When_method_returns_IQueryable_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(IQueryable).Assembly)
+                .Using(typeof(IQueryable).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IQueryable M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_method_returns_generic_IAsyncEnumerable_it_must_be_skipped()
         {
             // Arrange
@@ -262,6 +285,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                     public class C
                     {
                         public IAsyncEnumerable<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_generic_IQueryable_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(IQueryable<>).Assembly)
+                .Using(typeof(IQueryable<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IQueryable<string> M()
                         {
                             throw new NotImplementedException();
                         }
@@ -472,7 +517,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_inherited_method_returns_generic_List_it_must_be_skipped()
+        internal void When_inherited_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -499,7 +544,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_hidden_method_returns_generic_List_it_must_be_skipped()
+        internal void When_hidden_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -529,7 +574,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_implicitly_implemented_method_returns_generic_List_it_must_be_skipped()
+        internal void When_implicitly_implemented_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -556,7 +601,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_explicitly_implemented_method_returns_generic_List_it_must_be_skipped()
+        internal void When_explicitly_implemented_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -580,6 +625,43 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             // Act and assert
             VerifyGuidelineDiagnostic(source,
                 "Return type in signature for 'I.M()' should be an interface to an unchangeable collection");
+        }
+
+        [Fact]
+        internal void When_method_is_extension_on_ServiceCollection_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .Using(typeof(ICollection<>).Namespace)
+                .InGlobalScope(@"
+                    namespace Microsoft.Extensions.DependencyInjection
+                    {
+                        public class ServiceDescriptor
+                        {
+                        }
+
+                        public interface IServiceCollection : ICollection<ServiceDescriptor>, IEnumerable<ServiceDescriptor>, IList<ServiceDescriptor>
+                        {
+                        }
+                    }
+
+                    namespace Test
+                    {
+                        using Microsoft.Extensions.DependencyInjection;
+
+                        public static class ServiceCollectionExtensions
+                        {
+                            public static IServiceCollection AddSome(this IServiceCollection services)
+                            {
+                                throw null;
+                            }
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
         }
 
         [Fact]
