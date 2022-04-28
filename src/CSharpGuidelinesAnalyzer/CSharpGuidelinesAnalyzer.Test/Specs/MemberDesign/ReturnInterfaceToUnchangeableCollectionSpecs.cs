@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using CSharpGuidelinesAnalyzer.Rules.MemberDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -252,6 +253,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
+        internal void When_method_returns_IQueryable_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(IQueryable).Assembly)
+                .Using(typeof(IQueryable).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IQueryable M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
         internal void When_method_returns_generic_IAsyncEnumerable_it_must_be_skipped()
         {
             // Arrange
@@ -262,6 +285,28 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                     public class C
                     {
                         public IAsyncEnumerable<string> M()
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                ")
+                .Build();
+
+            // Act and assert
+            VerifyGuidelineDiagnostic(source);
+        }
+
+        [Fact]
+        internal void When_method_returns_generic_IQueryable_it_must_be_skipped()
+        {
+            // Arrange
+            ParsedSourceCode source = new TypeSourceCodeBuilder()
+                .WithReference(typeof(IQueryable<>).Assembly)
+                .Using(typeof(IQueryable<>).Namespace)
+                .InGlobalScope(@"
+                    public class C
+                    {
+                        public IQueryable<string> M()
                         {
                             throw new NotImplementedException();
                         }

@@ -63,6 +63,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
             {
                 KnownTypes.SystemCollectionsGenericIEnumerableT(compilation),
                 KnownTypes.SystemCollectionsGenericIAsyncEnumerableT(compilation),
+                KnownTypes.SystemLinqIQueryable(compilation),
+                KnownTypes.SystemLinqIQueryableT(compilation),
                 KnownTypes.SystemCollectionsGenericIReadOnlyCollectionT(compilation),
                 KnownTypes.SystemCollectionsGenericIReadOnlyListT(compilation),
                 KnownTypes.SystemCollectionsGenericIReadOnlySetT(compilation),
@@ -121,12 +123,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 return false;
             }
 
-            if (type is INamedTypeSymbol { IsGenericType: true } namedType)
-            {
-                return !unchangeableCollectionInterfaces.Contains(namedType.ConstructedFrom);
-            }
-
-            return true;
+            return type is INamedTypeSymbol { IsGenericType: true } genericType
+                ? !unchangeableCollectionInterfaces.Contains(genericType.ConstructedFrom)
+                : !unchangeableCollectionInterfaces.Contains(type);
         }
     }
 }
