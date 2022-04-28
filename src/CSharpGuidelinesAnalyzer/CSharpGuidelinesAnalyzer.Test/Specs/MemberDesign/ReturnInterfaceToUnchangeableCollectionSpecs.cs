@@ -517,7 +517,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_inherited_method_returns_generic_List_it_must_be_skipped()
+        internal void When_inherited_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -544,7 +544,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_hidden_method_returns_generic_List_it_must_be_skipped()
+        internal void When_hidden_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -574,7 +574,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_implicitly_implemented_method_returns_generic_List_it_must_be_skipped()
+        internal void When_implicitly_implemented_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -601,7 +601,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         }
 
         [Fact]
-        internal void When_explicitly_implemented_method_returns_generic_List_it_must_be_skipped()
+        internal void When_explicitly_implemented_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
