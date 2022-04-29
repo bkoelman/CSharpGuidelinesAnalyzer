@@ -11,7 +11,7 @@
     <!-- https://github.com/NuGet/Home/issues/5630 -->
     <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>3.8.0</Version>
+    <Version>3.8.1</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
