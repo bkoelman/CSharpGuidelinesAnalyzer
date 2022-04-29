@@ -163,7 +163,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .InGlobalScope(@"
                     class C
@@ -183,7 +182,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask<>).Assembly)
                 .Using(typeof(ValueTask<>).Namespace)
                 .InGlobalScope(@"
                     class C

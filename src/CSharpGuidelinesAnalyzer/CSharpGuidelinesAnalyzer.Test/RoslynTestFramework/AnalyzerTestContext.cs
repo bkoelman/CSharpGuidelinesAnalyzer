@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -22,7 +21,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         [NotNull]
         [ItemNotNull]
         private static readonly Lazy<ImmutableHashSet<MetadataReference>> DefaultReferencesLazy = new Lazy<ImmutableHashSet<MetadataReference>>(
-            () => ReferenceAssemblies.Default.ResolveAsync(null, CancellationToken.None).Result.ToImmutableHashSet(),
+            () => ReferenceAssemblies.Net.Net60.ResolveAsync(null, CancellationToken.None).Result.ToImmutableHashSet(),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
         [NotNull]
@@ -78,16 +77,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Options = options;
         }
 #pragma warning restore AV1561 // Signature contains too many parameters
-
-        [NotNull]
-        private static PortableExecutableReference CreateReferenceFromFile([NotNull] string assemblyPath, [NotNull] string assemblyFileName)
-        {
-            FrameworkGuard.NotNull(assemblyPath, nameof(assemblyPath));
-            FrameworkGuard.NotNull(assemblyFileName, nameof(assemblyFileName));
-
-            string filePath = Path.Combine(assemblyPath, assemblyFileName);
-            return MetadataReference.CreateFromFile(filePath);
-        }
 
         [NotNull]
         public AnalyzerTestContext WithCode([NotNull] string sourceCode, [NotNull] IList<TextSpan> sourceSpans)

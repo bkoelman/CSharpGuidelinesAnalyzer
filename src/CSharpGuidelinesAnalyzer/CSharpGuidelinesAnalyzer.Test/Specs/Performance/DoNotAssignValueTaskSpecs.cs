@@ -16,7 +16,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .InDefaultClass(@"
                     async Task M()
@@ -42,7 +41,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InDefaultClass(@"
@@ -75,7 +73,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InDefaultClass(@"
@@ -111,7 +108,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InGlobalScope(@"
@@ -141,7 +137,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InDefaultClass(@"
@@ -181,7 +176,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InDefaultClass(@"
@@ -218,7 +212,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InGlobalScope(@"
@@ -256,7 +249,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ValueTask).Assembly)
                 .Using(typeof(ValueTask).Namespace)
                 .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
                 .InGlobalScope(@"

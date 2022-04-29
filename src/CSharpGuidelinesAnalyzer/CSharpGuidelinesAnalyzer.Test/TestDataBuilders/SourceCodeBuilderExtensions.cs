@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using FluentAssertions;
 using JetBrains.Annotations;
@@ -49,24 +48,6 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
 
             source.Editor.UpdateTestContext(context => context.InAssemblyNamed(assemblyName));
-
-            return source;
-        }
-
-        [NotNull]
-        public static TBuilder WithReference<TBuilder>([NotNull] this TBuilder source, [NotNull] Assembly assembly)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-            Guard.NotNull(assembly, nameof(assembly));
-
-            PortableExecutableReference reference = MetadataReference.CreateFromFile(assembly.Location);
-
-            source.Editor.UpdateTestContext(context =>
-            {
-                ImmutableHashSet<MetadataReference> references = context.References.Add(reference);
-                return context.WithReferences(references);
-            });
 
             return source;
         }

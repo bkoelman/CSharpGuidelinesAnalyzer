@@ -72,7 +72,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(Enumerable).Assembly)
                 .Using(typeof(Enumerable).Namespace)
                 .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"
@@ -193,7 +192,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(Enumerable).Assembly)
                 .Using(typeof(Enumerable).Namespace)
                 .Using(typeof(IEnumerable<>).Namespace)
                 .InGlobalScope(@"

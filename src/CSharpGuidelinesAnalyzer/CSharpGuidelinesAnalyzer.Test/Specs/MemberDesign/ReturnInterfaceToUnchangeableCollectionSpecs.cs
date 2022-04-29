@@ -257,7 +257,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(IQueryable).Assembly)
                 .Using(typeof(IQueryable).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -279,7 +278,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(IAsyncEnumerable<>).Assembly)
                 .Using(typeof(IAsyncEnumerable<>).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -301,7 +299,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(IQueryable<>).Assembly)
                 .Using(typeof(IQueryable<>).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -360,7 +357,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             VerifyGuidelineDiagnostic(source);
         }
 
-#if NET5_0_OR_GREATER
         [Fact]
         internal void When_method_returns_generic_IReadOnlySet_it_must_be_skipped()
         {
@@ -381,7 +377,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
             // Act and assert
             VerifyGuidelineDiagnostic(source);
         }
-#endif
 
         [Fact]
         internal void When_method_returns_generic_IReadOnlyDictionary_it_must_be_skipped()
@@ -409,7 +404,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ImmutableArray<>).Assembly)
                 .Using(typeof(ImmutableArray<>).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -431,7 +425,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(IImmutableList<>).Assembly)
                 .Using(typeof(IImmutableList<>).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -453,7 +446,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ImmutableStack<>).Assembly)
                 .Using(typeof(ImmutableStack<>).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -475,7 +467,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ImmutableDictionary<,>).Assembly)
                 .Using(typeof(ImmutableDictionary<,>).Namespace)
                 .InGlobalScope(@"
                     public class C
@@ -497,7 +488,6 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .WithReference(typeof(ImmutableHashSet<>).Assembly)
                 .Using(typeof(ImmutableHashSet<>).Namespace)
                 .InGlobalScope(@"
                     using HS = System.Collections.Immutable.ImmutableHashSet<int>;
