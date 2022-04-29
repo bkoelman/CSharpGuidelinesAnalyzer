@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -173,7 +174,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
             while (nextType != null)
             {
-                if (nextType.IsEqualTo(systemEventArgs))
+                if (EqualityComparer<ISymbol>.Default.Equals(nextType, systemEventArgs))
                 {
                     return true;
                 }
