@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
+    <LangVersion>8.0</LangVersion>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <LangVersion>8.0</LangVersion>
+    <BaseOutputPath>$(SolutionDir)..\bin</BaseOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -24,14 +25,6 @@
     <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\bin\Debug</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\bin\Release</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <None Include="..\..\..\LICENSE.txt" Link="LICENSE.txt" />
   </ItemGroup>
@@ -49,6 +42,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="2.0.2" PrivateAssets="all" />
   </ItemGroup>
+
   <!--
     To bypass the NuGet cache during install/uninstall debugging, uncomment the target below.
 
@@ -59,5 +53,4 @@
     <Message Importance="High" Text="Setting PackageVersion to $(PackageVersion)" />
   </Target>
   -->
-
 </Project>
