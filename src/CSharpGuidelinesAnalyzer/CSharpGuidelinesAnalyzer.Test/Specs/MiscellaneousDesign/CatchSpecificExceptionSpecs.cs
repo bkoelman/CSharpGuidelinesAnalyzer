@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         protected override string DiagnosticId => CatchSpecificExceptionAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_catching_unfiltered_exception_it_must_be_reported()
+        internal async Task When_catching_unfiltered_exception_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -30,12 +31,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         [Fact]
-        internal void When_catching_filtered_exception_it_must_be_skipped()
+        internal async Task When_catching_filtered_exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -55,11 +56,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_catching_custom_exception_it_must_be_skipped()
+        internal async Task When_catching_custom_exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -83,11 +84,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_catching_argument_exception_it_must_be_skipped()
+        internal async Task When_catching_argument_exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -111,11 +112,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_catching_aggregate_exception_it_must_be_skipped()
+        internal async Task When_catching_aggregate_exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -139,11 +140,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_catching_unfiltered_system_exception_it_must_be_reported()
+        internal async Task When_catching_unfiltered_system_exception_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -163,12 +164,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         [Fact]
-        internal void When_catching_filtered_system_exception_it_must_be_skipped()
+        internal async Task When_catching_filtered_system_exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -188,11 +189,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_catching_unfiltered_application_exception_it_must_be_reported()
+        internal async Task When_catching_unfiltered_application_exception_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -212,12 +213,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 
         [Fact]
-        internal void When_catching_filtered_application_exception_it_must_be_skipped()
+        internal async Task When_catching_filtered_application_exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -237,11 +238,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_catching_unmanaged_exception_it_must_be_reported()
+        internal async Task When_catching_unmanaged_exception_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -261,7 +262,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Catch a specific exception instead of Exception, SystemException or ApplicationException");
         }
 

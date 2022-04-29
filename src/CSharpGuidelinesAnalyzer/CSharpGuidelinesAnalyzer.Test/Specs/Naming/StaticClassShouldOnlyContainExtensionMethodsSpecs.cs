@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => StaticClassShouldOnlyContainExtensionMethodsAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_class_is_not_static_it_must_be_skipped()
+        internal async Task When_class_is_not_static_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -22,11 +23,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_has_type_parameters_it_must_be_skipped()
+        internal async Task When_static_class_has_type_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -38,11 +39,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_misnamed_static_class_has_public_extension_method_it_must_be_reported()
+        internal async Task When_misnamed_static_class_has_public_extension_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -61,12 +62,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of extension method container class 'Container' should end with 'Extensions'");
         }
 
         [Fact]
-        internal void When_misnamed_static_class_has_internal_extension_method_it_must_be_reported()
+        internal async Task When_misnamed_static_class_has_internal_extension_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -85,12 +86,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of extension method container class 'Container' should end with 'Extensions'");
         }
 
         [Fact]
-        internal void When_misnamed_static_class_has_no_extension_methods_it_must_be_skipped()
+        internal async Task When_misnamed_static_class_has_no_extension_methods_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -102,7 +103,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

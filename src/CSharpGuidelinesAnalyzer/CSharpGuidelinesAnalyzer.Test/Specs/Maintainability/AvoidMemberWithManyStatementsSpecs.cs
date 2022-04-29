@@ -18,7 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         #region Different places where code blocks may occur
 
         [Fact]
-        internal void When_method_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_method_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -36,12 +36,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_method_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -60,12 +60,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_operator_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_operator_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -83,12 +83,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.operator ++(C)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_implicit_conversion_operator_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_implicit_conversion_operator_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -106,12 +106,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.implicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_explicit_conversion_operator_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_explicit_conversion_operator_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -129,12 +129,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.explicit operator C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_explicit_conversion_operator_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_explicit_conversion_operator_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -154,12 +154,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.explicit operator C(int)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_constructor_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_constructor_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -177,12 +177,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_constructor_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_constructor_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -202,12 +202,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.C(Task)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_constructor_initializer_contains_eight_statements_it_must_be_reported()
+        internal async Task When_constructor_initializer_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -233,12 +233,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.C(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_static_constructor_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_static_constructor_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -256,12 +256,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_static_constructor_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_static_constructor_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -283,12 +283,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_destructor_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_destructor_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -306,12 +306,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_destructor_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_destructor_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -333,12 +333,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.~C()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_property_initializer_contains_eight_statements_it_must_be_reported()
+        internal async Task When_property_initializer_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -356,12 +356,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Initializer for 'C.P' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_property_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_property_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -380,12 +380,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_property_getter_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_property_getter_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -406,12 +406,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_property_getter_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_property_getter_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -433,12 +433,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.P.get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_property_setter_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_property_setter_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -459,12 +459,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_property_setter_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_property_setter_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -486,12 +486,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.P.set' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_indexer_expression_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_indexer_expression_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -510,12 +510,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_indexer_getter_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_indexer_getter_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -536,12 +536,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.this[int].get' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_indexer_setter_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_indexer_setter_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -562,12 +562,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property accessor 'C.this[int].set' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_event_initializer_contains_eight_statements_it_must_be_reported()
+        internal async Task When_event_initializer_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -587,12 +587,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Initializer for 'C.E' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_event_adder_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_event_adder_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -617,12 +617,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event accessor 'C.E.add' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_event_remover_body_contains_eight_statements_it_must_be_reported()
+        internal async Task When_event_remover_body_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -647,12 +647,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event accessor 'C.E.remove' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_field_initializer_contains_eight_statements_it_must_be_reported()
+        internal async Task When_field_initializer_contains_eight_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -670,7 +670,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Initializer for 'C.f' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
@@ -679,7 +679,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         #region Different kinds of statements
 
         [Fact]
-        internal void When_method_contains_eight_empty_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_empty_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -698,12 +698,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_empty_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_empty_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -728,11 +728,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_declaration_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_declaration_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -756,12 +756,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_declaration_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_declaration_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -784,11 +784,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_expression_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_expression_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -815,12 +815,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_expression_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_expression_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -846,11 +846,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_for_loop_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_for_loop_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -877,12 +877,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_for_loop_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_for_loop_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -908,11 +908,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_foreach_loop_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_foreach_loop_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -940,12 +940,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(List<(int, string)>)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_foreach_loop_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_foreach_loop_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -972,11 +972,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_while_loop_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_while_loop_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1002,12 +1002,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_while_loop_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_while_loop_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1032,11 +1032,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_do_while_loop_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_do_while_loop_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1084,12 +1084,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_do_while_loop_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_do_while_loop_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1133,11 +1133,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_if_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_if_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1202,12 +1202,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_if_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_if_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1265,11 +1265,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_local_function_declarations_it_must_be_skipped()
+        internal async Task When_method_contains_eight_local_function_declarations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1315,11 +1315,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_local_function_invocations_it_must_be_reported()
+        internal async Task When_method_contains_eight_local_function_invocations_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1347,12 +1347,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_local_function_invocations_it_must_be_skipped()
+        internal async Task When_method_contains_seven_local_function_invocations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1379,11 +1379,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_switch_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_switch_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1423,12 +1423,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_switch_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_switch_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1465,11 +1465,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_statements_in_switch_case_blocks_it_must_be_reported()
+        internal async Task When_method_contains_eight_statements_in_switch_case_blocks_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1495,12 +1495,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(int)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_statements_in_switch_case_blocks_it_must_be_skipped()
+        internal async Task When_method_contains_seven_statements_in_switch_case_blocks_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1526,11 +1526,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_throw_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_throw_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1554,12 +1554,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_throw_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_throw_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1582,11 +1582,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_try_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_try_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1650,12 +1650,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_try_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_try_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1713,11 +1713,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_using_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_using_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1747,12 +1747,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_using_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_using_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1781,11 +1781,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_return_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_return_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1810,12 +1810,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_return_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_return_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1842,11 +1842,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_yield_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_yield_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1871,12 +1871,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_yield_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_yield_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1900,11 +1900,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_lock_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_lock_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1940,12 +1940,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_lock_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_lock_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1978,11 +1978,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_fixed_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_fixed_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2017,12 +2017,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_fixed_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_fixed_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2054,11 +2054,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_unsafe_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_unsafe_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2098,12 +2098,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_unsafe_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_unsafe_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2140,11 +2140,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_checked_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_checked_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2189,12 +2189,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_checked_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_checked_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2235,11 +2235,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_labels_and_eight_goto_statements_it_must_be_reported()
+        internal async Task When_method_contains_labels_and_eight_goto_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2271,12 +2271,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_labels_and_seven_goto_statements_it_must_be_skipped()
+        internal async Task When_method_contains_labels_and_seven_goto_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2306,11 +2306,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_continue_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_continue_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2336,12 +2336,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_continue_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_continue_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2366,11 +2366,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_break_statements_it_must_be_reported()
+        internal async Task When_method_contains_eight_break_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2396,12 +2396,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_break_statements_it_must_be_skipped()
+        internal async Task When_method_contains_seven_break_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2426,7 +2426,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         #endregion
@@ -2434,7 +2434,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         #region Reading through nested constructs
 
         [Fact]
-        internal void When_method_contains_eight_statements_with_local_function_it_must_be_reported()
+        internal async Task When_method_contains_eight_statements_with_local_function_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2457,12 +2457,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_statements_with_local_function_it_must_be_skipped()
+        internal async Task When_method_contains_seven_statements_with_local_function_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2485,11 +2485,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_statements_with_lambda_block_it_must_be_reported()
+        internal async Task When_method_contains_eight_statements_with_lambda_block_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2512,12 +2512,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_statements_with_lambda_block_it_must_be_skipped()
+        internal async Task When_method_contains_seven_statements_with_lambda_block_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2539,11 +2539,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_statements_with_parenthesized_lambda_block_it_must_be_reported()
+        internal async Task When_method_contains_eight_statements_with_parenthesized_lambda_block_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2566,12 +2566,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_statements_with_parenthesized_lambda_block_it_must_be_skipped()
+        internal async Task When_method_contains_seven_statements_with_parenthesized_lambda_block_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2593,11 +2593,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_eight_statements_with_anonymous_method_it_must_be_reported()
+        internal async Task When_method_contains_eight_statements_with_anonymous_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2620,12 +2620,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_method_contains_seven_statements_with_anonymous_method_it_must_be_skipped()
+        internal async Task When_method_contains_seven_statements_with_anonymous_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2647,13 +2647,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         #endregion
 
         [Fact]
-        internal void When_method_contains_mixed_set_of_statements_it_must_be_reported()
+        internal async Task When_method_contains_mixed_set_of_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2721,13 +2721,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M1()' contains 8 statements, which exceeds the maximum of 7 statements",
                 "Method 'C.M2(int, string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        internal void When_async_method_contains_mixed_set_of_statements_it_must_be_reported()
+        internal async Task When_async_method_contains_mixed_set_of_statements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2759,14 +2759,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(bool)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         #region Non-default configuration
 
         [Fact]
-        internal void When_using_editor_config_setting_it_must_be_applied()
+        internal async Task When_using_editor_config_setting_it_must_be_applied()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2789,12 +2789,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements");
         }
 
         [Fact]
-        internal void When_using_xml_config_setting_it_must_be_applied()
+        internal async Task When_using_xml_config_setting_it_must_be_applied()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2817,12 +2817,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements");
         }
 
         [Fact]
-        internal void When_using_xml_and_editor_config_setting_it_must_use_editor_config_value()
+        internal async Task When_using_xml_and_editor_config_setting_it_must_use_editor_config_value()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2847,12 +2847,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 17 statements, which exceeds the maximum of 16 statements");
         }
 
         [Fact]
-        public void When_xml_file_is_corrupt_it_must_use_default_value()
+        internal async Task When_xml_file_is_corrupt_it_must_use_default_value()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2872,12 +2872,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        public void When_settings_are_missing_it_must_use_default_value()
+        internal async Task When_settings_are_missing_it_must_use_default_value()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2900,12 +2900,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        public void When_xml_setting_value_is_missing_it_must_use_default_value()
+        internal async Task When_xml_setting_value_is_missing_it_must_use_default_value()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2926,12 +2926,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        public void When_editor_config_setting_value_is_missing_it_must_use_default_value()
+        internal async Task When_editor_config_setting_value_is_missing_it_must_use_default_value()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2952,12 +2952,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(string)' contains 8 statements, which exceeds the maximum of 7 statements");
         }
 
         [Fact]
-        public void When_xml_setting_value_is_invalid_it_must_fail()
+        internal async Task When_xml_setting_value_is_invalid_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2978,15 +2978,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'AV1500:MaxStatementCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
-        public void When_editor_config_setting_value_is_invalid_it_must_fail()
+        internal async Task When_editor_config_setting_value_is_invalid_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -3007,15 +3007,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'dotnet_diagnostic.av1500.max_statement_count' in '.editorconfig' must be in range 0-255.*");
         }
 
         [Fact]
-        public void When_xml_setting_value_is_out_of_range_it_must_fail()
+        internal async Task When_xml_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -3036,15 +3036,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'AV1500:MaxStatementCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
-        public void When_editor_config_setting_value_is_out_of_range_it_must_fail()
+        internal async Task When_editor_config_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -3065,10 +3065,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'dotnet_diagnostic.av1500.max_statement_count' in '.editorconfig' must be in range 0-255.*");
         }
 

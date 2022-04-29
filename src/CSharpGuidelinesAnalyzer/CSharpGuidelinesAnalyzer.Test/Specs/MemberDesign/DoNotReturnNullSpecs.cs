@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         protected override string DiagnosticId => DoNotReturnNullAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_returning_from_void_method_it_must_be_skipped()
+        internal async Task When_returning_from_void_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -26,11 +26,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_constant_from_method_it_must_be_skipped()
+        internal async Task When_returning_constant_from_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -43,11 +43,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_Exception_it_must_be_skipped()
+        internal async Task When_returning_null_for_return_type_Exception_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -60,11 +60,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -79,12 +79,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_List_of_int_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_List_of_int_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(List<>).Namespace)
@@ -100,12 +100,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_IEnumerable_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_IEnumerable_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(IEnumerable).Namespace)
@@ -121,12 +121,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_int_array_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_int_array_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -141,12 +141,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_Task_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_Task_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(Task).Namespace)
@@ -162,12 +162,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_Task_of_int_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_Task_of_int_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(Task<>).Namespace)
@@ -183,12 +183,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_from_async_Task_method_it_must_be_skipped()
+        internal async Task When_returning_from_async_Task_method_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(Task).Namespace)
@@ -204,11 +204,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_from_async_ValueTask_method_it_must_be_skipped()
+        internal async Task When_returning_from_async_ValueTask_method_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(ValueTask).Namespace)
@@ -224,11 +224,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_null_for_async_return_type_Task_of_Exception_it_must_be_skipped()
+        internal async Task When_returning_null_for_async_return_type_Task_of_Exception_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(Task<>).Namespace)
@@ -244,11 +244,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_null_for_async_return_type_ValueTask_of_Exception_it_must_be_skipped()
+        internal async Task When_returning_null_for_async_return_type_ValueTask_of_Exception_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(ValueTask<>).Namespace)
@@ -264,11 +264,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_returning_null_for_async_return_type_Task_of_string_it_must_be_reported()
+        internal async Task When_returning_null_for_async_return_type_Task_of_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(Task<>).Namespace)
@@ -284,12 +284,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_async_return_type_ValueTask_of_string_it_must_be_reported()
+        internal async Task When_returning_null_for_async_return_type_ValueTask_of_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(ValueTask<>).Namespace)
@@ -305,12 +305,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_yielding_break_it_must_be_skipped()
+        internal async Task When_yielding_break_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(IEnumerable<>).Namespace)
@@ -326,11 +326,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_yielding_null_for_return_type_IEnumerable_of_Exception_it_must_be_skipped()
+        internal async Task When_yielding_null_for_return_type_IEnumerable_of_Exception_it_must_be_skipped()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(IEnumerable<>).Namespace)
@@ -346,11 +346,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_yielding_null_for_return_type_IEnumerable_of_string_it_must_be_reported()
+        internal async Task When_yielding_null_for_return_type_IEnumerable_of_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Using(typeof(IEnumerable<>).Namespace)
@@ -367,12 +367,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_constant_for_return_type_string_it_must_be_reported()
+        internal async Task When_returning_null_constant_for_return_type_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -389,12 +389,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_cast_to_null_for_return_type_string_it_must_be_reported()
+        internal async Task When_returning_cast_to_null_for_return_type_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -409,12 +409,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_from_property_getter_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_from_property_getter_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -432,12 +432,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from property accessor 'C.P.get' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_from_indexer_getter_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_from_indexer_getter_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -455,12 +455,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from property accessor 'C.this[int].get' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_from_local_function_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_from_local_function_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -480,12 +480,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from local function 'L()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_expression_bodied_null_for_return_type_string_it_must_be_reported()
+        internal async Task When_returning_expression_bodied_null_for_return_type_string_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -497,12 +497,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'C.M()' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_from_lambda_expression_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_from_lambda_expression_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -517,12 +517,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'lambda expression' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_from_lambda_statement_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_from_lambda_statement_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -540,12 +540,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'lambda expression' which has return type of string, collection or task");
         }
 
         [Fact]
-        internal void When_returning_null_for_return_type_string_from_anonymous_method_it_must_be_reported()
+        internal async Task When_returning_null_for_return_type_string_from_anonymous_method_it_must_be_reported()
         {
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .InGlobalScope(@"
@@ -563,7 +563,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "null is returned from method 'lambda expression' which has return type of string, collection or task");
         }
 

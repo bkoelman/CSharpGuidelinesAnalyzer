@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.ClassDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         protected override string DiagnosticId => DoNotHideInheritedMemberAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_field_hides_base_field_it_must_be_reported()
+        internal async Task When_field_hides_base_field_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -28,12 +29,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.F' hides inherited member");
         }
 
         [Fact]
-        internal void When_property_overrides_base_property_it_must_be_skipped()
+        internal async Task When_property_overrides_base_property_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -71,11 +72,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_property_hides_base_property_it_must_be_reported()
+        internal async Task When_property_hides_base_property_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -113,12 +114,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.P' hides inherited member");
         }
 
         [Fact]
-        internal void When_method_overrides_base_method_it_must_be_skipped()
+        internal async Task When_method_overrides_base_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -140,11 +141,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_hides_base_method_it_must_be_reported()
+        internal async Task When_method_hides_base_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -166,12 +167,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.M(int)' hides inherited member");
         }
 
         [Fact]
-        internal void When_event_overrides_base_event_with_accessors_it_must_be_skipped()
+        internal async Task When_event_overrides_base_event_with_accessors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -209,11 +210,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_hides_base_event_with_accessors_it_must_be_reported()
+        internal async Task When_event_hides_base_event_with_accessors_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -251,12 +252,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.Changed' hides inherited member");
         }
 
         [Fact]
-        internal void When_event_overrides_base_event_without_accessors_it_must_be_skipped()
+        internal async Task When_event_overrides_base_event_without_accessors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -274,11 +275,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_hides_base_event_without_accessors_it_must_be_reported()
+        internal async Task When_event_hides_base_event_without_accessors_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -297,12 +298,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.Changed' hides inherited member");
         }
 
         [Fact]
-        internal void When_nested_class_hides_base_nested_struct_it_must_be_reported()
+        internal async Task When_nested_class_hides_base_nested_struct_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -324,12 +325,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.S' hides inherited member");
         }
 
         [Fact]
-        internal void When_nested_struct_hides_base_nested_class_it_must_be_reported()
+        internal async Task When_nested_struct_hides_base_nested_class_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -351,12 +352,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.S' hides inherited member");
         }
 
         [Fact]
-        internal void When_delegate_hides_base_property_it_must_be_reported()
+        internal async Task When_delegate_hides_base_property_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -377,12 +378,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.P' hides inherited member");
         }
 
         [Fact]
-        internal void When_property_hides_base_delegate_it_must_be_reported()
+        internal async Task When_property_hides_base_delegate_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -403,12 +404,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.P' hides inherited member");
         }
 
         [Fact]
-        internal void When_nested_enum_hides_base_field_it_must_be_reported()
+        internal async Task When_nested_enum_hides_base_field_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -429,12 +430,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.F' hides inherited member");
         }
 
         [Fact]
-        internal void When_field_hides_base_nested_enum_it_must_be_reported()
+        internal async Task When_field_hides_base_nested_enum_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -455,12 +456,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.F' hides inherited member");
         }
 
         [Fact]
-        internal void When_nested_interface_hides_base_event_it_must_be_reported()
+        internal async Task When_nested_interface_hides_base_event_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -480,12 +481,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.Changed' hides inherited member");
         }
 
         [Fact]
-        internal void When_event_hides_base_nested_interface_it_must_be_reported()
+        internal async Task When_event_hides_base_nested_interface_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -505,7 +506,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'C.Changed' hides inherited member");
         }
 

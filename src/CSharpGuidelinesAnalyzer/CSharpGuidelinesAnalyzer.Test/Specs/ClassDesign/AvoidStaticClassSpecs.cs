@@ -1,4 +1,5 @@
-﻿using CSharpGuidelinesAnalyzer.Rules.ClassDesign;
+﻿using System.Threading.Tasks;
+using CSharpGuidelinesAnalyzer.Rules.ClassDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         protected override string DiagnosticId => AvoidStaticClassAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_class_is_not_static_it_must_be_skipped()
+        internal async Task When_class_is_not_static_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,11 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Class 'C' should be non-static or its name should be suffixed with 'Extensions'");
         }
 
         [Fact]
-        internal void When_partial_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
+        internal async Task When_partial_static_class_name_does_not_end_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -60,12 +61,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Class 'C' should be non-static or its name should be suffixed with 'Extensions'");
         }
 
         [Fact]
-        internal void When_static_class_contains_no_members_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal async Task When_static_class_contains_no_members_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -77,11 +78,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_contains_nonstatic_nested_type_it_must_be_skipped()
+        internal async Task When_static_class_contains_nonstatic_nested_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -96,11 +97,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_contains_static_nested_type_it_must_be_reported()
+        internal async Task When_static_class_contains_static_nested_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -115,12 +116,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Class 'Nested' should be non-static or its name should be suffixed with 'Extensions'");
         }
 
         [Fact]
-        internal void When_static_class_contains_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal async Task When_static_class_contains_public_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -139,11 +140,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_contains_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal async Task When_static_class_contains_internal_extension_method_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -162,11 +163,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_contains_public_non_extension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_contains_public_non_extension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -181,12 +182,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Extension method container class 'SomeExtensions' contains public member 'M', which is not an extension method");
         }
 
         [Fact]
-        internal void When_static_class_contains_internal_non_extension_method_and_name_ends_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_contains_internal_non_extension_method_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -201,12 +202,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Extension method container class 'SomeExtensions' contains internal member 'M', which is not an extension method");
         }
 
         [Fact]
-        internal void When_static_class_contains_public_const_field_and_name_ends_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_contains_public_const_field_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -219,12 +220,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Extension method container class 'SomeExtensions' contains public member 'C', which is not an extension method");
         }
 
         [Fact]
-        internal void When_static_class_contains_public_static_field_and_name_ends_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_contains_public_static_field_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -237,12 +238,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Extension method container class 'SomeExtensions' contains public member 'F', which is not an extension method");
         }
 
         [Fact]
-        internal void When_static_class_contains_public_static_property_and_name_ends_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_contains_public_static_property_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -258,12 +259,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Extension method container class 'SomeExtensions' contains public member 'P', which is not an extension method");
         }
 
         [Fact]
-        internal void When_static_class_contains_public_static_event_and_name_ends_with_Extensions_it_must_be_reported()
+        internal async Task When_static_class_contains_public_static_event_and_name_ends_with_Extensions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -276,12 +277,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Extension method container class 'SomeExtensions' contains public member 'E', which is not an extension method");
         }
 
         [Fact]
-        internal void When_static_class_contains_static_constructor_and_name_ends_with_Extensions_it_must_be_skipped()
+        internal async Task When_static_class_contains_static_constructor_and_name_ends_with_Extensions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -296,11 +297,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_contains_entry_point_it_must_be_skipped()
+        internal async Task When_static_class_contains_entry_point_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -316,11 +317,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_static_class_is_platform_invoke_wrapper_it_must_be_skipped()
+        internal async Task When_static_class_is_platform_invoke_wrapper_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -347,7 +348,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

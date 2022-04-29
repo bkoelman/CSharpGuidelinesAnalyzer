@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => AvoidUsingNamedArgumentAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_using_a_named_argument_of_string_type_it_must_be_reported()
+        internal async Task When_using_a_named_argument_of_string_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -27,12 +28,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 's' in the call to 'Test.M(int, string)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_a_non_trailing_named_argument_of_string_type_it_must_be_reported()
+        internal async Task When_using_a_non_trailing_named_argument_of_string_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -49,12 +50,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 's' in the call to 'Test.M(int, string, int)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_a_named_argument_of_object_type_in_local_function_it_must_be_reported()
+        internal async Task When_using_a_named_argument_of_object_type_in_local_function_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -74,12 +75,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'o' in the call to 'L(int, object)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_a_named_argument_of_boolean_type_it_must_be_skipped()
+        internal async Task When_using_a_named_argument_of_boolean_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -96,11 +97,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_a_named_argument_of_boolean_type_in_local_function_it_must_be_skipped()
+        internal async Task When_using_a_named_argument_of_boolean_type_in_local_function_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -120,11 +121,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_a_named_argument_of_nullable_boolean_type_it_must_be_skipped()
+        internal async Task When_using_a_named_argument_of_nullable_boolean_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -141,11 +142,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_a_named_argument_of_nullable_boolean_type_in_local_function_it_must_be_skipped()
+        internal async Task When_using_a_named_argument_of_nullable_boolean_type_in_local_function_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -165,11 +166,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_only_unneeded_named_arguments_it_must_be_reported()
+        internal async Task When_using_only_unneeded_named_arguments_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -186,14 +187,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'd' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument",
                 "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument",
                 "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_some_unneeded_named_arguments_it_must_be_reported()
+        internal async Task When_using_some_unneeded_named_arguments_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -210,13 +211,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument",
                 "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_one_unneeded_named_argument_after_regular_parameter_it_must_be_reported()
+        internal async Task When_using_one_unneeded_named_argument_after_regular_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -233,12 +234,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_one_unneeded_named_argument_after_optional_parameter_it_must_be_reported()
+        internal async Task When_using_one_unneeded_named_argument_after_optional_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -255,12 +256,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'c' in the call to 'Test.M(int, string, double, float)' is invoked with a named argument");
         }
 
         [Fact]
-        internal void When_using_only_needed_named_arguments_it_must_be_skipped()
+        internal async Task When_using_only_needed_named_arguments_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -277,7 +278,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

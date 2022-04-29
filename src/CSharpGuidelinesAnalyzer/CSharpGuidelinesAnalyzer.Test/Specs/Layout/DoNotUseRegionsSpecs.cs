@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Layout;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
         protected override string DiagnosticId => DoNotUseRegionsAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_source_contains_no_regions_it_must_be_skipped()
+        internal async Task When_source_contains_no_regions_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -28,11 +29,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_source_contains_top_level_regions_it_must_be_reported()
+        internal async Task When_source_contains_top_level_regions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -46,13 +47,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Region should be removed",
                 "Region should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_nested_regions_it_must_be_reported()
+        internal async Task When_source_contains_nested_regions_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -90,7 +91,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Region should be removed",
                 "Region should be removed",
                 "Region should be removed",
@@ -99,7 +100,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
         }
 
         [Fact]
-        internal void When_source_contains_unbalanced_region_it_must_be_reported()
+        internal async Task When_source_contains_unbalanced_region_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -110,7 +111,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Region should be removed");
         }
 

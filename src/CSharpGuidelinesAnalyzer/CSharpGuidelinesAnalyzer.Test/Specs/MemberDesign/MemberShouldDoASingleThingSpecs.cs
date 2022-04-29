@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.MemberDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         protected override string DiagnosticId => MemberShouldDoASingleThingAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_property_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_property_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,12 +24,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'CustomerAndOrder' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_method_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_method_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -43,12 +44,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'SaveCustomerAndOrder' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_local_function_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_local_function_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -66,12 +67,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_nested_local_function_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_nested_local_function_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -95,12 +96,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'SaveCustomerAndOrder' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_field_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_field_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -113,12 +114,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field '_customerAndOrder' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_event_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_event_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -141,12 +142,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'CustomerAndOrderSaved' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_method_name_contains_the_word_and_with_underscores_it_must_be_reported()
+        internal async Task When_method_name_contains_the_word_and_with_underscores_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -161,12 +162,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'save_customer_and_order' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_method_name_contains_the_word_and_with_digits_it_must_be_reported()
+        internal async Task When_method_name_contains_the_word_and_with_digits_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -181,12 +182,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'Match1And2Again3' contains the word 'and', which suggests doing multiple things");
         }
 
         [Fact]
-        internal void When_method_name_contains_the_word_Land_it_must_be_skipped()
+        internal async Task When_method_name_contains_the_word_Land_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -201,11 +202,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_contains_the_word_Andy_it_must_be_skipped()
+        internal async Task When_method_name_contains_the_word_Andy_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -220,11 +221,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_overrides_base_method_it_must_be_skipped()
+        internal async Task When_method_overrides_base_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -244,11 +245,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_hides_base_method_it_must_be_skipped()
+        internal async Task When_method_hides_base_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -268,11 +269,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_implicitly_implements_interface_method_it_must_be_skipped()
+        internal async Task When_method_implicitly_implements_interface_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -292,11 +293,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_explicitly_implements_interface_method_it_must_be_skipped()
+        internal async Task When_method_explicitly_implements_interface_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -316,11 +317,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_MSTest_method_name_contains_the_word_And_it_must_be_skipped()
+        internal async Task When_MSTest_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -348,11 +349,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_XUnit_method_name_contains_the_word_And_it_must_be_skipped()
+        internal async Task When_XUnit_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -380,11 +381,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_NUnit_method_name_contains_the_word_And_it_must_be_skipped()
+        internal async Task When_NUnit_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -412,11 +413,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_MbUnit_method_name_contains_the_word_And_it_must_be_skipped()
+        internal async Task When_MbUnit_method_name_contains_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -444,11 +445,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_consists_of_the_word_And_it_must_be_skipped()
+        internal async Task When_method_name_consists_of_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -463,11 +464,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_starts_with_the_word_And_it_must_be_skipped()
+        internal async Task When_method_name_starts_with_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -482,11 +483,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_ends_with_the_word_And_it_must_be_skipped()
+        internal async Task When_method_name_ends_with_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -501,7 +502,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         protected override string DiagnosticId => DoNotAssignValueTaskAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_awaiting_ValueTask_it_must_be_skipped()
+        internal async Task When_awaiting_ValueTask_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -33,11 +33,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_initializing_variable_from_ValueTask_it_must_be_reported()
+        internal async Task When_initializing_variable_from_ValueTask_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -61,7 +61,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Assignment of ValueTask without await to 'task'",
                 "Assignment of ValueTask without await to 'configuredTask'",
                 "Assignment of ValueTask without await to 'stringTask'",
@@ -69,7 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         }
 
         [Fact]
-        internal void When_conditionally_initializing_variable_from_ValueTask_using_null_conditional_operator_it_must_be_reported()
+        internal async Task When_conditionally_initializing_variable_from_ValueTask_using_null_conditional_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -96,7 +96,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Assignment of ValueTask without await to 'task'",
                 "Assignment of ValueTask without await to 'configuredTask'",
                 "Assignment of ValueTask without await to 'stringTask'",
@@ -104,7 +104,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         }
 
         [Fact]
-        internal void When_initializing_member_from_ValueTask_it_must_be_reported()
+        internal async Task When_initializing_member_from_ValueTask_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -125,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Assignment of ValueTask without await to 'C.task'",
                 "Assignment of ValueTask without await to 'C.ConfiguredTask'",
                 "Assignment of ValueTask without await to 'C.stringTask'",
@@ -133,7 +133,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         }
 
         [Fact]
-        internal void When_assigning_variable_from_ValueTask_it_must_be_reported()
+        internal async Task When_assigning_variable_from_ValueTask_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -164,7 +164,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Assignment of ValueTask without await to 'task'",
                 "Assignment of ValueTask without await to 'configuredTask'",
                 "Assignment of ValueTask without await to 'stringTask'",
@@ -172,7 +172,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         }
 
         [Fact]
-        internal void When_conditionally_assigning_variable_from_ValueTask_using_null_coalescing_operator_it_must_be_reported()
+        internal async Task When_conditionally_assigning_variable_from_ValueTask_using_null_coalescing_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -200,7 +200,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Assignment of ValueTask without await to 'task'",
                 "Assignment of ValueTask without await to 'configuredTask'",
                 "Assignment of ValueTask without await to 'stringTask'",
@@ -208,7 +208,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         }
 
         [Fact]
-        internal void When_assigning_member_from_ValueTask_it_must_be_reported()
+        internal async Task When_assigning_member_from_ValueTask_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -237,7 +237,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Assignment of ValueTask without await to 'C.task'",
                 "Assignment of ValueTask without await to 'C.ConfiguredTask'",
                 "Assignment of ValueTask without await to 'C.stringTask'",
@@ -245,7 +245,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
         }
 
         [Fact]
-        internal void When_using_argument_of_type_ValueTask_it_must_be_reported()
+        internal async Task When_using_argument_of_type_ValueTask_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -268,7 +268,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Performance
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Usage of ValueTask without await on parameter 'value' of 'C.Target(object)'",
                 "Usage of ValueTask without await on parameter 'value' of 'C.Target(object)'",
                 "Usage of ValueTask without await on parameter 'value' of 'C.Target(object)'",

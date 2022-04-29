@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         protected override string DiagnosticId => OperationHasKeywordAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_empty_statement_is_found_it_must_be_reported()
+        internal async Task When_empty_statement_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -26,12 +26,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_while_loop_is_found_it_must_be_reported()
+        internal async Task When_while_loop_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -46,12 +46,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_do_while_loop_is_found_it_must_be_reported()
+        internal async Task When_do_while_loop_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -67,12 +67,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_do_while_loop_with_alternate_location_marker_is_found_it_must_be_reported()
+        internal async Task When_do_while_loop_with_alternate_location_marker_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -88,12 +88,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_for_loop_is_found_it_must_be_reported()
+        internal async Task When_for_loop_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -109,13 +109,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword",
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_foreach_loop_is_found_it_must_be_reported()
+        internal async Task When_foreach_loop_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -131,13 +131,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword",
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_return_is_found_it_must_be_reported()
+        internal async Task When_return_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -150,12 +150,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_yield_return_is_found_it_must_be_reported()
+        internal async Task When_yield_return_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -169,12 +169,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_yield_break_is_found_it_must_be_reported()
+        internal async Task When_yield_break_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -188,12 +188,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_goto_is_found_it_must_be_reported()
+        internal async Task When_goto_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -210,12 +210,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_if_is_found_it_must_be_reported()
+        internal async Task When_if_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -233,12 +233,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_using_is_found_it_must_be_reported()
+        internal async Task When_using_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -253,12 +253,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_lock_is_found_it_must_be_reported()
+        internal async Task When_lock_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -273,12 +273,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_constant_switch_is_found_it_must_be_reported()
+        internal async Task When_constant_switch_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -306,7 +306,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword",
                 "Operation should have a keyword",
                 "Operation should have a keyword",
@@ -318,7 +318,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_pattern_switch_is_found_it_must_be_reported()
+        internal async Task When_pattern_switch_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -345,7 +345,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword",
                 "Operation should have a keyword",
                 "Operation should have a keyword",
@@ -356,7 +356,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_try_catch_finally_is_found_it_must_be_reported()
+        internal async Task When_try_catch_finally_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -377,13 +377,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword",
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_try_catch_finally_with_alternate_location_marker_is_found_it_must_be_reported()
+        internal async Task When_try_catch_finally_with_alternate_location_marker_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -404,13 +404,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword",
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_throw_is_found_it_must_be_reported()
+        internal async Task When_throw_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -423,12 +423,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_await_is_found_it_must_be_reported()
+        internal async Task When_await_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -442,12 +442,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_sizeof_is_found_it_must_be_reported()
+        internal async Task When_sizeof_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -461,12 +461,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_typeof_is_found_it_must_be_reported()
+        internal async Task When_typeof_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -480,12 +480,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 
         [Fact]
-        internal void When_nameof_is_found_it_must_be_reported()
+        internal async Task When_nameof_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -499,7 +499,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation should have a keyword");
         }
 

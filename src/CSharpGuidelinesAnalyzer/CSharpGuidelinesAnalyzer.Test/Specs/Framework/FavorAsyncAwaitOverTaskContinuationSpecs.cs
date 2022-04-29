@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         protected override string DiagnosticId => FavorAsyncAwaitOverTaskContinuationAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
+        internal async Task When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -32,12 +32,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
         }
 
         [Fact]
-        internal void When_method_contains_invocation_of_TaskContinueWith_with_type_parameter_it_must_be_reported()
+        internal async Task When_method_contains_invocation_of_TaskContinueWith_with_type_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -57,12 +57,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
         }
 
         [Fact]
-        internal void When_method_contains_invocation_of_generic_TaskContinueWith_with_using_static_it_must_be_reported()
+        internal async Task When_method_contains_invocation_of_generic_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -85,12 +85,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
         }
 
         [Fact]
-        internal void When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
+        internal async Task When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -112,12 +112,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
         }
 
         [Fact]
-        internal void When_method_contains_invocation_of_TaskContinueWith_from_alternate_namespace_it_must_be_skipped()
+        internal async Task When_method_contains_invocation_of_TaskContinueWith_from_alternate_namespace_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -154,7 +154,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

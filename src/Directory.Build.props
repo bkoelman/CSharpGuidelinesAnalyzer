@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
-
     <!-- Required for code coverage -->
     <DebugType>full</DebugType>
   </PropertyGroup>

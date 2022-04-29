@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         protected override string DiagnosticId => DoNotPassNullOnEventInvocationAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_sender_argument_is_null_in_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_sender_argument_is_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -28,12 +29,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
-        internal void When_sender_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_sender_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -53,12 +54,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
-        internal void When_named_sender_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_named_sender_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -78,12 +79,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
-        internal void When_sender_argument_is_null_in_static_event_invocation_it_must_be_skipped()
+        internal async Task When_sender_argument_is_null_in_static_event_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -101,11 +102,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_sender_argument_is_null_in_method_invocation_it_must_be_skipped()
+        internal async Task When_sender_argument_is_null_in_method_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -126,11 +127,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_sender_parameter_is_missing_in_event_type_it_must_be_skipped()
+        internal async Task When_sender_parameter_is_missing_in_event_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -150,11 +151,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_sender_argument_is_null_in_null_conditional_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_sender_argument_is_null_in_null_conditional_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -172,12 +173,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'sender' argument is null in non-static event invocation");
         }
 
         [Fact]
-        internal void When_sender_argument_is_null_in_null_conditional_static_event_invocation_it_must_be_skipped()
+        internal async Task When_sender_argument_is_null_in_null_conditional_static_event_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -195,11 +196,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_both_arguments_are_provided_in_event_invocation_it_must_be_skipped()
+        internal async Task When_both_arguments_are_provided_in_event_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -217,11 +218,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_second_argument_is_null_in_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_second_argument_is_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -239,12 +240,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'e' argument is null in event invocation");
         }
 
         [Fact]
-        internal void When_second_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_second_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -264,12 +265,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'e' argument is null in event invocation");
         }
 
         [Fact]
-        internal void When_named_second_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_named_second_argument_is_folded_null_in_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -289,12 +290,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'e' argument is null in event invocation");
         }
 
         [Fact]
-        internal void When_second_argument_is_null_in_static_event_invocation_it_must_be_reported()
+        internal async Task When_second_argument_is_null_in_static_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -312,12 +313,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'e' argument is null in event invocation");
         }
 
         [Fact]
-        internal void When_second_argument_is_null_in_method_invocation_it_must_be_skipped()
+        internal async Task When_second_argument_is_null_in_method_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -338,11 +339,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_second_argument_of_derived_type_is_null_in_event_invocation_it_must_be_reported()
+        internal async Task When_second_argument_of_derived_type_is_null_in_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -366,12 +367,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'eventArguments' argument is null in event invocation");
         }
 
         [Fact]
-        internal void When_second_parameter_has_wrong_type_it_must_be_skipped()
+        internal async Task When_second_parameter_has_wrong_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -391,11 +392,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_second_argument_is_null_in_null_conditional_nonstatic_event_invocation_it_must_be_reported()
+        internal async Task When_second_argument_is_null_in_null_conditional_nonstatic_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -413,12 +414,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'e' argument is null in event invocation");
         }
 
         [Fact]
-        internal void When_second_argument_is_null_in_null_conditional_static_event_invocation_it_must_be_reported()
+        internal async Task When_second_argument_is_null_in_null_conditional_static_event_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -436,7 +437,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'e' argument is null in event invocation");
         }
 

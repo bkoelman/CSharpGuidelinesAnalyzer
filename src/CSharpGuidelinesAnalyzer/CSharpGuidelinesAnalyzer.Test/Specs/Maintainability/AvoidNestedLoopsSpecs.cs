@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => AvoidNestedLoopsAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_contains_single_for_loop_it_must_be_skipped()
+        internal async Task When_method_contains_single_for_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -26,11 +27,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_for_loop_it_must_be_reported()
+        internal async Task When_method_contains_nested_for_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -51,13 +52,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop statement contains nested loop",
                 "Loop statement contains nested loop");
         }
 
         [Fact]
-        internal void When_method_contains_single_foreach_loop_it_must_be_skipped()
+        internal async Task When_method_contains_single_foreach_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -72,11 +73,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_foreach_loop_it_must_be_reported()
+        internal async Task When_method_contains_nested_foreach_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -97,13 +98,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop statement contains nested loop",
                 "Loop statement contains nested loop");
         }
 
         [Fact]
-        internal void When_method_contains_single_deconstructing_foreach_loop_it_must_be_skipped()
+        internal async Task When_method_contains_single_deconstructing_foreach_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -119,11 +120,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_deconstructing_foreach_loop_it_must_be_reported()
+        internal async Task When_method_contains_nested_deconstructing_foreach_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -145,13 +146,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop statement contains nested loop",
                 "Loop statement contains nested loop");
         }
 
         [Fact]
-        internal void When_method_contains_single_while_loop_it_must_be_skipped()
+        internal async Task When_method_contains_single_while_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -166,11 +167,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_while_loop_it_must_be_reported()
+        internal async Task When_method_contains_nested_while_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -191,13 +192,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop statement contains nested loop",
                 "Loop statement contains nested loop");
         }
 
         [Fact]
-        internal void When_method_contains_single_do_while_loop_it_must_be_skipped()
+        internal async Task When_method_contains_single_do_while_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -213,11 +214,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_do_while_loop_it_must_be_reported()
+        internal async Task When_method_contains_nested_do_while_loop_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -241,13 +242,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop statement contains nested loop",
                 "Loop statement contains nested loop");
         }
 
         [Fact]
-        internal void When_method_contains_nested_loop_in_local_function_it_must_be_skipped()
+        internal async Task When_method_contains_nested_loop_in_local_function_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -268,11 +269,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_loop_in_lambda_block_it_must_be_skipped()
+        internal async Task When_method_contains_nested_loop_in_lambda_block_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -293,11 +294,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_loop_in_parenthesized_lambda_block_it_must_be_skipped()
+        internal async Task When_method_contains_nested_loop_in_parenthesized_lambda_block_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -318,11 +319,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_nested_loop_in_anonymous_method_it_must_be_skipped()
+        internal async Task When_method_contains_nested_loop_in_anonymous_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -343,7 +344,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

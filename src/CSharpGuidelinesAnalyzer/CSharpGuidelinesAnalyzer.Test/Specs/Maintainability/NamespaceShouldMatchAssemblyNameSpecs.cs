@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => NamespaceShouldMatchAssemblyNameAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_assembly_name_matches_with_namespace_name_it_must_be_skipped()
+        internal async Task When_assembly_name_matches_with_namespace_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -33,11 +34,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_assembly_name_does_not_match_with_namespace_name_it_must_be_reported()
+        internal async Task When_assembly_name_does_not_match_with_namespace_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -59,14 +60,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Namespace 'Some.WrongScope' does not match with assembly name 'Some.Scope.Example'",
                 "Namespace 'Some.WrongScope.Example' does not match with assembly name 'Some.Scope.Example'",
                 "Namespace 'Some.WrongScope.Example.Deeper' does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
-        internal void When_assembly_name_starts_with_namespace_name_but_does_not_match_it_must_be_reported()
+        internal async Task When_assembly_name_starts_with_namespace_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -82,12 +83,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Namespace 'Some.Scope2' does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
-        internal void When_namespace_name_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
+        internal async Task When_namespace_name_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -103,12 +104,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Namespace 'Some.Scope' does not match with assembly name 'Some.Scope2.Example'");
         }
 
         [Fact]
-        internal void When_assembly_name_matches_with_namespace_of_type_it_must_be_skipped()
+        internal async Task When_assembly_name_matches_with_namespace_of_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -137,11 +138,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_assembly_name_does_not_match_with_namespace_of_type_it_must_be_reported()
+        internal async Task When_assembly_name_does_not_match_with_namespace_of_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -172,13 +173,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'TooHigh' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope.Example'",
                 "Type 'AlsoTooHigh' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
-        internal void When_assembly_name_starts_with_namespace_of_type_but_does_not_match_it_must_be_reported()
+        internal async Task When_assembly_name_starts_with_namespace_of_type_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -197,13 +198,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Namespace 'Some.Scope' does not match with assembly name 'Some.Scope2'",
                 "Type 'WrongSpace' is declared in namespace 'Some.Scope', which does not match with assembly name 'Some.Scope2'");
         }
 
         [Fact]
-        internal void When_namespace_of_type_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
+        internal async Task When_namespace_of_type_starts_with_assembly_name_but_does_not_match_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -222,13 +223,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Namespace 'Some.Scope2' does not match with assembly name 'Some.Scope'",
                 "Type 'WrongSpace' is declared in namespace 'Some.Scope2', which does not match with assembly name 'Some.Scope'");
         }
 
         [Fact]
-        internal void When_type_is_defined_in_global_namespace_it_must_be_reported()
+        internal async Task When_type_is_defined_in_global_namespace_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -241,12 +242,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'C' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'");
         }
 
         [Fact]
-        internal void When_type_is_defined_in_global_namespace_in_Core_assembly_it_must_be_reported()
+        internal async Task When_type_is_defined_in_global_namespace_in_Core_assembly_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -259,12 +260,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'C' is declared in global namespace, which does not match with assembly name 'Core'");
         }
 
         [Fact]
-        internal void When_type_is_defined_in_non_global_namespace_in_Core_assembly_it_must_be_skipped()
+        internal async Task When_type_is_defined_in_non_global_namespace_in_Core_assembly_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -280,11 +281,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_type_is_defined_in_global_namespace_in_assembly_name_ending_with_Core_it_must_be_reported()
+        internal async Task When_type_is_defined_in_global_namespace_in_assembly_name_ending_with_Core_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -297,12 +298,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'C' is declared in global namespace, which does not match with assembly name 'Company.Core'");
         }
 
         [Fact]
-        internal void When_type_is_defined_in_namespace_above_Core_it_must_be_skipped()
+        internal async Task When_type_is_defined_in_namespace_above_Core_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -325,11 +326,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_namespace_is_JetBrains_Annotations_it_must_be_skipped()
+        internal async Task When_namespace_is_JetBrains_Annotations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -348,11 +349,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_namespace_is_not_JetBrains_Annotations_it_must_be_reported()
+        internal async Task When_namespace_is_not_JetBrains_Annotations_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -374,7 +375,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Namespace 'WrongRoot' does not match with assembly name 'Company.ProductName'",
                 "Namespace 'WrongRoot.JetBrains' does not match with assembly name 'Company.ProductName'",
                 "Namespace 'WrongRoot.JetBrains.Annotations' does not match with assembly name 'Company.ProductName'",
@@ -382,7 +383,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_top_level_program_it_must_be_skipped()
+        internal async Task When_top_level_program_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -394,11 +395,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_explicit_program_in_global_namespace_it_must_be_reported()
+        internal async Task When_explicit_program_in_global_namespace_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -416,7 +417,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source, "Type 'Program' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'");
+            await VerifyGuidelineDiagnosticAsync(source, "Type 'Program' is declared in global namespace, which does not match with assembly name 'Some.Scope.Example'");
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

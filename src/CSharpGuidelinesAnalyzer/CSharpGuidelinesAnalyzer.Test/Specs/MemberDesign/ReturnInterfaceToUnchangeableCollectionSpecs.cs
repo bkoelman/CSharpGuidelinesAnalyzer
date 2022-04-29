@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.MemberDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -14,7 +15,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
         protected override string DiagnosticId => ReturnInterfaceToUnchangeableCollectionAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_returns_void_it_must_be_skipped()
+        internal async Task When_method_returns_void_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -29,11 +30,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_string_it_must_be_skipped()
+        internal async Task When_method_returns_string_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -49,11 +50,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_array_it_must_be_reported()
+        internal async Task When_method_returns_array_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -69,12 +70,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_private_method_returns_array_it_must_be_skipped()
+        internal async Task When_private_method_returns_array_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -90,11 +91,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_List_it_must_be_reported()
+        internal async Task When_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -111,12 +112,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_public_method_in_private_class_returns_generic_List_it_must_be_skipped()
+        internal async Task When_public_method_in_private_class_returns_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -137,11 +138,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IList_it_must_be_reported()
+        internal async Task When_method_returns_generic_IList_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -158,12 +159,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_method_returns_generic_ICollection_it_must_be_reported()
+        internal async Task When_method_returns_generic_ICollection_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -180,12 +181,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_method_returns_custom_collection_type_it_must_be_reported()
+        internal async Task When_method_returns_custom_collection_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -206,12 +207,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'C.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_method_returns_IEnumerable_it_must_be_skipped()
+        internal async Task When_method_returns_IEnumerable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -228,11 +229,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IEnumerable_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IEnumerable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -249,11 +250,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_IQueryable_it_must_be_skipped()
+        internal async Task When_method_returns_IQueryable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -270,11 +271,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IAsyncEnumerable_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IAsyncEnumerable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -291,11 +292,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IQueryable_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IQueryable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -312,11 +313,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IReadOnlyCollection_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IReadOnlyCollection_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -333,11 +334,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IReadOnlyList_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IReadOnlyList_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -354,11 +355,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IReadOnlySet_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IReadOnlySet_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -375,11 +376,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_generic_IReadOnlyDictionary_it_must_be_skipped()
+        internal async Task When_method_returns_generic_IReadOnlyDictionary_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -396,11 +397,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_ImmutableArray_it_must_be_skipped()
+        internal async Task When_method_returns_ImmutableArray_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -417,11 +418,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_IImmutableList_it_must_be_skipped()
+        internal async Task When_method_returns_IImmutableList_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -438,11 +439,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_ImmutableStack_it_must_be_skipped()
+        internal async Task When_method_returns_ImmutableStack_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -459,11 +460,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_ImmutableDictionary_it_must_be_skipped()
+        internal async Task When_method_returns_ImmutableDictionary_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -480,11 +481,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_aliased_ImmutableHashSet_it_must_be_skipped()
+        internal async Task When_method_returns_aliased_ImmutableHashSet_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -503,11 +504,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_inherited_method_returns_generic_List_it_must_be_reported()
+        internal async Task When_inherited_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -529,12 +530,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'B.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_hidden_method_returns_generic_List_it_must_be_reported()
+        internal async Task When_hidden_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -559,12 +560,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'B.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_implicitly_implemented_method_returns_generic_List_it_must_be_reported()
+        internal async Task When_implicitly_implemented_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -586,12 +587,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'I.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_explicitly_implemented_method_returns_generic_List_it_must_be_reported()
+        internal async Task When_explicitly_implemented_method_returns_generic_List_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -613,12 +614,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Return type in signature for 'I.M()' should be an interface to an unchangeable collection");
         }
 
         [Fact]
-        internal void When_method_is_extension_on_ServiceCollection_it_must_be_skipped()
+        internal async Task When_method_is_extension_on_ServiceCollection_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -651,11 +652,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_property_type_is_generic_List_it_must_be_skipped()
+        internal async Task When_property_type_is_generic_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -669,7 +670,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MemberDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

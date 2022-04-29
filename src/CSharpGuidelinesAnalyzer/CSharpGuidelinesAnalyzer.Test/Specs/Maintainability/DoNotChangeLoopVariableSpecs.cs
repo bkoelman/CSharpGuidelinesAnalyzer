@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => DoNotChangeLoopVariableAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_for_loop_declares_no_variables_it_must_be_skipped()
+        internal async Task When_for_loop_declares_no_variables_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -27,11 +28,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_for_loop_assigns_variable_that_is_declared_outside_loop_it_must_be_skipped()
+        internal async Task When_for_loop_assigns_variable_that_is_declared_outside_loop_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -48,11 +49,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_for_loop_variable_is_not_written_to_in_body_it_must_be_skipped()
+        internal async Task When_for_loop_variable_is_not_written_to_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -68,11 +69,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_for_loop_variable_is_written_to_in_body_it_must_be_reported()
+        internal async Task When_for_loop_variable_is_written_to_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -88,12 +89,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop variable 'i' should not be written to in loop body");
         }
 
         [Fact]
-        internal void When_for_loop_variable_is_passed_by_ref_in_body_it_must_be_reported()
+        internal async Task When_for_loop_variable_is_passed_by_ref_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -109,12 +110,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop variable 'i' should not be written to in loop body");
         }
 
         [Fact]
-        internal void When_for_loop_declares_multiple_variables_they_must_be_reported()
+        internal async Task When_for_loop_declares_multiple_variables_they_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -131,13 +132,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Loop variable 'i' should not be written to in loop body",
                 "Loop variable 'j' should not be written to in loop body");
         }
 
         [Fact]
-        internal void When_for_loop_variable_shadows_field_it_must_be_skipped()
+        internal async Task When_for_loop_variable_shadows_field_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -155,7 +156,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

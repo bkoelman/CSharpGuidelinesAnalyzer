@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => DoNotUseOptionalParameterWithDefaultValueNullAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_using_optional_nullable_int_parameter_with_default_null_it_must_be_skipped()
+        internal async Task When_using_optional_nullable_int_parameter_with_default_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -26,11 +26,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_optional_string_parameter_with_default_value_it_must_be_skipped()
+        internal async Task When_using_optional_string_parameter_with_default_value_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -43,11 +43,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_optional_string_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_string_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -60,12 +60,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'string' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_List_of_int_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_List_of_int_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -79,12 +79,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'List<int>' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_IEnumerable_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_IEnumerable_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -98,12 +98,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'IEnumerable' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_int_array_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_int_array_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -116,12 +116,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'int[]' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_Task_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_Task_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -135,12 +135,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'Task' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_Task_of_int_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_Task_of_int_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -154,12 +154,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'Task<int>' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_ValueTask_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_ValueTask_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -173,12 +173,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'ValueTask?' has default value 'null'");
         }
 
         [Fact]
-        internal void When_using_optional_ValueTask_of_int_parameter_with_default_null_it_must_be_reported()
+        internal async Task When_using_optional_ValueTask_of_int_parameter_with_default_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -192,7 +192,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Optional parameter 'p' of type 'ValueTask<int>?' has default value 'null'");
         }
 

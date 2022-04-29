@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => AvoidBooleanParameterAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_public_method_parameter_type_is_bool_it_must_be_reported()
+        internal async Task When_public_method_parameter_type_is_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -22,12 +23,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_nullable_bool_it_must_be_reported()
+        internal async Task When_public_method_parameter_type_is_nullable_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_string_must_be_skipped()
+        internal async Task When_public_method_parameter_type_is_string_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -56,11 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_bool_in_Deconstruct_method_it_must_be_skipped()
+        internal async Task When_public_method_parameter_type_is_bool_in_Deconstruct_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -91,11 +92,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_public_constructor_parameter_type_is_bool_it_must_be_reported()
+        internal async Task When_public_constructor_parameter_type_is_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -110,12 +111,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_delegate_parameter_type_is_bool_it_must_be_reported()
+        internal async Task When_public_delegate_parameter_type_is_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -125,12 +126,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_property_is_bool_it_must_be_skipped()
+        internal async Task When_public_property_is_bool_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -147,11 +148,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_public_property_is_nullable_bool_it_must_be_skipped()
+        internal async Task When_public_property_is_nullable_bool_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -168,11 +169,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_bool_it_must_be_reported()
+        internal async Task When_public_indexer_parameter_type_is_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -186,12 +187,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_nullable_bool_it_must_be_reported()
+        internal async Task When_public_indexer_parameter_type_is_nullable_bool_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -205,12 +206,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_protected_method_parameter_type_is_bool_in_overridden_method_it_must_be_skipped()
+        internal async Task When_protected_method_parameter_type_is_bool_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -232,12 +233,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_protected_method_parameter_type_is_nullable_bool_in_overridden_method_it_must_be_skipped()
+        internal async Task When_protected_method_parameter_type_is_nullable_bool_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -259,12 +260,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_protected_method_parameter_type_is_bool_in_hidden_method_it_must_be_skipped()
+        internal async Task When_protected_method_parameter_type_is_bool_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -286,12 +287,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_protected_method_parameter_type_is_nullable_bool_in_hidden_method_it_must_be_skipped()
+        internal async Task When_protected_method_parameter_type_is_nullable_bool_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -313,12 +314,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_bool_in_overridden_indexer_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_bool_in_overridden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -343,12 +344,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_nullable_bool_in_overridden_indexer_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_nullable_bool_in_overridden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -373,12 +374,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_bool_in_hidden_indexer_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_bool_in_hidden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -404,12 +405,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_nullable_bool_in_hidden_indexer_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_nullable_bool_in_hidden_indexer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -435,12 +436,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_method_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -460,12 +461,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_method_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -485,12 +486,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_method_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -510,12 +511,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void When_public_method_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_method_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -535,12 +536,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -565,13 +566,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void
-            When_public_indexer_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_nullable_bool_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -596,12 +596,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_public_indexer_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -626,13 +626,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool'");
         }
 
         [Fact]
-        internal void
-            When_public_indexer_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_public_indexer_parameter_type_is_nullable_bool_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -657,12 +656,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b' is of type 'bool?'");
         }
 
         [Fact]
-        internal void When_method_parameter_type_is_bool_in_public_class_hierarchy_it_must_be_reported()
+        internal async Task When_method_parameter_type_is_bool_in_public_class_hierarchy_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -700,7 +699,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b1' is of type 'bool'",
                 "Parameter 'b2' is of type 'bool'",
                 "Parameter 'b3' is of type 'bool'",
@@ -709,7 +708,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_parameter_type_is_bool_in_protected_class_hierarchy_it_must_be_reported()
+        internal async Task When_method_parameter_type_is_bool_in_protected_class_hierarchy_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -747,7 +746,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b1' is of type 'bool'",
                 "Parameter 'b2' is of type 'bool'",
                 "Parameter 'b3' is of type 'bool'",
@@ -756,7 +755,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_parameter_type_is_bool_in_internal_class_hierarchy_it_must_be_reported()
+        internal async Task When_method_parameter_type_is_bool_in_internal_class_hierarchy_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -794,7 +793,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b1' is of type 'bool'",
                 "Parameter 'b2' is of type 'bool'",
                 "Parameter 'b3' is of type 'bool'",
@@ -803,7 +802,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_parameter_type_is_bool_in_protected_internal_class_hierarchy_it_must_be_reported()
+        internal async Task When_method_parameter_type_is_bool_in_protected_internal_class_hierarchy_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -841,7 +840,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'b1' is of type 'bool'",
                 "Parameter 'b2' is of type 'bool'",
                 "Parameter 'b3' is of type 'bool'",
@@ -850,7 +849,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         }
 
         [Fact]
-        internal void When_method_parameter_type_is_bool_in_private_class_hierarchy_it_must_be_skipped()
+        internal async Task When_method_parameter_type_is_bool_in_private_class_hierarchy_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -888,11 +887,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_type_is_bool_in_IDisposable_pattern_it_must_be_skipped()
+        internal async Task When_parameter_type_is_bool_in_IDisposable_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -907,7 +906,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -12,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => SuffixAsyncMethodCorrectlyAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_async_method_name_ends_with_Async_it_must_be_skipped()
+        internal async Task When_async_method_name_ends_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -26,11 +26,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_async_method_name_ends_with_TaskAsync_it_must_be_skipped()
+        internal async Task When_async_method_name_ends_with_TaskAsync_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -44,11 +44,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_async_method_name_does_not_end_with_Async_it_must_be_reported()
+        internal async Task When_async_method_name_does_not_end_with_Async_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -65,12 +65,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of async method 'C.Some()' should end with Async or TaskAsync");
         }
 
         [Fact]
-        internal void When_regular_method_name_does_not_end_with_Async_it_must_be_skipped()
+        internal async Task When_regular_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -84,11 +84,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_async_local_function_name_ends_with_Async_it_must_be_skipped()
+        internal async Task When_async_local_function_name_ends_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -105,11 +105,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_async_local_function_name_ends_with_TaskAsync_it_must_be_skipped()
+        internal async Task When_async_local_function_name_ends_with_TaskAsync_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -126,11 +126,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_async_local_function_name_does_not_end_with_Async_it_must_be_reported()
+        internal async Task When_async_local_function_name_does_not_end_with_Async_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -147,12 +147,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of async local function 'Some()' should end with Async or TaskAsync");
         }
 
         [Fact]
-        internal void When_regular_local_function_name_does_not_end_with_Async_it_must_be_skipped()
+        internal async Task When_regular_local_function_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -169,11 +169,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_async_entry_point_method_name_does_not_end_with_Async_it_must_be_skipped()
+        internal async Task When_async_entry_point_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -191,11 +191,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_test_method_name_does_not_end_with_Async_it_must_be_skipped()
+        internal async Task When_test_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -224,11 +224,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameterized_test_method_name_does_not_end_with_Async_it_must_be_skipped()
+        internal async Task When_parameterized_test_method_name_does_not_end_with_Async_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -268,7 +268,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

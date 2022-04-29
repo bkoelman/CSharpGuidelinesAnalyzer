@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Documentation;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         protected override string DiagnosticId => AvoidToDoCommentAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_source_contains_single_line_todo_comment_with_colon_it_must_be_reported()
+        internal async Task When_source_contains_single_line_todo_comment_with_colon_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -20,12 +21,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_single_line_todo_comment_with_space_it_must_be_reported()
+        internal async Task When_source_contains_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -35,12 +36,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_single_line_todo_comment_with_underscore_it_must_be_skipped()
+        internal async Task When_source_contains_single_line_todo_comment_with_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -50,11 +51,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_source_contains_single_line_todo_comment_with_number_it_must_be_skipped()
+        internal async Task When_source_contains_single_line_todo_comment_with_number_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -64,11 +65,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_source_contains_single_line_todo_comment_with_quotes_it_must_be_skipped()
+        internal async Task When_source_contains_single_line_todo_comment_with_quotes_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -78,11 +79,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_source_contains_single_line_comment_with_todo_in_the_middle_it_must_be_skipped()
+        internal async Task When_source_contains_single_line_comment_with_todo_in_the_middle_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -92,11 +93,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_source_contains_documentation_comment_with_space_it_must_be_reported()
+        internal async Task When_source_contains_documentation_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -106,12 +107,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_preprocessor_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
+        internal async Task When_source_contains_preprocessor_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,12 +123,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_preprocessor_directive_with_documentation_comment_with_space_it_must_be_reported()
+        internal async Task When_source_contains_preprocessor_directive_with_documentation_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -138,12 +139,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_region_directive_with_single_line_todo_comment_with_space_it_must_be_skipped()
+        internal async Task When_source_contains_region_directive_with_single_line_todo_comment_with_space_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -154,11 +155,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_source_contains_end_region_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
+        internal async Task When_source_contains_end_region_directive_with_single_line_todo_comment_with_space_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -169,12 +170,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_single_line_todo_comment_with_trailing_spaces_it_must_be_reported()
+        internal async Task When_source_contains_single_line_todo_comment_with_trailing_spaces_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -182,12 +183,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_multi_line_todo_comment_on_single_line_it_must_be_reported()
+        internal async Task When_source_contains_multi_line_todo_comment_on_single_line_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -197,12 +198,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_multi_line_documentation_comment_on_single_line_it_must_be_reported()
+        internal async Task When_source_contains_multi_line_documentation_comment_on_single_line_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -212,12 +213,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 
         [Fact]
-        internal void When_source_contains_multi_line_todo_comment_on_multiple_lines_it_must_be_reported()
+        internal async Task When_source_contains_multi_line_todo_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -231,7 +232,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed",
                 "Work-tracking TODO comment should be removed",
                 "Work-tracking TODO comment should be removed",
@@ -240,7 +241,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        internal void When_source_contains_multi_line_documentation_comment_on_multiple_lines_it_must_be_reported()
+        internal async Task When_source_contains_multi_line_documentation_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -254,7 +255,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed",
                 "Work-tracking TODO comment should be removed",
                 "Work-tracking TODO comment should be removed",
@@ -263,7 +264,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         }
 
         [Fact]
-        internal void When_source_contains_single_line_documentation_comment_on_multiple_lines_it_must_be_reported()
+        internal async Task When_source_contains_single_line_documentation_comment_on_multiple_lines_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -275,7 +276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Work-tracking TODO comment should be removed");
         }
 

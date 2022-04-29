@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         protected override string DiagnosticId => RaiseEventFromProtectedVirtualMethodAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_event_invocation_method_is_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
+        internal async Task When_event_invocation_method_is_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -28,12 +29,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_event_invocation_method_is_private_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
+        internal async Task When_event_invocation_method_is_private_protected_virtual_and_named_On_followed_by_event_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -48,11 +48,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_not_protected_it_must_be_reported()
+        internal async Task When_event_invocation_method_is_not_protected_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -70,12 +70,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual");
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_not_virtual_it_must_be_reported()
+        internal async Task When_event_invocation_method_is_not_virtual_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -97,12 +97,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'OnValueChanged' raises event 'ValueChanged', so it should be protected and virtual");
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_private_non_virtual_in_sealed_class_it_must_be_skipped()
+        internal async Task When_event_invocation_method_is_private_non_virtual_in_sealed_class_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -120,11 +120,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_static_it_must_be_skipped()
+        internal async Task When_event_invocation_method_is_static_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -142,11 +142,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_invocation_method_name_does_not_follow_pattern_it_must_be_reported()
+        internal async Task When_event_invocation_method_name_does_not_follow_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -164,13 +164,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'");
         }
 
         [Fact]
-        internal void
-            When_event_invocation_method_name_does_not_follow_pattern_and_is_not_protected_and_not_virtual_it_must_be_reported()
+        internal async Task When_event_invocation_method_name_does_not_follow_pattern_and_is_not_protected_and_not_virtual_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -188,12 +187,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'RaiseEvent' raises event 'ValueChanged', so it should be named 'OnValueChanged'");
         }
 
         [Fact]
-        internal void When_event_invocation_method_name_has_extra_words_it_must_be_reported()
+        internal async Task When_event_invocation_method_name_has_extra_words_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -217,12 +216,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'RaiseOnValueChanged' raises event 'ValueChanged', so it should be named 'OnValueChanged'");
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_lambda_expression_it_must_be_reported()
+        internal async Task When_event_invocation_method_is_lambda_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -241,12 +240,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'ValueChanged' should be raised from a regular method");
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_local_function_it_must_be_reported()
+        internal async Task When_event_invocation_method_is_local_function_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -267,12 +266,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'ValueChanged' should be raised from a regular method");
         }
 
         [Fact]
-        internal void When_event_invocation_method_is_explicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_event_invocation_method_is_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -300,7 +299,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

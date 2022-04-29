@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Documentation;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
         protected override string DiagnosticId => AvoidInlineCommentAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_body_contains_single_line_comment_it_must_be_reported()
+        internal async Task When_method_body_contains_single_line_comment_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -24,12 +25,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Code block should not contain inline comment");
         }
 
         [Fact]
-        internal void When_method_body_contains_multi_line_comment_it_must_be_reported()
+        internal async Task When_method_body_contains_multi_line_comment_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -44,12 +45,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Code block should not contain inline comment");
         }
 
         [Fact]
-        internal void When_method_contains_documentation_comment_it_must_be_skipped()
+        internal async Task When_method_contains_documentation_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -62,11 +63,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_preprocessor_directive_it_must_be_skipped()
+        internal async Task When_method_body_contains_preprocessor_directive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -83,11 +84,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_region_it_must_be_skipped()
+        internal async Task When_method_body_contains_region_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -102,11 +103,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_pragma_it_must_be_skipped()
+        internal async Task When_method_body_contains_pragma_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -121,11 +122,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_field_initializer_contains_single_line_comment_it_must_be_reported()
+        internal async Task When_field_initializer_contains_single_line_comment_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -137,12 +138,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Code block should not contain inline comment");
         }
 
         [Fact]
-        internal void When_property_getter_contains_multiple_comments_they_must_be_reported()
+        internal async Task When_property_getter_contains_multiple_comments_they_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -162,13 +163,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Code block should not contain inline comment",
                 "Code block should not contain inline comment");
         }
 
         [Fact]
-        internal void When_method_contains_leading_comment_it_must_be_skipped()
+        internal async Task When_method_contains_leading_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -181,11 +182,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_trailing_comment_it_must_be_skipped()
+        internal async Task When_method_contains_trailing_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -198,11 +199,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_Resharper_inspections_it_must_be_skipped()
+        internal async Task When_method_body_contains_Resharper_inspections_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -221,11 +222,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_Resharper_language_injection_it_must_be_skipped()
+        internal async Task When_method_body_contains_Resharper_language_injection_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -239,11 +240,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_Resharper_formatter_configurations_it_must_be_skipped()
+        internal async Task When_method_body_contains_Resharper_formatter_configurations_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -262,11 +263,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        internal async Task When_method_body_contains_Arrange_Act_Assert_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -287,11 +288,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
+        internal async Task When_method_body_contains_simplified_Arrange_Act_Assert_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -309,11 +310,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_else_clause_contains_only_comment_it_must_be_skipped()
+        internal async Task When_else_clause_contains_only_comment_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -337,7 +338,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Documentation
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

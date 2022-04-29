@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -13,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => AssignEachVariableInASeparateStatementAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_two_variables_are_declared_in_separate_statements_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_in_separate_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -27,11 +28,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_in_a_single_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_in_a_single_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -44,11 +45,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_separate_statements_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -63,11 +64,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -81,12 +82,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_compound_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_compound_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -101,12 +102,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_increment_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_increment_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -120,12 +121,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_separate_statements_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_and_assigned_in_separate_statements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -139,11 +140,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_a_single_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_declared_and_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -156,12 +157,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_a_single_compound_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_declared_and_assigned_in_a_single_compound_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -176,12 +177,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'k' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_a_single_decrement_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_declared_and_assigned_in_a_single_decrement_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -195,12 +196,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_variable_is_declared_and_two_variables_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal async Task When_variable_is_declared_and_two_variables_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -214,12 +215,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_multiple_times_in_a_single_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_multiple_times_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -234,12 +235,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_three_variables_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal async Task When_three_variables_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -253,12 +254,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i', 'j' and 'k' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_multiple_identifiers_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal async Task When_multiple_identifiers_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -282,12 +283,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_variable_is_declared_and_multiple_identifiers_are_assigned_in_a_single_statement_it_must_be_reported()
+        internal async Task When_variable_is_declared_and_multiple_identifiers_are_assigned_in_a_single_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -311,12 +312,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'decl1', 'local1', 'C.field1', 'C.Property1', 'C.this[int]' and 'parameter1' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_initializer_of_a_for_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_initializer_of_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -334,12 +335,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_sequentially_assigned_in_the_initializer_of_a_for_loop_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_sequentially_assigned_in_the_initializer_of_a_for_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -357,12 +358,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_declared_and_assigned_in_the_initializer_of_a_for_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_declared_and_assigned_in_the_initializer_of_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -380,12 +380,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_condition_of_a_for_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_condition_of_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -403,12 +403,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_post_expression_of_a_for_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_post_expression_of_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -426,13 +426,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_sequentially_assigned_in_the_post_expression_of_a_for_loop_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_sequentially_assigned_in_the_post_expression_of_a_for_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -450,12 +449,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_for_loop_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_for_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -474,12 +472,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_for_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_for_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -497,12 +494,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_collection_of_a_foreach_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_collection_of_a_foreach_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -520,13 +517,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_foreach_loop_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_foreach_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -545,12 +541,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_foreach_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_foreach_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -568,12 +563,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_condition_of_a_while_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_condition_of_a_while_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -591,13 +586,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_while_loop_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_while_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -616,12 +610,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_while_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_while_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -639,12 +632,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_condition_of_a_do_while_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_condition_of_a_do_while_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -663,13 +656,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_do_while_loop_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -689,12 +681,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_do_while_loop_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_do_while_loop_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -713,12 +704,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_condition_of_an_if_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_condition_of_an_if_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -736,12 +727,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_separate_statements_in_the_bodies_of_an_if_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_bodies_of_an_if_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -765,11 +756,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_statement_in_the_bodies_of_an_if_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_bodies_of_an_if_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -791,13 +782,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement",
                 "'x' and 'y' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_value_of_a_switch_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_value_of_a_switch_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -824,13 +815,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_separate_statements_in_the_clauses_of_a_switch_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_clauses_of_a_switch_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -859,12 +849,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_assigned_in_a_single_statement_in_the_clauses_of_a_switch_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_clauses_of_a_switch_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -891,13 +880,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement",
                 "'x' and 'y' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_return_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_return_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -912,12 +901,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_yield_return_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_yield_return_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -933,12 +922,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_expression_of_a_lock_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_expression_of_a_lock_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -957,12 +946,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'o' and 'p' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_lock_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_lock_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -981,11 +970,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_lock_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_lock_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1003,12 +992,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1028,13 +1017,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_variable_is_declared_and_two_variables_are_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
+        internal async Task When_variable_is_declared_and_two_variables_are_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1054,13 +1042,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void
-            When_two_variables_are_declared_and_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_declared_and_assigned_in_the_expression_of_a_using_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1079,12 +1066,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'ms1' and 'ms2' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_using_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_the_body_of_a_using_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1103,11 +1090,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_using_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_the_body_of_a_using_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1125,12 +1112,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_throw_statement_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_throw_statement_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1146,12 +1133,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_separate_statements_in_a_lambda_body_it_must_be_skipped()
+        internal async Task When_two_variables_are_assigned_in_separate_statements_in_a_lambda_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1171,11 +1158,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_statement_in_a_lambda_body_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_a_lambda_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1194,12 +1181,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_two_variables_are_assigned_in_a_single_statement_in_a_lambda_expression_it_must_be_reported()
+        internal async Task When_two_variables_are_assigned_in_a_single_statement_in_a_lambda_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1215,12 +1202,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "'i' and 'j' are assigned in a single statement");
         }
 
         [Fact]
-        internal void When_a_property_is_declared_and_assigned_in_an_anonymous_type_creation_expression_it_must_be_skipped()
+        internal async Task When_a_property_is_declared_and_assigned_in_an_anonymous_type_creation_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1233,11 +1220,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_members_are_assigned_in_an_object_creation_expression_it_must_be_skipped()
+        internal async Task When_members_are_assigned_in_an_object_creation_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1257,11 +1244,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_members_are_assigned_in_an_anonymous_object_creation_expression_it_must_be_skipped()
+        internal async Task When_members_are_assigned_in_an_anonymous_object_creation_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1274,11 +1261,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_members_are_assigned_in_a_type_parameter_object_creation_expression_it_must_be_skipped()
+        internal async Task When_members_are_assigned_in_a_type_parameter_object_creation_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1298,11 +1285,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_members_are_assigned_in_a_dynamic_object_creation_expression_it_must_be_skipped()
+        internal async Task When_members_are_assigned_in_a_dynamic_object_creation_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1322,11 +1309,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_a_declaration_expression_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_and_assigned_in_a_declaration_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1346,11 +1333,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_a_tuple_declaration_expression_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_and_assigned_in_a_tuple_declaration_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1370,11 +1357,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_an_is_pattern_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_and_assigned_in_an_is_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1389,11 +1376,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_two_variables_are_declared_and_assigned_in_a_pattern_matching_statement_it_must_be_skipped()
+        internal async Task When_two_variables_are_declared_and_assigned_in_a_pattern_matching_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1420,7 +1407,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

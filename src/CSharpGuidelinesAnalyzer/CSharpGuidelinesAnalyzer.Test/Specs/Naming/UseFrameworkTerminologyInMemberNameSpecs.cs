@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => UseFrameworkTerminologyInMemberNameAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_is_named_AddItem_it_must_be_reported()
+        internal async Task When_method_is_named_AddItem_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -22,12 +23,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'AddItem' should be renamed to 'Add'");
         }
 
         [Fact]
-        internal void When_method_is_named_Delete_it_must_be_reported()
+        internal async Task When_method_is_named_Delete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'Delete' should be renamed to 'Remove'");
         }
 
         [Fact]
-        internal void When_local_function_is_named_AddItem_it_must_be_reported()
+        internal async Task When_local_function_is_named_AddItem_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -59,12 +60,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'AddItem' should be renamed to 'Add'");
         }
 
         [Fact]
-        internal void When_local_function_is_named_Delete_it_must_be_reported()
+        internal async Task When_local_function_is_named_Delete_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -79,12 +80,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'Delete' should be renamed to 'Remove'");
         }
 
         [Fact]
-        internal void When_property_is_named_NumberOfItems_it_must_be_reported()
+        internal async Task When_property_is_named_NumberOfItems_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -94,12 +95,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'NumberOfItems' should be renamed to 'Count'");
         }
 
         [Fact]
-        internal void When_field_is_named_NumberOfItems_it_must_be_reported()
+        internal async Task When_field_is_named_NumberOfItems_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -109,12 +110,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'NumberOfItems' should be renamed to 'Count'");
         }
 
         [Fact]
-        internal void When_const_field_is_named_NumberOfItems_it_must_be_reported()
+        internal async Task When_const_field_is_named_NumberOfItems_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -124,7 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'NumberOfItems' should be renamed to 'Count'");
         }
 

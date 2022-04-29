@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => AvoidMultipleTypesPerFileAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_file_declares_a_single_class_it_must_be_skipped()
+        internal async Task When_file_declares_a_single_class_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -28,11 +29,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_multiple_classes_it_must_be_reported()
+        internal async Task When_file_declares_multiple_classes_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -69,14 +70,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "File 'Example.cs' contains additional type 'N1.C2'",
                 "File 'Example.cs' contains additional type 'C3'",
                 "File 'Example.cs' contains additional type 'N2.N3.C4'");
         }
 
         [Fact]
-        internal void When_file_declares_multiple_classes_with_same_name_but_different_arity_it_must_be_skipped()
+        internal async Task When_file_declares_multiple_classes_with_same_name_but_different_arity_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -113,11 +114,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_a_single_struct_it_must_be_skipped()
+        internal async Task When_file_declares_a_single_struct_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -135,11 +136,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_multiple_structs_it_must_be_reported()
+        internal async Task When_file_declares_multiple_structs_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -176,14 +177,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "File 'Example.cs' contains additional type 'N1.S2'",
                 "File 'Example.cs' contains additional type 'S3'",
                 "File 'Example.cs' contains additional type 'N2.N3.S4'");
         }
 
         [Fact]
-        internal void When_file_declares_multiple_structs_with_same_name_but_different_arity_it_must_be_skipped()
+        internal async Task When_file_declares_multiple_structs_with_same_name_but_different_arity_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -220,11 +221,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_a_single_enum_it_must_be_skipped()
+        internal async Task When_file_declares_a_single_enum_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -239,11 +240,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_multiple_enums_it_must_be_reported()
+        internal async Task When_file_declares_multiple_enums_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -274,14 +275,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "File 'Example.cs' contains additional type 'N1.E2'",
                 "File 'Example.cs' contains additional type 'E3'",
                 "File 'Example.cs' contains additional type 'N2.N3.E4'");
         }
 
         [Fact]
-        internal void When_file_declares_a_single_interface_it_must_be_skipped()
+        internal async Task When_file_declares_a_single_interface_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -296,11 +297,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_multiple_interfaces_it_must_be_reported()
+        internal async Task When_file_declares_multiple_interfaces_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -331,14 +332,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "File 'Example.cs' contains additional type 'N1.I2'",
                 "File 'Example.cs' contains additional type 'I3'",
                 "File 'Example.cs' contains additional type 'N2.N3.I4'");
         }
 
         [Fact]
-        internal void When_file_declares_multiple_interfaces_with_same_name_but_different_arity_it_must_be_skipped()
+        internal async Task When_file_declares_multiple_interfaces_with_same_name_but_different_arity_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -369,11 +370,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_a_single_delegate_it_must_be_skipped()
+        internal async Task When_file_declares_a_single_delegate_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -386,11 +387,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_file_declares_multiple_delegates_it_must_be_reported()
+        internal async Task When_file_declares_multiple_delegates_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -413,14 +414,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "File 'Example.cs' contains additional type 'N1.D2'",
                 "File 'Example.cs' contains additional type 'D3'",
                 "File 'Example.cs' contains additional type 'N2.N3.D4'");
         }
 
         [Fact]
-        internal void When_file_declares_multiple_delegates_with_same_name_but_different_arity_it_must_be_skipped()
+        internal async Task When_file_declares_multiple_delegates_with_same_name_but_different_arity_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -443,7 +444,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

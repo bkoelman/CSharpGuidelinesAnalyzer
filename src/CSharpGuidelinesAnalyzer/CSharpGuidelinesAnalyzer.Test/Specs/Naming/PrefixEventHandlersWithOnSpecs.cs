@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => PrefixEventHandlersWithOnAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_event_is_bound_to_an_anonymous_method_it_must_be_skipped()
+        internal async Task When_event_is_bound_to_an_anonymous_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -34,11 +35,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_is_bound_to_a_lambda_body_it_must_be_skipped()
+        internal async Task When_event_is_bound_to_a_lambda_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -62,11 +63,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_is_bound_to_a_lambda_expression_it_must_be_skipped()
+        internal async Task When_event_is_bound_to_a_lambda_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -88,11 +89,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_is_unbound_from_a_misnamed_method_it_must_be_skipped()
+        internal async Task When_event_is_unbound_from_a_misnamed_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -118,11 +119,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_remote_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        internal async Task When_remote_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -149,11 +150,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_remote_static_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        internal async Task When_remote_static_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -178,11 +179,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_remote_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
+        internal async Task When_remote_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -209,12 +210,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'HandleTopLeftValueChanged' that handles event 'ValueChanged' should be renamed to 'TopLeftOnValueChanged'");
         }
 
         [Fact]
-        internal void When_remote_event_is_bound_to_a_method_on_a_field_named_underscore_and_matches_pattern_it_must_be_skipped()
+        internal async Task When_remote_event_is_bound_to_a_method_on_a_field_named_underscore_and_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -241,11 +242,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        internal async Task When_local_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -267,11 +268,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_static_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
+        internal async Task When_local_static_event_is_bound_to_a_method_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -293,11 +294,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
+        internal async Task When_local_event_is_bound_to_a_method_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -319,12 +320,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'");
         }
 
         [Fact]
-        internal void When_local_event_is_bound_to_a_local_function_that_matches_pattern_it_must_be_skipped()
+        internal async Task When_local_event_is_bound_to_a_local_function_that_matches_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -349,11 +350,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_event_is_bound_to_a_local_function_that_does_not_match_pattern_it_must_be_reported()
+        internal async Task When_local_event_is_bound_to_a_local_function_that_does_not_match_pattern_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -378,7 +379,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'HandleValueChanged' that handles event 'ValueChanged' should be renamed to 'OnValueChanged'");
         }
 

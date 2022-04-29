@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Net;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -12,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => DoNotDeclareRefOrOutParameterAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_parameter_has_no_modifier_it_must_be_skipped()
+        internal async Task When_method_parameter_has_no_modifier_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -24,11 +25,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_has_ref_modifier_it_must_be_reported()
+        internal async Task When_method_parameter_has_ref_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -40,12 +41,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_method_parameter_has_out_modifier_it_must_be_reported()
+        internal async Task When_method_parameter_has_out_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -58,12 +59,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_method_parameter_has_in_modifier_it_must_be_skipped()
+        internal async Task When_method_parameter_has_in_modifier_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -75,11 +76,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_has_out_modifier_in_deconstruct_method_it_must_be_skipped()
+        internal async Task When_method_parameter_has_out_modifier_in_deconstruct_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -110,11 +111,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_has_ref_modifier_to_ref_struct_it_must_be_skipped()
+        internal async Task When_method_parameter_has_ref_modifier_to_ref_struct_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -131,11 +132,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_constructor_parameter_has_no_modifier_it_must_be_skipped()
+        internal async Task When_constructor_parameter_has_no_modifier_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -150,11 +151,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_constructor_parameter_has_ref_modifier_it_must_be_reported()
+        internal async Task When_constructor_parameter_has_ref_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -169,12 +170,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_constructor_parameter_has_out_modifier_it_must_be_reported()
+        internal async Task When_constructor_parameter_has_out_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -190,12 +191,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_local_function_parameter_has_no_modifier_it_must_be_skipped()
+        internal async Task When_local_function_parameter_has_no_modifier_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -210,11 +211,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_parameter_has_ref_modifier_it_must_be_reported()
+        internal async Task When_local_function_parameter_has_ref_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -229,12 +230,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_local_function_parameter_has_out_modifier_it_must_be_reported()
+        internal async Task When_local_function_parameter_has_out_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -250,12 +251,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_delegate_parameter_has_no_modifier_it_must_be_skipped()
+        internal async Task When_delegate_parameter_has_no_modifier_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -265,11 +266,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_parameter_has_ref_modifier_it_must_be_reported()
+        internal async Task When_delegate_parameter_has_ref_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -279,12 +280,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_delegate_parameter_has_out_modifier_it_must_be_reported()
+        internal async Task When_delegate_parameter_has_out_modifier_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -294,12 +295,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_method_parameter_has_ref_modifier_in_overridden_method_it_must_be_skipped()
+        internal async Task When_method_parameter_has_ref_modifier_in_overridden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -321,12 +322,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_method_parameter_has_ref_modifier_in_hidden_method_it_must_be_skipped()
+        internal async Task When_method_parameter_has_ref_modifier_in_hidden_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -348,12 +349,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_method_parameter_has_ref_modifier_in_implicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_method_parameter_has_ref_modifier_in_implicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -373,12 +374,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_method_parameter_has_ref_modifier_in_explicit_interface_implementation_it_must_be_skipped()
+        internal async Task When_method_parameter_has_ref_modifier_in_explicit_interface_implementation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -398,12 +399,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_invocation_argument_has_ref_or_out_modifier_it_must_be_skipped()
+        internal async Task When_invocation_argument_has_ref_or_out_modifier_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -418,13 +419,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'c' is declared as ref or out",
                 "Parameter 'd' is declared as ref or out");
         }
 
         [Fact]
-        internal void When_invocation_argument_has_out_modifier_in_TryParse_method_it_must_be_skipped()
+        internal async Task When_invocation_argument_has_out_modifier_in_TryParse_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -444,11 +445,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_has_out_modifier_in_TryParse_method_it_must_be_skipped()
+        internal async Task When_method_parameter_has_out_modifier_in_TryParse_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -466,11 +467,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_has_out_modifier_in_TryConvert_method_it_must_be_skipped()
+        internal async Task When_method_parameter_has_out_modifier_in_TryConvert_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -488,7 +489,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

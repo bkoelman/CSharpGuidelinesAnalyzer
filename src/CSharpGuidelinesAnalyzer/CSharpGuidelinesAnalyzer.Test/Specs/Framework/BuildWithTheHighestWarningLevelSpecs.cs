@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         protected override string DiagnosticId => BuildWithTheHighestWarningLevelAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_compiling_with_warnings_as_errors_it_must_be_skipped()
+        internal async Task When_compiling_with_warnings_as_errors_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -18,18 +19,18 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_compiling_with_warnings_not_as_errors_it_must_be_reported()
+        internal async Task When_compiling_with_warnings_not_as_errors_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Pass -warnaserror to the compiler or add <TreatWarningsAsErrors>True</TreatWarningsAsErrors> to your project file");
         }
 

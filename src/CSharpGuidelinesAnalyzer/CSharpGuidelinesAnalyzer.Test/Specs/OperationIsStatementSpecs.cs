@@ -1,4 +1,5 @@
 ﻿#if DEBUG
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         protected override string DiagnosticId => OperationIsStatementAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_for_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_for_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -30,14 +31,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'for' should be a statement",
                 "Operation 'for' should be a statement",
                 "Operation 'i--;' should be a statement");
         }
 
         [Fact]
-        internal void When_for_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_for_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -52,14 +53,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'for' should be a statement",
                 "Operation 'for' should be a statement",
                 "Operation 'i =- 1;' should be a statement");
         }
 
         [Fact]
-        internal void When_foreach_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_foreach_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -75,13 +76,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'foreach' should be a statement",
                 "Operation 'continue' should be a statement");
         }
 
         [Fact]
-        internal void When_foreach_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_foreach_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -95,13 +96,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'foreach' should be a statement",
                 "Operation 'System.Console.WriteLine(item);' should be a statement");
         }
 
         [Fact]
-        internal void When_while_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_while_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -117,13 +118,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'while' should be a statement",
                 "Operation 'throw' should be a statement");
         }
 
         [Fact]
-        internal void When_while_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_while_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -137,13 +138,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'while' should be a statement",
                 "Operation 'throw' should be a statement");
         }
 
         [Fact]
-        internal void When_if_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_if_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -165,14 +166,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'if' should be a statement",
                 "Operation 'while' should be a statement",
                 "Operation ';' should be a statement");
         }
 
         [Fact]
-        internal void When_if_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_if_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -191,14 +192,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'if' should be a statement",
                 "Operation ';' should be a statement",
                 "Operation 'do' should be a statement");
         }
 
         [Fact]
-        internal void When_try_catch_finally_is_found_it_must_be_reported()
+        internal async Task When_try_catch_finally_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -222,7 +223,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'try' should be a statement",
                 "Operation 'int i = 0;' should be a statement",
                 "Operation 'int j = 0;' should be a statement",
@@ -230,7 +231,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_switch_with_block_is_found_it_must_be_reported()
+        internal async Task When_switch_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -254,7 +255,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'switch' should be a statement",
                 "Operation 'bool b = i++ > 0 ? true : throw new System.Exception();' should be a statement",
                 "Operation 'break' should be a statement",
@@ -262,7 +263,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_switch_without_block_is_found_it_must_be_reported()
+        internal async Task When_switch_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -283,7 +284,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'switch' should be a statement",
                 "Operation 'break' should be a statement",
                 "Operation 'goto' should be a statement",
@@ -291,7 +292,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_lock_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_lock_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -309,13 +310,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'lock' should be a statement",
                 "Operation 'var value = new object() ?? new object();' should be a statement");
         }
 
         [Fact]
-        internal void When_lock_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_lock_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -329,13 +330,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'lock' should be a statement",
                 "Operation 'new object()?.ToString();' should be a statement");
         }
 
         [Fact]
-        internal void When_label_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_label_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -355,13 +356,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'goto' should be a statement",
                 "Operation 'goto' should be a statement");
         }
 
         [Fact]
-        internal void When_label_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_label_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -377,13 +378,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'goto' should be a statement",
                 "Operation 'goto' should be a statement");
         }
 
         [Fact]
-        internal void When_local_function_with_block_is_found_it_must_be_reported()
+        internal async Task When_local_function_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -402,14 +403,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'N' should be a statement",
                 "Operation 'O' should be a statement",
                 "Operation 'int i = 0;' should be a statement");
         }
 
         [Fact]
-        internal void When_local_function_without_block_is_found_it_must_be_reported()
+        internal async Task When_local_function_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -422,12 +423,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'N' should be a statement");
         }
 
         [Fact(Skip = "TODO: Look into nested location reporting")]
-        internal void When_lambda_expression_with_block_is_found_it_must_be_reported()
+        internal async Task When_lambda_expression_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -443,13 +444,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation '=>' should be a statement",
                 "Operation 'int i = 0;' should be a statement");
         }
 
         [Fact(Skip = "TODO: Look into nested location reporting")]
-        internal void When_lambda_expression_without_block_is_found_it_must_be_reported()
+        internal async Task When_lambda_expression_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -462,13 +463,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation '=>' should be a statement",
                 "Operation 'new object();' should be a statement");
         }
 
         [Fact]
-        internal void When_using_keyword_with_block_is_found_it_must_be_reported()
+        internal async Task When_using_keyword_with_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -487,14 +488,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'using' should be a statement",
                 "Operation 'using' should be a statement",
                 "Operation 'string z = null;' should be a statement");
         }
 
         [Fact]
-        internal void When_using_keyword_without_block_is_found_it_must_be_reported()
+        internal async Task When_using_keyword_without_block_is_found_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -509,7 +510,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Operation 'using' should be a statement",
                 "Operation 'using' should be a statement",
                 "Operation 'new string[0].ToString();' should be a statement");

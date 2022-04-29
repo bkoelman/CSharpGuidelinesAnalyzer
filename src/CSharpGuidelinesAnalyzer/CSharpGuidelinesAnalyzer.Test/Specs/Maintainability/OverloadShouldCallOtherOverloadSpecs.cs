@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => OverloadShouldCallOtherOverloadAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_type_is_enum_it_must_be_skipped()
+        internal async Task When_type_is_enum_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -22,11 +23,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_type_is_interface_it_must_be_skipped()
+        internal async Task When_type_is_interface_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -41,11 +42,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_differently_named_methods_exist_it_must_be_skipped()
+        internal async Task When_differently_named_methods_exist_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -64,11 +65,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_no_single_longest_method_overload_exists_it_must_be_skipped()
+        internal async Task When_no_single_longest_method_overload_exists_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -91,11 +92,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_longest_method_overload_is_not_virtual_it_must_be_reported()
+        internal async Task When_longest_method_overload_is_not_virtual_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -115,12 +116,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method overload with the most parameters should be virtual");
         }
 
         [Fact]
-        internal void When_longest_method_overload_in_base_type_is_not_virtual_it_must_be_reported()
+        internal async Task When_longest_method_overload_in_base_type_is_not_virtual_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -144,12 +145,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method overload with the most parameters should be virtual");
         }
 
         [Fact]
-        internal void When_longest_method_overload_is_private_it_must_be_skipped()
+        internal async Task When_longest_method_overload_is_private_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -169,11 +170,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_longest_method_overload_is_not_virtual_in_struct_it_must_be_skipped()
+        internal async Task When_longest_method_overload_is_not_virtual_in_struct_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -193,11 +194,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_longest_method_overload_is_not_virtual_in_sealed_class_it_must_be_skipped()
+        internal async Task When_longest_method_overload_is_not_virtual_in_sealed_class_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -217,11 +218,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_longest_method_overload_is_static_it_must_be_skipped()
+        internal async Task When_longest_method_overload_is_static_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -241,11 +242,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_method_overload_does_not_invoke_another_overload_it_must_be_reported()
+        internal async Task When_shorter_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -264,12 +265,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
-        internal void When_shorter_method_overload_does_not_invoke_another_overload_in_base_type_it_must_be_reported()
+        internal async Task When_shorter_method_overload_does_not_invoke_another_overload_in_base_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -292,12 +293,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Overloaded method 'B.M()' should call another overload");
         }
 
         [Fact]
-        internal void When_shorter_method_overload_invokes_another_overload_it_must_be_skipped()
+        internal async Task When_shorter_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -317,11 +318,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_method_overload_invokes_another_generic_overload_it_must_be_skipped()
+        internal async Task When_shorter_method_overload_invokes_another_generic_overload_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -341,11 +342,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_method_overload_invokes_itself_it_must_be_reported()
+        internal async Task When_shorter_method_overload_invokes_itself_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -365,12 +366,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
-        internal void When_shorter_method_overload_invokes_another_overload_in_base_type_it_must_be_skipped()
+        internal async Task When_shorter_method_overload_invokes_another_overload_in_base_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -398,11 +399,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_method_overload_invokes_same_overload_in_generic_base_type_it_must_be_skipped()
+        internal async Task When_shorter_method_overload_invokes_same_overload_in_generic_base_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -440,11 +441,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_method_overload_is_abstract_it_must_be_skipped()
+        internal async Task When_shorter_method_overload_is_abstract_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -461,11 +462,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_expression_bodied_method_overload_does_not_invoke_another_overload_it_must_be_reported()
+        internal async Task When_shorter_expression_bodied_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -480,12 +481,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
-        internal void When_shorter_expression_bodied_method_overload_invokes_another_overload_it_must_be_skipped()
+        internal async Task When_shorter_expression_bodied_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -500,11 +501,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_expression_bodied_method_overload_invokes_itself_it_must_be_reported()
+        internal async Task When_shorter_expression_bodied_method_overload_invokes_itself_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -519,12 +520,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
-        internal void When_partial_method_overload_invokes_another_overload_it_must_be_skipped()
+        internal async Task When_partial_method_overload_invokes_another_overload_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -549,11 +550,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_partial_method_overload_does_not_invoke_another_overload_it_must_be_reported()
+        internal async Task When_partial_method_overload_does_not_invoke_another_overload_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -576,12 +577,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Overloaded method 'C.M()' should call another overload");
         }
 
         [Fact]
-        internal void When_partial_method_implementation_is_missing_it_must_be_skipped()
+        internal async Task When_partial_method_implementation_is_missing_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -598,11 +599,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_shorter_constructor_overload_does_not_invoke_another_overload_it_must_be_skipped()
+        internal async Task When_shorter_constructor_overload_does_not_invoke_another_overload_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -621,11 +622,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_consistent_it_must_be_skipped()
+        internal async Task When_parameter_order_in_overloads_is_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -655,11 +656,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_consistent_with_extra_parameter_it_must_be_skipped()
+        internal async Task When_parameter_order_in_overloads_is_consistent_with_extra_parameter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -679,11 +680,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_not_consistent_it_must_be_reported()
+        internal async Task When_parameter_order_in_overloads_is_not_consistent_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -713,12 +714,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_not_consistent_in_base_type_it_must_be_reported()
+        internal async Task When_parameter_order_in_overloads_is_not_consistent_in_base_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -752,12 +753,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_consistent_with_params_array_it_must_be_skipped()
+        internal async Task When_parameter_order_in_overloads_is_consistent_with_params_array_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -792,11 +793,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_not_consistent_with_params_array_it_must_be_reported()
+        internal async Task When_parameter_order_in_overloads_is_not_consistent_with_params_array_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -831,12 +832,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter order in 'C.M(int, string, params object[])' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_consistent_with_optional_parameters_it_must_be_skipped()
+        internal async Task When_parameter_order_in_overloads_is_consistent_with_optional_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -866,11 +867,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_overloads_is_not_consistent_with_optional_parameters_it_must_be_reported()
+        internal async Task When_parameter_order_in_overloads_is_not_consistent_with_optional_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -900,13 +901,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter order in 'C.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
-        internal void
-            When_parameter_order_in_overloads_is_consistent_with_regular_and_optional_and_extra_parameters_it_must_be_skipped()
+        internal async Task When_parameter_order_in_overloads_is_consistent_with_regular_and_optional_and_extra_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -936,11 +936,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_overridden_overloads_is_not_consistent_it_must_be_skipped()
+        internal async Task When_parameter_order_in_overridden_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -978,11 +978,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_hidden_overloads_is_not_consistent_it_must_be_skipped()
+        internal async Task When_parameter_order_in_hidden_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1035,12 +1035,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter order in 'B.M(int, string)' does not match with the parameter order of the longest overload");
         }
 
         [Fact]
-        internal void When_parameter_order_in_implicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
+        internal async Task When_parameter_order_in_implicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1078,11 +1078,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
+        internal async Task When_parameter_order_in_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1123,11 +1123,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_parameter_order_in_generic_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
+        internal async Task When_parameter_order_in_generic_explicitly_implemented_overloads_is_not_consistent_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1168,7 +1168,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 ")
                 .Build();
 
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

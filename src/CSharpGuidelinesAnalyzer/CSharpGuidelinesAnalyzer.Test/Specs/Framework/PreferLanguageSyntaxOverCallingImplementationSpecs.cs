@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         protected override string DiagnosticId => PreferLanguageSyntaxOverCallingImplementationAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_null_check_it_must_be_skipped()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_null_check_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -30,11 +31,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_Nullable_HasValue_property_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_Nullable_HasValue_property_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -53,13 +54,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Replace call to Nullable<T>.HasValue with null check",
                 "Replace call to Nullable<T>.HasValue with null check");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_compared_to_numeric_constant_it_must_be_skipped()
+        internal async Task When_nullable_value_type_is_compared_to_numeric_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -94,11 +95,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_compared_to_numeric_type_it_must_be_skipped()
+        internal async Task When_nullable_value_type_is_compared_to_numeric_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -135,11 +136,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_in_various_ways_and_compared_to_number_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_in_various_ways_and_compared_to_number_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -179,7 +180,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
@@ -190,8 +191,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void
-            When_nullable_value_type_is_checked_for_null_in_various_ways_and_compared_to_number_value_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_in_various_ways_and_compared_to_number_value_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -227,7 +227,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
@@ -237,7 +237,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_to_number_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_to_number_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -280,7 +280,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
@@ -290,8 +290,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void
-            When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_to_number_value_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_to_number_value_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -334,7 +333,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
@@ -344,8 +343,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void
-            When_nullable_value_type_is_checked_for_null_and_different_argument_is_compared_to_number_it_must_be_skipped()
+        internal async Task When_nullable_value_type_is_checked_for_null_and_different_argument_is_compared_to_number_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -384,12 +382,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_for_non_equality_to_nullable_value_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_and_same_argument_is_compared_for_non_equality_to_nullable_value_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -459,7 +456,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
                 "Remove null check in numeric comparison",
@@ -471,7 +468,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_nullable_type_is_used_in_nameof_it_must_be_skipped()
+        internal async Task When_nullable_type_is_used_in_nameof_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -489,7 +486,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

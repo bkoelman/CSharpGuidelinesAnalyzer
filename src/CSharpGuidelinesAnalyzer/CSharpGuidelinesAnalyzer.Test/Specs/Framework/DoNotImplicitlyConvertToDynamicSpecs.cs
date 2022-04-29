@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         protected override string DiagnosticId => DoNotImplicitlyConvertToDynamicAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_dynamic_it_must_be_skipped()
+        internal async Task When_dynamic_identifier_is_assigned_from_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -47,11 +48,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_object_it_must_be_skipped()
+        internal async Task When_dynamic_identifier_is_assigned_from_object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -95,11 +96,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_null_it_must_be_skipped()
+        internal async Task When_dynamic_identifier_is_assigned_from_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -140,11 +141,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_constant_it_must_be_reported()
+        internal async Task When_dynamic_identifier_is_assigned_from_constant_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -186,7 +187,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "An expression of type 'String' is implicitly converted to dynamic",
                 "An expression of type 'Decimal' is implicitly converted to dynamic",
                 "An expression of type 'Int32' is implicitly converted to dynamic",
@@ -197,7 +198,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_cast_to_dynamic_it_must_be_skipped()
+        internal async Task When_dynamic_identifier_is_assigned_from_cast_to_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -233,11 +234,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_invocation_it_must_be_reported()
+        internal async Task When_dynamic_identifier_is_assigned_from_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -289,7 +290,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "An expression of type 'String' is implicitly converted to dynamic",
                 "An expression of type 'Decimal' is implicitly converted to dynamic",
                 "An expression of type 'Int32' is implicitly converted to dynamic",
@@ -301,7 +302,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
         }
 
         [Fact]
-        internal void When_dynamic_identifier_is_assigned_from_Activator_invocation_it_must_be_skipped()
+        internal async Task When_dynamic_identifier_is_assigned_from_Activator_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -316,7 +317,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

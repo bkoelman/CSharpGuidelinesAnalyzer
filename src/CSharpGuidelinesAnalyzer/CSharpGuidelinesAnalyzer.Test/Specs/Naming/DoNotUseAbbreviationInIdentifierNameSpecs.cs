@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => DoNotUseAbbreviationInIdentifierNameAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_class_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_class_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,11 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_class_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Class 'OkBtnContainer' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_class_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_class_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -56,12 +57,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Class 'C' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_struct_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_struct_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -73,11 +74,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_struct_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_struct_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -89,12 +90,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Struct 'OkBtnContainer' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_struct_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_struct_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -106,12 +107,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Struct 'S' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_enum_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_enum_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -123,11 +124,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_enum_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_enum_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -139,12 +140,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Enum 'NextBtnAction' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_enum_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_enum_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -156,12 +157,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Enum 'E' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_interface_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_interface_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -173,11 +174,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_interface_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_interface_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -189,12 +190,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Interface 'IOkBtnContainer' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_interface_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_interface_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -206,12 +207,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Interface 'I' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_delegate_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_delegate_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -221,11 +222,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_delegate_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -235,12 +236,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'BtnClick' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_delegate_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_delegate_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -250,12 +251,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_field_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_field_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -265,11 +266,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_field_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_field_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -279,12 +280,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'txtData' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_field_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_field_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -294,12 +295,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'i' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_property_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_property_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -309,11 +310,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_property_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_property_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -323,12 +324,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'ChkActive' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_property_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_property_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -338,12 +339,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'X' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_property_name_consists_of_single_letter_in_anonymous_type_it_must_be_reported()
+        internal async Task When_property_name_consists_of_single_letter_in_anonymous_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -362,14 +363,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'B' should have a more descriptive name",
                 "Property 'A' should have a more descriptive name",
                 "Property 'B' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_inherited_property_name_contains_an_abbreviation_it_must_be_skipped()
+        internal async Task When_inherited_property_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -387,12 +388,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'CmbItemCount' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_inherited_property_name_consists_of_single_letter_it_must_be_skipped()
+        internal async Task When_inherited_property_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -410,12 +411,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'X' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_implemented_property_name_contains_an_abbreviation_it_must_be_skipped()
+        internal async Task When_implemented_property_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -433,12 +434,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'PrgValue' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_implemented_property_name_consists_of_single_letter_it_must_be_skipped()
+        internal async Task When_implemented_property_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -456,12 +457,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'P' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_event_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_event_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -471,11 +472,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_event_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -485,12 +486,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'TxtChanged' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_event_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_event_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -500,12 +501,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'E' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_method_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_method_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -517,11 +518,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_method_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -533,12 +534,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'MakeRptVisible' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_method_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_method_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -550,12 +551,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_inherited_method_name_contains_an_abbreviation_it_must_be_skipped()
+        internal async Task When_inherited_method_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -575,12 +576,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'MakeRptVisible' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_inherited_method_name_consists_of_single_letter_it_must_be_skipped()
+        internal async Task When_inherited_method_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -600,12 +601,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_implemented_method_name_contains_an_abbreviation_it_must_be_skipped()
+        internal async Task When_implemented_method_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -625,12 +626,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'FldCount' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_implemented_method_name_consists_of_single_letter_it_must_be_skipped()
+        internal async Task When_implemented_method_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -650,12 +651,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_local_function_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_local_function_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -670,11 +671,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_local_function_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -689,12 +690,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'MakeRptVisible' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_local_function_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_local_function_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -709,12 +710,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_method_parameter_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_method_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -726,11 +727,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_method_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -742,12 +743,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'tvHistory' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_method_parameter_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_method_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -759,12 +760,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_lambda_parameter_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_lambda_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -777,11 +778,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_parameter_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_lambda_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -794,12 +795,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'chkAgree' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_lambda_parameter_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_lambda_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -812,12 +813,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_inherited_parameter_name_contains_an_abbreviation_it_must_be_skipped()
+        internal async Task When_inherited_parameter_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -837,12 +838,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'btnCount' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_inherited_parameter_name_consists_of_single_letter_it_must_be_skipped()
+        internal async Task When_inherited_parameter_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -862,12 +863,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_implemented_parameter_name_contains_an_abbreviation_it_must_be_skipped()
+        internal async Task When_implemented_parameter_name_contains_an_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -887,12 +888,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'btnCount' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_implemented_parameter_name_consists_of_single_letter_it_must_be_skipped()
+        internal async Task When_implemented_parameter_name_consists_of_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -912,12 +913,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_local_function_parameter_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_local_function_parameter_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -932,11 +933,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_parameter_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_local_function_parameter_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -951,12 +952,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'tvHistory' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_local_function_parameter_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_local_function_parameter_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -971,12 +972,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'x' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_variable_name_contains_no_abbreviation_it_must_be_skipped()
+        internal async Task When_variable_name_contains_no_abbreviation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -989,11 +990,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_variable_name_contains_an_abbreviation_it_must_be_reported()
+        internal async Task When_variable_name_contains_an_abbreviation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1006,12 +1007,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Variable 'str' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_variable_name_consists_of_single_letter_it_must_be_reported()
+        internal async Task When_variable_name_consists_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1024,12 +1025,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Variable 's' should have a more descriptive name");
         }
 
         [Fact]
-        internal void When_variable_name_consists_of_single_underscore_it_must_be_skipped()
+        internal async Task When_variable_name_consists_of_single_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1042,11 +1043,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_range_variable_names_consist_of_single_letter_it_must_be_reported()
+        internal async Task When_range_variable_names_consist_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1067,7 +1068,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Range variable 'a' should have a more descriptive name",
                 "Range variable 'b' should have a more descriptive name",
                 "Range variable 'c' should have a more descriptive name",
@@ -1077,7 +1078,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_tuple_element_names_consist_of_single_letter_it_must_be_reported()
+        internal async Task When_tuple_element_names_consist_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1102,7 +1103,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Tuple element 'p' should have a more descriptive name",
                 "Tuple element 'q' should have a more descriptive name",
                 "Tuple element 'a' should have a more descriptive name",
@@ -1120,7 +1121,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_inferred_tuple_element_names_consist_of_single_letter_it_must_be_reported()
+        internal async Task When_inferred_tuple_element_names_consist_of_single_letter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1140,7 +1141,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'A' should have a more descriptive name",
                 "Property 'B' should have a more descriptive name",
                 "Tuple element 'A' should have a more descriptive name",
@@ -1148,7 +1149,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_variable_name_contains_an_abbreviation_in_catch_it_must_be_reported()
+        internal async Task When_variable_name_contains_an_abbreviation_in_catch_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1166,7 +1167,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Variable 'ex' should have a more descriptive name");
         }
 

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => UseUnderscoreForUnusedLambdaParameterAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_anonymous_method_parameter_is_unused_in_body_it_must_be_reported()
+        internal async Task When_anonymous_method_parameter_is_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -30,12 +31,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Unused anonymous method parameter 'x' should be renamed to underscore(s)");
         }
 
         [Fact]
-        internal void When_anonymous_method_parameters_are_unused_in_body_it_must_be_reported()
+        internal async Task When_anonymous_method_parameters_are_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -55,13 +56,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Unused anonymous method parameter 'x' should be renamed to underscore(s)",
                 "Unused anonymous method parameter 'y' should be renamed to underscore(s)");
         }
 
         [Fact]
-        internal void When_unused_anonymous_method_parameter_is_named_underscore_it_must_be_skipped()
+        internal async Task When_unused_anonymous_method_parameter_is_named_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -81,11 +82,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_unused_anonymous_method_parameters_are_named_with_underscores_it_must_be_skipped()
+        internal async Task When_unused_anonymous_method_parameters_are_named_with_underscores_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -105,11 +106,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_parameter_is_unused_in_body_it_must_be_reported()
+        internal async Task When_lambda_parameter_is_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -126,12 +127,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Unused lambda parameter 'x' should be renamed to underscore(s)");
         }
 
         [Fact]
-        internal void When_lambda_parameters_are_unused_in_body_it_must_be_reported()
+        internal async Task When_lambda_parameters_are_unused_in_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -151,13 +152,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Unused lambda parameter 'x' should be renamed to underscore(s)",
                 "Unused lambda parameter 'y' should be renamed to underscore(s)");
         }
 
         [Fact]
-        internal void When_unused_lambda_parameter_is_named_underscore_it_must_be_skipped()
+        internal async Task When_unused_lambda_parameter_is_named_underscore_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -174,11 +175,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_unused_lambda_parameters_are_named_with_underscores_it_must_be_skipped()
+        internal async Task When_unused_lambda_parameters_are_named_with_underscores_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -195,11 +196,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_parameter_is_read_from_in_body_it_must_be_skipped()
+        internal async Task When_lambda_parameter_is_read_from_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -216,11 +217,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_parameter_is_written_to_in_body_it_must_be_skipped()
+        internal async Task When_lambda_parameter_is_written_to_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -241,11 +242,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_parameter_is_captured_in_body_it_must_be_skipped()
+        internal async Task When_lambda_parameter_is_captured_in_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -269,11 +270,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_self_referencing_nameof_in_property_it_must_not_crash()
+        internal async Task When_using_self_referencing_nameof_in_property_it_must_not_crash()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -288,7 +289,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

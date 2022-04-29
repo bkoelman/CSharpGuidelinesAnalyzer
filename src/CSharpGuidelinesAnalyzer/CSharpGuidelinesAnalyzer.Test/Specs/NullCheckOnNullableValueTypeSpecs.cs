@@ -1,6 +1,7 @@
 ﻿#if DEBUG
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -13,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         protected override string DiagnosticId => NullCheckOnNullableValueTypeAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_enum_type_is_checked_for_null_it_must_be_skipped()
+        internal async Task When_enum_type_is_checked_for_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -42,11 +43,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_enum_type_is_checked_for_not_null_it_must_be_skipped()
+        internal async Task When_enum_type_is_checked_for_not_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -75,11 +76,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_value_type_is_checked_for_null_it_must_be_skipped()
+        internal async Task When_value_type_is_checked_for_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -106,11 +107,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_value_type_is_checked_for_not_null_it_must_be_skipped()
+        internal async Task When_value_type_is_checked_for_not_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -137,11 +138,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_reference_type_is_checked_for_null_it_must_be_skipped()
+        internal async Task When_reference_type_is_checked_for_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -172,11 +173,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_reference_type_is_checked_for_not_null_it_must_be_skipped()
+        internal async Task When_reference_type_is_checked_for_not_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -207,11 +208,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_interface_type_is_checked_for_null_it_must_be_skipped()
+        internal async Task When_interface_type_is_checked_for_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -254,11 +255,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_interface_type_is_checked_for_not_null_it_must_be_skipped()
+        internal async Task When_interface_type_is_checked_for_not_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -293,11 +294,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_type_is_checked_for_null_it_must_be_skipped()
+        internal async Task When_delegate_type_is_checked_for_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -330,11 +331,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_type_is_checked_for_not_null_it_must_be_skipped()
+        internal async Task When_delegate_type_is_checked_for_not_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -367,11 +368,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_equality_operator_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_equality_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -410,7 +411,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using EqualityOperator",
                 "Expression of nullable value type 'j' is checked for null using EqualityOperator",
                 "Expression of nullable value type 'k' is checked for null using EqualityOperator",
@@ -420,7 +421,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_equality_operator_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_equality_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -455,7 +456,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using EqualityOperator",
                 "Expression of nullable value type 'j' is checked for not-null using EqualityOperator",
                 "Expression of nullable value type 'k' is checked for not-null using EqualityOperator",
@@ -464,7 +465,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_is_operator_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_is_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -487,12 +488,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using IsPattern");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_is_operator_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_is_operator_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -515,12 +516,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using IsPattern");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_HasValue_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_HasValue_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -535,12 +536,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using NullableHasValueMethod");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_HasValue_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_HasValue_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -555,12 +556,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using NullableHasValueMethod");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_Equals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_Equals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -587,14 +588,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using NullableEqualsMethod",
                 "Expression of nullable value type 'j' is checked for null using NullableEqualsMethod",
                 "Expression of nullable value type 'k' is checked for null using NullableEqualsMethod");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_Equals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_Equals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -621,14 +622,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using NullableEqualsMethod",
                 "Expression of nullable value type 'j' is checked for not-null using NullableEqualsMethod",
                 "Expression of nullable value type 'k' is checked for not-null using NullableEqualsMethod");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_ObjectEquals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_ObjectEquals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -663,7 +664,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using StaticObjectEqualsMethod",
                 "Expression of nullable value type 'j' is checked for null using StaticObjectEqualsMethod",
                 "Expression of nullable value type 'k' is checked for null using StaticObjectEqualsMethod",
@@ -671,7 +672,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_ObjectEquals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_ObjectEquals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -706,7 +707,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using StaticObjectEqualsMethod",
                 "Expression of nullable value type 'j' is checked for not-null using StaticObjectEqualsMethod",
                 "Expression of nullable value type 'k' is checked for not-null using StaticObjectEqualsMethod",
@@ -714,7 +715,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_ReferenceEquals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_ReferenceEquals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -753,7 +754,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'j' is checked for null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'k' is checked for null using StaticObjectReferenceEqualsMethod",
@@ -761,7 +762,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_ReferenceEquals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_ReferenceEquals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -800,7 +801,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'j' is checked for not-null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'k' is checked for not-null using StaticObjectReferenceEqualsMethod",
@@ -808,7 +809,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_ObjectReferenceEquals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_ObjectReferenceEquals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -847,7 +848,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'j' is checked for null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'k' is checked for null using StaticObjectReferenceEqualsMethod",
@@ -855,7 +856,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_ObjectReferenceEquals_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_ObjectReferenceEquals_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -894,7 +895,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'j' is checked for not-null using StaticObjectReferenceEqualsMethod",
                 "Expression of nullable value type 'k' is checked for not-null using StaticObjectReferenceEqualsMethod",
@@ -902,7 +903,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_DefaultEqualityComparer_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_DefaultEqualityComparer_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -942,7 +943,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using EqualityComparerEqualsMethod",
                 "Expression of nullable value type 'j' is checked for null using EqualityComparerEqualsMethod",
                 "Expression of nullable value type 'k' is checked for null using EqualityComparerEqualsMethod",
@@ -950,7 +951,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_DefaultEqualityComparer_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_DefaultEqualityComparer_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -990,7 +991,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using EqualityComparerEqualsMethod",
                 "Expression of nullable value type 'j' is checked for not-null using EqualityComparerEqualsMethod",
                 "Expression of nullable value type 'k' is checked for not-null using EqualityComparerEqualsMethod",
@@ -998,7 +999,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_cast_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_cast_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1029,14 +1030,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using EqualityOperator",
                 "Expression of nullable value type 'j' is checked for null using EqualityOperator",
                 "Expression of nullable value type 'k' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_not_null_using_cast_it_must_be_reported()
+        internal async Task When_nullable_value_type_is_checked_for_not_null_using_cast_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1067,14 +1068,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for not-null using EqualityOperator",
                 "Expression of nullable value type 'j' is checked for not-null using EqualityOperator",
                 "Expression of nullable value type 'k' is checked for not-null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_nullable_value_type_is_checked_for_null_using_case_statement_it_must_be_skipped()
+        internal async Task When_nullable_value_type_is_checked_for_null_using_case_statement_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1113,11 +1114,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_variable_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_variable_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1134,12 +1135,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'v' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_tuple_element_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_tuple_element_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1156,12 +1157,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'tuple.v' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_range_variable_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_range_variable_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1179,12 +1180,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'rangeVar' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_field_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_field_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1201,12 +1202,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'f' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_property_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_property_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1223,12 +1224,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'P' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_local_function_parameter_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_local_function_parameter_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1246,12 +1247,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'i' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_local_function_return_value_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_local_function_return_value_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1268,12 +1269,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'L()' is checked for null using EqualityOperator");
         }
 
         [Fact]
-        internal void When_method_return_value_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
+        internal async Task When_method_return_value_of_nullable_value_type_is_checked_for_null_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1291,7 +1292,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Expression of nullable value type 'N(string.Empty)' is checked for null using EqualityOperator");
         }
 

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => DoNotDeclareHelpingMethodAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_class_name_is_Helpers_it_must_be_reported()
+        internal async Task When_class_name_is_Helpers_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -22,12 +23,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of type 'Helpers' contains the term 'Helpers'");
         }
 
         [Fact]
-        internal void When_class_name_contains_the_word_Utility_it_must_be_reported()
+        internal async Task When_class_name_contains_the_word_Utility_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of type 'StringUtility' contains the term 'Utility'");
         }
 
         [Fact]
-        internal void When_struct_name_contains_the_word_Helpers_it_must_be_reported()
+        internal async Task When_struct_name_contains_the_word_Helpers_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -56,12 +57,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of type 'WebHelpers' contains the term 'Helpers'");
         }
 
         [Fact]
-        internal void When_enum_name_contains_the_word_Common_it_must_be_reported()
+        internal async Task When_enum_name_contains_the_word_Common_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -73,12 +74,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of type 'CommonState' contains the term 'Common'");
         }
 
         [Fact]
-        internal void When_class_name_contains_the_word_ShareDocument_it_must_be_skipped()
+        internal async Task When_class_name_contains_the_word_ShareDocument_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -90,11 +91,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_struct_name_contains_the_word_UncommonStory_it_must_be_skipped()
+        internal async Task When_struct_name_contains_the_word_UncommonStory_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -106,11 +107,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_interface_name_contains_the_word_Utility_it_must_be_reported()
+        internal async Task When_interface_name_contains_the_word_Utility_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,12 +123,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of type 'IUtilityObjects' contains the term 'Utility'");
         }
 
         [Fact]
-        internal void When_delegate_name_contains_the_word_Facilities_it_must_be_reported()
+        internal async Task When_delegate_name_contains_the_word_Facilities_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -137,7 +138,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Name of type 'ServiceFacilitiesUtilityCallback' contains the term 'Facilities'");
         }
 

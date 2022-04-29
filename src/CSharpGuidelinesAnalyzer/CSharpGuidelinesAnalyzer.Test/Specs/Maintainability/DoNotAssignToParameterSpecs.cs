@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => DoNotAssignToParameterAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_is_abstract_it_must_be_skipped()
+        internal async Task When_method_is_abstract_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,11 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_is_partial_without_body_it_must_be_skipped()
+        internal async Task When_method_is_partial_without_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -40,11 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_bool_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_bool_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -57,11 +58,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_bool_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_bool_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -74,12 +75,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_int_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_int_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -92,11 +93,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_int_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_int_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -109,12 +110,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_unsigned_short_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_unsigned_short_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -127,11 +128,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_unsigned_short_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_unsigned_short_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -144,12 +145,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_decimal_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_decimal_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -162,11 +163,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_decimal_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_decimal_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -179,12 +180,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_double_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_double_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -197,11 +198,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_double_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_double_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -214,12 +215,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_DateTime_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_DateTime_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -232,11 +233,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_DateTime_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_DateTime_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -249,12 +250,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_nullable_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_nullable_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -267,11 +268,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_nullable_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_nullable_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -284,12 +285,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_enum_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_enum_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -307,11 +308,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_enum_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_enum_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -329,12 +330,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_struct_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -352,11 +353,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_struct_parameter_is_invoked_on_in_method_body_it_must_be_skipped()
+        internal async Task When_struct_parameter_is_invoked_on_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -379,11 +380,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_struct_parameter_is_reassigned_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_reassigned_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -400,12 +401,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_compound_reassigned_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_compound_reassigned_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -426,12 +427,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_pre_incremented_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_pre_incremented_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -452,12 +453,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_post_incremented_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_post_incremented_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -478,12 +479,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_pre_decremented_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_pre_decremented_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -504,12 +505,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_post_decremented_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_post_decremented_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -530,12 +531,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_overwritten_by_deconstruction_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_overwritten_by_deconstruction_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -559,12 +560,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 's' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_passed_by_ref_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_passed_by_ref_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -583,12 +584,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_passed_by_out_in_method_body_it_must_be_reported()
+        internal async Task When_struct_parameter_is_passed_by_out_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -607,12 +608,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_struct_parameter_is_passed_by_in_in_method_body_it_must_be_skipped()
+        internal async Task When_struct_parameter_is_passed_by_in_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -631,11 +632,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_ref_struct_parameter_is_reassigned_in_method_body_it_must_be_skipped()
+        internal async Task When_ref_struct_parameter_is_reassigned_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -652,11 +653,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_out_struct_parameter_is_reassigned_in_method_body_it_must_be_skipped()
+        internal async Task When_out_struct_parameter_is_reassigned_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -673,11 +674,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_in_struct_parameter_is_invoked_in_method_body_it_must_be_skipped()
+        internal async Task When_in_struct_parameter_is_invoked_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -695,11 +696,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_method_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -712,11 +713,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_method_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_method_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -729,12 +730,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_ref_string_parameter_is_written_to_in_method_body_it_must_be_skipped()
+        internal async Task When_ref_string_parameter_is_written_to_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -747,11 +748,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_out_string_parameter_is_written_to_in_method_body_it_must_be_skipped()
+        internal async Task When_out_string_parameter_is_written_to_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -764,11 +765,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_in_string_parameter_is_invoked_in_method_body_it_must_be_skipped()
+        internal async Task When_in_string_parameter_is_invoked_in_method_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -781,11 +782,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_method_expression_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_method_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -799,11 +800,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_method_expression_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_method_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -817,12 +818,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_lambda_expression_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_lambda_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -843,11 +844,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_lambda_expression_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_lambda_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -868,12 +869,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_anonymous_method_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_anonymous_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -894,11 +895,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_anonymous_method_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_anonymous_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -919,12 +920,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_constructor_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -940,11 +941,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_constructor_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_constructor_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -960,12 +961,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_constructor_expression_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_constructor_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -982,11 +983,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_constructor_expression_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_constructor_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1003,12 +1004,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_conversion_operator_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_conversion_operator_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1026,11 +1027,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_conversion_operator_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_conversion_operator_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1049,12 +1050,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_conversion_operator_expression_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_conversion_operator_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1069,11 +1070,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_conversion_operator_expression_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_conversion_operator_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1090,12 +1091,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_value_parameter_is_read_from_in_property_setter_body_it_must_be_skipped()
+        internal async Task When_value_parameter_is_read_from_in_property_setter_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1111,11 +1112,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_value_parameter_is_written_to_in_property_setter_body_it_must_be_reported()
+        internal async Task When_value_parameter_is_written_to_in_property_setter_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1131,12 +1132,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_value_parameter_is_read_from_in_property_setter_expression_body_it_must_be_skipped()
+        internal async Task When_value_parameter_is_read_from_in_property_setter_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1149,11 +1150,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_value_parameter_is_written_to_in_property_setter_expression_body_it_must_be_reported()
+        internal async Task When_value_parameter_is_written_to_in_property_setter_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1166,12 +1167,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_indexer_getter_setter_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_indexer_getter_setter_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1191,11 +1192,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_indexer_getter_setter_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_indexer_getter_setter_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1216,12 +1217,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'key' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameters_are_written_to_in_indexer_getter_setter_body_it_must_be_reported()
+        internal async Task When_string_parameters_are_written_to_in_indexer_getter_setter_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1242,13 +1243,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'key1' is overwritten in its method body",
                 "The value of parameter 'key2' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_indexer_getter_setter_expression_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_indexer_getter_setter_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1262,11 +1263,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_indexer_getter_setter_expression_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_indexer_getter_setter_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1280,12 +1281,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'key' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_event_adder_remover_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_event_adder_remover_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1305,11 +1306,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_event_adder_remover_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_event_adder_remover_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1331,13 +1332,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'value' is overwritten in its method body",
                 "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_event_adder_remover_expression_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_event_adder_remover_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1351,11 +1352,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_event_adder_remover_expression_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_event_adder_remover_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1369,13 +1370,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'value' is overwritten in its method body",
                 "The value of parameter 'value' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_local_function_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_local_function_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1391,11 +1392,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_local_function_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_local_function_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1411,12 +1412,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 
         [Fact]
-        internal void When_string_parameter_is_read_from_in_local_function_expression_body_it_must_be_skipped()
+        internal async Task When_string_parameter_is_read_from_in_local_function_expression_body_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1433,11 +1434,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_string_parameter_is_written_to_in_local_function_expression_body_it_must_be_reported()
+        internal async Task When_string_parameter_is_written_to_in_local_function_expression_body_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -1454,7 +1455,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "The value of parameter 'p' is overwritten in its method body");
         }
 

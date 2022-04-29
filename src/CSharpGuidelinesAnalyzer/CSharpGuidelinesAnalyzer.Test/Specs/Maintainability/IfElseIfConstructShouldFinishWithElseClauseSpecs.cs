@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => IfElseIfConstructShouldFinishWithElseClauseAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_an_if_statement_has_no_else_clause_it_must_be_skipped()
+        internal async Task When_an_if_statement_has_no_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -25,11 +26,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_an_if_statement_has_an_unconditional_else_clause_it_must_be_skipped()
+        internal async Task When_an_if_statement_has_an_unconditional_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -47,11 +48,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_an_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
+        internal async Task When_an_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -69,12 +70,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "If-else-if construct should end with an unconditional else clause");
         }
 
         [Fact]
-        internal void When_an_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
+        internal async Task When_an_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -95,11 +96,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_an_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
+        internal async Task When_an_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -120,12 +121,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "If-else-if construct should end with an unconditional else clause");
         }
 
         [Fact]
-        internal void When_an_if_else_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
+        internal async Task When_an_if_else_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -149,12 +150,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_an_if_else_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
+        internal async Task When_an_if_else_if_else_if_else_if_statement_does_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -178,12 +178,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "If-else-if construct should end with an unconditional else clause");
         }
 
         [Fact]
-        internal void When_an_if_else_if_else_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
+        internal async Task When_an_if_else_if_else_if_else_if_statement_ends_with_an_unconditional_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -210,11 +210,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_nested_if_else_if_statements_do_not_end_with_an_unconditional_else_clause_it_must_be_reported()
+        internal async Task When_nested_if_else_if_statements_do_not_end_with_an_unconditional_else_clause_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -244,14 +244,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "If-else-if construct should end with an unconditional else clause",
                 "If-else-if construct should end with an unconditional else clause",
                 "If-else-if construct should end with an unconditional else clause");
         }
 
         [Fact]
-        internal void When_nested_if_else_if_statements_end_with_an_unconditional_else_clause_it_must_be_skipped()
+        internal async Task When_nested_if_else_if_statements_end_with_an_unconditional_else_clause_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -290,7 +290,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => DoNotIncludeContainingTypeNameInMemberNameAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_name_contains_class_name_it_must_be_reported()
+        internal async Task When_method_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -29,12 +30,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'GetEmployee' contains the name of its containing type 'Employee'");
         }
 
         [Fact]
-        internal void When_method_name_does_not_contain_class_name_it_must_be_skipped()
+        internal async Task When_method_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -52,11 +53,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_explicitly_implemented_method_name_contains_class_name_it_must_be_reported()
+        internal async Task When_explicitly_implemented_method_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -77,12 +78,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'N.M.IEmployee.GetEmployee' contains the name of its containing type 'Employee'");
         }
 
         [Fact]
-        internal void When_explicitly_implemented_method_name_does_not_contain_class_name_it_must_be_skipped()
+        internal async Task When_explicitly_implemented_method_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -103,11 +104,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_name_consists_of_a_single_letter_it_must_be_skipped()
+        internal async Task When_class_name_consists_of_a_single_letter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,11 +123,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_field_name_contains_struct_name_it_must_be_reported()
+        internal async Task When_field_name_contains_struct_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -139,12 +140,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'IsCustomerActive' contains the name of its containing type 'Customer'");
         }
 
         [Fact]
-        internal void When_field_name_does_not_contain_struct_name_it_must_be_skipped()
+        internal async Task When_field_name_does_not_contain_struct_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -157,11 +158,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_property_name_contains_class_name_it_must_be_reported()
+        internal async Task When_property_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -174,12 +175,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'IsOrderDeleted' contains the name of its containing type 'Order'");
         }
 
         [Fact]
-        internal void When_property_name_contains_generic_class_name_it_must_be_reported()
+        internal async Task When_property_name_contains_generic_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -192,12 +193,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'IsOrderDeleted' contains the name of its containing type 'Order'");
         }
 
         [Fact]
-        internal void When_property_name_does_not_contain_class_name_it_must_be_skipped()
+        internal async Task When_property_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -210,11 +211,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_name_contains_class_name_it_must_be_reported()
+        internal async Task When_event_name_contains_class_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -237,12 +238,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'RegistrationCompleted' contains the name of its containing type 'Registration'");
         }
 
         [Fact]
-        internal void When_event_name_does_not_contain_class_name_it_must_be_skipped()
+        internal async Task When_event_name_does_not_contain_class_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -266,11 +267,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_enum_member_contains_enum_name_it_must_be_reported()
+        internal async Task When_enum_member_contains_enum_name_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -283,12 +284,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'WindowStateVisible' contains the name of its containing type 'WindowState'");
         }
 
         [Fact]
-        internal void When_enum_member_does_not_contain_enum_name_it_must_be_skipped()
+        internal async Task When_enum_member_does_not_contain_enum_name_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -301,11 +302,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_contains_constructor_it_must_be_skipped()
+        internal async Task When_class_contains_constructor_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -320,11 +321,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_contains_static_constructor_it_must_be_skipped()
+        internal async Task When_class_contains_static_constructor_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -339,11 +340,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_contains_static_destructor_it_must_be_skipped()
+        internal async Task When_class_contains_static_destructor_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -358,7 +359,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

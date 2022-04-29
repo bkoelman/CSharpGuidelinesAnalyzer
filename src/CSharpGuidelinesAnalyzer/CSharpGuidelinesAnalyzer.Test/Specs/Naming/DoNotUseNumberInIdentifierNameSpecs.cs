@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Naming;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -11,7 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         protected override string DiagnosticId => DoNotUseNumberInIdentifierNameAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_class_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_class_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,11 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_class_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Class 'C5' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_struct_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_struct_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -56,11 +57,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_struct_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_struct_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -72,12 +73,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Struct 'S22' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_enum_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_enum_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -89,11 +90,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_enum_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_enum_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -105,12 +106,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Enum 'E3' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_interface_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_interface_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,11 +123,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_interface_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_interface_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -138,12 +139,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Interface 'I9' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_delegate_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_delegate_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -153,11 +154,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_delegate_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -167,12 +168,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D5' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_field_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_field_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -182,11 +183,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_field_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_field_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -196,12 +197,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'f3' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_property_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_property_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -211,11 +212,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_property_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_property_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -225,12 +226,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'P6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_property_name_contains_no_digits_in_anonymous_type_it_must_be_skipped()
+        internal async Task When_property_name_contains_no_digits_in_anonymous_type_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -249,11 +250,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_property_name_contains_a_digit_in_anonymous_type_it_must_be_reported()
+        internal async Task When_property_name_contains_a_digit_in_anonymous_type_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -272,14 +273,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Field 'B1' contains one or more digits in its name",
                 "Property 'A1' contains one or more digits in its name",
                 "Property 'B1' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_inherited_property_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_inherited_property_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -297,12 +298,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'P6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_implemented_property_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_implemented_property_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -320,12 +321,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'P6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_event_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_event_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -335,11 +336,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_event_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -349,12 +350,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Event 'Value9Changed' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_method_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_method_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -366,11 +367,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_method_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -382,12 +383,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_inherited_method_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_inherited_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -407,12 +408,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_implemented_method_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_implemented_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -432,12 +433,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_local_function_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_local_function_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -452,11 +453,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_local_function_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -471,12 +472,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L6' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_method_parameter_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_method_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -488,11 +489,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_parameter_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_method_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -504,12 +505,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p1' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_lambda_parameter_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_lambda_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -522,11 +523,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_parameter_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_lambda_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -539,12 +540,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p1' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_local_function_parameter_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_local_function_parameter_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -559,11 +560,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_parameter_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_local_function_parameter_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -578,12 +579,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p1' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_inherited_parameter_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_inherited_parameter_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -603,12 +604,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p7' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_implemented_parameter_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_implemented_parameter_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -628,12 +629,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Parameter 'p7' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_variable_name_contains_no_digits_it_must_be_skipped()
+        internal async Task When_variable_name_contains_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -646,11 +647,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_variable_name_contains_a_digit_it_must_be_reported()
+        internal async Task When_variable_name_contains_a_digit_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -663,12 +664,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Variable 'str12' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_range_variable_names_contain_no_digits_it_must_be_skipped()
+        internal async Task When_range_variable_names_contain_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -689,11 +690,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_range_variable_names_contain_digits_it_must_be_reported()
+        internal async Task When_range_variable_names_contain_digits_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -714,7 +715,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Range variable 'a1' contains one or more digits in its name",
                 "Range variable 'b2' contains one or more digits in its name",
                 "Range variable 'c3' contains one or more digits in its name",
@@ -724,7 +725,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_tuple_element_names_contain_no_digits_it_must_be_skipped()
+        internal async Task When_tuple_element_names_contain_no_digits_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -742,11 +743,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_tuple_element_names_contain_digits_it_must_be_reported()
+        internal async Task When_tuple_element_names_contain_digits_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -771,7 +772,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Tuple element 'p1' contains one or more digits in its name",
                 "Tuple element 'p2' contains one or more digits in its name",
                 "Tuple element 'e1' contains one or more digits in its name",
@@ -789,7 +790,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_inferred_tuple_element_names_contain_digits_it_must_be_reported()
+        internal async Task When_inferred_tuple_element_names_contain_digits_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -809,7 +810,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Property 'A1' contains one or more digits in its name",
                 "Property 'B1' contains one or more digits in its name",
                 "Tuple element 'A1' contains one or more digits in its name",
@@ -817,7 +818,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
         }
 
         [Fact]
-        internal void When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_MSTest_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -845,11 +846,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_XUnit_method_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_XUnit_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -877,11 +878,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_NUnit_method_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_NUnit_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -909,11 +910,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_MbUnit_method_name_contains_a_digit_it_must_be_skipped()
+        internal async Task When_MbUnit_method_name_contains_a_digit_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -941,11 +942,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_contains_only_whitelisted_words_it_must_be_skipped()
+        internal async Task When_method_name_contains_only_whitelisted_words_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -957,11 +958,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_name_contains_whitelisted_words_and_digits_it_must_be_reported()
+        internal async Task When_method_name_contains_whitelisted_words_and_digits_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -973,12 +974,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'ConvertDigit9IntoInt32' contains one or more digits in its name");
         }
 
         [Fact]
-        internal void When_method_name_contains_part_of_whitelisted_word_it_must_be_reported()
+        internal async Task When_method_name_contains_part_of_whitelisted_word_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -990,7 +991,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Naming
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'GetMatrix3Demo' contains one or more digits in its name");
         }
 

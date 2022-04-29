@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => SwitchStatementShouldHaveDefaultCaseAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_switch_statement_type_is_bool_and_contains_a_default_case_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_bool_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -27,11 +28,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_bool_and_is_exhaustive_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_bool_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -50,11 +51,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_bool_and_is_non_exhaustive_it_must_be_reported()
+        internal async Task When_switch_statement_type_is_bool_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -71,12 +72,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_bool_and_contains_a_default_case_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_nullable_bool_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -93,11 +94,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_bool_and_is_exhaustive_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_nullable_bool_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -117,11 +118,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_bool_and_is_non_exhaustive_it_must_be_reported()
+        internal async Task When_switch_statement_type_is_nullable_bool_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -139,12 +140,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_flags_enum_and_is_non_exhaustive_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_flags_enum_and_is_non_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -164,11 +165,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_and_contains_a_default_case_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_enum_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -187,11 +188,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_and_is_exhaustive_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_enum_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -213,11 +214,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_and_is_non_exhaustive_it_must_be_reported()
+        internal async Task When_switch_statement_type_is_enum_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -237,12 +238,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_enum_and_contains_a_default_case_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_nullable_enum_and_contains_a_default_case_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -261,11 +262,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_enum_and_is_exhaustive_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_nullable_enum_and_is_exhaustive_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -288,11 +289,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_enum_and_is_non_exhaustive_it_must_be_reported()
+        internal async Task When_switch_statement_type_is_nullable_enum_and_is_non_exhaustive_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -313,12 +314,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Non-exhaustive switch statement requires a default case clause");
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_nullable_byte_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_nullable_byte_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -335,11 +336,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_char_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_char_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -356,11 +357,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_int_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -377,11 +378,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_string_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_string_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -398,11 +399,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_contains_a_non_constant_case_expression_it_must_be_skipped()
+        internal async Task When_switch_statement_contains_a_non_constant_case_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -425,11 +426,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_is_invalid_it_must_be_skipped()
+        internal async Task When_switch_statement_is_invalid_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -449,11 +450,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_with_guard_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_enum_with_guard_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -474,11 +475,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_switch_statement_type_is_enum_with_pattern_it_must_be_skipped()
+        internal async Task When_switch_statement_type_is_enum_with_pattern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -499,7 +500,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

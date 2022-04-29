@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using FluentAssertions;
@@ -13,7 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => AvoidSignatureWithManyParametersAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_method_contains_three_parameters_it_must_be_skipped()
+        internal async Task When_method_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -25,11 +26,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_four_parameters_it_must_be_reported()
+        internal async Task When_method_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -41,12 +42,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
-        internal void When_method_contains_tuple_parameter_it_must_be_reported()
+        internal async Task When_method_contains_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -58,12 +59,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_method_contains_system_tuple_parameter_it_must_be_reported()
+        internal async Task When_method_contains_system_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -75,12 +76,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_method_contains_array_of_tuple_parameter_it_must_be_skipped()
+        internal async Task When_method_contains_array_of_tuple_parameter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -92,11 +93,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_contains_collection_of_tuple_parameter_it_must_be_skipped()
+        internal async Task When_method_contains_collection_of_tuple_parameter_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -109,11 +110,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_tuple_of_two_elements_it_must_be_skipped()
+        internal async Task When_method_returns_tuple_of_two_elements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -126,11 +127,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_tuple_of_three_elements_it_must_be_reported()
+        internal async Task When_method_returns_tuple_of_three_elements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -143,12 +144,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
-        internal void When_method_returns_system_tuple_of_two_elements_it_must_be_skipped()
+        internal async Task When_method_returns_system_tuple_of_two_elements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -161,11 +162,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_system_tuple_of_three_elements_it_must_be_reported()
+        internal async Task When_method_returns_system_tuple_of_three_elements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -178,12 +179,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'M' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
-        internal void When_method_is_extern_it_must_be_skipped()
+        internal async Task When_method_is_extern_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -193,11 +194,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_overrides_base_method_it_must_be_skipped()
+        internal async Task When_method_overrides_base_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -215,11 +216,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_hides_base_method_it_must_be_skipped()
+        internal async Task When_method_hides_base_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -237,11 +238,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_implicitly_implements_interface_method_it_must_be_skipped()
+        internal async Task When_method_implicitly_implements_interface_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -261,11 +262,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_explicitly_implements_interface_method_it_must_be_skipped()
+        internal async Task When_method_explicitly_implements_interface_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -285,11 +286,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_instance_constructor_contains_three_parameters_it_must_be_skipped()
+        internal async Task When_instance_constructor_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -304,11 +305,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_instance_constructor_contains_four_parameters_it_must_be_reported()
+        internal async Task When_instance_constructor_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -323,12 +324,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
-        internal void When_instance_constructor_contains_tuple_parameter_it_must_be_reported()
+        internal async Task When_instance_constructor_contains_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -343,12 +344,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_instance_constructor_contains_system_tuple_parameter_it_must_be_reported()
+        internal async Task When_instance_constructor_contains_system_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -363,12 +364,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_indexer_contains_three_parameters_it_must_be_skipped()
+        internal async Task When_indexer_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -381,11 +382,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_indexer_contains_four_parameters_it_must_be_reported()
+        internal async Task When_indexer_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -398,12 +399,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Indexer contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
-        internal void When_indexer_contains_tuple_parameter_it_must_be_reported()
+        internal async Task When_indexer_contains_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -417,12 +418,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Indexer contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_indexer_contains_system_tuple_parameter_it_must_be_reported()
+        internal async Task When_indexer_contains_system_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -436,12 +437,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Indexer contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_delegate_contains_three_parameters_it_must_be_skipped()
+        internal async Task When_delegate_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -451,11 +452,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_contains_four_parameters_it_must_be_reported()
+        internal async Task When_delegate_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -465,12 +466,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
-        internal void When_delegate_contains_tuple_parameter_it_must_be_reported()
+        internal async Task When_delegate_contains_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -480,12 +481,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_delegate_contains_system_tuple_parameter_it_must_be_reported()
+        internal async Task When_delegate_contains_system_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -495,12 +496,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_delegate_returns_tuple_of_two_elements_it_must_be_skipped()
+        internal async Task When_delegate_returns_tuple_of_two_elements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -510,11 +511,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_returns_tuple_of_three_elements_it_must_be_reported()
+        internal async Task When_delegate_returns_tuple_of_three_elements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -524,12 +525,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
-        internal void When_delegate_returns_system_tuple_of_two_elements_it_must_be_skipped()
+        internal async Task When_delegate_returns_system_tuple_of_two_elements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -539,11 +540,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_delegate_returns_system_tuple_of_three_elements_it_must_be_reported()
+        internal async Task When_delegate_returns_system_tuple_of_three_elements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -553,12 +554,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Delegate 'D' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
-        internal void When_local_function_contains_three_parameters_it_must_be_skipped()
+        internal async Task When_local_function_contains_three_parameters_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -573,11 +574,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_contains_four_parameters_it_must_be_reported()
+        internal async Task When_local_function_contains_four_parameters_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -592,12 +593,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L' contains 4 parameters, which exceeds the maximum of 3 parameters");
         }
 
         [Fact]
-        internal void When_local_function_contains_tuple_parameter_it_must_be_reported()
+        internal async Task When_local_function_contains_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -612,12 +613,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_local_function_contains_system_tuple_parameter_it_must_be_reported()
+        internal async Task When_local_function_contains_system_tuple_parameter_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -632,12 +633,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L' contains tuple parameter 'p'");
         }
 
         [Fact]
-        internal void When_local_function_returns_tuple_of_two_elements_it_must_be_skipped()
+        internal async Task When_local_function_returns_tuple_of_two_elements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -653,11 +654,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_returns_tuple_of_three_elements_it_must_be_reported()
+        internal async Task When_local_function_returns_tuple_of_three_elements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -673,12 +674,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         [Fact]
-        internal void When_local_function_returns_system_tuple_of_two_elements_it_must_be_skipped()
+        internal async Task When_local_function_returns_system_tuple_of_two_elements_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -694,11 +695,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_local_function_returns_system_tuple_of_three_elements_it_must_be_reported()
+        internal async Task When_local_function_returns_system_tuple_of_three_elements_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -714,14 +715,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Local function 'L' returns a tuple with 3 elements, which exceeds the maximum of 2 elements");
         }
 
         #region Non-default configuration
 
         [Fact]
-        internal void When_using_editor_config_setting_it_must_be_applied()
+        internal async Task When_using_editor_config_setting_it_must_be_applied()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -743,13 +744,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters");
         }
 
         [Fact]
-        internal void When_using_xml_config_setting_it_must_be_applied()
+        internal async Task When_using_xml_config_setting_it_must_be_applied()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -771,13 +772,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 8 parameters");
         }
 
         [Fact]
-        internal void When_using_editor_config_setting_with_constructor_override_it_must_be_applied()
+        internal async Task When_using_editor_config_setting_with_constructor_override_it_must_be_applied()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -800,13 +801,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 6 parameters");
         }
 
         [Fact]
-        internal void When_using_xml_config_setting_with_constructor_override_it_must_be_applied()
+        internal async Task When_using_xml_config_setting_with_constructor_override_it_must_be_applied()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -829,13 +830,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 8 parameters",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 6 parameters");
         }
 
         [Fact]
-        internal void When_using_xml_and_editor_config_settings_it_must_use_editor_config_values()
+        internal async Task When_using_xml_and_editor_config_settings_it_must_use_editor_config_values()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -861,13 +862,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Constructor for 'C' contains 9 parameters, which exceeds the maximum of 3 parameters",
                 "Method 'M' contains 9 parameters, which exceeds the maximum of 4 parameters");
         }
 
         [Fact]
-        internal void When_xml_setting_value_is_out_of_range_it_must_fail()
+        internal async Task When_xml_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -882,15 +883,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'AV1561:MaxParameterCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
-        internal void When_editor_config_setting_value_is_out_of_range_it_must_fail()
+        internal async Task When_editor_config_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -905,15 +906,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'dotnet_diagnostic.av1561.max_parameter_count' in '.editorconfig' must be in range 0-255.*");
         }
 
         [Fact]
-        internal void When_xml_constructor_setting_value_is_out_of_range_it_must_fail()
+        internal async Task When_xml_constructor_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -928,15 +929,15 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'AV1561:MaxConstructorParameterCount' in 'CSharpGuidelinesAnalyzer.config' must be in range 0-255.*");
         }
 
         [Fact]
-        internal void When_editor_config_constructor_setting_value_is_out_of_range_it_must_fail()
+        internal async Task When_editor_config_constructor_setting_value_is_out_of_range_it_must_fail()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -951,10 +952,10 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act
-            Action action = () => VerifyGuidelineDiagnostic(source);
+            Func<Task> action = async () => await VerifyGuidelineDiagnosticAsync(source);
 
             // Assert
-            action.Should().Throw<Exception>()
+            await action.Should().ThrowAsync<Exception>()
                 .WithMessage("*Value for 'dotnet_diagnostic.av1561.max_constructor_parameter_count' in '.editorconfig' must be in range 0-255.*");
         }
 

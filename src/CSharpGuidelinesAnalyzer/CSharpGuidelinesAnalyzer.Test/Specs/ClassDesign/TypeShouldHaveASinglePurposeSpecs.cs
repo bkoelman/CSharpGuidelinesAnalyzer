@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.ClassDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
         protected override string DiagnosticId => TypeShouldHaveASinglePurposeAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_class_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_class_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -22,12 +23,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'CustomerAndOrder' contains the word 'and', which suggests it has multiple purposes");
         }
 
         [Fact]
-        internal void When_struct_name_contains_the_word_and_it_must_be_reported()
+        internal async Task When_struct_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -39,12 +40,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'customer_and_order' contains the word 'and', which suggests it has multiple purposes");
         }
 
         [Fact]
-        internal void When_uppercase_interface_name_contains_the_word_and_it_must_be_reported()
+        internal async Task When_uppercase_interface_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -56,12 +57,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'CUSTOMER_AND_ORDER' contains the word 'and', which suggests it has multiple purposes");
         }
 
         [Fact]
-        internal void When_enum_name_contains_the_word_and_it_must_be_reported()
+        internal async Task When_enum_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -73,12 +74,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'Match1And2Again3' contains the word 'and', which suggests it has multiple purposes");
         }
 
         [Fact]
-        internal void When_uppercase_enum_name_contains_the_word_and_it_must_be_reported()
+        internal async Task When_uppercase_enum_name_contains_the_word_and_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -90,12 +91,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'MATCH1AND2AGAIN3' contains the word 'and', which suggests it has multiple purposes");
         }
 
         [Fact]
-        internal void When_delegate_name_contains_the_word_And_it_must_be_reported()
+        internal async Task When_delegate_name_contains_the_word_And_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -105,12 +106,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Type 'CustomerAndOrder' contains the word 'and', which suggests it has multiple purposes");
         }
 
         [Fact]
-        internal void When_class_name_contains_the_word_Land_it_must_be_skipped()
+        internal async Task When_class_name_contains_the_word_Land_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -122,11 +123,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_struct_name_contains_the_word_Andy_it_must_be_skipped()
+        internal async Task When_struct_name_contains_the_word_Andy_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -138,11 +139,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_name_consists_of_the_word_And_it_must_be_skipped()
+        internal async Task When_class_name_consists_of_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -154,11 +155,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_name_starts_with_the_word_And_it_must_be_skipped()
+        internal async Task When_class_name_starts_with_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -170,11 +171,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_class_name_ends_with_the_word_And_it_must_be_skipped()
+        internal async Task When_class_name_ends_with_the_word_And_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -186,7 +187,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.ClassDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

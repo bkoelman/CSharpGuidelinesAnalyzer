@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,7 +11,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
         protected override string DiagnosticId => DoNotUseOptionalParameterInTypeHierarchyAnalyzer.DiagnosticId;
 
         [Fact]
-        internal void When_using_optional_parameter_in_regular_method_it_must_be_skipped()
+        internal async Task When_using_optional_parameter_in_regular_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -23,11 +24,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_required_parameter_in_interface_method_it_must_be_skipped()
+        internal async Task When_using_required_parameter_in_interface_method_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -40,11 +41,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_interface_method_it_must_be_reported()
+        internal async Task When_using_optional_parameter_in_interface_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -57,12 +58,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'I.M(int)' contains optional parameter 'p'");
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_implicitly_implemented_interface_method_it_must_be_reported()
+        internal async Task When_using_optional_parameter_in_implicitly_implemented_interface_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -80,13 +81,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'I.M(int)' contains optional parameter 'p'",
                 "Method 'C.M(int)' contains optional parameter 'q'");
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_implicitly_implemented_method_from_external_assembly_it_must_be_skipped()
+        internal async Task When_using_optional_parameter_in_implicitly_implemented_method_from_external_assembly_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -110,11 +111,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_explicitly_implemented_interface_method_it_must_be_reported()
+        internal async Task When_using_optional_parameter_in_explicitly_implemented_interface_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -132,13 +133,13 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'I.M(int)' contains optional parameter 'p'",
                 "Method 'C.I.M(int)' contains optional parameter 'q'");
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_explicitly_implemented_interface_method_from_external_assembly_it_must_be_skipped()
+        internal async Task When_using_optional_parameter_in_explicitly_implemented_interface_method_from_external_assembly_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -157,11 +158,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_abstract_virtual_or_overridden_method_it_must_be_reported()
+        internal async Task When_using_optional_parameter_in_abstract_virtual_or_overridden_method_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -184,14 +185,14 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'A.M(int)' contains optional parameter 'p'",
                 "Method 'B.M(int)' contains optional parameter 'q'",
                 "Method 'D.M(int)' contains optional parameter 'r'");
         }
 
         [Fact]
-        internal void When_using_optional_parameter_in_overridden_method_from_external_assembly_it_must_be_skipped()
+        internal async Task When_using_optional_parameter_in_overridden_method_from_external_assembly_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -210,7 +211,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()

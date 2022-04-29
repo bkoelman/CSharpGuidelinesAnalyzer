@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -15,7 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Analysis, based solely on method signature
 
         [Fact]
-        internal void When_method_return_type_is_void_it_must_be_skipped()
+        internal async Task When_method_return_type_is_void_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -28,11 +29,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_untyped_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_untyped_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -47,11 +48,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_int_it_must_be_skipped()
+        internal async Task When_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -64,11 +65,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_int_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_int_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -82,11 +83,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_string_it_must_be_skipped()
+        internal async Task When_method_return_type_is_string_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -99,11 +100,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_string_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_string_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -117,11 +118,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_object_it_must_be_skipped()
+        internal async Task When_method_return_type_is_object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -135,11 +136,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_object_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_object_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -154,11 +155,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_dynamic_it_must_be_skipped()
+        internal async Task When_method_return_type_is_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -172,11 +173,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_dynamic_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_dynamic_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -191,11 +192,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_tuple_it_must_be_skipped()
+        internal async Task When_method_return_type_is_tuple_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -210,11 +211,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_tuple_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_tuple_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -230,11 +231,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_array_it_must_be_skipped()
+        internal async Task When_method_return_type_is_array_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -249,11 +250,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_array_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_array_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -269,11 +270,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_ArrayList_it_must_be_skipped()
+        internal async Task When_method_return_type_is_ArrayList_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -287,11 +288,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_ArrayList_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_ArrayList_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -306,11 +307,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_ListT_it_must_be_skipped()
+        internal async Task When_method_return_type_is_ListT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -324,11 +325,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_ListT_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_ListT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -342,11 +343,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_IOrderedEnumerableT_it_must_be_skipped()
+        internal async Task When_method_return_type_is_IOrderedEnumerableT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -361,11 +362,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_IOrderedEnumerableT_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_IOrderedEnumerableT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -380,11 +381,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_IQueryable_it_must_be_skipped()
+        internal async Task When_method_return_type_is_IQueryable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -399,11 +400,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_IQueryable_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_IQueryable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -418,11 +419,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_IQueryableT_it_must_be_skipped()
+        internal async Task When_method_return_type_is_IQueryableT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -437,11 +438,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_IQueryableT_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_IQueryableT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -456,11 +457,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_IOrderedQueryable_it_must_be_skipped()
+        internal async Task When_method_return_type_is_IOrderedQueryable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -475,11 +476,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_IOrderedQueryable_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_IOrderedQueryable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -494,11 +495,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_return_type_is_IOrderedQueryableT_it_must_be_skipped()
+        internal async Task When_method_return_type_is_IOrderedQueryableT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -513,11 +514,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_return_type_is_IOrderedQueryableT_it_must_be_skipped()
+        internal async Task When_iterator_method_return_type_is_IOrderedQueryableT_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -532,7 +533,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         #endregion
@@ -540,7 +541,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Analysis, based on compile-time type of return value
 
         [Fact]
-        internal void When_method_returns_null_it_must_be_skipped()
+        internal async Task When_method_returns_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -563,11 +564,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_returns_null_it_must_be_skipped()
+        internal async Task When_iterator_method_returns_null_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -585,11 +586,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_default_it_must_be_skipped()
+        internal async Task When_method_returns_default_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -606,11 +607,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_returns_default_it_must_be_skipped()
+        internal async Task When_iterator_method_returns_default_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -628,11 +629,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_untyped_default_it_must_be_skipped()
+        internal async Task When_method_returns_untyped_default_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -649,11 +650,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_returns_untyped_default_it_must_be_skipped()
+        internal async Task When_iterator_method_returns_untyped_default_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -670,11 +671,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_List_it_must_be_skipped()
+        internal async Task When_method_returns_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -691,11 +692,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_returns_List_it_must_be_skipped()
+        internal async Task When_iterator_method_returns_List_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -712,11 +713,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_array_after_Where_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_array_after_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -735,11 +736,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_returns_array_after_Where_invocation_it_must_be_skipped()
+        internal async Task When_iterator_method_returns_array_after_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -758,11 +759,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_array_after_a_query_expression_it_must_be_skipped()
+        internal async Task When_method_returns_array_after_a_query_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -784,11 +785,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_iterator_method_returns_array_after_a_query_expression_it_must_be_skipped()
+        internal async Task When_iterator_method_returns_array_after_a_query_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -810,11 +811,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_Queryable_it_must_be_reported()
+        internal async Task When_method_returns_Queryable_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -834,12 +835,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_iterator_method_returns_Queryable_it_must_be_reported()
+        internal async Task When_iterator_method_returns_Queryable_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -859,12 +860,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_QueryableT_it_must_be_reported()
+        internal async Task When_method_returns_QueryableT_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -884,12 +885,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_iterator_method_returns_QueryableT_it_must_be_reported()
+        internal async Task When_iterator_method_returns_QueryableT_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -909,12 +910,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_OrderedQueryable_it_must_be_reported()
+        internal async Task When_method_returns_OrderedQueryable_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -934,12 +935,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_iterator_method_returns_OrderedQueryable_it_must_be_reported()
+        internal async Task When_iterator_method_returns_OrderedQueryable_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -959,12 +960,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_OrderedQueryableT_it_must_be_reported()
+        internal async Task When_method_returns_OrderedQueryableT_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -984,12 +985,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_iterator_method_returns_OrderedQueryableT_it_must_be_reported()
+        internal async Task When_iterator_method_returns_OrderedQueryableT_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1009,7 +1010,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns an IQueryable, which uses deferred execution");
         }
 
@@ -1018,7 +1019,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Analysis, based on block scope
 
         [Fact]
-        internal void When_local_function_returns_the_result_of_Where_invocation_it_must_be_skipped()
+        internal async Task When_local_function_returns_the_result_of_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1041,11 +1042,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_lambda_expression_returns_the_result_of_Where_invocation_it_must_be_skipped()
+        internal async Task When_lambda_expression_returns_the_result_of_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1068,11 +1069,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_anonymous_method_returns_the_result_of_Where_invocation_it_must_be_skipped()
+        internal async Task When_anonymous_method_returns_the_result_of_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1095,7 +1096,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         #endregion
@@ -1105,7 +1106,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Flow analysis on chained method calls
 
         [Fact]
-        internal void When_method_returns_the_result_of_Where_invocation_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_Where_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1124,12 +1125,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_Select_invocation_with_nested_Where_invocation_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_Select_invocation_with_nested_Where_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1148,12 +1149,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<IEnumerable<char>>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_Where_invocation_after_ToArray_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_Where_invocation_after_ToArray_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1172,12 +1173,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_GroupBy_invocation_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_GroupBy_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1196,12 +1197,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a call to 'GroupBy', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_cast_to_result_of_Skip_it_must_be_reported()
+        internal async Task When_method_returns_cast_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1219,12 +1220,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_Select_invocation_with_code_block_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_Select_invocation_with_code_block_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1252,12 +1253,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_string_Join_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_string_Join_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1275,7 +1276,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         #endregion
@@ -1283,7 +1284,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Flow analysis on query expressions
 
         [Fact]
-        internal void When_method_returns_a_simple_query_expression_it_must_be_reported()
+        internal async Task When_method_returns_a_simple_query_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1304,12 +1305,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_a_simple_query_expression_with_redundant_parentheses_it_must_be_reported()
+        internal async Task When_method_returns_a_simple_query_expression_with_redundant_parentheses_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1330,12 +1331,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_a_query_expression_with_ordering_it_must_be_reported()
+        internal async Task When_method_returns_a_query_expression_with_ordering_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1357,12 +1358,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_a_query_expression_with_grouping_it_must_be_reported()
+        internal async Task When_method_returns_a_query_expression_with_grouping_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1383,7 +1384,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a query, which uses deferred execution");
         }
 
@@ -1392,7 +1393,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Flow analysis using variable tracking
 
         [Fact]
-        internal void When_method_returns_variable_that_contains_the_result_of_Where_invocation_it_must_be_reported()
+        internal async Task When_method_returns_variable_that_contains_the_result_of_Where_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1411,12 +1412,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_variable_that_contains_the_result_of_ToList_after_Where_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_variable_that_contains_the_result_of_ToList_after_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1435,11 +1436,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_variable_that_eventually_contains_the_result_of_Where_invocation_it_must_be_reported()
+        internal async Task When_method_returns_variable_that_eventually_contains_the_result_of_Where_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1459,13 +1460,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void
-            When_method_returns_variable_that_eventually_contains_the_result_of_ToArray_after_Where_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_variable_that_eventually_contains_the_result_of_ToArray_after_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1486,11 +1486,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_variable_that_eventually_contains_the_result_of_Select_invocation_it_must_be_reported()
+        internal async Task When_method_returns_variable_that_eventually_contains_the_result_of_Select_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1514,12 +1514,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_variable_that_contains_the_result_of_a_query_expression_it_must_be_reported()
+        internal async Task When_method_returns_variable_that_contains_the_result_of_a_query_expression_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1542,13 +1542,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a query, which uses deferred execution");
         }
 
         [Fact]
-        internal void
-            When_method_returns_variable_that_contains_the_result_of_ToList_after_a_query_expression_it_must_be_skipped()
+        internal async Task When_method_returns_variable_that_contains_the_result_of_ToList_after_a_query_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1572,11 +1571,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_variable_that_is_overwritten_by_deconstruction_it_must_be_skipped()
+        internal async Task When_method_returns_variable_that_is_overwritten_by_deconstruction_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1599,11 +1598,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_local_that_is_reassigned_after_copy_it_must_be_reported()
+        internal async Task When_method_returns_local_that_is_reassigned_after_copy_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1626,12 +1625,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_local_that_is_conditionally_reassigned_it_must_be_reported()
+        internal async Task When_method_returns_local_that_is_conditionally_reassigned_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1659,7 +1658,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
@@ -1668,8 +1667,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Flow analysis on control flow constructs
 
         [Fact]
-        internal void
-            When_method_returns_the_result_of_conditional_operator_after_Where_invocation_on_left_side_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_conditional_operator_after_Where_invocation_on_left_side_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1688,13 +1686,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void
-            When_method_returns_the_result_of_conditional_operator_after_Where_invocation_on_right_side_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_conditional_operator_after_Where_invocation_on_right_side_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1713,13 +1710,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void
-            When_method_returns_the_result_of_conditional_operator_after_Where_invocation_with_redundant_parentheses_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_conditional_operator_after_Where_invocation_with_redundant_parentheses_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1737,12 +1733,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>, bool)' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_conditional_operator_after_ToArray_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_conditional_operator_after_ToArray_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1761,12 +1757,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_method_returns_the_result_of_null_conditional_access_operator_after_Select_invocation_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_null_conditional_access_operator_after_Select_invocation_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1785,13 +1780,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void
-            When_method_returns_the_result_of_null_conditional_access_operator_after_ToList_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_null_conditional_access_operator_after_ToList_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1810,11 +1804,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_null_coalescing_operator_after_Select_on_left_side_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_null_coalescing_operator_after_Select_on_left_side_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1833,12 +1827,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_null_coalescing_operator_after_Select_on_right_side_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_null_coalescing_operator_after_Select_on_right_side_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1856,12 +1850,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(IList<int>)' returns the result of a call to 'Select', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_null_coalescing_operator_after_ToArray_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_null_coalescing_operator_after_ToArray_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1880,11 +1874,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_an_array_creation_with_initializer_it_must_be_skipped()
+        internal async Task When_method_returns_an_array_creation_with_initializer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1906,12 +1900,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void
-            When_method_returns_the_result_of_Where_invocation_after_array_creation_with_initializer_it_must_be_reported()
+        internal async Task When_method_returns_the_result_of_Where_invocation_after_array_creation_with_initializer_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1931,12 +1924,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a call to 'Where', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_an_anonymous_object_creation_it_must_be_skipped()
+        internal async Task When_method_returns_an_anonymous_object_creation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1960,11 +1953,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_an_object_creation_it_must_be_skipped()
+        internal async Task When_method_returns_an_object_creation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -1992,11 +1985,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_an_object_creation_with_dynamic_constructor_argument_it_must_be_skipped()
+        internal async Task When_method_returns_an_object_creation_with_dynamic_constructor_argument_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2024,11 +2017,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_an_object_creation_with_initializer_it_must_be_skipped()
+        internal async Task When_method_returns_an_object_creation_with_initializer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2059,11 +2052,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_a_collection_creation_with_initializer_it_must_be_skipped()
+        internal async Task When_method_returns_a_collection_creation_with_initializer_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2085,11 +2078,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_an_array_element_it_must_be_skipped()
+        internal async Task When_method_returns_an_array_element_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2109,11 +2102,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_invocation_of_local_variable_it_must_be_skipped()
+        internal async Task When_method_returns_invocation_of_local_variable_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2133,11 +2126,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_default_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_default_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2157,11 +2150,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_dynamic_invocation_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_dynamic_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2185,11 +2178,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_nameof_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_nameof_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2209,11 +2202,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_constant_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_constant_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2233,11 +2226,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_the_result_of_throw_expression_it_must_be_skipped()
+        internal async Task When_method_returns_the_result_of_throw_expression_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2257,7 +2250,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         #endregion
@@ -2265,7 +2258,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #region Flow analysis on assignment in return statement
 
         [Fact]
-        internal void When_method_returns_variable_assignment_to_result_of_Skip_it_must_be_reported()
+        internal async Task When_method_returns_variable_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2288,12 +2281,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_variable_assignment_to_result_of_ToArray_it_must_be_skipped()
+        internal async Task When_method_returns_variable_assignment_to_result_of_ToArray_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2316,11 +2309,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_method_returns_parameter_assignment_to_result_of_Skip_it_must_be_reported()
+        internal async Task When_method_returns_parameter_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2341,12 +2334,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M(ref IEnumerable<int>)' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_field_assignment_to_result_of_Skip_it_must_be_reported()
+        internal async Task When_method_returns_field_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2369,12 +2362,12 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
         [Fact]
-        internal void When_method_returns_property_assignment_to_result_of_Skip_it_must_be_reported()
+        internal async Task When_method_returns_property_assignment_to_result_of_Skip_it_must_be_reported()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2397,7 +2390,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source,
+            await VerifyGuidelineDiagnosticAsync(source,
                 "Method 'C.M()' returns the result of a call to 'Skip', which uses deferred execution");
         }
 
@@ -2406,7 +2399,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
         #endregion
 
         [Fact]
-        internal void When_enum_defines_field_with_explicit_value_it_must_not_crash()
+        internal async Task When_enum_defines_field_with_explicit_value_it_must_not_crash()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2419,11 +2412,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_event_declaration_initializes_with_empty_delegate_it_must_not_crash()
+        internal async Task When_event_declaration_initializes_with_empty_delegate_it_must_not_crash()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2436,11 +2429,11 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         [Fact]
-        internal void When_private_method_returns_the_result_of_Where_invocation_it_must_be_skipped()
+        internal async Task When_private_method_returns_the_result_of_Where_invocation_it_must_be_skipped()
         {
             // Arrange
             ParsedSourceCode source = new TypeSourceCodeBuilder()
@@ -2458,7 +2451,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign
                 .Build();
 
             // Act and assert
-            VerifyGuidelineDiagnostic(source);
+            await VerifyGuidelineDiagnosticAsync(source);
         }
 
         protected override DiagnosticAnalyzer CreateAnalyzer()
