@@ -4,6 +4,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
+// @formatter:keep_existing_linebreaks true
+
 namespace CSharpGuidelinesAnalyzer.Test.Specs.Maintainability;
 
 public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnalysisTestFixture

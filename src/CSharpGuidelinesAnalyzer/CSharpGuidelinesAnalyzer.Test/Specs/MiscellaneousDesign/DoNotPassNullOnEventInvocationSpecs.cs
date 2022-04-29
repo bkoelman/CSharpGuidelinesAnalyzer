@@ -3,6 +3,8 @@ using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
+// @formatter:keep_existing_linebreaks true
+
 namespace CSharpGuidelinesAnalyzer.Test.Specs.MiscellaneousDesign;
 
 public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalysisTestFixture
