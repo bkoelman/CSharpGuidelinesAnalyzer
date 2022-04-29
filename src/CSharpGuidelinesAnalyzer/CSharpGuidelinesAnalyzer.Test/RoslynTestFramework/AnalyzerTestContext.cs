@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
@@ -21,8 +21,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         [NotNull]
         [ItemNotNull]
-        private static readonly Lazy<ImmutableHashSet<MetadataReference>> DefaultReferencesLazy =
-            new Lazy<ImmutableHashSet<MetadataReference>>(ResolveDefaultReferences, LazyThreadSafetyMode.PublicationOnly);
+        private static readonly Lazy<ImmutableHashSet<MetadataReference>> DefaultReferencesLazy = new Lazy<ImmutableHashSet<MetadataReference>>(
+            () => ReferenceAssemblies.Default.ResolveAsync(null, CancellationToken.None).Result.ToImmutableHashSet(),
+            LazyThreadSafetyMode.ExecutionAndPublication);
 
         [NotNull]
         public string SourceCode { get; }
@@ -77,31 +78,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             Options = options;
         }
 #pragma warning restore AV1561 // Signature contains too many parameters
-
-        [NotNull]
-        [ItemNotNull]
-        private static ImmutableHashSet<MetadataReference> ResolveDefaultReferences()
-        {
-            string assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location);
-
-            if (assemblyPath == null)
-            {
-                throw new InvalidOperationException("Failed to locate assembly for System.Object.");
-            }
-
-            // Bug workaround for test runner in VS2019, which fails to load ValueTask due to missing dependency.
-            Assembly netStandardAssembly =
-                Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51");
-
-            return ImmutableHashSet.Create(new MetadataReference[]
-            {
-                CreateReferenceFromFile(assemblyPath, "mscorlib.dll"),
-                CreateReferenceFromFile(assemblyPath, "System.dll"),
-                CreateReferenceFromFile(assemblyPath, "System.Core.dll"),
-                CreateReferenceFromFile(assemblyPath, "System.Runtime.dll"),
-                MetadataReference.CreateFromFile(netStandardAssembly.Location)
-            });
-        }
 
         [NotNull]
         private static PortableExecutableReference CreateReferenceFromFile([NotNull] string assemblyPath, [NotNull] string assemblyFileName)

@@ -21,6 +21,7 @@
     <PackageReference Include="FluentAssertions" Version="6.5.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="4.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzer.Testing" Version="1.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="OpenCover" Version="4.7.1221" />
     <PackageReference Include="ReportGenerator" Version="5.0.4" />
