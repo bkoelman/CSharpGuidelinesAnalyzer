@@ -5,10 +5,9 @@ namespace CSharpGuidelinesAnalyzer.Test
 {
     internal sealed class ParsedSourceCode
     {
-        [NotNull]
         public AnalyzerTestContext TestContext { get; }
 
-        public ParsedSourceCode([NotNull] string sourceText, [NotNull] AnalyzerTestContext testContext)
+        public ParsedSourceCode(string sourceText, AnalyzerTestContext testContext)
         {
             Guard.NotNull(sourceText, nameof(sourceText));
             Guard.NotNull(testContext, nameof(testContext));

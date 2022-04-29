@@ -15,27 +15,21 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     /// <summary />
     internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
-        [ItemNotNull]
         protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
         {
             "System"
         }.ToImmutableArray();
 
-        [NotNull]
         public static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty, Array.Empty<TextSpan>(),
             new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
 
-        [NotNull]
-        [ItemNotNull]
         private readonly HashSet<string> namespaceImports;
 
-        [NotNull]
         internal readonly CodeEditor Editor;
 
-        [NotNull]
         private AnalyzerTestContext testContext = DefaultTestContext;
 
-        protected SourceCodeBuilder([NotNull] [ItemNotNull] IEnumerable<string> implicitNamespaceImports)
+        protected SourceCodeBuilder(IEnumerable<string> implicitNamespaceImports)
         {
             namespaceImports = new HashSet<string>(implicitNamespaceImports);
             Editor = new CodeEditor(this);
@@ -48,7 +42,6 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return new ParsedSourceCode(sourceText, testContext);
         }
 
-        [NotNull]
         private string GetCompleteSourceText()
         {
             var sourceBuilder = new StringBuilder();
@@ -61,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return sourceBuilder.ToString();
         }
 
-        private void WriteNamespaceImports([NotNull] StringBuilder sourceBuilder)
+        private void WriteNamespaceImports(StringBuilder sourceBuilder)
         {
             if (namespaceImports.Any())
             {
@@ -74,11 +67,9 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             }
         }
 
-        [NotNull]
         protected abstract string GetSourceCode();
 
-        [NotNull]
-        protected string GetLinesOfCode([NotNull] [ItemNotNull] IEnumerable<string> codeBlocks)
+        protected string GetLinesOfCode(IEnumerable<string> codeBlocks)
         {
             Guard.NotNull(codeBlocks, nameof(codeBlocks));
 
@@ -88,7 +79,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return builder.ToString();
         }
 
-        private static void AppendCodeBlocks([NotNull] [ItemNotNull] IEnumerable<string> codeBlocks, [NotNull] StringBuilder builder)
+        private static void AppendCodeBlocks(IEnumerable<string> codeBlocks, StringBuilder builder)
         {
             bool isInFirstBlock = true;
 
@@ -108,7 +99,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             }
         }
 
-        private static void AppendCodeBlock([NotNull] string codeBlock, [NotNull] StringBuilder builder)
+        private static void AppendCodeBlock(string codeBlock, StringBuilder builder)
         {
             bool isOnFirstLineInBlock = true;
 
@@ -128,13 +119,11 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             }
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private static IEnumerable<string> GetLinesInText([NotNull] string text)
+        private static IEnumerable<string> GetLinesInText(string text)
         {
             using var reader = new StringReader(text);
 
-            string line;
+            string? line;
 
             while ((line = reader.ReadLine()) != null)
             {
@@ -144,23 +133,22 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         internal sealed class CodeEditor
         {
-            [NotNull]
             private readonly SourceCodeBuilder owner;
 
-            public CodeEditor([NotNull] SourceCodeBuilder owner)
+            public CodeEditor(SourceCodeBuilder owner)
             {
                 Guard.NotNull(owner, nameof(owner));
                 this.owner = owner;
             }
 
-            public void UpdateTestContext([NotNull] Func<AnalyzerTestContext, AnalyzerTestContext> change)
+            public void UpdateTestContext(Func<AnalyzerTestContext, AnalyzerTestContext> change)
             {
                 Guard.NotNull(change, nameof(change));
 
                 owner.testContext = change(owner.testContext);
             }
 
-            public void IncludeNamespaceImport([NotNull] string codeNamespace)
+            public void IncludeNamespaceImport(string codeNamespace)
             {
                 owner.namespaceImports.Add(codeNamespace);
             }

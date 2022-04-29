@@ -18,26 +18,18 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         private const OutputKind DefaultOutputKind = OutputKind.DynamicallyLinkedLibrary;
         private const TestValidationMode DefaultTestValidationMode = TestValidationMode.AllowCompileWarnings;
 
-        [NotNull]
-        [ItemNotNull]
         private static readonly Lazy<ImmutableHashSet<MetadataReference>> DefaultReferencesLazy = new Lazy<ImmutableHashSet<MetadataReference>>(
             () => ReferenceAssemblies.Net.Net60.ResolveAsync(null, CancellationToken.None).Result.ToImmutableHashSet(),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
-        [NotNull]
         public string SourceCode { get; }
 
-        [NotNull]
         public IList<TextSpan> SourceSpans { get; }
 
-        [NotNull]
         public string FileName { get; }
 
-        [NotNull]
         public string AssemblyName { get; }
 
-        [NotNull]
-        [ItemNotNull]
         public ImmutableHashSet<MetadataReference> References { get; }
 
         public DocumentationMode DocumentationMode { get; }
@@ -48,10 +40,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         public TestValidationMode ValidationMode { get; }
 
-        [NotNull]
         public AnalyzerOptions Options { get; }
 
-        public AnalyzerTestContext([NotNull] string sourceCode, [NotNull] IList<TextSpan> sourceSpans, [NotNull] AnalyzerOptions options)
+        public AnalyzerTestContext(string sourceCode, IList<TextSpan> sourceSpans, AnalyzerOptions options)
             : this(sourceCode, sourceSpans, DefaultFileName, DefaultAssemblyName, DefaultReferencesLazy.Value, DefaultDocumentationMode, DefaultOutputKind,
                 TreatWarningsAsErrors.None, DefaultTestValidationMode, options)
         {
@@ -61,9 +52,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
 #pragma warning disable AV1561 // Signature contains too many parameters
-        private AnalyzerTestContext([NotNull] string sourceCode, [NotNull] IList<TextSpan> sourceSpans, [NotNull] string fileName,
-            [NotNull] string assemblyName, [NotNull] [ItemNotNull] ImmutableHashSet<MetadataReference> references, DocumentationMode documentationMode,
-            OutputKind outputKind, TreatWarningsAsErrors warningsAsErrors, TestValidationMode validationMode, [NotNull] AnalyzerOptions options)
+        private AnalyzerTestContext(string sourceCode, IList<TextSpan> sourceSpans, string fileName, string assemblyName,
+            ImmutableHashSet<MetadataReference> references, DocumentationMode documentationMode, OutputKind outputKind, TreatWarningsAsErrors warningsAsErrors,
+            TestValidationMode validationMode, AnalyzerOptions options)
         {
             SourceCode = sourceCode;
             SourceSpans = sourceSpans;
@@ -78,8 +69,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 #pragma warning restore AV1561 // Signature contains too many parameters
 
-        [NotNull]
-        public AnalyzerTestContext WithCode([NotNull] string sourceCode, [NotNull] IList<TextSpan> sourceSpans)
+        public AnalyzerTestContext WithCode(string sourceCode, IList<TextSpan> sourceSpans)
         {
             FrameworkGuard.NotNull(sourceCode, nameof(sourceCode));
             FrameworkGuard.NotNull(sourceSpans, nameof(sourceSpans));
@@ -88,8 +78,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 DocumentationMode, OutputKind, WarningsAsErrors, ValidationMode, Options);
         }
 
-        [NotNull]
-        public AnalyzerTestContext InFileNamed([NotNull] string fileName)
+        public AnalyzerTestContext InFileNamed(string fileName)
         {
             FrameworkGuard.NotNullNorWhiteSpace(fileName, nameof(fileName));
 
@@ -97,15 +86,13 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 DocumentationMode, OutputKind, WarningsAsErrors, ValidationMode, Options);
         }
 
-        [NotNull]
-        public AnalyzerTestContext InAssemblyNamed([NotNull] string assemblyName)
+        public AnalyzerTestContext InAssemblyNamed(string assemblyName)
         {
             return new AnalyzerTestContext(SourceCode, SourceSpans, FileName, assemblyName, References,
                 DocumentationMode, OutputKind, WarningsAsErrors, ValidationMode, Options);
         }
 
-        [NotNull]
-        public AnalyzerTestContext WithReferences([NotNull] [ItemNotNull] IEnumerable<MetadataReference> references)
+        public AnalyzerTestContext WithReferences(IEnumerable<MetadataReference> references)
         {
             FrameworkGuard.NotNull(references, nameof(references));
 
@@ -116,36 +103,31 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 ValidationMode, Options);
         }
 
-        [NotNull]
         public AnalyzerTestContext WithDocumentationMode(DocumentationMode mode)
         {
             return new AnalyzerTestContext(SourceCode, SourceSpans, FileName, AssemblyName, References, mode,
                 OutputKind, WarningsAsErrors, ValidationMode, Options);
         }
 
-        [NotNull]
         public AnalyzerTestContext WithOutputKind(OutputKind outputKind)
         {
             return new AnalyzerTestContext(SourceCode, SourceSpans, FileName, AssemblyName, References,
                 DocumentationMode, outputKind, WarningsAsErrors, ValidationMode, Options);
         }
 
-        [NotNull]
         public AnalyzerTestContext CompileWithWarningsAsErrors(TreatWarningsAsErrors warningsAsErrors)
         {
             return new AnalyzerTestContext(SourceCode, SourceSpans, FileName, AssemblyName, References,
                 DocumentationMode, OutputKind, warningsAsErrors, ValidationMode, Options);
         }
 
-        [NotNull]
         public AnalyzerTestContext InValidationMode(TestValidationMode validationMode)
         {
             return new AnalyzerTestContext(SourceCode, SourceSpans, FileName, AssemblyName, References,
                 DocumentationMode, OutputKind, WarningsAsErrors, validationMode, Options);
         }
 
-        [NotNull]
-        public AnalyzerTestContext WithOptions([NotNull] AnalyzerOptions options)
+        public AnalyzerTestContext WithOptions(AnalyzerOptions options)
         {
             FrameworkGuard.NotNull(options, nameof(options));
 

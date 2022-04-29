@@ -6,7 +6,6 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     /// <summary />
     internal sealed class EmptySourceCodeBuilder : SourceCodeBuilder
     {
-        [NotNull]
         private string text = string.Empty;
 
         public EmptySourceCodeBuilder()
@@ -19,8 +18,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return text;
         }
 
-        [NotNull]
-        public EmptySourceCodeBuilder WithCode([NotNull] string code)
+        public EmptySourceCodeBuilder WithCode(string code)
         {
             Guard.NotNull(code, nameof(code));
 

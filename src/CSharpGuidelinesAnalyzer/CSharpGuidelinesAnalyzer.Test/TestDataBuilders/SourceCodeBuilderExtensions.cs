@@ -14,8 +14,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     /// <summary />
     internal static class SourceCodeBuilderExtensions
     {
-        [NotNull]
-        public static TBuilder Using<TBuilder>([NotNull] this TBuilder source, [CanBeNull] string codeNamespace)
+        public static TBuilder Using<TBuilder>(this TBuilder source, string? codeNamespace)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -28,8 +27,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder InFileNamed<TBuilder>([NotNull] this TBuilder source, [NotNull] string fileName)
+        public static TBuilder InFileNamed<TBuilder>(this TBuilder source, string fileName)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -40,8 +38,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder InAssemblyNamed<TBuilder>([NotNull] this TBuilder source, [NotNull] string assemblyName)
+        public static TBuilder InAssemblyNamed<TBuilder>(this TBuilder source, string assemblyName)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -52,8 +49,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder WithReferenceToExternalAssemblyFor<TBuilder>([NotNull] this TBuilder source, [NotNull] string code)
+        public static TBuilder WithReferenceToExternalAssemblyFor<TBuilder>(this TBuilder source, string code)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -71,9 +67,8 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        private static Stream GetInMemoryAssemblyStreamForCode([NotNull] string code, [NotNull] string assemblyName,
-            [NotNull] [ItemNotNull] params MetadataReference[] references)
+        private static Stream GetInMemoryAssemblyStreamForCode(string code, string assemblyName,
+            params MetadataReference[] references)
         {
             SyntaxTree tree = CSharpSyntaxTree.ParseText(code);
             ImmutableArray<SyntaxTree> trees = ImmutableArray.Create(tree);
@@ -93,15 +88,14 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return stream;
         }
 
-        private static void ValidateCompileErrors([NotNull] EmitResult emitResult)
+        private static void ValidateCompileErrors(EmitResult emitResult)
         {
             Diagnostic[] compilerErrors = emitResult.Diagnostics.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
             compilerErrors.Should().BeEmpty("external assembly should not have compile errors");
             emitResult.Success.Should().BeTrue();
         }
 
-        [NotNull]
-        public static TBuilder WithDocumentationComments<TBuilder>([NotNull] this TBuilder source)
+        public static TBuilder WithDocumentationComments<TBuilder>(this TBuilder source)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -111,8 +105,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder WithOutputKind<TBuilder>([NotNull] this TBuilder source, OutputKind outputKind)
+        public static TBuilder WithOutputKind<TBuilder>(this TBuilder source, OutputKind outputKind)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -122,8 +115,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder CompileWithWarningAsError<TBuilder>([NotNull] this TBuilder source)
+        public static TBuilder CompileWithWarningAsError<TBuilder>(this TBuilder source)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -133,8 +125,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder AllowingCompileErrors<TBuilder>([NotNull] this TBuilder source)
+        public static TBuilder AllowingCompileErrors<TBuilder>(this TBuilder source)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(source, nameof(source));
@@ -144,8 +135,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return source;
         }
 
-        [NotNull]
-        public static TBuilder WithOptions<TBuilder>([NotNull] this TBuilder source, [NotNull] AnalyzerOptionsBuilder builder)
+        public static TBuilder WithOptions<TBuilder>(this TBuilder source, AnalyzerOptionsBuilder builder)
             where TBuilder : SourceCodeBuilder
         {
             Guard.NotNull(builder, nameof(builder));

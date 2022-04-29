@@ -7,15 +7,12 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     /// <summary />
     internal static class DocumentFactory
     {
-        [NotNull]
         private static readonly CSharpCompilationOptions DefaultCompilationOptions =
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, allowUnsafe: true);
 
-        [NotNull]
         private static readonly CSharpParseOptions DefaultParseOptions = new CSharpParseOptions();
 
-        [NotNull]
-        public static Document ToDocument([NotNull] string code, [NotNull] AnalyzerTestContext context)
+        public static Document ToDocument(string code, AnalyzerTestContext context)
         {
             ParseOptions parseOptions = GetParseOptions(context.DocumentationMode);
             CompilationOptions compilationOptions = GetCompilationOptions(context);
@@ -30,14 +27,12 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return document;
         }
 
-        [NotNull]
         private static ParseOptions GetParseOptions(DocumentationMode documentationMode)
         {
             return DefaultParseOptions.WithDocumentationMode(documentationMode);
         }
 
-        [NotNull]
-        private static CompilationOptions GetCompilationOptions([NotNull] AnalyzerTestContext context)
+        private static CompilationOptions GetCompilationOptions(AnalyzerTestContext context)
         {
             CompilationOptions options = DefaultCompilationOptions;
 

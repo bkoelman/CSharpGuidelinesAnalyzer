@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using SysNotNull = System.Diagnostics.CodeAnalysis.NotNullAttribute;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
@@ -11,8 +12,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
     internal static class FrameworkGuard
     {
         [AssertionMethod]
-        [ContractAnnotation("value: null => halt")]
-        public static void NotNull<T>([CanBeNull] [NoEnumeration] T value, [NotNull] [InvokerParameterName] string name)
+        public static void NotNull<T>([NoEnumeration] [SysNotNull] T? value, [InvokerParameterName] string name)
             where T : class
         {
             if (value is null)
@@ -22,9 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
         [AssertionMethod]
-        [ContractAnnotation("value: null => halt")]
-        private static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value,
-            [NotNull] [InvokerParameterName] string name)
+        private static void NotNullNorEmpty<T>([SysNotNull] IEnumerable<T>? value, [InvokerParameterName] string name)
         {
             NotNull(value, name);
 
@@ -35,8 +33,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         }
 
         [AssertionMethod]
-        [ContractAnnotation("value: null => halt")]
-        public static void NotNullNorWhiteSpace([CanBeNull] string value, [NotNull] [InvokerParameterName] string name)
+        public static void NotNullNorWhiteSpace([SysNotNull] string? value, [InvokerParameterName] string name)
         {
             if (string.IsNullOrWhiteSpace(value))
             {

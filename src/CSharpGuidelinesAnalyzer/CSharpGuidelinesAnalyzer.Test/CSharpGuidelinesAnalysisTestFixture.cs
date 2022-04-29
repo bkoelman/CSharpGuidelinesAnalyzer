@@ -6,7 +6,7 @@ namespace CSharpGuidelinesAnalyzer.Test
 {
     public abstract class CSharpGuidelinesAnalysisTestFixture : AnalysisTestFixture
     {
-        private protected async Task VerifyGuidelineDiagnosticAsync([NotNull] ParsedSourceCode source, [NotNull] [ItemNotNull] params string[] messages)
+        private protected async Task VerifyGuidelineDiagnosticAsync(ParsedSourceCode source, params string[] messages)
         {
             Guard.NotNull(source, nameof(source));
             Guard.NotNull(messages, nameof(messages));

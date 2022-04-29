@@ -14,13 +14,11 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     public abstract class AnalysisTestFixture
     {
-        [NotNull]
         protected abstract string DiagnosticId { get; }
 
-        [NotNull]
         protected abstract DiagnosticAnalyzer CreateAnalyzer();
 
-        protected async Task AssertDiagnosticsAsync([NotNull] AnalyzerTestContext context, [NotNull] [ItemNotNull] params string[] messages)
+        protected async Task AssertDiagnosticsAsync(AnalyzerTestContext context, params string[] messages)
         {
             FrameworkGuard.NotNull(context, nameof(context));
             FrameworkGuard.NotNull(messages, nameof(messages));
@@ -28,8 +26,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             await RunDiagnosticsAsync(context, messages);
         }
 
-        private async Task RunDiagnosticsAsync([NotNull] AnalyzerTestContext context,
-            [NotNull] [ItemNotNull] params string[] messages)
+        private async Task RunDiagnosticsAsync(AnalyzerTestContext context, params string[] messages)
         {
             AnalysisResult result = await GetAnalysisResultAsync(context, messages);
 
@@ -37,9 +34,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             VerifyDiagnostics(result);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<AnalysisResult> GetAnalysisResultAsync([NotNull] AnalyzerTestContext context, [NotNull] [ItemNotNull] string[] messages)
+        private async Task<AnalysisResult> GetAnalysisResultAsync(AnalyzerTestContext context, string[] messages)
         {
             var document = DocumentFactory.ToDocument(context.SourceCode, context);
 
@@ -47,9 +42,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return new AnalysisResult(diagnostics, context.SourceSpans, messages);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IList<Diagnostic>> GetSortedAnalyzerDiagnosticsAsync([NotNull] Document document, [NotNull] AnalyzerTestContext context)
+        private async Task<IList<Diagnostic>> GetSortedAnalyzerDiagnosticsAsync(Document document, AnalyzerTestContext context)
         {
             var diagnostics = new List<Diagnostic>();
 
@@ -64,15 +57,12 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return diagnostics.OrderBy(diagnostic => diagnostic.Location.SourceSpan).ToImmutableArray();
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async IAsyncEnumerable<Diagnostic> EnumerateDiagnosticsForDocumentAsync([NotNull] Document document,
-            [NotNull] AnalyzerTestContext context)
+        private async IAsyncEnumerable<Diagnostic> EnumerateDiagnosticsForDocumentAsync(Document document, AnalyzerTestContext context)
         {
             CompilationWithAnalyzers compilationWithAnalyzers =
                 await GetCompilationWithAnalyzersAsync(document, context.ValidationMode, context.Options);
 
-            SyntaxTree tree = await document.GetSyntaxTreeAsync();
+            SyntaxTree? tree = await document.GetSyntaxTreeAsync();
 
             await foreach (Diagnostic diagnostic in EnumerateAnalyzerDiagnosticsAsync(compilationWithAnalyzers, tree!))
             {
@@ -80,14 +70,11 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<CompilationWithAnalyzers> GetCompilationWithAnalyzersAsync([NotNull] Document document,
-            TestValidationMode validationMode, [NotNull] AnalyzerOptions options)
+        private async Task<CompilationWithAnalyzers> GetCompilationWithAnalyzersAsync(Document document, TestValidationMode validationMode, AnalyzerOptions options)
         {
             DiagnosticAnalyzer analyzer = CreateAnalyzer();
 
-            Compilation compilation = await document.Project.GetCompilationAsync();
+            Compilation? compilation = await document.Project.GetCompilationAsync();
             compilation = EnsureAnalyzerIsEnabled(analyzer, compilation!);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(CancellationToken.None);
@@ -101,9 +88,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return compilation.WithAnalyzers(analyzers, options);
         }
 
-        [NotNull]
-        private static Compilation EnsureAnalyzerIsEnabled([NotNull] DiagnosticAnalyzer analyzer,
-            [NotNull] Compilation compilation)
+        private static Compilation EnsureAnalyzerIsEnabled(DiagnosticAnalyzer analyzer, Compilation compilation)
         {
             ImmutableDictionary<string, ReportDiagnostic> diagnosticOptions = compilation.Options.SpecificDiagnosticOptions;
 
@@ -119,7 +104,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             return compilation.WithOptions(compilationWithSpecificOptions);
         }
 
-        private void ValidateCompileErrors([ItemNotNull] ImmutableArray<Diagnostic> compilerDiagnostics)
+        private void ValidateCompileErrors(ImmutableArray<Diagnostic> compilerDiagnostics)
         {
             Diagnostic[] compilerErrors = compilerDiagnostics.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
                 .ToArray();
@@ -127,10 +112,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             compilerErrors.Should().BeEmpty("test should not have compile errors");
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private static async IAsyncEnumerable<Diagnostic> EnumerateAnalyzerDiagnosticsAsync([NotNull] CompilationWithAnalyzers compilationWithAnalyzers,
-            [NotNull] SyntaxTree tree)
+        private static async IAsyncEnumerable<Diagnostic> EnumerateAnalyzerDiagnosticsAsync(CompilationWithAnalyzers compilationWithAnalyzers, SyntaxTree tree)
         {
             foreach (Diagnostic diagnostic in await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync())
             {
@@ -145,7 +127,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
-        private static void ThrowForCrashingAnalyzer([NotNull] Diagnostic diagnostic)
+        private static void ThrowForCrashingAnalyzer(Diagnostic diagnostic)
         {
             if (diagnostic.Id == "AD0001")
             {
@@ -154,19 +136,19 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
-        private static void VerifyDiagnosticCount([NotNull] AnalysisResult result)
+        private static void VerifyDiagnosticCount(AnalysisResult result)
         {
             result.DiagnosticsWithLocation.Should().HaveSameCount(result.SpansExpected);
             result.Diagnostics.Should().HaveSameCount(result.MessagesExpected);
         }
 
-        private static void VerifyDiagnostics([NotNull] AnalysisResult result)
+        private static void VerifyDiagnostics(AnalysisResult result)
         {
             VerifyDiagnosticMessages(result);
             VerifyDiagnosticLocations(result);
         }
 
-        private static void VerifyDiagnosticMessages([NotNull] AnalysisResult result)
+        private static void VerifyDiagnosticMessages(AnalysisResult result)
         {
             int messageIndex = 0;
 
@@ -180,7 +162,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
-        private static void VerifyDiagnosticLocations([NotNull] AnalysisResult result)
+        private static void VerifyDiagnosticLocations(AnalysisResult result)
         {
             int spanIndex = 0;
 
@@ -195,23 +177,16 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class AnalysisResult
         {
-            [NotNull]
-            [ItemNotNull]
             public IList<Diagnostic> Diagnostics { get; }
 
-            [NotNull]
-            [ItemNotNull]
             public IList<Diagnostic> DiagnosticsWithLocation => Diagnostics.Where(diagnostic => diagnostic.Location.IsInSource).ToArray();
 
-            [NotNull]
             public IList<TextSpan> SpansExpected { get; }
 
-            [NotNull]
-            [ItemNotNull]
             public IList<string> MessagesExpected { get; }
 
-            public AnalysisResult([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics, [NotNull] IList<TextSpan> spansExpected,
-                [NotNull] [ItemNotNull] IList<string> messagesExpected)
+            public AnalysisResult(IList<Diagnostic> diagnostics, IList<TextSpan> spansExpected,
+                IList<string> messagesExpected)
             {
                 FrameworkGuard.NotNull(diagnostics, nameof(diagnostics));
                 FrameworkGuard.NotNull(spansExpected, nameof(spansExpected));

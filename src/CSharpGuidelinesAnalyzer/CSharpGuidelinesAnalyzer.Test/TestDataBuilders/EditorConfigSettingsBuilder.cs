@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -8,7 +9,6 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
     internal sealed class EditorConfigSettingsBuilder : ITestDataBuilder<AnalyzerConfigOptionsProvider>
     {
-        [NotNull]
         private readonly FakeAnalyzerConfigOptionsProvider provider = new FakeAnalyzerConfigOptionsProvider();
 
         public AnalyzerConfigOptionsProvider Build()
@@ -16,8 +16,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return provider;
         }
 
-        [NotNull]
-        public EditorConfigSettingsBuilder Including([NotNull] string rule, [NotNull] string name, [CanBeNull] string value)
+        public EditorConfigSettingsBuilder Including(string rule, string name, string? value)
         {
             string key = string.Join(".", "dotnet_diagnostic", rule, name);
             provider.Add(key, value);
@@ -27,35 +26,30 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 
         private sealed class FakeAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsProvider
         {
-            [NotNull]
             private readonly FakeAnalyzerConfigOptions options = new FakeAnalyzerConfigOptions();
 
-            [NotNull]
             public override AnalyzerConfigOptions GlobalOptions => options;
 
-            public void Add([NotNull] string key, [CanBeNull] string value)
+            public void Add(string key, string? value)
             {
                 options.Settings.Add(key, value);
             }
 
-            [NotNull]
-            public override AnalyzerConfigOptions GetOptions([NotNull] SyntaxTree tree)
+            public override AnalyzerConfigOptions GetOptions(SyntaxTree tree)
             {
                 return options;
             }
 
-            [NotNull]
-            public override AnalyzerConfigOptions GetOptions([NotNull] AdditionalText textFile)
+            public override AnalyzerConfigOptions GetOptions(AdditionalText textFile)
             {
                 return options;
             }
 
             private sealed class FakeAnalyzerConfigOptions : AnalyzerConfigOptions
             {
-                [NotNull]
-                public IDictionary<string, string> Settings { get; } = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+                public IDictionary<string, string?> Settings { get; } = new Dictionary<string, string?>(StringComparer.InvariantCultureIgnoreCase);
 
-                public override bool TryGetValue([NotNull] string key, [CanBeNull] out string value)
+                public override bool TryGetValue(string key, [NotNullWhen(true)] out string? value)
                 {
                     return Settings.TryGetValue(key, out value);
                 }

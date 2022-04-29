@@ -7,8 +7,6 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     /// <summary />
     internal sealed class TypeSourceCodeBuilder : SourceCodeBuilder
     {
-        [NotNull]
-        [ItemNotNull]
         private readonly List<string> types = new List<string>();
 
         public TypeSourceCodeBuilder()
@@ -25,14 +23,13 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return builder.ToString();
         }
 
-        private void AppendTypes([NotNull] StringBuilder builder)
+        private void AppendTypes(StringBuilder builder)
         {
             string code = GetLinesOfCode(types);
             builder.AppendLine(code);
         }
 
-        [NotNull]
-        public TypeSourceCodeBuilder InGlobalScope([NotNull] string typeCode)
+        public TypeSourceCodeBuilder InGlobalScope(string typeCode)
         {
             Guard.NotNull(typeCode, nameof(typeCode));
 

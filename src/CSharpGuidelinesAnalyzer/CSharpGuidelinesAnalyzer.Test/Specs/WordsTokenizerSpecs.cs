@@ -165,7 +165,7 @@ namespace CSharpGuidelinesAnalyzer.Test.Specs
                 new WordToken("_", WordTokenKind.Separators));
         }
 
-        private static void RunTest([NotNull] string text, [NotNull] params WordToken[] expected)
+        private static void RunTest(string text, params WordToken[] expected)
         {
             var tokenizer = new WordsTokenizer(text);
             WordToken[] tokens = tokenizer.GetTokens().ToArray();

@@ -7,8 +7,6 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
     /// <summary />
     internal sealed class MemberSourceCodeBuilder : SourceCodeBuilder
     {
-        [NotNull]
-        [ItemNotNull]
         private readonly List<string> members = new List<string>();
 
         public MemberSourceCodeBuilder()
@@ -27,25 +25,24 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
             return builder.ToString();
         }
 
-        private static void AppendClassStart([NotNull] StringBuilder builder)
+        private static void AppendClassStart(StringBuilder builder)
         {
             builder.AppendLine("public class Test");
             builder.AppendLine("{");
         }
 
-        private void AppendClassMembers([NotNull] StringBuilder builder)
+        private void AppendClassMembers(StringBuilder builder)
         {
             string code = GetLinesOfCode(members);
             builder.AppendLine(code);
         }
 
-        private static void AppendClassEnd([NotNull] StringBuilder builder)
+        private static void AppendClassEnd(StringBuilder builder)
         {
             builder.AppendLine("}");
         }
 
-        [NotNull]
-        public MemberSourceCodeBuilder InDefaultClass([NotNull] string memberCode)
+        public MemberSourceCodeBuilder InDefaultClass(string memberCode)
         {
             Guard.NotNull(memberCode, nameof(memberCode));
 

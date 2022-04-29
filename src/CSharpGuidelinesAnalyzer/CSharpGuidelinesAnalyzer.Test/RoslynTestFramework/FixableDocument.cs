@@ -22,11 +22,8 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
         // Expected: abcINSdefghiZZZjkl
         // Spans:    [0..2], [2..3]
 
-        [NotNull]
-        [ItemNotNull]
         private readonly IList<TextBlock> blocks;
 
-        [NotNull]
         public string SourceText
         {
             get
@@ -36,10 +33,9 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             }
         }
 
-        [NotNull]
         public IList<TextSpan> SourceSpans { get; }
 
-        public FixableDocument([NotNull] string text)
+        public FixableDocument(string text)
         {
             FrameworkGuard.NotNull(text, nameof(text));
 
@@ -57,7 +53,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
             private const string ReplaceSeparator = "##";
             private const int SpanTextLength = 2;
 
-            [NotNull]
             private static readonly char[] SpanKinds =
             {
                 '|',
@@ -66,24 +61,18 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 '*'
             };
 
-            [NotNull]
-            [ItemNotNull]
             private static readonly string[] ReplaceSeparatorArray =
             {
                 ReplaceSeparator
             };
 
-            [NotNull]
             private readonly string markupCode;
 
-            [NotNull]
-            [ItemNotNull]
             public IList<TextBlock> TextBlocks { get; } = new List<TextBlock>();
 
-            [NotNull]
             public IList<TextSpan> TextSpans { get; } = new List<TextSpan>();
 
-            public MarkupParser([NotNull] string markupCode)
+            public MarkupParser(string markupCode)
             {
                 FrameworkGuard.NotNull(markupCode, nameof(markupCode));
                 this.markupCode = markupCode;
@@ -142,7 +131,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 }
             }
 
-            [CanBeNull]
             private (int spanStartIndex, char spanKind)? TryGetNextSpanStartForIndex(int index)
             {
                 if (index == -1 || index >= markupCode.Length - 1)
@@ -189,7 +177,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 string spanInnerText = markupCode.Substring(spanStartIndex + SpanTextLength,
                     spanEndIndex - spanStartIndex - SpanTextLength);
 
-                TextBlock textBlock = TryCreateTextBlockForSpan(spanInnerText, spanKind);
+                TextBlock? textBlock = TryCreateTextBlockForSpan(spanInnerText, spanKind);
 
                 if (textBlock != null)
                 {
@@ -197,8 +185,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 }
             }
 
-            [CanBeNull]
-            private TextBlock TryCreateTextBlockForSpan([NotNull] string spanInnerText, char spanKind)
+            private TextBlock? TryCreateTextBlockForSpan(string spanInnerText, char spanKind)
             {
                 switch (spanKind)
                 {
@@ -223,8 +210,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
                 return null;
             }
 
-            [NotNull]
-            private static ReplacedTextBlock CreateReplacedTextBlock([NotNull] string spanInnerText)
+            private static ReplacedTextBlock CreateReplacedTextBlock(string spanInnerText)
             {
                 string[] parts = spanInnerText.Split(ReplaceSeparatorArray, StringSplitOptions.None);
 
@@ -279,7 +265,6 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
             private struct ParseStateMachine
             {
-                [NotNull]
                 private readonly MarkupParser parser;
 
                 private int offset;
@@ -289,7 +274,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
                 private bool HasFoundSpanStart => spanStartIndex != -1;
 
-                public ParseStateMachine([NotNull] MarkupParser parser)
+                public ParseStateMachine(MarkupParser parser)
                 {
                     FrameworkGuard.NotNull(parser, nameof(parser));
 
@@ -360,13 +345,11 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private abstract class TextBlock
         {
-            [NotNull]
             public string TextBefore { get; }
 
-            [NotNull]
             public string TextAfter { get; }
 
-            protected TextBlock([NotNull] string textBefore, [NotNull] string textAfter)
+            protected TextBlock(string textBefore, string textAfter)
             {
                 FrameworkGuard.NotNull(textBefore, nameof(textBefore));
                 FrameworkGuard.NotNull(textAfter, nameof(textAfter));
@@ -378,7 +361,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class StaticTextBlock : TextBlock
         {
-            public StaticTextBlock([NotNull] string text)
+            public StaticTextBlock(string text)
                 : base(text, text)
             {
             }
@@ -391,7 +374,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class MarkedTextBlock : TextBlock
         {
-            public MarkedTextBlock([NotNull] string textToMark)
+            public MarkedTextBlock(string textToMark)
                 : base(textToMark, textToMark)
             {
             }
@@ -404,7 +387,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class InsertedTextBlock : TextBlock
         {
-            public InsertedTextBlock([NotNull] string textToInsert)
+            public InsertedTextBlock(string textToInsert)
                 : base(string.Empty, textToInsert)
             {
             }
@@ -417,7 +400,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class DeletedTextBlock : TextBlock
         {
-            public DeletedTextBlock([NotNull] string textToDelete)
+            public DeletedTextBlock(string textToDelete)
                 : base(textToDelete, string.Empty)
             {
             }
@@ -430,7 +413,7 @@ namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 
         private sealed class ReplacedTextBlock : TextBlock
         {
-            public ReplacedTextBlock([NotNull] string textBefore, [NotNull] string textAfter)
+            public ReplacedTextBlock(string textBefore, string textAfter)
                 : base(textBefore, textAfter)
             {
             }
