@@ -196,7 +196,10 @@ CSharpGuidelinesAnalyzer.Guard.NotNull($EXPR$, $NAME$);</s:String>
         &lt;HasMember&gt;&#xD;
           &lt;And&gt;&#xD;
             &lt;Kind Is="Method" /&gt;&#xD;
-            &lt;HasAttribute Name="Xunit.FactAttribute" Inherited="True" /&gt;&#xD;
+            &lt;Or&gt;&#xD;
+              &lt;HasAttribute Name="Xunit.FactAttribute" /&gt;&#xD;
+              &lt;HasAttribute Name="Xunit.TheoryAttribute" /&gt;&#xD;
+            &lt;/Or&gt;&#xD;
           &lt;/And&gt;&#xD;
         &lt;/HasMember&gt;&#xD;
       &lt;/And&gt;&#xD;
