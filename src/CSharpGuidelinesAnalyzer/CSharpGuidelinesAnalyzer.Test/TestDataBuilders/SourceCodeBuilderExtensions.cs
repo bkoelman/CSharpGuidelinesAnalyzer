@@ -1,149 +1,144 @@
 ﻿using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
 using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using FluentAssertions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Emit;
 
-namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
+namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+
+/// <summary />
+internal static class SourceCodeBuilderExtensions
 {
-    /// <summary />
-    internal static class SourceCodeBuilderExtensions
+    public static TBuilder Using<TBuilder>(this TBuilder source, string? codeNamespace)
+        where TBuilder : SourceCodeBuilder
     {
-        public static TBuilder Using<TBuilder>(this TBuilder source, string? codeNamespace)
-            where TBuilder : SourceCodeBuilder
+        Guard.NotNull(source, nameof(source));
+
+        if (!string.IsNullOrWhiteSpace(codeNamespace))
         {
-            Guard.NotNull(source, nameof(source));
-
-            if (!string.IsNullOrWhiteSpace(codeNamespace))
-            {
-                source.Editor.IncludeNamespaceImport(codeNamespace);
-            }
-
-            return source;
+            source.Editor.IncludeNamespaceImport(codeNamespace);
         }
 
-        public static TBuilder InFileNamed<TBuilder>(this TBuilder source, string fileName)
-            where TBuilder : SourceCodeBuilder
+        return source;
+    }
+
+    public static TBuilder InFileNamed<TBuilder>(this TBuilder source, string fileName)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
+        Guard.NotNullNorWhiteSpace(fileName, nameof(fileName));
+
+        source.Editor.UpdateTestContext(context => context.InFileNamed(fileName));
+
+        return source;
+    }
+
+    public static TBuilder InAssemblyNamed<TBuilder>(this TBuilder source, string assemblyName)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
+        Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
+
+        source.Editor.UpdateTestContext(context => context.InAssemblyNamed(assemblyName));
+
+        return source;
+    }
+
+    public static TBuilder WithReferenceToExternalAssemblyFor<TBuilder>(this TBuilder source, string code)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
+        Guard.NotNull(code, nameof(code));
+
+        Stream assemblyStream = GetInMemoryAssemblyStreamForCode(code, "TempAssembly");
+        PortableExecutableReference reference = MetadataReference.CreateFromStream(assemblyStream);
+
+        source.Editor.UpdateTestContext(context =>
         {
-            Guard.NotNull(source, nameof(source));
-            Guard.NotNullNorWhiteSpace(fileName, nameof(fileName));
+            ImmutableHashSet<MetadataReference> references = context.References.Add(reference);
+            return context.WithReferences(references);
+        });
 
-            source.Editor.UpdateTestContext(context => context.InFileNamed(fileName));
+        return source;
+    }
 
-            return source;
-        }
+    private static Stream GetInMemoryAssemblyStreamForCode(string code, string assemblyName, params MetadataReference[] references)
+    {
+        SyntaxTree tree = CSharpSyntaxTree.ParseText(code);
+        ImmutableArray<SyntaxTree> trees = ImmutableArray.Create(tree);
+        var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
-        public static TBuilder InAssemblyNamed<TBuilder>(this TBuilder source, string assemblyName)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-            Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
+        CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, trees).WithOptions(options);
+        compilation = compilation.AddReferences(SourceCodeBuilder.DefaultTestContext.References);
+        compilation = compilation.AddReferences(references);
 
-            source.Editor.UpdateTestContext(context => context.InAssemblyNamed(assemblyName));
+        var stream = new MemoryStream();
 
-            return source;
-        }
+        EmitResult emitResult = compilation.Emit(stream);
+        ValidateCompileErrors(emitResult);
 
-        public static TBuilder WithReferenceToExternalAssemblyFor<TBuilder>(this TBuilder source, string code)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-            Guard.NotNull(code, nameof(code));
+        stream.Seek(0, SeekOrigin.Begin);
 
-            Stream assemblyStream = GetInMemoryAssemblyStreamForCode(code, "TempAssembly");
-            PortableExecutableReference reference = MetadataReference.CreateFromStream(assemblyStream);
+        return stream;
+    }
 
-            source.Editor.UpdateTestContext(context =>
-            {
-                ImmutableHashSet<MetadataReference> references = context.References.Add(reference);
-                return context.WithReferences(references);
-            });
+    private static void ValidateCompileErrors(EmitResult emitResult)
+    {
+        Diagnostic[] compilerErrors = emitResult.Diagnostics.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
+        compilerErrors.Should().BeEmpty("external assembly should not have compile errors");
+        emitResult.Success.Should().BeTrue();
+    }
 
-            return source;
-        }
+    public static TBuilder WithDocumentationComments<TBuilder>(this TBuilder source)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
 
-        private static Stream GetInMemoryAssemblyStreamForCode(string code, string assemblyName,
-            params MetadataReference[] references)
-        {
-            SyntaxTree tree = CSharpSyntaxTree.ParseText(code);
-            ImmutableArray<SyntaxTree> trees = ImmutableArray.Create(tree);
-            var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
+        source.Editor.UpdateTestContext(context => context.WithDocumentationMode(DocumentationMode.Diagnose));
 
-            CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, trees).WithOptions(options);
-            compilation = compilation.AddReferences(SourceCodeBuilder.DefaultTestContext.References);
-            compilation = compilation.AddReferences(references);
+        return source;
+    }
 
-            var stream = new MemoryStream();
+    public static TBuilder WithOutputKind<TBuilder>(this TBuilder source, OutputKind outputKind)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
 
-            EmitResult emitResult = compilation.Emit(stream);
-            ValidateCompileErrors(emitResult);
+        source.Editor.UpdateTestContext(context => context.WithOutputKind(outputKind));
 
-            stream.Seek(0, SeekOrigin.Begin);
+        return source;
+    }
 
-            return stream;
-        }
+    public static TBuilder CompileWithWarningAsError<TBuilder>(this TBuilder source)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
 
-        private static void ValidateCompileErrors(EmitResult emitResult)
-        {
-            Diagnostic[] compilerErrors = emitResult.Diagnostics.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
-            compilerErrors.Should().BeEmpty("external assembly should not have compile errors");
-            emitResult.Success.Should().BeTrue();
-        }
+        source.Editor.UpdateTestContext(context => context.CompileWithWarningsAsErrors(TreatWarningsAsErrors.All));
 
-        public static TBuilder WithDocumentationComments<TBuilder>(this TBuilder source)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
+        return source;
+    }
 
-            source.Editor.UpdateTestContext(context => context.WithDocumentationMode(DocumentationMode.Diagnose));
+    public static TBuilder AllowingCompileErrors<TBuilder>(this TBuilder source)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(source, nameof(source));
 
-            return source;
-        }
+        source.Editor.UpdateTestContext(context => context.InValidationMode(TestValidationMode.AllowCompileErrors));
 
-        public static TBuilder WithOutputKind<TBuilder>(this TBuilder source, OutputKind outputKind)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
+        return source;
+    }
 
-            source.Editor.UpdateTestContext(context => context.WithOutputKind(outputKind));
+    public static TBuilder WithOptions<TBuilder>(this TBuilder source, AnalyzerOptionsBuilder builder)
+        where TBuilder : SourceCodeBuilder
+    {
+        Guard.NotNull(builder, nameof(builder));
 
-            return source;
-        }
+        AnalyzerOptions options = builder.Build();
+        source.Editor.UpdateTestContext(context => context.WithOptions(options));
 
-        public static TBuilder CompileWithWarningAsError<TBuilder>(this TBuilder source)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-
-            source.Editor.UpdateTestContext(context => context.CompileWithWarningsAsErrors(TreatWarningsAsErrors.All));
-
-            return source;
-        }
-
-        public static TBuilder AllowingCompileErrors<TBuilder>(this TBuilder source)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(source, nameof(source));
-
-            source.Editor.UpdateTestContext(context => context.InValidationMode(TestValidationMode.AllowCompileErrors));
-
-            return source;
-        }
-
-        public static TBuilder WithOptions<TBuilder>(this TBuilder source, AnalyzerOptionsBuilder builder)
-            where TBuilder : SourceCodeBuilder
-        {
-            Guard.NotNull(builder, nameof(builder));
-
-            AnalyzerOptions options = builder.Build();
-            source.Editor.UpdateTestContext(context => context.WithOptions(options));
-
-            return source;
-        }
+        return source;
     }
 }

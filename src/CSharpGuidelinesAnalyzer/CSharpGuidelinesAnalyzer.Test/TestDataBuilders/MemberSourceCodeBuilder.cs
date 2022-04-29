@@ -1,53 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using JetBrains.Annotations;
+﻿using System.Text;
 
-namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
+namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+
+/// <summary />
+internal sealed class MemberSourceCodeBuilder : SourceCodeBuilder
 {
-    /// <summary />
-    internal sealed class MemberSourceCodeBuilder : SourceCodeBuilder
+    private readonly List<string> members = new();
+
+    public MemberSourceCodeBuilder()
+        : base(DefaultNamespaceImports)
     {
-        private readonly List<string> members = new List<string>();
+    }
 
-        public MemberSourceCodeBuilder()
-            : base(DefaultNamespaceImports)
-        {
-        }
+    protected override string GetSourceCode()
+    {
+        var builder = new StringBuilder();
 
-        protected override string GetSourceCode()
-        {
-            var builder = new StringBuilder();
+        AppendClassStart(builder);
+        AppendClassMembers(builder);
+        AppendClassEnd(builder);
 
-            AppendClassStart(builder);
-            AppendClassMembers(builder);
-            AppendClassEnd(builder);
+        return builder.ToString();
+    }
 
-            return builder.ToString();
-        }
+    private static void AppendClassStart(StringBuilder builder)
+    {
+        builder.AppendLine("public class Test");
+        builder.AppendLine("{");
+    }
 
-        private static void AppendClassStart(StringBuilder builder)
-        {
-            builder.AppendLine("public class Test");
-            builder.AppendLine("{");
-        }
+    private void AppendClassMembers(StringBuilder builder)
+    {
+        string code = GetLinesOfCode(members);
+        builder.AppendLine(code);
+    }
 
-        private void AppendClassMembers(StringBuilder builder)
-        {
-            string code = GetLinesOfCode(members);
-            builder.AppendLine(code);
-        }
+    private static void AppendClassEnd(StringBuilder builder)
+    {
+        builder.AppendLine("}");
+    }
 
-        private static void AppendClassEnd(StringBuilder builder)
-        {
-            builder.AppendLine("}");
-        }
+    public MemberSourceCodeBuilder InDefaultClass(string memberCode)
+    {
+        Guard.NotNull(memberCode, nameof(memberCode));
 
-        public MemberSourceCodeBuilder InDefaultClass(string memberCode)
-        {
-            Guard.NotNull(memberCode, nameof(memberCode));
-
-            members.Add(memberCode);
-            return this;
-        }
+        members.Add(memberCode);
+        return this;
     }
 }

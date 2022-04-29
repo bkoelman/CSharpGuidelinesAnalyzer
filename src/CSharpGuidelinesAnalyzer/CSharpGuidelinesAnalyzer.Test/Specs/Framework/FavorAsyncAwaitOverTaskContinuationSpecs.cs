@@ -1,165 +1,162 @@
-using System;
-using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Framework;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework
+namespace CSharpGuidelinesAnalyzer.Test.Specs.Framework;
+
+public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesAnalysisTestFixture
 {
-    public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesAnalysisTestFixture
+    protected override string DiagnosticId => FavorAsyncAwaitOverTaskContinuationAnalyzer.DiagnosticId;
+
+    [Fact]
+    internal async Task When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
     {
-        protected override string DiagnosticId => FavorAsyncAwaitOverTaskContinuationAnalyzer.DiagnosticId;
-
-        [Fact]
-        internal async Task When_method_contains_invocation_of_TaskContinueWith_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof(Task).Namespace)
-                .InGlobalScope(@"
-                    namespace N
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(Task).Namespace)
+            .InGlobalScope(@"
+                namespace N
+                {
+                    class C
                     {
-                        class C
+                        Task<int> M(int i)
                         {
-                            Task<int> M(int i)
-                            {
-                                return Task.Delay(1).[|ContinueWith|](t => i);
-                            }
+                            return Task.Delay(1).[|ContinueWith|](t => i);
                         }
                     }
-                ")
-                .Build();
+                }
+            ")
+            .Build();
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
-        }
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
+    }
 
-        [Fact]
-        internal async Task When_method_contains_invocation_of_TaskContinueWith_with_type_parameter_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof(Task).Namespace)
-                .InGlobalScope(@"
-                    namespace N
+    [Fact]
+    internal async Task When_method_contains_invocation_of_TaskContinueWith_with_type_parameter_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(Task).Namespace)
+            .InGlobalScope(@"
+                namespace N
+                {
+                    class C
                     {
-                        class C
+                        Task<int> M(int i)
                         {
-                            Task<int> M(int i)
-                            {
-                                return Task.Delay(1).[|ContinueWith<int>|](t => i);
-                            }
+                            return Task.Delay(1).[|ContinueWith<int>|](t => i);
                         }
                     }
-                ")
-                .Build();
+                }
+            ")
+            .Build();
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
-        }
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
+    }
 
-        [Fact]
-        internal async Task When_method_contains_invocation_of_generic_TaskContinueWith_with_using_static_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof(Task).Namespace)
-                .InGlobalScope(@"
-                    namespace N
+    [Fact]
+    internal async Task When_method_contains_invocation_of_generic_TaskContinueWith_with_using_static_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(Task).Namespace)
+            .InGlobalScope(@"
+                namespace N
+                {
+                    class C
                     {
-                        class C
+                        Task<string> M(int i)
                         {
-                            Task<string> M(int i)
-                            {
-                                var task = GetStringTask();
-                                return task.[|ContinueWith|](t => t.Result);
-                            }
+                            var task = GetStringTask();
+                            return task.[|ContinueWith|](t => t.Result);
+                        }
 
-                            Task<string> GetStringTask() => throw null;
+                        Task<string> GetStringTask() => throw null;
+                    }
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
+    }
+
+    [Fact]
+    internal async Task When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(Task).Namespace)
+            .InGlobalScope(@"
+                using static System.Threading.Tasks.Task;
+
+                namespace N
+                {
+                    class C
+                    {
+                        Task<int> M(int i)
+                        {
+                            return Delay(1).[|ContinueWith|](t => i);
                         }
                     }
-                ")
-                .Build();
+                }
+            ")
+            .Build();
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
-        }
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
+    }
 
-        [Fact]
-        internal async Task When_method_contains_invocation_of_TaskContinueWith_with_using_static_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof(Task).Namespace)
-                .InGlobalScope(@"
-                    using static System.Threading.Tasks.Task;
-
-                    namespace N
+    [Fact]
+    internal async Task When_method_contains_invocation_of_TaskContinueWith_from_alternate_namespace_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(NotImplementedException).Namespace)
+            .InGlobalScope(@"
+                namespace N
+                {
+                    public class Task<T>
                     {
-                        class C
+                    }
+
+                    public class Task
+                    {
+                        public Task<TResult> ContinueWith<TResult>(Func<Task, TResult> continuationFunction)
                         {
-                            Task<int> M(int i)
-                            {
-                                return Delay(1).[|ContinueWith|](t => i);
-                            }
+                            throw new NotImplementedException();
+                        }
+
+                        public static Task Delay(int millisecondsDelay)
+                        {
+                            throw new NotImplementedException();
                         }
                     }
-                ")
-                .Build();
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "The call to 'Task.ContinueWith' in 'C.M(int)' should be replaced with an await expression");
-        }
-
-        [Fact]
-        internal async Task When_method_contains_invocation_of_TaskContinueWith_from_alternate_namespace_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .Using(typeof(NotImplementedException).Namespace)
-                .InGlobalScope(@"
-                    namespace N
+                    class C
                     {
-                        public class Task<T>
+                        Task<int> M(int i)
                         {
-                        }
-
-                        public class Task
-                        {
-                            public Task<TResult> ContinueWith<TResult>(Func<Task, TResult> continuationFunction)
-                            {
-                                throw new NotImplementedException();
-                            }
-
-                            public static Task Delay(int millisecondsDelay)
-                            {
-                                throw new NotImplementedException();
-                            }
-                        }
-
-                        class C
-                        {
-                            Task<int> M(int i)
-                            {
-                                return Task.Delay(1).ContinueWith(t => i);
-                            }
+                            return Task.Delay(1).ContinueWith(t => i);
                         }
                     }
-                ")
-                .Build();
+                }
+            ")
+            .Build();
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source);
-        }
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
 
-        protected override DiagnosticAnalyzer CreateAnalyzer()
-        {
-            return new FavorAsyncAwaitOverTaskContinuationAnalyzer();
-        }
+    protected override DiagnosticAnalyzer CreateAnalyzer()
+    {
+        return new FavorAsyncAwaitOverTaskContinuationAnalyzer();
     }
 }

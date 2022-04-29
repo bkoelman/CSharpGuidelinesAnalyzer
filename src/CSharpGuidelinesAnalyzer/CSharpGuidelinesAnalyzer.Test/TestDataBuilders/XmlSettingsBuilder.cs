@@ -1,72 +1,69 @@
 ﻿using System.Text;
-using System.Threading;
 using CSharpGuidelinesAnalyzer.Settings;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
+namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+
+internal sealed class XmlSettingsBuilder : ITestDataBuilder<AdditionalText>
 {
-    internal sealed class XmlSettingsBuilder : ITestDataBuilder<AdditionalText>
+    private readonly AnalyzerSettingsRegistry registry = new();
+
+    public AdditionalText Build()
     {
-        private readonly AnalyzerSettingsRegistry registry = new AnalyzerSettingsRegistry();
+        string content = AnalyzerSettingsProvider.ToFileContent(registry);
+        return new FakeAdditionalText(content);
+    }
 
-        public AdditionalText Build()
+    public XmlSettingsBuilder Including(string rule, string name, string? value)
+    {
+        registry.Add(rule, name, value);
+        return this;
+    }
+
+    public static AdditionalText FromContent(string content)
+    {
+        return new FakeAdditionalText(content);
+    }
+
+    private sealed class FakeAdditionalText : AdditionalText
+    {
+        private readonly SourceText sourceText;
+
+        public override string Path { get; } = AnalyzerSettingsProvider.SettingsFileName;
+
+        public FakeAdditionalText(string content)
         {
-            string content = AnalyzerSettingsProvider.ToFileContent(registry);
-            return new FakeAdditionalText(content);
+            sourceText = new FakeSourceText(content, AnalyzerSettingsProvider.CreateEncoding());
         }
 
-        public XmlSettingsBuilder Including(string rule, string name, string? value)
+        public override SourceText GetText(CancellationToken cancellationToken = new())
         {
-            registry.Add(rule, name, value);
-            return this;
+            return sourceText;
         }
 
-        public static AdditionalText FromContent(string content)
+        private sealed class FakeSourceText : SourceText
         {
-            return new FakeAdditionalText(content);
-        }
+            private readonly string content;
 
-        private sealed class FakeAdditionalText : AdditionalText
-        {
-            private readonly SourceText sourceText;
+            public override Encoding Encoding { get; }
 
-            public override string Path { get; } = AnalyzerSettingsProvider.SettingsFileName;
+            public override int Length => content.Length;
 
-            public FakeAdditionalText(string content)
+            public override char this[int position] => content[position];
+
+            public FakeSourceText(string content, Encoding encoding)
             {
-                sourceText = new FakeSourceText(content, AnalyzerSettingsProvider.CreateEncoding());
+                Guard.NotNull(content, nameof(content));
+                Guard.NotNull(encoding, nameof(encoding));
+
+                this.content = content;
+                Encoding = encoding;
             }
 
-            public override SourceText GetText(CancellationToken cancellationToken = new CancellationToken())
+            public override void CopyTo(int sourceIndex, char[] destination, int destinationIndex, int count)
             {
-                return sourceText;
-            }
-
-            private sealed class FakeSourceText : SourceText
-            {
-                private readonly string content;
-
-                public override Encoding Encoding { get; }
-
-                public override int Length => content.Length;
-
-                public override char this[int position] => content[position];
-
-                public FakeSourceText(string content, Encoding encoding)
-                {
-                    Guard.NotNull(content, nameof(content));
-                    Guard.NotNull(encoding, nameof(encoding));
-
-                    this.content = content;
-                    Encoding = encoding;
-                }
-
-                public override void CopyTo(int sourceIndex, char[] destination, int destinationIndex, int count)
-                {
-                    content.CopyTo(sourceIndex, destination, destinationIndex, count);
-                }
+                content.CopyTo(sourceIndex, destination, destinationIndex, count);
             }
         }
     }

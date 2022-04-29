@@ -1,8 +1,7 @@
-﻿namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
+﻿namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+
+internal interface ITestDataBuilder<out T>
 {
-    internal interface ITestDataBuilder<out T>
-    {
-        // ReSharper disable once UnusedMemberInSuper.Global
-        T Build();
-    }
+    // ReSharper disable once UnusedMemberInSuper.Global
+    T Build();
 }

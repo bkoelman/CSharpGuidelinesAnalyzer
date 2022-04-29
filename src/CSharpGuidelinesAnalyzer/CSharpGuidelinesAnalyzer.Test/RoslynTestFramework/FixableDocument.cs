@@ -1,427 +1,419 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using JetBrains.Annotations;
+﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
+namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
+
+internal sealed class FixableDocument
 {
-    internal sealed class FixableDocument
+    // Supported markers:
+    //
+    //   [|demo|] marks the span "demo"
+    //   [+demo+] expects "demo" will be inserted
+    //   [-demo-] expects "demo" will be removed
+    //   [*before##after*] expects "before" will be replaced with "after"
+    //
+    // Example:
+    // Input:    [|ab|][|c|][+INS+]def[-DEL-]ghi[*YYY##ZZZ*]jkl
+    // Source:   abcdefDELghiYYYjkl
+    // Expected: abcINSdefghiZZZjkl
+    // Spans:    [0..2], [2..3]
+
+    private readonly IList<TextBlock> blocks;
+
+    public string SourceText
     {
-        // Supported markers:
-        //
-        //   [|demo|] marks the span "demo"
-        //   [+demo+] expects "demo" will be inserted
-        //   [-demo-] expects "demo" will be removed
-        //   [*before##after*] expects "before" will be replaced with "after"
-        //
-        // Example:
-        // Input:    [|ab|][|c|][+INS+]def[-DEL-]ghi[*YYY##ZZZ*]jkl
-        // Source:   abcdefDELghiYYYjkl
-        // Expected: abcINSdefghiZZZjkl
-        // Spans:    [0..2], [2..3]
-
-        private readonly IList<TextBlock> blocks;
-
-        public string SourceText
+        get
         {
-            get
+            IEnumerable<string> beforeBlocks = blocks.Select(block => block.TextBefore);
+            return string.Concat(beforeBlocks);
+        }
+    }
+
+    public IList<TextSpan> SourceSpans { get; }
+
+    public FixableDocument(string text)
+    {
+        FrameworkGuard.NotNull(text, nameof(text));
+
+        var parser = new MarkupParser(text);
+        parser.Parse();
+
+        blocks = parser.TextBlocks;
+        SourceSpans = parser.TextSpans.OrderBy(span => span).ToImmutableArray();
+    }
+
+    private sealed class MarkupParser
+    {
+        private const string SpanOpenText = "[";
+        private const string SpanCloseText = "]";
+        private const string ReplaceSeparator = "##";
+        private const int SpanTextLength = 2;
+
+        private static readonly char[] SpanKinds =
+        {
+            '|',
+            '+',
+            '-',
+            '*'
+        };
+
+        private static readonly string[] ReplaceSeparatorArray =
+        {
+            ReplaceSeparator
+        };
+
+        private readonly string markupCode;
+
+        public IList<TextBlock> TextBlocks { get; } = new List<TextBlock>();
+        public IList<TextSpan> TextSpans { get; } = new List<TextSpan>();
+
+        public MarkupParser(string markupCode)
+        {
+            FrameworkGuard.NotNull(markupCode, nameof(markupCode));
+            this.markupCode = markupCode;
+        }
+
+        public void Parse()
+        {
+            TextBlocks.Clear();
+            TextSpans.Clear();
+
+            ParseMarkupCode();
+
+            CalculateSpans();
+        }
+
+        private void ParseMarkupCode()
+        {
+            var stateMachine = new ParseStateMachine(this);
+            stateMachine.Run();
+        }
+
+        private void CalculateSpans()
+        {
+            int offset = 0;
+
+            foreach (TextBlock block in TextBlocks)
             {
-                IEnumerable<string> beforeBlocks = blocks.Select(block => block.TextBefore);
-                return string.Concat(beforeBlocks);
+                int blockLength = block.TextBefore.Length;
+
+                if (block is MarkedTextBlock)
+                {
+                    TextSpan span = TextSpan.FromBounds(offset, offset + blockLength);
+                    TextSpans.Add(span);
+                }
+
+                offset += blockLength;
             }
         }
 
-        public IList<TextSpan> SourceSpans { get; }
-
-        public FixableDocument(string text)
+        private (int spanStartIndex, char spanKind) GetNextSpanStart(int offset)
         {
-            FrameworkGuard.NotNull(text, nameof(text));
+            int startIndex = offset;
 
-            var parser = new MarkupParser(text);
-            parser.Parse();
+            while (true)
+            {
+                int index = markupCode.IndexOf(SpanOpenText, startIndex, StringComparison.Ordinal);
 
-            blocks = parser.TextBlocks;
-            SourceSpans = parser.TextSpans.OrderBy(span => span).ToImmutableArray();
+                (int, char)? result = TryGetNextSpanStartForIndex(index);
+
+                if (result != null)
+                {
+                    return result.Value;
+                }
+
+                startIndex = index + 1;
+            }
         }
 
-        private sealed class MarkupParser
+        private (int spanStartIndex, char spanKind)? TryGetNextSpanStartForIndex(int index)
         {
-            private const string SpanOpenText = "[";
-            private const string SpanCloseText = "]";
-            private const string ReplaceSeparator = "##";
-            private const int SpanTextLength = 2;
-
-            private static readonly char[] SpanKinds =
+            if (index == -1 || index >= markupCode.Length - 1)
             {
-                '|',
-                '+',
-                '-',
-                '*'
-            };
-
-            private static readonly string[] ReplaceSeparatorArray =
-            {
-                ReplaceSeparator
-            };
-
-            private readonly string markupCode;
-
-            public IList<TextBlock> TextBlocks { get; } = new List<TextBlock>();
-
-            public IList<TextSpan> TextSpans { get; } = new List<TextSpan>();
-
-            public MarkupParser(string markupCode)
-            {
-                FrameworkGuard.NotNull(markupCode, nameof(markupCode));
-                this.markupCode = markupCode;
+                return (-1, '?');
             }
 
-            public void Parse()
+            char spanKind = markupCode[index + 1];
+
+            if (SpanKinds.Contains(spanKind))
             {
-                TextBlocks.Clear();
-                TextSpans.Clear();
-
-                ParseMarkupCode();
-
-                CalculateSpans();
+                return (index, spanKind);
             }
 
-            private void ParseMarkupCode()
+            return null;
+        }
+
+        private int GetNextSpanEnd(int start, char spanKind)
+        {
+            string spanEndText = spanKind + SpanCloseText;
+
+            int index = markupCode.IndexOf(spanEndText, start + SpanTextLength, StringComparison.Ordinal);
+
+            if (index == -1)
             {
-                var stateMachine = new ParseStateMachine(this);
-                stateMachine.Run();
+                throw new Exception($"Missing '{spanEndText}' in source.");
             }
 
-            private void CalculateSpans()
-            {
-                int offset = 0;
+            return index;
+        }
 
-                foreach (TextBlock block in TextBlocks)
+        private void AppendCodeBlock(int offset, int length)
+        {
+            if (length > 0)
+            {
+                string text = markupCode.Substring(offset, length);
+                var block = new StaticTextBlock(text);
+                TextBlocks.Add(block);
+            }
+        }
+
+        private void AppendTextSpan(int spanStartIndex, int spanEndIndex, char spanKind)
+        {
+            string spanInnerText = markupCode.Substring(spanStartIndex + SpanTextLength, spanEndIndex - spanStartIndex - SpanTextLength);
+            TextBlock? textBlock = TryCreateTextBlockForSpan(spanInnerText, spanKind);
+
+            if (textBlock != null)
+            {
+                TextBlocks.Add(textBlock);
+            }
+        }
+
+        private TextBlock? TryCreateTextBlockForSpan(string spanInnerText, char spanKind)
+        {
+            switch (spanKind)
+            {
+                case '|':
                 {
-                    int blockLength = block.TextBefore.Length;
-
-                    if (block is MarkedTextBlock)
-                    {
-                        TextSpan span = TextSpan.FromBounds(offset, offset + blockLength);
-                        TextSpans.Add(span);
-                    }
-
-                    offset += blockLength;
+                    return new MarkedTextBlock(spanInnerText);
+                }
+                case '+':
+                {
+                    return new InsertedTextBlock(spanInnerText);
+                }
+                case '-':
+                {
+                    return new DeletedTextBlock(spanInnerText);
+                }
+                case '*':
+                {
+                    return CreateReplacedTextBlock(spanInnerText);
                 }
             }
 
-            private (int spanStartIndex, char spanKind) GetNextSpanStart(int offset)
+            return null;
+        }
+
+        private static ReplacedTextBlock CreateReplacedTextBlock(string spanInnerText)
+        {
+            string[] parts = spanInnerText.Split(ReplaceSeparatorArray, StringSplitOptions.None);
+
+            if (parts.Length == 1)
             {
-                int startIndex = offset;
-
-                while (true)
-                {
-                    int index = markupCode.IndexOf(SpanOpenText, startIndex, StringComparison.Ordinal);
-
-                    (int, char)? result = TryGetNextSpanStartForIndex(index);
-
-                    if (result != null)
-                    {
-                        return result.Value;
-                    }
-
-                    startIndex = index + 1;
-                }
+                throw new Exception($"Missing '{ReplaceSeparator}' in source.");
             }
 
-            private (int spanStartIndex, char spanKind)? TryGetNextSpanStartForIndex(int index)
+            if (parts.Length > 2)
             {
-                if (index == -1 || index >= markupCode.Length - 1)
-                {
-                    return (-1, '?');
-                }
-
-                char spanKind = markupCode[index + 1];
-
-                if (SpanKinds.Contains(spanKind))
-                {
-                    return (index, spanKind);
-                }
-
-                return null;
+                throw new Exception($"Multiple '{ReplaceSeparator}' in source.");
             }
 
-            private int GetNextSpanEnd(int start, char spanKind)
+            return new ReplacedTextBlock(parts[0], parts[1]);
+        }
+
+        private void AppendLastCodeBlock(int offset)
+        {
+            if (HasMoreText(offset))
             {
-                string spanEndText = spanKind + SpanCloseText;
+                AssertLastSpanIsClosed(offset);
 
-                int index = markupCode.IndexOf(spanEndText, start + SpanTextLength, StringComparison.Ordinal);
+                string text = markupCode.Substring(offset);
 
-                if (index == -1)
+                if (text.Length > 0)
                 {
-                    throw new Exception($"Missing '{spanEndText}' in source.");
-                }
-
-                return index;
-            }
-
-            private void AppendCodeBlock(int offset, int length)
-            {
-                if (length > 0)
-                {
-                    string text = markupCode.Substring(offset, length);
                     var block = new StaticTextBlock(text);
                     TextBlocks.Add(block);
                 }
             }
+        }
 
-            private void AppendTextSpan(int spanStartIndex, int spanEndIndex, char spanKind)
+        private bool HasMoreText(int offset)
+        {
+            return markupCode.Length - offset > 0;
+        }
+
+        private void AssertLastSpanIsClosed(int offset)
+        {
+            foreach (char spanKind in SpanKinds)
             {
-                string spanInnerText = markupCode.Substring(spanStartIndex + SpanTextLength,
-                    spanEndIndex - spanStartIndex - SpanTextLength);
+                string spanEndText = spanKind + SpanCloseText;
 
-                TextBlock? textBlock = TryCreateTextBlockForSpan(spanInnerText, spanKind);
+                int index = markupCode.IndexOf(spanEndText, offset, StringComparison.Ordinal);
 
-                if (textBlock != null)
+                if (index != -1)
                 {
-                    TextBlocks.Add(textBlock);
-                }
-            }
-
-            private TextBlock? TryCreateTextBlockForSpan(string spanInnerText, char spanKind)
-            {
-                switch (spanKind)
-                {
-                    case '|':
-                    {
-                        return new MarkedTextBlock(spanInnerText);
-                    }
-                    case '+':
-                    {
-                        return new InsertedTextBlock(spanInnerText);
-                    }
-                    case '-':
-                    {
-                        return new DeletedTextBlock(spanInnerText);
-                    }
-                    case '*':
-                    {
-                        return CreateReplacedTextBlock(spanInnerText);
-                    }
-                }
-
-                return null;
-            }
-
-            private static ReplacedTextBlock CreateReplacedTextBlock(string spanInnerText)
-            {
-                string[] parts = spanInnerText.Split(ReplaceSeparatorArray, StringSplitOptions.None);
-
-                if (parts.Length == 1)
-                {
-                    throw new Exception($"Missing '{ReplaceSeparator}' in source.");
-                }
-
-                if (parts.Length > 2)
-                {
-                    throw new Exception($"Multiple '{ReplaceSeparator}' in source.");
-                }
-
-                return new ReplacedTextBlock(parts[0], parts[1]);
-            }
-
-            private void AppendLastCodeBlock(int offset)
-            {
-                if (HasMoreText(offset))
-                {
-                    AssertLastSpanIsClosed(offset);
-
-                    string text = markupCode.Substring(offset);
-
-                    if (text.Length > 0)
-                    {
-                        var block = new StaticTextBlock(text);
-                        TextBlocks.Add(block);
-                    }
-                }
-            }
-
-            private bool HasMoreText(int offset)
-            {
-                return markupCode.Length - offset > 0;
-            }
-
-            private void AssertLastSpanIsClosed(int offset)
-            {
-                foreach (char spanKind in SpanKinds)
-                {
-                    string spanEndText = spanKind + SpanCloseText;
-
-                    int index = markupCode.IndexOf(spanEndText, offset, StringComparison.Ordinal);
-
-                    if (index != -1)
-                    {
-                        throw new Exception($"Additional '{spanEndText}' found in source.");
-                    }
-                }
-            }
-
-            private struct ParseStateMachine
-            {
-                private readonly MarkupParser parser;
-
-                private int offset;
-                private int spanStartIndex;
-                private int spanEndIndex;
-                private char spanKind;
-
-                private bool HasFoundSpanStart => spanStartIndex != -1;
-
-                public ParseStateMachine(MarkupParser parser)
-                {
-                    FrameworkGuard.NotNull(parser, nameof(parser));
-
-                    this.parser = parser;
-                    offset = -1;
-                    spanStartIndex = -1;
-                    spanEndIndex = -1;
-                    spanKind = '?';
-                }
-
-                public void Run()
-                {
-                    LocateFirstSpanStart();
-
-                    LoopOverText();
-
-                    AppendCodeBlockAfterSpanEnd();
-                }
-
-                private void LocateFirstSpanStart()
-                {
-                    offset = 0;
-                    (spanStartIndex, spanKind) = parser.GetNextSpanStart(offset);
-                }
-
-                private void LoopOverText()
-                {
-                    while (HasFoundSpanStart)
-                    {
-                        AppendCodeBlockBeforeSpanStart();
-
-                        LocateNextSpanEnd();
-
-                        AppendTextSpan();
-
-                        LocateNextSpanStart();
-                    }
-                }
-
-                private void AppendCodeBlockBeforeSpanStart()
-                {
-                    int length = spanStartIndex - offset;
-                    parser.AppendCodeBlock(offset, length);
-                }
-
-                private void LocateNextSpanEnd()
-                {
-                    spanEndIndex = parser.GetNextSpanEnd(spanStartIndex, spanKind);
-                }
-
-                private void AppendTextSpan()
-                {
-                    parser.AppendTextSpan(spanStartIndex, spanEndIndex, spanKind);
-                }
-
-                private void LocateNextSpanStart()
-                {
-                    offset = spanEndIndex + SpanTextLength;
-                    (spanStartIndex, spanKind) = parser.GetNextSpanStart(offset);
-                }
-
-                private void AppendCodeBlockAfterSpanEnd()
-                {
-                    parser.AppendLastCodeBlock(offset);
+                    throw new Exception($"Additional '{spanEndText}' found in source.");
                 }
             }
         }
 
-        private abstract class TextBlock
+        private struct ParseStateMachine
         {
-            public string TextBefore { get; }
+            private readonly MarkupParser parser;
 
-            public string TextAfter { get; }
+            private int offset;
+            private int spanStartIndex;
+            private int spanEndIndex;
+            private char spanKind;
 
-            protected TextBlock(string textBefore, string textAfter)
+            private bool HasFoundSpanStart => spanStartIndex != -1;
+
+            public ParseStateMachine(MarkupParser parser)
             {
-                FrameworkGuard.NotNull(textBefore, nameof(textBefore));
-                FrameworkGuard.NotNull(textAfter, nameof(textAfter));
+                FrameworkGuard.NotNull(parser, nameof(parser));
 
-                TextBefore = textBefore;
-                TextAfter = textAfter;
+                this.parser = parser;
+                offset = -1;
+                spanStartIndex = -1;
+                spanEndIndex = -1;
+                spanKind = '?';
+            }
+
+            public void Run()
+            {
+                LocateFirstSpanStart();
+
+                LoopOverText();
+
+                AppendCodeBlockAfterSpanEnd();
+            }
+
+            private void LocateFirstSpanStart()
+            {
+                offset = 0;
+                (spanStartIndex, spanKind) = parser.GetNextSpanStart(offset);
+            }
+
+            private void LoopOverText()
+            {
+                while (HasFoundSpanStart)
+                {
+                    AppendCodeBlockBeforeSpanStart();
+
+                    LocateNextSpanEnd();
+
+                    AppendTextSpan();
+
+                    LocateNextSpanStart();
+                }
+            }
+
+            private void AppendCodeBlockBeforeSpanStart()
+            {
+                int length = spanStartIndex - offset;
+                parser.AppendCodeBlock(offset, length);
+            }
+
+            private void LocateNextSpanEnd()
+            {
+                spanEndIndex = parser.GetNextSpanEnd(spanStartIndex, spanKind);
+            }
+
+            private void AppendTextSpan()
+            {
+                parser.AppendTextSpan(spanStartIndex, spanEndIndex, spanKind);
+            }
+
+            private void LocateNextSpanStart()
+            {
+                offset = spanEndIndex + SpanTextLength;
+                (spanStartIndex, spanKind) = parser.GetNextSpanStart(offset);
+            }
+
+            private void AppendCodeBlockAfterSpanEnd()
+            {
+                parser.AppendLastCodeBlock(offset);
             }
         }
+    }
 
-        private sealed class StaticTextBlock : TextBlock
+    private abstract class TextBlock
+    {
+        public string TextBefore { get; }
+
+        public string TextAfter { get; }
+
+        protected TextBlock(string textBefore, string textAfter)
         {
-            public StaticTextBlock(string text)
-                : base(text, text)
-            {
-            }
+            FrameworkGuard.NotNull(textBefore, nameof(textBefore));
+            FrameworkGuard.NotNull(textAfter, nameof(textAfter));
 
-            public override string ToString()
-            {
-                return TextBefore;
-            }
+            TextBefore = textBefore;
+            TextAfter = textAfter;
+        }
+    }
+
+    private sealed class StaticTextBlock : TextBlock
+    {
+        public StaticTextBlock(string text)
+            : base(text, text)
+        {
         }
 
-        private sealed class MarkedTextBlock : TextBlock
+        public override string ToString()
         {
-            public MarkedTextBlock(string textToMark)
-                : base(textToMark, textToMark)
-            {
-            }
+            return TextBefore;
+        }
+    }
 
-            public override string ToString()
-            {
-                return "|" + TextAfter;
-            }
+    private sealed class MarkedTextBlock : TextBlock
+    {
+        public MarkedTextBlock(string textToMark)
+            : base(textToMark, textToMark)
+        {
         }
 
-        private sealed class InsertedTextBlock : TextBlock
+        public override string ToString()
         {
-            public InsertedTextBlock(string textToInsert)
-                : base(string.Empty, textToInsert)
-            {
-            }
+            return "|" + TextAfter;
+        }
+    }
 
-            public override string ToString()
-            {
-                return "+" + TextAfter;
-            }
+    private sealed class InsertedTextBlock : TextBlock
+    {
+        public InsertedTextBlock(string textToInsert)
+            : base(string.Empty, textToInsert)
+        {
         }
 
-        private sealed class DeletedTextBlock : TextBlock
+        public override string ToString()
         {
-            public DeletedTextBlock(string textToDelete)
-                : base(textToDelete, string.Empty)
-            {
-            }
+            return "+" + TextAfter;
+        }
+    }
 
-            public override string ToString()
-            {
-                return "-" + TextBefore;
-            }
+    private sealed class DeletedTextBlock : TextBlock
+    {
+        public DeletedTextBlock(string textToDelete)
+            : base(textToDelete, string.Empty)
+        {
         }
 
-        private sealed class ReplacedTextBlock : TextBlock
+        public override string ToString()
         {
-            public ReplacedTextBlock(string textBefore, string textAfter)
-                : base(textBefore, textAfter)
-            {
-            }
+            return "-" + TextBefore;
+        }
+    }
 
-            public override string ToString()
-            {
-                return TextBefore + "=>" + TextAfter;
-            }
+    private sealed class ReplacedTextBlock : TextBlock
+    {
+        public ReplacedTextBlock(string textBefore, string textAfter)
+            : base(textBefore, textAfter)
+        {
+        }
+
+        public override string ToString()
+        {
+            return TextBefore + "=>" + TextAfter;
         }
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
+﻿namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
+
+public enum TestValidationMode
 {
-    public enum TestValidationMode
-    {
-        AllowCompileWarnings,
-        AllowCompileErrors
-    }
+    AllowCompileWarnings,
+    AllowCompileErrors
 }

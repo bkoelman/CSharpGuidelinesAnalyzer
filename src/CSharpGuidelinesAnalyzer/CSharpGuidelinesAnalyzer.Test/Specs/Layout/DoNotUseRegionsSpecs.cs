@@ -1,123 +1,121 @@
-using System.Threading.Tasks;
 using CSharpGuidelinesAnalyzer.Rules.Layout;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout
+namespace CSharpGuidelinesAnalyzer.Test.Specs.Layout;
+
+public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
 {
-    public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
+    protected override string DiagnosticId => DoNotUseRegionsAnalyzer.DiagnosticId;
+
+    [Fact]
+    internal async Task When_source_contains_no_regions_it_must_be_skipped()
     {
-        protected override string DiagnosticId => DoNotUseRegionsAnalyzer.DiagnosticId;
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .InGlobalScope(@"
+                // #region This region is ignored due to single-line comments
+                // #endregion
 
-        [Fact]
-        internal async Task When_source_contains_no_regions_it_must_be_skipped()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    // #region This region is ignored due to single-line comments
-                    // #endregion
+                /* #region This region is ignored due to multi-line comments
+                #endregion */
 
-                    /* #region This region is ignored due to multi-line comments
-                    #endregion */
+                public class Region
+                {
+                }
+            ")
+            .Build();
 
-                    public class Region
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
+    internal async Task When_source_contains_top_level_regions_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .InGlobalScope(@"
+                [|#region First|]
+                #endregion
+
+                [|#region Second|]
+                #endregion
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Region should be removed",
+            "Region should be removed");
+    }
+
+    [Fact]
+    internal async Task When_source_contains_nested_regions_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .InGlobalScope(@"
+                [|#region Outer |]
+
+                namespace N
+                {
+                    [|#region Inside N|]
+
+                    class C
                     {
-                    }
-                ")
-                .Build();
+                        [|#region Inside N.C|]
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source);
-        }
-
-        [Fact]
-        internal async Task When_source_contains_top_level_regions_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    [|#region First|]
-                    #endregion
-
-                    [|#region Second|]
-                    #endregion
-                ")
-                .Build();
-
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "Region should be removed",
-                "Region should be removed");
-        }
-
-        [Fact]
-        internal async Task When_source_contains_nested_regions_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .InGlobalScope(@"
-                    [|#region Outer |]
-
-                    namespace N
-                    {
-                        [|#region Inside N|]
-
-                        class C
+                        public void M()
                         {
-                            [|#region Inside N.C|]
+                            [|#region Inside N.C.M|]
 
-                            public void M()
-                            {
-                                [|#region Inside N.C.M|]
+                            throw null;
 
-                                throw null;
-
-                                #endregion
-                            }
-
-                            #endregion
-
-                            [|#region End of N.C|]
                             #endregion
                         }
 
                         #endregion
+
+                        [|#region End of N.C|]
+                        #endregion
                     }
 
                     #endregion
-                ")
-                .Build();
+                }
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "Region should be removed",
-                "Region should be removed",
-                "Region should be removed",
-                "Region should be removed",
-                "Region should be removed");
-        }
+                #endregion
+            ")
+            .Build();
 
-        [Fact]
-        internal async Task When_source_contains_unbalanced_region_it_must_be_reported()
-        {
-            // Arrange
-            ParsedSourceCode source = new TypeSourceCodeBuilder()
-                .AllowingCompileErrors()
-                .InGlobalScope(@"
-                    [|#region Missing end-marker |]
-                ")
-                .Build();
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Region should be removed",
+            "Region should be removed",
+            "Region should be removed",
+            "Region should be removed",
+            "Region should be removed");
+    }
 
-            // Act and assert
-            await VerifyGuidelineDiagnosticAsync(source,
-                "Region should be removed");
-        }
+    [Fact]
+    internal async Task When_source_contains_unbalanced_region_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .AllowingCompileErrors()
+            .InGlobalScope(@"
+                [|#region Missing end-marker |]
+            ")
+            .Build();
 
-        protected override DiagnosticAnalyzer CreateAnalyzer()
-        {
-            return new DoNotUseRegionsAnalyzer();
-        }
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Region should be removed");
+    }
+
+    protected override DiagnosticAnalyzer CreateAnalyzer()
+    {
+        return new DoNotUseRegionsAnalyzer();
     }
 }
