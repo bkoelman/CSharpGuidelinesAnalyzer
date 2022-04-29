@@ -1,7 +1,9 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections;
+using System.Collections.Immutable;
+using System.Net;
+using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
@@ -14,9 +16,8 @@ public sealed class AnalyzerTestContext
     private const OutputKind DefaultOutputKind = OutputKind.DynamicallyLinkedLibrary;
     private const TestValidationMode DefaultTestValidationMode = TestValidationMode.AllowCompileWarnings;
 
-    private static readonly Lazy<ImmutableHashSet<MetadataReference>> DefaultReferencesLazy = new(
-        () => ReferenceAssemblies.Net.Net60.ResolveAsync(null, CancellationToken.None).Result.ToImmutableHashSet(),
-        LazyThreadSafetyMode.ExecutionAndPublication);
+    private static readonly Lazy<ImmutableHashSet<MetadataReference>> DefaultReferencesLazy =
+        new(ResolveDefaultReferences, LazyThreadSafetyMode.ExecutionAndPublication);
 
     public string SourceCode { get; }
     public IList<TextSpan> SourceSpans { get; }
@@ -55,6 +56,26 @@ public sealed class AnalyzerTestContext
         Options = options;
     }
 #pragma warning restore AV1561 // Signature contains too many parameters
+
+    private static ImmutableHashSet<MetadataReference> ResolveDefaultReferences()
+    {
+        string assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
+
+        string[] assemblies =
+        {
+            typeof(object).Assembly.Location, // System.Private.CoreLib.dll
+            typeof(BitArray).Assembly.Location, // System.Collections.dll
+            typeof(IImmutableList<>).Assembly.Location, // System.Collections.Immutable.dll
+            typeof(Enumerable).Assembly.Location, // System.Linq.dll
+            typeof(Queryable).Assembly.Location, // System.Linq.Queryable.dll
+            typeof(Console).Assembly.Location, // System.Console.dll
+            typeof(DynamicAttribute).Assembly.Location, // System.Linq.Expressions.dll
+            typeof(IPAddress).Assembly.Location, // System.Net.Primitives.dll
+            Path.Combine(assemblyPath, "System.Runtime.dll")
+        };
+
+        return assemblies.Select(assembly => (MetadataReference)MetadataReference.CreateFromFile(assembly)).ToImmutableHashSet();
+    }
 
     public AnalyzerTestContext WithCode(string sourceCode, IList<TextSpan> sourceSpans)
     {
