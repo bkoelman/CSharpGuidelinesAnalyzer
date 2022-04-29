@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using RoslynTestFramework;
+﻿using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
+using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Test
 {

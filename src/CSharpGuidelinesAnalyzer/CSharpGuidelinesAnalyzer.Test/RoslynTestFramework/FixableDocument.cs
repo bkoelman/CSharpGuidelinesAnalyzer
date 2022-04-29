@@ -5,10 +5,9 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.Text;
 
-// ReSharper disable once CheckNamespace
-namespace RoslynTestFramework
+namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
-    public sealed class FixableDocument
+    internal sealed class FixableDocument
     {
         // Supported markers:
         //
@@ -34,16 +33,6 @@ namespace RoslynTestFramework
             {
                 IEnumerable<string> beforeBlocks = blocks.Select(block => block.TextBefore);
                 return string.Concat(beforeBlocks);
-            }
-        }
-
-        [NotNull]
-        public string ExpectedText
-        {
-            get
-            {
-                IEnumerable<string> afterBlocks = blocks.Select(block => block.TextAfter);
-                return string.Concat(afterBlocks);
             }
         }
 

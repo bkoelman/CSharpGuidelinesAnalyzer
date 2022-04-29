@@ -4,11 +4,11 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
@@ -22,7 +22,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
         }.ToImmutableArray();
 
         [NotNull]
-        public static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty, Array.Empty<TextSpan>(), LanguageNames.CSharp,
+        public static readonly AnalyzerTestContext DefaultTestContext = new AnalyzerTestContext(string.Empty, Array.Empty<TextSpan>(),
             new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
 
         [NotNull]

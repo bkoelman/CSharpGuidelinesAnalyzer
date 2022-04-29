@@ -3,34 +3,21 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-// ReSharper disable once CheckNamespace
-namespace RoslynTestFramework
+namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     public abstract class AnalysisTestFixture
     {
-        [NotNull]
-        private static readonly DocumentFactory DocumentFactory = new DocumentFactory();
-
         [NotNull]
         protected abstract string DiagnosticId { get; }
 
         [NotNull]
         protected abstract DiagnosticAnalyzer CreateAnalyzer();
-
-        [NotNull]
-        protected virtual CodeFixProvider CreateFixProvider()
-        {
-            throw new NotImplementedException();
-        }
 
         protected void AssertDiagnostics([NotNull] AnalyzerTestContext context, [NotNull] [ItemNotNull] params string[] messages)
         {
@@ -40,16 +27,13 @@ namespace RoslynTestFramework
             RunDiagnostics(context, messages);
         }
 
-        [NotNull]
-        private AnalysisResult RunDiagnostics([NotNull] AnalyzerTestContext context,
+        private void RunDiagnostics([NotNull] AnalyzerTestContext context,
             [NotNull] [ItemNotNull] params string[] messages)
         {
             AnalysisResult result = GetAnalysisResult(context, messages);
 
             VerifyDiagnosticCount(result);
             VerifyDiagnostics(result);
-
-            return result;
         }
 
         [NotNull]
@@ -79,7 +63,7 @@ namespace RoslynTestFramework
 
             SyntaxTree tree = document.GetSyntaxTreeAsync().Result;
 
-            return EnumerateAnalyzerDiagnostics(compilationWithAnalyzers, tree);
+            return EnumerateAnalyzerDiagnostics(compilationWithAnalyzers, tree!);
         }
 
         [NotNull]
@@ -89,7 +73,7 @@ namespace RoslynTestFramework
             DiagnosticAnalyzer analyzer = CreateAnalyzer();
 
             Compilation compilation = document.Project.GetCompilationAsync().Result;
-            compilation = EnsureAnalyzerIsEnabled(analyzer, compilation);
+            compilation = EnsureAnalyzerIsEnabled(analyzer, compilation!);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(CancellationToken.None);
 
@@ -194,162 +178,6 @@ namespace RoslynTestFramework
             }
         }
 
-        protected void AssertDiagnosticsWithCodeFixes([NotNull] FixProviderTestContext context,
-            [NotNull] [ItemNotNull] params string[] messages)
-        {
-            FrameworkGuard.NotNull(context, nameof(context));
-            FrameworkGuard.NotNull(messages, nameof(messages));
-
-            AnalysisResult analysisResult = RunDiagnostics(context.AnalyzerTestContext, messages);
-
-            FixProviderTestContext fixContext = UpdateContextForComparisonMode(context);
-            RunCodeFixesForFirstDiagnostic(analysisResult, fixContext);
-        }
-
-        protected void AssertDiagnosticsWithAllCodeFixes([NotNull] FixProviderTestContext context,
-            [NotNull] [ItemNotNull] params string[] messages)
-        {
-            FrameworkGuard.NotNull(context, nameof(context));
-            FrameworkGuard.NotNull(messages, nameof(messages));
-
-            AnalysisResult analysisResult = RunDiagnostics(context.AnalyzerTestContext, messages);
-
-            FixProviderTestContext fixContext = UpdateContextForComparisonMode(context);
-
-            RunAllCodeFixesForDiagnostics(analysisResult.Diagnostics, fixContext);
-        }
-
-        [NotNull]
-        private static FixProviderTestContext UpdateContextForComparisonMode([NotNull] FixProviderTestContext context)
-        {
-            if (context.CodeComparisonMode == TextComparisonMode.IgnoreWhitespaceDifferences)
-            {
-                ICollection<string> expectedCode = context.ExpectedCode
-                    .Select(code => DocumentFactory.FormatSourceCode(code, context.AnalyzerTestContext)).ToArray();
-
-                return context.WithExpectedCode(expectedCode);
-            }
-
-            return context;
-        }
-
-        private void RunCodeFixesForFirstDiagnostic([NotNull] AnalysisResult analysisResult,
-            [NotNull] FixProviderTestContext context)
-        {
-            CodeFixProvider fixProvider = CreateFixProvider();
-
-            Diagnostic firstDiagnostic = analysisResult.Diagnostics.FirstOrDefault();
-
-            if (firstDiagnostic != null)
-            {
-                RunCodeFixesForDiagnostic(context, firstDiagnostic, fixProvider);
-            }
-        }
-
-        private void RunCodeFixesForDiagnostic([NotNull] FixProviderTestContext context, [NotNull] Diagnostic diagnostic,
-            [NotNull] CodeFixProvider fixProvider)
-        {
-            for (int index = 0; index < context.ExpectedCode.Count; index++)
-            {
-                var document =
-                    DocumentFactory.ToDocument(context.AnalyzerTestContext.SourceCode, context.AnalyzerTestContext);
-
-                ImmutableArray<CodeAction> codeFixes = GetCodeFixesForDiagnostic(diagnostic, document, fixProvider);
-                codeFixes.Should().HaveSameCount(context.ExpectedCode);
-
-                VerifyResultOfCodeFix(codeFixes[index], document, context, context.ExpectedCode[index]);
-            }
-        }
-
-        [ItemNotNull]
-        private ImmutableArray<CodeAction> GetCodeFixesForDiagnostic([NotNull] Diagnostic diagnostic, [NotNull] Document document,
-            [NotNull] CodeFixProvider fixProvider)
-        {
-            ImmutableArray<CodeAction>.Builder builder = ImmutableArray.CreateBuilder<CodeAction>();
-
-            var fixContext = new CodeFixContext(document, diagnostic, RegisterCodeFix, CancellationToken.None);
-            fixProvider.RegisterCodeFixesAsync(fixContext).Wait();
-
-            return builder.ToImmutable();
-
-            void RegisterCodeFix(CodeAction codeAction, ImmutableArray<Diagnostic> _)
-            {
-                builder.Add(codeAction);
-            }
-        }
-
-        private void RunAllCodeFixesForDiagnostics([NotNull] [ItemNotNull] IList<Diagnostic> diagnostics,
-            [NotNull] FixProviderTestContext context)
-        {
-            CodeFixProvider fixProvider = CreateFixProvider();
-
-            var diagnosticProvider = new SimpleDiagnosticProvider(diagnostics);
-
-            for (int index = 0; index < context.ExpectedCode.Count; index++)
-            {
-                var document =
-                    DocumentFactory.ToDocument(context.AnalyzerTestContext.SourceCode, context.AnalyzerTestContext);
-
-                string equivalenceKey = context.EquivalenceKeysForFixAll[index];
-                CodeAction codeFix = GetCodeFixForEquivalenceKey(equivalenceKey, document, fixProvider, diagnosticProvider);
-
-                string expectedCode = context.ExpectedCode[index];
-                VerifyResultOfCodeFix(codeFix, document, context, expectedCode);
-            }
-        }
-
-        [NotNull]
-        private static CodeAction GetCodeFixForEquivalenceKey([NotNull] string equivalenceKey, [NotNull] Document document,
-            [NotNull] CodeFixProvider fixProvider, [NotNull] SimpleDiagnosticProvider diagnosticProvider)
-        {
-            var fixAllContext = new FixAllContext(document, fixProvider, FixAllScope.Document, equivalenceKey,
-                fixProvider.FixableDiagnosticIds, diagnosticProvider, CancellationToken.None);
-
-            FixAllProvider fixAllProvider = fixProvider.GetFixAllProvider();
-            return fixAllProvider.GetFixAsync(fixAllContext).Result;
-        }
-
-        private static void VerifyResultOfCodeFix([NotNull] CodeAction fixAction, [NotNull] Document document,
-            [NotNull] FixProviderTestContext context, [NotNull] string expectedCode)
-        {
-            bool formatOutputDocument = context.CodeComparisonMode == TextComparisonMode.IgnoreWhitespaceDifferences;
-
-            string actualCode = ApplyCodeAction(fixAction, document, formatOutputDocument);
-            actualCode.Should().Be(expectedCode);
-        }
-
-        [NotNull]
-        private static string ApplyCodeAction([NotNull] CodeAction codeAction, [NotNull] Document document,
-            bool formatOutputDocument)
-        {
-            ImmutableArray<CodeActionOperation> operations = codeAction.GetOperationsAsync(CancellationToken.None).Result;
-
-            operations.Should().HaveCount(1);
-
-            CodeActionOperation operation = operations.Single();
-            return GetTextForOperation(document, operation, formatOutputDocument);
-        }
-
-        [NotNull]
-        private static string GetTextForOperation([NotNull] Document document, [NotNull] CodeActionOperation operation,
-            bool formatOutputDocument)
-        {
-            Document newDocument = ApplyOperationToDocument(operation, document);
-
-            return formatOutputDocument
-                ? DocumentFactory.FormatDocument(newDocument)
-                : newDocument.GetTextAsync().Result.ToString();
-        }
-
-        [NotNull]
-        private static Document ApplyOperationToDocument([NotNull] CodeActionOperation operation, [NotNull] Document document)
-        {
-            Workspace workspace = document.Project.Solution.Workspace;
-            operation.Apply(workspace, CancellationToken.None);
-
-            return workspace.CurrentSolution.GetDocument(document.Id);
-        }
-
         private sealed class AnalysisResult
         {
             [NotNull]
@@ -377,43 +205,6 @@ namespace RoslynTestFramework
                 Diagnostics = diagnostics;
                 SpansExpected = spansExpected;
                 MessagesExpected = messagesExpected;
-            }
-        }
-
-        private sealed class SimpleDiagnosticProvider : FixAllContext.DiagnosticProvider
-        {
-            [NotNull]
-            [ItemNotNull]
-            private readonly IEnumerable<Diagnostic> diagnostics;
-
-            public SimpleDiagnosticProvider([NotNull] [ItemNotNull] IEnumerable<Diagnostic> diagnostics)
-            {
-                FrameworkGuard.NotNull(diagnostics, nameof(diagnostics));
-                this.diagnostics = diagnostics;
-            }
-
-            [NotNull]
-            [ItemNotNull]
-            public override Task<IEnumerable<Diagnostic>> GetDocumentDiagnosticsAsync([NotNull] Document document,
-                CancellationToken cancellationToken)
-            {
-                return Task.FromResult(diagnostics);
-            }
-
-            [NotNull]
-            [ItemNotNull]
-            public override Task<IEnumerable<Diagnostic>> GetProjectDiagnosticsAsync([NotNull] Project project,
-                CancellationToken cancellationToken)
-            {
-                return Task.FromResult(diagnostics);
-            }
-
-            [NotNull]
-            [ItemNotNull]
-            public override Task<IEnumerable<Diagnostic>> GetAllDiagnosticsAsync([NotNull] Project project,
-                CancellationToken cancellationToken)
-            {
-                return Task.FromResult(diagnostics);
             }
         }
     }

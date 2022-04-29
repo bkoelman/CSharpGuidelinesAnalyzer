@@ -1,6 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-
-namespace RoslynTestFramework
+﻿namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     public enum TreatWarningsAsErrors
     {

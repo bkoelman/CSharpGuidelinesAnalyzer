@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-// ReSharper disable once CheckNamespace
-namespace RoslynTestFramework
+namespace CSharpGuidelinesAnalyzer.Test.RoslynTestFramework
 {
     /// <summary>
     /// Parameter validations, intended to be used for member precondition checks.
@@ -24,7 +23,7 @@ namespace RoslynTestFramework
 
         [AssertionMethod]
         [ContractAnnotation("value: null => halt")]
-        public static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value,
+        private static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value,
             [NotNull] [InvokerParameterName] string name)
         {
             NotNull(value, name);

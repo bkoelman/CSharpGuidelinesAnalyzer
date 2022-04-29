@@ -2,13 +2,13 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Emit;
-using RoslynTestFramework;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders
 {
