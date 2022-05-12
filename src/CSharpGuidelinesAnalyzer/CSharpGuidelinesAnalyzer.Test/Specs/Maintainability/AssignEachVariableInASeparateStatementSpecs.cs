@@ -1408,6 +1408,30 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         await VerifyGuidelineDiagnosticAsync(source);
     }
 
+    [Fact]
+    internal async Task When_two_variables_are_declared_and_assigned_in_with_expression_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new MemberSourceCodeBuilder()
+            .InDefaultClass(@"
+                void M(object o)
+                {
+                    X x1 = new X();
+                    X x2 = x1 with { P = 1 };
+                }
+
+                private struct X
+                {
+                    public int P { get; set; }
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+
     protected override DiagnosticAnalyzer CreateAnalyzer()
     {
         return new AssignEachVariableInASeparateStatementAnalyzer();
