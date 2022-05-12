@@ -152,6 +152,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                 this.section = section;
             }
 
+            public override void DefaultVisit([NotNull] IOperation operation)
+            {
+                // Check should be replaced with empty override of VisitWith(IWithOperation operation),
+                // after upgrade to recent version of Microsoft.CodeAnalysis.
+                if (operation.GetType().Name != "WithOperation")
+                {
+                    base.DefaultVisit(operation);
+                }
+            }
+
             public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
             {
                 IVariableInitializerOperation initializer = operation.GetVariableInitializer();
