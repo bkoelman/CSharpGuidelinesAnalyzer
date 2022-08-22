@@ -38,7 +38,7 @@
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.8.1" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.115" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.118" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="2.0.2" PrivateAssets="all" />
   </ItemGroup>
