@@ -102,6 +102,14 @@ namespace CSharpGuidelinesAnalyzer
         }
 
         [CanBeNull]
+        public static INamedTypeSymbol SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute([NotNull] Compilation compilation)
+        {
+            Guard.NotNull(compilation, nameof(compilation));
+
+            return compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.CallerArgumentExpressionAttribute");
+        }
+
+        [CanBeNull]
         public static INamedTypeSymbol SystemRuntimeCompilerServicesConfiguredValueTaskAwaitableT([NotNull] Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));

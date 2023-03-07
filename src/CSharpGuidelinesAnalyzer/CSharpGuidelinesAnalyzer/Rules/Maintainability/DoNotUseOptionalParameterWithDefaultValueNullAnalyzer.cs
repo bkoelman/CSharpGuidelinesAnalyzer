@@ -31,8 +31,9 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
 #pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
         [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext, IList<INamedTypeSymbol>> AnalyzeParameterAction = (syntaxContext, taskTypes) =>
-            syntaxContext.SkipEmptyName(symbolContext => AnalyzeParameter(symbolContext, taskTypes));
+        private static readonly Action<SyntaxNodeAnalysisContext, IList<INamedTypeSymbol>, INamedTypeSymbol> AnalyzeParameterAction =
+            (syntaxContext, taskTypes, callerArgumentExpressionAttributeType) => syntaxContext.SkipEmptyName(symbolContext =>
+                AnalyzeParameter(symbolContext, taskTypes, callerArgumentExpressionAttributeType));
 #pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
 
         [ItemNotNull]
@@ -50,7 +51,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             IList<INamedTypeSymbol> taskTypes = ResolveTaskTypes(startContext.Compilation).ToList();
 
-            startContext.RegisterSyntaxNodeAction(context => AnalyzeParameterAction(context, taskTypes), SyntaxKind.Parameter);
+            INamedTypeSymbol callerArgumentExpressionAttributeType =
+                KnownTypes.SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute(startContext.Compilation);
+
+            startContext.RegisterSyntaxNodeAction(context => AnalyzeParameterAction(context, taskTypes, callerArgumentExpressionAttributeType),
+                SyntaxKind.Parameter);
         }
 
         [NotNull]
@@ -72,11 +77,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
             }
         }
 
-        private static void AnalyzeParameter(SymbolAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+        private static void AnalyzeParameter(SymbolAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes,
+            [CanBeNull] INamedTypeSymbol callerArgumentExpressionAttributeType)
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.IsOptional && parameter.HasExplicitDefaultValue && parameter.ExplicitDefaultValue == null)
+            if (parameter.IsOptional && parameter.HasExplicitDefaultValue && parameter.ExplicitDefaultValue == null &&
+                !HasCallerArgumentExpressionAttribute(parameter, callerArgumentExpressionAttributeType))
             {
                 if (parameter.Type.IsOrImplementsIEnumerable() || IsTask(parameter.Type, taskTypes))
                 {
@@ -88,6 +95,13 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
                     context.ReportDiagnostic(diagnostic);
                 }
             }
+        }
+
+        private static bool HasCallerArgumentExpressionAttribute([NotNull] IParameterSymbol parameter,
+            [CanBeNull] INamedTypeSymbol callerArgumentExpressionAttributeType)
+        {
+            return callerArgumentExpressionAttributeType != null &&
+                parameter.GetAttributes().Any(attr => Equals(attr.AttributeClass, callerArgumentExpressionAttributeType));
         }
 
         private static bool IsTask([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
