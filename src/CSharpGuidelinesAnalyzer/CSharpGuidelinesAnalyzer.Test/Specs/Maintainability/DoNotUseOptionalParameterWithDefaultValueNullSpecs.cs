@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using CSharpGuidelinesAnalyzer.Rules.Maintainability;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -62,6 +63,24 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Act and assert
         await VerifyGuidelineDiagnosticAsync(source,
             "Optional parameter 'p' of type 'string' has default value 'null'");
+    }
+
+    [Fact]
+    internal async Task When_using_optional_string_parameter_with_default_null_with_CallerArgumentExpression_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(CallerArgumentExpressionAttribute).Namespace)
+            .InGlobalScope(@"
+                class C
+                {
+                    void M(object value, [CallerArgumentExpression(""value"")] string parameterName = null) => throw null;
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
     }
 
     [Fact]
