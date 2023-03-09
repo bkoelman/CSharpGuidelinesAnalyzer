@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
+using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -43,81 +43,132 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
         {
             var queryExpression = (QueryExpressionSyntax)context.Node;
 
-            if (queryExpression.Body.IsMissing || queryExpression.Body.Continuation != null)
+            var walker = new QueryExpressionWalker();
+            walker.Visit(queryExpression);
+
+            if (walker.SkipAlways || walker.TotalCount > 1)
             {
                 return;
             }
 
-            int complexity = CalculateComplexity(queryExpression);
-
-            if (complexity <= 1 && !IsIncomplete(queryExpression))
-            {
-                Location location = queryExpression.GetLocation();
-
-                var diagnostic = Diagnostic.Create(Rule, location);
-                context.ReportDiagnostic(diagnostic);
-            }
+            Location location = GetLocation(queryExpression, context.SemanticModel);
+            var diagnostic = Diagnostic.Create(Rule, location);
+            context.ReportDiagnostic(diagnostic);
         }
 
-        private static int CalculateComplexity([NotNull] QueryExpressionSyntax queryExpression)
+        [NotNull]
+        private static Location GetLocation([NotNull] QueryExpressionSyntax queryExpression, [NotNull] SemanticModel semanticModel)
         {
-            int complexity = 0;
+            SyntaxNode parent = SkipParentParentheses(queryExpression.Parent);
 
-            if (HasCastInFromClause(queryExpression))
+            if (parent is MemberAccessExpressionSyntax memberAccess)
             {
-                complexity++;
-            }
+                SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(memberAccess);
 
-            if (ProjectsIntoGroup(queryExpression.Body.SelectOrGroup) || ProjectsIntoAnonymousType(queryExpression.Body.SelectOrGroup))
-            {
-                complexity++;
+                if (symbolInfo.Symbol is IMethodSymbol methodSymbol && IsEnumerableExtensionMethod(methodSymbol))
+                {
+                    // Expand location to the containing .ToArray()/.ToList()/... call.
+                    return memberAccess.Parent.GetLocation();
+                }
             }
 
-            complexity += GetComplexityForClauses(queryExpression);
-
-            return complexity;
+            return queryExpression.GetLocation();
         }
 
-        private static bool HasCastInFromClause([NotNull] QueryExpressionSyntax queryExpression)
+        [NotNull]
+        private static SyntaxNode SkipParentParentheses([NotNull] SyntaxNode syntax)
         {
-            return queryExpression.FromClause.Type != null;
-        }
+            SyntaxNode current;
 
-        private static bool ProjectsIntoGroup([NotNull] SelectOrGroupClauseSyntax selectOrGroupClause)
-        {
-            return selectOrGroupClause is GroupClauseSyntax;
-        }
-
-        private static bool ProjectsIntoAnonymousType([NotNull] SelectOrGroupClauseSyntax selectOrGroupClause)
-        {
-            return selectOrGroupClause is SelectClauseSyntax { Expression: AnonymousObjectCreationExpressionSyntax _ };
-        }
-
-        private static int GetComplexityForClauses([NotNull] QueryExpressionSyntax queryExpression)
-        {
-            int complexity = 0;
-
-            foreach (QueryClauseSyntax bodyClause in queryExpression.Body.Clauses)
+            for (current = syntax; current is ParenthesizedExpressionSyntax && current.Parent != null; current = current.Parent)
             {
-                complexity += GetComplexityForClause(bodyClause);
             }
 
-            return complexity;
+            return current;
         }
 
-        private static int GetComplexityForClause([NotNull] QueryClauseSyntax bodyClause)
+        private static bool IsEnumerableExtensionMethod([NotNull] IMethodSymbol method)
         {
-            if (bodyClause is OrderByClauseSyntax orderByClause)
+            return method.IsExtensionMethod && method.IsGenericMethod && method.Name.StartsWith("To", StringComparison.Ordinal) &&
+                method.ReturnType.IsOrImplementsIEnumerable();
+        }
+
+        private sealed class QueryExpressionWalker : CSharpSyntaxWalker
+        {
+            private int fromCount;
+            private int castsInFromCount;
+            private int whereCount;
+            private int groupCount;
+            private int orderCount;
+            private int selectCount;
+
+            public bool SkipAlways { get; private set; }
+            public int TotalCount => Math.Max(0, fromCount - 1) + castsInFromCount + whereCount + groupCount + orderCount + selectCount;
+
+            public override void Visit([NotNull] SyntaxNode node)
             {
-                return orderByClause.Orderings.Count;
+                if (node.IsMissing)
+                {
+                    SkipAlways = true;
+                }
+                else
+                {
+                    base.Visit(node);
+                }
             }
 
-            return bodyClause is LetClauseSyntax ? 2 : 1;
-        }
+            public override void VisitJoinClause([NotNull] JoinClauseSyntax node)
+            {
+                SkipAlways = true;
+            }
 
-        private static bool IsIncomplete([NotNull] SyntaxNode syntaxNode)
-        {
-            return syntaxNode.DescendantNodesAndSelf().Any(node => node.IsMissing);
+            public override void VisitLetClause([NotNull] LetClauseSyntax node)
+            {
+                SkipAlways = true;
+            }
+
+            public override void VisitFromClause([NotNull] FromClauseSyntax node)
+            {
+                if (node.Type != null)
+                {
+                    castsInFromCount++;
+                }
+
+                fromCount++;
+                base.VisitFromClause(node);
+            }
+
+            public override void VisitWhereClause([NotNull] WhereClauseSyntax node)
+            {
+                whereCount++;
+                base.VisitWhereClause(node);
+            }
+
+            public override void VisitGroupClause([NotNull] GroupClauseSyntax node)
+            {
+                groupCount++;
+                base.VisitGroupClause(node);
+            }
+
+            public override void VisitOrdering([NotNull] OrderingSyntax node)
+            {
+                orderCount++;
+                base.VisitOrdering(node);
+            }
+
+            public override void VisitSelectClause([NotNull] SelectClauseSyntax node)
+            {
+                if (node.Expression is IdentifierNameSyntax)
+                {
+                    // In method syntax, .Select() can be omitted when it returns the incoming parameter unmodified.
+                }
+                else
+                {
+                    selectCount++;
+                }
+
+                base.VisitSelectClause(node);
+            }
         }
     }
 }
