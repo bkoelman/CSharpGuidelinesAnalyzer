@@ -12,7 +12,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     protected override string DiagnosticId => AvoidQuerySyntaxForSimpleExpressionAnalyzer.DiagnosticId;
 
     [Fact]
-    internal async Task When_method_contains_empty_query_it_must_be_reported()
+    internal async Task When_query_is_empty_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -23,6 +23,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     var query =
                         [|from item in Enumerable.Empty<string>()
                         select item|];
+
+                    // Method chain equivalent (no invocations):
+                    // var query = Enumerable.Empty<string>();
                 }
             ")
             .Build();
@@ -33,7 +36,32 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_simple_filter_query_it_must_be_reported()
+    internal async Task When_query_converts_to_enumerable_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new MemberSourceCodeBuilder()
+            .Using(typeof(Enumerable).Namespace)
+            .Using(typeof(List<>).Namespace)
+            .InDefaultClass(@"
+                void M()
+                {
+                    var query =
+                        [|from item in new List<string>()
+                        select item|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = new List<string>().Select(item => item);
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Simple query should be replaced by extension method call");
+    }
+
+    [Fact]
+    internal async Task When_query_contains_filter_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -45,6 +73,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         [|from item in Enumerable.Empty<string>()
                         where item.Length > 2
                         select item|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<string>().Where(item => item.Length > 2);
                 }
             ")
             .Build();
@@ -55,7 +86,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_multiple_filter_query_it_must_be_skipped()
+    internal async Task When_query_contains_multiple_filters_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -64,10 +95,15 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                 void M()
                 {
                     var query =
-                        from string item in Enumerable.Empty<object>()
+                        from item in Enumerable.Empty<string>()
                         where item != null
                         where item.Length > 2
                         select item;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .Where(item => item != null)
+                    //     .Where(item => item.Length > 2);
                 }
             ")
             .Build();
@@ -77,7 +113,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_embedded_simple_filter_query_it_must_be_reported()
+    internal async Task When_embedded_query_contains_filter_with_ToArray_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -85,10 +121,17 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
             .InDefaultClass(@"
                 void M()
                 {
-                    var result = Process((
-                        [|from item in Enumerable.Empty<string>()
-                        where item.Length > 2
-                        select item|]).ToArray());
+                    var result = Process([|(
+                            from item in Enumerable.Empty<string>()
+                            where item.Length > 2
+                            select item
+                        )
+                        .ToArray()|]);
+
+                    // Method chain equivalent (multiple invocations, yet still simpler):
+                    // var result = Process(Enumerable.Empty<string>()
+                    //     .Where(item => item.Length > 2)
+                    //     .ToArray());
                 }
 
                 object Process(object p) => throw null;
@@ -101,7 +144,32 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_nested_simple_filter_query_it_must_be_reported()
+    internal async Task When_query_contains_ToList_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new MemberSourceCodeBuilder()
+            .Using(typeof(Enumerable).Namespace)
+            .InDefaultClass(@"
+                void M()
+                {
+                    var query = [|(
+                        from item in Enumerable.Empty<string>()
+                        select item
+                    ).ToList()|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<string>().ToList();
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Simple query should be replaced by extension method call");
+    }
+
+    [Fact]
+    internal async Task When_nested_query_contains_filter_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -117,6 +185,14 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         where item.Length > 2
                         orderby item.Length
                         select item;
+
+                    // Method chain equivalent (single invocation):
+                    // var query =
+                    //     from item in
+                    //         Enumerable.Empty<string>().Where(other => other.Length > 2)
+                    //     where item.Length > 2
+                    //     orderby item.Length
+                    //     select item;
                 }
             ")
             .Build();
@@ -127,7 +203,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_simple_query_with_cast_it_must_be_reported()
+    internal async Task When_query_contains_cast_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -138,6 +214,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     var query =
                         [|from string item in Enumerable.Empty<object>()
                         select item|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<object>().Cast<string>();
                 }
             ")
             .Build();
@@ -148,7 +227,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_cast_it_must_be_skipped()
+    internal async Task When_query_contains_cast_with_filter_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -160,6 +239,11 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         from string item in Enumerable.Empty<object>()
                         where item.Length > 2
                         select item;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<object>()
+                    //     .Cast<string>()
+                    //     .Where(item => item.Length > 2);
                 }
             ")
             .Build();
@@ -169,7 +253,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_simple_query_with_grouping_it_must_be_reported()
+    internal async Task When_query_contains_grouping_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -180,6 +264,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     var query =
                         [|from item in Enumerable.Empty<string>()
                         group item by item.Length|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<string>().GroupBy(item => item.Length);
                 }
             ")
             .Build();
@@ -190,7 +277,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_grouping_it_must_be_skipped()
+    internal async Task When_query_contains_grouping_with_filter_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -202,6 +289,11 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         from item in Enumerable.Empty<string>()
                         where item != null
                         group item by item.Length;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .Where(item => item != null)
+                    //     .GroupBy(item => item.Length);
                 }
             ")
             .Build();
@@ -211,7 +303,33 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_grouping_into_it_must_be_skipped()
+    internal async Task When_query_contains_grouping_into_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new MemberSourceCodeBuilder()
+            .Using(typeof(Enumerable).Namespace)
+            .InDefaultClass(@"
+                void M()
+                {
+                    var query =
+                        [|from item in Enumerable.Empty<string>()
+                        group item by item.Length
+                        into grp
+                        select grp|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<string>().GroupBy(item => item.Length);
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Simple query should be replaced by extension method call");
+    }
+
+    [Fact]
+    internal async Task When_query_contains_grouping_into_with_filter_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -221,9 +339,15 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                 {
                     var query =
                         from item in Enumerable.Empty<string>()
-                        group item by item.Length into grp
-                        where grp != null
+                        group item by item.Length
+                        into grp
+                        where grp.Key > 0
                         select grp;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .GroupBy(item => item.Length)
+                    //     .Where(grp => grp.Key > 0);
                 }
             ")
             .Build();
@@ -233,7 +357,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_join_it_must_be_skipped()
+    internal async Task When_query_contains_join_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -244,8 +368,15 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     var query =
                         from item in Enumerable.Empty<string>()
                         join other in Enumerable.Empty<string>() on item.Length equals other.Length
-                        where item != null
                         select item;
+
+                    // Method chain equivalent (single invocation, yet more complex):
+                    // var query = Enumerable.Empty<string>()
+                    //     .Join(Enumerable.Empty<string>(),
+                    //         item => item.Length,
+                    //         other => other.Length,
+                    //         (item, other) => item);
+
                 }
             ")
             .Build();
@@ -255,7 +386,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_join_into_it_must_be_skipped()
+    internal async Task When_query_contains_join_into_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -265,9 +396,16 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                 {
                     var query =
                         from item in Enumerable.Empty<string>()
-                        join other in Enumerable.Empty<string>() on item.Length equals other.Length into product
-                        where product != null
+                        join other in Enumerable.Empty<string>() on item.Length equals other.Length
+                        into product
                         select product;
+
+                    // Method chain equivalent (single invocation, yet more complex):
+                    // var query = Enumerable.Empty<string>()
+                    //     .GroupJoin(Enumerable.Empty<string>(),
+                    //         item => item.Length,
+                    //         other => other.Length,
+                    //         (item, product) => product);
                 }
             ")
             .Build();
@@ -277,51 +415,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_simple_query_with_ordering_it_must_be_reported()
-    {
-        // Arrange
-        ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
-                void M()
-                {
-                    var query =
-                        [|from item in Enumerable.Empty<string>()
-                        orderby item
-                        select item|];
-                }
-            ")
-            .Build();
-
-        // Act and assert
-        await VerifyGuidelineDiagnosticAsync(source,
-            "Simple query should be replaced by extension method call");
-    }
-
-    [Fact]
-    internal async Task When_method_contains_complex_query_with_ordering_it_must_be_skipped()
-    {
-        // Arrange
-        ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
-                void M()
-                {
-                    var query =
-                        from item in Enumerable.Empty<string>()
-                        where item.Length > 2
-                        orderby item
-                        select item;
-                }
-            ")
-            .Build();
-
-        // Act and assert
-        await VerifyGuidelineDiagnosticAsync(source);
-    }
-
-    [Fact]
-    internal async Task When_method_contains_simple_query_with_descending_ordering_it_must_be_reported()
+    internal async Task When_query_contains_ordering_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -333,6 +427,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         [|from item in Enumerable.Empty<string>()
                         orderby item descending
                         select item|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<string>().OrderByDescending(item => item);
                 }
             ")
             .Build();
@@ -343,7 +440,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_descending_ordering_it_must_be_skipped()
+    internal async Task When_query_contains_ordering_with_filter_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -356,6 +453,11 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         where item.Length > 2
                         orderby item descending
                         select item;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .Where(item => item.Length > 2)
+                    //     .OrderByDescending(item => item);
                 }
             ")
             .Build();
@@ -365,7 +467,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_multiple_ordering_it_must_be_skipped()
+    internal async Task When_query_contains_multiple_orderings_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -377,6 +479,11 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         from item in Enumerable.Empty<string>()
                         orderby item.Length, item
                         select item;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .OrderBy(item => item.Length)
+                    //     .ThenBy(item => item);
                 }
             ")
             .Build();
@@ -386,7 +493,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_query_with_multiple_sources_it_must_be_skipped()
+    internal async Task When_query_contains_multiple_sources_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -395,20 +502,48 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                 void M()
                 {
                     var query =
-                        from item in Enumerable.Empty<string>()
-                        from other in Enumerable.Empty<string>()
-                        where item.Length > 2
-                        select item;
+                        from left in Enumerable.Empty<string>()
+                        from right in Enumerable.Empty<string>()
+                        select new { left, right };
+
+                    // Method chain equivalent (single invocation, yet more complex):
+                    // var query = Enumerable.Empty<string>().SelectMany(left => Enumerable.Empty<string>(), (left, right) => new { left, right });
                 }
             ")
             .Build();
 
-        // Act and assert
         await VerifyGuidelineDiagnosticAsync(source);
     }
 
     [Fact]
-    internal async Task When_method_contains_simple_projection_query_it_must_be_reported()
+    internal async Task When_query_contains_multiple_sources_with_filter_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new MemberSourceCodeBuilder()
+            .Using(typeof(Enumerable).Namespace)
+            .InDefaultClass(@"
+                void M()
+                {
+                    var query =
+                        from left in Enumerable.Empty<string>()
+                        from right in Enumerable.Empty<string>()
+                        where left.Length > right.Length
+                        select new { left, right };
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .SelectMany(left => Enumerable.Empty<string>(), (left, right) => new { left, right })
+                    //     .Where(pair => pair.left.Length > pair.right.Length)
+                    //     .Select(pair => new { pair.left, pair.right });
+                }
+            ")
+            .Build();
+
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
+    internal async Task When_query_contains_projection_it_must_be_reported()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -419,6 +554,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     var query =
                         [|from item in Enumerable.Empty<string>()
                         select new { item, item.Length }|];
+
+                    // Method chain equivalent (single invocation):
+                    // var query = Enumerable.Empty<string>().Select(item => new { item, item.Length });
                 }
             ")
             .Build();
@@ -429,7 +567,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_complex_projection_query_it_must_be_skipped()
+    internal async Task When_query_contains_projection_with_filter_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -441,6 +579,11 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         from item in Enumerable.Empty<string>()
                         where item != null
                         select new { item, item.Length };
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .Where(item => item != null)
+                    //     .Select(item => new { item, item.Length });
                 }
             ")
             .Build();
@@ -450,7 +593,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_let_query_it_must_be_skipped()
+    internal async Task When_query_contains_let_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
@@ -462,6 +605,11 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                         from item in Enumerable.Empty<string>()
                         let isLong = item.Length > 2
                         select item;
+
+                    // Method chain equivalent (multiple invocations):
+                    // var query = Enumerable.Empty<string>()
+                    //     .Select(item => new { item, isLong = item.Length > 2 })
+                    //     .Select(pair => pair.item);
                 }
             ")
             .Build();
@@ -471,7 +619,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
     }
 
     [Fact]
-    internal async Task When_method_contains_incomplete_query_it_must_be_skipped()
+    internal async Task When_query_is_incomplete_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
