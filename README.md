@@ -91,7 +91,7 @@ After each commit, a new prerelease NuGet package is automatically published to 
     * Click **Update**, **Ok**
 * Open the NuGet package manager console (**Tools**, **NuGet Package Manager**, **Package Manager Console**)
     * Select **AppVeyor CSharpGuidelinesAnalyzer** as package source
-    * Run command: `Install-Package CSharpGuidelinesAnalyzer -pre`
+    * Run command: `Install-Package CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId -pre`
 
 ## Building from source
 
