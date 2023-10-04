@@ -215,6 +215,75 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
             "Optional parameter 'p' of type 'ValueTask<int>?' has default value 'null'");
     }
 
+    [Fact]
+    internal async Task When_method_implicitly_implements_interface_method_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .WithReferenceToExternalAssemblyFor(@"
+                public interface I
+                {
+                    void M(string s = null);
+                }
+            ")
+            .InGlobalScope(@"
+                class C : I
+                {
+                    public void M(string s = null) => throw null;
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
+    internal async Task When_method_explicitly_implements_interface_method_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .WithReferenceToExternalAssemblyFor(@"
+                public interface I
+                {
+                    void M(string s = null);
+                }
+            ")
+            .InGlobalScope(@"
+                class C : I
+                {
+                    void I.M(string s = null) => throw null;
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
+    internal async Task When_method_overrides_base_method_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .WithReferenceToExternalAssemblyFor(@"
+                public abstract class B
+                {
+                    public virtual void M(string s = null) => throw null;
+                }
+            ")
+            .InGlobalScope(@"
+                class C : B
+                {
+                    public override void M(string s = null) => throw null;
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
     protected override DiagnosticAnalyzer CreateAnalyzer()
     {
         return new DoNotUseOptionalParameterWithDefaultValueNullAnalyzer();
