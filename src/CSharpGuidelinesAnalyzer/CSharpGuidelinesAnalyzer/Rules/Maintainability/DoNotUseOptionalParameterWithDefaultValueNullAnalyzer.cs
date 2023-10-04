@@ -82,7 +82,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         {
             var parameter = (IParameterSymbol)context.Symbol;
 
-            if (parameter.IsOptional && parameter.HasExplicitDefaultValue && parameter.ExplicitDefaultValue == null &&
+            if (parameter.IsOptional && parameter.HasExplicitDefaultValue && parameter.ExplicitDefaultValue == null && !parameter.ContainingSymbol.IsOverride &&
+                !parameter.ContainingSymbol.IsInterfaceImplementation() &&
                 !HasCallerArgumentExpressionAttribute(parameter, callerArgumentExpressionAttributeType))
             {
                 if (parameter.Type.IsOrImplementsIEnumerable() || IsTask(parameter.Type, taskTypes))
