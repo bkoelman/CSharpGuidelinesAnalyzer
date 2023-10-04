@@ -1431,7 +1431,6 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         await VerifyGuidelineDiagnosticAsync(source);
     }
 
-
     protected override DiagnosticAnalyzer CreateAnalyzer()
     {
         return new AssignEachVariableInASeparateStatementAnalyzer();
