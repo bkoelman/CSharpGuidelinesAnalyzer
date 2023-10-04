@@ -4,7 +4,6 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>CSharpGuidelinesAnalyzer</RootNamespace>
-    <AssemblyName>CSharpGuidelinesAnalyzer</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
