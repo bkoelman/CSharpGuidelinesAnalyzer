@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Globalization;
 using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -121,7 +122,7 @@ public abstract class AnalysisTestFixture
     {
         if (diagnostic.Id == "AD0001")
         {
-            string message = diagnostic.Descriptor.Description.ToString();
+            string message = diagnostic.GetMessage(CultureInfo.InvariantCulture);
             throw new Exception(message);
         }
     }
