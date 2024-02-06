@@ -215,6 +215,23 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     }
 
     [Fact]
+    internal async Task When_User_class_contains_UserName_property_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .InGlobalScope(@"
+                class User
+                {
+                    string UserName { get; set; }
+                }
+            ")
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
     internal async Task When_event_name_contains_class_name_it_must_be_reported()
     {
         // Arrange
@@ -344,7 +361,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     }
 
     [Fact]
-    internal async Task When_class_contains_static_destructor_it_must_be_skipped()
+    internal async Task When_class_contains_destructor_it_must_be_skipped()
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
