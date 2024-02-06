@@ -61,11 +61,16 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
         {
             string memberName = context.Symbol.MemberNameWithoutExplicitInterfacePrefix();
 
-            if (memberName.Contains(containingTypeName))
+            if (memberName.Contains(containingTypeName) && !IsUserNameInUserType(containingTypeName, memberName))
             {
                 var diagnostic = Diagnostic.Create(Rule, context.Symbol.Locations[0], context.Symbol.Kind, context.Symbol.Name, containingTypeName);
                 context.ReportDiagnostic(diagnostic);
             }
+        }
+
+        private static bool IsUserNameInUserType([NotNull] string containingTypeName, [NotNull] string memberName)
+        {
+            return containingTypeName == "User" && memberName.ToLowerInvariant() == "username";
         }
     }
 }
