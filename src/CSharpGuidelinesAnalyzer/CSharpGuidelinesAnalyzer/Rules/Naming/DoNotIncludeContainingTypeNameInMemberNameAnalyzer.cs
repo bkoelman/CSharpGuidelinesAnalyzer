@@ -70,7 +70,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Naming
 
         private static bool IsUserNameInUserType([NotNull] string containingTypeName, [NotNull] string memberName)
         {
-            return containingTypeName == "User" && memberName.ToLowerInvariant() == "username";
+            return containingTypeName == "User" && string.Equals(memberName, "username", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
