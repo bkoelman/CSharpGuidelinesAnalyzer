@@ -144,7 +144,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
                         string leftName = fieldInitializer.InitializedFields.First().ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                         return new AssignmentInfo(leftName, location, rightType);
                     }
-                    case IVariableInitializerOperation _:
+                    case IVariableInitializerOperation:
                     {
                         string leftName = ((VariableDeclaratorSyntax)equalsValueClause.Parent).Identifier.ToString();
                         return new AssignmentInfo(leftName, location, rightType);

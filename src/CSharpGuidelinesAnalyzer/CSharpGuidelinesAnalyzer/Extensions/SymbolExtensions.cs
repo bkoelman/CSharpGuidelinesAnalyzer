@@ -66,7 +66,7 @@ internal static class SymbolExtensions
             {
                 return propertyEventIndexerSyntax.Modifiers;
             }
-            case VariableDeclaratorSyntax _:
+            case VariableDeclaratorSyntax:
             {
                 if (syntax.Parent.Parent is BaseFieldDeclarationSyntax eventFieldSyntax)
                 {
