@@ -7,22 +7,15 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Settings;
 
-internal sealed class AnalyzerSettingsReader
+internal sealed class AnalyzerSettingsReader([NotNull] AnalyzerOptions options, CancellationToken cancellationToken)
 {
     private const string EditorConfigFileName = ".editorconfig";
 
     [NotNull]
-    private readonly AnalyzerConfigOptionsProviderShim analyzerConfigOptionsProvider;
+    private readonly AnalyzerConfigOptionsProviderShim analyzerConfigOptionsProvider = new(options);
 
     [NotNull]
-    private readonly AnalyzerSettingsRegistry settingsRegistry;
-
-    public AnalyzerSettingsReader([NotNull] AnalyzerOptions options, CancellationToken cancellationToken)
-    {
-        analyzerConfigOptionsProvider = new AnalyzerConfigOptionsProviderShim(options);
-
-        settingsRegistry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
-    }
+    private readonly AnalyzerSettingsRegistry settingsRegistry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
 
     [CanBeNull]
     internal int? TryGetInt32([NotNull] SyntaxTree syntaxTree, [NotNull] AnalyzerSettingKey key, int minValue, int maxValue)
@@ -59,7 +52,7 @@ internal sealed class AnalyzerSettingsReader
         return analyzerConfigOptionsProvider.TryGetOptionValue(syntaxTree, keyPath, out string value) ? value : null;
     }
 
-    private sealed class AnalyzerConfigOptionsProviderShim
+    private sealed class AnalyzerConfigOptionsProviderShim([NotNull] AnalyzerOptions options)
     {
         [CanBeNull]
         private static readonly PropertyInfo AnalyzerConfigOptionsProviderProperty =
@@ -76,12 +69,7 @@ internal sealed class AnalyzerSettingsReader
         ]);
 
         [CanBeNull]
-        private readonly object providerInstance;
-
-        public AnalyzerConfigOptionsProviderShim([NotNull] AnalyzerOptions options)
-        {
-            providerInstance = AnalyzerConfigOptionsProviderProperty?.GetValue(options);
-        }
+        private readonly object providerInstance = AnalyzerConfigOptionsProviderProperty?.GetValue(options);
 
         public bool TryGetOptionValue([NotNull] SyntaxTree syntaxTree, [NotNull] string key, [CanBeNull] out string value)
         {

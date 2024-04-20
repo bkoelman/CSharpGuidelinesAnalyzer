@@ -145,24 +145,13 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
             return ifStatement.WhenFalse is IConditionalOperation;
         }
 
-        private sealed class IfElseIfConstructAnalyzer
+        private sealed class IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation ifStatement)
         {
             [NotNull]
-            private readonly IfStatementAnalyzer owner;
+            private readonly IfStatementAnalyzer owner = owner;
 
             [CanBeNull]
-            private readonly Location topIfKeywordLocation;
-
-            [NotNull]
-            private IConditionalOperation ifStatement;
-
-            public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation topIfStatement)
-            {
-                this.owner = owner;
-
-                topIfKeywordLocation = topIfStatement.TryGetLocationForKeyword();
-                ifStatement = topIfStatement;
-            }
+            private readonly Location topIfKeywordLocation = ifStatement.TryGetLocationForKeyword();
 
             public void Analyze()
             {

@@ -139,18 +139,13 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
     /// <summary>
     /// Collects assignment expressions in the current statement, but without descending into nested statement blocks.
     /// </summary>
-    private sealed class StatementWalker : OperationWalker
+    private sealed class StatementWalker(ForLoopSection section) : OperationWalker
     {
-        private readonly ForLoopSection section;
+        private readonly ForLoopSection section = section;
 
         [NotNull]
         [ItemNotNull]
         public ISet<string> IdentifiersAssigned { get; } = new HashSet<string>();
-
-        public StatementWalker(ForLoopSection section)
-        {
-            this.section = section;
-        }
 
         public override void DefaultVisit([NotNull] IOperation operation)
         {

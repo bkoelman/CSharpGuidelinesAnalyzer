@@ -264,21 +264,16 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private sealed class MethodInvocationWalker : ExplicitOperationWalker
+    private sealed class MethodInvocationWalker([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup) : ExplicitOperationWalker
     {
         [NotNull]
         [ItemNotNull]
-        private readonly IReadOnlyCollection<IMethodSymbol> methodGroup;
+        private readonly IReadOnlyCollection<IMethodSymbol> methodGroup = methodGroup;
 
         [CanBeNull]
         private IMethodSymbol containingMethod;
 
         public bool HasFoundInvocation { get; private set; }
-
-        public MethodInvocationWalker([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
-        {
-            this.methodGroup = methodGroup;
-        }
 
         public void AnalyzeBlock([NotNull] IOperation block, [NotNull] IMethodSymbol method)
         {
@@ -340,23 +335,16 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private struct OverloadsInfo
+    private struct OverloadsInfo(
+        [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
     {
         [NotNull]
         [ItemNotNull]
-        public IReadOnlyCollection<IMethodSymbol> MethodGroup { get; }
+        public IReadOnlyCollection<IMethodSymbol> MethodGroup { get; } = methodGroup;
 
         [NotNull]
-        public IMethodSymbol LongestOverload { get; }
+        public IMethodSymbol LongestOverload { get; } = longestOverload;
 
-        public SymbolAnalysisContext Context { get; }
-
-        public OverloadsInfo([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] IMethodSymbol longestOverload,
-            SymbolAnalysisContext context)
-        {
-            MethodGroup = methodGroup;
-            LongestOverload = longestOverload;
-            Context = context;
-        }
+        public SymbolAnalysisContext Context { get; } = context;
     }
 }

@@ -125,16 +125,9 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         return member.Locations[0];
     }
 
-    private sealed class StatementWalker : CSharpSyntaxWalker
+    private sealed class StatementWalker(CancellationToken cancellationToken) : CSharpSyntaxWalker
     {
-        private CancellationToken cancellationToken;
-
         public int StatementCount { get; private set; }
-
-        public StatementWalker(CancellationToken cancellationToken)
-        {
-            this.cancellationToken = cancellationToken;
-        }
 
         public override void Visit([NotNull] SyntaxNode node)
         {

@@ -250,16 +250,11 @@ internal static class OperationExtensions
         }
     }
 
-    private sealed class OperationLocationVisitor : ExplicitOperationVisitor<object, Location>
+    private sealed class OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
+        : ExplicitOperationVisitor<object, Location>
     {
-        private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy;
-        private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy;
-
-        public OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
-        {
-            this.doWhileStrategy = doWhileStrategy;
-            this.tryFinallyStrategy = tryFinallyStrategy;
-        }
+        private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy = doWhileStrategy;
+        private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy = tryFinallyStrategy;
 
         [NotNull]
         public override Location VisitEmpty([NotNull] IEmptyOperation operation, [CanBeNull] object argument)

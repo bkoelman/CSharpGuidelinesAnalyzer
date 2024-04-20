@@ -310,16 +310,10 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private sealed class ParameterSettings
+    private sealed class ParameterSettings(int maxParameterCount, int maxConstructorParameterCount)
     {
-        public int MaxParameterCount { get; }
-        public int MaxConstructorParameterCount { get; }
-
-        public ParameterSettings(int maxParameterCount, int maxConstructorParameterCount)
-        {
-            MaxParameterCount = maxParameterCount;
-            MaxConstructorParameterCount = maxConstructorParameterCount;
-        }
+        public int MaxParameterCount { get; } = maxParameterCount;
+        public int MaxConstructorParameterCount { get; } = maxConstructorParameterCount;
     }
 
     private readonly struct ParameterCountInfo<TTarget>

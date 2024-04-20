@@ -352,65 +352,40 @@ internal sealed class FixableDocument
         }
     }
 
-    private sealed class StaticTextBlock : TextBlock
+    private sealed class StaticTextBlock(string text) : TextBlock(text, text)
     {
-        public StaticTextBlock(string text)
-            : base(text, text)
-        {
-        }
-
         public override string ToString()
         {
             return TextBefore;
         }
     }
 
-    private sealed class MarkedTextBlock : TextBlock
+    private sealed class MarkedTextBlock(string textToMark) : TextBlock(textToMark, textToMark)
     {
-        public MarkedTextBlock(string textToMark)
-            : base(textToMark, textToMark)
-        {
-        }
-
         public override string ToString()
         {
             return "|" + TextAfter;
         }
     }
 
-    private sealed class InsertedTextBlock : TextBlock
+    private sealed class InsertedTextBlock(string textToInsert) : TextBlock(string.Empty, textToInsert)
     {
-        public InsertedTextBlock(string textToInsert)
-            : base(string.Empty, textToInsert)
-        {
-        }
-
         public override string ToString()
         {
             return "+" + TextAfter;
         }
     }
 
-    private sealed class DeletedTextBlock : TextBlock
+    private sealed class DeletedTextBlock(string textToDelete) : TextBlock(textToDelete, string.Empty)
     {
-        public DeletedTextBlock(string textToDelete)
-            : base(textToDelete, string.Empty)
-        {
-        }
-
         public override string ToString()
         {
             return "-" + TextBefore;
         }
     }
 
-    private sealed class ReplacedTextBlock : TextBlock
+    private sealed class ReplacedTextBlock(string textBefore, string textAfter) : TextBlock(textBefore, textAfter)
     {
-        public ReplacedTextBlock(string textBefore, string textAfter)
-            : base(textBefore, textAfter)
-        {
-        }
-
         public override string ToString()
         {
             return TextBefore + "=>" + TextAfter;

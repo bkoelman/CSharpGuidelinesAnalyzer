@@ -107,17 +107,10 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private sealed class LoopLocationWalker : CSharpSyntaxWalker
+    private sealed class LoopLocationWalker(CancellationToken cancellationToken) : CSharpSyntaxWalker
     {
-        private CancellationToken cancellationToken;
-
         [CanBeNull]
         public Location LoopStatementLocation { get; private set; }
-
-        public LoopLocationWalker(CancellationToken cancellationToken)
-        {
-            this.cancellationToken = cancellationToken;
-        }
 
         public override void Visit([NotNull] SyntaxNode node)
         {

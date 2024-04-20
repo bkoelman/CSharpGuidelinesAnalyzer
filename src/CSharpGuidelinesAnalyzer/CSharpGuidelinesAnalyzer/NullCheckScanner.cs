@@ -322,30 +322,22 @@ internal sealed class NullCheckScanner
         }
     }
 
-    private readonly struct ArgumentsInfo
+    private readonly struct ArgumentsInfo(
+        [NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument, NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
     {
         [NotNull]
-        public IOperation LeftArgument { get; }
+        public IOperation LeftArgument { get; } = leftArgument;
 
         public bool IsLeftArgumentNull => IsConstantNullOrDefault(LeftArgument);
 
         [NotNull]
-        public IOperation RightArgument { get; }
+        public IOperation RightArgument { get; } = rightArgument;
 
         public bool IsRightArgumentNull => IsConstantNullOrDefault(RightArgument);
 
-        public NullCheckMethod NullCheckMethod { get; }
+        public NullCheckMethod NullCheckMethod { get; } = nullCheckMethod;
 
-        public NullCheckOperand NullCheckOperand { get; }
-
-        public ArgumentsInfo([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument, NullCheckMethod nullCheckMethod,
-            NullCheckOperand nullCheckOperand)
-        {
-            LeftArgument = leftArgument;
-            RightArgument = rightArgument;
-            NullCheckMethod = nullCheckMethod;
-            NullCheckOperand = nullCheckOperand;
-        }
+        public NullCheckOperand NullCheckOperand { get; } = nullCheckOperand;
 
         public ArgumentsInfo WithArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument)
         {

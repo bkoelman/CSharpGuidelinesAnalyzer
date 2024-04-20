@@ -240,17 +240,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     /// <summary>
     /// Analyzes the filtered set of return values in a method.
     /// </summary>
-    private sealed class ReturnValueAnalyzer
+    private sealed class ReturnValueAnalyzer(OperationBlockAnalysisContext context)
     {
-        private readonly OperationBlockAnalysisContext context;
+        private readonly OperationBlockAnalysisContext context = context;
 
         [NotNull]
         private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
-
-        public ReturnValueAnalyzer(OperationBlockAnalysisContext context)
-        {
-            this.context = context;
-        }
 
         public void Analyze([NotNull] IReturnOperation returnStatement)
         {
