@@ -98,7 +98,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
     private static bool IsDefaultOrPatternCase([NotNull] ICaseClauseOperation clause)
     {
-        return clause.CaseKind == CaseKind.Default || clause.CaseKind == CaseKind.Pattern;
+        return clause.CaseKind is CaseKind.Default or CaseKind.Pattern;
     }
 
     [CanBeNull]

@@ -47,7 +47,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
         {
             INamedTypeSymbol type = parameter.ContainingType;
 
-            if (!(parameter.ContainingSymbol is IMethodSymbol method))
+            if (parameter.ContainingSymbol is not IMethodSymbol method)
             {
                 return;
             }

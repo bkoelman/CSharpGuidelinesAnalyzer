@@ -74,7 +74,7 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
     private static bool IsComment(SyntaxTrivia trivia)
     {
         SyntaxKind kind = trivia.Kind();
-        return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.MultiLineCommentTrivia;
+        return kind is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.MultiLineCommentTrivia;
     }
 
     private static bool IsCommentInEmptyElseClause(SyntaxTrivia commentTrivia)

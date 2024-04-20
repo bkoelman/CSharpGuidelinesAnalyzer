@@ -189,7 +189,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
                     return HandleMissingElseClause();
                 }
 
-                return !(falseBlock is IConditionalOperation ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
+                return falseBlock is not IConditionalOperation ifElseStatement ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
             }
 
             private bool HandleMissingElseClause()

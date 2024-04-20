@@ -69,6 +69,6 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
 
     private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
     {
-        return method.DeclaredAccessibility == Accessibility.Public || method.DeclaredAccessibility == Accessibility.Internal;
+        return method.DeclaredAccessibility is Accessibility.Public or Accessibility.Internal;
     }
 }

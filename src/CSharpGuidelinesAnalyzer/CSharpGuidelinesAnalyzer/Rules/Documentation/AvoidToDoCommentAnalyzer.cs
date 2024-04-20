@@ -227,14 +227,14 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
         {
             SyntaxKind kind = trivia.Kind();
 
-            return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.SingleLineDocumentationCommentTrivia;
+            return kind is SyntaxKind.SingleLineCommentTrivia or SyntaxKind.SingleLineDocumentationCommentTrivia;
         }
 
         private bool IsMultilineComment(SyntaxTrivia trivia)
         {
             SyntaxKind kind = trivia.Kind();
 
-            return kind == SyntaxKind.MultiLineCommentTrivia || kind == SyntaxKind.MultiLineDocumentationCommentTrivia;
+            return kind is SyntaxKind.MultiLineCommentTrivia or SyntaxKind.MultiLineDocumentationCommentTrivia;
         }
 
         private struct LineRange

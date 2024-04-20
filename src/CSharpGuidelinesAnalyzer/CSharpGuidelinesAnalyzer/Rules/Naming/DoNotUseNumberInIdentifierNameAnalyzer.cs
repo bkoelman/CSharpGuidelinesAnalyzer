@@ -356,7 +356,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
 
     private static bool IsDimensional([NotNull] string thisTokenText, [NotNull] string nextTokenText)
     {
-        return (thisTokenText == "2" || thisTokenText == "3" || thisTokenText == "4") && nextTokenText == "D";
+        return thisTokenText is "2" or "3" or "4" && nextTokenText == "D";
     }
 
     private static bool IsWindowsOrSystemInt([NotNull] string thisTokenText, [NotNull] string nextTokenText)
@@ -364,14 +364,14 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         bool isTextMatch = string.Equals(thisTokenText, "int", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(thisTokenText, "win", StringComparison.OrdinalIgnoreCase);
 
-        return isTextMatch && (nextTokenText == "16" || nextTokenText == "32" || nextTokenText == "64");
+        return isTextMatch && nextTokenText is "16" or "32" or "64";
     }
 
     private static bool IsEncoding([NotNull] string thisTokenText, [NotNull] string nextTokenText)
     {
         bool isTextMatch = string.Equals(thisTokenText, "utf", StringComparison.OrdinalIgnoreCase);
 
-        return isTextMatch && (nextTokenText == "7" || nextTokenText == "8" || nextTokenText == "16" || nextTokenText == "32");
+        return isTextMatch && nextTokenText is "7" or "8" or "16" or "32";
     }
 
     private static bool ContainsDigit([NotNull] string text)

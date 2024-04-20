@@ -75,7 +75,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         var method = symbol as IMethodSymbol;
 
         MethodKind? kind = method?.MethodKind;
-        return kind == MethodKind.UserDefinedOperator || kind == MethodKind.BuiltinOperator;
+        return kind is MethodKind.UserDefinedOperator or MethodKind.BuiltinOperator;
     }
 
     private static bool IsMemberAccessible([NotNull] ISymbol symbol)

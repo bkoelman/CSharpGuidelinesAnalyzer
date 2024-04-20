@@ -149,7 +149,7 @@ internal static class SymbolExtensions
     public static bool IsInterfaceImplementation<TSymbol>([NotNull] this TSymbol member)
         where TSymbol : ISymbol
     {
-        if (!(member is IFieldSymbol))
+        if (member is not IFieldSymbol)
         {
             foreach (TSymbol interfaceMember in member.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers().OfType<TSymbol>()))
             {

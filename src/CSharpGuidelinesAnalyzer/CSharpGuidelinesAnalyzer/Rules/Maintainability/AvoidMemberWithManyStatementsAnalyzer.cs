@@ -99,7 +99,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
         foreach (SyntaxNode syntax in member.DeclaringSyntaxReferences.Select(reference => reference.GetSyntax(cancellationToken)))
         {
-            if (syntax is VariableDeclaratorSyntax || syntax is PropertyDeclarationSyntax)
+            if (syntax is VariableDeclaratorSyntax or PropertyDeclarationSyntax)
             {
                 return "Initializer for";
             }
@@ -155,7 +155,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
         private bool IsExcludedStatement([NotNull] SyntaxNode node)
         {
-            return node is BlockSyntax || node is LabeledStatementSyntax || node is LocalFunctionStatementSyntax;
+            return node is BlockSyntax or LabeledStatementSyntax or LocalFunctionStatementSyntax;
         }
     }
 }

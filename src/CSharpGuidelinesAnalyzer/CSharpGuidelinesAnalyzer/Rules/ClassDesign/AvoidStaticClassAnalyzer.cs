@@ -115,7 +115,7 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
 
     private static bool IsPublicOrInternal([NotNull] ISymbol member)
     {
-        return member.DeclaredAccessibility == Accessibility.Public || member.DeclaredAccessibility == Accessibility.Internal;
+        return member.DeclaredAccessibility is Accessibility.Public or Accessibility.Internal;
     }
 
     private static bool IsNestedType([NotNull] ISymbol member)

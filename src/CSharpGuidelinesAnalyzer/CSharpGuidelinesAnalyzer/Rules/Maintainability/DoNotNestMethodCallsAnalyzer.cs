@@ -105,7 +105,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
     {
         if (symbol is IMethodSymbol method)
         {
-            return method.MethodKind == MethodKind.Constructor || method.MethodKind == MethodKind.StaticConstructor;
+            return method.MethodKind is MethodKind.Constructor or MethodKind.StaticConstructor;
         }
 
         return false;

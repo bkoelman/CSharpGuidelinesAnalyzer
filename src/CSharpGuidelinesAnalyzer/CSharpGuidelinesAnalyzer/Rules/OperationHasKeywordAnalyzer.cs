@@ -63,7 +63,7 @@ public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
 
     private static bool IsReportAtAlternateLocation([NotNull] IOperation operation)
     {
-        return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax { Identifier: { ValueText: "ReportAtAlternateLocation" } };
+        return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax { Identifier.ValueText: "ReportAtAlternateLocation" };
     }
 
     private static void AnalyzeLocationForOperation(OperationAnalysisContext context, DoWhileLoopLookupKeywordStrategy doWhileStrategy,

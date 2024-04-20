@@ -181,7 +181,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
 
     private static bool IsProtected([NotNull] IMethodSymbol method)
     {
-        return method.DeclaredAccessibility == Accessibility.Protected || method.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
+        return method.DeclaredAccessibility is Accessibility.Protected or Accessibility.ProtectedAndInternal;
     }
 
     private sealed class LocalAssignmentWalker : ExplicitOperationWalker

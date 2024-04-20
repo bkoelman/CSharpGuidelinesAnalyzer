@@ -343,7 +343,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
 
         public override void VisitArgument([NotNull] IArgumentOperation operation)
         {
-            if (operation.Parameter.RefKind == RefKind.Ref || operation.Parameter.RefKind == RefKind.Out)
+            if (operation.Parameter.RefKind is RefKind.Ref or RefKind.Out)
             {
                 RegisterAssignmentToParameter(operation.Value);
             }

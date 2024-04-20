@@ -109,7 +109,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         {
             IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
 
-            if (leftTarget != null && !(leftTarget is IInvocationOperation))
+            if (leftTarget != null && leftTarget is not IInvocationOperation)
             {
                 if (DoReportForMatchingRightOperandInNullableComparison(binaryOperator.RightOperand, scanner, leftTarget))
                 {

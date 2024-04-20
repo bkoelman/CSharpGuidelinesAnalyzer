@@ -91,7 +91,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
 
     private static bool IsMemberInternal([NotNull] ISymbol member)
     {
-        bool isInternal = member.DeclaredAccessibility == Accessibility.Internal || member.DeclaredAccessibility == Accessibility.ProtectedAndInternal;
+        bool isInternal = member.DeclaredAccessibility is Accessibility.Internal or Accessibility.ProtectedAndInternal;
 
         return isInternal && member.IsSymbolAccessibleFromRoot();
     }

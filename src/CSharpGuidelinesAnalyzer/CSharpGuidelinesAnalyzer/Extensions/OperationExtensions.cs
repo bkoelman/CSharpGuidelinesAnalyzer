@@ -59,7 +59,7 @@ internal static class OperationExtensions
             return false;
         }
 
-        if (operation is IBlockOperation || operation is ILabeledOperation)
+        if (operation is IBlockOperation or ILabeledOperation)
         {
             return false;
         }

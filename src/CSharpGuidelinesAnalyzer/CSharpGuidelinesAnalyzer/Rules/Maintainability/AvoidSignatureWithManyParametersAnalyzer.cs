@@ -152,7 +152,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
     private static bool IsConstructor([NotNull] IMethodSymbol method)
     {
-        return method.MethodKind == MethodKind.Constructor || method.MethodKind == MethodKind.StaticConstructor;
+        return method.MethodKind is MethodKind.Constructor or MethodKind.StaticConstructor;
     }
 
     [NotNull]

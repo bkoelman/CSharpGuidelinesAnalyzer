@@ -61,7 +61,7 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
 
     private static bool IsRefOrOutParameter([NotNull] IParameterSymbol parameter)
     {
-        return parameter.RefKind == RefKind.Ref || parameter.RefKind == RefKind.Out;
+        return parameter.RefKind is RefKind.Ref or RefKind.Out;
     }
 
     private static bool IsOutParameterInTryMethod([NotNull] IParameterSymbol parameter)
