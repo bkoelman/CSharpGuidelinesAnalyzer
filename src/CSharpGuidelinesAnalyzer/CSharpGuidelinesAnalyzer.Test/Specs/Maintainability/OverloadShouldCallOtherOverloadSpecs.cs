@@ -838,6 +838,87 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     }
 
     [Fact]
+    internal async Task When_parameter_order_in_overloads_is_consistent_with_CancellationToken_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(CancellationToken).Namespace)
+            .InGlobalScope("""
+                public class C
+                {
+                    public bool M()
+                    {
+                        return M(CancellationToken.None);
+                    }
+                
+                    public bool M(CancellationToken cancellationToken)
+                    {
+                        return M(string.Empty, cancellationToken);
+                    }
+                
+                    public bool M(string value, CancellationToken cancellationToken)
+                    {
+                        return M(value, -1, cancellationToken);
+                    }
+                
+                    public bool M(string value, int index, CancellationToken cancellationToken)
+                    {
+                        return M(value, index, false, cancellationToken);
+                    }
+                
+                    protected virtual bool M(string value, int index, bool flag, CancellationToken cancellationToken)
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                """)
+            .Build();
+
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
+    internal async Task When_parameter_order_in_overloads_is_not_consistent_with_CancellationToken_it_must_be_reported()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .Using(typeof(CancellationToken).Namespace)
+            .InGlobalScope("""
+                public class C
+                {
+                    public bool M()
+                    {
+                        return M(CancellationToken.None);
+                    }
+                
+                    public bool M(CancellationToken cancellationToken)
+                    {
+                        return M(string.Empty, cancellationToken);
+                    }
+                
+                    public bool M(string value, CancellationToken cancellationToken)
+                    {
+                        return M(-1, value, cancellationToken);
+                    }
+                
+                    public bool [|M|](int index, string value, CancellationToken cancellationToken)
+                    {
+                        return M(value, index, false, cancellationToken);
+                    }
+                
+                    protected virtual bool M(string value, int index, bool flag, CancellationToken cancellationToken)
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                """)
+            .Build();
+
+        await VerifyGuidelineDiagnosticAsync(source,
+            "Parameter order in 'C.M(int, string, CancellationToken)' does not match with the parameter order of the longest overload");
+    }
+
+    [Fact]
     internal async Task When_parameter_order_in_overloads_is_consistent_with_optional_parameters_it_must_be_skipped()
     {
         // Arrange

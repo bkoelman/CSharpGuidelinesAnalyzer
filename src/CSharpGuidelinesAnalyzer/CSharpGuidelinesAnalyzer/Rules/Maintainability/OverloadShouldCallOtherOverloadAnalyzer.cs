@@ -216,7 +216,12 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
 
     private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
     {
-        return parameter is { HasExplicitDefaultValue: false, IsParams: false };
+        return parameter is { HasExplicitDefaultValue: false, IsParams: false } && !IsCancellationToken(parameter.Type);
+    }
+
+    private static bool IsCancellationToken([NotNull] ITypeSymbol type)
+    {
+        return type.ToDisplayString() == "System.Threading.CancellationToken";
     }
 
     private static bool AreDefaultParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
