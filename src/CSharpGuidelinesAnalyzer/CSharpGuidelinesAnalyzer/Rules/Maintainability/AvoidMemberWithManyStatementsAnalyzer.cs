@@ -56,22 +56,14 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         startContext.RegisterCodeBlockAction(actionContext => AnalyzeCodeBlock(actionContext, settingsReader));
     }
 
-    private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerSettingsReader settingsReader, [NotNull] SyntaxTree syntaxTree)
-    {
-        Guard.NotNull(settingsReader, nameof(settingsReader));
-        Guard.NotNull(syntaxTree, nameof(syntaxTree));
-
-        return settingsReader.TryGetInt32(syntaxTree, MaxStatementCountKey, 0, 255) ?? DefaultMaxStatementCount;
-    }
-
     private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
     {
-        int maxStatementCount = GetMaxStatementCountFromSettings(settingsReader, context.CodeBlock.SyntaxTree);
-
-        if (context.OwningSymbol is INamedTypeSymbol || context.OwningSymbol.IsSynthesized())
+        if (context.OwningSymbol is INamedTypeSymbol || context.OwningSymbol.IsSynthesized() || IsPrimaryConstructorInitializer(context.CodeBlock))
         {
             return;
         }
+
+        int maxStatementCount = GetMaxStatementCountFromSettings(settingsReader, context.CodeBlock.SyntaxTree);
 
         var statementWalker = new StatementWalker(context.CancellationToken);
         statementWalker.Visit(context.CodeBlock);
@@ -80,6 +72,19 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         {
             ReportAtContainingSymbol(statementWalker.StatementCount, maxStatementCount, context);
         }
+    }
+
+    private static bool IsPrimaryConstructorInitializer([NotNull] SyntaxNode codeBlock)
+    {
+        return codeBlock is BaseTypeDeclarationSyntax;
+    }
+
+    private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerSettingsReader settingsReader, [NotNull] SyntaxTree syntaxTree)
+    {
+        Guard.NotNull(settingsReader, nameof(settingsReader));
+        Guard.NotNull(syntaxTree, nameof(syntaxTree));
+
+        return settingsReader.TryGetInt32(syntaxTree, MaxStatementCountKey, 0, 255) ?? DefaultMaxStatementCount;
     }
 
     private static void ReportAtContainingSymbol(int statementCount, int maxStatementCount, CodeBlockAnalysisContext context)

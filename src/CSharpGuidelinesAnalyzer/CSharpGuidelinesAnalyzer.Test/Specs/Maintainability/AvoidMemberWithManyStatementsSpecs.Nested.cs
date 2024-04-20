@@ -223,4 +223,36 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Act and assert
         await VerifyGuidelineDiagnosticAsync(source);
     }
+
+    [Fact]
+    internal async Task When_type_has_primary_constructor_with_base_initializer_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .InGlobalScope("""
+                class C(string s) : B(s)
+                {
+                    void M1()
+                    {
+                        ; ; ; ;
+                    }
+                
+                    void M2()
+                    {
+                        ; ; ; ;
+                    }
+                }
+
+                abstract class B
+                {
+                    protected B(string s)
+                    {
+                    }
+                }
+                """)
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
 }

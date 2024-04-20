@@ -145,7 +145,10 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
             return ifStatement.WhenFalse is IConditionalOperation;
         }
 
+        // Workaround for https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/155.
+#pragma warning disable AV1500 // Member or local function contains too many statements
         private sealed class IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation ifStatement)
+#pragma warning restore AV1500 // Member or local function contains too many statements
         {
             [NotNull]
             private readonly IfStatementAnalyzer owner = owner;
