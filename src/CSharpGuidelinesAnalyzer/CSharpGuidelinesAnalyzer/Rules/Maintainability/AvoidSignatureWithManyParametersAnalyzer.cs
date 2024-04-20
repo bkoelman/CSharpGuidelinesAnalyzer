@@ -284,7 +284,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
     [CanBeNull]
     private static int? TryGetValueTupleElementCount([NotNull] ITypeSymbol type)
     {
-        return type.IsTupleType && type is INamedTypeSymbol namedType ? (int?)namedType.TupleElements.Length : null;
+        return type.IsTupleType && type is INamedTypeSymbol namedType ? namedType.TupleElements.Length : null;
     }
 
     [CanBeNull]
