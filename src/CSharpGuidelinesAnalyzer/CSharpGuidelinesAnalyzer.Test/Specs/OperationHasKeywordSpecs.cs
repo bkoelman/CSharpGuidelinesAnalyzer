@@ -17,12 +17,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -35,14 +35,14 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|while|] (System.DateTime.Now.Ticks % 2 != 1)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -55,7 +55,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|do|]
@@ -63,7 +63,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                     }
                     while (System.DateTime.Now.Ticks % 2 != 1);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -76,7 +76,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void ReportAtAlternateLocation()
                 {
                     do
@@ -84,7 +84,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                     }
                     [|while|] (System.DateTime.Now.Ticks % 2 != 1);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -97,7 +97,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|for|] (int i = 0; i < 10; i++)
@@ -105,7 +105,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                         [|break|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -119,7 +119,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|foreach|] (var item in new int[0])
@@ -127,7 +127,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                         [|continue|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -141,12 +141,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|return|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -160,12 +160,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<int> M()
                 {
                     [|yield return|] 1;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -179,12 +179,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<int> M()
                 {
                     [|yield break|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -197,16 +197,16 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|goto|] Finish;
-
+                
                     Finish:
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -219,7 +219,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|if|] (System.DateTime.Now.Ticks % 2 != 1)
@@ -229,7 +229,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -242,14 +242,14 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|using|] (IDisposable x = null)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -262,14 +262,14 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|lock|] (new object())
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -282,7 +282,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     [|switch|] (i)
@@ -302,7 +302,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -322,7 +322,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(object o)
                 {
                     [|switch|] (o)
@@ -341,7 +341,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -360,7 +360,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|try|]
@@ -373,7 +373,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -387,7 +387,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void ReportAtAlternateLocation()
                 {
                     try
@@ -400,7 +400,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -414,12 +414,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|throw|] new Exception(string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -433,12 +433,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task M()
                 {
                     [|await|] Task.Yield();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -452,12 +452,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task M()
                 {
                     int size = [|sizeof|](int);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -471,12 +471,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task M()
                 {
                     var type = [|typeof|](string);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -490,12 +490,12 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task M()
                 {
                     var name = [|nameof|](M);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -16,11 +16,11 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Container
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -32,11 +32,11 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class Container<T>
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -48,18 +48,18 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public static class [|Container|]
                 {
                     public static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -72,18 +72,18 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public static class [|Container|]
                 {
                     internal static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -96,11 +96,11 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public static class Container
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

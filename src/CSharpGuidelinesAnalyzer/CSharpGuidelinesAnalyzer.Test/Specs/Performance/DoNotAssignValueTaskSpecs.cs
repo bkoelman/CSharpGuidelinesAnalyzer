@@ -18,19 +18,19 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task M()
                 {
                     await GetAsync();
                     await GetAsync().ConfigureAwait(false);
-
+                
                     string result1 = await GetStringAsync();
                     string result2 = await GetStringAsync().ConfigureAwait(false);
                 }
 
                 ValueTask GetAsync() => throw null;
                 ValueTask<string> GetStringAsync() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -44,21 +44,21 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     ValueTask task [|=|] GetAsync();
                     ConfiguredValueTaskAwaitable configuredTask [|=|] GetAsync().ConfigureAwait(false);
-
+                
                     ValueTask<string> stringTask [|=|] GetStringAsync();
                     ConfiguredValueTaskAwaitable<string> configuredStringTask [|=|] GetStringAsync().ConfigureAwait(false);
-
+                
                     string result = GetStringAsync().Result;
                 }
 
                 ValueTask GetAsync() => throw null;
                 ValueTask<string> GetStringAsync() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -76,14 +76,14 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 C TheC { get; set; }
 
                 void M()
                 {
                     ValueTask task [|=|] TheC?.GetAsync() ?? default;
                     ConfiguredValueTaskAwaitable configuredTask [|=|] TheC?.GetAsync().ConfigureAwait(false) ?? default;
-
+                
                     ValueTask<string> stringTask [|=|] TheC?.GetStringAsync() ?? default;
                     ConfiguredValueTaskAwaitable<string> configuredStringTask [|=|] TheC?.GetStringAsync().ConfigureAwait(false) ?? default;
                 }
@@ -93,7 +93,7 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
                     public ValueTask GetAsync() => throw null;
                     public ValueTask<string> GetStringAsync() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -111,18 +111,18 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     ValueTask task [|=|] GetAsync();
                     ConfiguredValueTaskAwaitable ConfiguredTask {get; set; } [|=|] GetAsync().ConfigureAwait(false);
                     ValueTask<string> stringTask [|=|] GetStringAsync();
                     ConfiguredValueTaskAwaitable<string> ConfiguredStringTask {get; set; } [|=|] GetStringAsync().ConfigureAwait(false);
-
+                
                     static ValueTask GetAsync() => throw null;
                     static ValueTask<string> GetStringAsync() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -140,28 +140,28 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     ValueTask task;
                     task [|=|] GetAsync();
-
+                
                     ConfiguredValueTaskAwaitable configuredTask;
                     configuredTask [|=|] GetAsync().ConfigureAwait(false);
-
+                
                     ValueTask<string> stringTask;
                     stringTask [|=|] GetStringAsync();
-
+                
                     ConfiguredValueTaskAwaitable<string> configuredStringTask;
                     configuredStringTask [|=|] GetStringAsync().ConfigureAwait(false);
-
+                
                     string result;
                     result = GetStringAsync().Result;
                 }
 
                 ValueTask GetAsync() => throw null;
                 ValueTask<string> GetStringAsync() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -179,25 +179,25 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     ValueTask? task = null;
                     task [|??=|] GetAsync();
-
+                
                     ConfiguredValueTaskAwaitable? configuredTask = null;
                     configuredTask [|??=|] GetAsync().ConfigureAwait(false);
-
+                
                     ValueTask<string>? stringTask = null;
                     stringTask [|??=|] GetStringAsync();
-
+                
                     ConfiguredValueTaskAwaitable<string>? configuredStringTask = null;
                     configuredStringTask [|??=|] GetStringAsync().ConfigureAwait(false);
                 }
 
                 ValueTask GetAsync() => throw null;
                 ValueTask<string> GetStringAsync() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -215,14 +215,14 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     ValueTask task;
                     ConfiguredValueTaskAwaitable ConfiguredTask { get; set; }
                     ValueTask<string> stringTask;
                     ConfiguredValueTaskAwaitable<string> ConfiguredStringTask { get; set; }
-
+                
                     void M()
                     {
                         task [|=|] GetAsync();
@@ -230,11 +230,11 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
                         stringTask [|=|] GetStringAsync();
                         ConfiguredStringTask [|=|] GetStringAsync().ConfigureAwait(false);
                     }
-
+                
                     ValueTask GetAsync() => throw null;
                     ValueTask<string> GetStringAsync() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -252,7 +252,7 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
             .Using(typeof(ConfiguredValueTaskAwaitable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -262,10 +262,10 @@ public sealed class DoNotAssignValueTaskSpecs : CSharpGuidelinesAnalysisTestFixt
                         Target([|default(ValueTask<string>)|]);
                         Target([|default(ConfiguredValueTaskAwaitable<string>)|]);
                     }
-
+                
                     void Target(object value) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -17,7 +17,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     class C
@@ -28,7 +28,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -42,7 +42,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     class C
@@ -53,7 +53,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,7 +67,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     class C
@@ -77,11 +77,11 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                             var task = GetStringTask();
                             return task.[|ContinueWith|](t => t.Result);
                         }
-
+                
                         Task<string> GetStringTask() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -95,7 +95,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 using static System.Threading.Tasks.Task;
 
                 namespace N
@@ -108,7 +108,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -122,26 +122,26 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(NotImplementedException).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     public class Task<T>
                     {
                     }
-
+                
                     public class Task
                     {
                         public Task<TResult> ContinueWith<TResult>(Func<Task, TResult> continuationFunction)
                         {
                             throw new NotImplementedException();
                         }
-
+                
                         public static Task Delay(int millisecondsDelay)
                         {
                             throw new NotImplementedException();
                         }
                     }
-
+                
                     class C
                     {
                         Task<int> M(int i)
@@ -150,7 +150,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

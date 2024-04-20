@@ -1,14 +1,9 @@
 ﻿namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 
 /// <summary />
-internal sealed class EmptySourceCodeBuilder : SourceCodeBuilder
+internal sealed class EmptySourceCodeBuilder() : SourceCodeBuilder([])
 {
     private string text = string.Empty;
-
-    public EmptySourceCodeBuilder()
-        : base(Enumerable.Empty<string>())
-    {
-    }
 
     protected override string GetSourceCode()
     {

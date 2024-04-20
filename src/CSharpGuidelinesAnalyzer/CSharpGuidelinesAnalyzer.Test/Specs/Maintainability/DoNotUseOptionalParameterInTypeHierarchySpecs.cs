@@ -16,12 +16,12 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int p = 5) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,12 +33,12 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M(int p);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,12 +50,12 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M([|int p = 5|]);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -68,7 +68,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M([|int p = 5|]);
@@ -78,7 +78,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
                 {
                     public void M([|int q = 8|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -92,13 +92,13 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .WithReferenceToExternalAssemblyFor(@"
+            .WithReferenceToExternalAssemblyFor("""
                 public interface I
                 {
                     void M(int p = 5);
                 }
-            ")
-            .InGlobalScope(@"
+                """)
+            .InGlobalScope("""
                 abstract class B : I
                 {
                     public abstract void M(int q = 8);
@@ -108,7 +108,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
                 {
                     public void M(int q = 8) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -120,7 +120,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M([|int p = 5|]);
@@ -130,7 +130,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
                 {
                     void I.M([|int q = 8|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -144,18 +144,18 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .WithReferenceToExternalAssemblyFor(@"
+            .WithReferenceToExternalAssemblyFor("""
                 public interface I
                 {
                     void M(int p = 5);
                 }
-            ")
-            .InGlobalScope(@"
+                """)
+            .InGlobalScope("""
                 class C : I
                 {
                     void I.M(int q = 8) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -167,7 +167,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 abstract class A
                 {
                     protected abstract void M([|int p = 5|]);
@@ -182,7 +182,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
                 {
                     protected override void M([|int r = 12|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -197,18 +197,18 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchySpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .WithReferenceToExternalAssemblyFor(@"
+            .WithReferenceToExternalAssemblyFor("""
                 public abstract class B
                 {
                     protected abstract void M(int p = 5);
                 }
-            ")
-            .InGlobalScope(@"
+                """)
+            .InGlobalScope("""
                 class C : B
                 {
                     protected override void M(int q = 8) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

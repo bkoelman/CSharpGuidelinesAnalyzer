@@ -1,22 +1,16 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
 using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 
 /// <summary />
 internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 {
-    protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
-    {
-        "System"
-    }.ToImmutableArray();
+    protected static readonly ImmutableArray<string> DefaultNamespaceImports = ["System"];
 
-    public static readonly AnalyzerTestContext DefaultTestContext =
-        new(string.Empty, Array.Empty<TextSpan>(), new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
+    public static readonly AnalyzerTestContext DefaultTestContext = new(string.Empty, [], new AnalyzerOptions([]));
 
     private readonly HashSet<string> namespaceImports;
 
@@ -26,7 +20,7 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 
     protected SourceCodeBuilder(IEnumerable<string> implicitNamespaceImports)
     {
-        namespaceImports = new HashSet<string>(implicitNamespaceImports);
+        namespaceImports = implicitNamespaceImports.ToHashSet();
         Editor = new CodeEditor(this);
     }
 
@@ -118,9 +112,7 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         using var reader = new StringReader(text);
 
-        string? line;
-
-        while ((line = reader.ReadLine()) != null)
+        while (reader.ReadLine() is { } line)
         {
             yield return line;
         }

@@ -1,51 +1,50 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace CSharpGuidelinesAnalyzer
+namespace CSharpGuidelinesAnalyzer;
+
+public readonly struct WordToken : IEquatable<WordToken>
 {
-    public readonly struct WordToken : IEquatable<WordToken>
+    [NotNull]
+    public string Text { get; }
+
+    public WordTokenKind Kind { get; }
+
+    public WordToken([NotNull] string text, WordTokenKind kind)
     {
-        [NotNull]
-        public string Text { get; }
+        Guard.NotNull(text, nameof(text));
 
-        public WordTokenKind Kind { get; }
+        Text = text;
+        Kind = kind;
+    }
 
-        public WordToken([NotNull] string text, WordTokenKind kind)
-        {
-            Guard.NotNull(text, nameof(text));
+    public bool Equals(WordToken other)
+    {
+        return other.Text == Text && other.Kind == Kind;
+    }
 
-            Text = text;
-            Kind = kind;
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is WordToken wordToken && Equals(wordToken);
+    }
 
-        public bool Equals(WordToken other)
-        {
-            return other.Text == Text && other.Kind == Kind;
-        }
+    public override int GetHashCode()
+    {
+        return Text.GetHashCode() ^ Kind.GetHashCode();
+    }
 
-        public override bool Equals(object obj)
-        {
-            return obj is WordToken wordToken && Equals(wordToken);
-        }
+    public override string ToString()
+    {
+        return Kind + ": " + Text;
+    }
 
-        public override int GetHashCode()
-        {
-            return Text.GetHashCode() ^ Kind.GetHashCode();
-        }
+    public static bool operator ==(WordToken left, WordToken right)
+    {
+        return left.Equals(right);
+    }
 
-        public override string ToString()
-        {
-            return Kind + ": " + Text;
-        }
-
-        public static bool operator ==(WordToken left, WordToken right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(WordToken left, WordToken right)
-        {
-            return !(left == right);
-        }
+    public static bool operator !=(WordToken left, WordToken right)
+    {
+        return !(left == right);
     }
 }

@@ -16,9 +16,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                // [|TODO:test|]
-            ")
+            .InGlobalScope("// [|TODO:test|]")
             .Build();
 
         // Act and assert
@@ -31,9 +29,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                // [|TODO test|]
-            ")
+            .InGlobalScope("// [|TODO test|]")
             .Build();
 
         // Act and assert
@@ -46,9 +42,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                // TODO_test
-            ")
+            .InGlobalScope("// TODO_test")
             .Build();
 
         // Act and assert
@@ -60,9 +54,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                // TODO1 test
-            ")
+            .InGlobalScope("// TODO1 test")
             .Build();
 
         // Act and assert
@@ -74,9 +66,9 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                // ""TODO test""
-            ")
+            .InGlobalScope("""
+                // "TODO test"
+                """)
             .Build();
 
         // Act and assert
@@ -88,9 +80,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                // Hello TODO test
-            ")
+            .InGlobalScope("// Hello TODO test")
             .Build();
 
         // Act and assert
@@ -102,9 +92,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                ///    [|TODO test|]
-            ")
+            .InGlobalScope("/// [|TODO test|]")
             .Build();
 
         // Act and assert
@@ -117,10 +105,10 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 #if DEBUG // [|TODO test|]
                 #endif
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -133,10 +121,10 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 #if DEBUG ///    [|TODO test|]
                 #endif
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,10 +137,10 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 #region // TODO test
                 #endregion
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -164,10 +152,10 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 #region
                 #endregion // [|TODO test|]
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -180,7 +168,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"// [|TODO test                        |]")
+            .InGlobalScope("// [|TODO test                        |]")
             .Build();
 
         // Act and assert
@@ -193,9 +181,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                /* [|TODO: hello    |]*/
-            ")
+            .InGlobalScope("/* [|TODO: hello    |]*/")
             .Build();
 
         // Act and assert
@@ -208,9 +194,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                /** [|TODO: hello    |]*/
-            ")
+            .InGlobalScope("/** [|TODO: hello    |]*/")
             .Build();
 
         // Act and assert
@@ -223,13 +207,13 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 /* [|TODO: hello    |]
                         [|TODO: hello    |]
                 [|TODO: hello    |]
                     * [|TODO: hello    |]
                     [|TODO: hello    |]*/
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -246,13 +230,13 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 /** [|TODO: hello    |]
                         [|TODO: hello    |]
                 [|TODO: hello    |]
                     * [|TODO: hello    |]
                     [|TODO: hello    |]*/
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -269,11 +253,11 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 /// <summary>
                 /// [|TODO : test       |]
                 /// </summary>
-            ")
+                """)
             .Build();
 
         // Act and assert

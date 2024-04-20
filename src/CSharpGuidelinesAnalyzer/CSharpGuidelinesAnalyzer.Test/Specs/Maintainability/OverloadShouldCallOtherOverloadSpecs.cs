@@ -16,11 +16,11 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum E
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -32,14 +32,14 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M();
-
+                
                     void M(string s);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -51,18 +51,18 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
                     {
                     }
-
+                
                     public void M2(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -74,22 +74,22 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                     }
-
+                
                     public void M(string s)
                     {
                     }
-
+                
                     public void M(int i)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -101,19 +101,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     public void [|M|](string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -126,14 +126,14 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     public void [|M|](string s)
                     {
                     }
@@ -142,7 +142,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 class C : B
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -155,19 +155,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     private void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -179,19 +179,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     public void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -203,19 +203,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 sealed class C
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     public void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -227,19 +227,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     public static void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -251,18 +251,18 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
                     {
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -275,13 +275,13 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     void [|M|]()
                     {
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -290,7 +290,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 class C : B
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -303,19 +303,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         M(string.Empty);
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -327,19 +327,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         M(string.Empty, 0);
                     }
-
+                
                     protected virtual void M<T>(string s, T t)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -351,19 +351,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
                     {
                         M();
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -376,7 +376,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected virtual void M(string s, int i)
@@ -390,13 +390,13 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         base.M(string.Empty, 0);
                     }
-
+                
                     void M(string s)
                     {
                         base.M(s, 0);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -408,14 +408,14 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B<T>
                 {
                     protected virtual void M(T t)
                     {
                         M(t, 0);
                     }
-
+                
                     protected virtual void M(T t, int i)
                     {
                     }
@@ -427,18 +427,18 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         base.M(t);
                     }
-
+                
                     protected override void M(string t, int i)
                     {
                         base.M(t, i);
                     }
-
+                
                     protected virtual void M(string t, int i, object o)
                     {
                         base.M(t, i);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -450,16 +450,16 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 abstract class C
                 {
                     protected abstract void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -471,14 +471,14 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
-                    string [|M|]() => ""X"";
-
+                    string [|M|]() => "X";
+                
                     protected virtual string M(string s) => s;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -491,14 +491,14 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
-                    string M() => M(""X"");
-
+                    string M() => M("X");
+                
                     protected virtual string M(string s) => s;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -510,14 +510,14 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     string [|M|]() => M();
-
+                
                     string M(string s) => s;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -530,11 +530,11 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 partial class C
                 {
                     partial void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -547,7 +547,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                         M(string.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -559,11 +559,11 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 partial class C
                 {
                     partial void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -575,7 +575,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source,
@@ -587,16 +587,16 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 partial class C
                 {
                     partial void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -608,18 +608,18 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C()
                     {
                     }
-
+                
                     public C(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -631,30 +631,30 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M()
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(value, -1);
                     }
-
+                
                     public bool M(string value, int index)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -665,20 +665,20 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M(string value, string other)
                     {
                         return M(value, -1, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -689,30 +689,30 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M()
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public bool [|M|](int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source,
@@ -724,24 +724,24 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class B
                 {
                     public bool M()
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public bool [|M|](int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -751,7 +751,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 public class C : B
                 {
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source,
@@ -763,35 +763,35 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M()
                     {
                         return M(Array.Empty<object>());
                     }
-
+                
                     public bool M(params object[] args)
                     {
                         return M(string.Empty, args);
                     }
-
+                
                     public bool M(string value, params object[] args)
                     {
                         return M(value, -1, args);
                     }
-
+                
                     public bool M(string value, int index, params object[] args)
                     {
                         return M(value, index, false, args);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag, params object[] args)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -802,35 +802,35 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M()
                     {
                         return M(Array.Empty<object>());
                     }
-
+                
                     public bool M(params object[] args)
                     {
                         return M(string.Empty, args);
                     }
-
+                
                     public bool M(string value, params object[] args)
                     {
                         return M(-1, value, args);
                     }
-
+                
                     public bool [|M|](int index, string value, params object[] args)
                     {
                         return M(value, index, false, args);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag, params object[] args)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source,
@@ -842,30 +842,30 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M()
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value = null)
                     {
                         return M(value, -1);
                     }
-
+                
                     public bool M(string value = null, int index = -1)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value = null, int index = -1, bool flag = true)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -876,30 +876,30 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M()
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value = null)
                     {
                         return M(value, -1);
                     }
-
+                
                     public bool [|M|](int index = -1, string value = null)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value = null, int index = -1, bool flag = true)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source,
@@ -911,30 +911,30 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool M(DateTime time = default(DateTime))
                     {
                         return M(1.0, index: 0, DateTime.MinValue);
                     }
-
+                
                     public bool M(double first, int index = -1, DateTime time = default(DateTime))
                     {
                         return M(first, value: string.Empty, index: 0, new object());
                     }
-
+                
                     public bool M(double first, string value, int index = -1, object other = null)
                     {
                         return M(first, value, index, false, Array.Empty<object>());
                     }
-
+                
                     protected virtual bool M(double first, string value, int index = -1, bool flag = true, params object[] data)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -945,7 +945,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract bool M();
@@ -960,23 +960,23 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public override bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public override bool M(int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected override bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -987,24 +987,24 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public virtual bool M()
                     {
                         return M(string.Empty);
                     }
-
+                
                     public virtual bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public virtual bool [|M|](int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -1017,23 +1017,23 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public override bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public new bool M(int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected override bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source,
@@ -1045,7 +1045,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     bool M();
@@ -1060,23 +1060,23 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public bool M(int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     public virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -1087,7 +1087,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     bool M();
@@ -1103,25 +1103,25 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                         var @interface = (I)this;
                         return @interface.M(string.Empty);
                     }
-
+                
                     bool I.M(string value)
                     {
                         var @interface = (I)this;
                         return @interface.M(-1, value);
                     }
-
+                
                     bool I.M(int index, string value)
                     {
                         var @interface = (I)this;
                         return @interface.M(value, index, false);
                     }
-
+                
                     bool I.M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -1132,7 +1132,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I<T>
                 {
                     T M();
@@ -1148,25 +1148,25 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                         var @interface = (I<bool>)this;
                         return @interface.M(string.Empty);
                     }
-
+                
                     bool I<bool>.M(string value)
                     {
                         var @interface = (I<bool>)this;
                         return @interface.M(-1, value);
                     }
-
+                
                     bool I<bool>.M(int index, string value)
                     {
                         var @interface = (I<bool>)this;
                         return @interface.M(value, index, 0);
                     }
-
+                
                     bool I<bool>.M<U>(string value, int index, U extra)
                     {
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);

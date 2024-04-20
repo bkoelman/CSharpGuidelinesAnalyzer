@@ -1,8 +1,7 @@
-﻿namespace CSharpGuidelinesAnalyzer
+﻿namespace CSharpGuidelinesAnalyzer;
+
+internal enum DoWhileLoopLookupKeywordStrategy
 {
-    internal enum DoWhileLoopLookupKeywordStrategy
-    {
-        PreferDoKeyword,
-        PreferWhileKeyword
-    }
+    PreferDoKeyword,
+    PreferWhileKeyword
 }

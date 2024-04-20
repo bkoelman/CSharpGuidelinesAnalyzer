@@ -17,11 +17,11 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,11 +33,11 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class [|C|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,7 +50,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static partial class [|C|]
                 {
                 }
@@ -58,7 +58,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
                 static partial class C
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -71,11 +71,11 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -87,14 +87,14 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     class Nested
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -106,14 +106,14 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     static class [|Nested|]
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -126,18 +126,18 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     public static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,18 +149,18 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     internal static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -172,14 +172,14 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     public static void [|M|](string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -192,14 +192,14 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     internal static void [|M|](string s)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -212,12 +212,12 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     public const int [|C|] = 1;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -230,12 +230,12 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     public static readonly int [|F|] = 1;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -248,7 +248,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     public static int [|P|]
@@ -256,7 +256,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
                         get; set;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -269,12 +269,12 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     public static event EventHandler [|E|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -287,14 +287,14 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class SomeExtensions
                 {
                     static SomeExtensions()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -307,14 +307,14 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithOutputKind(OutputKind.WindowsApplication)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class Program
                 {
                     static void Main(string[] args)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -326,7 +326,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class NativeMethods
                 {
                 }
@@ -343,9 +343,9 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
                 {
                     private static class NativeMethods
                     {
-                    } 
+                    }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

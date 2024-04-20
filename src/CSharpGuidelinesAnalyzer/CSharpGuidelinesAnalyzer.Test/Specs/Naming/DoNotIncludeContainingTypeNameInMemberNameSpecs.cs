@@ -16,7 +16,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     class Employee
@@ -26,7 +26,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,7 +39,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     class Employee
@@ -49,7 +49,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -61,20 +61,20 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     interface IEmployee
                     {
                         string GetEmployee();
                     }
-
+                
                     class Employee : IEmployee
                     {
                         string IEmployee.[|GetEmployee|]() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -87,20 +87,20 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     interface IEmployee
                     {
                         string GetName();
                     }
-
+                
                     class Employee : IEmployee
                     {
                         string IEmployee.GetName() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -112,14 +112,14 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void IsC()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -131,12 +131,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct Customer
                 {
                     bool [|IsCustomerActive|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,12 +149,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct Customer
                 {
                     bool IsActive;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -166,12 +166,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Order
                 {
                     bool [|IsOrderDeleted|] { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -184,12 +184,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Order<TCategory>
                 {
                     bool [|IsOrderDeleted|] { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -202,12 +202,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Order
                 {
                     bool IsDeleted { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -219,12 +219,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class User
                 {
                     string UserName { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -236,7 +236,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Registration
                 {
                     event EventHandler [|RegistrationCompleted|]
@@ -251,7 +251,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -265,7 +265,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(NotImplementedException).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Registration
                 {
                     event EventHandler Completed
@@ -280,7 +280,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -292,12 +292,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum WindowState
                 {
                     [|WindowStateVisible|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -310,12 +310,12 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum WindowState
                 {
                     WindowVisible
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -327,14 +327,14 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Employee
                 {
                     Employee()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -346,14 +346,14 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Employee
                 {
                     static Employee()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -365,14 +365,14 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Employee
                 {
                     ~Employee()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

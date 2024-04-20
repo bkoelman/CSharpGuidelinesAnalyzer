@@ -16,17 +16,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged([|null|], EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,19 +39,19 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private const object ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged([|ConstantForNull|], EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -64,19 +64,19 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private const object ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(e: EventArgs.Empty, [|sender: ConstantForNull|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -89,17 +89,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(null, EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -111,20 +111,20 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void ValueChanged(object sender, EventArgs e)
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     void M()
                     {
                         ValueChanged(null, EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -136,19 +136,19 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public delegate void OtherEventHandler(string senderName, EventArgs e);
-
+                
                     event OtherEventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(null, EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -160,17 +160,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke([|null|], EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -183,17 +183,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke(null, EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -205,17 +205,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, EventArgs.Empty);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -227,17 +227,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|null|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -250,19 +250,19 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private const EventArgs ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|ConstantForNull|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -275,19 +275,19 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private const EventArgs ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged([|e: ConstantForNull|], sender: this);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -300,17 +300,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|null|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -323,20 +323,20 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void ValueChanged(object sender, EventArgs e)
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     void M()
                     {
                         ValueChanged(this, null);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -348,7 +348,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class OtherEventArgs : EventArgs
                 {
                 }
@@ -358,13 +358,13 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event OtherEventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|null|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -377,19 +377,19 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public delegate void OtherEventHandler(object sender, string data);
-
+                
                     event OtherEventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, null);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -401,17 +401,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke(this, [|null|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -424,17 +424,17 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke(this, [|null|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

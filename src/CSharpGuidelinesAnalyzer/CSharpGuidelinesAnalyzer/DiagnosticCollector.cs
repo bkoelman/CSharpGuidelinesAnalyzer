@@ -1,57 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
-namespace CSharpGuidelinesAnalyzer
+namespace CSharpGuidelinesAnalyzer;
+
+internal sealed class DiagnosticCollector : IDisposable
 {
-    internal sealed class DiagnosticCollector : IDisposable
+    [NotNull]
+    private readonly Action<Diagnostic> reportDiagnostic;
+
+    [CanBeNull]
+    [ItemNotNull]
+    private List<Diagnostic> diagnostics;
+
+    [NotNull]
+    [ItemNotNull]
+    public ICollection<Diagnostic> Diagnostics
     {
-        [NotNull]
-        private readonly Action<Diagnostic> reportDiagnostic;
-
-        [CanBeNull]
-        [ItemNotNull]
-        private List<Diagnostic> diagnostics;
-
-        [NotNull]
-        [ItemNotNull]
-        public ICollection<Diagnostic> Diagnostics
+        get
         {
-            get
+            if (diagnostics == null)
             {
-                if (diagnostics == null)
-                {
-                    return ImmutableArray<Diagnostic>.Empty;
-                }
-
-                return diagnostics;
+                return [];
             }
+
+            return diagnostics;
         }
+    }
 
-        public DiagnosticCollector([NotNull] Action<Diagnostic> reportDiagnostic)
+    public DiagnosticCollector([NotNull] Action<Diagnostic> reportDiagnostic)
+    {
+        Guard.NotNull(reportDiagnostic, nameof(reportDiagnostic));
+
+        diagnostics = null;
+        this.reportDiagnostic = reportDiagnostic;
+    }
+
+    public void Add([NotNull] Diagnostic diagnostic)
+    {
+        Guard.NotNull(diagnostic, nameof(diagnostic));
+
+        diagnostics ??= [];
+        diagnostics.Add(diagnostic);
+    }
+
+    public void Dispose()
+    {
+        foreach (Diagnostic diagnostic in Diagnostics)
         {
-            Guard.NotNull(reportDiagnostic, nameof(reportDiagnostic));
-
-            diagnostics = null;
-            this.reportDiagnostic = reportDiagnostic;
-        }
-
-        public void Add([NotNull] Diagnostic diagnostic)
-        {
-            Guard.NotNull(diagnostic, nameof(diagnostic));
-
-            diagnostics ??= new List<Diagnostic>();
-            diagnostics.Add(diagnostic);
-        }
-
-        public void Dispose()
-        {
-            foreach (Diagnostic diagnostic in Diagnostics)
-            {
-                reportDiagnostic(diagnostic);
-            }
+            reportDiagnostic(diagnostic);
         }
     }
 }

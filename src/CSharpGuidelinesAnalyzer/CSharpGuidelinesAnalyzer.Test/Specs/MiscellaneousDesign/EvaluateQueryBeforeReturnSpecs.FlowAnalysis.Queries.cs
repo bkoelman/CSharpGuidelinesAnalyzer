@@ -1,4 +1,4 @@
-﻿using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Xunit;
 
 // @formatter:keep_existing_linebreaks true
@@ -14,7 +14,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source)
@@ -25,7 +25,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             select item;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -40,7 +40,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source)
@@ -51,7 +51,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             select item));
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -66,7 +66,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source)
@@ -78,7 +78,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             select item;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -93,7 +93,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<IGrouping<int, int>> M()
@@ -104,7 +104,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             select grp;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

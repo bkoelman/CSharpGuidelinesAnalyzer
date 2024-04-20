@@ -16,18 +16,18 @@ public partial class AvoidSignatureWithManyParametersSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_parameter_count", "8")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -44,18 +44,18 @@ public partial class AvoidSignatureWithManyParametersSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxParameterCount", "8")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -73,18 +73,18 @@ public partial class AvoidSignatureWithManyParametersSpecs
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_parameter_count", "6")
                     .Including(DiagnosticId, "max_constructor_parameter_count", "8")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -102,18 +102,18 @@ public partial class AvoidSignatureWithManyParametersSpecs
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxParameterCount", "6")
                     .Including(DiagnosticId, "MaxConstructorParameterCount", "8")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -134,18 +134,18 @@ public partial class AvoidSignatureWithManyParametersSpecs
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxParameterCount", "8")
                     .Including(DiagnosticId, "MaxConstructorParameterCount", "7")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -162,11 +162,11 @@ public partial class AvoidSignatureWithManyParametersSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxParameterCount", "-1")))
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act
@@ -185,11 +185,11 @@ public partial class AvoidSignatureWithManyParametersSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_parameter_count", "-1")))
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act
@@ -208,11 +208,11 @@ public partial class AvoidSignatureWithManyParametersSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxConstructorParameterCount", "-1")))
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act
@@ -231,11 +231,11 @@ public partial class AvoidSignatureWithManyParametersSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_constructor_parameter_count", "-1")))
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act

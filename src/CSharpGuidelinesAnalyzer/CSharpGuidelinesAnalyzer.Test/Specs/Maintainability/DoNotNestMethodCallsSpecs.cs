@@ -17,14 +17,14 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     A(null);
                 }
 
                 object A(object inner) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -36,18 +36,18 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Example
                 {
                     void M()
                     {
                         A([|B(null)|]);
                     }
-
+                
                     object A(object outer) => throw null;
                     object B(object inner) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -60,19 +60,19 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Example
                 {
                     public Example()
                         : this(GetDefaultText())
                     {
                     }
-
+                
                     public Example(string text) => throw null;
-
+                
                     static string GetDefaultText() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -84,7 +84,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Base
                 {
                     public Base(string text) => throw null;
@@ -96,10 +96,10 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                         : base(GetDefaultText())
                     {
                     }
-
+                
                     static string GetDefaultText() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -111,15 +111,15 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     string _value = Convert(GetDefaultText());
-
+                
                     static string Convert(string source) => throw null;
                     static string GetDefaultText() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -133,14 +133,14 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query = GetItems().Skip(1).Take(1).Select(item => item.First()).ToArray();
                 }
 
                 IEnumerable<string> GetItems() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -152,14 +152,14 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     A(null).ToString();
                 }
 
                 object A(object inner) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -172,7 +172,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     string[] items = new[] { string.Empty };
@@ -180,7 +180,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                 }
 
                 bool Filter(string item) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -192,7 +192,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 string Value { get; set; }
 
                 void M()
@@ -201,7 +201,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                 }
 
                 object A(object inner) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -214,13 +214,13 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     string[] items = new[] { string.Empty };
                     items.Where(item => item.Any());
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -234,7 +234,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
             .Using(typeof(DateTime).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var items = new List<DateTime>
@@ -242,7 +242,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                         new DateTime(1, 1, 1)
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -255,17 +255,17 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(StringBuilder).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Example
                 {
                     public Example(StringBuilder builder) => throw null;
-
+                
                     void M()
                     {
                         new Example([|new StringBuilder()|]);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

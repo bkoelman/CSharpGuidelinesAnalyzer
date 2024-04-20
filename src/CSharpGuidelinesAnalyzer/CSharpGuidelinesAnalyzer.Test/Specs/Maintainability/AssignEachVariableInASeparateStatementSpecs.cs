@@ -16,13 +16,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i;
                     int j;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -34,12 +34,12 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -51,14 +51,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
                     i = 5;
                     j = 8;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -70,13 +70,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
                     [|i = j = 5;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -89,14 +89,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i = 5;
                     int j = 8;
-                    [|i = j += i;|]                        
+                    [|i = j += i;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -109,13 +109,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j = 5;
                     [|i = j++;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -128,13 +128,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i = 5;
                     int j = 8;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -146,12 +146,12 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|int i = 5, j = 8;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -164,14 +164,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i = 5;
                     int j = 8;
                     [|int k = j += i;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -184,13 +184,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int j = 5;
                     [|int i = --j;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -203,13 +203,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int j;
                     [|int i = j = 5;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -222,14 +222,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i;
                     int j;
                     [|i = j = j = 5;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -242,13 +242,13 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
                     [|i = (true ? (j = 5) : (k = 7));|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -261,23 +261,23 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 abstract class C
                 {
                     private int field1;
-
+                
                     private int Property1 { get; set; }
-
+                
                     public abstract int this[int index] { get; set; }
-
+                
                     void M(ref int parameter1)
                     {
                         int local1;
-
+                
                         [|local1 = field1 = Property1 = this[0] = parameter1 = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -290,23 +290,23 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 abstract class C
                 {
                     private int field1;
-
+                
                     private int Property1 { get; set; }
-
+                
                     public abstract int this[int index] { get; set; }
-
+                
                     void M(ref int parameter1)
                     {
                         int local1;
-
+                
                         [|int decl1 = local1 = field1 = Property1 = this[0] = parameter1 = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -319,17 +319,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k = 8;
-
+                
                     for ([|i = j = 5|]; (k = 1) > 0; k -= 2)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -342,17 +342,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k = 8;
-
+                
                     for (i = 1, j = 5; (k = 1) > 0; k -= 2)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -364,17 +364,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int k = 8;
-
+                
                     for ([|int i = 1, j = 5|]; (k += 1) > 0; k -= 2)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -387,17 +387,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     for (k = 1; [|(i = j = 5) > 0|]; k -= 2)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -410,17 +410,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     for (k = 1; (k += 1) > 0; [|i = j = 5|])
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -433,17 +433,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     for (k = 1; (k += 1) > 0; i = 5, j = 8)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -455,18 +455,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     for (int index = 0; index < 10; index++)
                     {
                         i = 5;
                         j = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -478,17 +478,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     for (int index = 0; index < 10; index++)
                     {
                         [|i = j = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -501,17 +501,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|foreach|] (var itr in new int[i = j = 5])
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -524,18 +524,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     foreach (var item in new int[0])
                     {
                         i = 5;
                         j = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -547,17 +547,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     foreach (var item in new int[0])
                     {
                         [|i = j = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -570,17 +570,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|while|] ((i = j = 5) > 0)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -593,18 +593,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     while (true)
                     {
                         i = 5;
                         j = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -616,17 +616,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     while (true)
                     {
                         [|i = j = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -639,18 +639,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     do
                     {
                         k = 3;
                     }
                     [|while|] ((i = j = 5) > 0);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -663,11 +663,11 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     do
                     {
                         i = 5;
@@ -675,7 +675,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                     }
                     while (true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -687,18 +687,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     do
                     {
                         [|i = j = 5;|]
                     }
                     while (true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -711,17 +711,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|if|] ((i = j = 5) > 0)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -734,11 +734,11 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, x, y;
-
+                
                     if (true)
                     {
                         i = 5;
@@ -750,7 +750,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                         y = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -762,11 +762,11 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, x, y;
-
+                
                     if (true)
                     {
                         [|i = j = 5;|]
@@ -776,7 +776,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                         [|x = y = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -790,11 +790,11 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|switch|] (i = j = 5)
                     {
                         case 1:
@@ -809,7 +809,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -822,11 +822,11 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     switch (true)
                     {
                         case true:
@@ -843,7 +843,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -855,11 +855,11 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j, x, y;
-
+                
                     switch (true)
                     {
                         case true:
@@ -874,7 +874,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -888,14 +888,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 int M()
                 {
                     int i, j;
-
+                
                     [|return|] i = j = 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -909,14 +909,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<int> M()
                 {
                     int i, j;
-
+                
                     [|yield return|] i = j = 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -929,18 +929,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     object o, p;
                     int k;
-
+                
                     [|lock|] (o = p = new object())
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -953,18 +953,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     lock (this)
                     {
                         i = 5;
                         j = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -976,17 +976,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     lock (this)
                     {
                         [|i = j = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1000,18 +1000,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IDisposable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     IDisposable i, j;
                     int k;
-
+                
                     [|using|] (i = j = null)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1025,18 +1025,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IDisposable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     IDisposable j;
                     int k;
-
+                
                     [|using|] (IDisposable i = j = null)
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1050,17 +1050,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(MemoryStream).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int k;
-
+                
                     [|using|] (MemoryStream ms1 = new MemoryStream(), ms2 = new MemoryStream())
                     {
                         k = 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1073,18 +1073,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     using (null)
                     {
                         i = 5;
                         j = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1096,17 +1096,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     using (null)
                     {
                         [|i = j = 5;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1120,14 +1120,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Exception).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 int M()
                 {
                     Exception i, j;
-
+                
                     [|throw|] i = j = new Exception();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1141,18 +1141,18 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Action).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     Action action = () =>
                     {
                         i = 5;
                         j = 8;
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1165,17 +1165,17 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Action).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     Action action = () =>
                     {
                         [|i = j = 5;|]
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1189,14 +1189,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Action).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i, j;
-
+                
                     Action action = () => [|i = j = 5|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1209,12 +1209,12 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var instance = new { Abc = string.Empty };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1226,7 +1226,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var instance = new X { F = 1, P = 2 };
@@ -1235,10 +1235,10 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 class X
                 {
                     public int F;
-
+                
                     public int P { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1250,12 +1250,12 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var instance = new { F = 1, P = 2 };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1267,7 +1267,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M<T>()
                     where T : I, new()
                 {
@@ -1279,7 +1279,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                     int P1 { get; set; }
                     int P2 { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1291,7 +1291,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(dynamic d)
                 {
                     var instance = new X(d) { P = 1 };
@@ -1300,10 +1300,10 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 class X
                 {
                     public X(dynamic d) => throw null;
-
+                
                     public int P { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1315,19 +1315,19 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     bool result = N(out var a, out var b);
-
+                
                     int x, y;
                     bool z;
-
+                
                     z = N(out x, out y);
                 }
 
                 bool N(out int i, out int j) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1339,19 +1339,19 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     (int a, int b) = GetTuple();
                     (var c, var d) = GetTuple();
                     (int, int) t = GetTuple();
-
+                
                     var (x, y) = GetTuple();
                     var (_, _) = GetTuple();
                 }
 
                 (int, int) GetTuple() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1363,14 +1363,14 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(object a, object b)
                 {
                     if (a is string s1 && b is string s2)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1382,7 +1382,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(object o)
                 {
                     switch (o)
@@ -1401,7 +1401,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1413,7 +1413,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(object o)
                 {
                     X x1 = new X();
@@ -1424,7 +1424,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 {
                     public int P { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

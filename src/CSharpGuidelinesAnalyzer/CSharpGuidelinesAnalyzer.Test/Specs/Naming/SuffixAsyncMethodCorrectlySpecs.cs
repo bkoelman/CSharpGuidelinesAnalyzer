@@ -18,12 +18,12 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task SomeAsync()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -36,12 +36,12 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 async Task SomeTaskAsync()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -54,7 +54,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     async Task [|Some|]()
@@ -62,7 +62,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -76,12 +76,12 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 Task Some()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -94,7 +94,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     async Task SomeAsync()
@@ -102,7 +102,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -115,7 +115,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     async Task SomeTaskAsync()
@@ -123,7 +123,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -136,7 +136,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     async Task [|Some|]()
@@ -144,7 +144,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -158,7 +158,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Task Some()
@@ -166,7 +166,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -180,7 +180,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
             .WithOutputKind(OutputKind.WindowsApplication)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class Program
                 {
                     static async Task Main(string[] args)
@@ -188,7 +188,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -201,7 +201,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Xunit
                 {
                     public class FactAttribute : Attribute
@@ -212,7 +212,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [Fact]
@@ -221,7 +221,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -234,13 +234,13 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Xunit
                 {
                     public class TheoryAttribute : Attribute
                     {
                     }
-
+                
                     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
                     public class InlineDataAttribute : Attribute
                     {
@@ -253,11 +253,11 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
-                        [InlineData(""A"")]
-                        [InlineData(""B"")]
+                        [InlineData("A")]
+                        [InlineData("B")]
                         [Theory]
                         public async Task When_some_condition_it_must_work(string value)
                         {
@@ -265,7 +265,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

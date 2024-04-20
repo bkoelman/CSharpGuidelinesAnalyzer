@@ -16,14 +16,14 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -35,7 +35,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
@@ -48,7 +48,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -62,14 +62,14 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     foreach (var outer in new int[0])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -81,7 +81,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     foreach (var outer in new int[0])
@@ -94,7 +94,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -109,14 +109,14 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     foreach (var (outer1, outer2) in Enumerable.Empty<(int, int)>())
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -129,7 +129,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     foreach (var (outer1, outer2) in Enumerable.Empty<(int, int)>())
@@ -142,7 +142,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -156,14 +156,14 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     while (true)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -175,7 +175,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     while (true)
@@ -188,7 +188,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -202,7 +202,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     do
@@ -210,7 +210,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                     }
                     while (true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -222,7 +222,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     do
@@ -238,7 +238,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                     }
                     while (true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -252,7 +252,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
@@ -265,7 +265,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -277,7 +277,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
@@ -290,7 +290,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -302,7 +302,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
@@ -315,7 +315,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -327,7 +327,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
@@ -340,7 +340,7 @@ public sealed class AvoidNestedLoopsSpecs : CSharpGuidelinesAnalysisTestFixture
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

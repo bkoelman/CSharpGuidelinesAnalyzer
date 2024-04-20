@@ -8,219 +8,210 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
+namespace CSharpGuidelinesAnalyzer.Rules.Maintainability;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : DiagnosticAnalyzer
+    private const string Title = "If-else-if construct should end with an unconditional else clause";
+    private const string MessageFormat = "If-else-if construct should end with an unconditional else clause";
+    private const string Description = "Finish every if-else-if statement with an else clause.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1537";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [NotNull]
+    private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction = context => context.SkipInvalid(AnalyzeCodeBlock);
+
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize([NotNull] AnalysisContext context)
     {
-        private const string Title = "If-else-if construct should end with an unconditional else clause";
-        private const string MessageFormat = "If-else-if construct should end with an unconditional else clause";
-        private const string Description = "Finish every if-else-if statement with an else clause.";
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1537";
+        context.RegisterOperationBlockAction(AnalyzeCodeBlockAction);
+    }
 
+    private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
+    {
+        var collector = new IfStatementCollector();
+        collector.VisitBlocks(context.OperationBlocks);
+
+        var analyzer = new IfStatementAnalyzer(collector.CollectedIfStatements, context);
+        analyzer.Analyze();
+    }
+
+    private sealed class IfStatementCollector : ExplicitOperationWalker
+    {
         [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+        public IDictionary<Location, IConditionalOperation> CollectedIfStatements { get; } =
+            new SortedDictionary<Location, IConditionalOperation>(LocationComparer.Default);
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [NotNull]
-        private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction = context => context.SkipInvalid(AnalyzeCodeBlock);
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize([NotNull] AnalysisContext context)
+        public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
         {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-
-            context.RegisterOperationBlockAction(AnalyzeCodeBlockAction);
+            foreach (IOperation block in blocks)
+            {
+                Visit(block);
+            }
         }
 
-        private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context)
+        public override void VisitConditional([NotNull] IConditionalOperation operation)
         {
-            var collector = new IfStatementCollector();
-            collector.VisitBlocks(context.OperationBlocks);
+            if (operation.IsStatement())
+            {
+                Location location = operation.TryGetLocationForKeyword();
 
-            var analyzer = new IfStatementAnalyzer(collector.CollectedIfStatements, context);
-            analyzer.Analyze();
+                if (location != null)
+                {
+                    CollectedIfStatements.Add(location, operation);
+                }
+            }
+
+            base.VisitConditional(operation);
         }
 
-        private sealed class IfStatementCollector : ExplicitOperationWalker
+        private sealed class LocationComparer : IComparer<Location>
         {
             [NotNull]
-            public IDictionary<Location, IConditionalOperation> CollectedIfStatements { get; } =
-                new SortedDictionary<Location, IConditionalOperation>(LocationComparer.Default);
+            public static readonly LocationComparer Default = new();
 
-            public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
+            public int Compare(Location x, Location y)
             {
-                foreach (IOperation block in blocks)
+                if (ReferenceEquals(x, y))
                 {
-                    Visit(block);
+                    return 0;
                 }
+
+                return x == null ? -1 : y == null ? 1 : x.SourceSpan.Start.CompareTo(y.SourceSpan.Start);
             }
+        }
+    }
 
-            public override void VisitConditional([NotNull] IConditionalOperation operation)
+    private sealed class IfStatementAnalyzer
+    {
+        [NotNull]
+        private readonly IDictionary<Location, IConditionalOperation> ifStatementsLeftToAnalyze;
+
+        private OperationBlockAnalysisContext context;
+
+        public IfStatementAnalyzer([NotNull] IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
+        {
+            Guard.NotNull(ifStatementsToAnalyze, nameof(ifStatementsToAnalyze));
+
+            ifStatementsLeftToAnalyze = ifStatementsToAnalyze;
+            this.context = context;
+        }
+
+        public void Analyze()
+        {
+            while (ifStatementsLeftToAnalyze.Any())
             {
-                if (operation.IsStatement())
-                {
-                    Location location = operation.TryGetLocationForKeyword();
+                context.CancellationToken.ThrowIfCancellationRequested();
 
-                    if (location != null)
-                    {
-                        CollectedIfStatements.Add(location, operation);
-                    }
-                }
-
-                base.VisitConditional(operation);
-            }
-
-            private sealed class LocationComparer : IComparer<Location>
-            {
-                [NotNull]
-                public static readonly LocationComparer Default = new LocationComparer();
-
-                public int Compare(Location x, Location y)
-                {
-                    if (ReferenceEquals(x, y))
-                    {
-                        return 0;
-                    }
-
-                    return x == null ? -1 : y == null ? 1 : x.SourceSpan.Start.CompareTo(y.SourceSpan.Start);
-                }
+                AnalyzeTopIfStatement();
             }
         }
 
-        private sealed class IfStatementAnalyzer
+        private void AnalyzeTopIfStatement()
+        {
+            IConditionalOperation ifStatement = ConsumeNextIfStatement();
+
+            if (IsIfElseIfConstruct(ifStatement))
+            {
+                var analyzer = new IfElseIfConstructAnalyzer(this, ifStatement);
+                analyzer.Analyze();
+            }
+        }
+
+        [NotNull]
+        private IConditionalOperation ConsumeNextIfStatement()
+        {
+            KeyValuePair<Location, IConditionalOperation> entry = ifStatementsLeftToAnalyze.First();
+            ifStatementsLeftToAnalyze.Remove(entry.Key);
+
+            return entry.Value;
+        }
+
+        private bool IsIfElseIfConstruct([NotNull] IConditionalOperation ifStatement)
+        {
+            return ifStatement.WhenFalse is IConditionalOperation;
+        }
+
+        // Workaround for https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/155.
+#pragma warning disable AV1500 // Member or local function contains too many statements
+        private sealed class IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation ifStatement)
+#pragma warning restore AV1500 // Member or local function contains too many statements
         {
             [NotNull]
-            private readonly IDictionary<Location, IConditionalOperation> ifStatementsLeftToAnalyze;
+            private readonly IfStatementAnalyzer owner = owner;
 
-            private OperationBlockAnalysisContext context;
-
-            public IfStatementAnalyzer([NotNull] IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
-            {
-                Guard.NotNull(ifStatementsToAnalyze, nameof(ifStatementsToAnalyze));
-
-                ifStatementsLeftToAnalyze = ifStatementsToAnalyze;
-                this.context = context;
-            }
+            [CanBeNull]
+            private readonly Location topIfKeywordLocation = ifStatement.TryGetLocationForKeyword();
 
             public void Analyze()
             {
-                while (ifStatementsLeftToAnalyze.Any())
+                if (topIfKeywordLocation != null)
                 {
-                    context.CancellationToken.ThrowIfCancellationRequested();
-
-                    AnalyzeTopIfStatement();
-                }
-            }
-
-            private void AnalyzeTopIfStatement()
-            {
-                IConditionalOperation ifStatement = ConsumeNextIfStatement();
-
-                if (IsIfElseIfConstruct(ifStatement))
-                {
-                    var analyzer = new IfElseIfConstructAnalyzer(this, ifStatement);
-                    analyzer.Analyze();
-                }
-            }
-
-            [NotNull]
-            private IConditionalOperation ConsumeNextIfStatement()
-            {
-                KeyValuePair<Location, IConditionalOperation> entry = ifStatementsLeftToAnalyze.First();
-                ifStatementsLeftToAnalyze.Remove(entry.Key);
-
-                return entry.Value;
-            }
-
-            private bool IsIfElseIfConstruct([NotNull] IConditionalOperation ifStatement)
-            {
-                return ifStatement.WhenFalse is IConditionalOperation;
-            }
-
-            private sealed class IfElseIfConstructAnalyzer
-            {
-                [NotNull]
-                private readonly IfStatementAnalyzer owner;
-
-                [CanBeNull]
-                private readonly Location topIfKeywordLocation;
-
-                [NotNull]
-                private IConditionalOperation ifStatement;
-
-                public IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation topIfStatement)
-                {
-                    this.owner = owner;
-
-                    topIfKeywordLocation = topIfStatement.TryGetLocationForKeyword();
-                    ifStatement = topIfStatement;
-                }
-
-                public void Analyze()
-                {
-                    if (topIfKeywordLocation != null)
+                    while (true)
                     {
-                        while (true)
+                        owner.context.CancellationToken.ThrowIfCancellationRequested();
+
+                        IOperation falseBlock = ifStatement.WhenFalse;
+
+                        if (!AnalyzeFalseBlock(falseBlock))
                         {
-                            owner.context.CancellationToken.ThrowIfCancellationRequested();
-
-                            IOperation falseBlock = ifStatement.WhenFalse;
-
-                            if (!AnalyzeFalseBlock(falseBlock))
-                            {
-                                break;
-                            }
+                            break;
                         }
                     }
                 }
+            }
 
-                private bool AnalyzeFalseBlock([CanBeNull] IOperation falseBlock)
+            private bool AnalyzeFalseBlock([CanBeNull] IOperation falseBlock)
+            {
+                if (falseBlock == null)
                 {
-                    if (falseBlock == null)
-                    {
-                        return HandleMissingElseClause();
-                    }
-
-                    return !(falseBlock is IConditionalOperation ifElseStatement) ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
+                    return HandleMissingElseClause();
                 }
 
-                private bool HandleMissingElseClause()
+                return falseBlock is not IConditionalOperation ifElseStatement ? HandleUnconditionalElse() : HandleElseIf(ifElseStatement);
+            }
+
+            private bool HandleMissingElseClause()
+            {
+                var diagnostic = Diagnostic.Create(Rule, topIfKeywordLocation);
+                owner.context.ReportDiagnostic(diagnostic);
+
+                Remove(ifStatement, owner.ifStatementsLeftToAnalyze);
+                return false;
+            }
+
+            private bool HandleUnconditionalElse()
+            {
+                return false;
+            }
+
+            private bool HandleElseIf([NotNull] IConditionalOperation ifElseStatement)
+            {
+                Remove(ifElseStatement, owner.ifStatementsLeftToAnalyze);
+                ifStatement = ifElseStatement;
+                return true;
+            }
+
+            private void Remove([NotNull] IConditionalOperation ifStatementToRemove, [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
+            {
+                Location location = ifStatementToRemove.TryGetLocationForKeyword();
+
+                if (location != null)
                 {
-                    var diagnostic = Diagnostic.Create(Rule, topIfKeywordLocation);
-                    owner.context.ReportDiagnostic(diagnostic);
-
-                    Remove(ifStatement, owner.ifStatementsLeftToAnalyze);
-                    return false;
-                }
-
-                private bool HandleUnconditionalElse()
-                {
-                    return false;
-                }
-
-                private bool HandleElseIf([NotNull] IConditionalOperation ifElseStatement)
-                {
-                    Remove(ifElseStatement, owner.ifStatementsLeftToAnalyze);
-                    ifStatement = ifElseStatement;
-                    return true;
-                }
-
-                private void Remove([NotNull] IConditionalOperation ifStatementToRemove, [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
-                {
-                    Location location = ifStatementToRemove.TryGetLocationForKeyword();
-
-                    if (location != null)
-                    {
-                        ifStatements.Remove(location);
-                    }
+                    ifStatements.Remove(location);
                 }
             }
         }

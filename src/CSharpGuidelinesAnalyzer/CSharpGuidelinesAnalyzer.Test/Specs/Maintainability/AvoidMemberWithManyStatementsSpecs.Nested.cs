@@ -12,7 +12,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -22,12 +22,12 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             ; ;
                             ; ;
                         }
-
+                
                         ; ;
                         ; ;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -40,7 +40,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -50,12 +50,12 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             ; ;
                             ; ;
                         }
-
+                
                         ; ;
                         ;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,14 +67,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
                     {
                         ; ;
                         ; ;
-
+                
                         Action<int> action = i =>
                         {
                             ; ;
@@ -82,7 +82,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -95,21 +95,21 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         ; ;
                         ; ;
-
+                
                         Action<int> action = i =>
                         {
                             ; ;
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -121,14 +121,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = () =>
                         {
                             ; ;
@@ -136,7 +136,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,21 +149,21 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = () =>
                         {
                             ; ;
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -175,14 +175,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = delegate
                         {
                             ; ;
@@ -190,7 +190,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -203,21 +203,53 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = delegate
                         {
                             ; ;
                         };
                     }
                 }
-            ")
+                """)
+            .Build();
+
+        // Act and assert
+        await VerifyGuidelineDiagnosticAsync(source);
+    }
+
+    [Fact]
+    internal async Task When_type_has_primary_constructor_with_base_initializer_it_must_be_skipped()
+    {
+        // Arrange
+        ParsedSourceCode source = new TypeSourceCodeBuilder()
+            .InGlobalScope("""
+                class C(string s) : B(s)
+                {
+                    void M1()
+                    {
+                        ; ; ; ;
+                    }
+                
+                    void M2()
+                    {
+                        ; ; ; ;
+                    }
+                }
+
+                abstract class B
+                {
+                    protected B(string s)
+                    {
+                    }
+                }
+                """)
             .Build();
 
         // Act and assert

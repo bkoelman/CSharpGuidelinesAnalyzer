@@ -16,11 +16,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class NoDigits
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -32,11 +32,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class [|C5|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -49,11 +49,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct NoDigits
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -65,11 +65,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct [|S22|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -82,11 +82,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum NoDigits
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -98,11 +98,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum [|E3|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -115,11 +115,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface INoDigits
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -131,11 +131,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface [|I9|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -148,9 +148,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void NoDigits();
-            ")
+            .InGlobalScope("delegate void NoDigits();")
             .Build();
 
         // Act and assert
@@ -162,9 +160,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void [|D5|]();
-            ")
+            .InGlobalScope("delegate void [|D5|]();")
             .Build();
 
         // Act and assert
@@ -177,9 +173,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                private int f;
-            ")
+            .InDefaultClass("private int f;")
             .Build();
 
         // Act and assert
@@ -191,9 +185,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                private int [|f3|];
-            ")
+            .InDefaultClass("private int [|f3|];")
             .Build();
 
         // Act and assert
@@ -206,9 +198,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public int P { get; } = 123;
-            ")
+            .InDefaultClass("public int P { get; } = 123;")
             .Build();
 
         // Act and assert
@@ -220,9 +210,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public int [|P6|] { get; } = 123;
-            ")
+            .InDefaultClass("public int [|P6|] { get; } = 123;")
             .Build();
 
         // Act and assert
@@ -235,7 +223,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 private int B;
 
                 void Method()
@@ -246,7 +234,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         B
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -258,7 +246,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 private int [|B1|];
 
                 void Method()
@@ -269,7 +257,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         [|B1|]
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -284,7 +272,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract int [|P6|] { get; }
@@ -294,7 +282,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 {
                     public override int P6 => 123;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -307,7 +295,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     int [|P6|] { get; }
@@ -317,7 +305,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 {
                     public int P6 => 123;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -330,9 +318,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public event EventHandler ValueChanged;
-            ")
+            .InDefaultClass("public event EventHandler ValueChanged;")
             .Build();
 
         // Act and assert
@@ -344,9 +330,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public event EventHandler [|Value9Changed|];
-            ")
+            .InDefaultClass("public event EventHandler [|Value9Changed|];")
             .Build();
 
         // Act and assert
@@ -359,11 +343,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -375,11 +359,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M6|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -392,7 +376,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract void [|M6|]();
@@ -404,7 +388,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -417,7 +401,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void [|M6|]();
@@ -429,7 +413,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -442,14 +426,14 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -461,14 +445,14 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void [|L6|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -481,11 +465,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int p)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -497,11 +481,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int [|p1|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -514,12 +498,12 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Func<int, bool> f = p => true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -531,12 +515,12 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Func<int, bool> f = [|p1|] => true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -549,14 +533,14 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int p)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -568,14 +552,14 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int [|p1|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -588,7 +572,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract void M(int [|p7|]);
@@ -600,7 +584,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -613,7 +597,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(int [|p7|]);
@@ -625,7 +609,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -638,12 +622,12 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-                    string str = ""A"";
+                    string str = "A";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -655,12 +639,12 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-                    string [|str12|] = ""A"";
+                    string [|str12|] = "A";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -674,7 +658,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                         var query =
@@ -686,7 +670,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                             let f = e.ToString()
                             select string.Empty;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -699,7 +683,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                         var query =
@@ -711,7 +695,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                             let [|f6|] = e5.ToString()
                             select string.Empty;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -730,7 +714,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     (var aa, var bb) = GetTuple();
@@ -739,7 +723,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 }
 
                 (int, string) GetTuple() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -752,23 +736,23 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M((int [|p1|], int [|p2|]) pp)
                 {
                     (var [|e1|], var [|e2|]) = GetTuple();
                     (int [|e3|], string [|e4|]) tt = GetTuple();
                     var ([|e5|], [|e6|]) = GetTuple();
-
+                
                     int [|e7|];
                     string [|e8|];
-
+                
                     (e7, e8) = GetTuple();
-                    
+                
                     (int [|l1|], string [|l2|]) LocalGetTuple() => throw null;
                 }
 
                 (int [|m1|], string [|m2|]) GetTuple() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -795,7 +779,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     var anon = new
@@ -803,10 +787,10 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         [|A1|] = string.Empty,
                         [|B1|] = 1
                     };
-
+                
                     var tuple = ([|anon.A1|], [|anon.B1|]);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -822,7 +806,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Microsoft.VisualStudio.TestTools.UnitTesting
                 {
                     public class TestMethodAttribute : Attribute
@@ -833,7 +817,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+                
                     class UnitTests
                     {
                         [TestMethod]
@@ -842,7 +826,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -854,7 +838,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Xunit
                 {
                     public class FactAttribute : Attribute
@@ -865,7 +849,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [Fact]
@@ -874,7 +858,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -886,7 +870,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace NUnit.Framework
                 {
                     public class TestAttribute : Attribute
@@ -897,7 +881,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using NUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]
@@ -906,7 +890,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -918,7 +902,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace MbUnit.Framework
                 {
                     public class TestAttribute : Attribute
@@ -929,7 +913,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using MbUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]
@@ -938,7 +922,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -950,11 +934,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Int16SaveInt32Or3DIntoInt64WithUtf7InWin32()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -966,11 +950,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|ConvertDigit9IntoInt32|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -983,11 +967,11 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|GetMatrix3Demo|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

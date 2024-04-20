@@ -1,13 +1,12 @@
-﻿namespace CSharpGuidelinesAnalyzer
+﻿namespace CSharpGuidelinesAnalyzer;
+
+internal enum NullCheckMethod
 {
-    internal enum NullCheckMethod
-    {
-        EqualityOperator,
-        IsPattern,
-        NullableHasValueMethod,
-        NullableEqualsMethod,
-        StaticObjectEqualsMethod,
-        StaticObjectReferenceEqualsMethod,
-        EqualityComparerEqualsMethod
-    }
+    EqualityOperator,
+    IsPattern,
+    NullableHasValueMethod,
+    NullableEqualsMethod,
+    StaticObjectEqualsMethod,
+    StaticObjectReferenceEqualsMethod,
+    EqualityComparerEqualsMethod
 }

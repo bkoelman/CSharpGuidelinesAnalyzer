@@ -7,122 +7,121 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
+namespace CSharpGuidelinesAnalyzer.Rules.Maintainability;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
+    private const string Title = "Method argument calls a nested method";
+    private const string MessageFormat = "Argument for parameter '{0}' in method call to '{1}' calls nested method '{2}'";
+    private const string Description = "Write code that is easy to debug.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1580";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [NotNull]
+    private static readonly Action<OperationAnalysisContext> AnalyzeArgumentAction = context => context.SkipInvalid(AnalyzeArgument);
+
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize([NotNull] AnalysisContext context)
     {
-        private const string Title = "Method argument calls a nested method";
-        private const string MessageFormat = "Argument for parameter '{0}' in method call to '{1}' calls nested method '{2}'";
-        private const string Description = "Write code that is easy to debug.";
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1580";
+        context.RegisterOperationAction(AnalyzeArgumentAction, OperationKind.Argument);
+    }
 
-        [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
+    private static void AnalyzeArgument(OperationAnalysisContext context)
+    {
+        var argument = (IArgumentOperation)context.Operation;
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeArgumentAction = context => context.SkipInvalid(AnalyzeArgument);
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize([NotNull] AnalysisContext context)
+        if (IsThisArgumentInExtensionMethod(argument) || IsInFieldOrConstructorInitializer(argument) || IsObjectOrCollectionInitializer(argument))
         {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-
-            context.RegisterOperationAction(AnalyzeArgumentAction, OperationKind.Argument);
+            return;
         }
 
-        private static void AnalyzeArgument(OperationAnalysisContext context)
+        IOperation argumentValue = argument.Value.SkipTypeConversions();
+
+        if (argumentValue is IInvocationOperation invocation)
         {
-            var argument = (IArgumentOperation)context.Operation;
+            string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            ReportAt(argument, innerName, context);
+        }
+        else if (argumentValue is IObjectCreationOperation objectCreation)
+        {
+            string innerName = objectCreation.Constructor.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            ReportAt(argument, innerName, context);
+        }
+    }
 
-            if (IsThisArgumentInExtensionMethod(argument) || IsInFieldOrConstructorInitializer(argument) || IsObjectOrCollectionInitializer(argument))
-            {
-                return;
-            }
+    private static bool IsThisArgumentInExtensionMethod([NotNull] IArgumentOperation argument)
+    {
+        if (argument.Parameter.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
+        {
+            IParameterSymbol thisParameter = method.Parameters.FirstOrDefault();
 
-            IOperation argumentValue = argument.Value.SkipTypeConversions();
-
-            if (argumentValue is IInvocationOperation invocation)
+            if (thisParameter != null && argument.Parameter.IsEqualTo(thisParameter))
             {
-                string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-                ReportAt(argument, innerName, context);
-            }
-            else if (argumentValue is IObjectCreationOperation objectCreation)
-            {
-                string innerName = objectCreation.Constructor.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-                ReportAt(argument, innerName, context);
+                return true;
             }
         }
 
-        private static bool IsThisArgumentInExtensionMethod([NotNull] IArgumentOperation argument)
-        {
-            if (argument.Parameter.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
-            {
-                IParameterSymbol thisParameter = method.Parameters.FirstOrDefault();
+        return false;
+    }
 
-                if (thisParameter != null && argument.Parameter.IsEqualTo(thisParameter))
-                {
-                    return true;
-                }
+    private static bool IsInFieldOrConstructorInitializer([NotNull] IArgumentOperation argument)
+    {
+        IOperation parent = argument.Parent;
+
+        while (parent != null)
+        {
+            if (parent is IFieldInitializerOperation)
+            {
+                return true;
             }
 
-            return false;
-        }
-
-        private static bool IsInFieldOrConstructorInitializer([NotNull] IArgumentOperation argument)
-        {
-            IOperation parent = argument.Parent;
-
-            while (parent != null)
+            // IConstructorBodyOperation is unavailable in the version of Microsoft.CodeAnalysis we depend on.
+            if (parent.GetType().ToString() == "Microsoft.CodeAnalysis.Operations.ConstructorBodyOperation" &&
+                IsConstructor(argument.Parameter.ContainingSymbol))
             {
-                if (parent is IFieldInitializerOperation)
-                {
-                    return true;
-                }
-
-                // IConstructorBodyOperation is unavailable in the version of Microsoft.CodeAnalysis we depend on.
-                if (parent.GetType().ToString() == "Microsoft.CodeAnalysis.Operations.ConstructorBodyOperation" &&
-                    IsConstructor(argument.Parameter.ContainingSymbol))
-                {
-                    return true;
-                }
-
-                parent = parent.Parent;
+                return true;
             }
 
-            return false;
+            parent = parent.Parent;
         }
 
-        private static bool IsConstructor([NotNull] ISymbol symbol)
+        return false;
+    }
+
+    private static bool IsConstructor([NotNull] ISymbol symbol)
+    {
+        if (symbol is IMethodSymbol method)
         {
-            if (symbol is IMethodSymbol method)
-            {
-                return method.MethodKind == MethodKind.Constructor || method.MethodKind == MethodKind.StaticConstructor;
-            }
-
-            return false;
+            return method.MethodKind is MethodKind.Constructor or MethodKind.StaticConstructor;
         }
 
-        private static bool IsObjectOrCollectionInitializer([NotNull] IArgumentOperation argument)
-        {
-            return argument.Parent?.Parent is IObjectOrCollectionInitializerOperation;
-        }
+        return false;
+    }
 
-        private static void ReportAt([NotNull] IArgumentOperation argument, [NotNull] string innerName, OperationAnalysisContext context)
-        {
-            string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-            Location location = argument.Value.Syntax.GetLocation();
+    private static bool IsObjectOrCollectionInitializer([NotNull] IArgumentOperation argument)
+    {
+        return argument.Parent?.Parent is IObjectOrCollectionInitializerOperation;
+    }
 
-            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
-            context.ReportDiagnostic(diagnostic);
-        }
+    private static void ReportAt([NotNull] IArgumentOperation argument, [NotNull] string innerName, OperationAnalysisContext context)
+    {
+        string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+        Location location = argument.Value.Syntax.GetLocation();
+
+        var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
+        context.ReportDiagnostic(diagnostic);
     }
 }

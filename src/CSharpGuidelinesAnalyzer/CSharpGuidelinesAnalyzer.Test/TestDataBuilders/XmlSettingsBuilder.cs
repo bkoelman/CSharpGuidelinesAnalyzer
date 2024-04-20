@@ -26,16 +26,11 @@ internal sealed class XmlSettingsBuilder : ITestDataBuilder<AdditionalText>
         return new FakeAdditionalText(content);
     }
 
-    private sealed class FakeAdditionalText : AdditionalText
+    private sealed class FakeAdditionalText(string content) : AdditionalText
     {
-        private readonly SourceText sourceText;
+        private readonly SourceText sourceText = new FakeSourceText(content, AnalyzerSettingsProvider.CreateEncoding());
 
         public override string Path { get; } = AnalyzerSettingsProvider.SettingsFileName;
-
-        public FakeAdditionalText(string content)
-        {
-            sourceText = new FakeSourceText(content, AnalyzerSettingsProvider.CreateEncoding());
-        }
 
         public override SourceText GetText(CancellationToken cancellationToken = new())
         {

@@ -7,74 +7,73 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Naming
+namespace CSharpGuidelinesAnalyzer.Rules.Naming;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
+    private const string Title = "Name of async method should end with Async or TaskAsync";
+    private const string MessageFormat = "Name of async {0} '{1}' should end with Async or TaskAsync";
+    private const string Description = "Postfix asynchronous methods with Async or TaskAsync.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1755";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [NotNull]
+    private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);
+
+    [NotNull]
+    private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
+
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize([NotNull] AnalysisContext context)
     {
-        private const string Title = "Name of async method should end with Async or TaskAsync";
-        private const string MessageFormat = "Name of async {0} '{1}' should end with Async or TaskAsync";
-        private const string Description = "Postfix asynchronous methods with Async or TaskAsync.";
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1755";
+        context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
+        context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+    }
 
-        [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
+    private static void AnalyzeMethod(SymbolAnalysisContext context)
+    {
+        var method = (IMethodSymbol)context.Symbol;
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize([NotNull] AnalysisContext context)
+        if (RequiresReport(method, context.Compilation, context.CancellationToken))
         {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-
-            context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
-            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+            ReportAt(method, context.ReportDiagnostic);
         }
+    }
 
-        private static void AnalyzeMethod(SymbolAnalysisContext context)
+    private static void AnalyzeLocalFunction(OperationAnalysisContext context)
+    {
+        var operation = (ILocalFunctionOperation)context.Operation;
+
+        if (RequiresReport(operation.Symbol, context.Compilation, context.CancellationToken))
         {
-            var method = (IMethodSymbol)context.Symbol;
-
-            if (RequiresReport(method, context.Compilation, context.CancellationToken))
-            {
-                ReportAt(method, context.ReportDiagnostic);
-            }
+            ReportAt(operation.Symbol, context.ReportDiagnostic);
         }
+    }
 
-        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
-        {
-            var operation = (ILocalFunctionOperation)context.Operation;
+    private static bool RequiresReport([NotNull] IMethodSymbol method, [NotNull] Compilation compilation, CancellationToken cancellationToken)
+    {
+        return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() && !method.IsUnitTestMethod() &&
+            !method.IsEntryPoint(compilation, cancellationToken);
+    }
 
-            if (RequiresReport(operation.Symbol, context.Compilation, context.CancellationToken))
-            {
-                ReportAt(operation.Symbol, context.ReportDiagnostic);
-            }
-        }
+    private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)
+    {
+        string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-        private static bool RequiresReport([NotNull] IMethodSymbol method, [NotNull] Compilation compilation, CancellationToken cancellationToken)
-        {
-            return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() && !method.IsUnitTestMethod() &&
-                !method.IsEntryPoint(compilation, cancellationToken);
-        }
-
-        private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)
-        {
-            string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-
-            var diagnostic = Diagnostic.Create(Rule, method.Locations[0], method.GetKind().ToLowerInvariant(), name);
-            reportDiagnostic(diagnostic);
-        }
+        var diagnostic = Diagnostic.Create(Rule, method.Locations[0], method.GetKind().ToLowerInvariant(), name);
+        reportDiagnostic(diagnostic);
     }
 }

@@ -17,7 +17,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 enum E { A, B, C }
 
                 void M(E e)
@@ -25,20 +25,20 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (e == null)
                     {
                     }
-
+                
                     if (null == e)
                     {
                     }
-
+                
                     if (e == default)
                     {
                     }
-
+                
                     if (e == default(E))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,7 +50,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 enum E { A, B, C }
 
                 void M(E e)
@@ -58,20 +58,20 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (e != null)
                     {
                     }
-
+                
                     if (null != e)
                     {
                     }
-
+                
                     if (e != default)
                     {
                     }
-
+                
                     if (e != default(E))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -83,26 +83,26 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     if (i == null)
                     {
                     }
-
+                
                     if (null == i)
                     {
                     }
-
+                
                     if (i == default)
                     {
                     }
-
+                
                     if (i == default(int))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -114,26 +114,26 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     if (i != null)
                     {
                     }
-
+                
                     if (null != i)
                     {
                     }
-
+                
                     if (i != default)
                     {
                     }
-
+                
                     if (i != default(int))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -145,30 +145,30 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     if (s == null)
                     {
                     }
-
+                
                     if (null == s)
                     {
                     }
-
+                
                     if (s is null)
                     {
                     }
-
+                
                     if (s == default)
                     {
                     }
-
+                
                     if (s == default(string))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -180,30 +180,30 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     if (s != null)
                     {
                     }
-
+                
                     if (null != s)
                     {
                     }
-
+                
                     if (!(s is null))
                     {
                     }
-
+                
                     if (s != default)
                     {
                     }
-
+                
                     if (s != default(string))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -215,7 +215,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 interface I<T>
                 {
                 }
@@ -229,28 +229,28 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (i == null)
                     {
                     }
-
+                
                     if (null == i)
                     {
                     }
-
+                
                     if (i is null)
                     {
                     }
-
+                
                     if (i == default)
                     {
                     }
-
+                
                     if (i == default(I<int?>))
                     {
                     }
-
+                
                     if (i is X x)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -262,7 +262,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 interface I<T>
                 {
                 }
@@ -272,24 +272,24 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (i != null)
                     {
                     }
-
+                
                     if (null != i)
                     {
                     }
-
+                
                     if (!(i is null))
                     {
                     }
-
+                
                     if (i != default)
                     {
                     }
-
+                
                     if (i != default(I<int?>))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -301,7 +301,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 delegate void D();
 
                 void M(D d)
@@ -309,24 +309,24 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (d == null)
                     {
                     }
-
+                
                     if (null == d)
                     {
                     }
-
+                
                     if (d is null)
                     {
                     }
-
+                
                     if (d == default)
                     {
                     }
-
+                
                     if (d == default(D))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -338,7 +338,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 delegate void D();
 
                 void M(D d)
@@ -346,24 +346,24 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (d != null)
                     {
                     }
-
+                
                     if (null != d)
                     {
                     }
-
+                
                     if (!(d is null))
                     {
                     }
-
+                
                     if (d != default)
                     {
                     }
-
+                
                     if (d != default(D))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -375,38 +375,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l, int? m, int? n)
                 {
                     if ([|i|] == null)
                     {
                     }
-
+                
                     if (null == [|j|])
                     {
                     }
-
+                
                     if ([|k|] == default)
                     {
                     }
-
+                
                     if ([|l|] == default(int?))
                     {
                     }
-
+                
                     if (!([|m|] != null))
                     {
                     }
-
+                
                     if (!(([|n|] == null) && j > 0))
                     {
                     }
-
+                
                     if (i == 0 || j >= 0)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -424,34 +424,34 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l, int? m)
                 {
                     if ([|i|] != null)
                     {
                     }
-
+                
                     if (null != [|j|])
                     {
                     }
-
+                
                     if ([|k|] != default)
                     {
                     }
-
+                
                     if ([|l|] != default(int?))
                     {
                     }
-
+                
                     if (!([|m|] == null))
                     {
                     }
-
+                
                     if (i != 0 || j < 0)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -468,22 +468,22 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i|] is null)
                     {
                     }
-
+                
                     if (i is 0)
                     {
                     }
-
+                
                     if (i is int x)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -496,22 +496,22 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (!([|i|] is null))
                     {
                     }
-
+                
                     if (!(i is 0))
                     {
                     }
-
+                
                     if (!(i is int x))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -524,14 +524,14 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i|].HasValue)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -544,14 +544,14 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (![|i|].HasValue)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -564,26 +564,26 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k)
                 {
                     if ([|i|].Equals(null))
                     {
                     }
-
+                
                     if ([|j|].Equals(default))
                     {
                     }
-
+                
                     if ([|k|].Equals(default(int?)))
                     {
                     }
-
+                
                     if (i.Equals(0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -598,26 +598,26 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k)
                 {
                     if (![|i|].Equals(null))
                     {
                     }
-
+                
                     if (![|j|].Equals(default))
                     {
                     }
-
+                
                     if (![|k|].Equals(default(int?)))
                     {
                     }
-
+                
                     if (!i.Equals(0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -632,34 +632,34 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (object.Equals([|i|], null))
                     {
                     }
-
+                
                     if (object.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (object.Equals([|k|], default))
                     {
                     }
-
+                
                     if (object.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (object.Equals(i, 0) || object.Equals(0, j))
                     {
                     }
-
+                
                     if (object.Equals(null, null) || object.Equals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -675,34 +675,34 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (!object.Equals([|i|], null))
                     {
                     }
-
+                
                     if (!object.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (!object.Equals([|k|], default))
                     {
                     }
-
+                
                     if (!object.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!object.Equals(i, 0) || !object.Equals(0, j))
                     {
                     }
-
+                
                     if (!object.Equals(null, null) || !object.Equals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -718,38 +718,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (ReferenceEquals(i, 0) || ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (ReferenceEquals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -765,38 +765,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (!ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (!ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (!ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (!ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!ReferenceEquals(i, 0) || !ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (!ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (!ReferenceEquals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -812,38 +812,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (object.ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (!!object.ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (object.ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(i, 0) || object.ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -859,38 +859,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (!object.ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (!!!object.ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals(i, 0) || !object.ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -907,38 +907,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(EqualityComparer<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (EqualityComparer<int?>.Default.Equals([|i|], null))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals([|k|], default))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(i, 0) || EqualityComparer<int?>.Default.Equals(j, 0))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(null, null))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -955,38 +955,38 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(EqualityComparer<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k, int? l)
                 {
                     if (!EqualityComparer<int?>.Default.Equals([|i|], null))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals([|k|], default))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(i, 0) || !EqualityComparer<int?>.Default.Equals(j, 0))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(null, null))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(0, 0))
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1002,30 +1002,30 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k)
                 {
                     if ((object)[|i|] == null)
                     {
                     }
-
+                
                     if (null == (object)[|j|])
                     {
                     }
-
+                
                     if ((object)[|k|] == default)
                     {
                     }
-
+                
                     if ((double)i == 0 || (decimal)j == 0)
                     {
                     }
-
+                
                     if ((object)null == (object)null)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1040,30 +1040,30 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k)
                 {
                     if ((object)[|i|] != null)
                     {
                     }
-
+                
                     if (null != (object)[|j|])
                     {
                     }
-
+                
                     if ((object)[|k|] != default)
                     {
                     }
-
+                
                     if ((double)i != 0 || (decimal)j != 0)
                     {
                     }
-
+                
                     if ((object)null != (object)null)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1078,7 +1078,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i, int? j, int? k)
                 {
                     switch (i)
@@ -1088,7 +1088,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                             break;
                         }
                     }
-
+                
                     switch (j)
                     {
                         case int x when x != null:
@@ -1096,7 +1096,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                             break;
                         }
                     }
-
+                
                     switch (k)
                     {
                         case 0:
@@ -1109,7 +1109,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1121,16 +1121,16 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     int? v = i;
-
+                
                     if ([|v|] == null)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1143,16 +1143,16 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     (int? v, int? w) tuple = (i, i);
-
+                
                     if ([|tuple.v|] == null)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1166,7 +1166,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -1175,7 +1175,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                         where [|rangeVar|] == null
                         select item;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1188,7 +1188,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 int? f;
 
                 void M()
@@ -1197,7 +1197,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1210,7 +1210,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 int? P { get; set; }
 
                 void M()
@@ -1219,7 +1219,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1232,7 +1232,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int? i)
@@ -1242,7 +1242,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1255,16 +1255,16 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     if ([|L()|] == null)
                     {
                     }
-
+                
                     int? L() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1277,7 +1277,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     if ([|N(string.Empty)|] == null)
@@ -1286,8 +1286,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                 }
 
                 int? N(string s) => throw null;
-
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Xunit;
 
@@ -13,12 +13,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     return;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -32,12 +32,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable M()
                 {
                     yield return new int[0].Where(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -49,12 +49,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 int M()
                 {
                     return 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,12 +67,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<int> M()
                 {
                     yield return 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -84,12 +84,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 string M()
                 {
                     return string.Empty;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -102,12 +102,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<string> M()
                 {
                     yield return string.Empty;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -120,12 +120,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 object M()
                 {
                     return new int[0].Where(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -139,12 +139,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<object> M()
                 {
                     yield return new int[0].Where(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -157,12 +157,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 dynamic M()
                 {
                     return new int[0].Where(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -176,12 +176,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<dynamic> M()
                 {
                     yield return new int[0].Where(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -195,12 +195,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 (IEnumerable, string) M()
                 {
                     return (new int[0].Where(x => true), string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -215,12 +215,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<(IEnumerable, string)> M()
                 {
                     yield return (new int[0].Where(x => true), string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -234,12 +234,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable[] M()
                 {
                     return new[] { new int[0].Where(x => true) };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -254,12 +254,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<IEnumerable[]> M()
                 {
                     yield return new[] { new int[0].Where(x => true) };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -272,12 +272,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(ArrayList).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 ArrayList M()
                 {
                     return new ArrayList();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -291,12 +291,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(ArrayList).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<ArrayList> M()
                 {
                     yield return new ArrayList();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -309,12 +309,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 List<string> M()
                 {
                     return new List<string>();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -327,12 +327,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<List<string>> M()
                 {
                     yield return new List<string>();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -346,12 +346,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IOrderedEnumerable<int> M()
                 {
                     return new List<int>().Where(x => true).OrderBy(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -365,12 +365,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<IOrderedEnumerable<int>> M()
                 {
                     yield return new List<int>().Where(x => true).OrderBy(x => true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -384,12 +384,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IQueryable M()
                 {
                     return new List<int>().Where(x => true).AsQueryable();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -403,12 +403,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<IQueryable> M()
                 {
                     yield return new List<int>().Where(x => true).AsQueryable();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -422,12 +422,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IQueryable<int> M()
                 {
                     return new List<int>().Where(x => true).AsQueryable();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -441,12 +441,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<IQueryable<int>> M()
                 {
                     yield return new List<int>().Where(x => true).AsQueryable();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -460,12 +460,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IOrderedQueryable M()
                 {
                     return new List<int>().Where(x => true).AsQueryable().OrderBy(x => x);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -479,12 +479,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<IOrderedQueryable> M()
                 {
                     yield return new List<int>().Where(x => true).AsQueryable().OrderBy(x => x);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -498,12 +498,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IOrderedQueryable<int> M()
                 {
                     return new List<int>().Where(x => true).AsQueryable().OrderBy(x => x);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -517,12 +517,12 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 IEnumerable<IOrderedQueryable<int>> M()
                 {
                     yield return new List<int>().Where(x => true).AsQueryable().OrderBy(x => x);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

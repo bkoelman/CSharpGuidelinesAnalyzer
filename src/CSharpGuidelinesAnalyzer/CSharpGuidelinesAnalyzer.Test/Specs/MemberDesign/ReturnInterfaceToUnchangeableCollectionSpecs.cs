@@ -18,14 +18,14 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public void M()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -37,7 +37,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public string M()
@@ -45,7 +45,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -57,7 +57,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public int[] [|M|]()
@@ -65,7 +65,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -78,7 +78,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     private int[] M()
@@ -86,7 +86,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -99,7 +99,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public List<string> [|M|]()
@@ -107,7 +107,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -121,7 +121,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class Outer
                 {
                     private class C
@@ -132,8 +132,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         }
                     }
                 }
-
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -146,7 +145,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IList<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IList<string> [|M|]()
@@ -154,7 +153,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -168,7 +167,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ICollection<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public ICollection<string> [|M|]()
@@ -176,7 +175,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -190,7 +189,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class CustomCollection : List<string>
                 {
                 }
@@ -202,7 +201,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -216,7 +215,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IEnumerable M()
@@ -224,7 +223,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -237,7 +236,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IEnumerable<string> M()
@@ -245,7 +244,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -258,7 +257,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IQueryable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IQueryable M()
@@ -266,7 +265,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -279,7 +278,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IAsyncEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IAsyncEnumerable<string> M()
@@ -287,7 +286,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -300,7 +299,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IQueryable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IQueryable<string> M()
@@ -308,7 +307,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -321,7 +320,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IReadOnlyCollection<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IReadOnlyCollection<string> M()
@@ -329,7 +328,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -342,7 +341,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IReadOnlyList<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IReadOnlyList<string> M()
@@ -350,7 +349,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -363,7 +362,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IReadOnlySet<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IReadOnlySet<string> M()
@@ -371,7 +370,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -384,7 +383,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IReadOnlyDictionary<,>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IReadOnlyDictionary<string, int> M()
@@ -392,7 +391,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -405,7 +404,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ImmutableArray<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public ImmutableArray<int> M()
@@ -413,7 +412,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -426,7 +425,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IImmutableList<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public IImmutableList<int> M()
@@ -434,7 +433,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -447,7 +446,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ImmutableStack<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public ImmutableStack<int> M()
@@ -455,7 +454,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -468,7 +467,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ImmutableDictionary<,>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public ImmutableDictionary<int, string> M()
@@ -476,7 +475,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -489,7 +488,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ImmutableHashSet<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 using HS = System.Collections.Immutable.ImmutableHashSet<int>;
 
                 public class C
@@ -499,7 +498,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -512,7 +511,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract List<string> [|M|]();
@@ -525,7 +524,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -539,7 +538,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class B
                 {
                     public virtual List<string> [|M|]()
@@ -555,7 +554,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -569,7 +568,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     List<string> [|M|]();
@@ -582,7 +581,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -596,7 +595,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     List<string> [|M|]();
@@ -609,7 +608,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -623,13 +622,13 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ICollection<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Microsoft.Extensions.DependencyInjection
                 {
                     public class ServiceDescriptor
                     {
                     }
-
+                
                     public interface IServiceCollection : ICollection<ServiceDescriptor>, IEnumerable<ServiceDescriptor>, IList<ServiceDescriptor>
                     {
                     }
@@ -638,7 +637,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                 namespace Test
                 {
                     using Microsoft.Extensions.DependencyInjection;
-
+                
                     public static class ServiceCollectionExtensions
                     {
                         public static IServiceCollection AddSome(this IServiceCollection services)
@@ -647,7 +646,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -660,12 +659,12 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public List<string> P { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

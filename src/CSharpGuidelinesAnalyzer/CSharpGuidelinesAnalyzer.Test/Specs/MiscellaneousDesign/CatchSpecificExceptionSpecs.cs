@@ -16,7 +16,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -28,7 +28,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -41,7 +41,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -53,7 +53,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -65,7 +65,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 class OtherException : Exception
                 {
                 }
@@ -81,7 +81,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -93,7 +93,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 class OtherException : Exception
                 {
                 }
@@ -109,7 +109,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -121,7 +121,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 class OtherException : Exception
                 {
                 }
@@ -137,7 +137,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,7 +149,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -161,7 +161,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -174,7 +174,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -186,7 +186,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -198,7 +198,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -210,7 +210,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -223,7 +223,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -235,7 +235,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -247,7 +247,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     try
@@ -259,7 +259,7 @@ public sealed class CatchSpecificExceptionSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

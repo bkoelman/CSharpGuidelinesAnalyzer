@@ -17,12 +17,12 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public void M()
                 {
                     return;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -34,12 +34,12 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int M()
                 {
                     return 3;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -51,12 +51,12 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public Exception M()
                 {
                     return null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,7 +67,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public string M()
@@ -75,7 +75,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -88,7 +88,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public List<int> M()
@@ -96,7 +96,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -109,7 +109,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable M()
@@ -117,7 +117,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -129,7 +129,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_int_array_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public int[] M()
@@ -137,7 +137,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -150,7 +150,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public Task M()
@@ -158,7 +158,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -171,7 +171,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public Task<int> M()
@@ -179,7 +179,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -192,7 +192,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public async Task M()
@@ -200,7 +200,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -212,7 +212,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public async ValueTask M()
@@ -220,7 +220,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -232,7 +232,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public async Task<Exception> M()
@@ -240,7 +240,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -252,7 +252,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public async ValueTask<Exception> M()
@@ -260,7 +260,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -272,7 +272,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public async Task<string> M()
@@ -280,7 +280,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -293,7 +293,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public async ValueTask<string> M()
@@ -301,7 +301,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -314,7 +314,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<string> M()
@@ -322,7 +322,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         yield break;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -334,7 +334,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<Exception> M()
@@ -342,7 +342,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         yield return null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -354,7 +354,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<string> M()
@@ -363,7 +363,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         yield break;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -375,17 +375,17 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_constant_for_return_type_string_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private const string NullConstant = null;
-
+                
                     public string M()
                     {
                         return [|NullConstant|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -397,7 +397,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_cast_to_null_for_return_type_string_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public string M()
@@ -405,7 +405,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         return [|(string)(object)null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -417,7 +417,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_from_property_getter_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public string P
@@ -428,7 +428,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -440,7 +440,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_from_indexer_getter_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public string this[int index]
@@ -451,7 +451,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -463,20 +463,20 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_from_local_function_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public string M()
                     {
                         return L();
-
+                
                         string L()
                         {
                             return [|null|];
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -488,12 +488,12 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_expression_bodied_null_for_return_type_string_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public string M() => [|null|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -505,7 +505,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_from_lambda_expression_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
@@ -513,7 +513,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         Func<int, string> callback = input => [|null|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -525,18 +525,18 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_from_lambda_statement_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
                     {
-                        Func<int, string> callback = input => 
+                        Func<int, string> callback = input =>
                         {
                             return [|null|];
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -548,7 +548,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
     internal async Task When_returning_null_for_return_type_string_from_anonymous_method_it_must_be_reported()
     {
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
@@ -559,7 +559,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

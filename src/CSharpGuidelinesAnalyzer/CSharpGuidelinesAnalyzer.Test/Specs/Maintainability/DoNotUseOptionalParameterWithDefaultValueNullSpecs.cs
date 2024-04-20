@@ -18,12 +18,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int? p = null) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -35,12 +35,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
-                    void M(string p = ""empty"") => throw null;
+                    void M(string p = "empty") => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -52,12 +52,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|string p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -71,12 +71,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(CallerArgumentExpressionAttribute).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
-                    void M(object value, [CallerArgumentExpression(""value"")] string parameterName = null) => throw null;
+                    void M(object value, [CallerArgumentExpression("value")] string parameterName = null) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -89,12 +89,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|List<int> p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -108,12 +108,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|IEnumerable p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -126,12 +126,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|int[] p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -145,12 +145,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|Task p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -164,12 +164,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|Task<int> p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -183,12 +183,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|ValueTask? p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -202,12 +202,12 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(ValueTask<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M([|ValueTask<int>? p = null|]) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -220,18 +220,18 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .WithReferenceToExternalAssemblyFor(@"
+            .WithReferenceToExternalAssemblyFor("""
                 public interface I
                 {
                     void M(string s = null);
                 }
-            ")
-            .InGlobalScope(@"
+                """)
+            .InGlobalScope("""
                 class C : I
                 {
                     public void M(string s = null) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -243,18 +243,18 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .WithReferenceToExternalAssemblyFor(@"
+            .WithReferenceToExternalAssemblyFor("""
                 public interface I
                 {
                     void M(string s = null);
                 }
-            ")
-            .InGlobalScope(@"
+                """)
+            .InGlobalScope("""
                 class C : I
                 {
                     void I.M(string s = null) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -266,18 +266,18 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .WithReferenceToExternalAssemblyFor(@"
+            .WithReferenceToExternalAssemblyFor("""
                 public abstract class B
                 {
                     public virtual void M(string s = null) => throw null;
                 }
-            ")
-            .InGlobalScope(@"
+                """)
+            .InGlobalScope("""
                 class C : B
                 {
                     public override void M(string s = null) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

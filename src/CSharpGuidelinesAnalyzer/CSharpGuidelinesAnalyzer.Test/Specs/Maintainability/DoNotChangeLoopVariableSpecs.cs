@@ -16,7 +16,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i = 0;
@@ -25,7 +25,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         i = 5;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -37,7 +37,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int i;
@@ -46,7 +46,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         i = 5;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -58,7 +58,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int i = 0; i < 10; i++)
@@ -66,7 +66,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         Console.WriteLine(i);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -78,7 +78,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int [|i|] = 0; i < 10; i++)
@@ -86,7 +86,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         i = 5;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -99,7 +99,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(ref int x)
                 {
                     for (int [|i|] = 0; i < 10; i++)
@@ -107,7 +107,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         M(ref i);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -120,7 +120,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int [|i|] = 0, [|j|] = 5; i < 10; i++)
@@ -129,7 +129,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         j -= 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -143,7 +143,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 private int i;
 
                 void M()
@@ -153,7 +153,7 @@ public sealed class DoNotChangeLoopVariableSpecs : CSharpGuidelinesAnalysisTestF
                         this.i = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

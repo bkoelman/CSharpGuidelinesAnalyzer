@@ -16,11 +16,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class OkButtonContainer
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -32,11 +32,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class [|OkBtnContainer|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -49,11 +49,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class [|C|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -66,11 +66,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct OkButtonContainer
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -82,11 +82,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct [|OkBtnContainer|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -99,11 +99,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct [|S|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -116,11 +116,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum NextButtonAction
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -132,11 +132,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum [|NextBtnAction|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,11 +149,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum [|E|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -166,11 +166,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface IOkButtonContainer
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -182,11 +182,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface [|IOkBtnContainer|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -199,11 +199,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface [|I|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -216,9 +216,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void ButtonClick();
-            ")
+            .InGlobalScope("delegate void ButtonClick();")
             .Build();
 
         // Act and assert
@@ -230,9 +228,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void [|BtnClick|]();
-            ")
+            .InGlobalScope("delegate void [|BtnClick|]();")
             .Build();
 
         // Act and assert
@@ -245,9 +241,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void [|D|]();
-            ")
+            .InGlobalScope("delegate void [|D|]();")
             .Build();
 
         // Act and assert
@@ -260,9 +254,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                private int some;
-            ")
+            .InDefaultClass("private int some;")
             .Build();
 
         // Act and assert
@@ -274,9 +266,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                private int [|txtData|];
-            ")
+            .InDefaultClass("private int [|txtData|];")
             .Build();
 
         // Act and assert
@@ -289,9 +279,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                private int [|i|];
-            ")
+            .InDefaultClass("private int [|i|];")
             .Build();
 
         // Act and assert
@@ -304,9 +292,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public int Some { get; } = 123;
-            ")
+            .InDefaultClass("public int Some { get; } = 123;")
             .Build();
 
         // Act and assert
@@ -318,9 +304,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public bool [|ChkActive|] { get; } = true;
-            ")
+            .InDefaultClass("public bool [|ChkActive|] { get; } = true;")
             .Build();
 
         // Act and assert
@@ -333,9 +317,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public bool [|X|] { get; } = true;
-            ")
+            .InDefaultClass("public bool [|X|] { get; } = true;")
             .Build();
 
         // Act and assert
@@ -348,7 +330,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 private int [|B|];
 
                 void Method()
@@ -359,7 +341,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                         [|B|]
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -374,7 +356,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class Bb
                 {
                     public abstract int [|CmbItemCount|] { get; }
@@ -384,7 +366,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                 {
                     public override int CmbItemCount => 123;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -397,7 +379,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class Bb
                 {
                     public abstract int [|X|] { get; }
@@ -407,7 +389,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                 {
                     public override int X => 123;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -420,7 +402,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface Ii
                 {
                     int [|PrgValue|] { get; }
@@ -430,7 +412,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                 {
                     public int PrgValue => 123;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -443,7 +425,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface Ii
                 {
                     int [|P|] { get; }
@@ -453,7 +435,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                 {
                     public int P => 123;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -466,9 +448,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public event EventHandler ValueChanged;
-            ")
+            .InDefaultClass("public event EventHandler ValueChanged;")
             .Build();
 
         // Act and assert
@@ -480,9 +460,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public event EventHandler [|TxtChanged|];
-            ")
+            .InDefaultClass("public event EventHandler [|TxtChanged|];")
             .Build();
 
         // Act and assert
@@ -495,9 +473,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public event EventHandler [|E|];
-            ")
+            .InDefaultClass("public event EventHandler [|E|];")
             .Build();
 
         // Act and assert
@@ -510,11 +486,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void More()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -526,11 +502,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|MakeRptVisible|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -543,11 +519,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -560,7 +536,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class Bb
                 {
                     public abstract void [|MakeRptVisible|]();
@@ -572,7 +548,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -585,7 +561,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class Bb
                 {
                     public abstract void [|M|]();
@@ -597,7 +573,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -610,7 +586,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface Ii
                 {
                     void [|FldCount|]();
@@ -622,7 +598,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -635,7 +611,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface Ii
                 {
                     void [|M|]();
@@ -647,7 +623,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -660,14 +636,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Some()
                 {
                     void More()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -679,14 +655,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Some()
                 {
                     void [|MakeRptVisible|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -699,14 +675,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Some()
                 {
                     void [|L|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -719,11 +695,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method(int someParameter)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -735,11 +711,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method(object [|tvHistory|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -752,11 +728,11 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method(object [|x|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -769,12 +745,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     Func<int, bool> func = someParameter => true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -786,12 +762,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     Func<int, bool> func = [|chkAgree|] => true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -804,12 +780,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     Func<int, bool> func = [|x|] => true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -822,7 +798,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class Bb
                 {
                     public abstract void Method(int [|btnCount|]);
@@ -834,7 +810,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -847,7 +823,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class Bb
                 {
                     public abstract void Method(int [|x|]);
@@ -859,7 +835,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -872,7 +848,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface Ii
                 {
                     void Method(int [|btnCount|]);
@@ -884,7 +860,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -897,7 +873,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface Ii
                 {
                     void Method(int [|x|]);
@@ -909,7 +885,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -922,14 +898,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     void LocalFunction(int someParameter)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -941,14 +917,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     void LocalFunction(object [|tvHistory|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -961,14 +937,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     void LocalFunction(object [|x|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -981,12 +957,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
-                    string lineString = ""A"";
+                    string lineString = "A";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -998,12 +974,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
-                    string [|str|] = ""A"";
+                    string [|str|] = "A";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1016,12 +992,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
-                    string [|s|] = ""A"";
+                    string [|s|] = "A";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1034,12 +1010,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
-                    string _ = ""A"";
+                    string _ = "A";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1052,7 +1028,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     var query =
@@ -1064,7 +1040,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                         let [|f|] = e.ToString()
                         select string.Empty;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1083,23 +1059,23 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method((int [|p|], int [|q|]) pp)
                 {
                     (var [|a|], var [|b|]) = GetTuple();
                     (int [|c|], string [|d|]) tt = GetTuple();
                     var ([|e|], [|f|]) = GetTuple();
-
+                
                     int [|g|];
                     string [|h|];
-
+                
                     (g, h) = GetTuple();
-                    
+                
                     (int [|l|], string [|m|]) LocalGetTuple() => throw null;
                 }
 
                 (int [|x|], string [|y|]) GetTuple() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1126,7 +1102,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     var anon = new
@@ -1134,10 +1110,10 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                         [|A|] = string.Empty,
                         [|B|] = 1
                     };
-
+                
                     var tuple = ([|anon.A|], [|anon.B|]);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1153,7 +1129,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Method()
                 {
                     try
@@ -1163,7 +1139,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

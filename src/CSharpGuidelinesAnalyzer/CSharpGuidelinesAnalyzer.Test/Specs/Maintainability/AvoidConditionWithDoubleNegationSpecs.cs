@@ -16,14 +16,14 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsNotVisible()
                     {
                         return true;
                     }
-
+                
                     public void M()
                     {
                         if ([|!IsNotVisible()|])
@@ -31,7 +31,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -44,14 +44,14 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsNoActiveCustomer()
                     {
                         return true;
                     }
-
+                
                     public void M()
                     {
                         if ([|!IsNoActiveCustomer()|])
@@ -59,7 +59,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -74,14 +74,14 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<string> GetNotActiveCustomerNames()
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     public void M()
                     {
                         if (!GetNotActiveCustomerNames().Any())
@@ -89,7 +89,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -101,16 +101,16 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsNotVisible()
                     {
                         return true;
                     }
-
+                
                     public bool IsHidden() => IsNotVisible();
-
+                
                     public void M()
                     {
                         if (!IsHidden())
@@ -118,7 +118,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -130,7 +130,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
@@ -139,7 +139,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             return true;
                         }
-
+                
                         void L()
                         {
                             if ([|!IsNotVisible()|])
@@ -148,7 +148,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -161,7 +161,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
@@ -170,7 +170,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             return true;
                         }
-
+                
                         void L()
                         {
                             if ([|!IsNoActiveCustomer()|])
@@ -179,7 +179,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -194,7 +194,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
@@ -203,7 +203,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             throw new NotImplementedException();
                         }
-
+                
                         void L()
                         {
                             if (!GetNotActiveCustomerNames().Any())
@@ -212,7 +212,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -224,7 +224,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
@@ -233,9 +233,9 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             return true;
                         }
-
+                
                         bool IsHidden() => IsNotVisible();
-
+                
                         void L()
                         {
                             if (!IsHidden())
@@ -244,7 +244,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -256,11 +256,11 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsNotVisible => true;
-
+                
                     public void M()
                     {
                         if ([|!IsNotVisible|])
@@ -268,7 +268,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -281,11 +281,11 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsNoActiveCustomer => true;
-
+                
                     public void M()
                     {
                         if ([|!IsNoActiveCustomer|])
@@ -293,7 +293,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -306,13 +306,13 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsNotVisible => true;
-
+                
                     public bool IsHidden => IsNotVisible;
-
+                
                     public void M()
                     {
                         if (!IsHidden)
@@ -320,7 +320,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -332,11 +332,11 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool isNotVisible;
-
+                
                     public void M()
                     {
                         if ([|!isNotVisible|])
@@ -344,7 +344,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -357,11 +357,11 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool isNoActiveCustomer;
-
+                
                     public void M()
                     {
                         if ([|!isNoActiveCustomer|])
@@ -369,7 +369,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -382,11 +382,11 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool isHidden;
-
+                
                     public void M()
                     {
                         if (!isHidden)
@@ -394,7 +394,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -406,7 +406,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M(bool isNotVisible)
@@ -416,7 +416,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -429,7 +429,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M(bool isNoActiveCustomer)
@@ -439,7 +439,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -452,7 +452,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M(bool isHidden)
@@ -462,7 +462,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -474,19 +474,19 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
                     {
                         bool isNotVisible = false;
-
+                
                         if ([|!isNotVisible|])
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -499,19 +499,19 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
                     {
                         bool isNoActiveCustomer = false;
-
+                
                         if ([|!isNoActiveCustomer|])
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -524,19 +524,19 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void M()
                     {
                         bool isHidden = false;
-
+                
                         if (!isHidden)
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -548,14 +548,14 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public bool IsHidden => [|!IsNotVisible()|];
-
+                
                     bool IsNotVisible() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -568,7 +568,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     protected C(bool b)
@@ -583,10 +583,10 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         : base([|!IsNotVisible()|])
                     {
                     }
-
+                
                     static bool IsNotVisible() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

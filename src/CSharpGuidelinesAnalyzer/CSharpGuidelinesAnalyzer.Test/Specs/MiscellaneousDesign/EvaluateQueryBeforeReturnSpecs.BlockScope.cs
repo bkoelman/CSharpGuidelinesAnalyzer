@@ -1,4 +1,4 @@
-﻿using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
+using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Xunit;
 
 // @formatter:keep_existing_linebreaks true
@@ -14,20 +14,20 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable<int> M()
                     {
                         return null;
-
+                
                         IEnumerable<int> L()
                         {
                             return new int[0].Where(x => true);
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -41,7 +41,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable<int> M()
@@ -50,11 +50,11 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         {
                             return new int[0].Where(x => true);
                         };
-
+                
                         return null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -68,7 +68,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable<int> M()
@@ -77,11 +77,11 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         {
                             return new int[0].Where(x => true);
                         };
-
+                
                         return null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

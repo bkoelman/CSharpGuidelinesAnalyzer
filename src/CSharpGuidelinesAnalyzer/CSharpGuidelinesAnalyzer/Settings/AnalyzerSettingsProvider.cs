@@ -10,107 +10,106 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace CSharpGuidelinesAnalyzer.Settings
+namespace CSharpGuidelinesAnalyzer.Settings;
+
+public static class AnalyzerSettingsProvider
 {
-    public static class AnalyzerSettingsProvider
+    public const string SettingsFileName = "CSharpGuidelinesAnalyzer.config";
+
+    [NotNull]
+    internal static AnalyzerSettingsRegistry LoadSettings([NotNull] AnalyzerOptions options, CancellationToken cancellationToken)
     {
-        public const string SettingsFileName = "CSharpGuidelinesAnalyzer.config";
+        Guard.NotNull(options, nameof(options));
 
-        [NotNull]
-        internal static AnalyzerSettingsRegistry LoadSettings([NotNull] AnalyzerOptions options, CancellationToken cancellationToken)
+        AdditionalText settingsFileOrNull = options.AdditionalFiles.FirstOrDefault(file => IsSettingsFile(file.Path));
+
+        if (settingsFileOrNull != null)
         {
-            Guard.NotNull(options, nameof(options));
+            SourceText fileText = settingsFileOrNull.GetText(cancellationToken);
 
-            AdditionalText settingsFileOrNull = options.AdditionalFiles.FirstOrDefault(file => IsSettingsFile(file.Path));
-
-            if (settingsFileOrNull != null)
-            {
-                SourceText fileText = settingsFileOrNull.GetText(cancellationToken);
-
-                return SafeReadSourceText(fileText, cancellationToken);
-            }
-
-            return AnalyzerSettingsRegistry.ImmutableEmpty;
+            return SafeReadSourceText(fileText, cancellationToken);
         }
 
-        [NotNull]
-        private static AnalyzerSettingsRegistry SafeReadSourceText([NotNull] SourceText fileText, CancellationToken cancellationToken)
-        {
-            try
-            {
-                return ReadSourceText(fileText, AnalyzerSettingsXmlConverter.ParseXml, cancellationToken);
-            }
-            catch (XmlException exception)
-            {
-                Debug.Write("Failed to parse analyzer settings file. Using default settings. Exception: " + exception);
-            }
+        return AnalyzerSettingsRegistry.ImmutableEmpty;
+    }
 
-            return AnalyzerSettingsRegistry.ImmutableEmpty;
+    [NotNull]
+    private static AnalyzerSettingsRegistry SafeReadSourceText([NotNull] SourceText fileText, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return ReadSourceText(fileText, AnalyzerSettingsXmlConverter.ParseXml, cancellationToken);
+        }
+        catch (XmlException exception)
+        {
+            Debug.Write("Failed to parse analyzer settings file. Using default settings. Exception: " + exception);
         }
 
-        private static bool IsSettingsFile([NotNull] string filePath)
+        return AnalyzerSettingsRegistry.ImmutableEmpty;
+    }
+
+    private static bool IsSettingsFile([NotNull] string filePath)
+    {
+        string fileName = Path.GetFileName(filePath);
+        return string.Equals(fileName, SettingsFileName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [NotNull]
+    private static TResult ReadSourceText<TResult>([NotNull] SourceText sourceText, [NotNull] Func<XmlReader, TResult> readAction,
+        CancellationToken cancellationToken)
+    {
+        using var stream = new MemoryStream();
+        using var writer = new StreamWriter(stream);
+
+        sourceText.Write(writer, cancellationToken);
+        writer.Flush();
+
+        stream.Seek(0, SeekOrigin.Begin);
+
+        using var xmlReader = XmlReader.Create(stream);
+
+        return readAction(xmlReader);
+    }
+
+    [NotNull]
+    public static string ToFileContent([NotNull] AnalyzerSettingsRegistry registry)
+    {
+        Guard.NotNull(registry, nameof(registry));
+
+        Encoding encoding = CreateEncoding();
+
+        return GetStringForXml(encoding, writer =>
         {
-            string fileName = Path.GetFileName(filePath);
-            return string.Equals(fileName, SettingsFileName, StringComparison.OrdinalIgnoreCase);
-        }
+            AnalyzerSettingsXmlConverter.WriteXml(registry, writer);
+        });
+    }
 
-        [NotNull]
-        private static TResult ReadSourceText<TResult>([NotNull] SourceText sourceText, [NotNull] Func<XmlReader, TResult> readAction,
-            CancellationToken cancellationToken)
+    [NotNull]
+    private static string GetStringForXml([NotNull] Encoding encoding, [NotNull] Action<XmlWriter> writeAction)
+    {
+        using var stream = new MemoryStream();
+
+        var writerSettings = new XmlWriterSettings
         {
-            using var stream = new MemoryStream();
-            using var writer = new StreamWriter(stream);
+            Encoding = encoding,
+            Indent = true
+        };
 
-            sourceText.Write(writer, cancellationToken);
-            writer.Flush();
+        using var writer = XmlWriter.Create(stream, writerSettings);
 
-            stream.Seek(0, SeekOrigin.Begin);
+        writeAction(writer);
+        writer.Flush();
 
-            using var xmlReader = XmlReader.Create(stream);
+        stream.Seek(0, SeekOrigin.Begin);
 
-            return readAction(xmlReader);
-        }
+        using var reader = new StreamReader(stream, encoding, true, 1024, true);
 
-        [NotNull]
-        public static string ToFileContent([NotNull] AnalyzerSettingsRegistry registry)
-        {
-            Guard.NotNull(registry, nameof(registry));
+        return reader.ReadToEnd();
+    }
 
-            Encoding encoding = CreateEncoding();
-
-            return GetStringForXml(encoding, writer =>
-            {
-                AnalyzerSettingsXmlConverter.WriteXml(registry, writer);
-            });
-        }
-
-        [NotNull]
-        private static string GetStringForXml([NotNull] Encoding encoding, [NotNull] Action<XmlWriter> writeAction)
-        {
-            using var stream = new MemoryStream();
-
-            var writerSettings = new XmlWriterSettings
-            {
-                Encoding = encoding,
-                Indent = true
-            };
-
-            using var writer = XmlWriter.Create(stream, writerSettings);
-
-            writeAction(writer);
-            writer.Flush();
-
-            stream.Seek(0, SeekOrigin.Begin);
-
-            using var reader = new StreamReader(stream, encoding, true, 1024, true);
-
-            return reader.ReadToEnd();
-        }
-
-        [NotNull]
-        public static Encoding CreateEncoding()
-        {
-            return new UTF8Encoding();
-        }
+    [NotNull]
+    public static Encoding CreateEncoding()
+    {
+        return new UTF8Encoding();
     }
 }

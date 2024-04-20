@@ -77,7 +77,7 @@ public abstract class AnalysisTestFixture
             ValidateCompileErrors(compilerDiagnostics);
         }
 
-        ImmutableArray<DiagnosticAnalyzer> analyzers = ImmutableArray.Create(analyzer);
+        ImmutableArray<DiagnosticAnalyzer> analyzers = [analyzer];
         return compilation.WithAnalyzers(analyzers, options);
     }
 

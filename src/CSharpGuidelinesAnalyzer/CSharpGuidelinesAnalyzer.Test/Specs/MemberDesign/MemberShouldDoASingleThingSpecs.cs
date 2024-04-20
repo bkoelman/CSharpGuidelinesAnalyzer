@@ -16,12 +16,12 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     object [|CustomerAndOrder|] { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -34,14 +34,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void [|SaveCustomerAndOrder|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -54,7 +54,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void M()
@@ -64,7 +64,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -77,7 +77,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void M()
@@ -93,7 +93,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -106,12 +106,12 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     object [|_customerAndOrder|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -124,7 +124,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler [|CustomerAndOrderSaved|]
@@ -139,7 +139,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -152,14 +152,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|save_customer_and_order|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -172,14 +172,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|Match1And2Again3|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -192,14 +192,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void ExploreTheBigLandOutHere()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -211,14 +211,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void VisitAndyWithJohn()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -230,19 +230,19 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 abstract class B
                 {
-#pragma warning disable AV1115
+                #pragma warning disable AV1115
                     protected abstract void ThisAndThat();
-#pragma warning restore AV1115
+                #pragma warning restore AV1115
                 }
 
                 class C : B
                 {
                     protected override void ThisAndThat() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -254,19 +254,19 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
-#pragma warning disable AV1115
+                #pragma warning disable AV1115
                     protected virtual void ThisAndThat() => throw null;
-#pragma warning restore AV1115
+                #pragma warning restore AV1115
                 }
 
                 class C : B
                 {
                     protected new void ThisAndThat() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -278,19 +278,19 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
-#pragma warning disable AV1115
+                #pragma warning disable AV1115
                     void ThisAndThat();
-#pragma warning restore AV1115
+                #pragma warning restore AV1115
                 }
 
                 class C : I
                 {
                     public void ThisAndThat() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -302,19 +302,19 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
-#pragma warning disable AV1115
+                #pragma warning disable AV1115
                     void ThisAndThat();
-#pragma warning restore AV1115
+                #pragma warning restore AV1115
                 }
 
                 class C : I
                 {
                     void I.ThisAndThat() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -326,7 +326,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Microsoft.VisualStudio.TestTools.UnitTesting
                 {
                     public class TestMethodAttribute : Attribute
@@ -337,7 +337,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+                
                     class UnitTests
                     {
                         [TestMethod]
@@ -346,7 +346,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -358,7 +358,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Xunit
                 {
                     public class FactAttribute : Attribute
@@ -369,7 +369,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [Fact]
@@ -378,7 +378,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -390,7 +390,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace NUnit.Framework
                 {
                     public class TestAttribute : Attribute
@@ -401,7 +401,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using NUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]
@@ -410,7 +410,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -422,7 +422,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace MbUnit.Framework
                 {
                     public class TestAttribute : Attribute
@@ -433,7 +433,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using MbUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]
@@ -442,7 +442,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -454,14 +454,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void And()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -473,14 +473,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void AndComputer()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -492,14 +492,14 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct C
                 {
                     void ParseLogicalAnd()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

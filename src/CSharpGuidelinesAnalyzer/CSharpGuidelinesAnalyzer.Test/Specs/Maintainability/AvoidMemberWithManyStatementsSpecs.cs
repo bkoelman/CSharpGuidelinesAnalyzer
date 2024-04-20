@@ -20,12 +20,12 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
             .Using(typeof(IDisposable).Namespace)
             .Using(typeof(CLSCompliantAttribute).Namespace)
             .Using(typeof(CallerMemberNameAttribute).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
-                    IDisposable AcquireResource() => throw null; 
+                    IDisposable AcquireResource() => throw null;
                     int field;
-
+                
                     [CLSCompliant(isCompliant: false)]
                     [Obsolete(null, false)]
                     void [|M1|]()
@@ -33,7 +33,7 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
                         using (var resource = AcquireResource())                    // 1
                         {
                             int i = true ? 1 : throw new NotSupportedException();   // 2
-
+                
                             try                                                     // 3
                             {
                                 int j = checked(i++);                               // 4
@@ -50,7 +50,7 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
                             }
                         }
                     }
-
+                
                     void [|M2|](int i, [CallerMemberName] string memberName = null)
                     {
                         switch (i)                                      // 1
@@ -66,7 +66,7 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
                                 throw null;                             // 4
                             }
                         }
-
+                
                         unsafe                                          // 5
                         {
                             fixed (int* p = &field)                     // 6
@@ -77,7 +77,7 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -92,7 +92,7 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     async Task [|M|](bool b = default(bool))
@@ -101,9 +101,9 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
                         {
                             throw null;             // 2
                         }
-
+                
                         await Task.Yield();         // 3
-
+                
                         if (!b)                     // 4
                         {
                             await Task.Yield();     // 5
@@ -111,11 +111,11 @@ public sealed partial class AvoidMemberWithManyStatementsSpecs : CSharpGuideline
                         }
                         else
                             throw null;             // 7
-
+                
                         return;                     // 8
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

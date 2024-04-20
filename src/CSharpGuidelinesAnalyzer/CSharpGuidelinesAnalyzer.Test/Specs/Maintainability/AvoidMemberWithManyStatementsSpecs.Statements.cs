@@ -13,7 +13,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -24,7 +24,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ; ;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -37,7 +37,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -45,7 +45,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ; ;
                         ; ;
                         ; ;
-
+                
                         // Block scopes are not counted
                         {
                             {
@@ -54,7 +54,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -66,7 +66,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -75,14 +75,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         int statement2 = 2;
                         int statement3 = 3;
                         int statement4 = 4;
-
+                
                         int statement5 = 5;
                         int statement6 = 6;
                         int statement7 = 7;
                         int statement8 = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -95,7 +95,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -104,13 +104,13 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         int statement2 = 2;
                         int statement3 = 3;
                         int statement4 = 4;
-
+                
                         int statement5 = 5;
                         int statement6 = 6;
                         int statement7 = 7, other = 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -123,25 +123,25 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private int i;
-
+                
                     void [|M|]()
                     {
                         i = 1;
                         i++;
                         i += 3;
                         i--;
-
+                
                         i += (true ? 5 : 0);
                         i *= 6;
                         i--;
                         i += 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -155,24 +155,24 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private int i;
-
+                
                     void M()
                     {
                         i = 1;
                         i++;
                         i += 3;
                         i--;
-
+                
                         i += (true ? 5 : 0);
                         i *= 6;
                         i--;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -184,7 +184,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -203,7 +203,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -216,7 +216,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -234,7 +234,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -247,7 +247,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|](List<(int, string)> source)
@@ -266,7 +266,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -280,7 +280,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(List<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(List<(int, string)> source)
@@ -298,7 +298,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -310,7 +310,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -319,7 +319,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true)
                                 while (true)
                                     while (true)
-
+                
                                         while (true)
                                             while (true)
                                                 while (true)
@@ -328,7 +328,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -341,7 +341,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -350,7 +350,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true)
                                 while (true)
                                     while (true)
-
+                
                                         while (true)
                                             while (true)
                                                 while (true)
@@ -358,7 +358,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                                 }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -370,7 +370,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -391,7 +391,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true);
                         }
                         while (true);
-
+                
                         do
                         {
                             do
@@ -410,7 +410,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         while (true);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -423,7 +423,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -444,7 +444,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true);
                         }
                         while (true);
-
+                
                         do
                         {
                             do
@@ -459,7 +459,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         while (true);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -471,7 +471,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -506,7 +506,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         else
                         {
                         }
-
+                
                         if (true)
                         {
                             if (true)
@@ -519,7 +519,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         else
                         {
                         }
-
+                
                         if (true)
                         {
                         }
@@ -528,7 +528,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -541,7 +541,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -576,7 +576,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         else
                         {
                         }
-
+                
                         if (true)
                         {
                             if (true)
@@ -591,7 +591,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -603,7 +603,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -611,37 +611,37 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         void L1()
                         {
                         }
-
+                
                         void L2()
                         {
                         }
-
+                
                         void L3()
                         {
                         }
-
+                
                         void L4()
                         {
                         }
-
+                
                         void L5()
                         {
                         }
-
+                
                         void L6()
                         {
                         }
-
+                
                         void L7()
                         {
                         }
-
+                
                         void L8()
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -653,7 +653,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -661,19 +661,19 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         void L()
                         {
                         }
-
+                
                         L();
                         L();
                         L();
                         L();
-
+                
                         L();
                         L();
                         L();
                         L();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -686,7 +686,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -694,18 +694,18 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         void L()
                         {
                         }
-
+                
                         L();
                         L();
                         L();
                         L();
-
+                
                         L();
                         L();
                         L();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -717,7 +717,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|](int i)
@@ -734,7 +734,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         switch (i)
                         {
                         }
-
+                
                         switch (i)
                         {
                         }
@@ -749,7 +749,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -762,7 +762,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int i)
@@ -779,7 +779,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         switch (i)
                         {
                         }
-
+                
                         switch (i)
                         {
                         }
@@ -791,7 +791,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -803,7 +803,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|](int i)
@@ -821,7 +821,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -834,7 +834,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int i)
@@ -852,7 +852,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -864,7 +864,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|](string s)
@@ -873,14 +873,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
-
+                
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -893,7 +893,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(string s)
@@ -902,13 +902,13 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
-
+                
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -920,7 +920,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -949,7 +949,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         try
                         {
                             try
@@ -976,7 +976,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -989,7 +989,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -1018,7 +1018,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         try
                         {
                             try
@@ -1039,7 +1039,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1051,11 +1051,11 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private IDisposable d;
-
+                
                     void [|M|]()
                     {
                         using (d)
@@ -1064,7 +1064,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     using (d)
                                     {
                                     }
-
+                
                         using (d)
                             using (d)
                                 using (d)
@@ -1073,7 +1073,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1086,11 +1086,11 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private IDisposable d;
-
+                
                     void M()
                     {
                         using (d)
@@ -1099,7 +1099,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     using (d)
                                     {
                                     }
-
+                
                         using (d)
                             using (d)
                                 using (IDisposable x = null, d = null)
@@ -1107,7 +1107,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                 }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1120,7 +1120,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public int [|M|]()
@@ -1129,14 +1129,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         return 2;
                         return 3;
                         return 4;
-
+                
                         return 5;
                         return 6;
                         return 7;
                         return 8;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1150,7 +1150,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public int P
@@ -1161,14 +1161,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             return 2;
                             return 3;
                             return 4;
-
+                
                             return 5;
                             return 6;
                             return 7;
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1181,7 +1181,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable [|M|]()
@@ -1190,14 +1190,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         yield return new object();
                         yield break;
                         yield return new object();
-
+                
                         yield break;
                         yield return new object();
                         yield break;
                         yield return new object();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1211,7 +1211,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M()
@@ -1220,13 +1220,13 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         yield return new object();
                         yield break;
                         yield return new object();
-
+                
                         yield break;
                         yield return new object();
                         yield break;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1238,11 +1238,11 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private static readonly object guard = new object();
-
+                
                     void [|M|]()
                     {
                         lock (guard)
@@ -1250,7 +1250,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                 lock (guard)
                                     lock (guard)
                                     {
-
+                
                                         lock (guard)
                                         {
                                             lock (guard)
@@ -1266,7 +1266,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1279,11 +1279,11 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     private static readonly object guard = new object();
-
+                
                     void M()
                     {
                         lock (guard)
@@ -1291,7 +1291,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                 lock (guard)
                                     lock (guard)
                                     {
-
+                
                                         lock (guard)
                                         {
                                             lock (guard)
@@ -1304,7 +1304,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1317,7 +1317,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     unsafe void [|M|]()
@@ -1328,7 +1328,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     fixed (char* p7 = Environment.MachineName, p8 = Environment.MachineName)
                                     {
                                     }
-
+                
                         fixed (char* p9 = Environment.MachineName, p10 = Environment.MachineName)
                         {
                             fixed (char* p11 = Environment.MachineName, p12 = Environment.MachineName)
@@ -1343,7 +1343,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1357,7 +1357,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     unsafe void M()
@@ -1368,7 +1368,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     fixed (char* p7 = Environment.MachineName, p8 = Environment.MachineName)
                                     {
                                     }
-
+                
                         fixed (char* p9 = Environment.MachineName, p10 = Environment.MachineName)
                         {
                             fixed (char* p11 = Environment.MachineName, p12 = Environment.MachineName)
@@ -1380,7 +1380,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1393,7 +1393,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -1424,7 +1424,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1438,7 +1438,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -1466,7 +1466,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1479,7 +1479,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -1490,32 +1490,32 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         unchecked
                         {
                             checked
                             {
                             }
                         }
-
+                
                         checked
                         {
                         }
-
+                
                         unchecked
                         {
                         }
-
+                
                         checked
                         {
                         }
-
+                
                         unchecked
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1529,7 +1529,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(IEnumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -1540,28 +1540,28 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         unchecked
                         {
                             checked
                             {
                             }
                         }
-
+                
                         checked
                         {
                         }
-
+                
                         unchecked
                         {
                         }
-
+                
                         checked
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1573,7 +1573,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -1586,7 +1586,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             goto Label4;
                         Label4:
                             goto Label5;
-
+                
                         Label5:
                             goto Label6;
                         Label6:
@@ -1597,7 +1597,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             goto Label1;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1610,7 +1610,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -1623,7 +1623,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             goto Label4;
                         Label4:
                             goto Label5;
-
+                
                         Label5:
                             goto Label6;
                         Label6:
@@ -1632,7 +1632,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             goto Label1;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1644,7 +1644,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -1655,14 +1655,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             continue;
                             continue;
                             continue;
-
+                
                             continue;
                             continue;
                             continue;
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1675,7 +1675,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -1686,13 +1686,13 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             continue;
                             continue;
                             continue;
-
+                
                             continue;
                             continue;
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1704,7 +1704,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -1715,14 +1715,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             break;
                             break;
                             break;
-
+                
                             break;
                             break;
                             break;
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1735,7 +1735,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -1746,13 +1746,13 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             break;
                             break;
                             break;
-
+                
                             break;
                             break;
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

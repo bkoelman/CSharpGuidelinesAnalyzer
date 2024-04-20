@@ -8,162 +8,198 @@ public sealed class WordsTokenizerSpecs
     [Fact]
     internal void When_empty_string_it_must_be_tokenized()
     {
-        RunTest("");
+        RunTest("", []);
     }
 
     [Fact]
     internal void When_single_lowercase_word_it_must_be_tokenized()
     {
-        RunTest("first",
-            new WordToken("first", WordTokenKind.CamelCaseWord));
+        RunTest("first", new[]
+        {
+            new WordToken("first", WordTokenKind.CamelCaseWord)
+        });
     }
 
     [Fact]
     internal void When_single_pascal_cased_word_it_must_be_tokenized()
     {
-        RunTest("First",
-            new WordToken("First", WordTokenKind.PascalCaseWord));
+        RunTest("First", new[]
+        {
+            new WordToken("First", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_single_uppercase_word_it_must_be_tokenized()
     {
-        RunTest("FIRST",
-            new WordToken("FIRST", WordTokenKind.UpperCaseWord));
+        RunTest("FIRST", new[]
+        {
+            new WordToken("FIRST", WordTokenKind.UpperCaseWord)
+        });
     }
 
     [Fact]
     internal void When_underscores_it_must_be_tokenized()
     {
-        RunTest("_____",
-            new WordToken("_____", WordTokenKind.Separators));
+        RunTest("_____", new[]
+        {
+            new WordToken("_____", WordTokenKind.Separators)
+        });
     }
 
     [Fact]
     internal void When_two_separated_lowercase_words_it_must_be_tokenized()
     {
-        RunTest("first_second",
+        RunTest("first_second", new[]
+        {
             new WordToken("first", WordTokenKind.CamelCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("second", WordTokenKind.CamelCaseWord));
+            new WordToken("second", WordTokenKind.CamelCaseWord)
+        });
     }
 
     [Fact]
     internal void When_lowercase_and_pascal_cased_word_it_must_be_tokenized()
     {
-        RunTest("firstSecond",
+        RunTest("firstSecond", new[]
+        {
             new WordToken("first", WordTokenKind.CamelCaseWord),
-            new WordToken("Second", WordTokenKind.PascalCaseWord));
+            new WordToken("Second", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_separated_lowercase_and_camel_cased_word_it_must_be_tokenized()
     {
-        RunTest("first_Second",
+        RunTest("first_Second", new[]
+        {
             new WordToken("first", WordTokenKind.CamelCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("Second", WordTokenKind.PascalCaseWord));
+            new WordToken("Second", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_two_pascal_cased_words_it_must_be_tokenized()
     {
-        RunTest("FirstSecond",
+        RunTest("FirstSecond", new[]
+        {
             new WordToken("First", WordTokenKind.PascalCaseWord),
-            new WordToken("Second", WordTokenKind.PascalCaseWord));
+            new WordToken("Second", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_two_separated_pascal_cased_words_it_must_be_tokenized()
     {
-        RunTest("First_Second",
+        RunTest("First_Second", new[]
+        {
             new WordToken("First", WordTokenKind.PascalCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("Second", WordTokenKind.PascalCaseWord));
+            new WordToken("Second", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_uppercase_and_pascal_cased_word_it_must_be_tokenized()
     {
-        RunTest("FIRSTSecond",
+        RunTest("FIRSTSecond", new[]
+        {
             new WordToken("FIRST", WordTokenKind.UpperCaseWord),
-            new WordToken("Second", WordTokenKind.PascalCaseWord));
+            new WordToken("Second", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_separated_uppercase_and_pascal_cased_word_it_must_be_tokenized()
     {
-        RunTest("FIRST_Second",
+        RunTest("FIRST_Second", new[]
+        {
             new WordToken("FIRST", WordTokenKind.UpperCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("Second", WordTokenKind.PascalCaseWord));
+            new WordToken("Second", WordTokenKind.PascalCaseWord)
+        });
     }
 
     [Fact]
     internal void When_lowercase_and_uppercase_word_it_must_be_tokenized()
     {
-        RunTest("firstSECOND",
+        RunTest("firstSECOND", new[]
+        {
             new WordToken("first", WordTokenKind.CamelCaseWord),
-            new WordToken("SECOND", WordTokenKind.UpperCaseWord));
+            new WordToken("SECOND", WordTokenKind.UpperCaseWord)
+        });
     }
 
     [Fact]
     internal void When_separated_lowercase_and_uppercase_word_it_must_be_tokenized()
     {
-        RunTest("first_SECOND",
+        RunTest("first_SECOND", new[]
+        {
             new WordToken("first", WordTokenKind.CamelCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("SECOND", WordTokenKind.UpperCaseWord));
+            new WordToken("SECOND", WordTokenKind.UpperCaseWord)
+        });
     }
 
     [Fact]
     internal void When_two_separated_uppercase_words_it_must_be_tokenized()
     {
-        RunTest("FIRST_SECOND",
+        RunTest("FIRST_SECOND", new[]
+        {
             new WordToken("FIRST", WordTokenKind.UpperCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("SECOND", WordTokenKind.UpperCaseWord));
+            new WordToken("SECOND", WordTokenKind.UpperCaseWord)
+        });
     }
 
     [Fact]
     internal void When_pascal_cased_word_is_surrounded_by_single_uppercase_letters_it_must_be_tokenized()
     {
-        RunTest("AFiS",
+        RunTest("AFiS", new[]
+        {
             new WordToken("A", WordTokenKind.UpperCaseWord),
             new WordToken("Fi", WordTokenKind.PascalCaseWord),
-            new WordToken("S", WordTokenKind.UpperCaseWord));
+            new WordToken("S", WordTokenKind.UpperCaseWord)
+        });
     }
 
     [Fact]
     internal void When_pascal_cased_word_is_followed_by_single_uppercase_letter_and_underscore_it_must_be_tokenized()
     {
-        RunTest("OfT_",
+        RunTest("OfT_", new[]
+        {
             new WordToken("Of", WordTokenKind.PascalCaseWord),
             new WordToken("T", WordTokenKind.UpperCaseWord),
-            new WordToken("_", WordTokenKind.Separators));
+            new WordToken("_", WordTokenKind.Separators)
+        });
     }
 
     [Fact]
     internal void When_pascal_cased_word_is_surrounded_by_single_uppercase_letters_and_underscores_it_must_be_tokenized()
     {
-        RunTest("A_First_S",
+        RunTest("A_First_S", new[]
+        {
             new WordToken("A", WordTokenKind.UpperCaseWord),
             new WordToken("_", WordTokenKind.Separators),
             new WordToken("First", WordTokenKind.PascalCaseWord),
             new WordToken("_", WordTokenKind.Separators),
-            new WordToken("S", WordTokenKind.UpperCaseWord));
+            new WordToken("S", WordTokenKind.UpperCaseWord)
+        });
     }
 
     [Fact]
     internal void When_lowercase_word_is_surrounded_by_single_underscores_it_must_be_tokenized()
     {
-        RunTest("_first_",
+        RunTest("_first_", new[]
+        {
             new WordToken("_", WordTokenKind.Separators),
             new WordToken("first", WordTokenKind.CamelCaseWord),
-            new WordToken("_", WordTokenKind.Separators));
+            new WordToken("_", WordTokenKind.Separators)
+        });
     }
 
-    private static void RunTest(string text, params WordToken[] expected)
+    private static void RunTest(string text, IList<WordToken> expected)
     {
         var tokenizer = new WordsTokenizer(text);
         WordToken[] tokens = tokenizer.GetTokens().ToArray();

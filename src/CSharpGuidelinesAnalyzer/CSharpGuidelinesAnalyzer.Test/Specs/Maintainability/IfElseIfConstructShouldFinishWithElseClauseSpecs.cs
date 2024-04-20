@@ -16,14 +16,14 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool condition)
                 {
                     if (condition)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -35,7 +35,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool condition)
                 {
                     if (condition)
@@ -45,7 +45,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -57,7 +57,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second)
                 {
                     [|if|] (first)
@@ -67,7 +67,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -80,7 +80,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second)
                 {
                     if (first)
@@ -93,7 +93,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -105,7 +105,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second, bool third)
                 {
                     [|if|] (first)
@@ -118,7 +118,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -131,7 +131,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second, bool third)
                 {
                     if (first)
@@ -147,7 +147,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -159,7 +159,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second, bool third, bool fourth)
                 {
                     [|if|] (first)
@@ -175,7 +175,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -188,7 +188,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second, bool third, bool fourth)
                 {
                     if (first)
@@ -207,7 +207,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -219,7 +219,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second)
                 {
                     [|if|] (first)
@@ -241,7 +241,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -256,7 +256,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool first, bool second)
                 {
                     if (first)
@@ -287,7 +287,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseSpecs : CSharpGui
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

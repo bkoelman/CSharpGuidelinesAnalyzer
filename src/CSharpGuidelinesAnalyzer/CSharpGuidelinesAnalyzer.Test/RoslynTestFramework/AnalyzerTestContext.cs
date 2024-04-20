@@ -62,7 +62,7 @@ public sealed class AnalyzerTestContext
         string assemblyPath = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
 
         string[] assemblies =
-        {
+        [
             typeof(object).Assembly.Location, // System.Private.CoreLib.dll
             typeof(BitArray).Assembly.Location, // System.Collections.dll
             typeof(IImmutableList<>).Assembly.Location, // System.Collections.Immutable.dll
@@ -72,7 +72,7 @@ public sealed class AnalyzerTestContext
             typeof(DynamicAttribute).Assembly.Location, // System.Linq.Expressions.dll
             typeof(IPAddress).Assembly.Location, // System.Net.Primitives.dll
             Path.Combine(assemblyPath, "System.Runtime.dll")
-        };
+        ];
 
         return assemblies.Select(assembly => (MetadataReference)MetadataReference.CreateFromFile(assembly)).ToImmutableHashSet();
     }

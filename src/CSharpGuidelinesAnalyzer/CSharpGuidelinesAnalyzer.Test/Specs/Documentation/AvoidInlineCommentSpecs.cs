@@ -17,12 +17,12 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|// Example|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -35,14 +35,14 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|/* Example
                     block
                     of text*/|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -55,12 +55,12 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 /// <summary>...</summary>
                 void M()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -72,16 +72,16 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-#if DEBUG
-                    Console.WriteLine(""Debug mode"");
-#else
-                    Console.WriteLine(""Release mode"");
-#endif
+                #if DEBUG
+                    Console.WriteLine("Debug mode");
+                #else
+                    Console.WriteLine("Release mode");
+                #endif
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -93,14 +93,14 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     #region Example
                     int i = 4;
                     #endregion
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -112,14 +112,14 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-#pragma warning disable CS0219
+                #pragma warning disable CS0219
                     int i = 4;
-#pragma warning restore
+                #pragma warning restore
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -131,11 +131,11 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int F = Int32
                     [|// comment|]
-                    .Parse(""1"");
-            ")
+                    .Parse("1");
+                """)
             .Build();
 
         // Act and assert
@@ -148,19 +148,19 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public string P
                 {
                     get
                     {
                         [|// comment |]
-
+                
                         return null;
-
+                
                         [|/* unreachable */|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -174,12 +174,12 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 // some
                 void M()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -191,12 +191,12 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                 }
                 // some
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -208,18 +208,18 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     string s = null;
-
+                
                     // ReSharper disable PossibleNullReferenceException
                     if (s.Length > 1)
                     // ReSharper restore PossibleNullReferenceException
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -231,13 +231,13 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     /*language=regexp|jsregexp*/
-                    string regex = @""^[A-Z]+$"";
+                    string regex = @"^[A-Z]+$";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -249,18 +249,18 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     // @formatter:max_line_length 50
                     string text = string.Empty;
                     // @formatter:max_line_length restore
-
+                
                     // @formatter:off
                     int i = 1;
                     // @formatter:on
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -273,19 +273,19 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Debug).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void UnitTest()
                 {
                     // Arrange
                     int x = 10;
-
+                
                     // Act
                     x -= 1;
-
+                
                     // Assert
                     Debug.Assert(x == 9);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -298,16 +298,16 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Debug).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void UnitTest()
                 {
                     // Arrange
                     int x = 10;
-
+                
                     // Act and assert
                     Debug.Assert(--x == 9);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -319,7 +319,7 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     if (i > 10)
@@ -335,7 +335,7 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
                         // No action required.
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

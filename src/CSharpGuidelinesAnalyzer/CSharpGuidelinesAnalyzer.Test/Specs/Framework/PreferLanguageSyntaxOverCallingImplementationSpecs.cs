@@ -16,18 +16,18 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (i == null)
                     {
                     }
-
+                
                     if (i != null)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,18 +39,18 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i.HasValue|])
                     {
                     }
-
+                
                     if (![|i.HasValue|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -64,34 +64,34 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (i > 5)
                     {
                     }
-
+                
                     if (i < 5.0)
                     {
                     }
-
+                
                     if (i <= 3.0f)
                     {
                     }
-
+                
                     if (i >= 3.0m)
                     {
                     }
-
+                
                     if (i == 8u)
                     {
                     }
-
+                
                     if (i != 8L)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -103,36 +103,36 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (i > GetNumber())
                     {
                     }
-
+                
                     if (i < GetNumber())
                     {
                     }
-
+                
                     if (i <= GetNumber())
                     {
                     }
-
+                
                     if (i >= GetNumber())
                     {
                     }
-
+                
                     if (i == GetNumber())
                     {
                     }
-
+                
                     if (i != GetNumber())
                     {
                     }
                 }
 
                 int GetNumber() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -145,38 +145,38 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(EqualityComparer<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i != null && i > 5|])
                     {
                     }
-
+                
                     if ([|i.HasValue && i > 5|])
                     {
                     }
-
+                
                     if ([|!(i is null) && i < 5|])
                     {
                     }
-
+                
                     if ([|!i.Equals(null) && i <= 3|])
                     {
                     }
-
+                
                     if ([|!object.Equals(i, null) && i >= 3|])
                     {
                     }
-
+                
                     if ([|!object.ReferenceEquals(i, null) && i > 8|])
                     {
                     }
-
+                
                     if ([|!EqualityComparer<int?>.Default.Equals(i, null) && i < 8|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -196,34 +196,34 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(EqualityComparer<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i != null && i.Value > 5|])
                     {
                     }
-
+                
                     if ([|!(i is null) && i.Value < 5|])
                     {
                     }
-
+                
                     if ([|!i.Equals(null) && i.Value <= 3|])
                     {
                     }
-
+                
                     if ([|!object.Equals(i, null) && i.Value >= 3|])
                     {
                     }
-
+                
                     if ([|!object.ReferenceEquals(i, null) && i.Value == 8|])
                     {
                     }
-
+                
                     if ([|!EqualityComparer<int?>.Default.Equals(i, null) && i.Value == 8|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -241,42 +241,42 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int? P { get; set; }
-
+                
                     int? F;
-
+                
                     void M(int? i, int?[] j, int?[] k, dynamic d)
                     {
                         if ([|i != null && i > 5|])
                         {
                         }
-
+                
                         if ([|j[0] != null && j[0] > 5|])
                         {
                         }
-
+                
                         if ([|k[i.Value + 1] != null && k[i.Value + 1] > 5|])
                         {
                         }
-
+                
                         if ([|!(P is null) && P > 5|])
                         {
                         }
-
+                
                         if ([|F != null && F > 5|])
                         {
                         }
-
+                
                         int? l = i;
                         if ([|l != null && l > 5|])
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -294,42 +294,42 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int? P { get; set; }
-
+                
                     int? F;
-
+                
                     void M(int? i, int?[] j, int?[] k, dynamic d)
                     {
                         if ([|i != null && i.Value > 5|])
                         {
                         }
-
+                
                         if ([|j[0] != null && j[0].Value > 5|])
                         {
                         }
-
+                
                         if ([|k[i.Value + 1] != null && k[i.Value + 1].Value > 5|])
                         {
                         }
-
+                
                         if ([|!(P is null) && P.Value > 5|])
                         {
                         }
-
+                
                         if ([|F != null && F.Value > 5|])
                         {
                         }
-
+                
                         int? l = i;
                         if ([|l != null && l.Value > 5|])
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -347,7 +347,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int? i, int? other, int?[] array, dynamic k)
@@ -355,30 +355,30 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         if (i != null && other > 5)
                         {
                         }
-
+                
                         if (array[0] != null && array[1] > 5)
                         {
                         }
-
+                
                         if (k.M() != null && k.M() > 5)
                         {
                         }
-
+                
                         if (N() != null && N() > 5)
                         {
                         }
-
+                
                         if (this != null && this > 5)
                         {
                         }
                     }
-
+                
                     int? N() => throw null;
-
+                
                     public static bool operator >(C left, int right) => throw null;
                     public static bool operator <(C left, int right) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -390,7 +390,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int? i, int? j)
@@ -398,61 +398,61 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         if (i != null && i == j)
                         {
                         }
-
+                
                         if (i != null && i.Value == j)
                         {
                         }
-
+                
                         if (i != null && i != j)
                         {
                         }
-
+                
                         if (i != null && i.Value != j)
                         {
                         }
-
+                
                         if (i != null && i != 123)
                         {
                         }
-
+                
                         if (i != null && i.Value != 123)
                         {
                         }
-
+                
                         if ([|i != null && i > j|])
                         {
                         }
-
+                
                         if ([|i != null && i.Value > j|])
                         {
                         }
-
+                
                         if ([|i != null && i >= j|])
                         {
                         }
-
+                
                         if ([|i != null && i.Value >= j|])
                         {
                         }
-
+                
                         if ([|i != null && i < j|])
                         {
                         }
-
+                
                         if ([|i != null && i.Value < j|])
                         {
                         }
-
+                
                         if ([|i != null && i <= j|])
                         {
                         }
-
+                
                         if ([|i != null && i.Value <= j|])
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -472,7 +472,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(string s)
@@ -482,7 +482,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

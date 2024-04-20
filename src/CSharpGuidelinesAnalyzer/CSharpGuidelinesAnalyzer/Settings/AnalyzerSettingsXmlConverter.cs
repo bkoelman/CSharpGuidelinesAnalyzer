@@ -2,59 +2,58 @@
 using System.Xml;
 using JetBrains.Annotations;
 
-namespace CSharpGuidelinesAnalyzer.Settings
+namespace CSharpGuidelinesAnalyzer.Settings;
+
+internal static class AnalyzerSettingsXmlConverter
 {
-    internal static class AnalyzerSettingsXmlConverter
+    [NotNull]
+    public static AnalyzerSettingsRegistry ParseXml([NotNull] XmlReader reader)
     {
-        [NotNull]
-        public static AnalyzerSettingsRegistry ParseXml([NotNull] XmlReader reader)
+        var settings = new AnalyzerSettingsRegistry();
+
+        while (reader.Read())
         {
-            var settings = new AnalyzerSettingsRegistry();
-
-            while (reader.Read())
+            if (reader is { NodeType: XmlNodeType.Element, Name: "setting" })
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "setting")
-                {
-                    ParseSettingElement(reader, settings);
-                }
-            }
-
-            return settings.IsEmpty ? AnalyzerSettingsRegistry.ImmutableEmpty : settings;
-        }
-
-        private static void ParseSettingElement([NotNull] XmlReader reader, [NotNull] AnalyzerSettingsRegistry registry)
-        {
-            string rule = reader.GetAttribute("rule");
-            string name = reader.GetAttribute("name");
-            string value = reader.GetAttribute("value");
-
-            if (!string.IsNullOrWhiteSpace(rule) && !string.IsNullOrWhiteSpace(name))
-            {
-                registry.Add(rule, name, value);
+                ParseSettingElement(reader, settings);
             }
         }
 
-        public static void WriteXml([NotNull] AnalyzerSettingsRegistry registry, [NotNull] XmlWriter writer)
+        return settings.IsEmpty ? AnalyzerSettingsRegistry.ImmutableEmpty : settings;
+    }
+
+    private static void ParseSettingElement([NotNull] XmlReader reader, [NotNull] AnalyzerSettingsRegistry registry)
+    {
+        string rule = reader.GetAttribute("rule");
+        string name = reader.GetAttribute("name");
+        string value = reader.GetAttribute("value");
+
+        if (!string.IsNullOrWhiteSpace(rule) && !string.IsNullOrWhiteSpace(name))
         {
-            writer.WriteStartElement("cSharpGuidelinesAnalyzerSettings");
+            registry.Add(rule, name, value);
+        }
+    }
 
-            foreach (KeyValuePair<AnalyzerSettingKey, string> setting in registry.GetAll())
-            {
-                WriteSettingElement(setting.Key, setting.Value, writer);
-            }
+    public static void WriteXml([NotNull] AnalyzerSettingsRegistry registry, [NotNull] XmlWriter writer)
+    {
+        writer.WriteStartElement("cSharpGuidelinesAnalyzerSettings");
 
-            writer.WriteEndElement();
+        foreach (KeyValuePair<AnalyzerSettingKey, string> setting in registry.GetAll())
+        {
+            WriteSettingElement(setting.Key, setting.Value, writer);
         }
 
-        private static void WriteSettingElement([NotNull] AnalyzerSettingKey settingKey, [NotNull] string settingValue, [NotNull] XmlWriter writer)
-        {
-            writer.WriteStartElement("setting");
+        writer.WriteEndElement();
+    }
 
-            writer.WriteAttributeString("rule", settingKey.Rule);
-            writer.WriteAttributeString("name", settingKey.Name);
-            writer.WriteAttributeString("value", settingValue);
+    private static void WriteSettingElement([NotNull] AnalyzerSettingKey settingKey, [NotNull] string settingValue, [NotNull] XmlWriter writer)
+    {
+        writer.WriteStartElement("setting");
 
-            writer.WriteEndElement();
-        }
+        writer.WriteAttributeString("rule", settingKey.Rule);
+        writer.WriteAttributeString("name", settingKey.Name);
+        writer.WriteAttributeString("value", settingValue);
+
+        writer.WriteEndElement();
     }
 }
