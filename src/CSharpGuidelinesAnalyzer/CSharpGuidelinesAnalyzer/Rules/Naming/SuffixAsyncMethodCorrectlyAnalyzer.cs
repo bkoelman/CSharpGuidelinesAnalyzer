@@ -22,8 +22,8 @@ public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);

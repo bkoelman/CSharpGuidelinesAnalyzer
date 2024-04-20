@@ -287,7 +287,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         {
                             S = source.Skip(1)
                         };
-
+                
                         return result.S;
                     }
                 }
@@ -314,11 +314,11 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         IEnumerable<int> result = new X(source.Where(x => true));
                         return result;
                     }
-
+                
                     class X : IEnumerable<int>
                     {
                         public X(IEnumerable<int> sequence) => throw null;
-
+                
                         public IEnumerator<int> GetEnumerator() => throw null;
                         IEnumerator IEnumerable.GetEnumerator() => throw null;
                     }
@@ -346,11 +346,11 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         IEnumerable<int> result = new X((dynamic)(source.Where(x => true)));
                         return result;
                     }
-
+                
                     class X : IEnumerable<int>
                     {
                         public X(dynamic sequence) => throw null;
-
+                
                         public IEnumerator<int> GetEnumerator() => throw null;
                         IEnumerator IEnumerable.GetEnumerator() => throw null;
                     }
@@ -381,11 +381,11 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         };
                         return result;
                     }
-
+                
                     class X : IEnumerable<int>
                     {
                         public IEnumerable<int> Sequence;
-
+                
                         public IEnumerator<int> GetEnumerator() => throw null;
                         IEnumerator IEnumerable.GetEnumerator() => throw null;
                     }
@@ -510,10 +510,10 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     {
                         dynamic d = GetValue();
                         IEnumerable<int> result = d.Skip(1);
-
+                
                         return result;
                     }
-
+                
                     dynamic GetValue() => throw null;
                 }
                 """)

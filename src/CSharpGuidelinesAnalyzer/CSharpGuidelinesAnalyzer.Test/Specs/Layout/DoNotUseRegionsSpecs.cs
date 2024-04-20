@@ -64,26 +64,26 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
                 namespace N
                 {
                     [|#region Inside N|]
-
+                
                     class C
                     {
                         [|#region Inside N.C|]
-
+                
                         public void M()
                         {
                             [|#region Inside N.C.M|]
-
+                
                             throw null;
-
+                
                             #endregion
                         }
-
+                
                         #endregion
-
+                
                         [|#region End of N.C|]
                         #endregion
                     }
-
+                
                     #endregion
                 }
 

@@ -262,7 +262,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                             return true;
                         });
                     }
-
+                
                     void N(Func<int, bool> f)
                     {
                     }
@@ -283,7 +283,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 class C
                 {
                     object P { get; } = Create(nameof(P), x => x.Length > 0);
-
+                
                     static object Create(string name, Func<string, bool> f) => throw null;
                 }
                 """)

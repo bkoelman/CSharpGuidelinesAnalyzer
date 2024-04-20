@@ -20,7 +20,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     IEnumerable<int> M()
                     {
                         return null;
-
+                
                         IEnumerable<int> L()
                         {
                             return new int[0].Where(x => true);
@@ -50,7 +50,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         {
                             return new int[0].Where(x => true);
                         };
-
+                
                         return null;
                     }
                 }
@@ -77,7 +77,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         {
                             return new int[0].Where(x => true);
                         };
-
+                
                         return null;
                     }
                 }

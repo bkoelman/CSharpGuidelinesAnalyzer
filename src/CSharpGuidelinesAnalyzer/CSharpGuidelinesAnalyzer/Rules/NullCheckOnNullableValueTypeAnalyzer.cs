@@ -22,8 +22,8 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Hidden, false, Description);
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Hidden, false,
+        Description);
 
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
@@ -43,13 +43,9 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
 
     private void RegisterForOperations([NotNull] CompilationStartAnalysisContext startContext, [NotNull] NullCheckScanner scanner)
     {
-        startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner)),
-            OperationKind.PropertyReference);
-
+        startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner)), OperationKind.PropertyReference);
         startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeInvocation(context, scanner)), OperationKind.Invocation);
-
         startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeIsPattern(context, scanner)), OperationKind.IsPattern);
-
         startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner)), OperationKind.BinaryOperator);
     }
 

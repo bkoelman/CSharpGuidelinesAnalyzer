@@ -25,15 +25,15 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (e == null)
                     {
                     }
-
+                
                     if (null == e)
                     {
                     }
-
+                
                     if (e == default)
                     {
                     }
-
+                
                     if (e == default(E))
                     {
                     }
@@ -58,15 +58,15 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (e != null)
                     {
                     }
-
+                
                     if (null != e)
                     {
                     }
-
+                
                     if (e != default)
                     {
                     }
-
+                
                     if (e != default(E))
                     {
                     }
@@ -89,15 +89,15 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (i == null)
                     {
                     }
-
+                
                     if (null == i)
                     {
                     }
-
+                
                     if (i == default)
                     {
                     }
-
+                
                     if (i == default(int))
                     {
                     }
@@ -120,15 +120,15 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (i != null)
                     {
                     }
-
+                
                     if (null != i)
                     {
                     }
-
+                
                     if (i != default)
                     {
                     }
-
+                
                     if (i != default(int))
                     {
                     }
@@ -151,19 +151,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (s == null)
                     {
                     }
-
+                
                     if (null == s)
                     {
                     }
-
+                
                     if (s is null)
                     {
                     }
-
+                
                     if (s == default)
                     {
                     }
-
+                
                     if (s == default(string))
                     {
                     }
@@ -186,19 +186,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (s != null)
                     {
                     }
-
+                
                     if (null != s)
                     {
                     }
-
+                
                     if (!(s is null))
                     {
                     }
-
+                
                     if (s != default)
                     {
                     }
-
+                
                     if (s != default(string))
                     {
                     }
@@ -229,23 +229,23 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (i == null)
                     {
                     }
-
+                
                     if (null == i)
                     {
                     }
-
+                
                     if (i is null)
                     {
                     }
-
+                
                     if (i == default)
                     {
                     }
-
+                
                     if (i == default(I<int?>))
                     {
                     }
-
+                
                     if (i is X x)
                     {
                     }
@@ -272,19 +272,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (i != null)
                     {
                     }
-
+                
                     if (null != i)
                     {
                     }
-
+                
                     if (!(i is null))
                     {
                     }
-
+                
                     if (i != default)
                     {
                     }
-
+                
                     if (i != default(I<int?>))
                     {
                     }
@@ -309,19 +309,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (d == null)
                     {
                     }
-
+                
                     if (null == d)
                     {
                     }
-
+                
                     if (d is null)
                     {
                     }
-
+                
                     if (d == default)
                     {
                     }
-
+                
                     if (d == default(D))
                     {
                     }
@@ -346,19 +346,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (d != null)
                     {
                     }
-
+                
                     if (null != d)
                     {
                     }
-
+                
                     if (!(d is null))
                     {
                     }
-
+                
                     if (d != default)
                     {
                     }
-
+                
                     if (d != default(D))
                     {
                     }
@@ -381,27 +381,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ([|i|] == null)
                     {
                     }
-
+                
                     if (null == [|j|])
                     {
                     }
-
+                
                     if ([|k|] == default)
                     {
                     }
-
+                
                     if ([|l|] == default(int?))
                     {
                     }
-
+                
                     if (!([|m|] != null))
                     {
                     }
-
+                
                     if (!(([|n|] == null) && j > 0))
                     {
                     }
-
+                
                     if (i == 0 || j >= 0)
                     {
                     }
@@ -430,23 +430,23 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ([|i|] != null)
                     {
                     }
-
+                
                     if (null != [|j|])
                     {
                     }
-
+                
                     if ([|k|] != default)
                     {
                     }
-
+                
                     if ([|l|] != default(int?))
                     {
                     }
-
+                
                     if (!([|m|] == null))
                     {
                     }
-
+                
                     if (i != 0 || j < 0)
                     {
                     }
@@ -474,11 +474,11 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ([|i|] is null)
                     {
                     }
-
+                
                     if (i is 0)
                     {
                     }
-
+                
                     if (i is int x)
                     {
                     }
@@ -502,11 +502,11 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (!([|i|] is null))
                     {
                     }
-
+                
                     if (!(i is 0))
                     {
                     }
-
+                
                     if (!(i is int x))
                     {
                     }
@@ -570,15 +570,15 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ([|i|].Equals(null))
                     {
                     }
-
+                
                     if ([|j|].Equals(default))
                     {
                     }
-
+                
                     if ([|k|].Equals(default(int?)))
                     {
                     }
-
+                
                     if (i.Equals(0))
                     {
                     }
@@ -604,15 +604,15 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (![|i|].Equals(null))
                     {
                     }
-
+                
                     if (![|j|].Equals(default))
                     {
                     }
-
+                
                     if (![|k|].Equals(default(int?)))
                     {
                     }
-
+                
                     if (!i.Equals(0))
                     {
                     }
@@ -638,23 +638,23 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (object.Equals([|i|], null))
                     {
                     }
-
+                
                     if (object.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (object.Equals([|k|], default))
                     {
                     }
-
+                
                     if (object.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (object.Equals(i, 0) || object.Equals(0, j))
                     {
                     }
-
+                
                     if (object.Equals(null, null) || object.Equals(0, 0))
                     {
                     }
@@ -681,23 +681,23 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (!object.Equals([|i|], null))
                     {
                     }
-
+                
                     if (!object.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (!object.Equals([|k|], default))
                     {
                     }
-
+                
                     if (!object.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!object.Equals(i, 0) || !object.Equals(0, j))
                     {
                     }
-
+                
                     if (!object.Equals(null, null) || !object.Equals(0, 0))
                     {
                     }
@@ -724,27 +724,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (ReferenceEquals(i, 0) || ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (ReferenceEquals(0, 0))
                     {
                     }
@@ -771,27 +771,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (!ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (!ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (!ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (!ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!ReferenceEquals(i, 0) || !ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (!ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (!ReferenceEquals(0, 0))
                     {
                     }
@@ -818,27 +818,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (object.ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (!!object.ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (object.ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(i, 0) || object.ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (object.ReferenceEquals(0, 0))
                     {
                     }
@@ -865,27 +865,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (!object.ReferenceEquals([|i|], null))
                     {
                     }
-
+                
                     if (!!!object.ReferenceEquals(null, [|j|]))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals([|k|], default))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals(i, 0) || !object.ReferenceEquals(j, 0))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals(null, null))
                     {
                     }
-
+                
                     if (!object.ReferenceEquals(0, 0))
                     {
                     }
@@ -913,27 +913,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (EqualityComparer<int?>.Default.Equals([|i|], null))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals([|k|], default))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(i, 0) || EqualityComparer<int?>.Default.Equals(j, 0))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(null, null))
                     {
                     }
-
+                
                     if (EqualityComparer<int?>.Default.Equals(0, 0))
                     {
                     }
@@ -961,27 +961,27 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if (!EqualityComparer<int?>.Default.Equals([|i|], null))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(null, [|j|]))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals([|k|], default))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals([|l|], default(int?)))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(i, 0) || !EqualityComparer<int?>.Default.Equals(j, 0))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(null, null))
                     {
                     }
-
+                
                     if (!EqualityComparer<int?>.Default.Equals(0, 0))
                     {
                     }
@@ -1008,19 +1008,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ((object)[|i|] == null)
                     {
                     }
-
+                
                     if (null == (object)[|j|])
                     {
                     }
-
+                
                     if ((object)[|k|] == default)
                     {
                     }
-
+                
                     if ((double)i == 0 || (decimal)j == 0)
                     {
                     }
-
+                
                     if ((object)null == (object)null)
                     {
                     }
@@ -1046,19 +1046,19 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ((object)[|i|] != null)
                     {
                     }
-
+                
                     if (null != (object)[|j|])
                     {
                     }
-
+                
                     if ((object)[|k|] != default)
                     {
                     }
-
+                
                     if ((double)i != 0 || (decimal)j != 0)
                     {
                     }
-
+                
                     if ((object)null != (object)null)
                     {
                     }
@@ -1088,7 +1088,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                             break;
                         }
                     }
-
+                
                     switch (j)
                     {
                         case int x when x != null:
@@ -1096,7 +1096,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                             break;
                         }
                     }
-
+                
                     switch (k)
                     {
                         case 0:
@@ -1125,7 +1125,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                 void M(int? i)
                 {
                     int? v = i;
-
+                
                     if ([|v|] == null)
                     {
                     }
@@ -1147,7 +1147,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                 void M(int? i)
                 {
                     (int? v, int? w) tuple = (i, i);
-
+                
                     if ([|tuple.v|] == null)
                     {
                     }
@@ -1261,7 +1261,7 @@ public sealed class NullCheckOnNullableValueTypeSpecs : CSharpGuidelinesAnalysis
                     if ([|L()|] == null)
                     {
                     }
-
+                
                     int? L() => throw null;
                 }
                 """)

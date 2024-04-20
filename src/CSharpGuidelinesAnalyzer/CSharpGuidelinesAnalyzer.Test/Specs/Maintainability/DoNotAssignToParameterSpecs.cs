@@ -545,11 +545,11 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     public void Deconstruct(out int i, out S s) => throw null;
-
+                
                     public struct S
                     {
                     }
-
+                
                     void M(S [|s|], C c)
                     {
                         int i;
@@ -974,7 +974,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     public C(string p) => N(p);
-
+                
                     void N(string s)
                     {
                     }
@@ -995,7 +995,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     public C(string [|p|]) => N(ref p);
-
+                
                     void N(ref string s)
                     {
                     }
@@ -1017,7 +1017,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     int Value;
-
+                
                     public static implicit operator int(C p)
                     {
                         return p.Value;
@@ -1039,7 +1039,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     int Value;
-
+                
                     public static implicit operator int(C [|p|])
                     {
                         p = new C();
@@ -1063,7 +1063,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     int Value;
-
+                
                     public static implicit operator int(C p) => p.Value;
                 }
                 """)
@@ -1082,9 +1082,9 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 class C
                 {
                     int Value;
-
+                
                     public static implicit operator int(C [|p|]) => M(ref p);
-
+                
                     static int M(ref C p) => throw null;
                 }
                 """)

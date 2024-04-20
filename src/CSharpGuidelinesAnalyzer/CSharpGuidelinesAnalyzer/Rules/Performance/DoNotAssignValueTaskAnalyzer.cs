@@ -35,8 +35,8 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Performance;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor AssignmentRule = new(DiagnosticId, Title, AssignmentMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor AssignmentRule = new(DiagnosticId, Title, AssignmentMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly DiagnosticDescriptor ArgumentRule = new(DiagnosticId, Title, ArgumentMessageFormat, Category.DisplayName,
@@ -134,9 +134,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
                 {
                     case IPropertyInitializerOperation propertyInitializer:
                     {
-                        string leftName = propertyInitializer.InitializedProperties.First()
-                            .ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-
+                        string leftName = propertyInitializer.InitializedProperties.First().ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
                         return new AssignmentInfo(leftName, location, rightType);
                     }
                     case IFieldInitializerOperation fieldInitializer:

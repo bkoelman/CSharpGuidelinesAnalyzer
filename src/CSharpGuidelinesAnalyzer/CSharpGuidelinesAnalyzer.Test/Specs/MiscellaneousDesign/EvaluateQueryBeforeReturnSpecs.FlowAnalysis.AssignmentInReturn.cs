@@ -20,7 +20,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     public IEnumerable<int> M()
                     {
                         IEnumerable<int> temp;
-
+                
                         [|return|] temp = new List<int>
                         {
                             1, 2, 3, 4, 5
@@ -51,7 +51,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         {
                             1, 2, 3, 4, 5
                         }.Skip(2);
-
+                
                         return temp = temp.ToArray();
                     }
                 }
@@ -99,7 +99,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                 class C
                 {
                     private IEnumerable<int> f;
-
+                
                     public IEnumerable<int> M()
                     {
                         [|return|] f = new List<int>
@@ -127,7 +127,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                 class C
                 {
                     private IEnumerable<int> P { get; set; }
-
+                
                     public IEnumerable<int> M()
                     {
                         [|return|] P = new List<int>

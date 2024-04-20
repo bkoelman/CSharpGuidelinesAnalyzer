@@ -20,7 +20,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged([|null|], EventArgs.Empty);
@@ -43,9 +43,9 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     private const object ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged([|ConstantForNull|], EventArgs.Empty);
@@ -68,9 +68,9 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     private const object ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(e: EventArgs.Empty, [|sender: ConstantForNull|]);
@@ -93,7 +93,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(null, EventArgs.Empty);
@@ -118,7 +118,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     void M()
                     {
                         ValueChanged(null, EventArgs.Empty);
@@ -140,9 +140,9 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     public delegate void OtherEventHandler(string senderName, EventArgs e);
-
+                
                     event OtherEventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(null, EventArgs.Empty);
@@ -164,7 +164,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke([|null|], EventArgs.Empty);
@@ -187,7 +187,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke(null, EventArgs.Empty);
@@ -209,7 +209,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, EventArgs.Empty);
@@ -231,7 +231,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|null|]);
@@ -254,9 +254,9 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     private const EventArgs ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|ConstantForNull|]);
@@ -279,9 +279,9 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     private const EventArgs ConstantForNull = null;
-
+                
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged([|e: ConstantForNull|], sender: this);
@@ -304,7 +304,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|null|]);
@@ -330,7 +330,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     void M()
                     {
                         ValueChanged(this, null);
@@ -358,7 +358,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event OtherEventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, [|null|]);
@@ -381,9 +381,9 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     public delegate void OtherEventHandler(object sender, string data);
-
+                
                     event OtherEventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged(this, null);
@@ -405,7 +405,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke(this, [|null|]);
@@ -428,7 +428,7 @@ public sealed class DoNotPassNullOnEventInvocationSpecs : CSharpGuidelinesAnalys
                 class C
                 {
                     static event EventHandler ValueChanged;
-
+                
                     void M()
                     {
                         ValueChanged?.Invoke(this, [|null|]);

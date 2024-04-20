@@ -25,8 +25,8 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<SemanticModelAnalysisContext> AnalyzeSemanticModelAction = AnalyzeSemanticModel;

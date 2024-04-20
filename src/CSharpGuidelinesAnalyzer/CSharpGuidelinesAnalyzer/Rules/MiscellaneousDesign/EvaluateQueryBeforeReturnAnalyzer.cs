@@ -31,8 +31,8 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor QueryRule = new(DiagnosticId, Title, QueryMessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor QueryRule = new(DiagnosticId, Title, QueryMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning,
+        true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly DiagnosticDescriptor QueryableRule = new(DiagnosticId, Title, QueryableMessageFormat, Category.DisplayName,
@@ -108,8 +108,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void ReportDiagnosticAt([NotNull] IReturnOperation returnStatement, [NotNull] string operationName,
-        OperationBlockAnalysisContext context)
+    private static void ReportDiagnosticAt([NotNull] IReturnOperation returnStatement, [NotNull] string operationName, OperationBlockAnalysisContext context)
     {
         Location location = returnStatement.TryGetLocationForKeyword();
 
@@ -518,8 +517,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             {
                 base.VisitSimpleAssignment(operation);
 
-                if (operation.Target is ILocalReferenceOperation targetLocal && currentLocal.IsEqualTo(targetLocal.Local) &&
-                    EndsBeforeMaxLocation(operation))
+                if (operation.Target is ILocalReferenceOperation targetLocal && currentLocal.IsEqualTo(targetLocal.Local) && EndsBeforeMaxLocation(operation))
                 {
                     AnalyzeAssignmentValue(operation.Value);
                 }

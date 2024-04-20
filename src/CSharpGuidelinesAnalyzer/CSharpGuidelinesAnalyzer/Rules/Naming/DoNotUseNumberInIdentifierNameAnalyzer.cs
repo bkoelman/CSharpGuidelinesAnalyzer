@@ -25,8 +25,8 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -344,8 +344,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
             string thisTokenText = tokens[index].Text;
             string nextTokenText = tokens[index + 1].Text;
 
-            if (IsWindowsOrSystemInt(thisTokenText, nextTokenText) || IsEncoding(thisTokenText, nextTokenText) ||
-                IsDimensional(thisTokenText, nextTokenText))
+            if (IsWindowsOrSystemInt(thisTokenText, nextTokenText) || IsEncoding(thisTokenText, nextTokenText) || IsDimensional(thisTokenText, nextTokenText))
             {
                 tokens.RemoveRange(index, 2);
                 index--;

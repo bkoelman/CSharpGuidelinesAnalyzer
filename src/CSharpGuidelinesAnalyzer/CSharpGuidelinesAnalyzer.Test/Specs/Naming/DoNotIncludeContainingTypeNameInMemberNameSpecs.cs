@@ -68,7 +68,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
                     {
                         string GetEmployee();
                     }
-
+                
                     class Employee : IEmployee
                     {
                         string IEmployee.[|GetEmployee|]() => throw null;
@@ -94,7 +94,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameSpecs : CSharpGuid
                     {
                         string GetName();
                     }
-
+                
                     class Employee : IEmployee
                     {
                         string IEmployee.GetName() => throw null;

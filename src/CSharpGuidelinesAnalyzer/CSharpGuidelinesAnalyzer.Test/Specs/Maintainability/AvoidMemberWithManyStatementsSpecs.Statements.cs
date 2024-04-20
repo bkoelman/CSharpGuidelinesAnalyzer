@@ -45,7 +45,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ; ;
                         ; ;
                         ; ;
-
+                
                         // Block scopes are not counted
                         {
                             {
@@ -75,7 +75,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         int statement2 = 2;
                         int statement3 = 3;
                         int statement4 = 4;
-
+                
                         int statement5 = 5;
                         int statement6 = 6;
                         int statement7 = 7;
@@ -104,7 +104,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         int statement2 = 2;
                         int statement3 = 3;
                         int statement4 = 4;
-
+                
                         int statement5 = 5;
                         int statement6 = 6;
                         int statement7 = 7, other = 8;
@@ -127,14 +127,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     private int i;
-
+                
                     void [|M|]()
                     {
                         i = 1;
                         i++;
                         i += 3;
                         i--;
-
+                
                         i += (true ? 5 : 0);
                         i *= 6;
                         i--;
@@ -159,14 +159,14 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     private int i;
-
+                
                     void M()
                     {
                         i = 1;
                         i++;
                         i += 3;
                         i--;
-
+                
                         i += (true ? 5 : 0);
                         i *= 6;
                         i--;
@@ -319,7 +319,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true)
                                 while (true)
                                     while (true)
-
+                
                                         while (true)
                                             while (true)
                                                 while (true)
@@ -350,7 +350,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true)
                                 while (true)
                                     while (true)
-
+                
                                         while (true)
                                             while (true)
                                                 while (true)
@@ -391,7 +391,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true);
                         }
                         while (true);
-
+                
                         do
                         {
                             do
@@ -444,7 +444,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             while (true);
                         }
                         while (true);
-
+                
                         do
                         {
                             do
@@ -506,7 +506,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         else
                         {
                         }
-
+                
                         if (true)
                         {
                             if (true)
@@ -519,7 +519,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         else
                         {
                         }
-
+                
                         if (true)
                         {
                         }
@@ -576,7 +576,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         else
                         {
                         }
-
+                
                         if (true)
                         {
                             if (true)
@@ -611,31 +611,31 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         void L1()
                         {
                         }
-
+                
                         void L2()
                         {
                         }
-
+                
                         void L3()
                         {
                         }
-
+                
                         void L4()
                         {
                         }
-
+                
                         void L5()
                         {
                         }
-
+                
                         void L6()
                         {
                         }
-
+                
                         void L7()
                         {
                         }
-
+                
                         void L8()
                         {
                         }
@@ -661,12 +661,12 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         void L()
                         {
                         }
-
+                
                         L();
                         L();
                         L();
                         L();
-
+                
                         L();
                         L();
                         L();
@@ -694,12 +694,12 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         void L()
                         {
                         }
-
+                
                         L();
                         L();
                         L();
                         L();
-
+                
                         L();
                         L();
                         L();
@@ -734,7 +734,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         switch (i)
                         {
                         }
-
+                
                         switch (i)
                         {
                         }
@@ -779,7 +779,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         switch (i)
                         {
                         }
-
+                
                         switch (i)
                         {
                         }
@@ -873,7 +873,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
-
+                
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
@@ -902,7 +902,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
-
+                
                         throw new NotImplementedException();
                         throw new NotImplementedException();
                         throw new NotImplementedException();
@@ -949,7 +949,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         try
                         {
                             try
@@ -1018,7 +1018,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         try
                         {
                             try
@@ -1055,7 +1055,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     private IDisposable d;
-
+                
                     void [|M|]()
                     {
                         using (d)
@@ -1064,7 +1064,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     using (d)
                                     {
                                     }
-
+                
                         using (d)
                             using (d)
                                 using (d)
@@ -1090,7 +1090,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     private IDisposable d;
-
+                
                     void M()
                     {
                         using (d)
@@ -1099,7 +1099,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     using (d)
                                     {
                                     }
-
+                
                         using (d)
                             using (d)
                                 using (IDisposable x = null, d = null)
@@ -1129,7 +1129,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         return 2;
                         return 3;
                         return 4;
-
+                
                         return 5;
                         return 6;
                         return 7;
@@ -1161,7 +1161,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             return 2;
                             return 3;
                             return 4;
-
+                
                             return 5;
                             return 6;
                             return 7;
@@ -1190,7 +1190,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         yield return new object();
                         yield break;
                         yield return new object();
-
+                
                         yield break;
                         yield return new object();
                         yield break;
@@ -1220,7 +1220,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         yield return new object();
                         yield break;
                         yield return new object();
-
+                
                         yield break;
                         yield return new object();
                         yield break;
@@ -1242,7 +1242,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     private static readonly object guard = new object();
-
+                
                     void [|M|]()
                     {
                         lock (guard)
@@ -1250,7 +1250,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                 lock (guard)
                                     lock (guard)
                                     {
-
+                
                                         lock (guard)
                                         {
                                             lock (guard)
@@ -1283,7 +1283,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     private static readonly object guard = new object();
-
+                
                     void M()
                     {
                         lock (guard)
@@ -1291,7 +1291,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                 lock (guard)
                                     lock (guard)
                                     {
-
+                
                                         lock (guard)
                                         {
                                             lock (guard)
@@ -1328,7 +1328,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     fixed (char* p7 = Environment.MachineName, p8 = Environment.MachineName)
                                     {
                                     }
-
+                
                         fixed (char* p9 = Environment.MachineName, p10 = Environment.MachineName)
                         {
                             fixed (char* p11 = Environment.MachineName, p12 = Environment.MachineName)
@@ -1368,7 +1368,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                                     fixed (char* p7 = Environment.MachineName, p8 = Environment.MachineName)
                                     {
                                     }
-
+                
                         fixed (char* p9 = Environment.MachineName, p10 = Environment.MachineName)
                         {
                             fixed (char* p11 = Environment.MachineName, p12 = Environment.MachineName)
@@ -1490,26 +1490,26 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         unchecked
                         {
                             checked
                             {
                             }
                         }
-
+                
                         checked
                         {
                         }
-
+                
                         unchecked
                         {
                         }
-
+                
                         checked
                         {
                         }
-
+                
                         unchecked
                         {
                         }
@@ -1540,22 +1540,22 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             {
                             }
                         }
-
+                
                         unchecked
                         {
                             checked
                             {
                             }
                         }
-
+                
                         checked
                         {
                         }
-
+                
                         unchecked
                         {
                         }
-
+                
                         checked
                         {
                         }
@@ -1586,7 +1586,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             goto Label4;
                         Label4:
                             goto Label5;
-
+                
                         Label5:
                             goto Label6;
                         Label6:
@@ -1623,7 +1623,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             goto Label4;
                         Label4:
                             goto Label5;
-
+                
                         Label5:
                             goto Label6;
                         Label6:
@@ -1655,7 +1655,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             continue;
                             continue;
                             continue;
-
+                
                             continue;
                             continue;
                             continue;
@@ -1686,7 +1686,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             continue;
                             continue;
                             continue;
-
+                
                             continue;
                             continue;
                         }
@@ -1715,7 +1715,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             break;
                             break;
                             break;
-
+                
                             break;
                             break;
                             break;
@@ -1746,7 +1746,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             break;
                             break;
                             break;
-
+                
                             break;
                             break;
                         }

@@ -23,8 +23,8 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeTypeDeclarationAction = AnalyzeTypeDeclaration;

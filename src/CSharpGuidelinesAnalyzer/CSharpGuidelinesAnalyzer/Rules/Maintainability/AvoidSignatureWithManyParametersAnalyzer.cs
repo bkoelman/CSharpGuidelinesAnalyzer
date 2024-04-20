@@ -28,16 +28,16 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ParameterCountRule = new(DiagnosticId, Title, ParameterCountMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor ParameterCountRule = new(DiagnosticId, Title, ParameterCountMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TupleParameterRule = new(DiagnosticId, Title, TupleParameterMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor TupleParameterRule = new(DiagnosticId, Title, TupleParameterMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TupleReturnRule = new(DiagnosticId, Title, TupleReturnMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor TupleReturnRule = new(DiagnosticId, Title, TupleReturnMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -65,8 +65,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
     private static readonly AnalyzerSettingKey MaxConstructorParameterCountKey = new(DiagnosticId, "MaxConstructorParameterCount");
 
     [ItemNotNull]
-    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
-        ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
 
     public override void Initialize([NotNull] AnalysisContext context)
     {

@@ -201,7 +201,7 @@ public sealed class OperationHasKeywordSpecs : CSharpGuidelinesAnalysisTestFixtu
                 void M()
                 {
                     [|goto|] Finish;
-
+                
                     Finish:
                     {
                     }

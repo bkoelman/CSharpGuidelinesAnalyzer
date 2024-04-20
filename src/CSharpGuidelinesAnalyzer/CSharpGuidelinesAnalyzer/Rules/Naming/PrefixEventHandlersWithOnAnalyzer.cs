@@ -23,8 +23,8 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<OperationAnalysisContext> AnalyzeEventAssignmentAction = context => context.SkipInvalid(AnalyzeEventAssignment);
@@ -82,9 +82,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
     [NotNull]
     private static string GetEventTargetName([NotNull] IEventReferenceOperation eventReference, [NotNull] IMethodSymbol targetMethod)
     {
-        return eventReference.Instance != null
-            ? GetInstanceEventTargetName(eventReference.Instance)
-            : GetStaticEventTargetName(eventReference, targetMethod);
+        return eventReference.Instance != null ? GetInstanceEventTargetName(eventReference.Instance) : GetStaticEventTargetName(eventReference, targetMethod);
     }
 
     [NotNull]
@@ -121,9 +119,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
     [NotNull]
     private static string ToCamelCase([NotNull] string identifierName)
     {
-        return identifierName.Length > 0 && char.IsLower(identifierName[0])
-            ? char.ToUpper(identifierName[0]) + identifierName.Substring(1)
-            : identifierName;
+        return identifierName.Length > 0 && char.IsLower(identifierName[0]) ? char.ToUpper(identifierName[0]) + identifierName.Substring(1) : identifierName;
     }
 
     [NotNull]

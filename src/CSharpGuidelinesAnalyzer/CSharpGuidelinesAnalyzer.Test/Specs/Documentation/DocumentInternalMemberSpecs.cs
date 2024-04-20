@@ -47,11 +47,11 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         protected abstract class X
                         {
                         }
-
+                
                         protected internal class Y
                         {
                         }
-
+                
                         private sealed class Z
                         {
                         }
@@ -375,17 +375,17 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         protected string F2;
                         protected internal string F3;
                         private string F4;
-
+                
                         public string P1 { get; set; }
                         protected string P2 { get; set; }
                         protected internal string P3 { get; set; }
                         private string P4 { get; set; }
-
+                
                         public event EventHandler E1;
                         protected event EventHandler E2;
                         protected internal event EventHandler E3;
                         private event EventHandler E4;
-
+                
                         public int M1(string p1) => throw new NotImplementedException();
                         protected int M2(string p2) => throw new NotImplementedException();
                         protected internal int M3(string p3) => throw new NotImplementedException();

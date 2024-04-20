@@ -90,13 +90,13 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                 {
                     public string Text;
                     public bool IsEnabled;
-
+                
                     public void Deconstruct(out string text, out bool isEnabled)
                     {
                         text = Text;
                         isEnabled = IsEnabled;
                     }
-
+                
                     static void Test()
                     {
                         S s = new S
@@ -104,7 +104,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                             Text = string.Empty,
                             IsEnabled = true
                         };
-
+                
                         (string a, bool b) = s;
                     }
                 }
@@ -430,10 +430,10 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                 void M()
                 {
                     bool result1 = int.TryParse(string.Empty, out _);
-
+                
                     float number;
                     bool result2 = Single.TryParse(string.Empty, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out number);
-
+                
                     bool result3 = IPAddress.TryParse(string.Empty, out var ipAddress);
                 }
                 """)

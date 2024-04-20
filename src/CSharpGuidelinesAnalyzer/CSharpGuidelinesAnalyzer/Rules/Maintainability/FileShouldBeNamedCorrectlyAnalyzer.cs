@@ -25,16 +25,16 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor CasingRule = new(DiagnosticId, Title, CasingMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor CasingRule = new(DiagnosticId, Title, CasingMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor UnderscoreRule = new(DiagnosticId, Title, UnderscoreMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor UnderscoreRule = new(DiagnosticId, Title, UnderscoreMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-    [NotNull]
-    private static readonly DiagnosticDescriptor ArityRule = new(DiagnosticId, Title, ArityMessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor ArityRule = new(DiagnosticId, Title, ArityMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeSyntaxTreeAction = AnalyzeSyntaxTree;

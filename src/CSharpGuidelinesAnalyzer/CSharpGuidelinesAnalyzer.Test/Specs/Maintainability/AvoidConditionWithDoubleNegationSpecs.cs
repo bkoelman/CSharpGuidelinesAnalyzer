@@ -23,7 +23,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     {
                         return true;
                     }
-
+                
                     public void M()
                     {
                         if ([|!IsNotVisible()|])
@@ -51,7 +51,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     {
                         return true;
                     }
-
+                
                     public void M()
                     {
                         if ([|!IsNoActiveCustomer()|])
@@ -81,7 +81,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     public void M()
                     {
                         if (!GetNotActiveCustomerNames().Any())
@@ -108,9 +108,9 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     {
                         return true;
                     }
-
+                
                     public bool IsHidden() => IsNotVisible();
-
+                
                     public void M()
                     {
                         if (!IsHidden())
@@ -139,7 +139,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             return true;
                         }
-
+                
                         void L()
                         {
                             if ([|!IsNotVisible()|])
@@ -170,7 +170,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             return true;
                         }
-
+                
                         void L()
                         {
                             if ([|!IsNoActiveCustomer()|])
@@ -203,7 +203,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             throw new NotImplementedException();
                         }
-
+                
                         void L()
                         {
                             if (!GetNotActiveCustomerNames().Any())
@@ -233,9 +233,9 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         {
                             return true;
                         }
-
+                
                         bool IsHidden() => IsNotVisible();
-
+                
                         void L()
                         {
                             if (!IsHidden())
@@ -260,7 +260,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool IsNotVisible => true;
-
+                
                     public void M()
                     {
                         if ([|!IsNotVisible|])
@@ -285,7 +285,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool IsNoActiveCustomer => true;
-
+                
                     public void M()
                     {
                         if ([|!IsNoActiveCustomer|])
@@ -310,9 +310,9 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool IsNotVisible => true;
-
+                
                     public bool IsHidden => IsNotVisible;
-
+                
                     public void M()
                     {
                         if (!IsHidden)
@@ -336,7 +336,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool isNotVisible;
-
+                
                     public void M()
                     {
                         if ([|!isNotVisible|])
@@ -361,7 +361,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool isNoActiveCustomer;
-
+                
                     public void M()
                     {
                         if ([|!isNoActiveCustomer|])
@@ -386,7 +386,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool isHidden;
-
+                
                     public void M()
                     {
                         if (!isHidden)
@@ -480,7 +480,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     public void M()
                     {
                         bool isNotVisible = false;
-
+                
                         if ([|!isNotVisible|])
                         {
                         }
@@ -505,7 +505,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     public void M()
                     {
                         bool isNoActiveCustomer = false;
-
+                
                         if ([|!isNoActiveCustomer|])
                         {
                         }
@@ -530,7 +530,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                     public void M()
                     {
                         bool isHidden = false;
-
+                
                         if (!isHidden)
                         {
                         }
@@ -552,7 +552,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                 class C
                 {
                     public bool IsHidden => [|!IsNotVisible()|];
-
+                
                     bool IsNotVisible() => throw null;
                 }
                 """)
@@ -583,7 +583,7 @@ public sealed class AvoidConditionWithDoubleNegationSpecs : CSharpGuidelinesAnal
                         : base([|!IsNotVisible()|])
                     {
                     }
-
+                
                     static bool IsNotVisible() => throw null;
                 }
                 """)

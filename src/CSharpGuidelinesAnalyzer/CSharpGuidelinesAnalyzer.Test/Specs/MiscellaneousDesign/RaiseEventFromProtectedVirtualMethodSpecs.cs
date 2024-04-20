@@ -20,7 +20,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     protected virtual void OnValueChanged(EventArgs args)
                     {
                         ValueChanged?.Invoke(this, args);
@@ -42,7 +42,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     private protected virtual void OnValueChanged(EventArgs args) => ValueChanged?.Invoke(this, args);
                 }
                 """)
@@ -61,7 +61,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     private void [|OnValueChanged|](EventArgs args)
                     {
                         ValueChanged?.Invoke(this, args);
@@ -84,7 +84,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     protected void [|OnValueChanged|](EventArgs args)
                     {
                         var snapshot = ValueChanged;
@@ -111,7 +111,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 public sealed class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     private void OnValueChanged(EventArgs args)
                     {
                         ValueChanged?.Invoke(this, args);
@@ -133,7 +133,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public static event EventHandler ValueChanged;
-
+                
                     private static void OnValueChanged(EventArgs args)
                     {
                         ValueChanged?.Invoke(null, args);
@@ -155,7 +155,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     protected virtual void [|RaiseEvent|](EventArgs args)
                     {
                         ValueChanged(this, args);
@@ -178,7 +178,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     private void [|RaiseEvent|](EventArgs args)
                     {
                         ValueChanged(this, args);
@@ -201,12 +201,12 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     protected virtual void [|RaiseOnValueChanged|](EventArgs args)
                     {
                         EventHandler snapshot;
                         snapshot = ValueChanged;
-
+                
                         if (snapshot != null)
                         {
                             snapshot(this, args);
@@ -230,7 +230,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     private void M()
                     {
                         Action action = [|() => ValueChanged?.Invoke(this, EventArgs.Empty)|];
@@ -254,7 +254,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                 class C
                 {
                     public event EventHandler ValueChanged;
-
+                
                     public void RaiseEvent(EventArgs args)
                     {
                         void [|OnValueChanged|]()
@@ -282,14 +282,14 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                     interface I
                     {
                         event EventHandler ValueChanged;
-
+                
                         void OnValueChanged();
                     }
-
+                
                     class C : I
                     {
                         public event EventHandler ValueChanged;
-
+                
                         void I.OnValueChanged()
                         {
                             ValueChanged?.Invoke(this, EventArgs.Empty);

@@ -337,7 +337,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+                
                     class UnitTests
                     {
                         [TestMethod]
@@ -369,7 +369,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [Fact]
@@ -401,7 +401,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using NUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]
@@ -433,7 +433,7 @@ public sealed class MemberShouldDoASingleThingSpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using MbUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]

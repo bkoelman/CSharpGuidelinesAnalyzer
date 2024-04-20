@@ -26,8 +26,7 @@ internal sealed class NullCheckScanner
     {
         Guard.NotNull(propertyReference, nameof(propertyReference));
 
-        if (propertyReference.Property.OriginalDefinition.IsEqualTo(knownSymbols.NullableHasValueProperty) &&
-            IsNullableValueType(propertyReference.Instance))
+        if (propertyReference.Property.OriginalDefinition.IsEqualTo(knownSymbols.NullableHasValueProperty) && IsNullableValueType(propertyReference.Instance))
         {
             NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(propertyReference);
             NullCheckOperand toggledOperand = nullCheckOperand.Toggle();

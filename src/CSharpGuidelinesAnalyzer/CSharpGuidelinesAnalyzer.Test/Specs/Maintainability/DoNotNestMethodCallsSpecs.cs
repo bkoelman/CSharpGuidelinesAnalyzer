@@ -43,7 +43,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                     {
                         A([|B(null)|]);
                     }
-
+                
                     object A(object outer) => throw null;
                     object B(object inner) => throw null;
                 }
@@ -67,9 +67,9 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                         : this(GetDefaultText())
                     {
                     }
-
+                
                     public Example(string text) => throw null;
-
+                
                     static string GetDefaultText() => throw null;
                 }
                 """)
@@ -96,7 +96,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                         : base(GetDefaultText())
                     {
                     }
-
+                
                     static string GetDefaultText() => throw null;
                 }
                 """)
@@ -115,7 +115,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                 class C
                 {
                     string _value = Convert(GetDefaultText());
-
+                
                     static string Convert(string source) => throw null;
                     static string GetDefaultText() => throw null;
                 }
@@ -259,7 +259,7 @@ public sealed class DoNotNestMethodCallsSpecs : CSharpGuidelinesAnalysisTestFixt
                 class Example
                 {
                     public Example(StringBuilder builder) => throw null;
-
+                
                     void M()
                     {
                         new Example([|new StringBuilder()|]);

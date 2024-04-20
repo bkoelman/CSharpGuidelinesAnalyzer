@@ -628,7 +628,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                     public class ServiceDescriptor
                     {
                     }
-
+                
                     public interface IServiceCollection : ICollection<ServiceDescriptor>, IEnumerable<ServiceDescriptor>, IList<ServiceDescriptor>
                     {
                     }
@@ -637,7 +637,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionSpecs : CSharpGuideli
                 namespace Test
                 {
                     using Microsoft.Extensions.DependencyInjection;
-
+                
                     public static class ServiceCollectionExtensions
                     {
                         public static IServiceCollection AddSome(this IServiceCollection services)

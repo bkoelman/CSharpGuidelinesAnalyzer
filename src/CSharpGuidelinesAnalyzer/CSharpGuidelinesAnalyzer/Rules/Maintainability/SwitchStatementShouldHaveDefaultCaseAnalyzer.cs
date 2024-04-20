@@ -26,8 +26,8 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     [ItemCanBeNull]
@@ -231,8 +231,8 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         {
             if (caseClause.Value.Syntax is LiteralExpressionSyntax literalSyntax)
             {
-                if (ProcessLiteralSyntaxAsTrueKeyword(analysisContext, literalSyntax) ||
-                    ProcessLiteralSyntaxAsFalseKeyword(analysisContext, literalSyntax) || ProcessLiteralSyntaxAsNullKeyword(literalSyntax))
+                if (ProcessLiteralSyntaxAsTrueKeyword(analysisContext, literalSyntax) || ProcessLiteralSyntaxAsFalseKeyword(analysisContext, literalSyntax) ||
+                    ProcessLiteralSyntaxAsNullKeyword(literalSyntax))
                 {
                     return true;
                 }

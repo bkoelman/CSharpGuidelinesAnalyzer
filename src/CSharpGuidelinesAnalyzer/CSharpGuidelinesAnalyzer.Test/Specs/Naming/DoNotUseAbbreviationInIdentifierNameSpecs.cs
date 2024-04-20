@@ -1065,12 +1065,12 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                     (var [|a|], var [|b|]) = GetTuple();
                     (int [|c|], string [|d|]) tt = GetTuple();
                     var ([|e|], [|f|]) = GetTuple();
-
+                
                     int [|g|];
                     string [|h|];
-
+                
                     (g, h) = GetTuple();
-
+                
                     (int [|l|], string [|m|]) LocalGetTuple() => throw null;
                 }
 
@@ -1110,7 +1110,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameSpecs : CSharpGuidelines
                         [|A|] = string.Empty,
                         [|B|] = 1
                     };
-
+                
                     var tuple = ([|anon.A|], [|anon.B|]);
                 }
                 """)

@@ -23,8 +23,8 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<OperationKind> ReturnOperationKinds = ImmutableArray.Create(OperationKind.Return, OperationKind.YieldReturn);
 
@@ -89,8 +89,7 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool ReturnsStringOrCollectionOrTask([NotNull] IReturnOperation returnOperation,
-        [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+    private static bool ReturnsStringOrCollectionOrTask([NotNull] IReturnOperation returnOperation, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
     {
         return returnOperation.ReturnedValue.Type.IsOrImplementsIEnumerable() || IsTask(returnOperation.ReturnedValue.Type, taskTypes);
     }

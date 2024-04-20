@@ -145,10 +145,10 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             {
                                 return string.Empty;
                             }
-
+                
                             return x.ToString();
                         });
-
+                
                         [|return|] result;
                     }
                 }

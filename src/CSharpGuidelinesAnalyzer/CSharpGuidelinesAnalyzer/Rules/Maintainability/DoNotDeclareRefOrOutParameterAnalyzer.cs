@@ -22,8 +22,8 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [CanBeNull]
     private static readonly PropertyInfo IsRefLikeTypeProperty = typeof(ITypeSymbol).GetRuntimeProperty("IsRefLikeType");

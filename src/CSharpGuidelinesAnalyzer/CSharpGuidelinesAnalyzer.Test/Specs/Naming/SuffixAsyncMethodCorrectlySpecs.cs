@@ -212,7 +212,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [Fact]
@@ -240,7 +240,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                     public class TheoryAttribute : Attribute
                     {
                     }
-
+                
                     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
                     public class InlineDataAttribute : Attribute
                     {
@@ -253,7 +253,7 @@ public sealed class SuffixAsyncMethodCorrectlySpecs : CSharpGuidelinesAnalysisTe
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [InlineData("A")]

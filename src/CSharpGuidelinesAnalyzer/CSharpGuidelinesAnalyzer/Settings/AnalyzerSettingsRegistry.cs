@@ -47,8 +47,8 @@ public sealed class AnalyzerSettingsRegistry
                 return value;
             }
 
-            throw new ArgumentOutOfRangeException(
-                $"Value for '{key}' in '{AnalyzerSettingsProvider.SettingsFileName}' must be in range {minValue}-{maxValue}.", (Exception)null);
+            throw new ArgumentOutOfRangeException($"Value for '{key}' in '{AnalyzerSettingsProvider.SettingsFileName}' must be in range {minValue}-{maxValue}.",
+                (Exception)null);
         }
 
         return null;

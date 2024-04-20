@@ -22,7 +22,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     {
                         return null;
                     }
-
+                
                     IEnumerable<int> N()
                     {
                         return null;

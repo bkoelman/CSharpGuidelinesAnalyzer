@@ -23,8 +23,8 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SpecialType> SimpleTypes = ImmutableArray.Create(SpecialType.System_Boolean, SpecialType.System_Char,
         SpecialType.System_SByte, SpecialType.System_Byte, SpecialType.System_Int16, SpecialType.System_UInt16, SpecialType.System_Int32,
@@ -57,7 +57,6 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
         context.RegisterSymbolAction(AnalyzePropertyAction, SymbolKind.Property);
         context.RegisterSymbolAction(AnalyzeEventAction, SymbolKind.Event);
-
         context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
         context.RegisterOperationAction(AnalyzeAnonymousFunctionAction, OperationKind.AnonymousFunction);
     }
@@ -101,8 +100,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         FilterDuplicateLocations(collector.Diagnostics);
     }
 
-    private static void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod, [NotNull] DiagnosticCollector collector,
-        SymbolAnalysisContext context)
+    private static void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod, [NotNull] DiagnosticCollector collector, SymbolAnalysisContext context)
     {
         if (accessorMethod == null || ShouldSkip(accessorMethod))
         {
@@ -275,8 +273,8 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         CollectAssignedStructParameters(context.Target, bodyOperation, collector);
     }
 
-    private static void CollectAssignedStructParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
-        [NotNull] IOperation bodyOperation, [NotNull] DiagnosticCollector collector)
+    private static void CollectAssignedStructParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters, [NotNull] IOperation bodyOperation,
+        [NotNull] DiagnosticCollector collector)
     {
         var walker = new AssignmentWalker(parameters);
         walker.Visit(bodyOperation);

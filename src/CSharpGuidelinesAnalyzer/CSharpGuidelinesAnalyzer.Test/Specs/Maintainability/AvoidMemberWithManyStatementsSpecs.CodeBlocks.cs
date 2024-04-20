@@ -137,7 +137,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ; ; ;
                         throw null;
                     });
-
+                
                     static C M(Action a) => throw null;
                 }
                 """)
@@ -260,7 +260,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     static Task t;
-
+                
                     static [|C|]() =>
                         t.ContinueWith(x =>
                         {
@@ -310,7 +310,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                 class C
                 {
                     static Task t;
-
+                
                     ~[|C|]() =>
                         t.ContinueWith(x =>
                         {
@@ -570,7 +570,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ; ; ;
                         throw null;
                     });
-
+                
                     static EventHandler M(Action a) => throw null;
                 }
                 """)

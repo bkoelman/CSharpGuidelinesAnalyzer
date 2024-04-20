@@ -28,16 +28,16 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor NamespaceRule = new(DiagnosticId, Title, NamespaceMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor NamespaceRule = new(DiagnosticId, Title, NamespaceMessageFormat, Category.DisplayName, DiagnosticSeverity.Info,
+        true, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor TypeInNamespaceRule = new(DiagnosticId, Title, TypeInNamespaceMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TypeInNamespaceRule = new(DiagnosticId, Title, TypeInNamespaceMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-    [NotNull]
-    private static readonly DiagnosticDescriptor GlobalTypeRule = new(DiagnosticId, Title, GlobalTypeMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor GlobalTypeRule = new(DiagnosticId, Title, GlobalTypeMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction = context => context.SkipEmptyName(AnalyzeNamespace);

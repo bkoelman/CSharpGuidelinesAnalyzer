@@ -71,13 +71,13 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                 {
                     public string Text;
                     public bool IsEnabled;
-
+                
                     public void Deconstruct(out string text, out bool isEnabled)
                     {
                         text = Text;
                         isEnabled = IsEnabled;
                     }
-
+                
                     static void Test()
                     {
                         S s = new S
@@ -85,7 +85,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                             Text = string.Empty,
                             IsEnabled = true
                         };
-
+                
                         (string a, bool b) = s;
                     }
                 }
@@ -672,23 +672,23 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         public void M1(bool [|b1|])
                         {
                         }
-
+                
                         protected void M2(bool [|b2|])
                         {
                         }
-
+                
                         internal void M3(bool [|b3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|b4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|b5|])
                         {
                         }
-
+                
                         private void M6(bool b6)
                         {
                         }
@@ -719,23 +719,23 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         public void M1(bool [|b1|])
                         {
                         }
-
+                
                         protected void M2(bool [|b2|])
                         {
                         }
-
+                
                         internal void M3(bool [|b3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|b4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|b5|])
                         {
                         }
-
+                
                         private void M6(bool b6)
                         {
                         }
@@ -766,23 +766,23 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         public void M1(bool [|b1|])
                         {
                         }
-
+                
                         protected void M2(bool [|b2|])
                         {
                         }
-
+                
                         internal void M3(bool [|b3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|b4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|b5|])
                         {
                         }
-
+                
                         private void M6(bool b6)
                         {
                         }
@@ -813,23 +813,23 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         public void M1(bool [|b1|])
                         {
                         }
-
+                
                         protected void M2(bool [|b2|])
                         {
                         }
-
+                
                         internal void M3(bool [|b3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|b4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|b5|])
                         {
                         }
-
+                
                         private void M6(bool b6)
                         {
                         }
@@ -860,23 +860,23 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         public void M1(bool b1)
                         {
                         }
-
+                
                         protected void M2(bool b2)
                         {
                         }
-
+                
                         internal void M3(bool b3)
                         {
                         }
-
+                
                         protected internal void M4(bool b4)
                         {
                         }
-
+                
                         private protected void M5(bool b5)
                         {
                         }
-
+                
                         private void M6(bool b6)
                         {
                         }

@@ -66,7 +66,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                     void L(int i, object o = null)
                     {
                     }
-
+                
                     void N()
                     {
                         L(3, [|o:|] null);
@@ -112,7 +112,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                     void L(bool b = false)
                     {
                     }
-
+                
                     void N()
                     {
                         L(b: true);
@@ -157,7 +157,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                     void L(bool? b = null)
                     {
                     }
-
+                
                     void N()
                     {
                         L(b: true);

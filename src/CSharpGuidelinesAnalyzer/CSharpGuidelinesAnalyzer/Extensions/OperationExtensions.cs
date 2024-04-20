@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using System.Threading;
 using JetBrains.Annotations;
@@ -76,8 +75,8 @@ internal static class OperationExtensions
     {
         return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) || OperationExistsInBodyOfWhileLoop(operation) ||
             OperationExistsInBodyOfIfStatement(operation) || OperationExistsInBodyOfTryFinallyStatement(operation) ||
-            OperationExistsInBodyOfCatchClause(operation) || OperationExistsInBodyOfCaseClause(operation) ||
-            OperationExistsInBodyOfLockStatement(operation) || OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
+            OperationExistsInBodyOfCatchClause(operation) || OperationExistsInBodyOfCaseClause(operation) || OperationExistsInBodyOfLockStatement(operation) ||
+            OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
     }
 
     private static bool OperationExistsInBodyOfForLoop([NotNull] IOperation operation)

@@ -125,7 +125,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                             public class Good
                             {
                             }
-
+                
                             namespace Deeper
                             {
                                 public class AlsoGood
@@ -156,18 +156,18 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         public class [|TooHigh|]
                         {
                         }
-
+                
                         namespace Example
                         {
                             namespace Deeper
                             {
                             }
                         }
-
+                
                         public class [|AlsoTooHigh|]
                         {
                         }
-
+                
                     }
                 }
                 """)
@@ -315,7 +315,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                     class Top
                     {
                     }
-
+                
                     namespace Deeper
                     {
                         class C

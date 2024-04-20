@@ -119,9 +119,9 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     {
                         var result1 = Enumerable.Empty<int>();
                         result1 = source.Select(x => x);
-
+                
                         var result2 = result1;
-
+                
                         var result3 = result2;
                         [|return|] result3;
                     }
@@ -150,7 +150,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             from item in Enumerable.Empty<int>()
                             where item != 2
                             select item;
-
+                
                         [|return|] (result);
                     }
                 }
@@ -179,7 +179,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                             where item != 2
                             select item
                             ).ToList();
-
+                
                         return result;
                     }
                 }
@@ -207,7 +207,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         (result, p) = this;
                         return result;
                     }
-
+                
                     void Deconstruct(out IEnumerable<int> i, out int j) => throw null;
                 }
                 """)
@@ -231,9 +231,9 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     {
                         var result1 = source.Select(x => x);
                         var result2 = result1;
-
+                
                         result1 = result2.ToArray(); // should not impact return value
-
+                
                         [|return|] result2;
                     }
                 }
@@ -259,14 +259,14 @@ public partial class EvaluateQueryBeforeReturnSpecs
                     {
                         var result1 = source.Select(x => x);
                         var result2 = result1;
-
+                
                         IEnumerable<int> result3 = null;
-
+                
                         if (condition)
                         {
                             result3 = result2; // should scan right through, we're not perfect
                         }
-
+                
                         [|return|] result3;
                     }
                 }

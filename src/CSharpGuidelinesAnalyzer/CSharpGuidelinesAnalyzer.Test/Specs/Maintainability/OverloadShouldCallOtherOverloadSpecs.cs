@@ -36,7 +36,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 interface I
                 {
                     void M();
-
+                
                     void M(string s);
                 }
                 """)
@@ -57,7 +57,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     public void M()
                     {
                     }
-
+                
                     public void M2(string s)
                     {
                     }
@@ -80,11 +80,11 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     void M()
                     {
                     }
-
+                
                     public void M(string s)
                     {
                     }
-
+                
                     public void M(int i)
                     {
                     }
@@ -108,7 +108,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     public void [|M|](string s)
                     {
                     }
@@ -133,7 +133,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     public void [|M|](string s)
                     {
                     }
@@ -162,7 +162,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     private void M(string s)
                     {
                     }
@@ -186,7 +186,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     public void M(string s)
                     {
                     }
@@ -210,7 +210,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     public void M(string s)
                     {
                     }
@@ -234,7 +234,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     public static void M(string s)
                     {
                     }
@@ -257,7 +257,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     void [|M|]()
                     {
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -281,7 +281,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     void [|M|]()
                     {
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -310,7 +310,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty);
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -334,7 +334,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(string.Empty, 0);
                     }
-
+                
                     protected virtual void M<T>(string s, T t)
                     {
                     }
@@ -358,7 +358,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M();
                     }
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -390,7 +390,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         base.M(string.Empty, 0);
                     }
-
+                
                     void M(string s)
                     {
                         base.M(s, 0);
@@ -415,7 +415,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         M(t, 0);
                     }
-
+                
                     protected virtual void M(T t, int i)
                     {
                     }
@@ -427,12 +427,12 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         base.M(t);
                     }
-
+                
                     protected override void M(string t, int i)
                     {
                         base.M(t, i);
                     }
-
+                
                     protected virtual void M(string t, int i, object o)
                     {
                         base.M(t, i);
@@ -454,7 +454,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 abstract class C
                 {
                     protected abstract void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -475,7 +475,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 class C
                 {
                     string [|M|]() => "X";
-
+                
                     protected virtual string M(string s) => s;
                 }
                 """)
@@ -495,7 +495,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 class C
                 {
                     string M() => M("X");
-
+                
                     protected virtual string M(string s) => s;
                 }
                 """)
@@ -514,7 +514,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 struct C
                 {
                     string [|M|]() => M();
-
+                
                     string M(string s) => s;
                 }
                 """)
@@ -534,7 +534,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 partial class C
                 {
                     partial void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -563,7 +563,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 partial class C
                 {
                     partial void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -591,7 +591,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                 partial class C
                 {
                     partial void M();
-
+                
                     protected virtual void M(string s)
                     {
                     }
@@ -614,7 +614,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     public C()
                     {
                     }
-
+                
                     public C(string s)
                     {
                     }
@@ -638,17 +638,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(value, -1);
                     }
-
+                
                     public bool M(string value, int index)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -672,7 +672,7 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(value, -1, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -696,17 +696,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public bool [|M|](int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -731,17 +731,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public bool [|M|](int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -770,22 +770,22 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(Array.Empty<object>());
                     }
-
+                
                     public bool M(params object[] args)
                     {
                         return M(string.Empty, args);
                     }
-
+                
                     public bool M(string value, params object[] args)
                     {
                         return M(value, -1, args);
                     }
-
+                
                     public bool M(string value, int index, params object[] args)
                     {
                         return M(value, index, false, args);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag, params object[] args)
                     {
                         throw new NotImplementedException();
@@ -809,22 +809,22 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(Array.Empty<object>());
                     }
-
+                
                     public bool M(params object[] args)
                     {
                         return M(string.Empty, args);
                     }
-
+                
                     public bool M(string value, params object[] args)
                     {
                         return M(-1, value, args);
                     }
-
+                
                     public bool [|M|](int index, string value, params object[] args)
                     {
                         return M(value, index, false, args);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag, params object[] args)
                     {
                         throw new NotImplementedException();
@@ -849,17 +849,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value = null)
                     {
                         return M(value, -1);
                     }
-
+                
                     public bool M(string value = null, int index = -1)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value = null, int index = -1, bool flag = true)
                     {
                         throw new NotImplementedException();
@@ -883,17 +883,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value = null)
                     {
                         return M(value, -1);
                     }
-
+                
                     public bool [|M|](int index = -1, string value = null)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value = null, int index = -1, bool flag = true)
                     {
                         throw new NotImplementedException();
@@ -918,17 +918,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(1.0, index: 0, DateTime.MinValue);
                     }
-
+                
                     public bool M(double first, int index = -1, DateTime time = default(DateTime))
                     {
                         return M(first, value: string.Empty, index: 0, new object());
                     }
-
+                
                     public bool M(double first, string value, int index = -1, object other = null)
                     {
                         return M(first, value, index, false, Array.Empty<object>());
                     }
-
+                
                     protected virtual bool M(double first, string value, int index = -1, bool flag = true, params object[] data)
                     {
                         throw new NotImplementedException();
@@ -960,17 +960,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public override bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public override bool M(int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected override bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -994,17 +994,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public virtual bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public virtual bool [|M|](int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -1017,17 +1017,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public override bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public new bool M(int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     protected override bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -1060,17 +1060,17 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                     {
                         return M(string.Empty);
                     }
-
+                
                     public bool M(string value)
                     {
                         return M(-1, value);
                     }
-
+                
                     public bool M(int index, string value)
                     {
                         return M(value, index, false);
                     }
-
+                
                     public virtual bool M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -1103,19 +1103,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                         var @interface = (I)this;
                         return @interface.M(string.Empty);
                     }
-
+                
                     bool I.M(string value)
                     {
                         var @interface = (I)this;
                         return @interface.M(-1, value);
                     }
-
+                
                     bool I.M(int index, string value)
                     {
                         var @interface = (I)this;
                         return @interface.M(value, index, false);
                     }
-
+                
                     bool I.M(string value, int index, bool flag)
                     {
                         throw new NotImplementedException();
@@ -1148,19 +1148,19 @@ public sealed class OverloadShouldCallOtherOverloadSpecs : CSharpGuidelinesAnaly
                         var @interface = (I<bool>)this;
                         return @interface.M(string.Empty);
                     }
-
+                
                     bool I<bool>.M(string value)
                     {
                         var @interface = (I<bool>)this;
                         return @interface.M(-1, value);
                     }
-
+                
                     bool I<bool>.M(int index, string value)
                     {
                         var @interface = (I<bool>)this;
                         return @interface.M(value, index, 0);
                     }
-
+                
                     bool I<bool>.M<U>(string value, int index, U extra)
                     {
                         throw new NotImplementedException();

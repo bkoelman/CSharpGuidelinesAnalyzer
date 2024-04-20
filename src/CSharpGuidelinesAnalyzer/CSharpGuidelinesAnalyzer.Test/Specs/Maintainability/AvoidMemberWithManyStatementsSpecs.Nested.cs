@@ -22,7 +22,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             ; ;
                             ; ;
                         }
-
+                
                         ; ;
                         ; ;
                     }
@@ -50,7 +50,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                             ; ;
                             ; ;
                         }
-
+                
                         ; ;
                         ;
                     }
@@ -74,7 +74,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     {
                         ; ;
                         ; ;
-
+                
                         Action<int> action = i =>
                         {
                             ; ;
@@ -102,7 +102,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     {
                         ; ;
                         ; ;
-
+                
                         Action<int> action = i =>
                         {
                             ; ;
@@ -128,7 +128,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = () =>
                         {
                             ; ;
@@ -156,7 +156,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = () =>
                         {
                             ; ;
@@ -182,7 +182,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = delegate
                         {
                             ; ;
@@ -210,7 +210,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     {
                         ; ;
                         ; ;
-
+                
                         Action action = delegate
                         {
                             ; ;

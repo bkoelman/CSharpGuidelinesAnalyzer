@@ -48,7 +48,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                         {
                         }
                     }
-
+                
                     class [|C2|]
                     {
                     }
@@ -92,7 +92,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                         {
                         }
                     }
-
+                
                     class \u0043<T> // unicode escape for C
                     {
                     }
@@ -155,7 +155,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                         {
                         }
                     }
-
+                
                     struct [|S2|]
                     {
                     }
@@ -199,7 +199,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                         {
                         }
                     }
-
+                
                     struct \u0053<T> // unicode escape for S
                     {
                     }
@@ -256,7 +256,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                     enum E
                     {
                     }
-
+                
                     enum [|E2|]
                     {
                     }
@@ -313,7 +313,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                     interface I
                     {
                     }
-
+                
                     interface [|I2|]
                     {
                     }
@@ -351,7 +351,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                     interface I
                     {
                     }
-
+                
                     interface \u0049<T> // unicode escape for I
                     {
                     }
@@ -401,7 +401,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                 namespace N1
                 {
                     delegate void D();
-
+                
                     delegate void [|D2|]();
                 }
 
@@ -431,7 +431,7 @@ public sealed class AvoidMultipleTypesPerFileSpecs : CSharpGuidelinesAnalysisTes
                 namespace N1
                 {
                     delegate void D();
-
+                
                     delegate void \u0044<T>(T t); // unicode escape for D
                 }
 

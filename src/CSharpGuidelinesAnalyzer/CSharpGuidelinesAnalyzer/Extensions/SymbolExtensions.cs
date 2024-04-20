@@ -17,8 +17,7 @@ internal static class SymbolExtensions
     [ItemNotNull]
     private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
         "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethodAttribute",
-        "Xunit.FactAttribute", "Xunit.TheoryAttribute", "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute",
-        "MbUnit.Framework.TestAttribute");
+        "Xunit.FactAttribute", "Xunit.TheoryAttribute", "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute", "MbUnit.Framework.TestAttribute");
 
     [NotNull]
     [ItemNotNull]
@@ -190,8 +189,7 @@ internal static class SymbolExtensions
     {
         Guard.NotNull(method, nameof(method));
 
-        foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken))
-            .ToArray())
+        foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray())
         {
             SyntaxNode bodySyntax = TryGetDeclarationBody(syntaxNode);
 

@@ -379,7 +379,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                 class C
                 {
                     private const string NullConstant = null;
-
+                
                     public string M()
                     {
                         return [|NullConstant|];
@@ -469,7 +469,7 @@ public sealed class DoNotReturnNullSpecs : CSharpGuidelinesAnalysisTestFixture
                     public string M()
                     {
                         return L();
-
+                
                         string L()
                         {
                             return [|null|];

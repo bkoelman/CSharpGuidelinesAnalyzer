@@ -742,12 +742,12 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                     (var [|e1|], var [|e2|]) = GetTuple();
                     (int [|e3|], string [|e4|]) tt = GetTuple();
                     var ([|e5|], [|e6|]) = GetTuple();
-
+                
                     int [|e7|];
                     string [|e8|];
-
+                
                     (e7, e8) = GetTuple();
-
+                
                     (int [|l1|], string [|l2|]) LocalGetTuple() => throw null;
                 }
 
@@ -787,7 +787,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                         [|A1|] = string.Empty,
                         [|B1|] = 1
                     };
-
+                
                     var tuple = ([|anon.A1|], [|anon.B1|]);
                 }
                 """)
@@ -817,7 +817,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+                
                     class UnitTests
                     {
                         [TestMethod]
@@ -849,7 +849,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using Xunit;
-
+                
                     class UnitTests
                     {
                         [Fact]
@@ -881,7 +881,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using NUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]
@@ -913,7 +913,7 @@ public sealed class DoNotUseNumberInIdentifierNameSpecs : CSharpGuidelinesAnalys
                 namespace App
                 {
                     using MbUnit.Framework;
-
+                
                     class UnitTests
                     {
                         [Test]

@@ -22,7 +22,7 @@ public partial class AvoidSignatureWithManyParametersSpecs
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
@@ -50,7 +50,7 @@ public partial class AvoidSignatureWithManyParametersSpecs
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
@@ -79,7 +79,7 @@ public partial class AvoidSignatureWithManyParametersSpecs
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
@@ -108,7 +108,7 @@ public partial class AvoidSignatureWithManyParametersSpecs
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
@@ -140,7 +140,7 @@ public partial class AvoidSignatureWithManyParametersSpecs
                     public [|C|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }
-
+                
                     void [|M|](int first, string second, double third, float fourth, byte fifth, char sixth, DateTime seventh, TimeSpan eighth, ushort ninth)
                     {
                     }

@@ -26,16 +26,16 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new(DiagnosticId, Title, MissingTypeOrMemberMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new(DiagnosticId, Title, MissingTypeOrMemberMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor MissingParameterRule = new(DiagnosticId, Title, MissingParameterMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor MissingParameterRule = new(DiagnosticId, Title, MissingParameterMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ExtraParameterRule = new(DiagnosticId, Title, ExtraParameterMessageFormat,
-        Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor ExtraParameterRule = new(DiagnosticId, Title, ExtraParameterMessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
@@ -157,9 +157,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     {
         context.CancellationToken.ThrowIfCancellationRequested();
 
-        ISet<string> parameterNamesInDocumentation = string.IsNullOrEmpty(documentationXml)
-            ? EmptyHashSet
-            : TryParseDocumentationCommentXml(documentationXml);
+        ISet<string> parameterNamesInDocumentation = string.IsNullOrEmpty(documentationXml) ? EmptyHashSet : TryParseDocumentationCommentXml(documentationXml);
 
         if (parameterNamesInDocumentation != null)
         {

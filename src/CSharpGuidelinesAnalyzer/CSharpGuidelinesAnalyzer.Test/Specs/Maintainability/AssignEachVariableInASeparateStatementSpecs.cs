@@ -265,15 +265,15 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 abstract class C
                 {
                     private int field1;
-
+                
                     private int Property1 { get; set; }
-
+                
                     public abstract int this[int index] { get; set; }
-
+                
                     void M(ref int parameter1)
                     {
                         int local1;
-
+                
                         [|local1 = field1 = Property1 = this[0] = parameter1 = 5;|]
                     }
                 }
@@ -294,15 +294,15 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 abstract class C
                 {
                     private int field1;
-
+                
                     private int Property1 { get; set; }
-
+                
                     public abstract int this[int index] { get; set; }
-
+                
                     void M(ref int parameter1)
                     {
                         int local1;
-
+                
                         [|int decl1 = local1 = field1 = Property1 = this[0] = parameter1 = 5;|]
                     }
                 }
@@ -323,7 +323,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k = 8;
-
+                
                     for ([|i = j = 5|]; (k = 1) > 0; k -= 2)
                     {
                         k = 3;
@@ -346,7 +346,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k = 8;
-
+                
                     for (i = 1, j = 5; (k = 1) > 0; k -= 2)
                     {
                         k = 3;
@@ -368,7 +368,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int k = 8;
-
+                
                     for ([|int i = 1, j = 5|]; (k += 1) > 0; k -= 2)
                     {
                         k = 3;
@@ -391,7 +391,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     for (k = 1; [|(i = j = 5) > 0|]; k -= 2)
                     {
                         k = 3;
@@ -414,7 +414,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     for (k = 1; (k += 1) > 0; [|i = j = 5|])
                     {
                         k = 3;
@@ -437,7 +437,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     for (k = 1; (k += 1) > 0; i = 5, j = 8)
                     {
                         k = 3;
@@ -459,7 +459,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     for (int index = 0; index < 10; index++)
                     {
                         i = 5;
@@ -482,7 +482,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     for (int index = 0; index < 10; index++)
                     {
                         [|i = j = 5;|]
@@ -505,7 +505,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|foreach|] (var itr in new int[i = j = 5])
                     {
                         k = 3;
@@ -528,7 +528,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     foreach (var item in new int[0])
                     {
                         i = 5;
@@ -551,7 +551,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     foreach (var item in new int[0])
                     {
                         [|i = j = 5;|]
@@ -574,7 +574,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|while|] ((i = j = 5) > 0)
                     {
                         k = 3;
@@ -597,7 +597,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     while (true)
                     {
                         i = 5;
@@ -620,7 +620,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     while (true)
                     {
                         [|i = j = 5;|]
@@ -643,7 +643,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     do
                     {
                         k = 3;
@@ -667,7 +667,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     do
                     {
                         i = 5;
@@ -691,7 +691,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     do
                     {
                         [|i = j = 5;|]
@@ -715,7 +715,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|if|] ((i = j = 5) > 0)
                     {
                         k = 3;
@@ -738,7 +738,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, x, y;
-
+                
                     if (true)
                     {
                         i = 5;
@@ -766,7 +766,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, x, y;
-
+                
                     if (true)
                     {
                         [|i = j = 5;|]
@@ -794,7 +794,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, k;
-
+                
                     [|switch|] (i = j = 5)
                     {
                         case 1:
@@ -826,7 +826,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     switch (true)
                     {
                         case true:
@@ -859,7 +859,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j, x, y;
-
+                
                     switch (true)
                     {
                         case true:
@@ -892,7 +892,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 int M()
                 {
                     int i, j;
-
+                
                     [|return|] i = j = 5;
                 }
                 """)
@@ -913,7 +913,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 IEnumerable<int> M()
                 {
                     int i, j;
-
+                
                     [|yield return|] i = j = 5;
                 }
                 """)
@@ -934,7 +934,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 {
                     object o, p;
                     int k;
-
+                
                     [|lock|] (o = p = new object())
                     {
                         k = 3;
@@ -957,7 +957,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     lock (this)
                     {
                         i = 5;
@@ -980,7 +980,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     lock (this)
                     {
                         [|i = j = 5;|]
@@ -1005,7 +1005,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 {
                     IDisposable i, j;
                     int k;
-
+                
                     [|using|] (i = j = null)
                     {
                         k = 3;
@@ -1030,7 +1030,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 {
                     IDisposable j;
                     int k;
-
+                
                     [|using|] (IDisposable i = j = null)
                     {
                         k = 3;
@@ -1054,7 +1054,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int k;
-
+                
                     [|using|] (MemoryStream ms1 = new MemoryStream(), ms2 = new MemoryStream())
                     {
                         k = 3;
@@ -1077,7 +1077,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     using (null)
                     {
                         i = 5;
@@ -1100,7 +1100,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     using (null)
                     {
                         [|i = j = 5;|]
@@ -1124,7 +1124,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 int M()
                 {
                     Exception i, j;
-
+                
                     [|throw|] i = j = new Exception();
                 }
                 """)
@@ -1145,7 +1145,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     Action action = () =>
                     {
                         i = 5;
@@ -1169,7 +1169,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     Action action = () =>
                     {
                         [|i = j = 5;|]
@@ -1193,7 +1193,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     int i, j;
-
+                
                     Action action = () => [|i = j = 5|];
                 }
                 """)
@@ -1235,7 +1235,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 class X
                 {
                     public int F;
-
+                
                     public int P { get; set; }
                 }
                 """)
@@ -1300,7 +1300,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 class X
                 {
                     public X(dynamic d) => throw null;
-
+                
                     public int P { get; set; }
                 }
                 """)
@@ -1319,10 +1319,10 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                 void M()
                 {
                     bool result = N(out var a, out var b);
-
+                
                     int x, y;
                     bool z;
-
+                
                     z = N(out x, out y);
                 }
 
@@ -1345,7 +1345,7 @@ public sealed class AssignEachVariableInASeparateStatementSpecs : CSharpGuidelin
                     (int a, int b) = GetTuple();
                     (var c, var d) = GetTuple();
                     (int, int) t = GetTuple();
-
+                
                     var (x, y) = GetTuple();
                     var (_, _) = GetTuple();
                 }

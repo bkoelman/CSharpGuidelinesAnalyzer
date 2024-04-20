@@ -21,15 +21,15 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, false,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
 
     [ItemNotNull]
     private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Be", "Is", "Was", "Were", "Has", "Have", "Can", "Could",
-        "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides",
-        "Contain", "Contains", "Require", "Requires", "Return", "Returns", "Starts", "Consists", "Targets");
+        "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain",
+        "Contains", "Require", "Requires", "Return", "Returns", "Starts", "Consists", "Targets");
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);

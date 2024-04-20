@@ -350,7 +350,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     {
                         throw new NotImplementedException();
                     }
-
+                
                     public static bool operator !=(C left, C right)
                     {
                         throw new NotImplementedException();
@@ -716,15 +716,15 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     public class D
                     {
                         public bool [|thisIsVisible1|];
-
+                
                         protected bool [|thisIsVisible2|];
-
+                
                         internal bool [|thisIsVisible3|];
-
+                
                         protected internal bool [|thisIsVisible4|];
-
+                
                         private protected bool [|thisIsVisible5|];
-
+                
                         private bool thisIsVisible6;
                     }
                 }
@@ -751,15 +751,15 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     protected class D
                     {
                         public bool [|thisIsVisible1|];
-
+                
                         protected bool [|thisIsVisible2|];
-
+                
                         internal bool [|thisIsVisible3|];
-
+                
                         protected internal bool [|thisIsVisible4|];
-
+                
                         private protected bool [|thisIsVisible5|];
-
+                
                         private bool thisIsVisible6;
                     }
                 }
@@ -786,15 +786,15 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     internal class D
                     {
                         public bool [|thisIsVisible1|];
-
+                
                         protected bool [|thisIsVisible2|];
-
+                
                         internal bool [|thisIsVisible3|];
-
+                
                         protected internal bool [|thisIsVisible4|];
-
+                
                         private protected bool [|thisIsVisible5|];
-
+                
                         private bool thisIsVisible6;
                     }
                 }
@@ -821,15 +821,15 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     protected internal class D
                     {
                         public bool [|thisIsVisible1|];
-
+                
                         protected bool [|thisIsVisible2|];
-
+                
                         internal bool [|thisIsVisible3|];
-
+                
                         protected internal bool [|thisIsVisible4|];
-
+                
                         private protected bool [|thisIsVisible5|];
-
+                
                         private bool thisIsVisible6;
                     }
                 }
@@ -856,15 +856,15 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     private class D
                     {
                         public bool thisIsVisible1;
-
+                
                         protected bool thisIsVisible2;
-
+                
                         internal bool thisIsVisible3;
-
+                
                         protected internal bool thisIsVisible4;
-
+                
                         private protected bool thisIsVisible5;
-
+                
                         private bool thisIsVisible6;
                     }
                 }
@@ -888,23 +888,23 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         public void M1(bool [|thisIsVisible1|])
                         {
                         }
-
+                
                         protected void M2(bool [|thisIsVisible2|])
                         {
                         }
-
+                
                         internal void M3(bool [|thisIsVisible3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|thisIsVisible4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|thisIsVisible5|])
                         {
                         }
-
+                
                         private void M6(bool thisIsVisible6)
                         {
                         }
@@ -935,23 +935,23 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         public void M1(bool [|thisIsVisible1|])
                         {
                         }
-
+                
                         protected void M2(bool [|thisIsVisible2|])
                         {
                         }
-
+                
                         internal void M3(bool [|thisIsVisible3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|thisIsVisible4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|thisIsVisible5|])
                         {
                         }
-
+                
                         private void M6(bool thisIsVisible6)
                         {
                         }
@@ -982,23 +982,23 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         public void M1(bool [|thisIsVisible1|])
                         {
                         }
-
+                
                         protected void M2(bool [|thisIsVisible2|])
                         {
                         }
-
+                
                         internal void M3(bool [|thisIsVisible3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|thisIsVisible4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|thisIsVisible5|])
                         {
                         }
-
+                
                         private void M6(bool thisIsVisible6)
                         {
                         }
@@ -1029,23 +1029,23 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         public void M1(bool [|thisIsVisible1|])
                         {
                         }
-
+                
                         protected void M2(bool [|thisIsVisible2|])
                         {
                         }
-
+                
                         internal void M3(bool [|thisIsVisible3|])
                         {
                         }
-
+                
                         protected internal void M4(bool [|thisIsVisible4|])
                         {
                         }
-
+                
                         private protected void M5(bool [|thisIsVisible5|])
                         {
                         }
-
+                
                         private void M6(bool thisIsVisible6)
                         {
                         }
@@ -1076,23 +1076,23 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         public void M1(bool thisIsVisible1)
                         {
                         }
-
+                
                         protected void M2(bool thisIsVisible2)
                         {
                         }
-
+                
                         internal void M3(bool thisIsVisible3)
                         {
                         }
-
+                
                         protected internal void M4(bool thisIsVisible4)
                         {
                         }
-
+                
                         private protected void M5(bool thisIsVisible5)
                         {
                         }
-
+                
                         private void M6(bool thisIsVisible6)
                         {
                         }

@@ -54,7 +54,7 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
                     public static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }
@@ -78,7 +78,7 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsSpecs : CSharpGu
                     internal static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
 using CSharpGuidelinesAnalyzer.Test.RoslynTestFramework;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 
@@ -12,8 +10,7 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 {
     protected static readonly ImmutableArray<string> DefaultNamespaceImports = ["System"];
 
-    public static readonly AnalyzerTestContext DefaultTestContext =
-        new(string.Empty, [], new AnalyzerOptions([]));
+    public static readonly AnalyzerTestContext DefaultTestContext = new(string.Empty, [], new AnalyzerOptions([]));
 
     private readonly HashSet<string> namespaceImports;
 

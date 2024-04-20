@@ -416,7 +416,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                         case true && true:
                             throw new NotImplementedException();
                     }
-
+                
                     switch (b)
                     {
                         case !true:

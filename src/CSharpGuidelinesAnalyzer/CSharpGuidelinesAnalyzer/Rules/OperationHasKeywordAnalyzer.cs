@@ -22,8 +22,8 @@ public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Hidden, false, Description);
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Hidden, false,
+        Description);
 
     [NotNull]
     private static readonly OperationKind[] OperationKinds = (OperationKind[])Enum.GetValues(typeof(OperationKind));

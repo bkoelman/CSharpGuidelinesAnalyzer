@@ -132,7 +132,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
                     public static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }
@@ -155,7 +155,7 @@ public sealed class AvoidStaticClassSpecs : CSharpGuidelinesAnalysisTestFixture
                     internal static void M(this string s)
                     {
                     }
-
+                
                     private static void InnerMethod(string s)
                     {
                     }

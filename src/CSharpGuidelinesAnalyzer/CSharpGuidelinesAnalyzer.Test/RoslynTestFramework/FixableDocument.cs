@@ -57,10 +57,7 @@ internal sealed class FixableDocument
             '*'
         ];
 
-        private static readonly string[] ReplaceSeparatorArray =
-        [
-            ReplaceSeparator
-        ];
+        private static readonly string[] ReplaceSeparatorArray = [ReplaceSeparator];
 
         private readonly string markupCode;
 

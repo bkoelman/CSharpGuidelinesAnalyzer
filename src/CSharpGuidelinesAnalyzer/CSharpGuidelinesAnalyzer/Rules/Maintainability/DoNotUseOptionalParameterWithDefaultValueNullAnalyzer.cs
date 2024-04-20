@@ -23,8 +23,8 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -83,8 +83,7 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         var parameter = (IParameterSymbol)context.Symbol;
 
         if (parameter.IsOptional && parameter.HasExplicitDefaultValue && parameter.ExplicitDefaultValue == null && !parameter.ContainingSymbol.IsOverride &&
-            !parameter.ContainingSymbol.IsInterfaceImplementation() &&
-            !HasCallerArgumentExpressionAttribute(parameter, callerArgumentExpressionAttributeType))
+            !parameter.ContainingSymbol.IsInterfaceImplementation() && !HasCallerArgumentExpressionAttribute(parameter, callerArgumentExpressionAttributeType))
         {
             if (parameter.Type.IsOrImplementsIEnumerable() || IsTask(parameter.Type, taskTypes))
             {

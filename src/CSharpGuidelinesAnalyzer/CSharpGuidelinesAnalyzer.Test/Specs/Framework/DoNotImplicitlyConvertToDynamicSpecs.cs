@@ -20,27 +20,27 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                 class C
                 {
                     dynamic field = GetDynamic();
-
+                
                     dynamic Property
                     {
                         get => field;
                         set => value = field;
                     }
-
+                
                     public C()
                     {
                         dynamic d = GetDynamicLocal();
-
+                
                         dynamic GetDynamicLocal() => throw null;
                     }
-
+                
                     void M(ref dynamic p)
                     {
                         SetDynamic(p);
-
+                
                         p += field;
                     }
-
+                
                     static dynamic GetDynamic() => throw null;
                     static void SetDynamic(dynamic d) => throw null;
                 }
@@ -67,28 +67,28 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                 class C : B
                 {
                     dynamic field = GetObject();
-
+                
                     dynamic Property
                     {
                         get => field;
                         set => value = field;
                     }
-
+                
                     public C()
                         : base(new object())
                     {
                         dynamic d = GetObjectLocal();
-
+                
                         object GetObjectLocal() => throw null;
                     }
-
+                
                     void M(ref dynamic p)
                     {
                         SetDynamic(new object());
-
+                
                         p += field;
                     }
-
+                
                     static object GetObject() => throw null;
                     static void SetDynamic(dynamic d) => throw null;
                 }
@@ -115,26 +115,26 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                 class C : B
                 {
                     dynamic field = null;
-
+                
                     dynamic Property
                     {
                         get => null;
                         set => value = null;
                     }
-
+                
                     public C()
                         : base(null)
                     {
                         dynamic d = null;
                     }
-
+                
                     void M(ref dynamic p)
                     {
                         SetDynamic(null);
-
+                
                         p += null;
                     }
-
+                
                     static void SetDynamic(dynamic d) => throw null;
                 }
                 """)
@@ -160,27 +160,27 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                 class C : B
                 {
                     dynamic field = [|"A"|];
-
+                
                     dynamic Property
                     {
                         get => [|1.5m|];
                         set => value = [|1|];
                     }
-
+                
                     public C()
                         : base([|'X'|])
                     {
                         dynamic d = [|2.8D|];
                     }
-
+                
                     void M(ref dynamic p)
                     {
                         const byte b = (byte)0;
                         SetDynamic([|b|]);
-
+                
                         p += [|2.9F|];
                     }
-
+                
                     static void SetDynamic(dynamic d) => throw null;
                 }
                 """)
@@ -206,28 +206,28 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                 class C
                 {
                     dynamic field = (dynamic)"A";
-
+                
                     dynamic Property
                     {
                         get => (dynamic)1.5m;
                         set => value = (dynamic)1;
                     }
-
+                
                     public C()
                     {
                         dynamic d = (dynamic)2.8D;
                     }
-
+                
                     void M(ref dynamic p)
                     {
                         const byte b = (byte)0;
                         SetDynamic((dynamic)b);
-
+                
                         p += (dynamic)2.9F;
-
+                
                         dynamic d = (dynamic)new { A = p };
                     }
-
+                
                     static void SetDynamic(dynamic d) => throw null;
                 }
                 """)
@@ -253,32 +253,32 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                 class C : B
                 {
                     dynamic field = [|GetString()|];
-
+                
                     dynamic Property
                     {
                         get => [|GetDecimal()|];
                         set => value = [|GetInt32()|];
                     }
-
+                
                     public C()
                         : base([|GetChar()|])
                     {
                         dynamic d = [|GetDouble()|];
-
+                
                         double GetDouble() => throw null;
                     }
-
+                
                     void M(ref dynamic p)
                     {
                         SetDynamic([|GetByte()|]);
-
+                
                         p += [|GetDateTime()|];
-
+                
                         dynamic d = [|new { A = p }|];
-
+                
                         DateTime GetDateTime() => throw null;
                     }
-
+                
                     static string GetString() => throw null;
                     static decimal GetDecimal() => throw null;
                     static int GetInt32() => throw null;

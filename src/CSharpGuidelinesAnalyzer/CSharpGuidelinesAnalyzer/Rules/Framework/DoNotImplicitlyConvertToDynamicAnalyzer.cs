@@ -21,8 +21,8 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
+        Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -55,7 +55,6 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
 
         startContext.RegisterOperationAction(context => AnalyzeConversionAction(context, objectHandleType), OperationKind.Conversion);
-
         startContext.RegisterOperationAction(context => AnalyzeCompoundAssignmentAction(context, objectHandleType), OperationKind.CompoundAssignment);
     }
 
@@ -92,8 +91,7 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool RequiresReport([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType,
-        [CanBeNull] INamedTypeSymbol objectHandleType)
+    private static bool RequiresReport([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType, [CanBeNull] INamedTypeSymbol objectHandleType)
     {
         if (!IsDynamic(destinationType))
         {

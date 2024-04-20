@@ -154,9 +154,9 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
                     get
                     {
                         [|// comment |]
-
+                
                         return null;
-
+                
                         [|/* unreachable */|]
                     }
                 }
@@ -212,7 +212,7 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
                 void M()
                 {
                     string s = null;
-
+                
                     // ReSharper disable PossibleNullReferenceException
                     if (s.Length > 1)
                     // ReSharper restore PossibleNullReferenceException
@@ -255,7 +255,7 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
                     // @formatter:max_line_length 50
                     string text = string.Empty;
                     // @formatter:max_line_length restore
-
+                
                     // @formatter:off
                     int i = 1;
                     // @formatter:on
@@ -278,10 +278,10 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
                 {
                     // Arrange
                     int x = 10;
-
+                
                     // Act
                     x -= 1;
-
+                
                     // Assert
                     Debug.Assert(x == 9);
                 }
@@ -303,7 +303,7 @@ public sealed class AvoidInlineCommentSpecs : CSharpGuidelinesAnalysisTestFixtur
                 {
                     // Arrange
                     int x = 10;
-
+                
                     // Act and assert
                     Debug.Assert(--x == 9);
                 }
