@@ -16,19 +16,19 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
                     {
-                        case ""A"":
-                        case ""B"":
+                        case "A":
+                        case "B":
                         {
                             break;
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -40,7 +40,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
@@ -51,7 +51,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -63,7 +63,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
@@ -74,7 +74,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -86,17 +86,17 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
                     {
-                        case ""A"":
-                        [|case|] ""B"":
+                        case "A":
+                        [|case|] "B":
                             break;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -109,7 +109,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
@@ -118,7 +118,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
                             break;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -131,7 +131,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
@@ -140,7 +140,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
                             break;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -154,17 +154,17 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockSpecs : CSharpGuidelin
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .AllowingCompileErrors()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
                     {
-                        case ""A"":
-                        case ""B"":
+                        case "A":
+                        case "B":
                             #;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

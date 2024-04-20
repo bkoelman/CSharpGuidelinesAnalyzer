@@ -17,7 +17,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|for|] (int i = 0; i < 10; i++)
@@ -28,7 +28,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -43,14 +43,14 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|for|] (int i = 0; i < 10; i++)
                         [|for|] (int j = 0; j < i; j++)
                             [|i =- 1;|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -65,7 +65,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|foreach|] (var item in new int[0])
@@ -73,7 +73,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         [|continue|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -87,13 +87,13 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|foreach|] (var item in new int[0])
                         [|System.Console.WriteLine(item);|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -107,7 +107,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|while|] (System.DateTime.Now.Ticks % 2 != 1)
@@ -115,7 +115,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         [|throw|] new System.Exception();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -129,13 +129,13 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|while|] (System.DateTime.Now.Ticks % 2 != 1)
                         [|throw|] new System.Exception();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,7 +149,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|if|] (System.DateTime.Now.Ticks % 2 != 1)
@@ -163,7 +163,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         [|;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -178,7 +178,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|if|] (System.DateTime.Now.Ticks % 2 != 1)
@@ -189,7 +189,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         }
                         while (true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -204,7 +204,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|try|]
@@ -220,7 +220,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         [|int k = 0;|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -236,7 +236,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     [|switch|] (i)
@@ -252,7 +252,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -268,7 +268,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     [|switch|] (i)
@@ -281,7 +281,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                             [|throw|] new System.NotSupportedException();
                    }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -297,7 +297,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|lock|] (new object())
@@ -307,7 +307,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -321,13 +321,13 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|lock|] (new object())
                         [|new object()?.ToString();|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -341,7 +341,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     start:
@@ -353,7 +353,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         [|goto|] start;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -367,7 +367,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     start:
@@ -375,7 +375,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                     done:
                         [|goto|] start;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -389,7 +389,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void [|N|]()
@@ -400,7 +400,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -415,12 +415,12 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void [|N|]() => throw new System.Exception();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -433,7 +433,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Action action = () [|=>|]
@@ -441,7 +441,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         [|int i = 0;|]
                     };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -455,12 +455,12 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Action action = () [|=>|] [|new object();|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -474,7 +474,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|using|] (IDisposable x = null)
@@ -485,7 +485,7 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -500,14 +500,14 @@ public sealed class OperationIsStatementSpecs : CSharpGuidelinesAnalysisTestFixt
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     [|using|] (IDisposable x = null)
                         [|using|] (IDisposable y = null)
                             [|new string[0].ToString();|]
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

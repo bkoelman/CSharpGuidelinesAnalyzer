@@ -16,12 +16,12 @@ public sealed partial class EvaluateQueryBeforeReturnSpecs : CSharpGuidelinesAna
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum E
                 {
                     A = 1
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,12 +33,12 @@ public sealed partial class EvaluateQueryBeforeReturnSpecs : CSharpGuidelinesAna
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler SomethingChanged = delegate { };
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -52,7 +52,7 @@ public sealed partial class EvaluateQueryBeforeReturnSpecs : CSharpGuidelinesAna
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     private IEnumerable<int> M(IEnumerable<int> source)
@@ -60,7 +60,7 @@ public sealed partial class EvaluateQueryBeforeReturnSpecs : CSharpGuidelinesAna
                         return source.Where(x => true);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

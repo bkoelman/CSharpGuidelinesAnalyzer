@@ -16,7 +16,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (i == null)
@@ -27,7 +27,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,7 +39,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i.HasValue|])
@@ -50,7 +50,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -64,7 +64,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (i > 5)
@@ -91,7 +91,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -103,7 +103,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if (i > GetNumber())
@@ -132,7 +132,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                 }
 
                 int GetNumber() => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -145,7 +145,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(EqualityComparer<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i != null && i > 5|])
@@ -176,7 +176,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -196,7 +196,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(EqualityComparer<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? i)
                 {
                     if ([|i != null && i.Value > 5|])
@@ -223,7 +223,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -241,7 +241,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int? P { get; set; }
@@ -276,7 +276,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -294,7 +294,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int? P { get; set; }
@@ -329,7 +329,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -347,7 +347,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int? i, int? other, int?[] array, dynamic k)
@@ -378,7 +378,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                     public static bool operator >(C left, int right) => throw null;
                     public static bool operator <(C left, int right) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -390,7 +390,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(int? i, int? j)
@@ -452,7 +452,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -472,7 +472,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M(string s)
@@ -482,7 +482,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationSpecs : CSharpG
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

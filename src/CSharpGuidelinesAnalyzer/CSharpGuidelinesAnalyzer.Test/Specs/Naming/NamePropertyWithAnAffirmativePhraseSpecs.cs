@@ -16,12 +16,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public int some;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,12 +33,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool isVisible;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,12 +50,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool [|thisIsVisible|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -68,12 +68,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool? isVisible;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -85,12 +85,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool? [|thisIsVisible|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -103,12 +103,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public int Some { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -120,12 +120,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool IsVisible { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -137,12 +137,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool [|ThisIsVisible|] { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -155,12 +155,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool? IsVisible { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -172,12 +172,12 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool? [|ThisIsVisible|] { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -190,7 +190,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract bool [|ThisIsVisible|] { get; set; }
@@ -200,7 +200,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                 {
                     public override bool ThisIsVisible { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -213,7 +213,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract bool? [|ThisIsVisible|] { get; set; }
@@ -223,7 +223,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                 {
                     public override bool? ThisIsVisible { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -236,7 +236,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     bool [|ThisIsVisible|] { get; }
@@ -246,7 +246,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                 {
                     public bool ThisIsVisible { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -259,7 +259,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     bool? [|ThisIsVisible|] { get; }
@@ -269,7 +269,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                 {
                     public bool? ThisIsVisible { get; set; }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -282,7 +282,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public int Some()
@@ -290,7 +290,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -302,7 +302,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool IsVisible()
@@ -310,7 +310,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -322,7 +322,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool [|ThisIsVisible|]()
@@ -330,7 +330,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -343,7 +343,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public struct C
                 {
                     public static bool operator ==(C left, C right)
@@ -356,7 +356,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -368,7 +368,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool? IsVisible()
@@ -376,7 +376,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -388,7 +388,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public bool? [|ThisIsVisible|]()
@@ -396,7 +396,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -409,7 +409,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract bool [|ThisIsVisible|]();
@@ -422,7 +422,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -435,7 +435,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract bool? [|ThisIsVisible|]();
@@ -448,7 +448,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -461,7 +461,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     bool [|ThisIsVisible|]();
@@ -474,7 +474,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -487,7 +487,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     bool? [|ThisIsVisible|]();
@@ -500,7 +500,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -513,14 +513,14 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public void M(int other)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -532,14 +532,14 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public void M(bool isVisible)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -551,14 +551,14 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public void M(bool [|thisIsVisible|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -571,14 +571,14 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public void M(bool? isVisible)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -590,14 +590,14 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public void M(bool? [|thisIsVisible|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -610,7 +610,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract void M(bool [|thisIsVisible|]);
@@ -622,7 +622,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -635,7 +635,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class B
                 {
                     public abstract void M(bool? [|thisIsVisible|]);
@@ -647,7 +647,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -660,7 +660,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(bool [|thisIsVisible|]);
@@ -672,7 +672,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -685,7 +685,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(bool? [|thisIsVisible|]);
@@ -697,7 +697,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -710,7 +710,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public class D
@@ -728,7 +728,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         private bool thisIsVisible6;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -745,7 +745,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected class D
@@ -763,7 +763,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         private bool thisIsVisible6;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -780,7 +780,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 internal class C
                 {
                     internal class D
@@ -798,7 +798,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         private bool thisIsVisible6;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -815,7 +815,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 internal class C
                 {
                     protected internal class D
@@ -833,7 +833,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         private bool thisIsVisible6;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -850,7 +850,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     private class D
@@ -868,7 +868,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         private bool thisIsVisible6;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -880,7 +880,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public class D
@@ -910,7 +910,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -927,7 +927,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected class D
@@ -957,7 +957,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -974,7 +974,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 internal class C
                 {
                     internal class D
@@ -1004,7 +1004,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1021,7 +1021,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 internal class C
                 {
                     protected internal class D
@@ -1051,7 +1051,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1068,7 +1068,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     private class D
@@ -1098,7 +1098,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

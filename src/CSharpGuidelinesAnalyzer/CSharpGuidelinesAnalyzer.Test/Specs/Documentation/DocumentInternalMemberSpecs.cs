@@ -16,7 +16,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     internal class C
@@ -26,7 +26,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,7 +39,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -57,7 +57,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -70,7 +70,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <missingClosingTag>
@@ -80,7 +80,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         public void M(int p) => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -93,7 +93,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     internal class [|C|]
@@ -103,7 +103,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -118,7 +118,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary />
@@ -130,7 +130,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -143,7 +143,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -156,7 +156,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -169,7 +169,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     internal struct [|C|]
@@ -179,7 +179,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -194,7 +194,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary />
@@ -206,7 +206,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -219,14 +219,14 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     internal enum [|E|]
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -240,7 +240,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary/>
@@ -249,7 +249,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         [|X|]
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -263,7 +263,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary />
@@ -273,7 +273,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         X
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -286,14 +286,14 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     internal interface [|I|]
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -307,7 +307,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary />
@@ -315,7 +315,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -328,12 +328,12 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     internal delegate int [|D|](string s);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -347,13 +347,13 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary />
                     internal delegate int D(string s);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -366,7 +366,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -392,7 +392,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private int M4(string p4) => throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -405,7 +405,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -413,7 +413,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         internal int [|F|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -427,7 +427,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary/>
@@ -436,7 +436,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         public int [|F|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -450,7 +450,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -459,7 +459,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         internal int F;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -472,7 +472,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -483,7 +483,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -496,7 +496,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -504,7 +504,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private protected int [|F|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -518,7 +518,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -527,7 +527,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private protected int F;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -540,7 +540,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -548,7 +548,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         internal string [|P|] { get; set; }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -562,7 +562,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary/>
@@ -571,7 +571,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         public string [|P|] { get; set; }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -585,7 +585,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -594,7 +594,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         internal string P { get; set; }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -607,7 +607,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -618,7 +618,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -631,7 +631,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -639,7 +639,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private protected string [|P|] { get; set; }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -653,7 +653,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -662,7 +662,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private protected string P { get; set; }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -675,7 +675,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -683,7 +683,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         internal event EventHandler [|E|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -697,7 +697,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary/>
@@ -706,7 +706,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         public event EventHandler [|E|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -720,7 +720,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -729,7 +729,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         internal event EventHandler E;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -742,7 +742,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -753,7 +753,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -766,7 +766,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -774,7 +774,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private protected event EventHandler [|E|];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -788,7 +788,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -797,7 +797,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         private protected event EventHandler E;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -810,7 +810,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -820,7 +820,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -834,7 +834,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     /// <summary/>
@@ -845,7 +845,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -859,7 +859,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -870,7 +870,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -883,7 +883,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -896,7 +896,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -909,7 +909,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -919,7 +919,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -933,7 +933,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -944,7 +944,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -957,7 +957,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -968,7 +968,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -982,19 +982,19 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
                     {
                         /// <summary />
-                        /// <param name=""i"" />
+                        /// <param name="i" />
                         internal void M(int i)
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1007,7 +1007,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -1020,7 +1020,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1033,7 +1033,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -1044,7 +1044,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1057,7 +1057,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -1068,7 +1068,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1081,18 +1081,18 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
                     {
-                        /// <inheritdoc cref=""some""/>
+                        /// <inheritdoc cref="some"/>
                         internal void M(int i)
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1105,7 +1105,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -1116,7 +1116,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1130,19 +1130,19 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
                     {
                         /// <summary />
-                        /// <param name=""i"" />
+                        /// <param name="i" />
                         private protected void M(int i)
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1155,7 +1155,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -1167,7 +1167,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1180,7 +1180,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
@@ -1194,7 +1194,7 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1207,20 +1207,20 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
                     {
                         /// <summary />
-                        /// <param name=""z"" />
-                        /// <param name=""i"" />
+                        /// <param name="z" />
+                        /// <param name="i" />
                         internal void [|M|](int i)
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1234,20 +1234,20 @@ public sealed class DocumentInternalMemberSpecs : CSharpGuidelinesAnalysisTestFi
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithDocumentationComments()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N.M
                 {
                     public class C
                     {
                         /// <summary />
-                        /// <param name=""z"" />
-                        /// <param name=""i"" />
+                        /// <param name="z" />
+                        /// <param name="i" />
                         private protected void [|M|](int i)
                         {
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

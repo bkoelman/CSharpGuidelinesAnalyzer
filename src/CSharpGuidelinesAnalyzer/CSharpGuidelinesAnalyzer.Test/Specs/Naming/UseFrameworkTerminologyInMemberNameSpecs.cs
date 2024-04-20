@@ -16,11 +16,11 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|AddItem|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,11 +33,11 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|Delete|]()
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,14 +50,14 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void [|AddItem|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -70,14 +70,14 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void [|Delete|]()
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -90,9 +90,7 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public int [|NumberOfItems|] { get; set; }
-            ")
+            .InDefaultClass("public int [|NumberOfItems|] { get; set; }")
             .Build();
 
         // Act and assert
@@ -105,9 +103,7 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public int [|NumberOfItems|];
-            ")
+            .InDefaultClass("public int [|NumberOfItems|];")
             .Build();
 
         // Act and assert
@@ -120,9 +116,7 @@ public sealed class UseFrameworkTerminologyInMemberNameSpecs : CSharpGuidelinesA
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                public const int [|NumberOfItems|] = 3;
-            ")
+            .InDefaultClass("public const int [|NumberOfItems|] = 3;")
             .Build();
 
         // Act and assert

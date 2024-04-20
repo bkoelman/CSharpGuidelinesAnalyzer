@@ -16,7 +16,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(delegate(int [|x|])
@@ -28,7 +28,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -41,7 +41,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(delegate(int [|x|], int [|y|])
@@ -53,7 +53,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,7 +67,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(delegate(int _)
@@ -79,7 +79,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -91,7 +91,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(delegate(int _, int __)
@@ -103,7 +103,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -115,7 +115,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N([|x|] => true);
@@ -124,7 +124,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -137,7 +137,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(([|x|], [|y|]) =>
@@ -149,7 +149,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, string, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -163,7 +163,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(_ => true);
@@ -172,7 +172,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -184,7 +184,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N((_, __) => true);
@@ -193,7 +193,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, string, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -205,7 +205,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(x => x > 5);
@@ -214,7 +214,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -226,7 +226,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(x =>
@@ -239,7 +239,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                 void N(Func<int, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -251,7 +251,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -267,7 +267,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -279,14 +279,14 @@ public sealed class UseUnderscoreForUnusedLambdaParameterSpecs : CSharpGuideline
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     object P { get; } = Create(nameof(P), x => x.Length > 0);
 
                     static object Create(string name, Func<string, bool> f) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

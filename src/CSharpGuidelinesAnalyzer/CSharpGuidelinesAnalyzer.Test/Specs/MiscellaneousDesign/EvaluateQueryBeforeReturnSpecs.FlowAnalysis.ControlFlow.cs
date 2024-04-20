@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 using Xunit;
 
@@ -15,7 +15,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source, bool condition)
@@ -24,7 +24,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] condition ? result : source;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,7 +39,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source, bool condition)
@@ -48,7 +48,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] condition ? source : result;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -63,7 +63,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source, bool condition)
@@ -71,7 +71,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] (condition ? (source.Where(x => true)) : (null));
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -86,7 +86,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable<int> M(IEnumerable<int> source, bool condition)
@@ -95,7 +95,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return condition ? result.ToArray() : source.ToArray();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -109,7 +109,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source)
@@ -118,7 +118,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] result?.Select(x => x);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -133,7 +133,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable<int> M(IList<int> source)
@@ -142,7 +142,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return result?.ToList();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -156,7 +156,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source)
@@ -165,7 +165,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] result ?? new List<int>();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -180,7 +180,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable<int> M(IList<int> source)
@@ -188,7 +188,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] source ?? new int[0].Select(x => x);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -203,7 +203,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable<int> M(List<int> source)
@@ -212,7 +212,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return result ?? new List<int>();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -227,7 +227,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<int> source)
@@ -238,7 +238,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         }.AsEnumerable();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -253,7 +253,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public IEnumerable M()
@@ -262,7 +262,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         [|return|] result;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -278,7 +278,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IEnumerable<int> source)
@@ -291,7 +291,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return result.S;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -306,7 +306,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<int> source)
@@ -323,7 +323,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         IEnumerator IEnumerable.GetEnumerator() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -338,7 +338,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<int> source)
@@ -355,7 +355,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         IEnumerator IEnumerable.GetEnumerator() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -370,7 +370,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<int> source)
@@ -390,7 +390,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         IEnumerator IEnumerable.GetEnumerator() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -405,7 +405,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<int> source)
@@ -416,7 +416,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         }.AsEnumerable();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -431,7 +431,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<IEnumerable<int>> source)
@@ -440,7 +440,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return array[0];
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -455,7 +455,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<IEnumerable<int>> source)
@@ -464,7 +464,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return f();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -479,7 +479,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M()
@@ -488,7 +488,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return result;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -503,7 +503,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M()
@@ -516,7 +516,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
 
                     dynamic GetValue() => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -531,7 +531,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M()
@@ -540,7 +540,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return result;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -555,16 +555,16 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M()
                     {
-                        IEnumerable result = """";
+                        IEnumerable result = "";
                         return result;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -579,7 +579,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
             .Using(typeof(IEnumerable).Namespace)
             .Using(typeof(IEnumerable<>).Namespace)
             .Using(typeof(Enumerable).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     IEnumerable M(IList<int> source)
@@ -588,7 +588,7 @@ public partial class EvaluateQueryBeforeReturnSpecs
                         return result;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

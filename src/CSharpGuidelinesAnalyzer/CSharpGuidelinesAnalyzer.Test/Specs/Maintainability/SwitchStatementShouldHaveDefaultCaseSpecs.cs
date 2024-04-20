@@ -16,7 +16,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool b)
                 {
                     switch (b)
@@ -25,7 +25,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -37,7 +37,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool b)
                 {
                     switch (b)
@@ -48,7 +48,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -60,7 +60,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool b)
                 {
                     [|switch|] (b)
@@ -69,7 +69,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -82,7 +82,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool? b)
                 {
                     switch (b)
@@ -91,7 +91,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -103,7 +103,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool? b)
                 {
                     switch (b)
@@ -115,7 +115,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -127,7 +127,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool? b)
                 {
                     [|switch|] (b)
@@ -137,7 +137,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -150,7 +150,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 [Flags]
                 public enum Status { Pending, Active, Completed }
 
@@ -162,7 +162,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -174,7 +174,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status s)
@@ -185,7 +185,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -197,7 +197,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status s)
@@ -211,7 +211,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -223,7 +223,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status s)
@@ -235,7 +235,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -248,7 +248,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status? s)
@@ -259,7 +259,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -271,7 +271,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status? s)
@@ -286,7 +286,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -298,7 +298,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status? s)
@@ -311,7 +311,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -324,7 +324,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(byte? b)
                 {
                     switch (b)
@@ -333,7 +333,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -345,7 +345,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(char c)
                 {
                     switch (c)
@@ -354,7 +354,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -366,7 +366,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i)
                 {
                     switch (i)
@@ -375,7 +375,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -387,16 +387,16 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string s)
                 {
                     switch (s)
                     {
-                        case ""X"":
+                        case "X":
                             throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -408,7 +408,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool b)
                 {
                     switch (b)
@@ -422,8 +422,8 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                         case !true:
                             throw new NotImplementedException();
                     }
-               }
-            ")
+                }
+                """)
             .Build();
 
         // Act and assert
@@ -436,7 +436,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .AllowingCompileErrors()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool b)
                 {
                     switch (b)
@@ -446,8 +446,8 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                         case true:
                             throw new NotImplementedException();
                     }
-               }
-            ")
+                }
+                """)
             .Build();
 
         // Act and assert
@@ -459,7 +459,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status s)
@@ -472,7 +472,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -484,7 +484,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum Status { Pending, Active, Completed }
 
                 void M(Status s)
@@ -497,7 +497,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseSpecs : CSharpGuidelines
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -16,11 +16,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class [|CustomerAndOrder|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,11 +33,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct [|customer_and_order|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,11 +50,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface [|CUSTOMER_AND_ORDER|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,11 +67,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum [|Match1And2Again3|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -84,11 +84,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum [|MATCH1AND2AGAIN3|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -101,9 +101,7 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void [|CustomerAndOrder|]();
-            ")
+            .InGlobalScope("delegate void [|CustomerAndOrder|]();")
             .Build();
 
         // Act and assert
@@ -116,11 +114,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class TheBigLandIsHere
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -132,11 +130,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct VisitAndyWithJohn
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -148,11 +146,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class And
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -164,11 +162,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class AndComputer
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -180,11 +178,11 @@ public sealed class TypeShouldHaveASinglePurposeSpecs : CSharpGuidelinesAnalysis
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class LogicalAnd
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

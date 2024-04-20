@@ -16,7 +16,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i, string s = null)
                 {
                 }
@@ -25,7 +25,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(3, [|s:|] string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -38,7 +38,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int i, string s = null, int j = 1)
                 {
                 }
@@ -47,7 +47,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(3, [|s:|] string.Empty, 6);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -60,7 +60,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void Outer()
                 {
                     void L(int i, object o = null)
@@ -72,7 +72,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                         L(3, [|o:|] null);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -85,7 +85,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool b = false)
                 {
                 }
@@ -94,7 +94,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(b: true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -106,7 +106,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(bool b = false)
@@ -118,7 +118,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                         L(b: true);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -130,7 +130,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool? b = null)
                 {
                 }
@@ -139,7 +139,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(b: true);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -151,7 +151,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(bool? b = null)
@@ -163,7 +163,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                         L(b: true);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -175,7 +175,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int a, string b = null, double c = 0.4, float d = 0.7f)
                 {
                 }
@@ -184,7 +184,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(1, [|d:|] 3.0f, [|b:|] string.Empty, [|c:|] 2.0);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -199,7 +199,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int a, string b = null, double c = 0.4, float d = 0.7f)
                 {
                 }
@@ -208,7 +208,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(1, [|c:|] 2.0, [|b:|] string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -222,7 +222,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int a, string b = null, double c = 0.4, float d = 0.7f)
                 {
                 }
@@ -231,7 +231,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(1, d: 3.0f, [|b:|] string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -244,7 +244,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int a, string b = null, double c = 0.4, float d = 0.7f)
                 {
                 }
@@ -253,7 +253,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(1, string.Empty, [|c:|] 2.0);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -266,7 +266,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int a, string b = null, double c = 0.4, float d = 0.7f)
                 {
                 }
@@ -275,7 +275,7 @@ public sealed class AvoidUsingNamedArgumentSpecs : CSharpGuidelinesAnalysisTestF
                 {
                     M(1, d: 3.0f, c: 2.0);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -18,7 +18,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace Scope
@@ -31,7 +31,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -44,7 +44,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace [|WrongScope|]
@@ -57,7 +57,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -73,14 +73,14 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace [|Scope2|]
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -94,14 +94,14 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope2.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace [|Scope|]
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -115,7 +115,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace Scope
@@ -135,7 +135,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -148,7 +148,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace Scope
@@ -170,7 +170,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
 
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -185,7 +185,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope2")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace [|Scope|]
@@ -195,7 +195,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -210,7 +210,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     namespace [|Scope2|]
@@ -220,7 +220,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -235,11 +235,11 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class [|C|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -253,11 +253,11 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Core")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class [|C|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -271,14 +271,14 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Core")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Some
                 {
                     public class C
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -291,11 +291,11 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Company.Core")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class [|C|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -309,7 +309,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Company.Core")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace Company
                 {
                     class Top
@@ -323,7 +323,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -336,7 +336,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Company.ProductName")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace JetBrains
                 {
                     namespace Annotations
@@ -346,7 +346,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -359,7 +359,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Company.ProductName")
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace [|WrongRoot|]
                 {
                     namespace [|JetBrains|]
@@ -372,7 +372,7 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -390,9 +390,9 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
             .WithOutputKind(OutputKind.ConsoleApplication)
-            .InGlobalScope(@"
-                System.Console.WriteLine("""");
-            ")
+            .InGlobalScope("""
+                System.Console.WriteLine("");
+                """)
             .Build();
 
         // Act and assert
@@ -406,15 +406,15 @@ public sealed class NamespaceShouldMatchAssemblyNameSpecs : CSharpGuidelinesAnal
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .InAssemblyNamed("Some.Scope.Example")
             .WithOutputKind(OutputKind.ConsoleApplication)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class [|Program|]
                 {
                     static void Main()
                     {
-                        System.Console.WriteLine("""");
+                        System.Console.WriteLine("");
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

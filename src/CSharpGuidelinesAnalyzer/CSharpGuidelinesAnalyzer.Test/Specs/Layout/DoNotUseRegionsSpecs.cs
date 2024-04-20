@@ -16,7 +16,7 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 // #region This region is ignored due to single-line comments
                 // #endregion
 
@@ -26,7 +26,7 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
                 public class Region
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -38,13 +38,13 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 [|#region First|]
                 #endregion
 
                 [|#region Second|]
                 #endregion
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -58,7 +58,7 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 [|#region Outer |]
 
                 namespace N
@@ -88,7 +88,7 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
                 }
 
                 #endregion
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -106,9 +106,7 @@ public sealed class DoNotUseRegionsSpecs : CSharpGuidelinesAnalysisTestFixture
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .AllowingCompileErrors()
-            .InGlobalScope(@"
-                [|#region Missing end-marker |]
-            ")
+            .InGlobalScope("[|#region Missing end-marker |]")
             .Build();
 
         // Act and assert

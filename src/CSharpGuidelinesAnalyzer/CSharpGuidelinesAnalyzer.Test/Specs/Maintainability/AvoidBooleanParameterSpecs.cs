@@ -16,11 +16,11 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public void M(bool [|b|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,11 +33,11 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public void M(bool? [|b|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,11 +50,11 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public void M(string s)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -66,7 +66,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public string Text;
@@ -89,7 +89,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         (string a, bool b) = s;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -101,14 +101,14 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public C(bool [|b|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -121,9 +121,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D(bool [|b|]);
-            ")
+            .InGlobalScope("public delegate void D(bool [|b|]);")
             .Build();
 
         // Act and assert
@@ -136,7 +134,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public bool B
                 {
                     get { throw new NotImplementedException(); }
@@ -145,7 +143,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         value = true;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -157,7 +155,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public bool? B
                 {
                     get { throw new NotImplementedException(); }
@@ -166,7 +164,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         value = true;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -178,13 +176,13 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[bool [|b|]]
                 {
                     get { throw new NotImplementedException(); }
                     set { throw new NotImplementedException(); }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -197,13 +195,13 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[bool? [|b|]]
                 {
                     get { throw new NotImplementedException(); }
                     set { throw new NotImplementedException(); }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -216,7 +214,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected virtual void M(bool [|b|])
@@ -230,7 +228,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -243,7 +241,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected virtual void M(bool? [|b|])
@@ -257,7 +255,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -270,7 +268,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected virtual void M(bool [|b|])
@@ -284,7 +282,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -297,7 +295,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected virtual void M(bool? [|b|])
@@ -311,7 +309,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -324,7 +322,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class C
                 {
                     public abstract int this[bool [|b|]]
@@ -341,7 +339,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -354,7 +352,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class C
                 {
                     public abstract int this[bool? [|b|]]
@@ -371,7 +369,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -384,7 +382,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public virtual int this[bool [|b|]]
@@ -402,7 +400,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -415,7 +413,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public virtual int this[bool? [|b|]]
@@ -433,7 +431,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -446,7 +444,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(bool [|b|]);
@@ -458,7 +456,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -471,7 +469,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(bool? [|b|]);
@@ -483,7 +481,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -496,7 +494,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(bool [|b|]);
@@ -508,7 +506,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -521,7 +519,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     void M(bool? [|b|]);
@@ -533,7 +531,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -546,7 +544,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     int this[bool [|b|]]
@@ -563,7 +561,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -576,7 +574,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     int this[bool? [|b|]]
@@ -593,7 +591,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -606,7 +604,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     int this[bool [|b|]]
@@ -623,7 +621,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -636,7 +634,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public interface I
                 {
                     int this[bool? [|b|]]
@@ -653,7 +651,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         set { throw new NotImplementedException(); }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -666,7 +664,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public class D
@@ -696,7 +694,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -713,7 +711,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected class D
@@ -743,7 +741,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -760,7 +758,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 internal class C
                 {
                     internal class D
@@ -790,7 +788,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -807,7 +805,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 internal class C
                 {
                     protected internal class D
@@ -837,7 +835,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -854,7 +852,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     private class D
@@ -884,7 +882,7 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -896,14 +894,14 @@ public sealed class AvoidBooleanParameterSpecs : CSharpGuidelinesAnalysisTestFix
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     protected virtual void Dispose(bool disposing)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -16,7 +16,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -26,7 +26,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         ValueChanged?.Invoke(this, args);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -38,14 +38,14 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
 
                     private protected virtual void OnValueChanged(EventArgs args) => ValueChanged?.Invoke(this, args);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -57,7 +57,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -67,7 +67,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         ValueChanged?.Invoke(this, args);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -80,7 +80,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -94,7 +94,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -107,7 +107,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public sealed class C
                 {
                     public event EventHandler ValueChanged;
@@ -117,7 +117,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         ValueChanged?.Invoke(this, args);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -129,7 +129,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public static event EventHandler ValueChanged;
@@ -139,7 +139,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         ValueChanged?.Invoke(null, args);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -151,7 +151,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -161,7 +161,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         ValueChanged(this, args);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -174,7 +174,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -184,7 +184,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         ValueChanged(this, args);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -197,7 +197,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -213,7 +213,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -226,7 +226,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -237,7 +237,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         action();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -250,7 +250,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public event EventHandler ValueChanged;
@@ -263,7 +263,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -276,7 +276,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     interface I
@@ -296,7 +296,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodSpecs : CSharpGuidelines
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

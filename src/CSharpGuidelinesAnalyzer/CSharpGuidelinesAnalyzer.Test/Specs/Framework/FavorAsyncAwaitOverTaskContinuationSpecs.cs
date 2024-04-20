@@ -17,7 +17,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     class C
@@ -28,7 +28,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -42,7 +42,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     class C
@@ -53,7 +53,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,7 +67,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     class C
@@ -81,7 +81,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         Task<string> GetStringTask() => throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -95,7 +95,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(Task).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 using static System.Threading.Tasks.Task;
 
                 namespace N
@@ -108,7 +108,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -122,7 +122,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .Using(typeof(NotImplementedException).Namespace)
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 namespace N
                 {
                     public class Task<T>
@@ -150,7 +150,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationSpecs : CSharpGuidelinesA
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -16,11 +16,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class [|Helpers|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,11 +33,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 static class [|StringUtility|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,11 +50,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct [|WebHelpers|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,11 +67,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 enum [|CommonState|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -84,11 +84,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class ShareDocument
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -100,11 +100,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 struct UncommonStory
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -116,11 +116,11 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface [|IUtilityObjects|]
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -133,9 +133,7 @@ public sealed class DoNotDeclareHelpingMethodSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                delegate void [|ServiceFacilitiesUtilityCallback|]();
-            ")
+            .InGlobalScope("delegate void [|ServiceFacilitiesUtilityCallback|]();")
             .Build();
 
         // Act and assert

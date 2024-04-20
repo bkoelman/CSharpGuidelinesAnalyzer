@@ -17,7 +17,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -27,7 +27,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (no invocations):
                     // var query = Enumerable.Empty<string>();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -42,7 +42,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .Using(typeof(List<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -52,7 +52,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = new List<string>().Select(item => item);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -66,7 +66,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -77,7 +77,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<string>().Where(item => item.Length > 2);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -91,7 +91,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -105,7 +105,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Where(item => item != null)
                     //     .Where(item => item.Length > 2);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -118,7 +118,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var result = Process([|(
@@ -135,7 +135,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                 }
 
                 object Process(object p) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,7 +149,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query = [|(
@@ -160,7 +160,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<string>().ToList();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -174,7 +174,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -194,7 +194,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     orderby item.Length
                     //     select item;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -208,7 +208,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -218,7 +218,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<object>().Cast<string>();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -232,7 +232,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -245,7 +245,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Cast<string>()
                     //     .Where(item => item.Length > 2);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -258,7 +258,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -268,7 +268,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<string>().GroupBy(item => item.Length);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -282,7 +282,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -295,7 +295,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Where(item => item != null)
                     //     .GroupBy(item => item.Length);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -308,7 +308,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -320,7 +320,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<string>().GroupBy(item => item.Length);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -334,7 +334,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -349,7 +349,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .GroupBy(item => item.Length)
                     //     .Where(grp => grp.Key > 0);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -362,7 +362,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -376,9 +376,8 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //         item => item.Length,
                     //         other => other.Length,
                     //         (item, other) => item);
-
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -391,7 +390,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -407,7 +406,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //         other => other.Length,
                     //         (item, product) => product);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -420,7 +419,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -431,7 +430,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<string>().OrderByDescending(item => item);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -445,7 +444,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -459,7 +458,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Where(item => item.Length > 2)
                     //     .OrderByDescending(item => item);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -472,7 +471,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -485,7 +484,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .OrderBy(item => item.Length)
                     //     .ThenBy(item => item);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -498,7 +497,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -509,7 +508,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation, yet more complex):
                     // var query = Enumerable.Empty<string>().SelectMany(left => Enumerable.Empty<string>(), (left, right) => new { left, right });
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -521,7 +520,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -536,7 +535,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Where(pair => pair.left.Length > pair.right.Length)
                     //     .Select(pair => new { pair.left, pair.right });
                 }
-            ")
+                """)
             .Build();
 
         await VerifyGuidelineDiagnosticAsync(source);
@@ -548,7 +547,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -558,7 +557,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     // Method chain equivalent (single invocation):
                     // var query = Enumerable.Empty<string>().Select(item => new { item, item.Length });
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -572,7 +571,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -585,7 +584,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Where(item => item != null)
                     //     .Select(item => new { item, item.Length });
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -598,7 +597,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
@@ -611,7 +610,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
                     //     .Select(item => new { item, isLong = item.Length > 2 })
                     //     .Select(pair => pair.item);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -625,14 +624,14 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionSpecs : CSharpGuidelinesA
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Enumerable).Namespace)
             .AllowingCompileErrors()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     var query =
                         from item in Enumerable.Empty<string>()
                         select ;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

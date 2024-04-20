@@ -16,7 +16,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public string F;
@@ -26,7 +26,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                 {
                     public new string [|F|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -39,7 +39,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual string P
@@ -69,7 +69,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -81,7 +81,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual string P
@@ -111,7 +111,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -124,7 +124,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual void M(int i)
@@ -138,7 +138,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -150,7 +150,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual void M(int i)
@@ -164,7 +164,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -177,7 +177,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual event EventHandler Changed
@@ -207,7 +207,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -219,7 +219,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual event EventHandler Changed
@@ -249,7 +249,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -262,7 +262,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual event EventHandler Changed;
@@ -272,7 +272,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                 {
                     public override event EventHandler Changed;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -284,7 +284,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public virtual event EventHandler Changed;
@@ -294,8 +294,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                 {
                     public new event EventHandler [|Changed|];
                 }
-
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -308,7 +307,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public struct S
@@ -322,7 +321,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -335,7 +334,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public class S
@@ -349,7 +348,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -362,7 +361,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public int P
@@ -375,7 +374,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                 {
                     public new delegate void [|P|](string s);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -388,7 +387,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public delegate void P(string s);
@@ -401,7 +400,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                         get; set;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -414,7 +413,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public int F;
@@ -427,7 +426,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                         A, B
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -440,7 +439,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public enum F
@@ -453,7 +452,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                 {
                     public new int [|F|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -466,7 +465,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public event EventHandler Changed;
@@ -478,7 +477,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -491,7 +490,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     public interface Changed
@@ -503,7 +502,7 @@ public sealed class DoNotHideInheritedMemberSpecs : CSharpGuidelinesAnalysisTest
                 {
                     public new event EventHandler [|Changed|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

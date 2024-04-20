@@ -16,14 +16,14 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     for (int [|b001|] = 5; b001 < 10; b001++)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -36,11 +36,11 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int [|b001|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -53,14 +53,14 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int [|b001|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -73,12 +73,12 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     int [|lo|];
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -91,11 +91,11 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int [|lo|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -108,14 +108,14 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int [|lo|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -128,12 +128,12 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-                    string [|I1|] = ""X"";
+                    string [|I1|] = "X";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -146,11 +146,11 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                void M(string [|I1|] = ""X"")
+            .InDefaultClass("""
+                void M(string [|I1|] = "X")
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -163,14 +163,14 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-                    void L(string [|I1|] = ""X"")
+                    void L(string [|I1|] = "X")
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -183,12 +183,12 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     bool [|lOl|] = true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -201,11 +201,11 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool [|lOl|] = true)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -218,14 +218,14 @@ public sealed class AvoidMisleadingNameSpecs : CSharpGuidelinesAnalysisTestFixtu
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
-                    void L(string [|lOl|] = ""X"")
+                    void L(string [|lOl|] = "X")
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

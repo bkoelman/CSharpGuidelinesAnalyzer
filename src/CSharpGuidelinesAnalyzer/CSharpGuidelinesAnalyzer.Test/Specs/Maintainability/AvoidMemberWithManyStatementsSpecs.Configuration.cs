@@ -16,7 +16,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_statement_count", "16")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -28,7 +28,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -44,7 +44,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxStatementCount", "16")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -56,7 +56,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -74,7 +74,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     .Including(DiagnosticId, "MaxStatementCount", "12"))
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_statement_count", "16")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -86,7 +86,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -101,7 +101,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
         ParsedSourceCode source = new TypeSourceCodeBuilder()
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlText("*** BAD XML ***"))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -111,7 +111,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -129,7 +129,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                     .Including(DiagnosticId, "other-unused-setting", "some-value"))
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "OtherUnusedSetting", "SomeValue")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -139,7 +139,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -155,7 +155,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxStatementCount", null)))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -165,7 +165,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -181,7 +181,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_statement_count", null)))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -191,7 +191,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -207,7 +207,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxStatementCount", "bad")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -217,7 +217,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act
@@ -236,7 +236,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_statement_count", "bad")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -246,7 +246,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act
@@ -265,7 +265,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForXmlSettings(new XmlSettingsBuilder()
                     .Including(DiagnosticId, "MaxStatementCount", "-1")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -275,7 +275,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act
@@ -294,7 +294,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
             .WithOptions(new AnalyzerOptionsBuilder()
                 .ForEditorConfig(new EditorConfigSettingsBuilder()
                     .Including(DiagnosticId, "max_statement_count", "-1")))
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int [|M|](string s)
@@ -304,7 +304,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act

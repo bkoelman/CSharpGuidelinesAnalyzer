@@ -18,11 +18,11 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int p)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -34,11 +34,11 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(ref int [|p|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -51,12 +51,12 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(out int [|p|])
                 {
                     p = 1;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -69,11 +69,11 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(in int p)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -85,7 +85,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public string Text;
@@ -108,7 +108,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                         (string a, bool b) = s;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -120,7 +120,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 ref struct S
                 {
                 }
@@ -129,7 +129,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                 {
                     void M(ref S s) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -141,14 +141,14 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     C(TimeSpan p)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -160,14 +160,14 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     C(ref bool [|p|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -180,7 +180,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     C(out string [|p|])
@@ -188,7 +188,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                         p = default;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -201,14 +201,14 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int p)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -220,14 +220,14 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(ref int [|p|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -240,7 +240,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(out int [|p|])
@@ -248,7 +248,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                         p = 1;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -261,9 +261,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D(DateTime p);
-            ")
+            .InGlobalScope("public delegate void D(DateTime p);")
             .Build();
 
         // Act and assert
@@ -275,9 +273,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D(ref object [|p|]);
-            ")
+            .InGlobalScope("public delegate void D(ref object [|p|]);")
             .Build();
 
         // Act and assert
@@ -290,9 +286,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D(out string [|p|]);
-            ")
+            .InGlobalScope("public delegate void D(out string [|p|]);")
             .Build();
 
         // Act and assert
@@ -305,7 +299,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     protected virtual void M(ref string [|p|])
@@ -319,7 +313,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -332,7 +326,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     protected virtual void M(ref string [|p|])
@@ -346,7 +340,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -359,7 +353,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M(ref bool [|p|]);
@@ -371,7 +365,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -384,7 +378,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
                     void M(ref bool [|p|]);
@@ -396,7 +390,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -409,14 +403,14 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int x, int y, int z)
                 {
                     Target(x, in y, ref z, out int _);
                 }
 
                 void Target(int a, in int b, ref int [|c|], out int [|d|]) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -432,7 +426,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(CultureInfo).Namespace)
             .Using(typeof(IPAddress).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     bool result1 = int.TryParse(string.Empty, out _);
@@ -442,7 +436,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
 
                     bool result3 = IPAddress.TryParse(string.Empty, out var ipAddress);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -454,7 +448,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     bool result = Fraction.TryParse(string.Empty, out var value);
@@ -464,7 +458,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                 {
                     public static bool TryParse(string text, out Fraction value) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -476,7 +470,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     bool result = Fraction.TryConvert(string.Empty, out var value);
@@ -486,7 +480,7 @@ public sealed class DoNotDeclareRefOrOutParameterSpecs : CSharpGuidelinesAnalysi
                 {
                     public static bool TryConvert(string text, out Fraction value) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

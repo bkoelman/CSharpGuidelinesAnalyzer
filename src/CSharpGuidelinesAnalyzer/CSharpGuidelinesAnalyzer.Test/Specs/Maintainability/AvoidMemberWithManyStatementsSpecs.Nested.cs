@@ -12,7 +12,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -27,7 +27,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ; ;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -40,7 +40,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -55,7 +55,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         ;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,7 +67,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -82,7 +82,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -95,7 +95,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -109,7 +109,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -121,7 +121,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -136,7 +136,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,7 +149,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -163,7 +163,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -175,7 +175,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void [|M|]()
@@ -190,7 +190,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -203,7 +203,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     void M()
@@ -217,7 +217,7 @@ public partial class AvoidMemberWithManyStatementsSpecs
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

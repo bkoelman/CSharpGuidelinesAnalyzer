@@ -16,7 +16,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     dynamic field = GetDynamic();
@@ -44,7 +44,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                     static dynamic GetDynamic() => throw null;
                     static void SetDynamic(dynamic d) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -56,7 +56,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected B(dynamic d)
@@ -92,7 +92,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                     static object GetObject() => throw null;
                     static void SetDynamic(dynamic d) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -104,7 +104,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected B(dynamic d)
@@ -137,7 +137,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
 
                     static void SetDynamic(dynamic d) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -149,7 +149,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected B(dynamic d)
@@ -159,7 +159,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
 
                 class C : B
                 {
-                    dynamic field = [|""A""|];
+                    dynamic field = [|"A"|];
 
                     dynamic Property
                     {
@@ -183,7 +183,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
 
                     static void SetDynamic(dynamic d) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -202,10 +202,10 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
-                    dynamic field = (dynamic)""A"";
+                    dynamic field = (dynamic)"A";
 
                     dynamic Property
                     {
@@ -230,7 +230,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
 
                     static void SetDynamic(dynamic d) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -242,7 +242,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected B(dynamic d)
@@ -286,7 +286,7 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
                     static byte GetByte() => throw null;
                     static void SetDynamic(dynamic d) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -307,13 +307,13 @@ public sealed class DoNotImplicitlyConvertToDynamicSpecs : CSharpGuidelinesAnaly
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(Activator).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(ref dynamic p)
                 {
                     dynamic instance1 = Activator.CreateInstance(new int[0].GetType());
                     dynamic instance2 = Activator.CreateInstance(null, string.Empty, string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

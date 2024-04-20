@@ -16,11 +16,11 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int first, string second, double third)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -32,11 +32,11 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void [|M|](int first, string second, double third, object fourth)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -49,11 +49,11 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M((int a, int b) [|p|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -66,11 +66,11 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(Tuple<int, int> [|p|])
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -83,11 +83,11 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M((int a, int b)[] p)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -100,11 +100,11 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
             .Using(typeof(IList<>).Namespace)
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(IList<(int a, int b)> p)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -116,12 +116,12 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 (int, string) M()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -133,12 +133,12 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 (int, string, bool) [|M|]()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -151,12 +151,12 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 Tuple<int, string> M()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -168,12 +168,12 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 Tuple<int, string, bool> [|M|]()
                 {
                     throw new NotImplementedException();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -186,9 +186,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
-                extern (int, string, object) M(int first, string second, double third, object fourth);
-            ")
+            .InDefaultClass("extern (int, string, object) M(int first, string second, double third, object fourth);")
             .Build();
 
         // Act and assert
@@ -200,7 +198,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected virtual extern (int, string, object) M(int first, string second, double third, object fourth);
@@ -210,7 +208,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
                 {
                     protected override (int, string, object) M(int first, string second, double third, object fourth) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -222,7 +220,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class B
                 {
                     protected virtual extern (int, string, object) M(int first, string second, double third, object fourth);
@@ -232,7 +230,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
                 {
                     protected new (int, string, object) M(int first, string second, double third, object fourth) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -244,19 +242,19 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
-#pragma warning disable AV1561
+                #pragma warning disable AV1561
                     (int, string, object) M(int first, string second, double third, object fourth);
-#pragma warning restore AV1561
+                #pragma warning restore AV1561
                 }
 
                 class C : I
                 {
                     public (int, string, object) M(int first, string second, double third, object fourth) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -268,19 +266,19 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 interface I
                 {
-#pragma warning disable AV1561
+                #pragma warning disable AV1561
                     (int, string, object) M(int first, string second, double third, object fourth);
-#pragma warning restore AV1561
+                #pragma warning restore AV1561
                 }
 
                 class C : I
                 {
                     (int, string, object) I.M(int first, string second, double third, object fourth) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -292,14 +290,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C(int first, string second, double third)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -311,14 +309,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public [|C|](int first, string second, double third, object fourth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -331,14 +329,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C((int a, int b) [|p|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -351,14 +349,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C(Tuple<int, int> [|p|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -371,12 +369,12 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public string this[int first, string second, double third]
                 {
                     get { throw new NotImplementedException(); }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -388,12 +386,12 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public string [|this|][int first, string second, double third, object fourth]
                 {
                     get { throw new NotImplementedException(); }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -406,13 +404,13 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public string this[(int a, int b) [|p|]]
                 {
                     get { throw new NotImplementedException(); }
                     set { throw new NotImplementedException(); }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -425,13 +423,13 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public string this[Tuple<int, int> [|p|]]
                 {
                     get { throw new NotImplementedException(); }
                     set { throw new NotImplementedException(); }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -444,9 +442,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D(int first, string second, double third);
-            ")
+            .InGlobalScope("public delegate void D(int first, string second, double third);")
             .Build();
 
         // Act and assert
@@ -458,9 +454,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void [|D|](int first, string second, double third, object fourth);
-            ")
+            .InGlobalScope("public delegate void [|D|](int first, string second, double third, object fourth);")
             .Build();
 
         // Act and assert
@@ -473,9 +467,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D((int a, int b) [|p|]);
-            ")
+            .InGlobalScope("public delegate void D((int a, int b) [|p|]);")
             .Build();
 
         // Act and assert
@@ -488,9 +480,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate void D(Tuple<int, int> [|p|]);
-            ")
+            .InGlobalScope("public delegate void D(Tuple<int, int> [|p|]);")
             .Build();
 
         // Act and assert
@@ -503,9 +493,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate (int, bool) D();
-            ")
+            .InGlobalScope("public delegate (int, bool) D();")
             .Build();
 
         // Act and assert
@@ -517,9 +505,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate (int, string, int) [|D|]();
-            ")
+            .InGlobalScope("public delegate (int, string, int) [|D|]();")
             .Build();
 
         // Act and assert
@@ -532,9 +518,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate Tuple<int, bool> D();
-            ")
+            .InGlobalScope("public delegate Tuple<int, bool> D();")
             .Build();
 
         // Act and assert
@@ -546,9 +530,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
-                public delegate Tuple<int, string, int> [|D|]();
-            ")
+            .InGlobalScope("public delegate Tuple<int, string, int> [|D|]();")
             .Build();
 
         // Act and assert
@@ -561,14 +543,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(int first, string second, double third)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -580,14 +562,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void [|L|](int first, string second, double third, object fourth)
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -600,14 +582,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L((int a, int b) [|p|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -620,14 +602,14 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(Tuple<int, int> [|p|])
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -640,7 +622,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     (int, string) L()
@@ -648,7 +630,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -660,7 +642,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     (int, string, double) [|L|]()
@@ -668,7 +650,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -681,7 +663,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Tuple<int, string> L()
@@ -689,7 +671,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -701,7 +683,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     Tuple<int, string, double> [|L|]()
@@ -709,7 +691,7 @@ public sealed partial class AvoidSignatureWithManyParametersSpecs : CSharpGuidel
                         throw new NotImplementedException();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

@@ -16,12 +16,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public abstract class C
                 {
                     public abstract void M(string p);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -33,12 +33,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 partial class C
                 {
                     partial void M(string p);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -50,12 +50,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool p)
                 {
                     var x = p.ToString(null);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -67,12 +67,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(bool [|p|])
                 {
                     p = true;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -85,12 +85,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int p)
                 {
                     var x = p.GetHashCode();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -102,12 +102,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int [|p|])
                 {
                     p += 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -120,12 +120,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(ushort p)
                 {
                     var x = p.GetHashCode();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -137,12 +137,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(ushort [|p|])
                 {
                     p += 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -155,12 +155,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(decimal p)
                 {
                     var x = p.ToString(null, null);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -172,12 +172,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(decimal [|p|])
                 {
                     p += 5m;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -190,12 +190,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(double p)
                 {
                     var x = p.ToString(null, null);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -207,12 +207,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(double [|p|])
                 {
                     p += 5.0;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -225,12 +225,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(DateTime p)
                 {
                     var x = p.Year;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -242,12 +242,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(DateTime [|p|])
                 {
                     p = DateTime.UtcNow;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -260,12 +260,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? p)
                 {
                     var x = p.Value.ToString(null, null);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -277,12 +277,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(int? [|p|])
                 {
                     p += 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -295,7 +295,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum E
                 {
                     A, B
@@ -305,7 +305,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     var x = p.HasFlag(E.A);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -317,7 +317,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public enum E
                 {
                     A, B
@@ -327,7 +327,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p = E.B;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -340,7 +340,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public int Value;
@@ -350,7 +350,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     var x = p.Value;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -362,7 +362,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public void M()
@@ -377,7 +377,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         s.M();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -389,7 +389,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                 }
@@ -398,7 +398,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p = new S();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -411,7 +411,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public static S operator +(S p, int i)
@@ -424,7 +424,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p += 5;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -437,7 +437,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public static S operator ++(S p)
@@ -450,7 +450,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     ++p;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -463,7 +463,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public static S operator ++(S p)
@@ -476,7 +476,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p++;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -489,7 +489,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public static S operator --(S p)
@@ -502,7 +502,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     --p;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -515,7 +515,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                     public static S operator --(S p)
@@ -528,7 +528,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p--;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -541,7 +541,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public void Deconstruct(out int i, out S s) => throw null;
@@ -556,8 +556,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         (i, s) = c;
                     }
                 }
-
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -570,7 +569,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                 }
@@ -581,7 +580,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 }
 
                 void N(ref S s) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -594,7 +593,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                 }
@@ -605,7 +604,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 }
 
                 void N(out S s) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -618,7 +617,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                 }
@@ -629,7 +628,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 }
 
                 void N(in S s) => throw null;
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -641,7 +640,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                 }
@@ -650,7 +649,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p = new S();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -662,7 +661,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public struct S
                 {
                 }
@@ -671,7 +670,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p = new S();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -683,7 +682,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 struct S
                 {
                     public void M() => throw null;
@@ -693,7 +692,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 {
                     p.M();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -705,12 +704,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string p)
                 {
                     string x = p;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -722,12 +721,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string [|p|])
                 {
-                    p += ""X"";
+                    p += "X";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -740,12 +739,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(ref string p)
                 {
-                    p += ""X"";
+                    p += "X";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -757,12 +756,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(out string p)
                 {
-                    p = ""X"";
+                    p = "X";
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -774,12 +773,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(in string p)
                 {
                     p.ToString();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -791,13 +790,13 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string p) => N(p);
 
                 void N(string s)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -809,13 +808,13 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M(string [|p|]) => N(ref p);
 
                 void N(ref string s)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -828,7 +827,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(p =>
@@ -841,7 +840,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 void N(Func<string, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -853,12 +852,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N([|p|] =>
                     {
-                        p = ""A"";
+                        p = "A";
                         return true;
                     });
                 }
@@ -866,7 +865,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 void N(Func<string, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -879,7 +878,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(delegate(string p)
@@ -892,7 +891,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 void N(Func<string, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -904,12 +903,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     N(delegate(string [|p|])
                     {
-                        p = ""A"";
+                        p = "A";
                         return true;
                     });
                 }
@@ -917,7 +916,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 void N(Func<string, bool> f)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -930,7 +929,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C(string p)
@@ -938,7 +937,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         string s = p;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -950,15 +949,15 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C(string [|p|])
                     {
-                        p += ""X"";
+                        p += "X";
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -971,7 +970,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C(string p) => N(p);
@@ -980,7 +979,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -992,7 +991,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     public C(string [|p|]) => N(ref p);
@@ -1001,7 +1000,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1014,7 +1013,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int Value;
@@ -1024,7 +1023,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         return p.Value;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1036,7 +1035,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int Value;
@@ -1047,7 +1046,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1060,14 +1059,14 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int Value;
 
                     public static implicit operator int(C p) => p.Value;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1079,7 +1078,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 class C
                 {
                     int Value;
@@ -1088,7 +1087,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
 
                     static int M(ref C p) => throw null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1101,7 +1100,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int Value
                 {
                     set
@@ -1109,7 +1108,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         var str = value.ToString();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1121,7 +1120,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int Value
                 {
                     [|set|]
@@ -1129,7 +1128,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         value += 3;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1142,12 +1141,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int Value
                 {
                     set => value.ToString();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1159,12 +1158,12 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int Value
                 {
                     [|set|] => Math.Min(value += 4, 1);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1177,7 +1176,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[string key]
                 {
                     get
@@ -1189,7 +1188,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         string copy = key;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1201,7 +1200,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[string [|key|]]
                 {
                     get
@@ -1214,7 +1213,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         key += new string('x', 10);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1227,7 +1226,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[string [|key1|], string [|key2|]]
                 {
                     get
@@ -1240,7 +1239,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         key2 += new string('x', 10);
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1254,13 +1253,13 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[string key]
                 {
                     get => int.Parse(key);
                     set => key.GetHashCode();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1272,13 +1271,13 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public int this[string [|key|]]
                 {
                     get => int.Parse(key = string.Empty);
                     set => int.Parse(key = string.Empty);
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1291,7 +1290,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public event EventHandler Started
                 {
                     add
@@ -1303,7 +1302,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         var x = value;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1315,7 +1314,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public event EventHandler Started
                 {
                     [|add|]
@@ -1329,7 +1328,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         throw null;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1343,13 +1342,13 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public event EventHandler Started
                 {
                     add => value.ToString();
                     remove => value.ToString();
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1361,13 +1360,13 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 public event EventHandler Started
                 {
                     [|add|] => value = null;
                     [|remove|] => value = null;
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1381,7 +1380,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(string p)
@@ -1389,7 +1388,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                         string x = p;
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1401,15 +1400,15 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(string [|p|])
                     {
-                        p += ""X"";
+                        p += "X";
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1422,7 +1421,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(string p) => N(p);
@@ -1431,7 +1430,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 void N(string s)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -1443,7 +1442,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
     {
         // Arrange
         ParsedSourceCode source = new MemberSourceCodeBuilder()
-            .InDefaultClass(@"
+            .InDefaultClass("""
                 void M()
                 {
                     void L(string [|p|]) => N(ref p);
@@ -1452,7 +1451,7 @@ public sealed class DoNotAssignToParameterSpecs : CSharpGuidelinesAnalysisTestFi
                 void N(ref string s)
                 {
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert

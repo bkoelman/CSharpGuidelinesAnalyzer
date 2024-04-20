@@ -16,7 +16,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class X
                 {
                     public event EventHandler ValueChanged;
@@ -32,7 +32,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                         });
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -44,7 +44,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class X
                 {
                     public event EventHandler ValueChanged;
@@ -60,7 +60,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                         };
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -72,7 +72,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class X
                 {
                     public event EventHandler ValueChanged;
@@ -86,7 +86,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                         x.ValueChanged += (s, e) => M();
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -98,7 +98,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class X
                 {
                     public event EventHandler ValueChanged;
@@ -116,7 +116,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -128,7 +128,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class Coordinate
                 {
                     public event EventHandler ValueChanged;
@@ -147,7 +147,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -159,7 +159,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public static class Coordinate
                 {
                     public static event EventHandler ValueChanged;
@@ -176,7 +176,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -188,7 +188,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class Coordinate
                 {
                     public event EventHandler ValueChanged;
@@ -207,7 +207,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -220,7 +220,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class Coordinate
                 {
                     public event EventHandler ValueChanged;
@@ -239,7 +239,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -251,7 +251,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public event EventHandler ValueChanged;
@@ -265,7 +265,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -277,7 +277,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public static event EventHandler ValueChanged;
@@ -291,7 +291,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -303,7 +303,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public event EventHandler ValueChanged;
@@ -317,7 +317,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                     {
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -330,7 +330,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public event EventHandler ValueChanged;
@@ -347,7 +347,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
@@ -359,7 +359,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"
+            .InGlobalScope("""
                 public class C
                 {
                     public event EventHandler ValueChanged;
@@ -376,7 +376,7 @@ public sealed class PrefixEventHandlersWithOnSpecs : CSharpGuidelinesAnalysisTes
                         }
                     }
                 }
-            ")
+                """)
             .Build();
 
         // Act and assert
