@@ -26,15 +26,15 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new DiagnosticDescriptor(DiagnosticId, Title, MissingTypeOrMemberMessageFormat,
+    private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new(DiagnosticId, Title, MissingTypeOrMemberMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor MissingParameterRule = new DiagnosticDescriptor(DiagnosticId, Title, MissingParameterMessageFormat,
+    private static readonly DiagnosticDescriptor MissingParameterRule = new(DiagnosticId, Title, MissingParameterMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ExtraParameterRule = new DiagnosticDescriptor(DiagnosticId, Title, ExtraParameterMessageFormat,
+    private static readonly DiagnosticDescriptor ExtraParameterRule = new(DiagnosticId, Title, ExtraParameterMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
@@ -42,7 +42,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
 
     [NotNull]
     [ItemNotNull]
-    private static readonly HashSet<string> EmptyHashSet = new HashSet<string>();
+    private static readonly HashSet<string> EmptyHashSet = new();
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);

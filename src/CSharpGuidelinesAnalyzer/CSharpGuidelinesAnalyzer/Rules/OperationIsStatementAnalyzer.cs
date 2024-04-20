@@ -22,7 +22,7 @@ public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Hidden, false, Description);
 
     [NotNull]

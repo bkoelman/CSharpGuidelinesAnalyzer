@@ -26,15 +26,15 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor InvokeRule = new DiagnosticDescriptor(DiagnosticId, Title, InvokeMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor InvokeRule = new(DiagnosticId, Title, InvokeMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor MakeVirtualRule = new DiagnosticDescriptor(DiagnosticId, Title, MakeVirtualMessageFormat,
+    private static readonly DiagnosticDescriptor MakeVirtualRule = new(DiagnosticId, Title, MakeVirtualMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor OrderRule = new DiagnosticDescriptor(DiagnosticId, Title, OrderMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor OrderRule = new(DiagnosticId, Title, OrderMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<MethodKind> RegularMethodKinds = new[]

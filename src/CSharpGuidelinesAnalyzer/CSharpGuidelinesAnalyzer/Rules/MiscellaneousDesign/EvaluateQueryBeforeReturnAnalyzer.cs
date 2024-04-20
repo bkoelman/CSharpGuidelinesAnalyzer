@@ -27,15 +27,15 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor OperationRule = new DiagnosticDescriptor(DiagnosticId, Title, OperationMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor OperationRule = new(DiagnosticId, Title, OperationMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor QueryRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor QueryRule = new(DiagnosticId, Title, QueryMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor QueryableRule = new DiagnosticDescriptor(DiagnosticId, Title, QueryableMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor QueryableRule = new(DiagnosticId, Title, QueryableMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [ItemNotNull]
@@ -577,16 +577,16 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     private abstract class AbstractEvaluatingOperationWalker : OperationWalker
     {
         [NotNull]
-        public EvaluationResult Result { get; } = new EvaluationResult();
+        public EvaluationResult Result { get; } = new();
     }
 
     private sealed class EvaluationResult
     {
         [NotNull]
-        public static readonly EvaluationResult Query = new EvaluationResult(EvaluationState.Deferred, QueryOperationName);
+        public static readonly EvaluationResult Query = new(EvaluationState.Deferred, QueryOperationName);
 
         [NotNull]
-        public static readonly EvaluationResult Unknown = new EvaluationResult(EvaluationState.Unknown, null);
+        public static readonly EvaluationResult Unknown = new(EvaluationState.Unknown, null);
 
         private EvaluationState evaluationState;
 

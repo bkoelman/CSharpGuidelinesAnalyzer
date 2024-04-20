@@ -28,15 +28,15 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor NamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title, NamespaceMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor NamespaceRule = new(DiagnosticId, Title, NamespaceMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TypeInNamespaceRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeInNamespaceMessageFormat,
+    private static readonly DiagnosticDescriptor TypeInNamespaceRule = new(DiagnosticId, Title, TypeInNamespaceMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor GlobalTypeRule = new DiagnosticDescriptor(DiagnosticId, Title, GlobalTypeMessageFormat,
+    private static readonly DiagnosticDescriptor GlobalTypeRule = new(DiagnosticId, Title, GlobalTypeMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
@@ -129,7 +129,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
 
         [NotNull]
         [ItemNotNull]
-        private readonly Stack<string> namespaceNames = new Stack<string>();
+        private readonly Stack<string> namespaceNames = new();
 
         private SymbolAnalysisContext context;
 

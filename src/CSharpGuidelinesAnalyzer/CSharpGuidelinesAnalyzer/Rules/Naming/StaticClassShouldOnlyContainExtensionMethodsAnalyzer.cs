@@ -21,7 +21,7 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

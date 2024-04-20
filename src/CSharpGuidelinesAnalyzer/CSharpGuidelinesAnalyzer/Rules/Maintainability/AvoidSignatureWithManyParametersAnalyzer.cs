@@ -28,15 +28,15 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ParameterCountRule = new DiagnosticDescriptor(DiagnosticId, Title, ParameterCountMessageFormat,
+    private static readonly DiagnosticDescriptor ParameterCountRule = new(DiagnosticId, Title, ParameterCountMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TupleParameterRule = new DiagnosticDescriptor(DiagnosticId, Title, TupleParameterMessageFormat,
+    private static readonly DiagnosticDescriptor TupleParameterRule = new(DiagnosticId, Title, TupleParameterMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TupleReturnRule = new DiagnosticDescriptor(DiagnosticId, Title, TupleReturnMessageFormat,
+    private static readonly DiagnosticDescriptor TupleReturnRule = new(DiagnosticId, Title, TupleReturnMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
@@ -59,10 +59,10 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         context.SkipInvalid(_ => AnalyzeLocalFunction(context, settingsReader));
 
     [NotNull]
-    private static readonly AnalyzerSettingKey MaxParameterCountKey = new AnalyzerSettingKey(DiagnosticId, "MaxParameterCount");
+    private static readonly AnalyzerSettingKey MaxParameterCountKey = new(DiagnosticId, "MaxParameterCount");
 
     [NotNull]
-    private static readonly AnalyzerSettingKey MaxConstructorParameterCountKey = new AnalyzerSettingKey(DiagnosticId, "MaxConstructorParameterCount");
+    private static readonly AnalyzerSettingKey MaxConstructorParameterCountKey = new(DiagnosticId, "MaxConstructorParameterCount");
 
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>

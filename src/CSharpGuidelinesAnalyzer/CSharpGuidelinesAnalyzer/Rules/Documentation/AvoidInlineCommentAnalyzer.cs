@@ -22,7 +22,7 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [ItemNotNull]

@@ -32,7 +32,7 @@ internal sealed class OperationEqualityComparer
     };
 
     [NotNull]
-    public static readonly OperationEqualityComparer Default = new OperationEqualityComparer();
+    public static readonly OperationEqualityComparer Default = new();
 
     public bool Equals([CanBeNull] IOperation left, [CanBeNull] IOperation right)
     {

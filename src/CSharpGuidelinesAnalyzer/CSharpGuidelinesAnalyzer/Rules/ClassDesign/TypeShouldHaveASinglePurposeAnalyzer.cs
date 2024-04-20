@@ -23,7 +23,7 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
@@ -40,7 +40,7 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
     };
 
     [NotNull]
-    private static readonly TypeIdentifierResolver IdentifierResolver = new TypeIdentifierResolver();
+    private static readonly TypeIdentifierResolver IdentifierResolver = new();
 
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

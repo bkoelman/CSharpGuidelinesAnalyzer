@@ -21,7 +21,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticA
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

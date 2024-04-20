@@ -22,7 +22,7 @@ internal static class SymbolExtensions
 
     [NotNull]
     [ItemNotNull]
-    private static readonly Lazy<IEqualityComparer<ISymbol>> SymbolComparerLazy = new Lazy<IEqualityComparer<ISymbol>>(() =>
+    private static readonly Lazy<IEqualityComparer<ISymbol>> SymbolComparerLazy = new(() =>
     {
         Type comparerType = typeof(ISymbol).GetTypeInfo().Assembly.GetType("Microsoft.CodeAnalysis.SymbolEqualityComparer");
         FieldInfo includeField = comparerType?.GetTypeInfo().GetDeclaredField("IncludeNullability");

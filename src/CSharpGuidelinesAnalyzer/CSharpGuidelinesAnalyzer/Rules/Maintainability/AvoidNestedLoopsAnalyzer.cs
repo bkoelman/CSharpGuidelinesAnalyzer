@@ -22,7 +22,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
@@ -39,7 +39,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLoopStatementAction = AnalyzeLoopStatement;
 
     [NotNull]
-    private static readonly LoopBodyLocator BodyLocator = new LoopBodyLocator();
+    private static readonly LoopBodyLocator BodyLocator = new();
 
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

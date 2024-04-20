@@ -35,11 +35,11 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Performance;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor AssignmentRule = new DiagnosticDescriptor(DiagnosticId, Title, AssignmentMessageFormat,
+    private static readonly DiagnosticDescriptor AssignmentRule = new(DiagnosticId, Title, AssignmentMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ArgumentRule = new DiagnosticDescriptor(DiagnosticId, Title, ArgumentMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor ArgumentRule = new(DiagnosticId, Title, ArgumentMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

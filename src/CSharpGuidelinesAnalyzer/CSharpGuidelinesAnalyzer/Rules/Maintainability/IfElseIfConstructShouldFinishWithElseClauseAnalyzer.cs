@@ -23,7 +23,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
@@ -81,7 +81,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
         private sealed class LocationComparer : IComparer<Location>
         {
             [NotNull]
-            public static readonly LocationComparer Default = new LocationComparer();
+            public static readonly LocationComparer Default = new();
 
             public int Compare(Location x, Location y)
             {

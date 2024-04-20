@@ -25,11 +25,11 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor SenderRule = new DiagnosticDescriptor(DiagnosticId, SenderTitle, SenderMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor SenderRule = new(DiagnosticId, SenderTitle, SenderMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ArgsRule = new DiagnosticDescriptor(DiagnosticId, ArgsTitle, ArgsMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor ArgsRule = new(DiagnosticId, ArgsTitle, ArgsMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

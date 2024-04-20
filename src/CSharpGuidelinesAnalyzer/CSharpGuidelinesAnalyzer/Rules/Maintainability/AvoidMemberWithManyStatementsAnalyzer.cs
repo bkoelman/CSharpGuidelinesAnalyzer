@@ -27,14 +27,14 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
     private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
 
     [NotNull]
-    private static readonly AnalyzerSettingKey MaxStatementCountKey = new AnalyzerSettingKey(DiagnosticId, "MaxStatementCount");
+    private static readonly AnalyzerSettingKey MaxStatementCountKey = new(DiagnosticId, "MaxStatementCount");
 
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);

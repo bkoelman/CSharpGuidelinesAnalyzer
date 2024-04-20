@@ -24,7 +24,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

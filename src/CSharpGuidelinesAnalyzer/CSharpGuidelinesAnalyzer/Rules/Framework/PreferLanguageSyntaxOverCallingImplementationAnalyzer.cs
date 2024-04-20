@@ -33,11 +33,11 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor NullableHasValueRule = new DiagnosticDescriptor(DiagnosticId, Title, NullableHasValueMessageFormat,
+    private static readonly DiagnosticDescriptor NullableHasValueRule = new(DiagnosticId, Title, NullableHasValueMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor NullableComparisonRule = new DiagnosticDescriptor(DiagnosticId, Title, NullableComparisonMessageFormat,
+    private static readonly DiagnosticDescriptor NullableComparisonRule = new(DiagnosticId, Title, NullableComparisonMessageFormat,
         Category.DisplayName, DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

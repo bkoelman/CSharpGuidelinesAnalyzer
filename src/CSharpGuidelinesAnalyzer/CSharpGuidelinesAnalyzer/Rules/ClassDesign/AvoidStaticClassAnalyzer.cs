@@ -24,11 +24,11 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor TypeRule = new DiagnosticDescriptor(DiagnosticId, Title, TypeMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor TypeRule = new(DiagnosticId, Title, TypeMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor MemberRule = new DiagnosticDescriptor(DiagnosticId, Title, MemberMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor MemberRule = new(DiagnosticId, Title, MemberMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]

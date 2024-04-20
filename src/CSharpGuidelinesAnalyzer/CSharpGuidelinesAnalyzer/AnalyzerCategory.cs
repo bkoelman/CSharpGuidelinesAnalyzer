@@ -8,31 +8,31 @@ internal sealed class AnalyzerCategory
     public const string RulePrefix = "AV";
 
     [NotNull]
-    public static readonly AnalyzerCategory ClassDesign = new AnalyzerCategory("Class Design");
+    public static readonly AnalyzerCategory ClassDesign = new("Class Design");
 
     [NotNull]
-    public static readonly AnalyzerCategory MemberDesign = new AnalyzerCategory("Member Design");
+    public static readonly AnalyzerCategory MemberDesign = new("Member Design");
 
     [NotNull]
-    public static readonly AnalyzerCategory MiscellaneousDesign = new AnalyzerCategory("Miscellaneous Design");
+    public static readonly AnalyzerCategory MiscellaneousDesign = new("Miscellaneous Design");
 
     [NotNull]
-    public static readonly AnalyzerCategory Maintainability = new AnalyzerCategory("Maintainability");
+    public static readonly AnalyzerCategory Maintainability = new("Maintainability");
 
     [NotNull]
-    public static readonly AnalyzerCategory Naming = new AnalyzerCategory("Naming");
+    public static readonly AnalyzerCategory Naming = new("Naming");
 
     [NotNull]
-    public static readonly AnalyzerCategory Performance = new AnalyzerCategory("Performance");
+    public static readonly AnalyzerCategory Performance = new("Performance");
 
     [NotNull]
-    public static readonly AnalyzerCategory Framework = new AnalyzerCategory("Framework");
+    public static readonly AnalyzerCategory Framework = new("Framework");
 
     [NotNull]
-    public static readonly AnalyzerCategory Documentation = new AnalyzerCategory("Documentation");
+    public static readonly AnalyzerCategory Documentation = new("Documentation");
 
     [NotNull]
-    public static readonly AnalyzerCategory Layout = new AnalyzerCategory("Layout");
+    public static readonly AnalyzerCategory Layout = new("Layout");
 
     [NotNull]
     public string DisplayName { get; }

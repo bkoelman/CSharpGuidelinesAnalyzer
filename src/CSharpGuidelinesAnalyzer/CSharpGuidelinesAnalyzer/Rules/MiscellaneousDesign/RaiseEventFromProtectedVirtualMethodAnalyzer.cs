@@ -24,15 +24,15 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
     [NotNull]
-    private static readonly DiagnosticDescriptor KindRule = new DiagnosticDescriptor(DiagnosticId, Title, KindMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor KindRule = new(DiagnosticId, Title, KindMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor ModifiersRule = new DiagnosticDescriptor(DiagnosticId, Title, ModifiersMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor ModifiersRule = new(DiagnosticId, Title, ModifiersMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly DiagnosticDescriptor NameRule = new DiagnosticDescriptor(DiagnosticId, Title, NameMessageFormat, Category.DisplayName,
+    private static readonly DiagnosticDescriptor NameRule = new(DiagnosticId, Title, NameMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<MethodKind> RegularMethodKinds = new[]
