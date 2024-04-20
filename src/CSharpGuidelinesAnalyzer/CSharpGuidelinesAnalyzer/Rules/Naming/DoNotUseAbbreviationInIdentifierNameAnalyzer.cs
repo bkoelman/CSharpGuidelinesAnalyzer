@@ -33,7 +33,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
     [ItemNotNull]
     private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Btn", "Ctrl", "Frm", "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Ex",
         "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt",
-        "Len", "Idx", "Str");
+        "Len", "Idx", "Str", "Doc");
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
