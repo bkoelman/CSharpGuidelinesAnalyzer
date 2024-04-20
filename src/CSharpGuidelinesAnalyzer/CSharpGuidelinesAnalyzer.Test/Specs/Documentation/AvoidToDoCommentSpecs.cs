@@ -180,7 +180,7 @@ public sealed class AvoidToDoCommentSpecs : CSharpGuidelinesAnalysisTestFixture
     {
         // Arrange
         ParsedSourceCode source = new TypeSourceCodeBuilder()
-            .InGlobalScope(@"// [|TODO test                        |]")
+            .InGlobalScope("// [|TODO test                        |]")
             .Build();
 
         // Act and assert

@@ -83,7 +83,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MemberDesign
                 return;
             }
 
-            if (returnOperation.ReturnedValue.ConstantValue.HasValue && returnOperation.ReturnedValue.ConstantValue.Value == null)
+            if (returnOperation.ReturnedValue.ConstantValue is { HasValue: true, Value: null })
             {
                 ReportReturnStatement(returnOperation, context);
             }

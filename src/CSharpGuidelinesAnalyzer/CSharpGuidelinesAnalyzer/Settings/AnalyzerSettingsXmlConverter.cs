@@ -13,7 +13,7 @@ namespace CSharpGuidelinesAnalyzer.Settings
 
             while (reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "setting")
+                if (reader is { NodeType: XmlNodeType.Element, Name: "setting" })
                 {
                     ParseSettingElement(reader, settings);
                 }

@@ -494,9 +494,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
                 public void VisitBlockBody()
                 {
-                    if (owner.variableEvaluationCache.ContainsKey(currentLocal))
+                    if (owner.variableEvaluationCache.TryGetValue(currentLocal, out EvaluationResult resultFromCache))
                     {
-                        EvaluationResult resultFromCache = owner.variableEvaluationCache[currentLocal];
                         Result.CopyFrom(resultFromCache);
                     }
                     else
@@ -655,12 +654,12 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
                 Guard.NotNull(first, nameof(first));
                 Guard.NotNull(second, nameof(second));
 
-                if (first.IsConclusive && first.IsDeferred)
+                if (first is { IsConclusive: true, IsDeferred: true })
                 {
                     return first;
                 }
 
-                if (second.IsConclusive && second.IsDeferred)
+                if (second is { IsConclusive: true, IsDeferred: true })
                 {
                     return second;
                 }

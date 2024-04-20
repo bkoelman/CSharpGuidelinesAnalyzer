@@ -181,7 +181,8 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
         private static bool CanBeMadeVirtual([NotNull] IMethodSymbol method)
         {
             return !method.IsStatic && method.DeclaredAccessibility != Accessibility.Private && !method.ContainingType.IsSealed &&
-                method.ContainingType.TypeKind != TypeKind.Struct && !method.IsVirtual && !method.IsOverride && !method.ExplicitInterfaceImplementations.Any();
+                method.ContainingType.TypeKind != TypeKind.Struct && method is { IsVirtual: false, IsOverride: false } &&
+                !method.ExplicitInterfaceImplementations.Any();
         }
 
         private static void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
@@ -215,7 +216,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
         {
-            return !parameter.HasExplicitDefaultValue && !parameter.IsParams;
+            return parameter is { HasExplicitDefaultValue: false, IsParams: false };
         }
 
         private static bool AreDefaultParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
@@ -229,7 +230,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool IsParameterWithDefaultValue([NotNull] IParameterSymbol parameter)
         {
-            return parameter.HasExplicitDefaultValue && !parameter.IsParams;
+            return parameter is { HasExplicitDefaultValue: true, IsParams: false };
         }
 
         private static bool AreParametersDeclaredInSameOrder([NotNull] [ItemNotNull] IList<IParameterSymbol> parameters,

@@ -187,7 +187,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.MiscellaneousDesign
 
         private static bool IsNullConstant([NotNull] IOperation operation)
         {
-            return operation.ConstantValue.HasValue && operation.ConstantValue.Value == null;
+            return operation.ConstantValue is { HasValue: true, Value: null };
         }
     }
 }

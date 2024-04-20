@@ -148,7 +148,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
 
         private static bool HasConstantValue([NotNull] IOperation operation)
         {
-            return operation.ConstantValue.HasValue && operation.ConstantValue.Value == null;
+            return operation.ConstantValue is { HasValue: true, Value: null };
         }
 
         private static bool IsOperationInBodyOfParent([NotNull] IOperation operation, [NotNull] IOperation parentOperationBody)

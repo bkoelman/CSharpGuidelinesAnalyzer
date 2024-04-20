@@ -203,7 +203,7 @@ namespace CSharpGuidelinesAnalyzer
 
         private static bool IsConstantNullOrDefault([NotNull] IOperation operation)
         {
-            if (operation.ConstantValue.HasValue && operation.ConstantValue.Value == null)
+            if (operation.ConstantValue is { HasValue: true, Value: null })
             {
                 return true;
             }

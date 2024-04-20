@@ -14,14 +14,18 @@ internal static class DocumentFactory
         ParseOptions parseOptions = GetParseOptions(context.DocumentationMode);
         CompilationOptions compilationOptions = GetCompilationOptions(context);
 
-        Document document = new AdhocWorkspace()
+        // @formatter:wrap_chained_method_calls chop_always
+        // @formatter:wrap_before_first_method_call true
+
+        return new AdhocWorkspace()
             .AddProject(context.AssemblyName, LanguageNames.CSharp)
             .WithParseOptions(parseOptions)
             .WithCompilationOptions(compilationOptions)
             .AddMetadataReferences(context.References)
             .AddDocument(context.FileName, code);
 
-        return document;
+        // @formatter:wrap_before_first_method_call restore
+        // @formatter:wrap_chained_method_calls restore
     }
 
     private static ParseOptions GetParseOptions(DocumentationMode documentationMode)

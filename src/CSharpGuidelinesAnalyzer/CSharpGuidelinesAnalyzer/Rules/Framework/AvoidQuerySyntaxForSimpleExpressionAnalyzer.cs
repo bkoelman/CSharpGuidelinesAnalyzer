@@ -89,7 +89,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
 
         private static bool IsEnumerableExtensionMethod([NotNull] IMethodSymbol method)
         {
-            return method.IsExtensionMethod && method.IsGenericMethod && method.Name.StartsWith("To", StringComparison.Ordinal) &&
+            return method is { IsExtensionMethod: true, IsGenericMethod: true } && method.Name.StartsWith("To", StringComparison.Ordinal) &&
                 method.ReturnType.IsOrImplementsIEnumerable();
         }
 

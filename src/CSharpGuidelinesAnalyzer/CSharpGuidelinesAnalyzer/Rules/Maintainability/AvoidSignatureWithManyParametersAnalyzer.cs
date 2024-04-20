@@ -136,7 +136,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool MemberRequiresAnalysis([NotNull] ISymbol member, CancellationToken cancellationToken)
         {
-            return !member.IsExtern && !member.IsOverride && !member.HidesBaseMember(cancellationToken) && !member.IsInterfaceImplementation();
+            return member is { IsExtern: false, IsOverride: false } && !member.HidesBaseMember(cancellationToken) && !member.IsInterfaceImplementation();
         }
 
         private static bool MethodCanReturnValue([NotNull] IMethodSymbol method)

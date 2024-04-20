@@ -74,14 +74,11 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool IsDisposablePattern([NotNull] IParameterSymbol parameter)
         {
-            if (parameter.Name == "disposing")
+            if (parameter is { Name: "disposing", ContainingSymbol: IMethodSymbol { Name: "Dispose" } containingMethod })
             {
-                if (parameter.ContainingSymbol is IMethodSymbol { Name: "Dispose" } containingMethod)
+                if (containingMethod.IsVirtual && containingMethod.DeclaredAccessibility == Accessibility.Protected)
                 {
-                    if (containingMethod.IsVirtual && containingMethod.DeclaredAccessibility == Accessibility.Protected)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 

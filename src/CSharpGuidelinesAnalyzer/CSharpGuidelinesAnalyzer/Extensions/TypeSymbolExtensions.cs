@@ -54,7 +54,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions
                 var namedTypeSymbol = type as INamedTypeSymbol;
                 ITypeSymbol innerType = namedTypeSymbol?.TypeArguments[0];
 
-                if (innerType?.BaseType != null && innerType.BaseType.SpecialType == SpecialType.System_Enum)
+                if (innerType?.BaseType is { SpecialType: SpecialType.System_Enum })
                 {
                     return true;
                 }

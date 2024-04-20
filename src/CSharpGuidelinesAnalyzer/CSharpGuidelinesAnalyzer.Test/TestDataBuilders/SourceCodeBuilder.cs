@@ -118,9 +118,7 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
     {
         using var reader = new StringReader(text);
 
-        string? line;
-
-        while ((line = reader.ReadLine()) != null)
+        while (reader.ReadLine() is { } line)
         {
             yield return line;
         }

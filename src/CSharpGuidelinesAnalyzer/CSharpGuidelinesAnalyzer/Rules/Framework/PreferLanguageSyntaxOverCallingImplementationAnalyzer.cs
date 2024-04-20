@@ -146,7 +146,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Framework
             }
 
             // Bug workaround for https://github.com/dotnet/roslyn/issues/27209
-            if (binaryOperation.OperatorKind == BinaryOperatorKind.And && binaryOperation.Syntax is BinaryExpressionSyntax binaryExpressionSyntax)
+            if (binaryOperation is { OperatorKind: BinaryOperatorKind.And, Syntax: BinaryExpressionSyntax binaryExpressionSyntax })
             {
                 if (binaryExpressionSyntax.OperatorToken.IsKind(SyntaxKind.AmpersandAmpersandToken))
                 {

@@ -66,8 +66,7 @@ namespace CSharpGuidelinesAnalyzer.Rules.Maintainability
 
         private static bool IsOutParameterInTryMethod([NotNull] IParameterSymbol parameter)
         {
-            return parameter.RefKind == RefKind.Out && parameter.ContainingSymbol is IMethodSymbol method &&
-                method.Name.StartsWith("Try", StringComparison.Ordinal);
+            return parameter is { RefKind: RefKind.Out, ContainingSymbol: IMethodSymbol method } && method.Name.StartsWith("Try", StringComparison.Ordinal);
         }
 
         private static void AnalyzeRefParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)

@@ -105,6 +105,9 @@ namespace CSharpGuidelinesAnalyzer
             IEnumerator leftEnumerator = leftSequence.GetEnumerator();
             IEnumerator rightEnumerator = rightSequence.GetEnumerator();
 
+            using var leftDisposable = leftEnumerator as IDisposable;
+            using var rightDisposable = rightEnumerator as IDisposable;
+
             return AreSequenceValuesEqual(elementType, leftEnumerator, rightEnumerator);
         }
 
