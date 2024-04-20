@@ -2,74 +2,73 @@
 using System.Text;
 using JetBrains.Annotations;
 
-namespace CSharpGuidelinesAnalyzer.Settings
+namespace CSharpGuidelinesAnalyzer.Settings;
+
+internal sealed class AnalyzerSettingKey
 {
-    internal sealed class AnalyzerSettingKey
+    [NotNull]
+    [ItemNotNull]
+    private readonly Lazy<string> lazyNameInSnakeCase;
+
+    [NotNull]
+    public string Rule { get; }
+
+    [NotNull]
+    public string Name { get; }
+
+    [NotNull]
+    public string NameInSnakeCase => lazyNameInSnakeCase.Value;
+
+    public AnalyzerSettingKey([NotNull] string rule, [NotNull] string name)
     {
-        [NotNull]
-        [ItemNotNull]
-        private readonly Lazy<string> lazyNameInSnakeCase;
+        Guard.NotNullNorWhiteSpace(rule, nameof(rule));
+        Guard.NotNullNorWhiteSpace(name, nameof(name));
 
-        [NotNull]
-        public string Rule { get; }
+        Rule = rule;
+        Name = name;
 
-        [NotNull]
-        public string Name { get; }
+        lazyNameInSnakeCase = new Lazy<string>(GetNameInSnakeCase);
+    }
 
-        [NotNull]
-        public string NameInSnakeCase => lazyNameInSnakeCase.Value;
+    [NotNull]
+    private string GetNameInSnakeCase()
+    {
+        var builder = new StringBuilder();
 
-        public AnalyzerSettingKey([NotNull] string rule, [NotNull] string name)
+        for (int index = 0; index < Name.Length; index++)
         {
-            Guard.NotNullNorWhiteSpace(rule, nameof(rule));
-            Guard.NotNullNorWhiteSpace(name, nameof(name));
+            char ch = Name[index];
 
-            Rule = rule;
-            Name = name;
-
-            lazyNameInSnakeCase = new Lazy<string>(GetNameInSnakeCase);
-        }
-
-        [NotNull]
-        private string GetNameInSnakeCase()
-        {
-            var builder = new StringBuilder();
-
-            for (int index = 0; index < Name.Length; index++)
+            if (char.IsUpper(ch))
             {
-                char ch = Name[index];
-
-                if (char.IsUpper(ch))
+                if (index > 0)
                 {
-                    if (index > 0)
-                    {
-                        builder.Append('_');
-                    }
-
-                    char lowerCaseChar = char.ToLowerInvariant(ch);
-                    builder.Append(lowerCaseChar);
-                    continue;
+                    builder.Append('_');
                 }
 
-                builder.Append(ch);
+                char lowerCaseChar = char.ToLowerInvariant(ch);
+                builder.Append(lowerCaseChar);
+                continue;
             }
 
-            return builder.ToString();
+            builder.Append(ch);
         }
 
-        public override bool Equals(object obj)
-        {
-            return obj is AnalyzerSettingKey other && other.Rule == Rule && other.Name == Name;
-        }
+        return builder.ToString();
+    }
 
-        public override int GetHashCode()
-        {
-            return Rule.GetHashCode() ^ Name.GetHashCode();
-        }
+    public override bool Equals(object obj)
+    {
+        return obj is AnalyzerSettingKey other && other.Rule == Rule && other.Name == Name;
+    }
 
-        public override string ToString()
-        {
-            return Rule + ":" + Name;
-        }
+    public override int GetHashCode()
+    {
+        return Rule.GetHashCode() ^ Name.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return Rule + ":" + Name;
     }
 }

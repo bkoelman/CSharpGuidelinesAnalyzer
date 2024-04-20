@@ -8,150 +8,149 @@ using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using ReflectionTypeInfo = System.Reflection.TypeInfo;
 
-namespace CSharpGuidelinesAnalyzer
+namespace CSharpGuidelinesAnalyzer;
+
+internal sealed class OperationEqualityComparer
 {
-    internal sealed class OperationEqualityComparer
+    [NotNull]
+    private static readonly ReflectionTypeInfo SymbolInterface = typeof(ISymbol).GetTypeInfo();
+
+    [NotNull]
+    private static readonly ReflectionTypeInfo OperationInterface = typeof(IOperation).GetTypeInfo();
+
+    [NotNull]
+    private static readonly ReflectionTypeInfo EnumerableInterface = typeof(IEnumerable).GetTypeInfo();
+
+    [NotNull]
+    [ItemNotNull]
+    private static readonly IReadOnlyCollection<string> PropertyNamesToSkip = new[]
     {
-        [NotNull]
-        private static readonly ReflectionTypeInfo SymbolInterface = typeof(ISymbol).GetTypeInfo();
+        nameof(IOperation.Parent),
+        nameof(IOperation.Syntax),
+        "SemanticModel",
+        "Compilation"
+    };
 
-        [NotNull]
-        private static readonly ReflectionTypeInfo OperationInterface = typeof(IOperation).GetTypeInfo();
+    [NotNull]
+    public static readonly OperationEqualityComparer Default = new OperationEqualityComparer();
 
-        [NotNull]
-        private static readonly ReflectionTypeInfo EnumerableInterface = typeof(IEnumerable).GetTypeInfo();
-
-        [NotNull]
-        [ItemNotNull]
-        private static readonly IReadOnlyCollection<string> PropertyNamesToSkip = new[]
+    public bool Equals([CanBeNull] IOperation left, [CanBeNull] IOperation right)
+    {
+        if (ReferenceEquals(left, right))
         {
-            nameof(IOperation.Parent),
-            nameof(IOperation.Syntax),
-            "SemanticModel",
-            "Compilation"
-        };
+            return true;
+        }
 
-        [NotNull]
-        public static readonly OperationEqualityComparer Default = new OperationEqualityComparer();
-
-        public bool Equals([CanBeNull] IOperation left, [CanBeNull] IOperation right)
+        if (left is null || right is null)
         {
-            if (ReferenceEquals(left, right))
+            return false;
+        }
+
+        IReadOnlyCollection<Type> leftInterfaces = left.GetType().GetMostSpecificOperationInterfaces();
+        IReadOnlyCollection<Type> rightInterfaces = right.GetType().GetMostSpecificOperationInterfaces();
+
+        return leftInterfaces.SequenceEqual(rightInterfaces) && AreOperationPropertiesEqual(leftInterfaces, left, right);
+    }
+
+    private bool AreOperationPropertiesEqual([NotNull] [ItemNotNull] IReadOnlyCollection<Type> interfaces, [NotNull] IOperation left,
+        [NotNull] IOperation right)
+    {
+        foreach (PropertyInfo property in interfaces.DeepGetOperationProperties())
+        {
+            if (PropertyNamesToSkip.Contains(property.Name))
             {
-                return true;
+                continue;
             }
 
-            if (left is null || right is null)
+            if (!ArePropertyValuesEqual(property, left, right))
             {
                 return false;
             }
-
-            IReadOnlyCollection<Type> leftInterfaces = left.GetType().GetMostSpecificOperationInterfaces();
-            IReadOnlyCollection<Type> rightInterfaces = right.GetType().GetMostSpecificOperationInterfaces();
-
-            return leftInterfaces.SequenceEqual(rightInterfaces) && AreOperationPropertiesEqual(leftInterfaces, left, right);
         }
 
-        private bool AreOperationPropertiesEqual([NotNull] [ItemNotNull] IReadOnlyCollection<Type> interfaces, [NotNull] IOperation left,
-            [NotNull] IOperation right)
+        return true;
+    }
+
+    private bool ArePropertyValuesEqual([NotNull] PropertyInfo property, [NotNull] object left, [NotNull] object right)
+    {
+        object[] emptyObjectArray = Array.Empty<object>();
+
+        object leftValue = property.GetMethod.Invoke(left, emptyObjectArray);
+        object rightValue = property.GetMethod.Invoke(right, emptyObjectArray);
+        ReflectionTypeInfo propertyType = property.PropertyType.GetTypeInfo();
+
+        if (EnumerableInterface.IsAssignableFrom(propertyType))
         {
-            foreach (PropertyInfo property in interfaces.DeepGetOperationProperties())
+            Type elementType = property.PropertyType.GetSequenceElementType();
+
+            return AreOptionalSequenceValuesEqual(elementType, (IEnumerable)leftValue, (IEnumerable)rightValue);
+        }
+
+        return AreValuesEqual(property.PropertyType, leftValue, rightValue);
+    }
+
+    private bool AreOptionalSequenceValuesEqual([NotNull] Type elementType, [CanBeNull] [ItemNotNull] IEnumerable leftSequence,
+        [CanBeNull] [ItemNotNull] IEnumerable rightSequence)
+    {
+        if (ReferenceEquals(leftSequence, rightSequence))
+        {
+            return true;
+        }
+
+        if (leftSequence is null || rightSequence is null)
+        {
+            return false;
+        }
+
+        IEnumerator leftEnumerator = leftSequence.GetEnumerator();
+        IEnumerator rightEnumerator = rightSequence.GetEnumerator();
+
+        using var leftDisposable = leftEnumerator as IDisposable;
+        using var rightDisposable = rightEnumerator as IDisposable;
+
+        return AreSequenceValuesEqual(elementType, leftEnumerator, rightEnumerator);
+    }
+
+    private bool AreSequenceValuesEqual([NotNull] Type elementType, [NotNull] IEnumerator leftEnumerator, [NotNull] IEnumerator rightEnumerator)
+    {
+        while (true)
+        {
+            if (leftEnumerator.MoveNext())
             {
-                if (PropertyNamesToSkip.Contains(property.Name))
+                if (!rightEnumerator.MoveNext())
                 {
-                    continue;
+                    return false;
                 }
 
-                if (!ArePropertyValuesEqual(property, left, right))
+                if (!AreValuesEqual(elementType, leftEnumerator.Current, rightEnumerator.Current))
                 {
                     return false;
                 }
             }
-
-            return true;
+            else
+            {
+                return !rightEnumerator.MoveNext();
+            }
         }
+    }
 
-        private bool ArePropertyValuesEqual([NotNull] PropertyInfo property, [NotNull] object left, [NotNull] object right)
+    private bool AreValuesEqual([NotNull] Type type, [CanBeNull] object leftValue, [CanBeNull] object rightValue)
+    {
+        ReflectionTypeInfo typeInfo = type.GetTypeInfo();
+
+        if (SymbolInterface.IsAssignableFrom(typeInfo))
         {
-            object[] emptyObjectArray = Array.Empty<object>();
+            var leftSymbol = (ISymbol)leftValue;
+            var rightSymbol = (ISymbol)rightValue;
 
-            object leftValue = property.GetMethod.Invoke(left, emptyObjectArray);
-            object rightValue = property.GetMethod.Invoke(right, emptyObjectArray);
-            ReflectionTypeInfo propertyType = property.PropertyType.GetTypeInfo();
-
-            if (EnumerableInterface.IsAssignableFrom(propertyType))
-            {
-                Type elementType = property.PropertyType.GetSequenceElementType();
-
-                return AreOptionalSequenceValuesEqual(elementType, (IEnumerable)leftValue, (IEnumerable)rightValue);
-            }
-
-            return AreValuesEqual(property.PropertyType, leftValue, rightValue);
+            return leftSymbol.IsEqualTo(rightSymbol);
         }
 
-        private bool AreOptionalSequenceValuesEqual([NotNull] Type elementType, [CanBeNull] [ItemNotNull] IEnumerable leftSequence,
-            [CanBeNull] [ItemNotNull] IEnumerable rightSequence)
+        if (OperationInterface.IsAssignableFrom(typeInfo))
         {
-            if (ReferenceEquals(leftSequence, rightSequence))
-            {
-                return true;
-            }
-
-            if (leftSequence is null || rightSequence is null)
-            {
-                return false;
-            }
-
-            IEnumerator leftEnumerator = leftSequence.GetEnumerator();
-            IEnumerator rightEnumerator = rightSequence.GetEnumerator();
-
-            using var leftDisposable = leftEnumerator as IDisposable;
-            using var rightDisposable = rightEnumerator as IDisposable;
-
-            return AreSequenceValuesEqual(elementType, leftEnumerator, rightEnumerator);
+            return Equals((IOperation)leftValue, (IOperation)rightValue);
         }
 
-        private bool AreSequenceValuesEqual([NotNull] Type elementType, [NotNull] IEnumerator leftEnumerator, [NotNull] IEnumerator rightEnumerator)
-        {
-            while (true)
-            {
-                if (leftEnumerator.MoveNext())
-                {
-                    if (!rightEnumerator.MoveNext())
-                    {
-                        return false;
-                    }
-
-                    if (!AreValuesEqual(elementType, leftEnumerator.Current, rightEnumerator.Current))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return !rightEnumerator.MoveNext();
-                }
-            }
-        }
-
-        private bool AreValuesEqual([NotNull] Type type, [CanBeNull] object leftValue, [CanBeNull] object rightValue)
-        {
-            ReflectionTypeInfo typeInfo = type.GetTypeInfo();
-
-            if (SymbolInterface.IsAssignableFrom(typeInfo))
-            {
-                var leftSymbol = (ISymbol)leftValue;
-                var rightSymbol = (ISymbol)rightValue;
-
-                return leftSymbol.IsEqualTo(rightSymbol);
-            }
-
-            if (OperationInterface.IsAssignableFrom(typeInfo))
-            {
-                return Equals((IOperation)leftValue, (IOperation)rightValue);
-            }
-
-            return EqualityComparer<object>.Default.Equals(leftValue, rightValue);
-        }
+        return EqualityComparer<object>.Default.Equals(leftValue, rightValue);
     }
 }

@@ -8,112 +8,111 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Framework
+namespace CSharpGuidelinesAnalyzer.Rules.Framework;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnalyzer
+    private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
+    private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression";
+    private const string Description = "Favor async/await over Task continuations.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2235";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [NotNull]
+    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+
+    [NotNull]
+    private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction = (context, taskInfo) =>
+        context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
+
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize([NotNull] AnalysisContext context)
     {
-        private const string Title = "Call to Task.ContinueWith should be replaced with an await expression";
-        private const string MessageFormat = "The call to 'Task.ContinueWith' in '{0}' should be replaced with an await expression";
-        private const string Description = "Favor async/await over Task continuations.";
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2235";
+        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+    }
 
-        [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
+    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    {
+        var taskInfo = new TaskTypeInfo(startContext.Compilation);
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+        if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
+        {
+            startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, taskInfo), OperationKind.Invocation);
+        }
+    }
 
-        [NotNull]
-        private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
+    private static void AnalyzeInvocation(OperationAnalysisContext context, TaskTypeInfo taskInfo)
+    {
+        var invocation = (IInvocationOperation)context.Operation;
 
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction = (context, taskInfo) =>
-            context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
+        if (invocation.TargetMethod.ContainingType.IsEqualTo(taskInfo.TaskType) ||
+            invocation.TargetMethod.ContainingType.ConstructedFrom.IsEqualTo(taskInfo.GenericTaskType))
+        {
+            IMethodSymbol openTypedTargetMethod = invocation.TargetMethod.OriginalDefinition;
+
+            if (taskInfo.ContinueWithMethodGroup.Any(method => method.IsEqualTo(openTypedTargetMethod)))
+            {
+                Location location = GetInvocationLocation(context);
+
+                string name = context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+
+                var diagnostic = Diagnostic.Create(Rule, location, name);
+                context.ReportDiagnostic(diagnostic);
+            }
+        }
+    }
+
+    [NotNull]
+    private static Location GetInvocationLocation(OperationAnalysisContext context)
+    {
+        SimpleNameSyntax simpleNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf().OfType<SimpleNameSyntax>()
+            .First(syntax => syntax.Identifier.ValueText == "ContinueWith");
+
+        return simpleNameSyntax.GetLocation();
+    }
+
+    private struct TaskTypeInfo
+    {
+        [CanBeNull]
+        public INamedTypeSymbol TaskType { get; }
+
+        [CanBeNull]
+        public INamedTypeSymbol GenericTaskType { get; }
 
         [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public ImmutableArray<ISymbol> ContinueWithMethodGroup { get; }
 
-        public override void Initialize([NotNull] AnalysisContext context)
+        public TaskTypeInfo([NotNull] Compilation compilation)
         {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            Guard.NotNull(compilation, nameof(compilation));
 
-            context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+            GenericTaskType = KnownTypes.SystemThreadingTasksTaskT(compilation);
+            TaskType = KnownTypes.SystemThreadingTasksTask(compilation);
+
+            ContinueWithMethodGroup = GetTaskContinueWithMethodGroup(TaskType, GenericTaskType);
         }
 
-        private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+        [ItemNotNull]
+        private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup([CanBeNull] INamedTypeSymbol taskType,
+            [CanBeNull] INamedTypeSymbol genericTaskType)
         {
-            var taskInfo = new TaskTypeInfo(startContext.Compilation);
+            ImmutableArray<ISymbol> taskContinueWithMethodGroup = taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
+            ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
 
-            if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
-            {
-                startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, taskInfo), OperationKind.Invocation);
-            }
-        }
-
-        private static void AnalyzeInvocation(OperationAnalysisContext context, TaskTypeInfo taskInfo)
-        {
-            var invocation = (IInvocationOperation)context.Operation;
-
-            if (invocation.TargetMethod.ContainingType.IsEqualTo(taskInfo.TaskType) ||
-                invocation.TargetMethod.ContainingType.ConstructedFrom.IsEqualTo(taskInfo.GenericTaskType))
-            {
-                IMethodSymbol openTypedTargetMethod = invocation.TargetMethod.OriginalDefinition;
-
-                if (taskInfo.ContinueWithMethodGroup.Any(method => method.IsEqualTo(openTypedTargetMethod)))
-                {
-                    Location location = GetInvocationLocation(context);
-
-                    string name = context.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-
-                    var diagnostic = Diagnostic.Create(Rule, location, name);
-                    context.ReportDiagnostic(diagnostic);
-                }
-            }
-        }
-
-        [NotNull]
-        private static Location GetInvocationLocation(OperationAnalysisContext context)
-        {
-            SimpleNameSyntax simpleNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf().OfType<SimpleNameSyntax>()
-                .First(syntax => syntax.Identifier.ValueText == "ContinueWith");
-
-            return simpleNameSyntax.GetLocation();
-        }
-
-        private struct TaskTypeInfo
-        {
-            [CanBeNull]
-            public INamedTypeSymbol TaskType { get; }
-
-            [CanBeNull]
-            public INamedTypeSymbol GenericTaskType { get; }
-
-            [ItemNotNull]
-            public ImmutableArray<ISymbol> ContinueWithMethodGroup { get; }
-
-            public TaskTypeInfo([NotNull] Compilation compilation)
-            {
-                Guard.NotNull(compilation, nameof(compilation));
-
-                GenericTaskType = KnownTypes.SystemThreadingTasksTaskT(compilation);
-                TaskType = KnownTypes.SystemThreadingTasksTask(compilation);
-
-                ContinueWithMethodGroup = GetTaskContinueWithMethodGroup(TaskType, GenericTaskType);
-            }
-
-            [ItemNotNull]
-            private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup([CanBeNull] INamedTypeSymbol taskType,
-                [CanBeNull] INamedTypeSymbol genericTaskType)
-            {
-                ImmutableArray<ISymbol> taskContinueWithMethodGroup = taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
-                ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
-
-                return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
-            }
+            return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
         }
     }
 }

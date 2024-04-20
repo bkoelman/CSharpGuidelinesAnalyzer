@@ -7,104 +7,103 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Documentation
+namespace CSharpGuidelinesAnalyzer.Rules.Documentation;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
+    private const string Title = "Code block should not contain inline comment";
+    private const string MessageFormat = "Code block should not contain inline comment";
+    private const string Description = "Avoid inline comments.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2310";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    [ItemNotNull]
+    private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
+
+    [NotNull]
+    private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
+
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize([NotNull] AnalysisContext context)
     {
-        private const string Title = "Code block should not contain inline comment";
-        private const string MessageFormat = "Code block should not contain inline comment";
-        private const string Description = "Avoid inline comments.";
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2310";
+        context.RegisterCodeBlockAction(AnalyzeCodeBlockAction);
+    }
 
-        [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
+    private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
+    {
+        SyntaxTriviaList trailingTrivia = context.CodeBlock.GetTrailingTrivia();
+        SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(trailingTrivia).Where(IsComment).ToArray();
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+        AnalyzeCommentTrivia(outerCommentTrivia, context);
+    }
 
-        [ItemNotNull]
-        private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
-
-        [NotNull]
-        private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize([NotNull] AnalysisContext context)
+    private static void AnalyzeCommentTrivia([NotNull] SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
+    {
+        foreach (SyntaxTrivia commentTrivia in context.CodeBlock.DescendantTrivia().Where(IsComment))
         {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.CancellationToken.ThrowIfCancellationRequested();
 
-            context.RegisterCodeBlockAction(AnalyzeCodeBlockAction);
-        }
-
-        private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)
-        {
-            SyntaxTriviaList trailingTrivia = context.CodeBlock.GetTrailingTrivia();
-            SyntaxTrivia[] outerCommentTrivia = context.CodeBlock.GetLeadingTrivia().Concat(trailingTrivia).Where(IsComment).ToArray();
-
-            AnalyzeCommentTrivia(outerCommentTrivia, context);
-        }
-
-        private static void AnalyzeCommentTrivia([NotNull] SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
-        {
-            foreach (SyntaxTrivia commentTrivia in context.CodeBlock.DescendantTrivia().Where(IsComment))
+            if (!outerCommentTrivia.Contains(commentTrivia) && !IsCommentInEmptyElseClause(commentTrivia))
             {
-                context.CancellationToken.ThrowIfCancellationRequested();
+                string commentText = commentTrivia.ToString();
 
-                if (!outerCommentTrivia.Contains(commentTrivia) && !IsCommentInEmptyElseClause(commentTrivia))
+                if (!IsResharperDirective(commentText) && !IsArrangeActAssertUnitTestPattern(commentText))
                 {
-                    string commentText = commentTrivia.ToString();
+                    Location location = commentTrivia.GetLocation();
 
-                    if (!IsResharperDirective(commentText) && !IsArrangeActAssertUnitTestPattern(commentText))
-                    {
-                        Location location = commentTrivia.GetLocation();
-
-                        var diagnostic = Diagnostic.Create(Rule, location);
-                        context.ReportDiagnostic(diagnostic);
-                    }
+                    var diagnostic = Diagnostic.Create(Rule, location);
+                    context.ReportDiagnostic(diagnostic);
                 }
             }
         }
+    }
 
-        private static bool IsComment(SyntaxTrivia trivia)
-        {
-            SyntaxKind kind = trivia.Kind();
-            return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.MultiLineCommentTrivia;
-        }
+    private static bool IsComment(SyntaxTrivia trivia)
+    {
+        SyntaxKind kind = trivia.Kind();
+        return kind == SyntaxKind.SingleLineCommentTrivia || kind == SyntaxKind.MultiLineCommentTrivia;
+    }
 
-        private static bool IsCommentInEmptyElseClause(SyntaxTrivia commentTrivia)
-        {
-            return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() && parentBlock.Parent is ElseClauseSyntax;
-        }
+    private static bool IsCommentInEmptyElseClause(SyntaxTrivia commentTrivia)
+    {
+        return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() && parentBlock.Parent is ElseClauseSyntax;
+    }
 
-        private static bool IsResharperDirective([NotNull] string commentText)
-        {
-            return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) || IsResharperFormatterConfiguration(commentText);
-        }
+    private static bool IsResharperDirective([NotNull] string commentText)
+    {
+        return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) || IsResharperFormatterConfiguration(commentText);
+    }
 
-        private static bool IsResharperSuppression([NotNull] string commentText)
-        {
-            return commentText.Contains("// ReSharper disable ") || commentText.Contains("// ReSharper restore ");
-        }
+    private static bool IsResharperSuppression([NotNull] string commentText)
+    {
+        return commentText.Contains("// ReSharper disable ") || commentText.Contains("// ReSharper restore ");
+    }
 
-        private static bool IsResharperLanguageInjection([NotNull] string commentText)
-        {
-            return commentText.Contains("language=");
-        }
+    private static bool IsResharperLanguageInjection([NotNull] string commentText)
+    {
+        return commentText.Contains("language=");
+    }
 
-        private static bool IsResharperFormatterConfiguration([NotNull] string commentText)
-        {
-            return commentText.Contains("// @formatter:");
-        }
+    private static bool IsResharperFormatterConfiguration([NotNull] string commentText)
+    {
+        return commentText.Contains("// @formatter:");
+    }
 
-        private static bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
-        {
-            return ArrangeActAssertLines.Any(line => line.Equals(commentText));
-        }
+    private static bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
+    {
+        return ArrangeActAssertLines.Any(line => line.Equals(commentText));
     }
 }

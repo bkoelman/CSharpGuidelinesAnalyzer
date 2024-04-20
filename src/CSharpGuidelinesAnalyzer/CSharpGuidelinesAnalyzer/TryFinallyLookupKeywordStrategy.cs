@@ -1,8 +1,7 @@
-﻿namespace CSharpGuidelinesAnalyzer
+﻿namespace CSharpGuidelinesAnalyzer;
+
+internal enum TryFinallyLookupKeywordStrategy
 {
-    internal enum TryFinallyLookupKeywordStrategy
-    {
-        PreferTryKeyword,
-        PreferFinallyKeyword
-    }
+    PreferTryKeyword,
+    PreferFinallyKeyword
 }

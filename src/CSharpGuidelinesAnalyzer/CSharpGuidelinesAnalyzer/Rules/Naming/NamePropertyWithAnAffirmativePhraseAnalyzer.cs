@@ -6,121 +6,120 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Naming
+namespace CSharpGuidelinesAnalyzer.Rules.Naming;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnalyzer
+    private const string Title = "Name of public or internal boolean identifier should start with a verb";
+    private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb";
+    private const string Description = "Properly name properties.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1715";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
+
+    [ItemNotNull]
+    private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Be", "Is", "Was", "Were", "Has", "Have", "Can", "Could",
+        "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides",
+        "Contain", "Contains", "Require", "Requires", "Return", "Returns", "Starts", "Consists", "Targets");
+
+    [NotNull]
+    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
+
+    [NotNull]
+    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
+
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+
+    public override void Initialize([NotNull] AnalysisContext context)
     {
-        private const string Title = "Name of public or internal boolean identifier should start with a verb";
-        private const string MessageFormat = "The name of {0} boolean {1} '{2}' should start with a verb";
-        private const string Description = "Properly name properties.";
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1715";
+        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+        context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
+    }
 
-        [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
-
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Warning, false, Description, Category.GetHelpLinkUri(DiagnosticId));
-
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
-
-        [ItemNotNull]
-        private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Be", "Is", "Was", "Were", "Has", "Have", "Can", "Could",
-            "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides",
-            "Contain", "Contains", "Require", "Requires", "Return", "Returns", "Starts", "Consists", "Targets");
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
-        [NotNull]
-        private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize([NotNull] AnalysisContext context)
+    private static void AnalyzeMember(SymbolAnalysisContext context)
+    {
+        if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() || IsOperator(context.Symbol) || context.Symbol.IsOverride ||
+            context.Symbol.IsSynthesized())
         {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-
-            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
-            context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
+            return;
         }
 
-        private static void AnalyzeMember(SymbolAnalysisContext context)
+        ITypeSymbol type = context.Symbol.GetSymbolType();
+
+        if (!type.IsBooleanOrNullableBoolean())
         {
-            if (!IsMemberAccessible(context.Symbol) || context.Symbol.IsPropertyOrEventAccessor() || IsOperator(context.Symbol) || context.Symbol.IsOverride ||
-                context.Symbol.IsSynthesized())
-            {
-                return;
-            }
-
-            ITypeSymbol type = context.Symbol.GetSymbolType();
-
-            if (!type.IsBooleanOrNullableBoolean())
-            {
-                return;
-            }
-
-            if (!IsWhitelisted(context.Symbol.Name) && !context.Symbol.IsInterfaceImplementation())
-            {
-                ReportAt(context, context.Symbol);
-            }
+            return;
         }
 
-        private static bool IsOperator([NotNull] ISymbol symbol)
+        if (!IsWhitelisted(context.Symbol.Name) && !context.Symbol.IsInterfaceImplementation())
         {
-            var method = symbol as IMethodSymbol;
+            ReportAt(context, context.Symbol);
+        }
+    }
 
-            MethodKind? kind = method?.MethodKind;
-            return kind == MethodKind.UserDefinedOperator || kind == MethodKind.BuiltinOperator;
+    private static bool IsOperator([NotNull] ISymbol symbol)
+    {
+        var method = symbol as IMethodSymbol;
+
+        MethodKind? kind = method?.MethodKind;
+        return kind == MethodKind.UserDefinedOperator || kind == MethodKind.BuiltinOperator;
+    }
+
+    private static bool IsMemberAccessible([NotNull] ISymbol symbol)
+    {
+        return symbol.DeclaredAccessibility != Accessibility.Private && symbol.IsSymbolAccessibleFromRoot();
+    }
+
+    private static void AnalyzeParameter(SymbolAnalysisContext context)
+    {
+        var parameter = (IParameterSymbol)context.Symbol;
+
+        if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride || !parameter.Type.IsBooleanOrNullableBoolean() ||
+            parameter.IsSynthesized())
+        {
+            return;
         }
 
-        private static bool IsMemberAccessible([NotNull] ISymbol symbol)
+        if (!IsWhitelisted(parameter.Name) && !parameter.IsInterfaceImplementation())
         {
-            return symbol.DeclaredAccessibility != Accessibility.Private && symbol.IsSymbolAccessibleFromRoot();
+            ReportAt(context, parameter);
         }
+    }
 
-        private static void AnalyzeParameter(SymbolAnalysisContext context)
-        {
-            var parameter = (IParameterSymbol)context.Symbol;
+    private static bool IsParameterAccessible([NotNull] IParameterSymbol parameter)
+    {
+        ISymbol containingMember = parameter.ContainingSymbol;
+        return IsMemberAccessible(containingMember);
+    }
 
-            if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride || !parameter.Type.IsBooleanOrNullableBoolean() ||
-                parameter.IsSynthesized())
-            {
-                return;
-            }
+    private static bool IsWhitelisted([NotNull] string identifierName)
+    {
+        return identifierName.StartsWithWordInList(WordsWhitelist);
+    }
 
-            if (!IsWhitelisted(parameter.Name) && !parameter.IsInterfaceImplementation())
-            {
-                ReportAt(context, parameter);
-            }
-        }
+    private static void ReportAt(SymbolAnalysisContext context, [NotNull] ISymbol symbol)
+    {
+        Accessibility accessibility = symbol is IParameterSymbol parameterSymbol
+            ? parameterSymbol.ContainingSymbol.DeclaredAccessibility
+            : symbol.DeclaredAccessibility;
 
-        private static bool IsParameterAccessible([NotNull] IParameterSymbol parameter)
-        {
-            ISymbol containingMember = parameter.ContainingSymbol;
-            return IsMemberAccessible(containingMember);
-        }
+        string accessibilityText = accessibility.ToText().ToLowerInvariant();
+        string kindText = symbol.GetKind().ToLowerInvariant();
 
-        private static bool IsWhitelisted([NotNull] string identifierName)
-        {
-            return identifierName.StartsWithWordInList(WordsWhitelist);
-        }
-
-        private static void ReportAt(SymbolAnalysisContext context, [NotNull] ISymbol symbol)
-        {
-            Accessibility accessibility = symbol is IParameterSymbol parameterSymbol
-                ? parameterSymbol.ContainingSymbol.DeclaredAccessibility
-                : symbol.DeclaredAccessibility;
-
-            string accessibilityText = accessibility.ToText().ToLowerInvariant();
-            string kindText = symbol.GetKind().ToLowerInvariant();
-
-            var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], accessibilityText, kindText, symbol.Name);
-            context.ReportDiagnostic(diagnostic);
-        }
+        var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], accessibilityText, kindText, symbol.Name);
+        context.ReportDiagnostic(diagnostic);
     }
 }

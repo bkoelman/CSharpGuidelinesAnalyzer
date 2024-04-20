@@ -2,36 +2,35 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace CSharpGuidelinesAnalyzer
+namespace CSharpGuidelinesAnalyzer;
+
+/// <summary>
+/// A visitor that skips compiler-generated / implicitly computed operations.
+/// </summary>
+internal class ExplicitOperationVisitor : OperationVisitor
 {
-    /// <summary>
-    /// A visitor that skips compiler-generated / implicitly computed operations.
-    /// </summary>
-    internal class ExplicitOperationVisitor : OperationVisitor
+    public override void Visit([CanBeNull] IOperation operation)
     {
-        public override void Visit([CanBeNull] IOperation operation)
+        if (operation is { IsImplicit: false })
         {
-            if (operation is { IsImplicit: false })
-            {
-                operation.Accept(this);
-            }
+            operation.Accept(this);
         }
     }
+}
 
-    /// <summary>
-    /// A visitor that skips compiler-generated / implicitly computed operations.
-    /// </summary>
-    internal abstract class ExplicitOperationVisitor<TArgument, TResult> : OperationVisitor<TArgument, TResult>
+/// <summary>
+/// A visitor that skips compiler-generated / implicitly computed operations.
+/// </summary>
+internal abstract class ExplicitOperationVisitor<TArgument, TResult> : OperationVisitor<TArgument, TResult>
+{
+    [CanBeNull]
+    public override TResult Visit([CanBeNull] IOperation operation, [CanBeNull] TArgument argument)
     {
-        [CanBeNull]
-        public override TResult Visit([CanBeNull] IOperation operation, [CanBeNull] TArgument argument)
+        if (operation is { IsImplicit: false })
         {
-            if (operation is { IsImplicit: false })
-            {
-                return operation.Accept(this, argument);
-            }
-
-            return default;
+            return operation.Accept(this, argument);
         }
+
+        return default;
     }
 }

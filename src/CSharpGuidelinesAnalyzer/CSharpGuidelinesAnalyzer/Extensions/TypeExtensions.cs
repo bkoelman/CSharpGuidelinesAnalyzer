@@ -4,76 +4,75 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace CSharpGuidelinesAnalyzer.Extensions
+namespace CSharpGuidelinesAnalyzer.Extensions;
+
+internal static class TypeExtensions
 {
-    internal static class TypeExtensions
+    [NotNull]
+    [ItemNotNull]
+    public static IReadOnlyCollection<Type> GetMostSpecificOperationInterfaces([NotNull] this Type type)
     {
-        [NotNull]
-        [ItemNotNull]
-        public static IReadOnlyCollection<Type> GetMostSpecificOperationInterfaces([NotNull] this Type type)
+        Type[] operationInterfaces = GetPublicOperationInterfaces(type, true).ToArray();
+
+        var mostSpecificInterfaces = new List<Type>(operationInterfaces);
+
+        foreach (Type parentInterface in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, false)))
         {
-            Type[] operationInterfaces = GetPublicOperationInterfaces(type, true).ToArray();
-
-            var mostSpecificInterfaces = new List<Type>(operationInterfaces);
-
-            foreach (Type parentInterface in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, false)))
-            {
-                mostSpecificInterfaces.Remove(parentInterface);
-            }
-
-            return mostSpecificInterfaces.OrderBy(@interface => @interface.FullName).ToArray();
+            mostSpecificInterfaces.Remove(parentInterface);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private static IEnumerable<Type> GetPublicOperationInterfaces([NotNull] Type type, bool includeSelf)
-        {
-            if (includeSelf && IsPublicOperationInterface(type))
-            {
-                yield return type;
-            }
+        return mostSpecificInterfaces.OrderBy(@interface => @interface.FullName).ToArray();
+    }
 
-            foreach (Type @interface in type.GetTypeInfo().ImplementedInterfaces.Where(IsPublicOperationInterface))
-            {
-                yield return @interface;
-            }
+    [NotNull]
+    [ItemNotNull]
+    private static IEnumerable<Type> GetPublicOperationInterfaces([NotNull] Type type, bool includeSelf)
+    {
+        if (includeSelf && IsPublicOperationInterface(type))
+        {
+            yield return type;
         }
 
-        private static bool IsPublicOperationInterface([NotNull] Type type)
+        foreach (Type @interface in type.GetTypeInfo().ImplementedInterfaces.Where(IsPublicOperationInterface))
         {
-            return type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsPublic && type.Name.EndsWith("Operation", StringComparison.Ordinal);
+            yield return @interface;
+        }
+    }
+
+    private static bool IsPublicOperationInterface([NotNull] Type type)
+    {
+        return type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsPublic && type.Name.EndsWith("Operation", StringComparison.Ordinal);
+    }
+
+    [NotNull]
+    [ItemNotNull]
+    public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties([NotNull] [ItemNotNull] this IEnumerable<Type> operationInterfaces)
+    {
+        var properties = new HashSet<PropertyInfo>();
+
+        foreach (PropertyInfo property in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, true))
+            .SelectMany(operationInterface => operationInterface.GetTypeInfo().DeclaredProperties))
+        {
+            properties.Add(property);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties([NotNull] [ItemNotNull] this IEnumerable<Type> operationInterfaces)
+        return properties;
+    }
+
+    [NotNull]
+    public static Type GetSequenceElementType([NotNull] this Type type)
+    {
+        if (IsGenericEnumerable(type))
         {
-            var properties = new HashSet<PropertyInfo>();
-
-            foreach (PropertyInfo property in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, true))
-                .SelectMany(operationInterface => operationInterface.GetTypeInfo().DeclaredProperties))
-            {
-                properties.Add(property);
-            }
-
-            return properties;
+            return type.GenericTypeArguments.Single();
         }
 
-        [NotNull]
-        public static Type GetSequenceElementType([NotNull] this Type type)
-        {
-            if (IsGenericEnumerable(type))
-            {
-                return type.GenericTypeArguments.Single();
-            }
+        Type enumerable = type.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(IsGenericEnumerable);
+        return enumerable != null ? enumerable.GenericTypeArguments.Single() : typeof(object);
+    }
 
-            Type enumerable = type.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(IsGenericEnumerable);
-            return enumerable != null ? enumerable.GenericTypeArguments.Single() : typeof(object);
-        }
-
-        private static bool IsGenericEnumerable([NotNull] Type type)
-        {
-            return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
-        }
+    private static bool IsGenericEnumerable([NotNull] Type type)
+    {
+        return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
     }
 }

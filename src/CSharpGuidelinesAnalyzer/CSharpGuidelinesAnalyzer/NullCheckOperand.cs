@@ -1,8 +1,7 @@
-﻿namespace CSharpGuidelinesAnalyzer
+﻿namespace CSharpGuidelinesAnalyzer;
+
+internal enum NullCheckOperand
 {
-    internal enum NullCheckOperand
-    {
-        IsNull,
-        IsNotNull
-    }
+    IsNull,
+    IsNotNull
 }

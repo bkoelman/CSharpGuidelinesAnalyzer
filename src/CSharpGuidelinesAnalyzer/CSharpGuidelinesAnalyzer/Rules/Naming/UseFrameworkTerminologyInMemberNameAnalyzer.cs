@@ -7,77 +7,76 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace CSharpGuidelinesAnalyzer.Rules.Naming
+namespace CSharpGuidelinesAnalyzer.Rules.Naming;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnalyzer
+    private const string Title = "Name members and local functions similarly to members of .NET Framework classes";
+    private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'";
+    private const string Description = "Name members similarly to members of related .NET Framework classes.";
+
+    public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1711";
+
+    [NotNull]
+    private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
+
+    [NotNull]
+    private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
+        DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+
+    private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
+        ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
+
+    [NotNull]
+    private static readonly ImmutableDictionary<string, string> WordsReplacementMap = new Dictionary<string, string>
     {
-        private const string Title = "Name members and local functions similarly to members of .NET Framework classes";
-        private const string MessageFormat = "{0} '{1}' should be renamed to '{2}'";
-        private const string Description = "Name members similarly to members of related .NET Framework classes.";
+        { "AddItem", "Add" },
+        { "Delete", "Remove" },
+        { "NumberOfItems", "Count" }
+    }.ToImmutableDictionary();
 
-        public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1711";
+    [NotNull]
+    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
 
-        [NotNull]
-        private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
+    [NotNull]
+    private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
 
-        [NotNull]
-        private static readonly DiagnosticDescriptor Rule = new DiagnosticDescriptor(DiagnosticId, Title, MessageFormat, Category.DisplayName,
-            DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
+    [ItemNotNull]
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-        private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
-            ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
+    public override void Initialize([NotNull] AnalysisContext context)
+    {
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        [NotNull]
-        private static readonly ImmutableDictionary<string, string> WordsReplacementMap = new Dictionary<string, string>
+        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+        context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+    }
+
+    private static void AnalyzeMember(SymbolAnalysisContext context)
+    {
+        if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsSynthesized())
         {
-            { "AddItem", "Add" },
-            { "Delete", "Remove" },
-            { "NumberOfItems", "Count" }
-        }.ToImmutableDictionary();
-
-        [NotNull]
-        private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
-        [NotNull]
-        private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
-
-        [ItemNotNull]
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
-
-        public override void Initialize([NotNull] AnalysisContext context)
-        {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-
-            context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
-            context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+            return;
         }
 
-        private static void AnalyzeMember(SymbolAnalysisContext context)
+        AnalyzeSymbol(context.Symbol, context.ReportDiagnostic);
+    }
+
+    private static void AnalyzeLocalFunction(OperationAnalysisContext context)
+    {
+        var localFunction = (ILocalFunctionOperation)context.Operation;
+
+        AnalyzeSymbol(localFunction.Symbol, context.ReportDiagnostic);
+    }
+
+    private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
+    {
+        if (WordsReplacementMap.ContainsKey(symbol.Name))
         {
-            if (context.Symbol.IsPropertyOrEventAccessor() || context.Symbol.IsSynthesized())
-            {
-                return;
-            }
-
-            AnalyzeSymbol(context.Symbol, context.ReportDiagnostic);
-        }
-
-        private static void AnalyzeLocalFunction(OperationAnalysisContext context)
-        {
-            var localFunction = (ILocalFunctionOperation)context.Operation;
-
-            AnalyzeSymbol(localFunction.Symbol, context.ReportDiagnostic);
-        }
-
-        private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
-        {
-            if (WordsReplacementMap.ContainsKey(symbol.Name))
-            {
-                var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name, WordsReplacementMap[symbol.Name]);
-                reportDiagnostic(diagnostic);
-            }
+            var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], symbol.GetKind(), symbol.Name, WordsReplacementMap[symbol.Name]);
+            reportDiagnostic(diagnostic);
         }
     }
 }

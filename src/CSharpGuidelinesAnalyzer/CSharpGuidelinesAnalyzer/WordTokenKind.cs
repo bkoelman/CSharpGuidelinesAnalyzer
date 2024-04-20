@@ -1,10 +1,9 @@
-﻿namespace CSharpGuidelinesAnalyzer
+﻿namespace CSharpGuidelinesAnalyzer;
+
+public enum WordTokenKind
 {
-    public enum WordTokenKind
-    {
-        Separators,
-        CamelCaseWord,
-        PascalCaseWord,
-        UpperCaseWord
-    }
+    Separators,
+    CamelCaseWord,
+    PascalCaseWord,
+    UpperCaseWord
 }

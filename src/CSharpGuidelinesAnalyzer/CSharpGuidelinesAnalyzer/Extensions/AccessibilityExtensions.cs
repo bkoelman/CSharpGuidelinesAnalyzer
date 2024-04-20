@@ -1,31 +1,30 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
-namespace CSharpGuidelinesAnalyzer.Extensions
+namespace CSharpGuidelinesAnalyzer.Extensions;
+
+internal static class AccessibilityExtensions
 {
-    internal static class AccessibilityExtensions
+    [NotNull]
+    public static string ToText(this Accessibility accessibility)
     {
-        [NotNull]
-        public static string ToText(this Accessibility accessibility)
+        switch (accessibility)
         {
-            switch (accessibility)
+            case Accessibility.NotApplicable:
             {
-                case Accessibility.NotApplicable:
-                {
-                    return string.Empty;
-                }
-                case Accessibility.ProtectedAndInternal:
-                {
-                    return "Private protected";
-                }
-                case Accessibility.ProtectedOrInternal:
-                {
-                    return "Protected internal";
-                }
-                default:
-                {
-                    return accessibility.ToString();
-                }
+                return string.Empty;
+            }
+            case Accessibility.ProtectedAndInternal:
+            {
+                return "Private protected";
+            }
+            case Accessibility.ProtectedOrInternal:
+            {
+                return "Protected internal";
+            }
+            default:
+            {
+                return accessibility.ToString();
             }
         }
     }
