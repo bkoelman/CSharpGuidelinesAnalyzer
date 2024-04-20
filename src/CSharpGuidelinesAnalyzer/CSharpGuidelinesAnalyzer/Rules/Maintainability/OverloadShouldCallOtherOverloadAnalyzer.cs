@@ -335,7 +335,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private struct OverloadsInfo(
+    private readonly struct OverloadsInfo(
         [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
     {
         [NotNull]

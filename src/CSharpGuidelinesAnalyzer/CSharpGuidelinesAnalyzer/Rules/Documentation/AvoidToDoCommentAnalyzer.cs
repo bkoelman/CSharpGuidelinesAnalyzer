@@ -237,7 +237,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
             return kind is SyntaxKind.MultiLineCommentTrivia or SyntaxKind.MultiLineDocumentationCommentTrivia;
         }
 
-        private struct LineRange(TextLine startLine, TextLine endLine)
+        private readonly struct LineRange(TextLine startLine, TextLine endLine)
         {
             public TextLine StartLine { get; } = startLine;
             public TextLine EndLine { get; } = endLine;
