@@ -186,8 +186,7 @@ internal static class OperationExtensions
     {
         if (OperationSemanticModelProperty != null)
         {
-            object[] emptyArray = Array.Empty<object>();
-            return (SemanticModel)OperationSemanticModelProperty.GetMethod.Invoke(operation, emptyArray);
+            return (SemanticModel)OperationSemanticModelProperty.GetMethod.Invoke(operation, []);
         }
 
         return compilation.GetSemanticModel(operation.Syntax.SyntaxTree);

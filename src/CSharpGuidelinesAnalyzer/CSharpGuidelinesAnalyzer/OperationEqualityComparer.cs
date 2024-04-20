@@ -73,10 +73,8 @@ internal sealed class OperationEqualityComparer
 
     private bool ArePropertyValuesEqual([NotNull] PropertyInfo property, [NotNull] object left, [NotNull] object right)
     {
-        object[] emptyObjectArray = Array.Empty<object>();
-
-        object leftValue = property.GetMethod.Invoke(left, emptyObjectArray);
-        object rightValue = property.GetMethod.Invoke(right, emptyObjectArray);
+        object leftValue = property.GetMethod.Invoke(left, []);
+        object rightValue = property.GetMethod.Invoke(right, []);
         ReflectionTypeInfo propertyType = property.PropertyType.GetTypeInfo();
 
         if (EnumerableInterface.IsAssignableFrom(propertyType))

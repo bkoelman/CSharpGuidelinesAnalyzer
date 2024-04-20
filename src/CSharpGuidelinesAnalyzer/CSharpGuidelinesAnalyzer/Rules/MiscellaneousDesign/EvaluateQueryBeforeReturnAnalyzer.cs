@@ -132,28 +132,25 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         {
             case QueryOperationName:
             {
-                return (QueryRule, new object[]
-                {
+                return (QueryRule, [
                     containingMember.GetKind(),
                     memberName
-                });
+                ]);
             }
             case QueryableOperationName:
             {
-                return (QueryableRule, new object[]
-                {
+                return (QueryableRule, [
                     containingMember.GetKind(),
                     memberName
-                });
+                ]);
             }
             default:
             {
-                return (OperationRule, new object[]
-                {
+                return (OperationRule, [
                     containingMember.GetKind(),
                     memberName,
                     operationName
-                });
+                ]);
             }
         }
     }
@@ -172,7 +169,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         [NotNull]
         [ItemNotNull]
-        public IList<IReturnOperation> ReturnStatements { get; } = new List<IReturnOperation>();
+        public IList<IReturnOperation> ReturnStatements { get; } = [];
 
         public ReturnStatementCollector([NotNull] SequenceTypeInfo sequenceTypeInfo, OperationBlockAnalysisContext context)
         {
@@ -701,12 +698,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         private ImmutableArray<INamedTypeSymbol> GetQueryableTypes([NotNull] Compilation compilation)
         {
             INamedTypeSymbol[] types =
-            {
+            [
                 KnownTypes.SystemLinqIQueryableT(compilation),
                 KnownTypes.SystemLinqIOrderedQueryableT(compilation),
                 KnownTypes.SystemLinqIQueryable(compilation),
                 KnownTypes.SystemLinqIOrderedQueryable(compilation)
-            };
+            ];
 
             return types.Where(type => type != null).ToImmutableArray();
         }
@@ -715,11 +712,11 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         private ImmutableArray<INamedTypeSymbol> GetOtherSequenceTypes([NotNull] Compilation compilation)
         {
             INamedTypeSymbol[] types =
-            {
+            [
                 KnownTypes.SystemLinqIOrderedEnumerableT(compilation),
                 KnownTypes.SystemLinqIGroupingTKeyTElement(compilation),
                 KnownTypes.SystemLinqILookupTKeyTElement(compilation)
-            };
+            ];
 
             return types.Where(type => type != null).ToImmutableArray();
         }

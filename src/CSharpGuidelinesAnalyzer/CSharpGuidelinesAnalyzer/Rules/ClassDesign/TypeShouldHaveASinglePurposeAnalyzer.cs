@@ -31,13 +31,13 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
 
     [NotNull]
     private static readonly SyntaxKind[] TypeDeclarationKinds =
-    {
+    [
         SyntaxKind.ClassDeclaration,
         SyntaxKind.StructDeclaration,
         SyntaxKind.InterfaceDeclaration,
         SyntaxKind.EnumDeclaration,
         SyntaxKind.DelegateDeclaration
-    };
+    ];
 
     [NotNull]
     private static readonly TypeIdentifierResolver IdentifierResolver = new();

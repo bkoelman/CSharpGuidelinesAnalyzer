@@ -6,7 +6,7 @@ internal sealed class EmptySourceCodeBuilder : SourceCodeBuilder
     private string text = string.Empty;
 
     public EmptySourceCodeBuilder()
-        : base(Enumerable.Empty<string>())
+        : base([])
     {
     }
 

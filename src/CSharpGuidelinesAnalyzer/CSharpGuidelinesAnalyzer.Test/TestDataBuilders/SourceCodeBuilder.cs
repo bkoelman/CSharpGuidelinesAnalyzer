@@ -10,13 +10,10 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 /// <summary />
 internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 {
-    protected static readonly ImmutableArray<string> DefaultNamespaceImports = new[]
-    {
-        "System"
-    }.ToImmutableArray();
+    protected static readonly ImmutableArray<string> DefaultNamespaceImports = ["System"];
 
     public static readonly AnalyzerTestContext DefaultTestContext =
-        new(string.Empty, Array.Empty<TextSpan>(), new AnalyzerOptions(ImmutableArray<AdditionalText>.Empty));
+        new(string.Empty, [], new AnalyzerOptions([]));
 
     private readonly HashSet<string> namespaceImports;
 
@@ -26,7 +23,7 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 
     protected SourceCodeBuilder(IEnumerable<string> implicitNamespaceImports)
     {
-        namespaceImports = new HashSet<string>(implicitNamespaceImports);
+        namespaceImports = implicitNamespaceImports.ToHashSet();
         Editor = new CodeEditor(this);
     }
 

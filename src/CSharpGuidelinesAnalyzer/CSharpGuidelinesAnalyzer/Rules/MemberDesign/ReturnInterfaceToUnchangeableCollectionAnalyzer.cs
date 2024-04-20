@@ -62,7 +62,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
     private static ISet<INamedTypeSymbol> ResolveUnchangeableCollectionInterfaces([NotNull] Compilation compilation)
     {
         INamedTypeSymbol[] types =
-        {
+        [
             KnownTypes.SystemCollectionsGenericIEnumerableT(compilation),
             KnownTypes.SystemCollectionsGenericIAsyncEnumerableT(compilation),
             KnownTypes.SystemLinqIQueryable(compilation),
@@ -71,7 +71,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
             KnownTypes.SystemCollectionsGenericIReadOnlyListT(compilation),
             KnownTypes.SystemCollectionsGenericIReadOnlySetT(compilation),
             KnownTypes.SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue(compilation)
-        };
+        ];
 
         return types.Where(type => type != null).ToImmutableHashSet();
     }

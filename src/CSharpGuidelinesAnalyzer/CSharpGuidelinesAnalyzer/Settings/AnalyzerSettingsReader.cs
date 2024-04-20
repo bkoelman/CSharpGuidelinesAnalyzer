@@ -66,17 +66,14 @@ internal sealed class AnalyzerSettingsReader
             typeof(AnalyzerOptions).GetRuntimeProperty("AnalyzerConfigOptionsProvider");
 
         [CanBeNull]
-        private static readonly MethodInfo GetOptionsMethod = AnalyzerConfigOptionsProviderProperty?.PropertyType.GetRuntimeMethod("GetOptions", new[]
-        {
-            typeof(SyntaxTree)
-        });
+        private static readonly MethodInfo GetOptionsMethod =
+            AnalyzerConfigOptionsProviderProperty?.PropertyType.GetRuntimeMethod("GetOptions", [typeof(SyntaxTree)]);
 
         [CanBeNull]
-        private static readonly MethodInfo TryGetValueMethod = GetOptionsMethod?.ReturnType.GetRuntimeMethod("TryGetValue", new[]
-        {
+        private static readonly MethodInfo TryGetValueMethod = GetOptionsMethod?.ReturnType.GetRuntimeMethod("TryGetValue", [
             typeof(string),
             typeof(string).MakeByRefType()
-        });
+        ]);
 
         [CanBeNull]
         private readonly object providerInstance;
@@ -90,16 +87,13 @@ internal sealed class AnalyzerSettingsReader
         {
             if (providerInstance != null && GetOptionsMethod != null && TryGetValueMethod != null)
             {
-                object options = GetOptionsMethod.Invoke(providerInstance, new object[]
-                {
-                    syntaxTree
-                });
+                object options = GetOptionsMethod.Invoke(providerInstance, [syntaxTree]);
 
                 object[] parameters =
-                {
+                [
                     key,
                     null
-                };
+                ];
 
                 bool succeeded = (bool)TryGetValueMethod.Invoke(options, parameters);
 

@@ -108,7 +108,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
 
         [NotNull]
         [ItemNotNull]
-        public IList<SyntaxNode> TopLevelTypeDeclarations { get; } = new List<SyntaxNode>();
+        public IList<SyntaxNode> TopLevelTypeDeclarations { get; } = [];
 
         public override void Visit([NotNull] SyntaxNode node)
         {

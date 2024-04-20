@@ -23,7 +23,7 @@ internal sealed class DiagnosticCollector : IDisposable
         {
             if (diagnostics == null)
             {
-                return ImmutableArray<Diagnostic>.Empty;
+                return [];
             }
 
             return diagnostics;
@@ -42,7 +42,7 @@ internal sealed class DiagnosticCollector : IDisposable
     {
         Guard.NotNull(diagnostic, nameof(diagnostic));
 
-        diagnostics ??= new List<Diagnostic>();
+        diagnostics ??= [];
         diagnostics.Add(diagnostic);
     }
 

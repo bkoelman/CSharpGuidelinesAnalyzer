@@ -59,11 +59,11 @@ public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
     private static ImmutableArray<INamedTypeSymbol> ResolveExceptionTypes([NotNull] Compilation compilation)
     {
         INamedTypeSymbol[] types =
-        {
+        [
             KnownTypes.SystemException(compilation),
             KnownTypes.SystemSystemException(compilation),
             KnownTypes.SystemApplicationException(compilation)
-        };
+        ];
 
         return types.Where(type => type != null).ToImmutableArray();
     }

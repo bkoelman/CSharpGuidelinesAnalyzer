@@ -67,7 +67,7 @@ internal static class SourceCodeBuilderExtensions
     private static Stream GetInMemoryAssemblyStreamForCode(string code, string assemblyName, params MetadataReference[] references)
     {
         SyntaxTree tree = CSharpSyntaxTree.ParseText(code);
-        ImmutableArray<SyntaxTree> trees = ImmutableArray.Create(tree);
+        ImmutableArray<SyntaxTree> trees = [tree];
         var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
         CSharpCompilation compilation = CSharpCompilation.Create(assemblyName, trees).WithOptions(options);

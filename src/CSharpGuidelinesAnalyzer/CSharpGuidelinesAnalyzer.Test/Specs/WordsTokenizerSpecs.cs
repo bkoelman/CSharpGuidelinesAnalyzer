@@ -8,7 +8,7 @@ public sealed class WordsTokenizerSpecs
     [Fact]
     internal void When_empty_string_it_must_be_tokenized()
     {
-        RunTest("", Array.Empty<WordToken>());
+        RunTest("", []);
     }
 
     [Fact]

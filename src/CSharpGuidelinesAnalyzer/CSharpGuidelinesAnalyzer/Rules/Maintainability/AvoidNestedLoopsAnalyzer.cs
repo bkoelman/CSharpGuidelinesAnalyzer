@@ -27,13 +27,13 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
 
     [NotNull]
     private static readonly SyntaxKind[] LoopStatementKinds =
-    {
+    [
         SyntaxKind.WhileStatement,
         SyntaxKind.DoStatement,
         SyntaxKind.ForStatement,
         SyntaxKind.ForEachStatement,
         SyntaxKind.ForEachVariableStatement
-    };
+    ];
 
     [NotNull]
     private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLoopStatementAction = AnalyzeLoopStatement;

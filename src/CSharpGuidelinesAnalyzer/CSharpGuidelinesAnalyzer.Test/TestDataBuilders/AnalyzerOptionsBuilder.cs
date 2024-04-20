@@ -11,12 +11,7 @@ internal sealed class AnalyzerOptionsBuilder : ITestDataBuilder<AnalyzerOptions>
 
     public AnalyzerOptions Build()
     {
-        ImmutableArray<AdditionalText> textArray = xmlSettings == null
-            ? ImmutableArray<AdditionalText>.Empty
-            : new[]
-            {
-                xmlSettings
-            }.ToImmutableArray();
+        ImmutableArray<AdditionalText> textArray = xmlSettings == null ? [] : [xmlSettings];
 
         return editorConfigSettings != null ? new AnalyzerOptions(textArray, editorConfigSettings) : new AnalyzerOptions(textArray);
     }

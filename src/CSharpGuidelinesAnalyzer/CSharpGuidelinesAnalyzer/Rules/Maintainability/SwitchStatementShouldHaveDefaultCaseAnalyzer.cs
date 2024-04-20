@@ -31,10 +31,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
     [NotNull]
     [ItemCanBeNull]
-    private static readonly ISymbol[] NullSymbolArray =
-    {
-        null
-    };
+    private static readonly ISymbol[] NullSymbolArray = [null];
 
     [NotNull]
     private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
@@ -185,7 +182,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
     {
         [NotNull]
         [ItemCanBeNull]
-        private readonly HashSet<ISymbol> caseClauseValues = new();
+        private readonly HashSet<ISymbol> caseClauseValues = [];
 
         [CanBeNull]
         [ItemCanBeNull]

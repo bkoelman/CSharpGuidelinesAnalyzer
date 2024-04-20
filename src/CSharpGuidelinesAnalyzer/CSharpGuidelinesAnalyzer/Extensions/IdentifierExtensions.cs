@@ -17,7 +17,7 @@ internal static class IdentifierExtensions
 
         if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWordsListed(identifierName, list))
         {
-            return ImmutableArray<WordToken>.Empty;
+            return [];
         }
 
         var tokenizer = new WordsTokenizer(identifierName);

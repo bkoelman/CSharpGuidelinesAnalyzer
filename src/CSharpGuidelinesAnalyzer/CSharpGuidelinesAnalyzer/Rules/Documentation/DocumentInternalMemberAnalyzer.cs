@@ -42,7 +42,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
 
     [NotNull]
     [ItemNotNull]
-    private static readonly HashSet<string> EmptyHashSet = new();
+    private static readonly HashSet<string> EmptyHashSet = [];
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
@@ -192,7 +192,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     {
         var parameterNames = new HashSet<string>();
 
-        foreach (XElement paramElement in document.Element("member")?.Elements("param") ?? ImmutableArray<XElement>.Empty)
+        foreach (XElement paramElement in document.Element("member")?.Elements("param") ?? [])
         {
             XAttribute paramAttribute = paramElement.Attribute("name");
 

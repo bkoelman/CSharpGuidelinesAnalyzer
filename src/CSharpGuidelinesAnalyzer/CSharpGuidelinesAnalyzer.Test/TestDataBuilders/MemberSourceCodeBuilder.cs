@@ -5,7 +5,7 @@ namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 /// <summary />
 internal sealed class MemberSourceCodeBuilder : SourceCodeBuilder
 {
-    private readonly List<string> members = new();
+    private readonly List<string> members = [];
 
     public MemberSourceCodeBuilder()
         : base(DefaultNamespaceImports)

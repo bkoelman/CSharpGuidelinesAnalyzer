@@ -28,11 +28,11 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
 
     [NotNull]
     private static readonly SyntaxKind[] AnonymousFunctionKinds =
-    {
+    [
         SyntaxKind.SimpleLambdaExpression,
         SyntaxKind.ParenthesizedLambdaExpression,
         SyntaxKind.AnonymousMethodExpression
-    };
+    ];
 
     [NotNull]
     private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeAnonymousFunctionAction = AnalyzeAnonymousFunction;

@@ -26,10 +26,10 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
     [NotNull]
     private static readonly SyntaxKind[] AssignmentSyntaxKinds =
-    {
+    [
         SyntaxKind.SimpleAssignmentExpression,
         CoalesceAssignmentExpressionSyntaxKind
-    };
+    ];
 
     [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Performance;

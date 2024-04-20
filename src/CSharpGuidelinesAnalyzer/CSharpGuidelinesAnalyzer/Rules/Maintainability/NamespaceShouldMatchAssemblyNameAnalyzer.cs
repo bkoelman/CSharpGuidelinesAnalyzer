@@ -116,10 +116,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
         private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace = ImmutableArray.Create("JetBrains", "Annotations");
 
         [NotNull]
-        private static readonly char[] DotSeparator =
-        {
-            '.'
-        };
+        private static readonly char[] DotSeparator = ['.'];
 
         [ItemNotNull]
         private readonly ImmutableArray<string> assemblyNameParts;

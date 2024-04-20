@@ -145,7 +145,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
 
         [NotNull]
         [ItemNotNull]
-        public ICollection<string> IdentifiersAssigned { get; } = new HashSet<string>();
+        public ISet<string> IdentifiersAssigned { get; } = new HashSet<string>();
 
         public StatementWalker(ForLoopSection section)
         {

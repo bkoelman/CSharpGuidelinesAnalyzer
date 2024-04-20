@@ -50,22 +50,22 @@ internal sealed class FixableDocument
         private const int SpanTextLength = 2;
 
         private static readonly char[] SpanKinds =
-        {
+        [
             '|',
             '+',
             '-',
             '*'
-        };
+        ];
 
         private static readonly string[] ReplaceSeparatorArray =
-        {
+        [
             ReplaceSeparator
-        };
+        ];
 
         private readonly string markupCode;
 
-        public IList<TextBlock> TextBlocks { get; } = new List<TextBlock>();
-        public IList<TextSpan> TextSpans { get; } = new List<TextSpan>();
+        public IList<TextBlock> TextBlocks { get; } = [];
+        public IList<TextSpan> TextSpans { get; } = [];
 
         public MarkupParser(string markupCode)
         {

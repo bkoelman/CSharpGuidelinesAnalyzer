@@ -33,7 +33,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
 
     [NotNull]
     private static readonly char[] Digits =
-    {
+    [
         '0',
         '1',
         '2',
@@ -44,7 +44,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         '7',
         '8',
         '9'
-    };
+    ];
 
     [NotNull]
     private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);

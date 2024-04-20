@@ -170,9 +170,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
         [CanBeNull]
         private IEventReferenceOperation InvokeEventReferencePropertyGetMethod()
         {
-            object[] emptyObjectArray = Array.Empty<object>();
-
-            object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, emptyObjectArray);
+            object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, []);
             TypeInfo propertyType = propertyValue.GetType().GetTypeInfo();
 
             return typeof(IEventReferenceOperation).GetTypeInfo().IsAssignableFrom(propertyType) ? (IEventReferenceOperation)propertyValue : null;
