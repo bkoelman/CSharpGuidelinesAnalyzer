@@ -38,7 +38,7 @@
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.8.4" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.137" PrivateAssets="all" />
+    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.147" PrivateAssets="all" />
     <!-- ReSharper disable once VulnerablePackage -->
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
     <PackageReference Include="ResharperCodeContractNullability" Version="2.0.2" PrivateAssets="all" />
