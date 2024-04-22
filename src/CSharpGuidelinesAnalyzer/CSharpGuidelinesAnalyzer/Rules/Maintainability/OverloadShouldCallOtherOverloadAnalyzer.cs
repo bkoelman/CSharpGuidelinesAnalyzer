@@ -265,10 +265,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    // Workaround for https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/155.
-#pragma warning disable AV1500 // Member or local function contains too many statements
     private sealed class MethodInvocationWalker([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup) : ExplicitOperationWalker
-#pragma warning restore AV1500 // Member or local function contains too many statements
     {
         [NotNull]
         [ItemNotNull]
