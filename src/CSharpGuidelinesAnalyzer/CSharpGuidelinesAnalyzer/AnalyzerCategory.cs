@@ -53,6 +53,6 @@ internal sealed class AnalyzerCategory
         }
 
         string ruleNumber = ruleId.Substring(2);
-        return $"https://github.com/dennisdoomen/CSharpGuidelines/blob/5.6.0/_rules/{ruleNumber}.md";
+        return $"https://github.com/dennisdoomen/CSharpGuidelines/blob/5.7.0/_rules/{ruleNumber}.md";
     }
 }
