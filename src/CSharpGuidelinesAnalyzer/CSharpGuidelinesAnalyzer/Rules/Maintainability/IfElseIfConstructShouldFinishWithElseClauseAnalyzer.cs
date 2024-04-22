@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -26,9 +25,6 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<OperationBlockAnalysisContext> AnalyzeCodeBlockAction = context => context.SkipInvalid(AnalyzeCodeBlock);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -37,7 +33,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterOperationBlockAction(AnalyzeCodeBlockAction);
+        context.SafeRegisterOperationBlockAction(AnalyzeCodeBlock);
     }
 
     private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context)

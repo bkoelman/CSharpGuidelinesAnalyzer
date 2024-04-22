@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -28,12 +27,6 @@ public sealed class AvoidMisleadingNameAnalyzer : DiagnosticAnalyzer
     [ItemNotNull]
     private static readonly ImmutableArray<string> Blacklist = ImmutableArray.Create("b001", "lo", "I1", "lOl");
 
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context => context.SkipInvalid(AnalyzeVariableDeclarator);
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -42,8 +35,8 @@ public sealed class AvoidMisleadingNameAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterOperationAction(AnalyzeVariableDeclaratorAction, OperationKind.VariableDeclarator);
-        context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
+        context.SafeRegisterOperationAction(AnalyzeVariableDeclarator, OperationKind.VariableDeclarator);
+        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
     private static void AnalyzeVariableDeclarator(OperationAnalysisContext context)

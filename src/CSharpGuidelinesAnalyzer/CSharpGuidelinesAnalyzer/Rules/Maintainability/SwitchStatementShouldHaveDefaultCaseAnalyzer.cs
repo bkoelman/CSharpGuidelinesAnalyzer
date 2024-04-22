@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -33,15 +32,6 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
     [ItemCanBeNull]
     private static readonly ISymbol[] NullSymbolArray = [null];
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeSwitchStatementAction = (context, systemBoolean) =>
-        context.SkipInvalid(_ => AnalyzeSwitchStatement(context, systemBoolean));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -50,7 +40,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -59,7 +49,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
         if (systemBoolean != null)
         {
-            startContext.RegisterOperationAction(context => AnalyzeSwitchStatementAction(context, systemBoolean), OperationKind.Switch);
+            startContext.SafeRegisterOperationAction(context => AnalyzeSwitchStatement(context, systemBoolean), OperationKind.Switch);
         }
     }
 

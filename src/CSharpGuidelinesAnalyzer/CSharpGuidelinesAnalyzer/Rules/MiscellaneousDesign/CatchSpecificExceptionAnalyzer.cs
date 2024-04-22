@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -26,14 +25,6 @@ public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext, ImmutableArray<INamedTypeSymbol>> AnalyzeCatchClauseAction = AnalyzeCatchClause;
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -42,7 +33,7 @@ public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -51,7 +42,7 @@ public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
 
         if (types.Any())
         {
-            startContext.RegisterSyntaxNodeAction(context => AnalyzeCatchClauseAction(context, types), SyntaxKind.CatchClause);
+            startContext.RegisterSyntaxNodeAction(context => AnalyzeCatchClause(context, types), SyntaxKind.CatchClause);
         }
     }
 

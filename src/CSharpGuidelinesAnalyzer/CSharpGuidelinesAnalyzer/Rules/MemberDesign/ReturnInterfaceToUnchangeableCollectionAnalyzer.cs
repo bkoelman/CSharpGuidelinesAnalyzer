@@ -27,15 +27,6 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext, ISet<INamedTypeSymbol>> AnalyzeMethodAction = (context, unchangeableCollectionInterfaces) =>
-        context.SkipEmptyName(_ => AnalyzeMethod(context, unchangeableCollectionInterfaces));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -44,7 +35,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -53,7 +44,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
 
         if (unchangeableCollectionInterfaces.Any())
         {
-            startContext.RegisterSymbolAction(context => AnalyzeMethodAction(context, unchangeableCollectionInterfaces), SymbolKind.Method);
+            startContext.SafeRegisterSymbolAction(context => AnalyzeMethod(context, unchangeableCollectionInterfaces), SymbolKind.Method);
         }
     }
 

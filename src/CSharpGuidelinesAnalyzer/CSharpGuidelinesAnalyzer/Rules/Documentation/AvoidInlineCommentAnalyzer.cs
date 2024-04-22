@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using JetBrains.Annotations;
@@ -28,9 +27,6 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
     [ItemNotNull]
     private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
 
-    [NotNull]
-    private static readonly Action<CodeBlockAnalysisContext> AnalyzeCodeBlockAction = AnalyzeCodeBlock;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -39,7 +35,7 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCodeBlockAction(AnalyzeCodeBlockAction);
+        context.RegisterCodeBlockAction(AnalyzeCodeBlock);
     }
 
     private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context)

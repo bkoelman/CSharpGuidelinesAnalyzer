@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -28,15 +27,6 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
 
     private static readonly ImmutableArray<OperationKind> ReturnOperationKinds = ImmutableArray.Create(OperationKind.Return, OperationKind.YieldReturn);
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, IList<INamedTypeSymbol>> AnalyzeReturnAction = (context, taskTypes) =>
-        context.SkipInvalid(_ => AnalyzeReturn(context, taskTypes));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -45,14 +35,14 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
     {
         IList<INamedTypeSymbol> taskTypes = ResolveTaskTypes(startContext.Compilation).ToList();
 
-        startContext.RegisterOperationAction(context => AnalyzeReturnAction(context, taskTypes), ReturnOperationKinds);
+        startContext.SafeRegisterOperationAction(context => AnalyzeReturn(context, taskTypes), ReturnOperationKinds);
     }
 
     [NotNull]

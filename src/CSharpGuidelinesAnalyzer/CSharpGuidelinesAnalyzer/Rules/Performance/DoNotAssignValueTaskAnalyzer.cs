@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -42,24 +41,6 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor ArgumentRule = new(DiagnosticId, Title, ArgumentMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext, IList<INamedTypeSymbol>> AnalyzeInitializerAction = AnalyzeInitializer;
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext, IList<INamedTypeSymbol>> AnalyzeAssignmentAction = AnalyzeAssignment;
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext, IList<INamedTypeSymbol>> AnalyzeArgumentAction = AnalyzeArgument;
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(AssignmentRule, ArgumentRule);
 
@@ -68,7 +49,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -77,9 +58,9 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
         if (valueTaskTypes.Any())
         {
-            startContext.RegisterSyntaxNodeAction(context => AnalyzeInitializerAction(context, valueTaskTypes), SyntaxKind.EqualsValueClause);
-            startContext.RegisterSyntaxNodeAction(context => AnalyzeAssignmentAction(context, valueTaskTypes), AssignmentSyntaxKinds);
-            startContext.RegisterSyntaxNodeAction(context => AnalyzeArgumentAction(context, valueTaskTypes), SyntaxKind.Argument);
+            startContext.RegisterSyntaxNodeAction(context => AnalyzeInitializer(context, valueTaskTypes), SyntaxKind.EqualsValueClause);
+            startContext.RegisterSyntaxNodeAction(context => AnalyzeAssignment(context, valueTaskTypes), AssignmentSyntaxKinds);
+            startContext.RegisterSyntaxNodeAction(context => AnalyzeArgument(context, valueTaskTypes), SyntaxKind.Argument);
         }
     }
 

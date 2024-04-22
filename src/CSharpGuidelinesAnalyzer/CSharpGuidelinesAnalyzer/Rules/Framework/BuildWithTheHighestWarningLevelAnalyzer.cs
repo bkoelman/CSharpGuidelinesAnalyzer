@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -22,9 +21,6 @@ public sealed class BuildWithTheHighestWarningLevelAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationAnalysisContext> AnalyzeCompilationOptionsAction = AnalyzeCompilationOptions;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -33,7 +29,7 @@ public sealed class BuildWithTheHighestWarningLevelAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationAction(AnalyzeCompilationOptionsAction);
+        context.RegisterCompilationAction(AnalyzeCompilationOptions);
     }
 
     private static void AnalyzeCompilationOptions(CompilationAnalysisContext context)

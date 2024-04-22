@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -31,9 +30,6 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-    [NotNull]
     private static readonly AnalyzerSettingKey MaxStatementCountKey = new(DiagnosticId, "MaxStatementCount");
 
     [ItemNotNull]
@@ -44,7 +40,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -53,7 +49,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
         var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
-        startContext.RegisterCodeBlockAction(actionContext => AnalyzeCodeBlock(actionContext, settingsReader));
+        startContext.RegisterCodeBlockAction(context => AnalyzeCodeBlock(context, settingsReader));
     }
 
     private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)

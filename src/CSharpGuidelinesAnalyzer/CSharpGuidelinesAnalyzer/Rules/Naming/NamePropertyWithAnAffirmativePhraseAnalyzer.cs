@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -31,12 +30,6 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain",
         "Contains", "Require", "Requires", "Return", "Returns", "Starts", "Consists", "Targets");
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -45,8 +38,8 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
-        context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
+        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
     private static void AnalyzeMember(SymbolAnalysisContext context)

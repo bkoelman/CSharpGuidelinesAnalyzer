@@ -25,12 +25,6 @@ public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -39,8 +33,8 @@ public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
-        context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+        context.SafeRegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
+        context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
     }
 
     private static void AnalyzeMethod(SymbolAnalysisContext context)

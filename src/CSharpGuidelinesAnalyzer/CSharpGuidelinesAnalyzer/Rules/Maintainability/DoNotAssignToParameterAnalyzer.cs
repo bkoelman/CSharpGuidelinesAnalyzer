@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -31,21 +30,6 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         SpecialType.System_UInt32, SpecialType.System_Int64, SpecialType.System_UInt64, SpecialType.System_Decimal, SpecialType.System_Single,
         SpecialType.System_Double, SpecialType.System_IntPtr, SpecialType.System_UIntPtr, SpecialType.System_DateTime);
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMethodAction = context => context.SkipEmptyName(AnalyzeMethod);
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzePropertyAction = context => context.SkipEmptyName(AnalyzeProperty);
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeEventAction = context => context.SkipEmptyName(AnalyzeEvent);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousFunctionAction = context => context.SkipInvalid(AnalyzeAnonymousFunction);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -54,11 +38,11 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeMethodAction, SymbolKind.Method);
-        context.RegisterSymbolAction(AnalyzePropertyAction, SymbolKind.Property);
-        context.RegisterSymbolAction(AnalyzeEventAction, SymbolKind.Event);
-        context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
-        context.RegisterOperationAction(AnalyzeAnonymousFunctionAction, OperationKind.AnonymousFunction);
+        context.SafeRegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
+        context.SafeRegisterSymbolAction(AnalyzeProperty, SymbolKind.Property);
+        context.SafeRegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
+        context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
+        context.SafeRegisterOperationAction(AnalyzeAnonymousFunction, OperationKind.AnonymousFunction);
     }
 
     private static void AnalyzeMethod(SymbolAnalysisContext context)

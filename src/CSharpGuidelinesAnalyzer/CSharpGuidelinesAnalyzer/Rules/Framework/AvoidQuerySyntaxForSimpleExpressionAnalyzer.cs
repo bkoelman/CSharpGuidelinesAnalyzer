@@ -25,9 +25,6 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeQueryExpressionAction = AnalyzeQueryExpression;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -36,7 +33,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeQueryExpressionAction, SyntaxKind.QueryExpression);
+        context.RegisterSyntaxNodeAction(AnalyzeQueryExpression, SyntaxKind.QueryExpression);
     }
 
     private static void AnalyzeQueryExpression(SyntaxNodeAnalysisContext context)

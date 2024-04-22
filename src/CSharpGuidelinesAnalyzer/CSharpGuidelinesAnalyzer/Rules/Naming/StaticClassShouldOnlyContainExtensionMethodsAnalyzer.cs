@@ -24,9 +24,6 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -35,7 +32,7 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
     }
 
     private static void AnalyzeNamedType(SymbolAnalysisContext context)

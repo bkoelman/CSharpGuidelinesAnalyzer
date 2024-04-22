@@ -24,21 +24,6 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeConversionAction = (context, objectHandleType) =>
-        context.SkipInvalid(_ => AnalyzeConversion(context, objectHandleType));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeCompoundAssignmentAction = (context, objectHandleType) =>
-        context.SkipInvalid(_ => AnalyzeCompoundAssignment(context, objectHandleType));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -47,15 +32,15 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
     {
         INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
 
-        startContext.RegisterOperationAction(context => AnalyzeConversionAction(context, objectHandleType), OperationKind.Conversion);
-        startContext.RegisterOperationAction(context => AnalyzeCompoundAssignmentAction(context, objectHandleType), OperationKind.CompoundAssignment);
+        startContext.SafeRegisterOperationAction(context => AnalyzeConversion(context, objectHandleType), OperationKind.Conversion);
+        startContext.SafeRegisterOperationAction(context => AnalyzeCompoundAssignment(context, objectHandleType), OperationKind.CompoundAssignment);
     }
 
     private static void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)

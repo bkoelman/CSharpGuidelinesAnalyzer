@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -27,9 +26,6 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeTypeDeclarationAction = AnalyzeTypeDeclaration;
-
-    [NotNull]
     private static readonly SyntaxKind[] TypeDeclarationKinds =
     [
         SyntaxKind.ClassDeclaration,
@@ -50,7 +46,7 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeTypeDeclarationAction, TypeDeclarationKinds);
+        context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, TypeDeclarationKinds);
     }
 
     private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)

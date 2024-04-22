@@ -26,9 +26,6 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameAnalyzer : Diagnos
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -37,7 +34,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameAnalyzer : Diagnos
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+        context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
     }
 
     private static void AnalyzeMember(SymbolAnalysisContext context)

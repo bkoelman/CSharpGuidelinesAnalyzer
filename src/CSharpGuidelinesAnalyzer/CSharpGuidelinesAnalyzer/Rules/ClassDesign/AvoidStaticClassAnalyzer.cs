@@ -31,9 +31,6 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor MemberRule = new(DiagnosticId, Title, MemberMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
     [ItemNotNull]
     private static readonly ImmutableArray<string> PlatformInvokeWrapperTypeNames =
         ImmutableArray.Create("NativeMethods", "SafeNativeMethods", "UnsafeNativeMethods");
@@ -46,7 +43,7 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
     }
 
     private static void AnalyzeNamedType(SymbolAnalysisContext context)

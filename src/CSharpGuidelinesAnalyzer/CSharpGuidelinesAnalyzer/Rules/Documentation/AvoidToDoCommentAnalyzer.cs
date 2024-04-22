@@ -25,9 +25,6 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeTodoCommentsAction = AnalyzeTodoComments;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -36,7 +33,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxTreeAction(AnalyzeTodoCommentsAction);
+        context.RegisterSyntaxTreeAction(AnalyzeTodoComments);
     }
 
     private static void AnalyzeTodoComments(SyntaxTreeAnalysisContext context)

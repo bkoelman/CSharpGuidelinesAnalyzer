@@ -28,9 +28,6 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SemanticModelAnalysisContext> AnalyzeSemanticModelAction = AnalyzeSemanticModel;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -39,7 +36,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSemanticModelAction(AnalyzeSemanticModelAction);
+        context.RegisterSemanticModelAction(AnalyzeSemanticModel);
     }
 
     private static void AnalyzeSemanticModel(SemanticModelAnalysisContext context)

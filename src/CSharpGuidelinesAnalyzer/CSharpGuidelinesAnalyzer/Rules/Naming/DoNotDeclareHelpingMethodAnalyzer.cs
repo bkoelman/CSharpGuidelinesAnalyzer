@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -29,9 +28,6 @@ public sealed class DoNotDeclareHelpingMethodAnalyzer : DiagnosticAnalyzer
     private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Utility", "Utilities", "Facility",
         "Facilities", "Helper", "Helpers", "Common", "Shared");
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -40,7 +36,7 @@ public sealed class DoNotDeclareHelpingMethodAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
     }
 
     private static void AnalyzeNamedType(SymbolAnalysisContext context)

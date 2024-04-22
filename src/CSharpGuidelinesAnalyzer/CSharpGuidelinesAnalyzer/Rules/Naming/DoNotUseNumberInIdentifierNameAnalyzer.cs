@@ -46,43 +46,6 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         '9'
     ];
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeVariableDeclaratorAction = context => context.SkipInvalid(AnalyzeVariableDeclarator);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeTupleAction = context => context.SkipInvalid(AnalyzeTuple);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeAnonymousObjectCreationAction = context =>
-        context.SkipInvalid(AnalyzeAnonymousObjectCreation);
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeFromClauseAction = AnalyzeFromClause;
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeJoinClauseAction = AnalyzeJoinClause;
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeJoinIntoClauseAction = AnalyzeJoinIntoClause;
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeQueryContinuationAction = AnalyzeQueryContinuation;
-
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLetClauseAction = AnalyzeLetClause;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -98,26 +61,26 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
 
     private void RegisterForSymbols([NotNull] AnalysisContext context)
     {
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
-        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
-        context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
+        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
     private void RegisterForOperations([NotNull] AnalysisContext context)
     {
-        context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
-        context.RegisterOperationAction(AnalyzeVariableDeclaratorAction, OperationKind.VariableDeclarator);
-        context.RegisterOperationAction(AnalyzeTupleAction, OperationKind.Tuple);
-        context.RegisterOperationAction(AnalyzeAnonymousObjectCreationAction, OperationKind.AnonymousObjectCreation);
+        context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
+        context.SafeRegisterOperationAction(AnalyzeVariableDeclarator, OperationKind.VariableDeclarator);
+        context.SafeRegisterOperationAction(AnalyzeTuple, OperationKind.Tuple);
+        context.SafeRegisterOperationAction(AnalyzeAnonymousObjectCreation, OperationKind.AnonymousObjectCreation);
     }
 
     private void RegisterForSyntax([NotNull] AnalysisContext context)
     {
-        context.RegisterSyntaxNodeAction(AnalyzeFromClauseAction, SyntaxKind.FromClause);
-        context.RegisterSyntaxNodeAction(AnalyzeJoinClauseAction, SyntaxKind.JoinClause);
-        context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClauseAction, SyntaxKind.JoinIntoClause);
-        context.RegisterSyntaxNodeAction(AnalyzeQueryContinuationAction, SyntaxKind.QueryContinuation);
-        context.RegisterSyntaxNodeAction(AnalyzeLetClauseAction, SyntaxKind.LetClause);
+        context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
+        context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
+        context.RegisterSyntaxNodeAction(AnalyzeJoinIntoClause, SyntaxKind.JoinIntoClause);
+        context.RegisterSyntaxNodeAction(AnalyzeQueryContinuation, SyntaxKind.QueryContinuation);
+        context.RegisterSyntaxNodeAction(AnalyzeLetClause, SyntaxKind.LetClause);
     }
 
     private static void AnalyzeNamedType(SymbolAnalysisContext context)

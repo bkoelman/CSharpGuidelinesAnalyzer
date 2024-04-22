@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.IO;
 using JetBrains.Annotations;
@@ -36,9 +35,6 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor ArityRule = new(DiagnosticId, Title, ArityMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SyntaxTreeAnalysisContext> AnalyzeSyntaxTreeAction = AnalyzeSyntaxTree;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(CasingRule, UnderscoreRule, ArityRule);
 
@@ -47,7 +43,7 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxTreeAction(AnalyzeSyntaxTreeAction);
+        context.RegisterSyntaxTreeAction(AnalyzeSyntaxTree);
     }
 
     private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)

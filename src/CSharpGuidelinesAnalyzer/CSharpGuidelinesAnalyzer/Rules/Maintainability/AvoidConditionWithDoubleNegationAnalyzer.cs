@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -30,9 +29,6 @@ public sealed class AvoidConditionWithDoubleNegationAnalyzer : DiagnosticAnalyze
     [ItemNotNull]
     private static readonly ImmutableArray<string> NegatingWords = ImmutableArray.Create("no", "not");
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeNotExpressionAction = AnalyzeNotExpression;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -41,7 +37,7 @@ public sealed class AvoidConditionWithDoubleNegationAnalyzer : DiagnosticAnalyze
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeNotExpressionAction, SyntaxKind.LogicalNotExpression);
+        context.RegisterSyntaxNodeAction(AnalyzeNotExpression, SyntaxKind.LogicalNotExpression);
     }
 
     private static void AnalyzeNotExpression(SyntaxNodeAnalysisContext context)

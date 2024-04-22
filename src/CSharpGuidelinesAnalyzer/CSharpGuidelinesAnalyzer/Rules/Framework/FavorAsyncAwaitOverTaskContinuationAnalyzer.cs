@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -26,13 +25,6 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, TaskTypeInfo> AnalyzeInvocationAction = (context, taskInfo) =>
-        context.SkipInvalid(_ => AnalyzeInvocation(context, taskInfo));
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -41,7 +33,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -50,7 +42,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
 
         if (!taskInfo.ContinueWithMethodGroup.IsEmpty)
         {
-            startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, taskInfo), OperationKind.Invocation);
+            startContext.SafeRegisterOperationAction(context => AnalyzeInvocation(context, taskInfo), OperationKind.Invocation);
         }
     }
 

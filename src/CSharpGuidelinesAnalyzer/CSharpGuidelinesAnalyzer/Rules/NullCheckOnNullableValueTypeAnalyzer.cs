@@ -33,20 +33,17 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(startContext =>
-        {
-            var scanner = new NullCheckScanner(startContext.Compilation);
-
-            RegisterForOperations(startContext, scanner);
-        });
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private void RegisterForOperations([NotNull] CompilationStartAnalysisContext startContext, [NotNull] NullCheckScanner scanner)
+    private void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
     {
-        startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner)), OperationKind.PropertyReference);
-        startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeInvocation(context, scanner)), OperationKind.Invocation);
-        startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeIsPattern(context, scanner)), OperationKind.IsPattern);
-        startContext.RegisterOperationAction(context => context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner)), OperationKind.BinaryOperator);
+        var scanner = new NullCheckScanner(startContext.Compilation);
+
+        startContext.SafeRegisterOperationAction(context => AnalyzePropertyReference(context, scanner), OperationKind.PropertyReference);
+        startContext.SafeRegisterOperationAction(context => AnalyzeInvocation(context, scanner), OperationKind.Invocation);
+        startContext.SafeRegisterOperationAction(context => AnalyzeIsPattern(context, scanner), OperationKind.IsPattern);
+        startContext.SafeRegisterOperationAction(context => AnalyzeBinaryOperator(context, scanner), OperationKind.BinaryOperator);
     }
 
     private void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)

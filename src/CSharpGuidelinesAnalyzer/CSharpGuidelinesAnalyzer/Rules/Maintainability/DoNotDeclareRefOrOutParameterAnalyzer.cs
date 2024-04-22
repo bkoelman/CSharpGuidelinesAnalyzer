@@ -28,9 +28,6 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
     [CanBeNull]
     private static readonly PropertyInfo IsRefLikeTypeProperty = typeof(ITypeSymbol).GetRuntimeProperty("IsRefLikeType");
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeParameterAction = context => context.SkipEmptyName(AnalyzeParameter);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -39,7 +36,7 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeParameterAction, SyntaxKind.Parameter);
+        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
     private static void AnalyzeParameter(SymbolAnalysisContext context)

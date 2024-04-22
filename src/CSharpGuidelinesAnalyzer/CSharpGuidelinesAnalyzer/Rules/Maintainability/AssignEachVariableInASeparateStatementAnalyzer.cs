@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -27,9 +26,6 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeStatementAction = context => context.SkipInvalid(AnalyzeStatement);
-
     private readonly ImmutableArray<OperationKind> statementKinds = ImmutableArray.Create(OperationKind.VariableDeclarationGroup, OperationKind.Switch,
         OperationKind.Conditional, OperationKind.Loop, OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using,
         OperationKind.YieldReturn, OperationKind.ExpressionStatement);
@@ -42,7 +38,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterOperationAction(AnalyzeStatementAction, statementKinds);
+        context.SafeRegisterOperationAction(AnalyzeStatement, statementKinds);
     }
 
     private static void AnalyzeStatement(OperationAnalysisContext context)

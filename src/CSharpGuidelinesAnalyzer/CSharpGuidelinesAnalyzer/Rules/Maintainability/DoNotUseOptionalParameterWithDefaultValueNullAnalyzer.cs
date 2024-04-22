@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -26,16 +25,6 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext, IList<INamedTypeSymbol>, INamedTypeSymbol> AnalyzeParameterAction =
-        (syntaxContext, taskTypes, callerArgumentExpressionAttributeType) => syntaxContext.SkipEmptyName(symbolContext =>
-            AnalyzeParameter(symbolContext, taskTypes, callerArgumentExpressionAttributeType));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -44,7 +33,7 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -54,8 +43,7 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         INamedTypeSymbol callerArgumentExpressionAttributeType =
             KnownTypes.SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute(startContext.Compilation);
 
-        startContext.RegisterSyntaxNodeAction(context => AnalyzeParameterAction(context, taskTypes, callerArgumentExpressionAttributeType),
-            SyntaxKind.Parameter);
+        startContext.SafeRegisterSyntaxNodeAction(context => AnalyzeParameter(context, taskTypes, callerArgumentExpressionAttributeType), SyntaxKind.Parameter);
     }
 
     [NotNull]

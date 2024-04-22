@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using JetBrains.Annotations;
@@ -36,9 +35,6 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     ];
 
     [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeLoopStatementAction = AnalyzeLoopStatement;
-
-    [NotNull]
     private static readonly LoopBodyLocator BodyLocator = new();
 
     [ItemNotNull]
@@ -49,7 +45,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeLoopStatementAction, LoopStatementKinds);
+        context.RegisterSyntaxNodeAction(AnalyzeLoopStatement, LoopStatementKinds);
     }
 
     private static void AnalyzeLoopStatement(SyntaxNodeAnalysisContext context)

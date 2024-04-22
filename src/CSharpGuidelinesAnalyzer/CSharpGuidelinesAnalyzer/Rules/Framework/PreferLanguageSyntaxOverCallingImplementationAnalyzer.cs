@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -40,17 +39,6 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
     private static readonly DiagnosticDescriptor NullableComparisonRule = new(DiagnosticId, Title, NullableComparisonMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, NullCheckScanner> AnalyzePropertyReferenceAction = (context, scanner) =>
-        context.SkipInvalid(_ => AnalyzePropertyReference(context, scanner));
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, NullCheckScanner> AnalyzeBinaryOperatorAction = (context, scanner) =>
-        context.SkipInvalid(_ => AnalyzeBinaryOperator(context, scanner));
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
 
@@ -59,15 +47,15 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
     {
         var scanner = new NullCheckScanner(startContext.Compilation);
 
-        startContext.RegisterOperationAction(context => AnalyzePropertyReferenceAction(context, scanner), OperationKind.PropertyReference);
-        startContext.RegisterOperationAction(context => AnalyzeBinaryOperatorAction(context, scanner), OperationKind.BinaryOperator);
+        startContext.SafeRegisterOperationAction(context => AnalyzePropertyReference(context, scanner), OperationKind.PropertyReference);
+        startContext.SafeRegisterOperationAction(context => AnalyzeBinaryOperator(context, scanner), OperationKind.BinaryOperator);
     }
 
     private static void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)

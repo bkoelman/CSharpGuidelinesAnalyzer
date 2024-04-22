@@ -39,12 +39,6 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
     private static readonly DiagnosticDescriptor GlobalTypeRule = new(DiagnosticId, Title, GlobalTypeMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamespaceAction = context => context.SkipEmptyName(AnalyzeNamespace);
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
 
@@ -53,8 +47,8 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeNamespaceAction, SymbolKind.Namespace);
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeNamespace, SymbolKind.Namespace);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
     }
 
     private static void AnalyzeNamespace(SymbolAnalysisContext context)

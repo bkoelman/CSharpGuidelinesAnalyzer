@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -25,9 +24,6 @@ public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeForStatementAction = AnalyzeForStatement;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -36,7 +32,7 @@ public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeForStatementAction, SyntaxKind.ForStatement);
+        context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
     }
 
     private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)

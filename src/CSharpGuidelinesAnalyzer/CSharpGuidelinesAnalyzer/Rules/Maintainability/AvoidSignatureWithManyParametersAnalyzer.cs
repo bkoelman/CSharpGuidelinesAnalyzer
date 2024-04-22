@@ -40,25 +40,6 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzePropertyAction = (context, settingsReader) =>
-        context.SkipEmptyName(_ => AnalyzeProperty(context, settingsReader));
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeMethodAction = (context, settingsReader) =>
-        context.SkipEmptyName(_ => AnalyzeMethod(context, settingsReader));
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext, AnalyzerSettingsReader> AnalyzeNamedTypeAction = (context, settingsReader) =>
-        context.SkipEmptyName(_ => AnalyzeNamedType(context, settingsReader));
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, AnalyzerSettingsReader> AnalyzeLocalFunctionAction = (context, settingsReader) =>
-        context.SkipInvalid(_ => AnalyzeLocalFunction(context, settingsReader));
-
-    [NotNull]
     private static readonly AnalyzerSettingKey MaxParameterCountKey = new(DiagnosticId, "MaxParameterCount");
 
     [NotNull]
@@ -72,7 +53,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -81,10 +62,10 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
         var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
-        startContext.RegisterSymbolAction(actionContext => AnalyzePropertyAction(actionContext, settingsReader), SymbolKind.Property);
-        startContext.RegisterSymbolAction(actionContext => AnalyzeMethodAction(actionContext, settingsReader), SymbolKind.Method);
-        startContext.RegisterSymbolAction(actionContext => AnalyzeNamedTypeAction(actionContext, settingsReader), SymbolKind.NamedType);
-        startContext.RegisterOperationAction(actionContext => AnalyzeLocalFunctionAction(actionContext, settingsReader), OperationKind.LocalFunction);
+        startContext.SafeRegisterSymbolAction(context => AnalyzeProperty(context, settingsReader), SymbolKind.Property);
+        startContext.SafeRegisterSymbolAction(context => AnalyzeMethod(context, settingsReader), SymbolKind.Method);
+        startContext.SafeRegisterSymbolAction(context => AnalyzeNamedType(context, settingsReader), SymbolKind.NamedType);
+        startContext.SafeRegisterOperationAction(context => AnalyzeLocalFunction(context, settingsReader), OperationKind.LocalFunction);
     }
 
     [NotNull]

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -34,9 +33,6 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         SyntaxKind.AnonymousMethodExpression
     ];
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeAnonymousFunctionAction = AnalyzeAnonymousFunction;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -45,7 +41,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeAnonymousFunctionAction, AnonymousFunctionKinds);
+        context.RegisterSyntaxNodeAction(AnalyzeAnonymousFunction, AnonymousFunctionKinds);
     }
 
     private static void AnalyzeAnonymousFunction(SyntaxNodeAnalysisContext context)

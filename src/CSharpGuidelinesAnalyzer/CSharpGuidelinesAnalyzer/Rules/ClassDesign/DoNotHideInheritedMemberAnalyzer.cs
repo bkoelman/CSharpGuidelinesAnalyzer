@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;
@@ -26,9 +25,6 @@ public sealed class DoNotHideInheritedMemberAnalyzer : DiagnosticAnalyzer
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Field,
         SymbolKind.Property, SymbolKind.Method, SymbolKind.Event, SymbolKind.NamedType);
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -37,7 +33,7 @@ public sealed class DoNotHideInheritedMemberAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+        context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
     }
 
     private static void AnalyzeMember(SymbolAnalysisContext context)

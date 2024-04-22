@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -41,9 +40,6 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         MethodKind.ExplicitInterfaceImplementation
     }.ToImmutableArray();
 
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeInvocationAction = context => context.SkipInvalid(AnalyzeInvocation);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
 
@@ -52,7 +48,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterOperationAction(AnalyzeInvocationAction, OperationKind.Invocation);
+        context.SafeRegisterOperationAction(AnalyzeInvocation, OperationKind.Invocation);
     }
 
     private static void AnalyzeInvocation(OperationAnalysisContext context)

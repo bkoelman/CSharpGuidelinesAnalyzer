@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -24,9 +23,6 @@ public sealed class DoNotUseRegionsAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeSyntaxNodeAction = AnalyzeSyntaxNode;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -35,7 +31,7 @@ public sealed class DoNotUseRegionsAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeSyntaxNodeAction, SyntaxKind.RegionDirectiveTrivia);
+        context.RegisterSyntaxNodeAction(AnalyzeSyntaxNode, SyntaxKind.RegionDirectiveTrivia);
     }
 
     private static void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)

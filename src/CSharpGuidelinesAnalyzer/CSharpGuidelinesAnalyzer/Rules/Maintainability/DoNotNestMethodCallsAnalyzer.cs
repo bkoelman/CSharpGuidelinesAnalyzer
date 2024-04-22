@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
@@ -25,9 +24,6 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeArgumentAction = context => context.SkipInvalid(AnalyzeArgument);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -36,7 +32,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterOperationAction(AnalyzeArgumentAction, OperationKind.Argument);
+        context.SafeRegisterOperationAction(AnalyzeArgument, OperationKind.Argument);
     }
 
     private static void AnalyzeArgument(OperationAnalysisContext context)

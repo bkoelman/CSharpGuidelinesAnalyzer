@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -32,15 +31,6 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor ArgsRule = new(DiagnosticId, ArgsTitle, ArgsMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning,
         true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext, INamedTypeSymbol> AnalyzeInvocationAction = (context, systemEventArgs) =>
-        context.SkipInvalid(_ => AnalyzeInvocation(context, systemEventArgs));
-#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer.
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
@@ -49,7 +39,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
@@ -58,7 +48,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
 
         if (systemEventArgs != null)
         {
-            startContext.RegisterOperationAction(context => AnalyzeInvocationAction(context, systemEventArgs), OperationKind.Invocation);
+            startContext.SafeRegisterOperationAction(context => AnalyzeInvocation(context, systemEventArgs), OperationKind.Invocation);
         }
     }
 

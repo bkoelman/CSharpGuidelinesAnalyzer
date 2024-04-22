@@ -44,12 +44,6 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
     [ItemNotNull]
     private static readonly HashSet<string> EmptyHashSet = [];
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
         ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
@@ -59,8 +53,8 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
-        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
     }
 
     private static void AnalyzeNamedType(SymbolAnalysisContext context)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -24,9 +23,6 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticA
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    private static readonly Action<SyntaxNodeAnalysisContext> AnalyzeSwitchSectionAction = AnalyzeSwitchSection;
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -35,7 +31,7 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticA
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSyntaxNodeAction(AnalyzeSwitchSectionAction, SyntaxKind.SwitchSection);
+        context.RegisterSyntaxNodeAction(AnalyzeSwitchSection, SyntaxKind.SwitchSection);
     }
 
     private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)

@@ -51,13 +51,6 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     [ItemNotNull]
     private static readonly ImmutableArray<string> LinqOperatorsTransparent = ImmutableArray.Create("AsEnumerable", "AsQueryable");
 
-    [NotNull]
-    private static readonly Action<CompilationStartAnalysisContext> RegisterCompilationStartAction = RegisterCompilationStart;
-
-    [NotNull]
-    private static readonly Action<OperationBlockAnalysisContext, SequenceTypeInfo> AnalyzeCodeBlockAction = (context, sequenceTypeInfo) =>
-        context.SkipInvalid(_ => AnalyzeCodeBlock(context, sequenceTypeInfo));
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
 
@@ -66,14 +59,14 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterCompilationStartAction(RegisterCompilationStartAction);
+        context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
     private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
     {
         var sequenceTypeInfo = new SequenceTypeInfo(startContext.Compilation);
 
-        startContext.RegisterOperationBlockAction(context => AnalyzeCodeBlockAction(context, sequenceTypeInfo));
+        startContext.SafeRegisterOperationBlockAction(context => AnalyzeCodeBlock(context, sequenceTypeInfo));
     }
 
     private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)

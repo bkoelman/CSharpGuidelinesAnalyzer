@@ -29,12 +29,6 @@ public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeMemberAction = context => context.SkipEmptyName(AnalyzeMember);
-
-    [NotNull]
-    private static readonly Action<OperationAnalysisContext> AnalyzeLocalFunctionAction = context => context.SkipInvalid(AnalyzeLocalFunction);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -43,8 +37,8 @@ public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeMemberAction, MemberSymbolKinds);
-        context.RegisterOperationAction(AnalyzeLocalFunctionAction, OperationKind.LocalFunction);
+        context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
+        context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
     }
 
     private static void AnalyzeMember(SymbolAnalysisContext context)

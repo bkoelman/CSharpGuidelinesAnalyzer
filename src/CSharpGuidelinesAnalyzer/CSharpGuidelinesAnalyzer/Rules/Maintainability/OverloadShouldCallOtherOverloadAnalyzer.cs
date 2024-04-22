@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -44,9 +43,6 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         MethodKind.ReducedExtension
     }.ToImmutableArray();
 
-    [NotNull]
-    private static readonly Action<SymbolAnalysisContext> AnalyzeNamedTypeAction = context => context.SkipEmptyName(AnalyzeNamedType);
-
     [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
 
@@ -55,7 +51,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterSymbolAction(AnalyzeNamedTypeAction, SymbolKind.NamedType);
+        context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
     }
 
     private static void AnalyzeNamedType(SymbolAnalysisContext context)

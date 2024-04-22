@@ -5,6 +5,7 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <BaseOutputPath>$(SolutionDir)..\bin</BaseOutputPath>
+    <NoWarn>$(NoWarn);RS1012</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>

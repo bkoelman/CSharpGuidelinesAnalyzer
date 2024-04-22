@@ -36,7 +36,7 @@ public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.RegisterOperationAction(operationContext => operationContext.SkipInvalid(AnalyzeOperation), OperationKinds);
+        context.SafeRegisterOperationAction(AnalyzeOperation, OperationKinds);
     }
 
     private void AnalyzeOperation(OperationAnalysisContext context)
