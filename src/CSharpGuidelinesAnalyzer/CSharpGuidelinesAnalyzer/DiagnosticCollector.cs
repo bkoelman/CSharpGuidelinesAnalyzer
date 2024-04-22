@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
@@ -22,7 +23,7 @@ internal sealed class DiagnosticCollector : IDisposable
         {
             if (diagnostics == null)
             {
-                return [];
+                return ImmutableArray<Diagnostic>.Empty;
             }
 
             return diagnostics;
