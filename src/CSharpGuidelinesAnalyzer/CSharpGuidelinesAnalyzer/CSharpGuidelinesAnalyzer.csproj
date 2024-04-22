@@ -10,9 +10,9 @@
 
   <PropertyGroup>
     <!-- https://github.com/NuGet/Home/issues/5630 -->
-    <PackageId>CSharpGuidelinesAnalyzer</PackageId>
+    <PackageId>CSharpGuidelinesAnalyzer.NuGetBugRequiresNewId</PackageId>
     <Title>C# Coding Guidelines Analyzer</Title>
-    <Version>3.8.5</Version>
+    <Version>3.8.6-pre</Version>
     <Authors>Bart Koelman</Authors>
     <Company />
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.8.5" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.147" PrivateAssets="all" />
