@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -17,17 +16,14 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1580";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -58,7 +54,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsThisArgumentInExtensionMethod([NotNull] IArgumentOperation argument)
+    private static bool IsThisArgumentInExtensionMethod(IArgumentOperation argument)
     {
         if (argument.Parameter.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
         {
@@ -73,7 +69,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsInFieldOrConstructorInitializer([NotNull] IArgumentOperation argument)
+    private static bool IsInFieldOrConstructorInitializer(IArgumentOperation argument)
     {
         IOperation parent = argument.Parent;
 
@@ -97,7 +93,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsConstructor([NotNull] ISymbol symbol)
+    private static bool IsConstructor(ISymbol symbol)
     {
         if (symbol is IMethodSymbol method)
         {
@@ -107,12 +103,12 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsObjectOrCollectionInitializer([NotNull] IArgumentOperation argument)
+    private static bool IsObjectOrCollectionInitializer(IArgumentOperation argument)
     {
         return argument.Parent?.Parent is IObjectOrCollectionInitializerOperation;
     }
 
-    private static void ReportAt([NotNull] IArgumentOperation argument, [NotNull] string innerName, OperationAnalysisContext context)
+    private static void ReportAt(IArgumentOperation argument, string innerName, OperationAnalysisContext context)
     {
         string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
         Location location = argument.Value.Syntax.GetLocation();

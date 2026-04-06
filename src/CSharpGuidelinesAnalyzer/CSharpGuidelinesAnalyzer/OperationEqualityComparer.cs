@@ -12,17 +12,12 @@ namespace CSharpGuidelinesAnalyzer;
 
 internal sealed class OperationEqualityComparer
 {
-    [NotNull]
     private static readonly ReflectionTypeInfo SymbolInterface = typeof(ISymbol).GetTypeInfo();
 
-    [NotNull]
     private static readonly ReflectionTypeInfo OperationInterface = typeof(IOperation).GetTypeInfo();
 
-    [NotNull]
     private static readonly ReflectionTypeInfo EnumerableInterface = typeof(IEnumerable).GetTypeInfo();
 
-    [NotNull]
-    [ItemNotNull]
     private static readonly IReadOnlyCollection<string> PropertyNamesToSkip = new[]
     {
         nameof(IOperation.Parent),
@@ -31,10 +26,9 @@ internal sealed class OperationEqualityComparer
         "Compilation"
     };
 
-    [NotNull]
     public static readonly OperationEqualityComparer Default = new();
 
-    public bool Equals([CanBeNull] IOperation left, [CanBeNull] IOperation right)
+    public bool Equals(IOperation? left, IOperation? right)
     {
         if (ReferenceEquals(left, right))
         {
@@ -52,8 +46,8 @@ internal sealed class OperationEqualityComparer
         return leftInterfaces.SequenceEqual(rightInterfaces) && AreOperationPropertiesEqual(leftInterfaces, left, right);
     }
 
-    private bool AreOperationPropertiesEqual([NotNull] [ItemNotNull] IReadOnlyCollection<Type> interfaces, [NotNull] IOperation left,
-        [NotNull] IOperation right)
+    private bool AreOperationPropertiesEqual(IReadOnlyCollection<Type> interfaces, IOperation left,
+        IOperation right)
     {
         foreach (PropertyInfo property in interfaces.DeepGetOperationProperties())
         {
@@ -71,7 +65,7 @@ internal sealed class OperationEqualityComparer
         return true;
     }
 
-    private bool ArePropertyValuesEqual([NotNull] PropertyInfo property, [NotNull] object left, [NotNull] object right)
+    private bool ArePropertyValuesEqual(PropertyInfo property, object left, object right)
     {
         object leftValue = property.GetMethod.Invoke(left, []);
         object rightValue = property.GetMethod.Invoke(right, []);
@@ -87,8 +81,8 @@ internal sealed class OperationEqualityComparer
         return AreValuesEqual(property.PropertyType, leftValue, rightValue);
     }
 
-    private bool AreOptionalSequenceValuesEqual([NotNull] Type elementType, [CanBeNull] [ItemNotNull] IEnumerable leftSequence,
-        [CanBeNull] [ItemNotNull] IEnumerable rightSequence)
+    private bool AreOptionalSequenceValuesEqual(Type elementType, [ItemNotNull] IEnumerable? leftSequence,
+        [ItemNotNull] IEnumerable? rightSequence)
     {
         if (ReferenceEquals(leftSequence, rightSequence))
         {
@@ -109,7 +103,7 @@ internal sealed class OperationEqualityComparer
         return AreSequenceValuesEqual(elementType, leftEnumerator, rightEnumerator);
     }
 
-    private bool AreSequenceValuesEqual([NotNull] Type elementType, [NotNull] IEnumerator leftEnumerator, [NotNull] IEnumerator rightEnumerator)
+    private bool AreSequenceValuesEqual(Type elementType, IEnumerator leftEnumerator, IEnumerator rightEnumerator)
     {
         while (true)
         {
@@ -132,23 +126,23 @@ internal sealed class OperationEqualityComparer
         }
     }
 
-    private bool AreValuesEqual([NotNull] Type type, [CanBeNull] object leftValue, [CanBeNull] object rightValue)
+    private bool AreValuesEqual(Type type, object? leftValue, object? rightValue)
     {
         ReflectionTypeInfo typeInfo = type.GetTypeInfo();
 
         if (SymbolInterface.IsAssignableFrom(typeInfo))
         {
-            var leftSymbol = (ISymbol)leftValue;
-            var rightSymbol = (ISymbol)rightValue;
+            var leftSymbol = (ISymbol?)leftValue;
+            var rightSymbol = (ISymbol?)rightValue;
 
             return leftSymbol.IsEqualTo(rightSymbol);
         }
 
         if (OperationInterface.IsAssignableFrom(typeInfo))
         {
-            return Equals((IOperation)leftValue, (IOperation)rightValue);
+            return Equals((IOperation?)leftValue, (IOperation?)rightValue);
         }
 
-        return EqualityComparer<object>.Default.Equals(leftValue, rightValue);
+        return EqualityComparer<object?>.Default.Equals(leftValue, rightValue);
     }
 }

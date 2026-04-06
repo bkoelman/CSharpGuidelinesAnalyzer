@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
 
 /// <summary />
 internal static class IdentifierExtensions
 {
-    [NotNull]
-    public static IReadOnlyCollection<WordToken> GetWordsInList([NotNull] this string identifierName, [NotNull] [ItemNotNull] ICollection<string> list)
+    public static IReadOnlyCollection<WordToken> GetWordsInList(this string identifierName, ICollection<string> list)
     {
         Guard.NotNull(identifierName, nameof(identifierName));
         Guard.NotNullNorEmpty(list, nameof(list));
@@ -23,7 +21,7 @@ internal static class IdentifierExtensions
         return tokenizer.GetWords().Where(word => IsListed(word, list)).ToArray();
     }
 
-    public static bool ContainsWordInTheMiddle([NotNull] this string identifierName, [NotNull] string word)
+    public static bool ContainsWordInTheMiddle(this string identifierName, string word)
     {
         Guard.NotNull(identifierName, nameof(identifierName));
         Guard.NotNullNorWhiteSpace(word, nameof(word));
@@ -39,7 +37,7 @@ internal static class IdentifierExtensions
         return TokenSetContainsWordInTheMiddle(identifierTokens, word);
     }
 
-    private static bool TokenSetContainsWordInTheMiddle([NotNull] IReadOnlyList<WordToken> tokenSet, [NotNull] string word)
+    private static bool TokenSetContainsWordInTheMiddle(IReadOnlyList<WordToken> tokenSet, string word)
     {
         for (int index = 1; index < tokenSet.Count - 1; index++)
         {
@@ -54,7 +52,7 @@ internal static class IdentifierExtensions
         return false;
     }
 
-    public static bool StartsWithWordInList([NotNull] this string identifierName, [NotNull] [ItemNotNull] ICollection<string> list)
+    public static bool StartsWithWordInList(this string identifierName, ICollection<string> list)
     {
         Guard.NotNull(identifierName, nameof(identifierName));
         Guard.NotNullNorEmpty(list, nameof(list));
@@ -70,17 +68,17 @@ internal static class IdentifierExtensions
         return words.Any() && IsListed(words[0], list);
     }
 
-    private static bool QuickScanMayContainWordsListed([NotNull] string text, [NotNull] [ItemNotNull] IEnumerable<string> list)
+    private static bool QuickScanMayContainWordsListed(string text, IEnumerable<string> list)
     {
         return list.Any(word => QuickScanMayContainWord(text, word));
     }
 
-    private static bool QuickScanMayContainWord([NotNull] string text, [NotNull] string word)
+    private static bool QuickScanMayContainWord(string text, string word)
     {
         return text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1;
     }
 
-    private static bool IsListed(WordToken wordToken, [NotNull] [ItemNotNull] IEnumerable<string> list)
+    private static bool IsListed(WordToken wordToken, IEnumerable<string> list)
     {
         return list.Any(word => string.Equals(word, wordToken.Text, StringComparison.OrdinalIgnoreCase));
     }

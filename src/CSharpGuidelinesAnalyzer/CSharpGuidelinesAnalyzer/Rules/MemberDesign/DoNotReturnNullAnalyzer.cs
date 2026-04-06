@@ -2,7 +2,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -18,19 +17,16 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1135";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<OperationKind> ReturnOperationKinds = ImmutableArray.Create(OperationKind.Return, OperationKind.YieldReturn);
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -38,18 +34,16 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         IList<INamedTypeSymbol> taskTypes = ResolveTaskTypes(startContext.Compilation).ToList();
 
         startContext.SafeRegisterOperationAction(context => AnalyzeReturn(context, taskTypes), ReturnOperationKinds);
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<INamedTypeSymbol> ResolveTaskTypes([NotNull] Compilation compilation)
+    private static IEnumerable<INamedTypeSymbol> ResolveTaskTypes(Compilation compilation)
     {
-        foreach (INamedTypeSymbol taskType in new[]
+        foreach (INamedTypeSymbol? taskType in new[]
         {
             KnownTypes.SystemThreadingTasksTaskT(compilation),
             KnownTypes.SystemThreadingTasksTask(compilation),
@@ -64,7 +58,7 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeReturn(OperationAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+    private static void AnalyzeReturn(OperationAnalysisContext context, IList<INamedTypeSymbol> taskTypes)
     {
         var returnOperation = (IReturnOperation)context.Operation;
 
@@ -79,19 +73,19 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool ReturnsStringOrCollectionOrTask([NotNull] IReturnOperation returnOperation, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+    private static bool ReturnsStringOrCollectionOrTask(IReturnOperation returnOperation, IList<INamedTypeSymbol> taskTypes)
     {
         return returnOperation.ReturnedValue.Type.IsOrImplementsIEnumerable() || IsTask(returnOperation.ReturnedValue.Type, taskTypes);
     }
 
-    private static bool IsTask([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+    private static bool IsTask(ITypeSymbol type, IList<INamedTypeSymbol> taskTypes)
     {
         return taskTypes.Any(taskType => taskType.IsEqualTo(type.OriginalDefinition));
     }
 
-    private static void ReportReturnStatement([NotNull] IReturnOperation returnOperation, OperationAnalysisContext context)
+    private static void ReportReturnStatement(IReturnOperation returnOperation, OperationAnalysisContext context)
     {
-        IMethodSymbol method = returnOperation.TryGetContainingMethod(context.Compilation);
+        IMethodSymbol? method = returnOperation.TryGetContainingMethod(context.Compilation);
 
         if (method != null && !method.IsSynthesized())
         {

@@ -18,10 +18,8 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1568";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
@@ -30,10 +28,9 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         SpecialType.System_UInt32, SpecialType.System_Int64, SpecialType.System_UInt64, SpecialType.System_Decimal, SpecialType.System_Single,
         SpecialType.System_Double, SpecialType.System_IntPtr, SpecialType.System_UIntPtr, SpecialType.System_DateTime);
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -84,7 +81,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         FilterDuplicateLocations(collector.Diagnostics);
     }
 
-    private static void AnalyzeAccessorMethod([CanBeNull] IMethodSymbol accessorMethod, [NotNull] DiagnosticCollector collector, SymbolAnalysisContext context)
+    private static void AnalyzeAccessorMethod(IMethodSymbol? accessorMethod, DiagnosticCollector collector, SymbolAnalysisContext context)
     {
         if (accessorMethod == null || ShouldSkip(accessorMethod))
         {
@@ -95,7 +92,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         InnerAnalyzeMethod(methodContext, collector);
     }
 
-    private static void FilterDuplicateLocations([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
+    private static void FilterDuplicateLocations(ICollection<Diagnostic> diagnostics)
     {
         while (true)
         {
@@ -106,7 +103,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool RemoveNextDuplicate([NotNull] [ItemNotNull] ICollection<Diagnostic> diagnostics)
+    private static bool RemoveNextDuplicate(ICollection<Diagnostic> diagnostics)
     {
         foreach (Diagnostic diagnostic in diagnostics)
         {
@@ -124,7 +121,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static void RemoveRange<T>([NotNull] [ItemNotNull] ICollection<T> source, [NotNull] [ItemNotNull] ICollection<T> elementsToRemove)
+    private static void RemoveRange<T>([ItemNotNull] ICollection<T> source, [ItemNotNull] ICollection<T> elementsToRemove)
     {
         foreach (T elementToRemove in elementsToRemove)
         {
@@ -162,14 +159,14 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         InnerAnalyzeMethod(methodContext, collector);
     }
 
-    private static bool ShouldSkip([NotNull] IMethodSymbol method)
+    private static bool ShouldSkip(IMethodSymbol method)
     {
         return method.IsAbstract || method.IsSynthesized() || !method.Parameters.Any();
     }
 
-    private static void InnerAnalyzeMethod(BaseAnalysisContext<IMethodSymbol> context, [NotNull] DiagnosticCollector collector)
+    private static void InnerAnalyzeMethod(BaseAnalysisContext<IMethodSymbol> context, DiagnosticCollector collector)
     {
-        SyntaxNode bodySyntax = context.Target.TryGetBodySyntaxForMethod(context.CancellationToken);
+        SyntaxNode? bodySyntax = context.Target.TryGetBodySyntaxForMethod(context.CancellationToken);
 
         if (bodySyntax == null)
         {
@@ -180,8 +177,8 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         AnalyzeParametersInMethod(analysisContext, bodySyntax, collector);
     }
 
-    private static void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context, [NotNull] SyntaxNode bodySyntax,
-        [NotNull] DiagnosticCollector collector)
+    private static void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context, SyntaxNode bodySyntax,
+        DiagnosticCollector collector)
     {
         IGrouping<bool, IParameterSymbol>[] parameterGrouping = context.Target
             .Where(parameter => parameter.RefKind == RefKind.None && !parameter.IsSynthesized()).GroupBy(IsUserDefinedStruct).ToArray();
@@ -203,20 +200,20 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsUserDefinedStruct([NotNull] IParameterSymbol parameter)
+    private static bool IsUserDefinedStruct(IParameterSymbol parameter)
     {
         return parameter.Type.TypeKind == TypeKind.Struct && !IsSimpleType(parameter.Type);
     }
 
-    private static bool IsSimpleType([NotNull] ITypeSymbol type)
+    private static bool IsSimpleType(ITypeSymbol type)
     {
         return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T || SimpleTypes.Contains(type.SpecialType);
     }
 
-    private static void AnalyzeOrdinaryParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context, [NotNull] SyntaxNode bodySyntax,
-        [NotNull] DiagnosticCollector collector)
+    private static void AnalyzeOrdinaryParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context, SyntaxNode bodySyntax,
+        DiagnosticCollector collector)
     {
-        DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
+        DataFlowAnalysis? dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
 
         if (dataFlowAnalysis == null)
         {
@@ -233,15 +230,14 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] Compilation compilation)
+    private static DataFlowAnalysis? TryAnalyzeDataFlow(SyntaxNode bodySyntax, Compilation compilation)
     {
         SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
         return model.SafeAnalyzeDataFlow(bodySyntax);
     }
 
-    private static void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context, [NotNull] SyntaxNode bodySyntax,
-        [NotNull] DiagnosticCollector collector)
+    private static void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context, SyntaxNode bodySyntax,
+        DiagnosticCollector collector)
     {
         // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow
         // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
@@ -257,8 +253,8 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         CollectAssignedStructParameters(context.Target, bodyOperation, collector);
     }
 
-    private static void CollectAssignedStructParameters([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters, [NotNull] IOperation bodyOperation,
-        [NotNull] DiagnosticCollector collector)
+    private static void CollectAssignedStructParameters(ICollection<IParameterSymbol> parameters, IOperation bodyOperation,
+        DiagnosticCollector collector)
     {
         var walker = new AssignmentWalker(parameters);
         walker.Visit(bodyOperation);
@@ -272,14 +268,11 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
 
     private sealed class AssignmentWalker : ExplicitOperationWalker
     {
-        [NotNull]
         private readonly IDictionary<IParameterSymbol, bool> seenAssignmentPerParameter = new Dictionary<IParameterSymbol, bool>();
 
-        [NotNull]
-        [ItemNotNull]
         public ICollection<IParameterSymbol> ParametersAssigned => seenAssignmentPerParameter.Where(pair => pair.Value).Select(pair => pair.Key).ToArray();
 
-        public AssignmentWalker([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters)
+        public AssignmentWalker(ICollection<IParameterSymbol> parameters)
         {
             Guard.NotNull(parameters, nameof(parameters));
 
@@ -289,28 +282,28 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
+        public override void VisitSimpleAssignment(ISimpleAssignmentOperation operation)
         {
             RegisterAssignmentToParameter(operation.Target);
 
             base.VisitSimpleAssignment(operation);
         }
 
-        public override void VisitCompoundAssignment([NotNull] ICompoundAssignmentOperation operation)
+        public override void VisitCompoundAssignment(ICompoundAssignmentOperation operation)
         {
             RegisterAssignmentToParameter(operation.Target);
 
             base.VisitCompoundAssignment(operation);
         }
 
-        public override void VisitIncrementOrDecrement([NotNull] IIncrementOrDecrementOperation operation)
+        public override void VisitIncrementOrDecrement(IIncrementOrDecrementOperation operation)
         {
             RegisterAssignmentToParameter(operation.Target);
 
             base.VisitIncrementOrDecrement(operation);
         }
 
-        public override void VisitDeconstructionAssignment([NotNull] IDeconstructionAssignmentOperation operation)
+        public override void VisitDeconstructionAssignment(IDeconstructionAssignmentOperation operation)
         {
             if (operation.Target is ITupleOperation tuple)
             {
@@ -323,7 +316,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
             base.VisitDeconstructionAssignment(operation);
         }
 
-        public override void VisitArgument([NotNull] IArgumentOperation operation)
+        public override void VisitArgument(IArgumentOperation operation)
         {
             if (operation.Parameter.RefKind is RefKind.Ref or RefKind.Out)
             {
@@ -333,7 +326,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
             base.VisitArgument(operation);
         }
 
-        private void RegisterAssignmentToParameter([NotNull] IOperation operation)
+        private void RegisterAssignmentToParameter(IOperation operation)
         {
             if (operation is IParameterReferenceOperation parameterReference)
             {

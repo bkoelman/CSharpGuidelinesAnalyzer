@@ -1,16 +1,14 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer;
 
 public readonly struct WordToken : IEquatable<WordToken>
 {
-    [NotNull]
     public string Text { get; }
 
     public WordTokenKind Kind { get; }
 
-    public WordToken([NotNull] string text, WordTokenKind kind)
+    public WordToken(string text, WordTokenKind kind)
     {
         Guard.NotNull(text, nameof(text));
 
@@ -23,7 +21,7 @@ public readonly struct WordToken : IEquatable<WordToken>
         return other.Text == Text && other.Kind == Kind;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is WordToken wordToken && Equals(wordToken);
     }

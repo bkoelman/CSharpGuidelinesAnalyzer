@@ -1,8 +1,8 @@
-﻿#if DEBUG
+﻿
+#if DEBUG
 using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -18,20 +18,16 @@ public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "000000000000";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Hidden, false,
         Description);
 
-    [NotNull]
     private static readonly OperationKind[] OperationKinds = (OperationKind[])Enum.GetValues(typeof(OperationKind));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -61,7 +57,7 @@ public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
         AnalyzeLocationForOperation(context, doWhileStrategy, tryFinallyStrategy);
     }
 
-    private static bool IsReportAtAlternateLocation([NotNull] IOperation operation)
+    private static bool IsReportAtAlternateLocation(IOperation operation)
     {
         return operation.Parent?.Parent?.Syntax is MethodDeclarationSyntax { Identifier.ValueText: "ReportAtAlternateLocation" };
     }
@@ -69,7 +65,7 @@ public sealed class OperationHasKeywordAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeLocationForOperation(OperationAnalysisContext context, DoWhileLoopLookupKeywordStrategy doWhileStrategy,
         TryFinallyLookupKeywordStrategy tryFinallyStrategy)
     {
-        Location location = context.Operation.TryGetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
+        Location? location = context.Operation.TryGetLocationForKeyword(doWhileStrategy, tryFinallyStrategy);
 
         if (location != null)
         {

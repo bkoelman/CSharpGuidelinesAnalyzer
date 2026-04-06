@@ -64,7 +64,7 @@ public sealed class AnalyzerTestContext
         string[] assemblies =
         [
             typeof(object).Assembly.Location, // System.Private.CoreLib.dll
-            typeof(BitArray).Assembly.Location, // System.Collections.dll
+            typeof(SortedSet<>).Assembly.Location, // System.Collections.dll
             typeof(IImmutableList<>).Assembly.Location, // System.Collections.Immutable.dll
             typeof(Enumerable).Assembly.Location, // System.Linq.dll
             typeof(Queryable).Assembly.Location, // System.Linq.Queryable.dll

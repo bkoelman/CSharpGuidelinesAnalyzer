@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -18,17 +17,14 @@ public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1755";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -57,13 +53,13 @@ public sealed class SuffixAsyncMethodCorrectlyAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool RequiresReport([NotNull] IMethodSymbol method, [NotNull] Compilation compilation, CancellationToken cancellationToken)
+    private static bool RequiresReport(IMethodSymbol method, Compilation compilation, CancellationToken cancellationToken)
     {
         return method.IsAsync && !method.Name.EndsWith("Async", StringComparison.Ordinal) && !method.IsSynthesized() && !method.IsUnitTestMethod() &&
             !method.IsEntryPoint(compilation, cancellationToken);
     }
 
-    private static void ReportAt([NotNull] IMethodSymbol method, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private static void ReportAt(IMethodSymbol method, Action<Diagnostic> reportDiagnostic)
     {
         string name = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 

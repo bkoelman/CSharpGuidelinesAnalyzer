@@ -5,7 +5,6 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -22,33 +21,26 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2305";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor MissingTypeOrMemberRule = new(DiagnosticId, Title, MissingTypeOrMemberMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor MissingParameterRule = new(DiagnosticId, Title, MissingParameterMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor ExtraParameterRule = new(DiagnosticId, Title, ExtraParameterMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [NotNull]
-    [ItemNotNull]
     private static readonly HashSet<string> EmptyHashSet = [];
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics =>
         ImmutableArray.Create(MissingTypeOrMemberRule, MissingParameterRule, ExtraParameterRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -65,7 +57,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsTypeAccessible([NotNull] ISymbol type)
+    private static bool IsTypeAccessible(ISymbol type)
     {
         return type.DeclaredAccessibility == Accessibility.Internal && type.IsSymbolAccessibleFromRoot();
     }
@@ -78,24 +70,24 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsMemberAccessible([NotNull] ISymbol member)
+    private static bool IsMemberAccessible(ISymbol member)
     {
         return IsMemberInternal(member) || IsMemberPublicInInternalTypeHierarchy(member);
     }
 
-    private static bool IsMemberInternal([NotNull] ISymbol member)
+    private static bool IsMemberInternal(ISymbol member)
     {
         bool isInternal = member.DeclaredAccessibility is Accessibility.Internal or Accessibility.ProtectedAndInternal;
 
         return isInternal && member.IsSymbolAccessibleFromRoot();
     }
 
-    private static bool IsMemberPublicInInternalTypeHierarchy([NotNull] ISymbol member)
+    private static bool IsMemberPublicInInternalTypeHierarchy(ISymbol member)
     {
         return member.DeclaredAccessibility == Accessibility.Public && member.IsSymbolAccessibleFromRoot() && HasInternalTypeInHierarchy(member);
     }
 
-    private static bool HasInternalTypeInHierarchy([NotNull] ISymbol symbol)
+    private static bool HasInternalTypeInHierarchy(ISymbol symbol)
     {
         ISymbol container = symbol;
 
@@ -112,7 +104,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static void AnalyzeSymbol([NotNull] ISymbol symbol, SymbolAnalysisContext context)
+    private static void AnalyzeSymbol(ISymbol symbol, SymbolAnalysisContext context)
     {
         if (symbol.IsSynthesized())
         {
@@ -135,7 +127,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool InheritsDocumentation([CanBeNull] string documentationXml)
+    private static bool InheritsDocumentation(string? documentationXml)
     {
         if (documentationXml == null)
         {
@@ -146,12 +138,12 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         return tagIndex != -1;
     }
 
-    private static void AnalyzeParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [CanBeNull] string documentationXml,
+    private static void AnalyzeParameters(ImmutableArray<IParameterSymbol> parameters, string? documentationXml,
         SymbolAnalysisContext context)
     {
         context.CancellationToken.ThrowIfCancellationRequested();
 
-        ISet<string> parameterNamesInDocumentation = string.IsNullOrEmpty(documentationXml) ? EmptyHashSet : TryParseDocumentationCommentXml(documentationXml);
+        ISet<string>? parameterNamesInDocumentation = documentationXml is null or "" ? EmptyHashSet : TryParseDocumentationCommentXml(documentationXml);
 
         if (parameterNamesInDocumentation != null)
         {
@@ -160,9 +152,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    [ItemNotNull]
-    private static ISet<string> TryParseDocumentationCommentXml([NotNull] string documentationXml)
+    private static ISet<string>? TryParseDocumentationCommentXml(string documentationXml)
     {
         try
         {
@@ -178,17 +168,15 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static ISet<string> GetParameterNamesFromXml([NotNull] XDocument document)
+    private static ISet<string> GetParameterNamesFromXml(XDocument document)
     {
         var parameterNames = new HashSet<string>();
 
         foreach (XElement paramElement in document.Element("member")?.Elements("param") ?? [])
         {
-            XAttribute paramAttribute = paramElement.Attribute("name");
+            XAttribute? paramAttribute = paramElement.Attribute("name");
 
-            if (!string.IsNullOrEmpty(paramAttribute?.Value))
+            if (paramAttribute?.Value is not (null or ""))
             {
                 parameterNames.Add(paramAttribute.Value);
             }
@@ -197,8 +185,8 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         return parameterNames;
     }
 
-    private static void AnalyzeMissingParameters([ItemNotNull] ImmutableArray<IParameterSymbol> parameters,
-        [NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
+    private static void AnalyzeMissingParameters(ImmutableArray<IParameterSymbol> parameters,
+        ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
     {
         foreach (IParameterSymbol parameter in parameters)
         {
@@ -222,7 +210,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeExtraParameters([NotNull] [ItemNotNull] ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
+    private static void AnalyzeExtraParameters(ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
     {
         if (context.Symbol.IsSynthesized())
         {

@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -17,17 +16,14 @@ public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1530";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -48,14 +44,14 @@ public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeLoopVariable(SyntaxNodeAnalysisContext context, [NotNull] VariableDeclaratorSyntax variableDeclaratorSyntax,
-        [NotNull] StatementSyntax statementSyntax)
+    private static void AnalyzeLoopVariable(SyntaxNodeAnalysisContext context, VariableDeclaratorSyntax variableDeclaratorSyntax,
+        StatementSyntax statementSyntax)
     {
         ISymbol variableSymbol = context.SemanticModel.GetDeclaredSymbol(variableDeclaratorSyntax);
 
         if (variableSymbol != null)
         {
-            DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.SafeAnalyzeDataFlow(statementSyntax);
+            DataFlowAnalysis? dataFlowAnalysis = context.SemanticModel.SafeAnalyzeDataFlow(statementSyntax);
 
             if (dataFlowAnalysis != null)
             {

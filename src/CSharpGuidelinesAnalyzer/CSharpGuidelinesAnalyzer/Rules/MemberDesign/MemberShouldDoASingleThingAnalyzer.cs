@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -19,20 +18,17 @@ public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1115";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -53,7 +49,7 @@ public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
         AnalyzeSymbol(operation.Symbol, context.ReportDiagnostic, context.CancellationToken);
     }
 
-    private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
+    private static void AnalyzeSymbol(ISymbol symbol, Action<Diagnostic> reportDiagnostic, CancellationToken cancellationToken)
     {
         if (RequiresAnalysis(symbol, cancellationToken) && ContainsBlacklistedWord(symbol.Name))
         {
@@ -62,7 +58,7 @@ public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool RequiresAnalysis([NotNull] ISymbol symbol, CancellationToken cancellationToken)
+    private static bool RequiresAnalysis(ISymbol symbol, CancellationToken cancellationToken)
     {
         if (symbol.IsPropertyOrEventAccessor() || symbol.IsUnitTestMethod() || symbol.IsSynthesized())
         {
@@ -72,7 +68,7 @@ public sealed class MemberShouldDoASingleThingAnalyzer : DiagnosticAnalyzer
         return !symbol.IsOverride && !symbol.HidesBaseMember(cancellationToken) && !symbol.IsInterfaceImplementation();
     }
 
-    private static bool ContainsBlacklistedWord([NotNull] string name)
+    private static bool ContainsBlacklistedWord(string name)
     {
         return name.ContainsWordInTheMiddle(BlacklistWord);
     }

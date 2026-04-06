@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using System.Linq;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -17,20 +16,16 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2310";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, false,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> ArrangeActAssertLines = ImmutableArray.Create("// Arrange", "// Act", "// Assert", "// Act and assert");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -46,7 +41,7 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
         AnalyzeCommentTrivia(outerCommentTrivia, context);
     }
 
-    private static void AnalyzeCommentTrivia([NotNull] SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
+    private static void AnalyzeCommentTrivia(SyntaxTrivia[] outerCommentTrivia, CodeBlockAnalysisContext context)
     {
         foreach (SyntaxTrivia commentTrivia in context.CodeBlock.DescendantTrivia().Where(IsComment))
         {
@@ -78,27 +73,27 @@ public sealed class AvoidInlineCommentAnalyzer : DiagnosticAnalyzer
         return commentTrivia.Token.Parent is BlockSyntax parentBlock && !parentBlock.Statements.Any() && parentBlock.Parent is ElseClauseSyntax;
     }
 
-    private static bool IsResharperDirective([NotNull] string commentText)
+    private static bool IsResharperDirective(string commentText)
     {
         return IsResharperSuppression(commentText) || IsResharperLanguageInjection(commentText) || IsResharperFormatterConfiguration(commentText);
     }
 
-    private static bool IsResharperSuppression([NotNull] string commentText)
+    private static bool IsResharperSuppression(string commentText)
     {
         return commentText.Contains("// ReSharper disable ") || commentText.Contains("// ReSharper restore ");
     }
 
-    private static bool IsResharperLanguageInjection([NotNull] string commentText)
+    private static bool IsResharperLanguageInjection(string commentText)
     {
         return commentText.Contains("language=");
     }
 
-    private static bool IsResharperFormatterConfiguration([NotNull] string commentText)
+    private static bool IsResharperFormatterConfiguration(string commentText)
     {
         return commentText.Contains("// @formatter:");
     }
 
-    private static bool IsArrangeActAssertUnitTestPattern([NotNull] string commentText)
+    private static bool IsArrangeActAssertUnitTestPattern(string commentText)
     {
         return ArrangeActAssertLines.Any(line => line.Equals(commentText));
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -18,17 +17,14 @@ public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnal
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1711";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [NotNull]
     private static readonly ImmutableDictionary<string, string> WordsReplacementMap = new Dictionary<string, string>
     {
         { "AddItem", "Add" },
@@ -36,10 +32,9 @@ public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnal
         { "NumberOfItems", "Count" }
     }.ToImmutableDictionary();
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -65,7 +60,7 @@ public sealed class UseFrameworkTerminologyInMemberNameAnalyzer : DiagnosticAnal
         AnalyzeSymbol(localFunction.Symbol, context.ReportDiagnostic);
     }
 
-    private static void AnalyzeSymbol([NotNull] ISymbol symbol, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private static void AnalyzeSymbol(ISymbol symbol, Action<Diagnostic> reportDiagnostic)
     {
         if (WordsReplacementMap.ContainsKey(symbol.Name))
         {

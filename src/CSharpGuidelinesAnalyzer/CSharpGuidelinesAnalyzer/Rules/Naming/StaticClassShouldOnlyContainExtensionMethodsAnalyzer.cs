@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -17,17 +16,14 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1745";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -51,7 +47,7 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
         }
     }
 
-    private static bool IsExtensionMethodContainer([NotNull] INamedTypeSymbol type)
+    private static bool IsExtensionMethodContainer(INamedTypeSymbol type)
     {
         if (!type.IsStatic || type.IsGenericType)
         {
@@ -64,7 +60,7 @@ public sealed class StaticClassShouldOnlyContainExtensionMethodsAnalyzer : Diagn
         return !hasRegularAccessibleMethods && accessibleMethods.Any();
     }
 
-    private static bool IsPublicOrInternal([NotNull] IMethodSymbol method)
+    private static bool IsPublicOrInternal(IMethodSymbol method)
     {
         return method.DeclaredAccessibility is Accessibility.Public or Accessibility.Internal;
     }

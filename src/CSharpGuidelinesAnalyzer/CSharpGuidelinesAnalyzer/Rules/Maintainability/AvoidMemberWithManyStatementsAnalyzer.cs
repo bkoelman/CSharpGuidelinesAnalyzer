@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using CSharpGuidelinesAnalyzer.Settings;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -22,20 +21,16 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1500";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly AnalyzerSettingKey MaxStatementCountKey = new(DiagnosticId, "MaxStatementCount");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -43,7 +38,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         Guard.NotNull(startContext, nameof(startContext));
 
@@ -52,7 +47,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         startContext.RegisterCodeBlockAction(context => AnalyzeCodeBlock(context, settingsReader));
     }
 
-    private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
+    private static void AnalyzeCodeBlock(CodeBlockAnalysisContext context, AnalyzerSettingsReader settingsReader)
     {
         if (context.OwningSymbol is INamedTypeSymbol || context.OwningSymbol.IsSynthesized() || IsPrimaryConstructorInitializer(context.CodeBlock))
         {
@@ -70,12 +65,12 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsPrimaryConstructorInitializer([NotNull] SyntaxNode codeBlock)
+    private static bool IsPrimaryConstructorInitializer(SyntaxNode codeBlock)
     {
         return codeBlock is BaseTypeDeclarationSyntax;
     }
 
-    private static int GetMaxStatementCountFromSettings([NotNull] AnalyzerSettingsReader settingsReader, [NotNull] SyntaxTree syntaxTree)
+    private static int GetMaxStatementCountFromSettings(AnalyzerSettingsReader settingsReader, SyntaxTree syntaxTree)
     {
         Guard.NotNull(settingsReader, nameof(settingsReader));
         Guard.NotNull(syntaxTree, nameof(syntaxTree));
@@ -93,8 +88,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         context.ReportDiagnostic(diagnostic);
     }
 
-    [NotNull]
-    private static string GetMemberKind([NotNull] ISymbol member, CancellationToken cancellationToken)
+    private static string GetMemberKind(ISymbol member, CancellationToken cancellationToken)
     {
         Guard.NotNull(member, nameof(member));
 
@@ -109,8 +103,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         return member.GetKind();
     }
 
-    [NotNull]
-    private static Location GetMemberLocation([NotNull] ISymbol member, [NotNull] SemanticModel semanticModel, CancellationToken cancellationToken)
+    private static Location GetMemberLocation(ISymbol member, SemanticModel semanticModel, CancellationToken cancellationToken)
     {
         foreach (ArrowExpressionClauseSyntax arrowExpressionClause in member.DeclaringSyntaxReferences
             .Select(reference => reference.GetSyntax(cancellationToken)).OfType<ArrowExpressionClauseSyntax>())
@@ -130,7 +123,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
     {
         public int StatementCount { get; private set; }
 
-        public override void Visit([NotNull] SyntaxNode node)
+        public override void Visit(SyntaxNode node)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -142,12 +135,12 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
             base.Visit(node);
         }
 
-        private bool IsStatement([NotNull] SyntaxNode node)
+        private bool IsStatement(SyntaxNode node)
         {
             return !node.IsMissing && node is StatementSyntax && !IsExcludedStatement(node);
         }
 
-        private bool IsExcludedStatement([NotNull] SyntaxNode node)
+        private bool IsExcludedStatement(SyntaxNode node)
         {
             return node is BlockSyntax or LabeledStatementSyntax or LocalFunctionStatementSyntax;
         }

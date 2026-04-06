@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using System.IO;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
@@ -20,25 +19,20 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1506";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor CasingRule = new(DiagnosticId, Title, CasingMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor UnderscoreRule = new(DiagnosticId, Title, UnderscoreMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor ArityRule = new(DiagnosticId, Title, ArityMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(CasingRule, UnderscoreRule, ArityRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -60,7 +54,7 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
         AnalyzeArity(fileName, context);
     }
 
-    private static void AnalyzeCasing([NotNull] string fileName, SyntaxTreeAnalysisContext context)
+    private static void AnalyzeCasing(string fileName, SyntaxTreeAnalysisContext context)
     {
         if (char.IsLower(fileName[0]))
         {
@@ -71,7 +65,7 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeUnderscores([NotNull] string fileName, SyntaxTreeAnalysisContext context)
+    private static void AnalyzeUnderscores(string fileName, SyntaxTreeAnalysisContext context)
     {
         if (fileName.IndexOf('_') != -1)
         {
@@ -82,7 +76,7 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeArity([NotNull] string fileName, SyntaxTreeAnalysisContext context)
+    private static void AnalyzeArity(string fileName, SyntaxTreeAnalysisContext context)
     {
         if (fileName.IndexOf('`') != -1)
         {
@@ -93,7 +87,6 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
     private static Location GetLocationForStartOfFile(SyntaxTreeAnalysisContext context)
     {
         var span = new TextSpan(0, 0);

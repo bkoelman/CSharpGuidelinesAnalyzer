@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer;
 
@@ -7,43 +6,32 @@ internal sealed class AnalyzerCategory
 {
     public const string RulePrefix = "AV";
 
-    [NotNull]
     public static readonly AnalyzerCategory ClassDesign = new("Class Design");
 
-    [NotNull]
     public static readonly AnalyzerCategory MemberDesign = new("Member Design");
 
-    [NotNull]
     public static readonly AnalyzerCategory MiscellaneousDesign = new("Miscellaneous Design");
 
-    [NotNull]
     public static readonly AnalyzerCategory Maintainability = new("Maintainability");
 
-    [NotNull]
     public static readonly AnalyzerCategory Naming = new("Naming");
 
-    [NotNull]
     public static readonly AnalyzerCategory Performance = new("Performance");
 
-    [NotNull]
     public static readonly AnalyzerCategory Framework = new("Framework");
 
-    [NotNull]
     public static readonly AnalyzerCategory Documentation = new("Documentation");
 
-    [NotNull]
     public static readonly AnalyzerCategory Layout = new("Layout");
 
-    [NotNull]
     public string DisplayName { get; }
 
-    private AnalyzerCategory([NotNull] string displayName)
+    private AnalyzerCategory(string displayName)
     {
         DisplayName = displayName;
     }
 
-    [NotNull]
-    public string GetHelpLinkUri([NotNull] string ruleId)
+    public string GetHelpLinkUri(string ruleId)
     {
         Guard.NotNullNorWhiteSpace(ruleId, nameof(ruleId));
 

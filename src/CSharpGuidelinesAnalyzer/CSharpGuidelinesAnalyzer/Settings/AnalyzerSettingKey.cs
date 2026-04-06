@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Text;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Settings;
 
 internal sealed class AnalyzerSettingKey
 {
-    [NotNull]
-    [ItemNotNull]
     private readonly Lazy<string> lazyNameInSnakeCase;
 
-    [NotNull]
     public string Rule { get; }
 
-    [NotNull]
     public string Name { get; }
 
-    [NotNull]
     public string NameInSnakeCase => lazyNameInSnakeCase.Value;
 
-    public AnalyzerSettingKey([NotNull] string rule, [NotNull] string name)
+    public AnalyzerSettingKey(string rule, string name)
     {
         Guard.NotNullNorWhiteSpace(rule, nameof(rule));
         Guard.NotNullNorWhiteSpace(name, nameof(name));
@@ -30,7 +24,6 @@ internal sealed class AnalyzerSettingKey
         lazyNameInSnakeCase = new Lazy<string>(GetNameInSnakeCase);
     }
 
-    [NotNull]
     private string GetNameInSnakeCase()
     {
         var builder = new StringBuilder();
@@ -57,7 +50,7 @@ internal sealed class AnalyzerSettingKey
         return builder.ToString();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is AnalyzerSettingKey other && other.Rule == Rule && other.Name == Name;
     }

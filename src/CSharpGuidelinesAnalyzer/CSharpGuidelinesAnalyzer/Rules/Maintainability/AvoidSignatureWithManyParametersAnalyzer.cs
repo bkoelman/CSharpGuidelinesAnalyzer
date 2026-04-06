@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using CSharpGuidelinesAnalyzer.Settings;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -24,31 +23,24 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1561";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor ParameterCountRule = new(DiagnosticId, Title, ParameterCountMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor TupleParameterRule = new(DiagnosticId, Title, TupleParameterMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor TupleReturnRule = new(DiagnosticId, Title, TupleReturnMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly AnalyzerSettingKey MaxParameterCountKey = new(DiagnosticId, "MaxParameterCount");
 
-    [NotNull]
     private static readonly AnalyzerSettingKey MaxConstructorParameterCountKey = new(DiagnosticId, "MaxConstructorParameterCount");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(ParameterCountRule, TupleParameterRule, TupleReturnRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -56,7 +48,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         Guard.NotNull(startContext, nameof(startContext));
 
@@ -68,8 +60,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         startContext.SafeRegisterOperationAction(context => AnalyzeLocalFunction(context, settingsReader), OperationKind.LocalFunction);
     }
 
-    [NotNull]
-    private static ParameterSettings GetParameterSettings([NotNull] AnalyzerSettingsReader settingsReader, [NotNull] SyntaxTree syntaxTree)
+    private static ParameterSettings GetParameterSettings(AnalyzerSettingsReader settingsReader, SyntaxTree syntaxTree)
     {
         int maxParameterCount = settingsReader.TryGetInt32(syntaxTree, MaxParameterCountKey, 0, 255) ?? DefaultMaxParameterCount;
         int maxConstructorParameterCount = settingsReader.TryGetInt32(syntaxTree, MaxConstructorParameterCountKey, 0, 255) ?? maxParameterCount;
@@ -77,7 +68,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         return new ParameterSettings(maxParameterCount, maxConstructorParameterCount);
     }
 
-    private static void AnalyzeProperty(SymbolAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
+    private static void AnalyzeProperty(SymbolAnalysisContext context, AnalyzerSettingsReader settingsReader)
     {
         var property = (IPropertySymbol)context.Symbol;
 
@@ -91,7 +82,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static void AnalyzeMethod(SymbolAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
+    private static void AnalyzeMethod(SymbolAnalysisContext context, AnalyzerSettingsReader settingsReader)
     {
         var method = (IMethodSymbol)context.Symbol;
 
@@ -114,29 +105,27 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static bool MemberRequiresAnalysis([NotNull] ISymbol member, CancellationToken cancellationToken)
+    private static bool MemberRequiresAnalysis(ISymbol member, CancellationToken cancellationToken)
     {
         return member is { IsExtern: false, IsOverride: false } && !member.HidesBaseMember(cancellationToken) && !member.IsInterfaceImplementation();
     }
 
-    private static bool MethodCanReturnValue([NotNull] IMethodSymbol method)
+    private static bool MethodCanReturnValue(IMethodSymbol method)
     {
         return !IsConstructor(method) && method.MethodKind != MethodKind.Destructor;
     }
 
-    [NotNull]
-    private static string GetMemberName([NotNull] IMethodSymbol method)
+    private static string GetMemberName(IMethodSymbol method)
     {
         return IsConstructor(method) ? GetNameForConstructor(method) : GetNameForMethod(method);
     }
 
-    private static bool IsConstructor([NotNull] IMethodSymbol method)
+    private static bool IsConstructor(IMethodSymbol method)
     {
         return method.MethodKind is MethodKind.Constructor or MethodKind.StaticConstructor;
     }
 
-    [NotNull]
-    private static string GetNameForConstructor([NotNull] IMethodSymbol method)
+    private static string GetNameForConstructor(IMethodSymbol method)
     {
         var builder = new StringBuilder();
         builder.Append("Constructor for '");
@@ -145,8 +134,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         return builder.ToString();
     }
 
-    [NotNull]
-    private static string GetNameForMethod([NotNull] IMethodSymbol method)
+    private static string GetNameForMethod(IMethodSymbol method)
     {
         var builder = new StringBuilder();
         string kind = method.GetKind();
@@ -159,7 +147,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         return builder.ToString();
     }
 
-    private static void AnalyzeNamedType(SymbolAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
+    private static void AnalyzeNamedType(SymbolAnalysisContext context, AnalyzerSettingsReader settingsReader)
     {
         var type = (INamedTypeSymbol)context.Symbol;
 
@@ -171,7 +159,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static void AnalyzeDelegate([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context, [NotNull] ParameterSettings settings)
+    private static void AnalyzeDelegate(INamedTypeSymbol type, SymbolAnalysisContext context, ParameterSettings settings)
     {
         IMethodSymbol method = type.DelegateInvokeMethod;
 
@@ -189,12 +177,12 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static bool IsDelegate([NotNull] INamedTypeSymbol type)
+    private static bool IsDelegate(INamedTypeSymbol type)
     {
         return type.TypeKind == TypeKind.Delegate;
     }
 
-    private static void AnalyzeLocalFunction(OperationAnalysisContext context, [NotNull] AnalyzerSettingsReader settingsReader)
+    private static void AnalyzeLocalFunction(OperationAnalysisContext context, AnalyzerSettingsReader settingsReader)
     {
         var operation = (ILocalFunctionOperation)context.Operation;
 
@@ -211,7 +199,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         AnalyzeReturnType(typeContext, operation.Symbol, memberName);
     }
 
-    private static void AnalyzeParameters(ParameterCountInfo<ImmutableArray<IParameterSymbol>> info, [NotNull] ISymbol member, [NotNull] string memberName)
+    private static void AnalyzeParameters(ParameterCountInfo<ImmutableArray<IParameterSymbol>> info, ISymbol member, string memberName)
     {
         ImmutableArray<IParameterSymbol> parameters = info.Context.Target;
 
@@ -232,7 +220,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static void ReportParameterCount(ParameterCountInfo<ISymbol> info, [NotNull] string name, int parameterCount)
+    private static void ReportParameterCount(ParameterCountInfo<ISymbol> info, string name, int parameterCount)
     {
         if (!info.Context.Target.IsSynthesized())
         {
@@ -241,7 +229,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static void ReportTupleParameter(BaseAnalysisContext<IParameterSymbol> context, [NotNull] string memberName, [NotNull] string parameterName)
+    private static void ReportTupleParameter(BaseAnalysisContext<IParameterSymbol> context, string memberName, string parameterName)
     {
         if (!context.Target.IsSynthesized())
         {
@@ -250,7 +238,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, [NotNull] ISymbol member, [NotNull] string memberName)
+    private static void AnalyzeReturnType(BaseAnalysisContext<ITypeSymbol> context, ISymbol member, string memberName)
     {
         int? elementCount = TryGetValueTupleElementCount(context.Target) ?? TryGetSystemTupleElementCount(context.Target);
 
@@ -261,14 +249,12 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         }
     }
 
-    [CanBeNull]
-    private static int? TryGetValueTupleElementCount([NotNull] ITypeSymbol type)
+    private static int? TryGetValueTupleElementCount(ITypeSymbol type)
     {
         return type.IsTupleType && type is INamedTypeSymbol namedType ? namedType.TupleElements.Length : null;
     }
 
-    [CanBeNull]
-    private static int? TryGetSystemTupleElementCount([NotNull] ITypeSymbol type)
+    private static int? TryGetSystemTupleElementCount(ITypeSymbol type)
     {
         if (type.Name == "Tuple" && type.ToString().StartsWith("System.Tuple<", StringComparison.Ordinal))
         {
@@ -281,7 +267,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
         return null;
     }
 
-    private static void ReportTupleReturn(BaseAnalysisContext<ISymbol> context, [NotNull] string memberName, int tupleElementCount)
+    private static void ReportTupleReturn(BaseAnalysisContext<ISymbol> context, string memberName, int tupleElementCount)
     {
         if (!context.Target.IsSynthesized())
         {
@@ -302,12 +288,11 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
         public int MaxParameterCount => isConstructor ? settings.MaxConstructorParameterCount : settings.MaxParameterCount;
 
-        [NotNull]
         private readonly ParameterSettings settings;
 
         private readonly bool isConstructor;
 
-        public ParameterCountInfo(BaseAnalysisContext<TTarget> context, [NotNull] ParameterSettings settings, bool isConstructor = false)
+        public ParameterCountInfo(BaseAnalysisContext<TTarget> context, ParameterSettings settings, bool isConstructor = false)
         {
             Guard.NotNull(settings, nameof(settings));
 

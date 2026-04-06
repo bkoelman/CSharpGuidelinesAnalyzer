@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -8,21 +7,18 @@ namespace CSharpGuidelinesAnalyzer;
 
 internal sealed class NullCheckScanner
 {
-    [NotNull]
     private readonly KnownSymbols knownSymbols;
 
-    [CanBeNull]
-    public IPropertySymbol NullableHasValueProperty => knownSymbols.NullableValueProperty;
+    public IPropertySymbol? NullableHasValueProperty => knownSymbols.NullableValueProperty;
 
-    public NullCheckScanner([NotNull] Compilation compilation)
+    public NullCheckScanner(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         knownSymbols = new KnownSymbols(compilation);
     }
 
-    [CanBeNull]
-    public NullCheckScanResult? ScanPropertyReference([NotNull] IPropertyReferenceOperation propertyReference)
+    public NullCheckScanResult? ScanPropertyReference(IPropertyReferenceOperation propertyReference)
     {
         Guard.NotNull(propertyReference, nameof(propertyReference));
 
@@ -37,8 +33,7 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    [CanBeNull]
-    public NullCheckScanResult? ScanInvocation([NotNull] IInvocationOperation invocation)
+    public NullCheckScanResult? ScanInvocation(IInvocationOperation invocation)
     {
         Guard.NotNull(invocation, nameof(invocation));
 
@@ -58,8 +53,7 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    [CanBeNull]
-    private NullCheckScanResult? AnalyzeSingleArgumentInvocation([NotNull] IInvocationOperation invocation)
+    private NullCheckScanResult? AnalyzeSingleArgumentInvocation(IInvocationOperation invocation)
     {
         if (invocation.Instance != null)
         {
@@ -77,8 +71,7 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    [CanBeNull]
-    private NullCheckScanResult? AnalyzeDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
+    private NullCheckScanResult? AnalyzeDoubleArgumentInvocation(IInvocationOperation invocation)
     {
         NullCheckMethod? nullCheckMethod = TryGetNullCheckForDoubleArgumentInvocation(invocation);
 
@@ -96,8 +89,7 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    [CanBeNull]
-    private NullCheckMethod? TryGetNullCheckForDoubleArgumentInvocation([NotNull] IInvocationOperation invocation)
+    private NullCheckMethod? TryGetNullCheckForDoubleArgumentInvocation(IInvocationOperation invocation)
     {
         if (IsObjectReferenceEquals(invocation))
         {
@@ -117,23 +109,22 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    private bool IsObjectReferenceEquals([NotNull] IInvocationOperation invocation)
+    private bool IsObjectReferenceEquals(IInvocationOperation invocation)
     {
         return invocation.TargetMethod.IsEqualTo(knownSymbols.StaticObjectReferenceEqualsMethod);
     }
 
-    private bool IsStaticObjectEquals([NotNull] IInvocationOperation invocation)
+    private bool IsStaticObjectEquals(IInvocationOperation invocation)
     {
         return invocation.TargetMethod.IsEqualTo(knownSymbols.StaticObjectEqualsMethod);
     }
 
-    private bool IsEqualityComparerEquals([NotNull] IInvocationOperation invocation)
+    private bool IsEqualityComparerEquals(IInvocationOperation invocation)
     {
         return invocation.TargetMethod.OriginalDefinition.IsEqualTo(knownSymbols.EqualityComparerEqualsMethod);
     }
 
-    [CanBeNull]
-    public NullCheckScanResult? ScanIsPattern([NotNull] IIsPatternOperation isPattern)
+    public NullCheckScanResult? ScanIsPattern(IIsPatternOperation isPattern)
     {
         Guard.NotNull(isPattern, nameof(isPattern));
 
@@ -150,8 +141,7 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    [CanBeNull]
-    public NullCheckScanResult? ScanBinaryOperator([NotNull] IBinaryOperation binaryOperator)
+    public NullCheckScanResult? ScanBinaryOperator(IBinaryOperation binaryOperator)
     {
         Guard.NotNull(binaryOperator, nameof(binaryOperator));
 
@@ -169,8 +159,7 @@ internal sealed class NullCheckScanner
         return AnalyzeArguments(info);
     }
 
-    [CanBeNull]
-    private NullCheckOperand? TryGetBinaryOperatorNullCheckOperand([NotNull] IBinaryOperation binaryOperator)
+    private NullCheckOperand? TryGetBinaryOperatorNullCheckOperand(IBinaryOperation binaryOperator)
     {
         if (binaryOperator.OperatorKind == BinaryOperatorKind.Equals)
         {
@@ -185,7 +174,7 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    private NullCheckOperand GetParentNullCheckOperand([NotNull] IOperation operation)
+    private NullCheckOperand GetParentNullCheckOperand(IOperation operation)
     {
         var operand = NullCheckOperand.IsNull;
 
@@ -200,7 +189,7 @@ internal sealed class NullCheckScanner
         return operand;
     }
 
-    private static bool IsConstantNullOrDefault([NotNull] IOperation operation)
+    private static bool IsConstantNullOrDefault(IOperation operation)
     {
         if (operation.ConstantValue is { HasValue: true, Value: null })
         {
@@ -210,7 +199,6 @@ internal sealed class NullCheckScanner
         return operation is IDefaultValueOperation;
     }
 
-    [CanBeNull]
     private NullCheckScanResult? AnalyzeArguments(ArgumentsInfo info)
     {
         IOperation leftArgumentNoConversion = info.LeftArgument.SkipTypeConversions();
@@ -220,7 +208,6 @@ internal sealed class NullCheckScanner
         return InnerAnalyzeArguments(arguments);
     }
 
-    [CanBeNull]
     private NullCheckScanResult? InnerAnalyzeArguments(ArgumentsInfo info)
     {
         if (info.IsRightArgumentNull)
@@ -241,32 +228,26 @@ internal sealed class NullCheckScanner
         return null;
     }
 
-    private bool IsNullableValueType([CanBeNull] IOperation operation)
+    private bool IsNullableValueType(IOperation? operation)
     {
         return operation != null && operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
     }
 
     private sealed class KnownSymbols
     {
-        [CanBeNull]
-        public IPropertySymbol NullableHasValueProperty { get; }
+        public IPropertySymbol? NullableHasValueProperty { get; }
 
-        [CanBeNull]
-        public IPropertySymbol NullableValueProperty { get; }
+        public IPropertySymbol? NullableValueProperty { get; }
 
-        [CanBeNull]
-        public IMethodSymbol StaticObjectReferenceEqualsMethod { get; }
+        public IMethodSymbol? StaticObjectReferenceEqualsMethod { get; }
 
-        [CanBeNull]
-        public IMethodSymbol StaticObjectEqualsMethod { get; }
+        public IMethodSymbol? StaticObjectEqualsMethod { get; }
 
-        [CanBeNull]
-        public IMethodSymbol NullableEqualsMethod { get; }
+        public IMethodSymbol? NullableEqualsMethod { get; }
 
-        [CanBeNull]
-        public IMethodSymbol EqualityComparerEqualsMethod { get; }
+        public IMethodSymbol? EqualityComparerEqualsMethod { get; }
 
-        public KnownSymbols([NotNull] Compilation compilation)
+        public KnownSymbols(Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
 
@@ -278,58 +259,50 @@ internal sealed class NullCheckScanner
             EqualityComparerEqualsMethod = ResolveEqualityComparerEquals(compilation);
         }
 
-        [CanBeNull]
-        private static IPropertySymbol ResolveNullableHasValueProperty([NotNull] Compilation compilation)
+        private static IPropertySymbol? ResolveNullableHasValueProperty(Compilation compilation)
         {
-            INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+            INamedTypeSymbol? nullableType = KnownTypes.SystemNullableT(compilation);
             return nullableType?.GetMembers("HasValue").OfType<IPropertySymbol>().FirstOrDefault();
         }
 
-        [CanBeNull]
-        private static IPropertySymbol ResolveNullableValueProperty([NotNull] Compilation compilation)
+        private static IPropertySymbol? ResolveNullableValueProperty(Compilation compilation)
         {
-            INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+            INamedTypeSymbol? nullableType = KnownTypes.SystemNullableT(compilation);
             return nullableType?.GetMembers("Value").OfType<IPropertySymbol>().FirstOrDefault();
         }
 
-        [CanBeNull]
-        private IMethodSymbol ResolveObjectReferenceEquals([NotNull] Compilation compilation)
+        private IMethodSymbol? ResolveObjectReferenceEquals(Compilation compilation)
         {
-            INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
+            INamedTypeSymbol? objectType = KnownTypes.SystemObject(compilation);
             return objectType?.GetMembers("ReferenceEquals").OfType<IMethodSymbol>().FirstOrDefault();
         }
 
-        [CanBeNull]
-        private IMethodSymbol ResolveStaticObjectEquals([NotNull] Compilation compilation)
+        private IMethodSymbol? ResolveStaticObjectEquals(Compilation compilation)
         {
-            INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
+            INamedTypeSymbol? objectType = KnownTypes.SystemObject(compilation);
             return objectType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault(method => method.IsStatic);
         }
 
-        [CanBeNull]
-        private IMethodSymbol ResolveNullableEquals([NotNull] Compilation compilation)
+        private IMethodSymbol? ResolveNullableEquals(Compilation compilation)
         {
-            INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+            INamedTypeSymbol? nullableType = KnownTypes.SystemNullableT(compilation);
             return nullableType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
         }
 
-        [CanBeNull]
-        private IMethodSymbol ResolveEqualityComparerEquals([NotNull] Compilation compilation)
+        private IMethodSymbol? ResolveEqualityComparerEquals(Compilation compilation)
         {
-            INamedTypeSymbol equalityComparerType = KnownTypes.SystemCollectionsGenericEqualityComparerT(compilation);
+            INamedTypeSymbol? equalityComparerType = KnownTypes.SystemCollectionsGenericEqualityComparerT(compilation);
             return equalityComparerType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
         }
     }
 
     private readonly struct ArgumentsInfo(
-        [NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument, NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
+        IOperation leftArgument, IOperation rightArgument, NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
     {
-        [NotNull]
         public IOperation LeftArgument { get; } = leftArgument;
 
         public bool IsLeftArgumentNull => IsConstantNullOrDefault(LeftArgument);
 
-        [NotNull]
         public IOperation RightArgument { get; } = rightArgument;
 
         public bool IsRightArgumentNull => IsConstantNullOrDefault(RightArgument);
@@ -338,7 +311,7 @@ internal sealed class NullCheckScanner
 
         public NullCheckOperand NullCheckOperand { get; } = nullCheckOperand;
 
-        public ArgumentsInfo WithArguments([NotNull] IOperation leftArgument, [NotNull] IOperation rightArgument)
+        public ArgumentsInfo WithArguments(IOperation leftArgument, IOperation rightArgument)
         {
             return new ArgumentsInfo(leftArgument, rightArgument, NullCheckMethod, NullCheckOperand);
         }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -18,17 +17,14 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1537";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -47,11 +43,10 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
 
     private sealed class IfStatementCollector : ExplicitOperationWalker
     {
-        [NotNull]
         public IDictionary<Location, IConditionalOperation> CollectedIfStatements { get; } =
             new SortedDictionary<Location, IConditionalOperation>(LocationComparer.Default);
 
-        public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
+        public void VisitBlocks(ImmutableArray<IOperation> blocks)
         {
             foreach (IOperation block in blocks)
             {
@@ -59,11 +54,11 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
             }
         }
 
-        public override void VisitConditional([NotNull] IConditionalOperation operation)
+        public override void VisitConditional(IConditionalOperation operation)
         {
             if (operation.IsStatement())
             {
-                Location location = operation.TryGetLocationForKeyword();
+                Location? location = operation.TryGetLocationForKeyword();
 
                 if (location != null)
                 {
@@ -76,10 +71,9 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
 
         private sealed class LocationComparer : IComparer<Location>
         {
-            [NotNull]
             public static readonly LocationComparer Default = new();
 
-            public int Compare(Location x, Location y)
+            public int Compare(Location? x, Location? y)
             {
                 if (ReferenceEquals(x, y))
                 {
@@ -93,12 +87,11 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
 
     private sealed class IfStatementAnalyzer
     {
-        [NotNull]
         private readonly IDictionary<Location, IConditionalOperation> ifStatementsLeftToAnalyze;
 
         private OperationBlockAnalysisContext context;
 
-        public IfStatementAnalyzer([NotNull] IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
+        public IfStatementAnalyzer(IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
         {
             Guard.NotNull(ifStatementsToAnalyze, nameof(ifStatementsToAnalyze));
 
@@ -127,7 +120,6 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
             }
         }
 
-        [NotNull]
         private IConditionalOperation ConsumeNextIfStatement()
         {
             KeyValuePair<Location, IConditionalOperation> entry = ifStatementsLeftToAnalyze.First();
@@ -136,18 +128,16 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
             return entry.Value;
         }
 
-        private bool IsIfElseIfConstruct([NotNull] IConditionalOperation ifStatement)
+        private bool IsIfElseIfConstruct(IConditionalOperation ifStatement)
         {
             return ifStatement.WhenFalse is IConditionalOperation;
         }
 
-        private sealed class IfElseIfConstructAnalyzer([NotNull] IfStatementAnalyzer owner, [NotNull] IConditionalOperation ifStatement)
+        private sealed class IfElseIfConstructAnalyzer(IfStatementAnalyzer owner, IConditionalOperation ifStatement)
         {
-            [NotNull]
             private readonly IfStatementAnalyzer owner = owner;
 
-            [CanBeNull]
-            private readonly Location topIfKeywordLocation = ifStatement.TryGetLocationForKeyword();
+            private readonly Location? topIfKeywordLocation = ifStatement.TryGetLocationForKeyword();
 
             public void Analyze()
             {
@@ -167,7 +157,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
                 }
             }
 
-            private bool AnalyzeFalseBlock([CanBeNull] IOperation falseBlock)
+            private bool AnalyzeFalseBlock(IOperation? falseBlock)
             {
                 if (falseBlock == null)
                 {
@@ -191,16 +181,16 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
                 return false;
             }
 
-            private bool HandleElseIf([NotNull] IConditionalOperation ifElseStatement)
+            private bool HandleElseIf(IConditionalOperation ifElseStatement)
             {
                 Remove(ifElseStatement, owner.ifStatementsLeftToAnalyze);
                 ifStatement = ifElseStatement;
                 return true;
             }
 
-            private void Remove([NotNull] IConditionalOperation ifStatementToRemove, [NotNull] IDictionary<Location, IConditionalOperation> ifStatements)
+            private void Remove(IConditionalOperation ifStatementToRemove, IDictionary<Location, IConditionalOperation> ifStatements)
             {
-                Location location = ifStatementToRemove.TryGetLocationForKeyword();
+                Location? location = ifStatementToRemove.TryGetLocationForKeyword();
 
                 if (location != null)
                 {

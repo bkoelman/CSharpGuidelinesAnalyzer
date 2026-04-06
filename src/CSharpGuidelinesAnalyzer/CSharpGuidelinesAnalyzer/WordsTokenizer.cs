@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer;
 
@@ -9,18 +8,16 @@ namespace CSharpGuidelinesAnalyzer;
 /// </summary>
 public sealed class WordsTokenizer
 {
-    [NotNull]
     private readonly string text;
 
     private int position;
 
-    public WordsTokenizer([NotNull] string text)
+    public WordsTokenizer(string text)
     {
         Guard.NotNull(text, nameof(text));
         this.text = text;
     }
 
-    [NotNull]
     public IEnumerable<WordToken> GetWords()
     {
         foreach (WordToken token in GetTokens())
@@ -32,7 +29,6 @@ public sealed class WordsTokenizer
         }
     }
 
-    [NotNull]
     public IEnumerable<WordToken> GetTokens()
     {
         Reset();
@@ -75,22 +71,21 @@ public sealed class WordsTokenizer
         return CreateTokenFromScan(startIndex, WordTokenKind.Separators);
     }
 
-    private static bool IsUpperCaseLetter([CanBeNull] char? ch)
+    private static bool IsUpperCaseLetter(char? ch)
     {
         return ch != null && char.IsLetter(ch.Value) && char.IsUpper(ch.Value);
     }
 
-    private static bool IsLowerCaseLetter([CanBeNull] char? ch)
+    private static bool IsLowerCaseLetter(char? ch)
     {
         return ch != null && char.IsLetter(ch.Value) && !char.IsUpper(ch.Value);
     }
 
-    private static bool IsSeparator([CanBeNull] char? ch)
+    private static bool IsSeparator(char? ch)
     {
         return ch != null && !IsLowerCaseLetter(ch) && !IsUpperCaseLetter(ch);
     }
 
-    [CanBeNull]
     private char? PeekChar()
     {
         return position < text.Length - 1 ? text[position + 1] : null;
@@ -129,7 +124,7 @@ public sealed class WordsTokenizer
         return IsTokenKind(nextChar, kind);
     }
 
-    private static bool IsTokenKind([CanBeNull] char? ch, WordTokenKind kind)
+    private static bool IsTokenKind(char? ch, WordTokenKind kind)
     {
         switch (kind)
         {
@@ -164,7 +159,6 @@ public sealed class WordsTokenizer
         return new WordToken(value, kind);
     }
 
-    [NotNull]
     private string ExtractText(int startIndex)
     {
         return text.Substring(startIndex, position - startIndex);
@@ -174,7 +168,7 @@ public sealed class WordsTokenizer
     {
         private int iterationCount;
 
-        public void EnterNextIteration([NotNull] string text, int position)
+        public void EnterNextIteration(string text, int position)
         {
             iterationCount++;
 

@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,17 +15,14 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticA
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1535";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -44,12 +40,12 @@ public sealed class ClauseInSwitchStatementShouldHaveBlockAnalyzer : DiagnosticA
         }
     }
 
-    private static bool SectionHasBlock([NotNull] SwitchSectionSyntax switchSection)
+    private static bool SectionHasBlock(SwitchSectionSyntax switchSection)
     {
         return switchSection.Statements[0] is BlockSyntax;
     }
 
-    private static void ReportAtLastLabel([NotNull] SwitchSectionSyntax switchSection, SyntaxNodeAnalysisContext context)
+    private static void ReportAtLastLabel(SwitchSectionSyntax switchSection, SyntaxNodeAnalysisContext context)
     {
         SwitchLabelSyntax lastLabel = switchSection.Labels.Last();
         Location location = lastLabel.Keyword.GetLocation();

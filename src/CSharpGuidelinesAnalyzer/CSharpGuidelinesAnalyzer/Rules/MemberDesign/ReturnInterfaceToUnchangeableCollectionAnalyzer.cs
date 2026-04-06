@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -20,17 +19,14 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1130";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MemberDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -38,7 +34,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         ISet<INamedTypeSymbol> unchangeableCollectionInterfaces = ResolveUnchangeableCollectionInterfaces(startContext.Compilation);
 
@@ -48,11 +44,9 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         }
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static ISet<INamedTypeSymbol> ResolveUnchangeableCollectionInterfaces([NotNull] Compilation compilation)
+    private static ISet<INamedTypeSymbol> ResolveUnchangeableCollectionInterfaces(Compilation compilation)
     {
-        INamedTypeSymbol[] types =
+        INamedTypeSymbol?[] types =
         [
             KnownTypes.SystemCollectionsGenericIEnumerableT(compilation),
             KnownTypes.SystemCollectionsGenericIAsyncEnumerableT(compilation),
@@ -64,10 +58,10 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
             KnownTypes.SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue(compilation)
         ];
 
-        return types.Where(type => type != null).ToImmutableHashSet();
+        return types.Where(type => type != null).Cast<INamedTypeSymbol>().ToImmutableHashSet();
     }
 
-    private static void AnalyzeMethod(SymbolAnalysisContext context, [NotNull] [ItemNotNull] ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
+    private static void AnalyzeMethod(SymbolAnalysisContext context, ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
     {
         var method = (IMethodSymbol)context.Symbol;
 
@@ -92,27 +86,27 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         }
     }
 
-    private static bool IsString([NotNull] ITypeSymbol type)
+    private static bool IsString(ITypeSymbol type)
     {
         return type.SpecialType == SpecialType.System_String;
     }
 
-    private static bool IsImmutable([NotNull] ITypeSymbol type)
+    private static bool IsImmutable(ITypeSymbol type)
     {
         return type.Name.StartsWith("Immutable", StringComparison.Ordinal) || type.Name.StartsWith("IImmutable", StringComparison.Ordinal);
     }
 
-    private static bool IsMethodAccessible([NotNull] IMethodSymbol method)
+    private static bool IsMethodAccessible(IMethodSymbol method)
     {
         return method.DeclaredAccessibility != Accessibility.Private && method.IsSymbolAccessibleFromRoot();
     }
 
-    private static bool IsArray([NotNull] ITypeSymbol type)
+    private static bool IsArray(ITypeSymbol type)
     {
         return type.TypeKind == TypeKind.Array;
     }
 
-    private static bool IsChangeableCollection([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
+    private static bool IsChangeableCollection(ITypeSymbol type, ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
     {
         if (!type.ImplementsIEnumerable())
         {
@@ -124,12 +118,12 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
             : !unchangeableCollectionInterfaces.Contains(type);
     }
 
-    private static bool IsWhitelisted([NotNull] IMethodSymbol method)
+    private static bool IsWhitelisted(IMethodSymbol method)
     {
         return IsDependencyInjectionRegistrationMethod(method);
     }
 
-    private static bool IsDependencyInjectionRegistrationMethod([NotNull] IMethodSymbol method)
+    private static bool IsDependencyInjectionRegistrationMethod(IMethodSymbol method)
     {
         return method.Name.StartsWith("Add", StringComparison.Ordinal) && method.IsExtensionMethod &&
             method.ReturnType.ToString() == DependencyInjectionServiceCollectionTypeName && method.Parameters.Length >= 1 &&

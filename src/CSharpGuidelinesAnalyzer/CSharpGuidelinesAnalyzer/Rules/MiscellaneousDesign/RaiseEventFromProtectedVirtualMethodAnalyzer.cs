@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -19,18 +18,14 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1225";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor KindRule = new(DiagnosticId, Title, KindMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor ModifiersRule = new(DiagnosticId, Title, ModifiersMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor NameRule = new(DiagnosticId, Title, NameMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
@@ -40,10 +35,9 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         MethodKind.ExplicitInterfaceImplementation
     }.ToImmutableArray();
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(KindRule, ModifiersRule, NameRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -61,34 +55,31 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         }
     }
 
-    private static void AnalyzeEventInvocation(OperationAnalysisContext context, [NotNull] IInvocationOperation invocation)
+    private static void AnalyzeEventInvocation(OperationAnalysisContext context, IInvocationOperation invocation)
     {
-        IEventSymbol @event = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
+        IEventSymbol? @event = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
 
         if (@event != null)
         {
-            IMethodSymbol containingMethod = invocation.TryGetContainingMethod(context.Compilation);
+            IMethodSymbol? containingMethod = invocation.TryGetContainingMethod(context.Compilation);
             AnalyzeContainingMethod(containingMethod, @event, context);
         }
     }
 
-    [CanBeNull]
-    private static IEventSymbol TryGetEvent([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod, OperationAnalysisContext context)
+    private static IEventSymbol? TryGetEvent(IOperation operation, IMethodSymbol? containingMethod, OperationAnalysisContext context)
     {
         return TryGetEventForInvocation(operation) ??
             TryGetEventForNullConditionalAccessInvocation(operation, context.Compilation, context.CancellationToken) ??
             TryGetEventForLocalCopy(operation, containingMethod, context);
     }
 
-    [CanBeNull]
-    private static IEventSymbol TryGetEventForInvocation([NotNull] IOperation operation)
+    private static IEventSymbol? TryGetEventForInvocation(IOperation operation)
     {
         var eventReference = operation as IEventReferenceOperation;
         return eventReference?.Event;
     }
 
-    [CanBeNull]
-    private static IEventSymbol TryGetEventForNullConditionalAccessInvocation([NotNull] IOperation operation, [NotNull] Compilation compilation,
+    private static IEventSymbol? TryGetEventForNullConditionalAccessInvocation(IOperation operation, Compilation compilation,
         CancellationToken cancellationToken)
     {
         if (operation is IConditionalAccessInstanceOperation)
@@ -100,8 +91,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         return null;
     }
 
-    [CanBeNull]
-    private static IEventSymbol TryGetEventForLocalCopy([NotNull] IOperation operation, [CanBeNull] IMethodSymbol containingMethod,
+    private static IEventSymbol? TryGetEventForLocalCopy(IOperation operation, IMethodSymbol? containingMethod,
         OperationAnalysisContext context)
     {
         return operation is ILocalReferenceOperation local && containingMethod != null
@@ -109,11 +99,10 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
             : null;
     }
 
-    [CanBeNull]
-    private static IEventSymbol TryGetEventFromMethodStatements([NotNull] IMethodSymbol containingMethod, [NotNull] ILocalSymbol local,
+    private static IEventSymbol? TryGetEventFromMethodStatements(IMethodSymbol containingMethod, ILocalSymbol local,
         OperationAnalysisContext context)
     {
-        IOperation body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
+        IOperation? body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
 
         if (body != null)
         {
@@ -126,7 +115,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         return null;
     }
 
-    private static void AnalyzeContainingMethod([CanBeNull] IMethodSymbol method, [NotNull] IEventSymbol @event, OperationAnalysisContext context)
+    private static void AnalyzeContainingMethod(IMethodSymbol? method, IEventSymbol @event, OperationAnalysisContext context)
     {
         if (method == null || !RegularMethodKinds.Contains(method.MethodKind))
         {
@@ -147,7 +136,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         }
     }
 
-    private static bool AnalyzeMethodName([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event, OperationAnalysisContext context)
+    private static bool AnalyzeMethodName(IMethodSymbol method, IEventSymbol @event, OperationAnalysisContext context)
     {
         string nameExpected = string.Concat("On", @event.Name);
         string nameActual = method.MemberNameWithoutExplicitInterfacePrefix();
@@ -163,7 +152,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         return false;
     }
 
-    private static void AnalyzeMethodSignature([NotNull] IMethodSymbol method, [NotNull] IEventSymbol @event, OperationAnalysisContext context)
+    private static void AnalyzeMethodSignature(IMethodSymbol method, IEventSymbol @event, OperationAnalysisContext context)
     {
         if (!method.ContainingType.IsSealed && !method.IsStatic && method.MethodKind != MethodKind.ExplicitInterfaceImplementation)
         {
@@ -175,26 +164,24 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         }
     }
 
-    private static bool IsProtected([NotNull] IMethodSymbol method)
+    private static bool IsProtected(IMethodSymbol method)
     {
         return method.DeclaredAccessibility is Accessibility.Protected or Accessibility.ProtectedAndInternal;
     }
 
     private sealed class LocalAssignmentWalker : ExplicitOperationWalker
     {
-        [NotNull]
         private readonly ILocalSymbol local;
 
-        [CanBeNull]
-        public IEventSymbol Event { get; private set; }
+        public IEventSymbol? Event { get; private set; }
 
-        public LocalAssignmentWalker([NotNull] ILocalSymbol local)
+        public LocalAssignmentWalker(ILocalSymbol local)
         {
             Guard.NotNull(local, nameof(local));
             this.local = local;
         }
 
-        public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
+        public override void VisitSimpleAssignment(ISimpleAssignmentOperation operation)
         {
             if (operation.Target is ILocalReferenceOperation targetLocal && local.IsEqualTo(targetLocal.Local))
             {
@@ -204,7 +191,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
             base.VisitSimpleAssignment(operation);
         }
 
-        public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
+        public override void VisitVariableDeclarator(IVariableDeclaratorOperation operation)
         {
             if (local.IsEqualTo(operation.Symbol))
             {
@@ -219,7 +206,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
             base.VisitVariableDeclarator(operation);
         }
 
-        private void TrySetEvent([CanBeNull] IOperation assignedValue)
+        private void TrySetEvent(IOperation? assignedValue)
         {
             if (assignedValue is IEventReferenceOperation eventReference)
             {

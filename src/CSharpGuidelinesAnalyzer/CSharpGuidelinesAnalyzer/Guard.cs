@@ -14,7 +14,7 @@ public static class Guard
 {
     [AssertionMethod]
     [ContractAnnotation("value: null => halt")]
-    public static void NotNull<T>([CanBeNull] [NoEnumeration] T value, [NotNull] [InvokerParameterName] string name)
+    public static void NotNull<T>([NoEnumeration] T? value, [InvokerParameterName] string name)
         where T : class
     {
         if (value is null)
@@ -25,7 +25,7 @@ public static class Guard
 
     [AssertionMethod]
     [ContractAnnotation("value: null => halt")]
-    internal static void NotNullNorEmpty<T>([CanBeNull] [ItemCanBeNull] IEnumerable<T> value, [NotNull] [InvokerParameterName] string name)
+    internal static void NotNullNorEmpty<T>(IEnumerable<T?>? value, [InvokerParameterName] string name)
     {
         NotNull(value, name);
 
@@ -37,7 +37,7 @@ public static class Guard
 
     [AssertionMethod]
     [ContractAnnotation("value: null => halt")]
-    public static void NotNullNorWhiteSpace([CanBeNull] string value, [NotNull] [InvokerParameterName] string name)
+    public static void NotNullNorWhiteSpace(string? value, [InvokerParameterName] string name)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

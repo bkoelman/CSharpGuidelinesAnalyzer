@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Settings;
 
 public sealed class AnalyzerSettingsRegistry
 {
-    [NotNull]
     internal static readonly AnalyzerSettingsRegistry ImmutableEmpty = new(ImmutableDictionary<AnalyzerSettingKey, string>.Empty);
 
-    [NotNull]
     private readonly IDictionary<AnalyzerSettingKey, string> settings;
 
     internal bool IsEmpty => !settings.Any();
@@ -21,22 +18,24 @@ public sealed class AnalyzerSettingsRegistry
     {
     }
 
-    private AnalyzerSettingsRegistry([NotNull] IDictionary<AnalyzerSettingKey, string> settings)
+    private AnalyzerSettingsRegistry(IDictionary<AnalyzerSettingKey, string> settings)
     {
         this.settings = settings;
     }
 
-    public void Add([NotNull] string rule, [NotNull] string name, [CanBeNull] string value)
+    public void Add(string rule, string name, string? value)
     {
         Guard.NotNull(rule, nameof(rule));
         Guard.NotNull(name, nameof(name));
 
-        var key = new AnalyzerSettingKey(rule, name);
-        settings[key] = value;
+        if (value != null)
+        {
+            var key = new AnalyzerSettingKey(rule, name);
+            settings[key] = value;
+        }
     }
 
-    [CanBeNull]
-    internal int? TryGetInt32([NotNull] AnalyzerSettingKey key, int minValue, int maxValue)
+    internal int? TryGetInt32(AnalyzerSettingKey key, int minValue, int maxValue)
     {
         Guard.NotNull(key, nameof(key));
 
@@ -48,13 +47,12 @@ public sealed class AnalyzerSettingsRegistry
             }
 
             throw new ArgumentOutOfRangeException($"Value for '{key}' in '{AnalyzerSettingsProvider.SettingsFileName}' must be in range {minValue}-{maxValue}.",
-                (Exception)null);
+                (Exception?)null);
         }
 
         return null;
     }
 
-    [NotNull]
     internal IEnumerable<KeyValuePair<AnalyzerSettingKey, string>> GetAll()
     {
         return settings;

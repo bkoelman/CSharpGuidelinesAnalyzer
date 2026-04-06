@@ -1,8 +1,8 @@
-﻿#if DEBUG
+﻿
+#if DEBUG
 using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
@@ -18,20 +18,16 @@ public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "0000000000000000";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Hidden, false,
         Description);
 
-    [NotNull]
     private static readonly OperationKind[] OperationKinds = (OperationKind[])Enum.GetValues(typeof(OperationKind));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -43,7 +39,7 @@ public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
     {
         if (!context.Operation.IsImplicit && context.Operation.IsStatement())
         {
-            Location locationForKeyword = context.Operation.TryGetLocationForKeyword();
+            Location? locationForKeyword = context.Operation.TryGetLocationForKeyword();
             Location location = locationForKeyword ?? context.Operation.Syntax.GetLocation();
 
             string keywordText = GetTextAt(location);
@@ -53,8 +49,7 @@ public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    private static string GetTextAt([NotNull] Location locationForKeyword)
+    private static string GetTextAt(Location locationForKeyword)
     {
         TextSpan sourceSpan = locationForKeyword.SourceSpan;
         return locationForKeyword.SourceTree.ToString().Substring(sourceSpan.Start, sourceSpan.Length);

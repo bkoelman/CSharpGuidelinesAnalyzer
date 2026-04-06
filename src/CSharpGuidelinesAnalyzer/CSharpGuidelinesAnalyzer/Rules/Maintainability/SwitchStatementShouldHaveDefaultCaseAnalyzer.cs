@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,21 +20,16 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1536";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
-    [ItemCanBeNull]
-    private static readonly ISymbol[] NullSymbolArray = [null];
+    private static readonly ISymbol?[] NullSymbolArray = [null];
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -43,9 +37,9 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
+        INamedTypeSymbol? systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
 
         if (systemBoolean != null)
         {
@@ -53,7 +47,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         }
     }
 
-    private static void AnalyzeSwitchStatement(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemBoolean)
+    private static void AnalyzeSwitchStatement(OperationAnalysisContext context, INamedTypeSymbol systemBoolean)
     {
         var switchStatement = (ISwitchOperation)context.Operation;
 
@@ -67,7 +61,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         AnalyzeSwitchExhaustiveness(switchStatement, systemBoolean, context);
     }
 
-    private static void AnalyzeSwitchExhaustiveness([NotNull] ISwitchOperation switchStatement, [NotNull] INamedTypeSymbol systemBoolean,
+    private static void AnalyzeSwitchExhaustiveness(ISwitchOperation switchStatement, INamedTypeSymbol systemBoolean,
         OperationAnalysisContext context)
     {
         var analysisContext = new SwitchAnalysisContext(switchStatement, systemBoolean, context);
@@ -81,40 +75,37 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         }
     }
 
-    private static bool HasDefaultOrPatternCase([NotNull] ISwitchOperation switchStatement)
+    private static bool HasDefaultOrPatternCase(ISwitchOperation switchStatement)
     {
         return switchStatement.Cases.SelectMany(@case => @case.Clauses).Any(IsDefaultOrPatternCase);
     }
 
-    private static bool IsDefaultOrPatternCase([NotNull] ICaseClauseOperation clause)
+    private static bool IsDefaultOrPatternCase(ICaseClauseOperation clause)
     {
         return clause.CaseKind is CaseKind.Default or CaseKind.Pattern;
     }
 
-    [CanBeNull]
-    private static bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext)
+    private static bool? IsSwitchExhaustive(SwitchAnalysisContext analysisContext)
     {
-        IdentifierInfo identifierInfo = analysisContext.SwitchStatement.Value.TryGetIdentifierInfo();
+        IdentifierInfo? identifierInfo = analysisContext.SwitchStatement.Value.TryGetIdentifierInfo();
 
         return identifierInfo != null ? IsSwitchExhaustive(analysisContext, identifierInfo) : null;
     }
 
-    [CanBeNull]
-    private static bool? IsSwitchExhaustive([NotNull] SwitchAnalysisContext analysisContext, [NotNull] IdentifierInfo identifierInfo)
+    private static bool? IsSwitchExhaustive(SwitchAnalysisContext analysisContext, IdentifierInfo identifierInfo)
     {
         return IsSwitchExhaustiveForBooleanTypes(identifierInfo, analysisContext) ?? IsSwitchExhaustiveForEnumerationTypes(identifierInfo, analysisContext);
     }
 
-    [CanBeNull]
-    private static bool? IsSwitchExhaustiveForBooleanTypes([NotNull] IdentifierInfo identifierInfo, [NotNull] SwitchAnalysisContext analysisContext)
+    private static bool? IsSwitchExhaustiveForBooleanTypes(IdentifierInfo identifierInfo, SwitchAnalysisContext analysisContext)
     {
         bool isBoolean = identifierInfo.Type.SpecialType == SpecialType.System_Boolean;
         bool isNullableBoolean = identifierInfo.Type.IsNullableBoolean();
 
         if (isBoolean || isNullableBoolean)
         {
-            ImmutableArray<ISymbol> possibleValues = isBoolean
-                ? ImmutableArray.Create(analysisContext.BooleanTrue, analysisContext.BooleanFalse)
+            ImmutableArray<ISymbol?> possibleValues = isBoolean
+                ? ImmutableArray.Create<ISymbol?>(analysisContext.BooleanTrue, analysisContext.BooleanFalse)
                 : ImmutableArray.Create(analysisContext.BooleanTrue, analysisContext.BooleanFalse, null);
 
             return HasCaseClausesFor(possibleValues, analysisContext);
@@ -123,8 +114,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         return null;
     }
 
-    [CanBeNull]
-    private static bool? IsSwitchExhaustiveForEnumerationTypes([NotNull] IdentifierInfo identifierInfo, [NotNull] SwitchAnalysisContext analysisContext)
+    private static bool? IsSwitchExhaustiveForEnumerationTypes(IdentifierInfo identifierInfo, SwitchAnalysisContext analysisContext)
     {
         bool isEnumeration = identifierInfo.Type.BaseType is { SpecialType: SpecialType.System_Enum };
 
@@ -134,7 +124,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         {
             ITypeSymbol enumType = isEnumeration ? (INamedTypeSymbol)identifierInfo.Type : ((INamedTypeSymbol)identifierInfo.Type).TypeArguments[0];
 
-            ISymbol[] possibleValues = isEnumeration
+            ISymbol?[] possibleValues = isEnumeration
                 ? enumType.GetMembers().OfType<IFieldSymbol>().Cast<ISymbol>().ToArray()
                 : enumType.GetMembers().OfType<IFieldSymbol>().Concat(NullSymbolArray).ToArray();
 
@@ -144,20 +134,18 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         return null;
     }
 
-    [CanBeNull]
-    private static bool? HasCaseClausesFor([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues, [NotNull] SwitchAnalysisContext analysisContext)
+    private static bool? HasCaseClausesFor(ICollection<ISymbol?> expectedValues, SwitchAnalysisContext analysisContext)
     {
         var collector = new CaseClauseCollector();
-        ICollection<ISymbol> caseClauseValues = collector.TryGetSymbolsForCaseClauses(analysisContext);
+        ICollection<ISymbol?>? caseClauseValues = collector.TryGetSymbolsForCaseClauses(analysisContext);
 
         return caseClauseValues == null ? null : HasCaseClauseForExpectedValues(expectedValues, caseClauseValues);
     }
 
-    [CanBeNull]
-    private static bool? HasCaseClauseForExpectedValues([NotNull] [ItemCanBeNull] ICollection<ISymbol> expectedValues,
-        [NotNull] [ItemCanBeNull] ICollection<ISymbol> caseClauseValues)
+    private static bool? HasCaseClauseForExpectedValues(ICollection<ISymbol?> expectedValues,
+        ICollection<ISymbol?> caseClauseValues)
     {
-        foreach (ISymbol expectedValue in expectedValues)
+        foreach (ISymbol? expectedValue in expectedValues)
         {
             if (!caseClauseValues.Contains(expectedValue))
             {
@@ -170,13 +158,9 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
     private sealed class CaseClauseCollector
     {
-        [NotNull]
-        [ItemCanBeNull]
-        private readonly HashSet<ISymbol> caseClauseValues = [];
+        private readonly HashSet<ISymbol?> caseClauseValues = [];
 
-        [CanBeNull]
-        [ItemCanBeNull]
-        public ICollection<ISymbol> TryGetSymbolsForCaseClauses([NotNull] SwitchAnalysisContext analysisContext)
+        public ICollection<ISymbol?>? TryGetSymbolsForCaseClauses(SwitchAnalysisContext analysisContext)
         {
             IEnumerable<ISingleValueCaseClauseOperation> caseClauses =
                 analysisContext.SwitchStatement.Cases.SelectMany(@case => @case.Clauses.OfType<ISingleValueCaseClauseOperation>());
@@ -201,12 +185,12 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             return caseClauseValues;
         }
 
-        private bool ProcessAsConversion([NotNull] SwitchAnalysisContext analysisContext, [NotNull] ISingleValueCaseClauseOperation caseClause)
+        private bool ProcessAsConversion(SwitchAnalysisContext analysisContext, ISingleValueCaseClauseOperation caseClause)
         {
             var conversion = caseClause.Value as IConversionOperation;
             var memberSyntax = conversion?.Syntax as MemberAccessExpressionSyntax;
 
-            IFieldSymbol field = analysisContext.GetFieldOrNull(memberSyntax);
+            IFieldSymbol? field = analysisContext.GetFieldOrNull(memberSyntax);
 
             if (field != null)
             {
@@ -217,7 +201,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             return false;
         }
 
-        private bool ProcessAsLiteralSyntax([NotNull] SwitchAnalysisContext analysisContext, [NotNull] ISingleValueCaseClauseOperation caseClause)
+        private bool ProcessAsLiteralSyntax(SwitchAnalysisContext analysisContext, ISingleValueCaseClauseOperation caseClause)
         {
             if (caseClause.Value.Syntax is LiteralExpressionSyntax literalSyntax)
             {
@@ -231,7 +215,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             return false;
         }
 
-        private bool ProcessLiteralSyntaxAsTrueKeyword([NotNull] SwitchAnalysisContext analysisContext, [NotNull] LiteralExpressionSyntax literalSyntax)
+        private bool ProcessLiteralSyntaxAsTrueKeyword(SwitchAnalysisContext analysisContext, LiteralExpressionSyntax literalSyntax)
         {
             if (literalSyntax.Token.IsKind(SyntaxKind.TrueKeyword))
             {
@@ -242,7 +226,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             return false;
         }
 
-        private bool ProcessLiteralSyntaxAsFalseKeyword([NotNull] SwitchAnalysisContext analysisContext, [NotNull] LiteralExpressionSyntax literalSyntax)
+        private bool ProcessLiteralSyntaxAsFalseKeyword(SwitchAnalysisContext analysisContext, LiteralExpressionSyntax literalSyntax)
         {
             if (literalSyntax.Token.IsKind(SyntaxKind.FalseKeyword))
             {
@@ -253,7 +237,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             return false;
         }
 
-        private bool ProcessLiteralSyntaxAsNullKeyword([NotNull] LiteralExpressionSyntax literalSyntax)
+        private bool ProcessLiteralSyntaxAsNullKeyword(LiteralExpressionSyntax literalSyntax)
         {
             if (literalSyntax.Token.IsKind(SyntaxKind.NullKeyword))
             {
@@ -264,7 +248,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             return false;
         }
 
-        private bool ProcessAsField([NotNull] ISingleValueCaseClauseOperation caseClause)
+        private bool ProcessAsField(ISingleValueCaseClauseOperation caseClause)
         {
             if (caseClause.Value is IFieldReferenceOperation enumField)
             {
@@ -278,21 +262,17 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
     private sealed class SwitchAnalysisContext
     {
-        [NotNull]
         private readonly Compilation compilation;
 
         public CancellationToken CancellationToken { get; }
 
-        [NotNull]
         public ISwitchOperation SwitchStatement { get; }
 
-        [NotNull]
         public ISymbol BooleanTrue { get; }
 
-        [NotNull]
         public ISymbol BooleanFalse { get; }
 
-        public SwitchAnalysisContext([NotNull] ISwitchOperation switchStatement, [NotNull] INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
+        public SwitchAnalysisContext(ISwitchOperation switchStatement, INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
         {
             Guard.NotNull(switchStatement, nameof(switchStatement));
             Guard.NotNull(systemBoolean, nameof(systemBoolean));
@@ -305,8 +285,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
             BooleanFalse = systemBoolean.GetMembers("FalseString").Single();
         }
 
-        [CanBeNull]
-        public IFieldSymbol GetFieldOrNull([CanBeNull] MemberAccessExpressionSyntax memberSyntax)
+        public IFieldSymbol? GetFieldOrNull(MemberAccessExpressionSyntax? memberSyntax)
         {
             if (memberSyntax != null)
             {

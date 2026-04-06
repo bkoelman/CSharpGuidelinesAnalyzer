@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -20,21 +19,17 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1235";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor SenderRule = new(DiagnosticId, SenderTitle, SenderMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor ArgsRule = new(DiagnosticId, ArgsTitle, ArgsMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning,
         true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(SenderRule, ArgsRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -42,9 +37,9 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        INamedTypeSymbol systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
+        INamedTypeSymbol? systemEventArgs = KnownTypes.SystemEventArgs(startContext.Compilation);
 
         if (systemEventArgs != null)
         {
@@ -52,7 +47,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] INamedTypeSymbol systemEventArgs)
+    private static void AnalyzeInvocation(OperationAnalysisContext context, INamedTypeSymbol systemEventArgs)
     {
         var invocation = (IInvocationOperation)context.Operation;
 
@@ -64,8 +59,8 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         AnalyzeEventInvocation(invocation, context, systemEventArgs);
     }
 
-    private static void AnalyzeEventInvocation([NotNull] IInvocationOperation invocation, OperationAnalysisContext context,
-        [NotNull] INamedTypeSymbol systemEventArgs)
+    private static void AnalyzeEventInvocation(IInvocationOperation invocation, OperationAnalysisContext context,
+        INamedTypeSymbol systemEventArgs)
     {
         bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
 
@@ -83,14 +78,12 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static bool? IsStaticEvent([NotNull] IOperation operation, [NotNull] Compilation compilation)
+    private static bool? IsStaticEvent(IOperation operation, Compilation compilation)
     {
         return IsStaticEventInvocation(operation) ?? IsStaticEventInvocationUsingNullConditionalAccessOperator(operation, compilation);
     }
 
-    [CanBeNull]
-    private static bool? IsStaticEventInvocation([NotNull] IOperation operation)
+    private static bool? IsStaticEventInvocation(IOperation operation)
     {
         if (operation is IEventReferenceOperation eventReference)
         {
@@ -100,8 +93,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    [CanBeNull]
-    private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator([NotNull] IOperation operation, [NotNull] Compilation compilation)
+    private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator(IOperation operation, Compilation compilation)
     {
         if (operation is IConditionalAccessInstanceOperation)
         {
@@ -116,9 +108,9 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    private static void AnalyzeSenderArgument([NotNull] IInvocationOperation invocation, OperationAnalysisContext context)
+    private static void AnalyzeSenderArgument(IInvocationOperation invocation, OperationAnalysisContext context)
     {
-        IArgumentOperation senderArgument = GetSenderArgument(invocation);
+        IArgumentOperation? senderArgument = GetSenderArgument(invocation);
 
         if (senderArgument != null && IsNullConstant(senderArgument.Value))
         {
@@ -129,18 +121,17 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static IArgumentOperation GetSenderArgument([NotNull] IInvocationOperation invocation)
+    private static IArgumentOperation? GetSenderArgument(IInvocationOperation invocation)
     {
         IArgumentOperation argument = invocation.Arguments.FirstOrDefault(nextArgument => nextArgument.Parameter.Name == "sender");
 
         return argument != null && argument.Parameter.Type.SpecialType == SpecialType.System_Object ? argument : null;
     }
 
-    private static void AnalyzeArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs,
+    private static void AnalyzeArgsArgument(IInvocationOperation invocation, INamedTypeSymbol systemEventArgs,
         OperationAnalysisContext context)
     {
-        IArgumentOperation argsArgument = GetArgsArgument(invocation, systemEventArgs);
+        IArgumentOperation? argsArgument = GetArgsArgument(invocation, systemEventArgs);
 
         if (argsArgument != null && IsNullConstant(argsArgument.Value))
         {
@@ -151,16 +142,15 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static IArgumentOperation GetArgsArgument([NotNull] IInvocationOperation invocation, [NotNull] INamedTypeSymbol systemEventArgs)
+    private static IArgumentOperation? GetArgsArgument(IInvocationOperation invocation, INamedTypeSymbol systemEventArgs)
     {
         return invocation.Arguments.FirstOrDefault(argument =>
-            !string.IsNullOrEmpty(argument.Parameter?.Name) && IsEventArgs(argument.Parameter.Type, systemEventArgs));
+            !string.IsNullOrEmpty(argument.Parameter?.Name) && IsEventArgs(argument.Parameter?.Type, systemEventArgs));
     }
 
-    private static bool IsEventArgs([CanBeNull] ITypeSymbol type, [NotNull] INamedTypeSymbol systemEventArgs)
+    private static bool IsEventArgs(ITypeSymbol? type, INamedTypeSymbol systemEventArgs)
     {
-        ITypeSymbol nextType = type;
+        ITypeSymbol? nextType = type;
 
         while (nextType != null)
         {
@@ -175,7 +165,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsNullConstant([NotNull] IOperation operation)
+    private static bool IsNullConstant(IOperation operation)
     {
         return operation.ConstantValue is { HasValue: true, Value: null };
     }

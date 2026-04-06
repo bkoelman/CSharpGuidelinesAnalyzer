@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -19,10 +18,8 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1522";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
@@ -30,10 +27,9 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
         OperationKind.Conditional, OperationKind.Loop, OperationKind.Throw, OperationKind.Return, OperationKind.Lock, OperationKind.Using,
         OperationKind.YieldReturn, OperationKind.ExpressionStatement);
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -59,7 +55,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
         }
     }
 
-    private static void AnalyzeForLoop([NotNull] IForLoopOperation forLoopOperation, OperationAnalysisContext context)
+    private static void AnalyzeForLoop(IForLoopOperation forLoopOperation, OperationAnalysisContext context)
     {
         foreach (IOperation beforeOperation in forLoopOperation.Before)
         {
@@ -74,13 +70,13 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
         }
     }
 
-    private static void AnalyzeForLoopSection(ForLoopSection section, [NotNull] IOperation operation, OperationAnalysisContext context)
+    private static void AnalyzeForLoopSection(ForLoopSection section, IOperation operation, OperationAnalysisContext context)
     {
         var statementWalker = new StatementWalker(section);
         AnalyzeVisitOperation(operation, statementWalker, context);
     }
 
-    private static void AnalyzeVisitOperation([NotNull] IOperation operation, [NotNull] StatementWalker statementWalker, OperationAnalysisContext context)
+    private static void AnalyzeVisitOperation(IOperation operation, StatementWalker statementWalker, OperationAnalysisContext context)
     {
         statementWalker.Visit(operation);
 
@@ -97,14 +93,12 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
         }
     }
 
-    [NotNull]
-    private static Location GetLocation([NotNull] IOperation operation)
+    private static Location GetLocation(IOperation operation)
     {
         return operation.TryGetLocationForKeyword(DoWhileLoopLookupKeywordStrategy.PreferWhileKeyword) ?? operation.Syntax.GetLocation();
     }
 
-    [NotNull]
-    private static string FormatIdentifierList([NotNull] [ItemNotNull] IList<string> variableNames)
+    private static string FormatIdentifierList(IList<string> variableNames)
     {
         var messageBuilder = new StringBuilder();
 
@@ -120,7 +114,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
         return messageBuilder.ToString();
     }
 
-    private static void AppendVariableName([NotNull] string variableName, [NotNull] StringBuilder messageBuilder)
+    private static void AppendVariableName(string variableName, StringBuilder messageBuilder)
     {
         if (messageBuilder.Length > 0)
         {
@@ -139,11 +133,9 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
     {
         private readonly ForLoopSection section = section;
 
-        [NotNull]
-        [ItemNotNull]
         public ISet<string> IdentifiersAssigned { get; } = new HashSet<string>();
 
-        public override void DefaultVisit([NotNull] IOperation operation)
+        public override void DefaultVisit(IOperation operation)
         {
             // Check should be replaced with empty override of VisitWith(IWithOperation operation),
             // after upgrade to recent version of Microsoft.CodeAnalysis.
@@ -153,7 +145,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
             }
         }
 
-        public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
+        public override void VisitVariableDeclarator(IVariableDeclaratorOperation operation)
         {
             IVariableInitializerOperation initializer = operation.GetVariableInitializer();
 
@@ -165,31 +157,31 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
             base.VisitVariableDeclarator(operation);
         }
 
-        public override void VisitAnonymousFunction([NotNull] IAnonymousFunctionOperation operation)
+        public override void VisitAnonymousFunction(IAnonymousFunctionOperation operation)
         {
         }
 
-        public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
+        public override void VisitSimpleAssignment(ISimpleAssignmentOperation operation)
         {
             RegisterAssignment(operation.Target);
             base.VisitSimpleAssignment(operation);
         }
 
-        public override void VisitCompoundAssignment([NotNull] ICompoundAssignmentOperation operation)
+        public override void VisitCompoundAssignment(ICompoundAssignmentOperation operation)
         {
             RegisterAssignment(operation.Target);
             base.VisitCompoundAssignment(operation);
         }
 
-        public override void VisitIncrementOrDecrement([NotNull] IIncrementOrDecrementOperation operation)
+        public override void VisitIncrementOrDecrement(IIncrementOrDecrementOperation operation)
         {
             RegisterAssignment(operation.Target);
             base.VisitIncrementOrDecrement(operation);
         }
 
-        private void RegisterAssignment([NotNull] IOperation operation)
+        private void RegisterAssignment(IOperation operation)
         {
-            IdentifierInfo identifierInfo = operation.TryGetIdentifierInfo();
+            IdentifierInfo? identifierInfo = operation.TryGetIdentifierInfo();
 
             if (identifierInfo != null)
             {
@@ -197,23 +189,23 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
             }
         }
 
-        public override void VisitAnonymousObjectCreation([NotNull] IAnonymousObjectCreationOperation operation)
+        public override void VisitAnonymousObjectCreation(IAnonymousObjectCreationOperation operation)
         {
         }
 
-        public override void VisitObjectCreation([NotNull] IObjectCreationOperation operation)
+        public override void VisitObjectCreation(IObjectCreationOperation operation)
         {
         }
 
-        public override void VisitDynamicObjectCreation([NotNull] IDynamicObjectCreationOperation operation)
+        public override void VisitDynamicObjectCreation(IDynamicObjectCreationOperation operation)
         {
         }
 
-        public override void VisitTypeParameterObjectCreation([NotNull] ITypeParameterObjectCreationOperation operation)
+        public override void VisitTypeParameterObjectCreation(ITypeParameterObjectCreationOperation operation)
         {
         }
 
-        public override void VisitConditional([NotNull] IConditionalOperation operation)
+        public override void VisitConditional(IConditionalOperation operation)
         {
             if (operation.IsStatement())
             {
@@ -225,7 +217,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
             }
         }
 
-        public override void VisitForLoop([NotNull] IForLoopOperation operation)
+        public override void VisitForLoop(IForLoopOperation operation)
         {
             if (section == ForLoopSection.Before)
             {
@@ -246,33 +238,33 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
             }
         }
 
-        public override void VisitForEachLoop([NotNull] IForEachLoopOperation operation)
+        public override void VisitForEachLoop(IForEachLoopOperation operation)
         {
             Visit(operation.LoopControlVariable);
             Visit(operation.Collection);
         }
 
-        public override void VisitWhileLoop([NotNull] IWhileLoopOperation operation)
+        public override void VisitWhileLoop(IWhileLoopOperation operation)
         {
             Visit(operation.Condition);
         }
 
-        public override void VisitLock([NotNull] ILockOperation operation)
+        public override void VisitLock(ILockOperation operation)
         {
             Visit(operation.LockedValue);
         }
 
-        public override void VisitUsing([NotNull] IUsingOperation operation)
+        public override void VisitUsing(IUsingOperation operation)
         {
             Visit(operation.Resources);
         }
 
-        public override void VisitSwitchCase([NotNull] ISwitchCaseOperation operation)
+        public override void VisitSwitchCase(ISwitchCaseOperation operation)
         {
             VisitArray(operation.Clauses);
         }
 
-        private void VisitArray([CanBeNull] [ItemNotNull] IEnumerable<IOperation> operations)
+        private void VisitArray(IEnumerable<IOperation>? operations)
         {
             if (operations != null)
             {

@@ -1,18 +1,16 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer;
 
 internal struct NullCheckScanResult
 {
-    [NotNull]
     public IOperation Target { get; }
 
     public NullCheckMethod Method { get; }
 
     public NullCheckOperand Operand { get; }
 
-    public NullCheckScanResult([NotNull] IOperation target, NullCheckMethod method, NullCheckOperand operand)
+    public NullCheckScanResult(IOperation target, NullCheckMethod method, NullCheckOperand operand)
     {
         Guard.NotNull(target, nameof(target));
 

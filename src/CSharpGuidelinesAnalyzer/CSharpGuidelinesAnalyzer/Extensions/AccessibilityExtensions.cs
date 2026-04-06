@@ -1,11 +1,9 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
 
 internal static class AccessibilityExtensions
 {
-    [NotNull]
     public static string ToText(this Accessibility accessibility)
     {
         switch (accessibility)

@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -18,17 +17,14 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2235";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -36,7 +32,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         var taskInfo = new TaskTypeInfo(startContext.Compilation);
 
@@ -67,7 +63,6 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
         }
     }
 
-    [NotNull]
     private static Location GetInvocationLocation(OperationAnalysisContext context)
     {
         SimpleNameSyntax simpleNameSyntax = context.Operation.Syntax.DescendantNodesAndSelf().OfType<SimpleNameSyntax>()
@@ -78,16 +73,13 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
 
     private struct TaskTypeInfo
     {
-        [CanBeNull]
-        public INamedTypeSymbol TaskType { get; }
+        public INamedTypeSymbol? TaskType { get; }
 
-        [CanBeNull]
-        public INamedTypeSymbol GenericTaskType { get; }
+        public INamedTypeSymbol? GenericTaskType { get; }
 
-        [ItemNotNull]
         public ImmutableArray<ISymbol> ContinueWithMethodGroup { get; }
 
-        public TaskTypeInfo([NotNull] Compilation compilation)
+        public TaskTypeInfo(Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
 
@@ -97,9 +89,8 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
             ContinueWithMethodGroup = GetTaskContinueWithMethodGroup(TaskType, GenericTaskType);
         }
 
-        [ItemNotNull]
-        private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup([CanBeNull] INamedTypeSymbol taskType,
-            [CanBeNull] INamedTypeSymbol genericTaskType)
+        private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup(INamedTypeSymbol? taskType,
+            INamedTypeSymbol? genericTaskType)
         {
             ImmutableArray<ISymbol> taskContinueWithMethodGroup = taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
             ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;

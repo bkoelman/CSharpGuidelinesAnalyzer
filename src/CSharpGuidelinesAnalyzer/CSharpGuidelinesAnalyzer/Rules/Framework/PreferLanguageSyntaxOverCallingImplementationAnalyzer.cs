@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,21 +27,17 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         BinaryOperatorKind.GreaterThanOrEqual
     }.ToImmutableArray();
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor NullableHasValueRule = new(DiagnosticId, Title, NullableHasValueMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor NullableComparisonRule = new(DiagnosticId, Title, NullableComparisonMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NullableHasValueRule, NullableComparisonRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -50,7 +45,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         var scanner = new NullCheckScanner(startContext.Compilation);
 
@@ -58,7 +53,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         startContext.SafeRegisterOperationAction(context => AnalyzeBinaryOperator(context, scanner), OperationKind.BinaryOperator);
     }
 
-    private static void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+    private static void AnalyzePropertyReference(OperationAnalysisContext context, NullCheckScanner scanner)
     {
         var propertyReference = (IPropertyReferenceOperation)context.Operation;
 
@@ -78,7 +73,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         }
     }
 
-    private static void AnalyzeBinaryOperator(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+    private static void AnalyzeBinaryOperator(OperationAnalysisContext context, NullCheckScanner scanner)
     {
         var binaryOperator = (IBinaryOperation)context.Operation;
 
@@ -91,11 +86,11 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         }
     }
 
-    private static bool DoReportForNullableComparison([NotNull] IBinaryOperation binaryOperator, [NotNull] NullCheckScanner scanner)
+    private static bool DoReportForNullableComparison(IBinaryOperation binaryOperator, NullCheckScanner scanner)
     {
         if (IsLogicalAnd(binaryOperator))
         {
-            IOperation leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
+            IOperation? leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
 
             if (leftTarget != null && leftTarget is not IInvocationOperation)
             {
@@ -109,8 +104,8 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return false;
     }
 
-    private static bool DoReportForMatchingRightOperandInNullableComparison([NotNull] IOperation rightOperand, [NotNull] NullCheckScanner scanner,
-        [NotNull] IOperation leftTarget)
+    private static bool DoReportForMatchingRightOperandInNullableComparison(IOperation rightOperand, NullCheckScanner scanner,
+        IOperation leftTarget)
     {
         if (rightOperand is IBinaryOperation rightOperation && NumericComparisonOperators.Contains(rightOperation.OperatorKind))
         {
@@ -126,7 +121,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return false;
     }
 
-    private static bool IsLogicalAnd([NotNull] IBinaryOperation binaryOperation)
+    private static bool IsLogicalAnd(IBinaryOperation binaryOperation)
     {
         if (binaryOperation.OperatorKind == BinaryOperatorKind.ConditionalAnd)
         {
@@ -145,8 +140,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return false;
     }
 
-    [CanBeNull]
-    private static IOperation TryGetTargetInNotNullCheck([NotNull] IOperation operation, [NotNull] NullCheckScanner scanner)
+    private static IOperation? TryGetTargetInNotNullCheck(IOperation operation, NullCheckScanner scanner)
     {
         IOperation targetOperation = SkipNotOperators(operation);
 
@@ -156,8 +150,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return visitor.ScanResult is { Operand: NullCheckOperand.IsNotNull } ? visitor.ScanResult.Value.Target : null;
     }
 
-    [NotNull]
-    private static IOperation SkipNotOperators([NotNull] IOperation operation)
+    private static IOperation SkipNotOperators(IOperation operation)
     {
         IOperation currentOperation = operation;
 
@@ -169,15 +162,14 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return currentOperation;
     }
 
-    private static bool HaveSameTarget([NotNull] IOperation leftOperation, [NotNull] IOperation rightOperation, [NotNull] NullCheckScanner scanner)
+    private static bool HaveSameTarget(IOperation leftOperation, IOperation rightOperation, NullCheckScanner scanner)
     {
         IOperation innerRightOperation = SkipNullableValueProperty(rightOperation, scanner.NullableHasValueProperty);
 
         return OperationEqualityComparer.Default.Equals(leftOperation, innerRightOperation);
     }
 
-    [NotNull]
-    private static IOperation SkipNullableValueProperty([NotNull] IOperation operation, [CanBeNull] IPropertySymbol nullableHasValueProperty)
+    private static IOperation SkipNullableValueProperty(IOperation operation, IPropertySymbol? nullableHasValueProperty)
     {
         if (nullableHasValueProperty != null && operation.SkipTypeConversions() is IPropertyReferenceOperation propertyReference)
         {
@@ -190,7 +182,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return operation;
     }
 
-    private static bool IsEqualityComparisonWithNullableType([NotNull] IBinaryOperation binaryOperator)
+    private static bool IsEqualityComparisonWithNullableType(IBinaryOperation binaryOperator)
     {
         if (IsEqualityComparison(binaryOperator.OperatorKind))
         {
@@ -208,26 +200,24 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return operatorKind == BinaryOperatorKind.Equals;
     }
 
-    private static bool IsNullableValueType([NotNull] IOperation operation)
+    private static bool IsNullableValueType(IOperation operation)
     {
         return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
     }
 
     private sealed class NullCheckVisitor : ExplicitOperationVisitor
     {
-        [NotNull]
         private readonly NullCheckScanner scanner;
 
-        [CanBeNull]
         public NullCheckScanResult? ScanResult { get; private set; }
 
-        public NullCheckVisitor([NotNull] NullCheckScanner scanner)
+        public NullCheckVisitor(NullCheckScanner scanner)
         {
             Guard.NotNull(scanner, nameof(scanner));
             this.scanner = scanner;
         }
 
-        public override void VisitPropertyReference([NotNull] IPropertyReferenceOperation operation)
+        public override void VisitPropertyReference(IPropertyReferenceOperation operation)
         {
             NullCheckScanResult? scanResult = scanner.ScanPropertyReference(operation);
             SetScanResult(scanResult);
@@ -235,7 +225,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
             base.VisitPropertyReference(operation);
         }
 
-        public override void VisitInvocation([NotNull] IInvocationOperation operation)
+        public override void VisitInvocation(IInvocationOperation operation)
         {
             NullCheckScanResult? scanResult = scanner.ScanInvocation(operation);
             SetScanResult(scanResult);
@@ -243,7 +233,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
             base.VisitInvocation(operation);
         }
 
-        public override void VisitIsPattern([NotNull] IIsPatternOperation operation)
+        public override void VisitIsPattern(IIsPatternOperation operation)
         {
             NullCheckScanResult? scanResult = scanner.ScanIsPattern(operation);
             SetScanResult(scanResult);
@@ -251,7 +241,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
             base.VisitIsPattern(operation);
         }
 
-        public override void VisitBinaryOperator([NotNull] IBinaryOperation operation)
+        public override void VisitBinaryOperator(IBinaryOperation operation)
         {
             NullCheckScanResult? scanResult = scanner.ScanBinaryOperator(operation);
             SetScanResult(scanResult);
@@ -259,7 +249,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
             base.VisitBinaryOperator(operation);
         }
 
-        private void SetScanResult([CanBeNull] NullCheckScanResult? scanResult)
+        private void SetScanResult(NullCheckScanResult? scanResult)
         {
             if (scanResult != null)
             {

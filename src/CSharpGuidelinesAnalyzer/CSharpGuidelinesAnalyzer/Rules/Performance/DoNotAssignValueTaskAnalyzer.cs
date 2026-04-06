@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -23,28 +22,23 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1840";
 
-    [NotNull]
     private static readonly SyntaxKind[] AssignmentSyntaxKinds =
     [
         SyntaxKind.SimpleAssignmentExpression,
         CoalesceAssignmentExpressionSyntaxKind
     ];
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Performance;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor AssignmentRule = new(DiagnosticId, Title, AssignmentMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor ArgumentRule = new(DiagnosticId, Title, ArgumentMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(AssignmentRule, ArgumentRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -52,7 +46,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         IList<INamedTypeSymbol> valueTaskTypes = ResolveValueTaskTypes(startContext.Compilation).ToList();
 
@@ -64,11 +58,9 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<INamedTypeSymbol> ResolveValueTaskTypes([NotNull] Compilation compilation)
+    private static IEnumerable<INamedTypeSymbol> ResolveValueTaskTypes(Compilation compilation)
     {
-        foreach (INamedTypeSymbol taskType in new[]
+        foreach (INamedTypeSymbol? taskType in new[]
         {
             KnownTypes.SystemThreadingTasksValueTask(compilation),
             KnownTypes.SystemThreadingTasksValueTaskT(compilation),
@@ -83,7 +75,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeInitializer(SyntaxNodeAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> valueTaskTypes)
+    private static void AnalyzeInitializer(SyntaxNodeAnalysisContext context, IList<INamedTypeSymbol> valueTaskTypes)
     {
         var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
 
@@ -91,7 +83,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
         if (operation != null)
         {
-            AssignmentInfo assignmentInfo = TryGetAssignmentInfoFromOperation(operation, equalsValueClause);
+            AssignmentInfo? assignmentInfo = TryGetAssignmentInfoFromOperation(operation, equalsValueClause);
 
             if (assignmentInfo != null)
             {
@@ -100,8 +92,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static AssignmentInfo TryGetAssignmentInfoFromOperation([NotNull] IOperation operation, [NotNull] EqualsValueClauseSyntax equalsValueClause)
+    private static AssignmentInfo? TryGetAssignmentInfoFromOperation(IOperation operation, EqualsValueClauseSyntax equalsValueClause)
     {
         if (operation is ISymbolInitializerOperation symbolInitializer)
         {
@@ -135,7 +126,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    private static void AnalyzeAssignment(SyntaxNodeAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> valueTaskTypes)
+    private static void AnalyzeAssignment(SyntaxNodeAnalysisContext context, IList<INamedTypeSymbol> valueTaskTypes)
     {
         var assignmentExpression = (AssignmentExpressionSyntax)context.Node;
 
@@ -156,7 +147,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeRightHandSideType([NotNull] AssignmentInfo assignmentInfo, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> valueTaskTypes,
+    private static void AnalyzeRightHandSideType(AssignmentInfo assignmentInfo, IList<INamedTypeSymbol> valueTaskTypes,
         SyntaxNodeAnalysisContext context)
     {
         if (IsValueTask(assignmentInfo.RightType, valueTaskTypes))
@@ -166,7 +157,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeArgument(SyntaxNodeAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> valueTaskTypes)
+    private static void AnalyzeArgument(SyntaxNodeAnalysisContext context, IList<INamedTypeSymbol> valueTaskTypes)
     {
         var argument = (ArgumentSyntax)context.Node;
 
@@ -188,7 +179,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsValueTask([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> valueTaskTypes)
+    private static bool IsValueTask(ITypeSymbol type, IList<INamedTypeSymbol> valueTaskTypes)
     {
         if (type is INamedTypeSymbol namedType)
         {
@@ -203,16 +194,13 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
     private sealed class AssignmentInfo
     {
-        [NotNull]
         public string LeftName { get; }
 
-        [NotNull]
         public Location OperatorLocation { get; }
 
-        [NotNull]
         public ITypeSymbol RightType { get; }
 
-        public AssignmentInfo([NotNull] string leftName, [NotNull] Location operatorLocation, [NotNull] ITypeSymbol rightType)
+        public AssignmentInfo(string leftName, Location operatorLocation, ITypeSymbol rightType)
         {
             Guard.NotNull(leftName, nameof(leftName));
             Guard.NotNull(operatorLocation, nameof(operatorLocation));

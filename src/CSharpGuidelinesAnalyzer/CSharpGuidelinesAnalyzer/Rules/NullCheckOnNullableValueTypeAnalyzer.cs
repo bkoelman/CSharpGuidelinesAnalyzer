@@ -1,8 +1,8 @@
-﻿#if DEBUG
+﻿
+#if DEBUG
 using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -18,17 +18,14 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "00000000";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Hidden, false,
         Description);
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -36,7 +33,7 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         var scanner = new NullCheckScanner(startContext.Compilation);
 
@@ -46,7 +43,7 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         startContext.SafeRegisterOperationAction(context => AnalyzeBinaryOperator(context, scanner), OperationKind.BinaryOperator);
     }
 
-    private void AnalyzePropertyReference(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+    private void AnalyzePropertyReference(OperationAnalysisContext context, NullCheckScanner scanner)
     {
         var propertyReference = (IPropertyReferenceOperation)context.Operation;
 
@@ -54,7 +51,7 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         ReportForScanResult(scanResult, context.ReportDiagnostic);
     }
 
-    private void AnalyzeInvocation(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+    private void AnalyzeInvocation(OperationAnalysisContext context, NullCheckScanner scanner)
     {
         var invocation = (IInvocationOperation)context.Operation;
 
@@ -62,7 +59,7 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         ReportForScanResult(scanResult, context.ReportDiagnostic);
     }
 
-    private void AnalyzeIsPattern(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+    private void AnalyzeIsPattern(OperationAnalysisContext context, NullCheckScanner scanner)
     {
         var isPattern = (IIsPatternOperation)context.Operation;
 
@@ -70,7 +67,7 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         ReportForScanResult(scanResult, context.ReportDiagnostic);
     }
 
-    private void AnalyzeBinaryOperator(OperationAnalysisContext context, [NotNull] NullCheckScanner scanner)
+    private void AnalyzeBinaryOperator(OperationAnalysisContext context, NullCheckScanner scanner)
     {
         var binaryOperator = (IBinaryOperation)context.Operation;
 
@@ -78,7 +75,7 @@ public sealed class NullCheckOnNullableValueTypeAnalyzer : DiagnosticAnalyzer
         ReportForScanResult(scanResult, context.ReportDiagnostic);
     }
 
-    private void ReportForScanResult([CanBeNull] NullCheckScanResult? scanResult, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private void ReportForScanResult(NullCheckScanResult? scanResult, Action<Diagnostic> reportDiagnostic)
     {
         if (scanResult != null)
         {

@@ -1,13 +1,11 @@
 ﻿using System;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
 
 internal static class SemanticModelExtensions
 {
-    [CanBeNull]
-    public static DataFlowAnalysis SafeAnalyzeDataFlow([NotNull] this SemanticModel model, [NotNull] SyntaxNode bodySyntax)
+    public static DataFlowAnalysis? SafeAnalyzeDataFlow(this SemanticModel model, SyntaxNode bodySyntax)
     {
         try
         {

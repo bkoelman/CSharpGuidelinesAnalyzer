@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -18,17 +17,14 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1553";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -36,21 +32,19 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         IList<INamedTypeSymbol> taskTypes = ResolveTaskTypes(startContext.Compilation).ToList();
 
-        INamedTypeSymbol callerArgumentExpressionAttributeType =
+        INamedTypeSymbol? callerArgumentExpressionAttributeType =
             KnownTypes.SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute(startContext.Compilation);
 
         startContext.SafeRegisterSyntaxNodeAction(context => AnalyzeParameter(context, taskTypes, callerArgumentExpressionAttributeType), SyntaxKind.Parameter);
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<INamedTypeSymbol> ResolveTaskTypes([NotNull] Compilation compilation)
+    private static IEnumerable<INamedTypeSymbol> ResolveTaskTypes(Compilation compilation)
     {
-        foreach (INamedTypeSymbol taskType in new[]
+        foreach (INamedTypeSymbol? taskType in new[]
         {
             KnownTypes.SystemThreadingTasksTaskT(compilation),
             KnownTypes.SystemThreadingTasksTask(compilation),
@@ -65,8 +59,8 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         }
     }
 
-    private static void AnalyzeParameter(SymbolAnalysisContext context, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes,
-        [CanBeNull] INamedTypeSymbol callerArgumentExpressionAttributeType)
+    private static void AnalyzeParameter(SymbolAnalysisContext context, IList<INamedTypeSymbol> taskTypes,
+        INamedTypeSymbol? callerArgumentExpressionAttributeType)
     {
         var parameter = (IParameterSymbol)context.Symbol;
 
@@ -85,14 +79,14 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         }
     }
 
-    private static bool HasCallerArgumentExpressionAttribute([NotNull] IParameterSymbol parameter,
-        [CanBeNull] INamedTypeSymbol callerArgumentExpressionAttributeType)
+    private static bool HasCallerArgumentExpressionAttribute(IParameterSymbol parameter,
+        INamedTypeSymbol? callerArgumentExpressionAttributeType)
     {
         return callerArgumentExpressionAttributeType != null &&
             parameter.GetAttributes().Any(attr => Equals(attr.AttributeClass, callerArgumentExpressionAttributeType));
     }
 
-    private static bool IsTask([NotNull] ITypeSymbol type, [NotNull] [ItemNotNull] IList<INamedTypeSymbol> taskTypes)
+    private static bool IsTask(ITypeSymbol type, IList<INamedTypeSymbol> taskTypes)
     {
         ITypeSymbol unwrappedType = type.UnwrapNullableValueType();
         return taskTypes.Any(taskType => taskType.IsEqualTo(unwrappedType.OriginalDefinition));

@@ -14,26 +14,22 @@ namespace CSharpGuidelinesAnalyzer;
 /// </typeparam>
 internal readonly struct BaseAnalysisContext<TTarget>
 {
-    [NotNull]
     private readonly Action<Diagnostic> reportDiagnosticCallback;
 
-    [NotNull]
     public Compilation Compilation { get; }
 
-    [NotNull]
     public AnalyzerOptions Options { get; }
 
     public CancellationToken CancellationToken { get; }
 
-    [NotNull]
     public TTarget Target { get; }
 
-    public BaseAnalysisContext([NotNull] Compilation compilation, [NotNull] AnalyzerOptions options, CancellationToken cancellationToken,
-        [NotNull] Action<Diagnostic> reportDiagnostic, [NotNull] TTarget target)
+    public BaseAnalysisContext(Compilation compilation, AnalyzerOptions options, CancellationToken cancellationToken,
+        Action<Diagnostic> reportDiagnostic, TTarget target)
     {
         Guard.NotNull(compilation, nameof(compilation));
         Guard.NotNull(options, nameof(options));
-        Guard.NotNull((object)target, nameof(target));
+        Guard.NotNull((object?)target, nameof(target));
 
         Compilation = compilation;
         Options = options;
@@ -42,7 +38,7 @@ internal readonly struct BaseAnalysisContext<TTarget>
         Target = target;
     }
 
-    public void ReportDiagnostic([NotNull] Diagnostic diagnostic)
+    public void ReportDiagnostic(Diagnostic diagnostic)
     {
         reportDiagnosticCallback(diagnostic);
     }

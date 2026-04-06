@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -18,20 +17,16 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1562";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [CanBeNull]
-    private static readonly PropertyInfo IsRefLikeTypeProperty = typeof(ITypeSymbol).GetRuntimeProperty("IsRefLikeType");
+    private static readonly PropertyInfo? IsRefLikeTypeProperty = typeof(ITypeSymbol).GetRuntimeProperty("IsRefLikeType");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -56,17 +51,17 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
         AnalyzeRefParameter(parameter, context);
     }
 
-    private static bool IsRefOrOutParameter([NotNull] IParameterSymbol parameter)
+    private static bool IsRefOrOutParameter(IParameterSymbol parameter)
     {
         return parameter.RefKind is RefKind.Ref or RefKind.Out;
     }
 
-    private static bool IsOutParameterInTryMethod([NotNull] IParameterSymbol parameter)
+    private static bool IsOutParameterInTryMethod(IParameterSymbol parameter)
     {
         return parameter is { RefKind: RefKind.Out, ContainingSymbol: IMethodSymbol method } && method.Name.StartsWith("Try", StringComparison.Ordinal);
     }
 
-    private static void AnalyzeRefParameter([NotNull] IParameterSymbol parameter, SymbolAnalysisContext context)
+    private static void AnalyzeRefParameter(IParameterSymbol parameter, SymbolAnalysisContext context)
     {
         if (IsRefStruct(parameter.Type))
         {
@@ -82,7 +77,7 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsRefStruct([NotNull] ITypeSymbol type)
+    private static bool IsRefStruct(ITypeSymbol type)
     {
         return IsRefLikeTypeProperty != null && type.TypeKind == TypeKind.Struct && (bool)IsRefLikeTypeProperty.GetValue(type);
     }

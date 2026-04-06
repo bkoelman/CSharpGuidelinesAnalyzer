@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -20,25 +19,20 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1008";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor TypeRule = new(DiagnosticId, Title, TypeMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor MemberRule = new(DiagnosticId, Title, MemberMessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> PlatformInvokeWrapperTypeNames =
         ImmutableArray.Create("NativeMethods", "SafeNativeMethods", "UnsafeNativeMethods");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(TypeRule, MemberRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -69,17 +63,17 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsPlatformInvokeWrapper([NotNull] INamedTypeSymbol type)
+    private static bool IsPlatformInvokeWrapper(INamedTypeSymbol type)
     {
         return PlatformInvokeWrapperTypeNames.Contains(type.Name);
     }
 
-    private static bool TypeContainsEntryPoint([NotNull] INamedTypeSymbol type, [NotNull] Compilation compilation, CancellationToken cancellationToken)
+    private static bool TypeContainsEntryPoint(INamedTypeSymbol type, Compilation compilation, CancellationToken cancellationToken)
     {
         return type.GetMembers().OfType<IMethodSymbol>().Any(method => method.IsEntryPoint(compilation, cancellationToken));
     }
 
-    private static void AnalyzeTypeMembers([NotNull] INamedTypeSymbol type, SymbolAnalysisContext context)
+    private static void AnalyzeTypeMembers(INamedTypeSymbol type, SymbolAnalysisContext context)
     {
         IEnumerable<ISymbol> accessibleMembers = type.GetMembers().Where(IsPublicOrInternal)
             .Where(member => !IsNestedType(member) && !member.IsPropertyOrEventAccessor());
@@ -90,7 +84,7 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeAccessibleMember([NotNull] ISymbol member, [NotNull] INamedTypeSymbol containingType, SymbolAnalysisContext context)
+    private static void AnalyzeAccessibleMember(ISymbol member, INamedTypeSymbol containingType, SymbolAnalysisContext context)
     {
         context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -110,12 +104,12 @@ public sealed class AvoidStaticClassAnalyzer : DiagnosticAnalyzer
         context.ReportDiagnostic(diagnostic);
     }
 
-    private static bool IsPublicOrInternal([NotNull] ISymbol member)
+    private static bool IsPublicOrInternal(ISymbol member)
     {
         return member.DeclaredAccessibility is Accessibility.Public or Accessibility.Internal;
     }
 
-    private static bool IsNestedType([NotNull] ISymbol member)
+    private static bool IsNestedType(ISymbol member)
     {
         return member is ITypeSymbol;
     }

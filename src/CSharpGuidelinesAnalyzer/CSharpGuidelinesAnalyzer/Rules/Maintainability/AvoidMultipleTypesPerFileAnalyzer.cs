@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,17 +20,14 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1507";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -51,7 +47,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
         ReportWalkerResult(walker, context);
     }
 
-    private static void ReportWalkerResult([NotNull] TopLevelTypeSyntaxWalker walker, SemanticModelAnalysisContext context)
+    private static void ReportWalkerResult(TopLevelTypeSyntaxWalker walker, SemanticModelAnalysisContext context)
     {
         if (walker.TopLevelTypeDeclarations.Count > 1)
         {
@@ -65,8 +61,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    private static string GetTypeName([NotNull] SyntaxNode syntax)
+    private static string GetTypeName(SyntaxNode syntax)
     {
         switch (syntax)
         {
@@ -85,7 +80,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void ReportType(SemanticModelAnalysisContext context, [NotNull] SyntaxNode typeSyntax)
+    private static void ReportType(SemanticModelAnalysisContext context, SyntaxNode typeSyntax)
     {
         ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(typeSyntax, context.CancellationToken);
 
@@ -103,11 +98,9 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
     {
         private bool isInType;
 
-        [NotNull]
-        [ItemNotNull]
         public IList<SyntaxNode> TopLevelTypeDeclarations { get; } = [];
 
-        public override void Visit([NotNull] SyntaxNode node)
+        public override void Visit(SyntaxNode node)
         {
             if (IsTypeDeclaration(node))
             {
@@ -119,7 +112,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        private void VisitTypeDeclaration([NotNull] SyntaxNode node)
+        private void VisitTypeDeclaration(SyntaxNode node)
         {
             if (!isInType)
             {
@@ -137,7 +130,7 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        private bool IsTypeDeclaration([NotNull] SyntaxNode node)
+        private bool IsTypeDeclaration(SyntaxNode node)
         {
             return node.IsKind(SyntaxKind.ClassDeclaration) || node.IsKind(SyntaxKind.StructDeclaration) || node.IsKind(SyntaxKind.EnumDeclaration) ||
                 node.IsKind(SyntaxKind.InterfaceDeclaration) || node.IsKind(SyntaxKind.DelegateDeclaration);

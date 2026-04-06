@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -16,20 +15,17 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameAnalyzer : Diagnos
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1710";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -54,7 +50,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameAnalyzer : Diagnos
         AnalyzeMemberName(typeName, context);
     }
 
-    private static void AnalyzeMemberName([NotNull] string containingTypeName, SymbolAnalysisContext context)
+    private static void AnalyzeMemberName(string containingTypeName, SymbolAnalysisContext context)
     {
         string memberName = context.Symbol.MemberNameWithoutExplicitInterfacePrefix();
 
@@ -65,7 +61,7 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameAnalyzer : Diagnos
         }
     }
 
-    private static bool IsUserNameInUserType([NotNull] string containingTypeName, [NotNull] string memberName)
+    private static bool IsUserNameInUserType(string containingTypeName, string memberName)
     {
         return containingTypeName == "User" && string.Equals(memberName, "username", StringComparison.OrdinalIgnoreCase);
     }

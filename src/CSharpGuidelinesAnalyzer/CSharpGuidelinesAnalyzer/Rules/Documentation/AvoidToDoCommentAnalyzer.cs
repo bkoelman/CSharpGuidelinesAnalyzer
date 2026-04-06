@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -18,17 +17,14 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2318";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Documentation;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -56,12 +52,11 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
         private const string SingleLineCommentPrefix = "//";
         private static readonly int MultiLineCommentPostfixLength = "*/".Length;
 
-        [NotNull]
         private readonly SourceText text;
 
         private SyntaxTreeAnalysisContext context;
 
-        public TodoCommentAnalyzer([NotNull] SourceText text, SyntaxTreeAnalysisContext context)
+        public TodoCommentAnalyzer(SourceText text, SyntaxTreeAnalysisContext context)
         {
             Guard.NotNull(text, nameof(text));
 
@@ -101,7 +96,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
             ReportTodoCommentFromSingleLine(substring, start);
         }
 
-        private void ReportTodoCommentFromSingleLine([NotNull] string message, int start)
+        private void ReportTodoCommentFromSingleLine(string message, int start)
         {
             int index = GetCommentStartingIndex(message);
 
@@ -122,12 +117,12 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
             context.ReportDiagnostic(diagnostic);
         }
 
-        private static bool StartsWithTodoCommentToken([NotNull] string message, int index)
+        private static bool StartsWithTodoCommentToken(string message, int index)
         {
             return string.Compare(message, index, TodoCommentToken, 0, TodoCommentToken.Length, StringComparison.OrdinalIgnoreCase) == 0;
         }
 
-        private static bool HasIdentifierCharacterAfterTodoCommentToken([NotNull] string message, int index)
+        private static bool HasIdentifierCharacterAfterTodoCommentToken(string message, int index)
         {
             return message.Length > index + TodoCommentToken.Length && SyntaxFacts.IsIdentifierPartCharacter(message[index + TodoCommentToken.Length]);
         }
@@ -151,7 +146,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        private void ProcessCommentOnSingleLine([NotNull] string fullString, TextSpan fullSpan, int postfixLength)
+        private void ProcessCommentOnSingleLine(string fullString, TextSpan fullSpan, int postfixLength)
         {
             string message = postfixLength == 0 ? fullString : fullString.Substring(0, fullSpan.Length - postfixLength);
             ReportTodoCommentFromSingleLine(message, fullSpan.Start);
@@ -197,7 +192,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
             ReportTodoCommentFromSingleLine(lastMessage, endLine.Start);
         }
 
-        private int GetCommentStartingIndex([NotNull] string message)
+        private int GetCommentStartingIndex(string message)
         {
             for (int index = 0; index < message.Length; index++)
             {

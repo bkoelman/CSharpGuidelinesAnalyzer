@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,14 +17,11 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1000";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.ClassDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly SyntaxKind[] TypeDeclarationKinds =
     [
         SyntaxKind.ClassDeclaration,
@@ -35,13 +31,11 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
         SyntaxKind.DelegateDeclaration
     ];
 
-    [NotNull]
     private static readonly TypeIdentifierResolver IdentifierResolver = new();
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -67,34 +61,34 @@ public sealed class TypeShouldHaveASinglePurposeAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool ContainsBlacklistedWord([NotNull] string name)
+    private static bool ContainsBlacklistedWord(string name)
     {
         return name.ContainsWordInTheMiddle(BlacklistWord);
     }
 
     private sealed class TypeIdentifierResolver : CSharpSyntaxVisitor<SyntaxToken>
     {
-        public override SyntaxToken VisitClassDeclaration([NotNull] ClassDeclarationSyntax node)
+        public override SyntaxToken VisitClassDeclaration(ClassDeclarationSyntax node)
         {
             return node.Identifier;
         }
 
-        public override SyntaxToken VisitStructDeclaration([NotNull] StructDeclarationSyntax node)
+        public override SyntaxToken VisitStructDeclaration(StructDeclarationSyntax node)
         {
             return node.Identifier;
         }
 
-        public override SyntaxToken VisitInterfaceDeclaration([NotNull] InterfaceDeclarationSyntax node)
+        public override SyntaxToken VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
             return node.Identifier;
         }
 
-        public override SyntaxToken VisitEnumDeclaration([NotNull] EnumDeclarationSyntax node)
+        public override SyntaxToken VisitEnumDeclaration(EnumDeclarationSyntax node)
         {
             return node.Identifier;
         }
 
-        public override SyntaxToken VisitDelegateDeclaration([NotNull] DelegateDeclarationSyntax node)
+        public override SyntaxToken VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
             return node.Identifier;
         }

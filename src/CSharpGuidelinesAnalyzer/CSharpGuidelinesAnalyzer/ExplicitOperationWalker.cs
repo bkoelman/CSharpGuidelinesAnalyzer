@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 
 namespace CSharpGuidelinesAnalyzer;
@@ -9,7 +8,7 @@ namespace CSharpGuidelinesAnalyzer;
 /// </summary>
 internal abstract class ExplicitOperationWalker : OperationWalker
 {
-    public override void Visit([CanBeNull] IOperation operation)
+    public override void Visit(IOperation? operation)
     {
         if (operation is { IsImplicit: false })
         {

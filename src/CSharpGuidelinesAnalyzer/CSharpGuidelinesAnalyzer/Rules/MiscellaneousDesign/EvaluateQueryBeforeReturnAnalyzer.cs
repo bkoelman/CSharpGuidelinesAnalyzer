@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -23,38 +22,30 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1250";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.MiscellaneousDesign;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor OperationRule = new(DiagnosticId, Title, OperationMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor QueryRule = new(DiagnosticId, Title, QueryMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning,
         true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor QueryableRule = new(DiagnosticId, Title, QueryableMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> LinqOperatorsDeferred = ImmutableArray.Create("Aggregate", "All", "Any", "Cast", "Concat", "Contains",
         "DefaultIfEmpty", "Except", "GroupBy", "GroupJoin", "Intersect", "Join", "OfType", "OrderBy", "OrderByDescending", "Range", "Repeat", "Reverse",
         "Select", "SelectMany", "SequenceEqual", "Skip", "SkipWhile", "Take", "TakeWhile", "ThenBy", "ThenByDescending", "Union", "Where", "Zip");
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> LinqOperatorsImmediate = ImmutableArray.Create("Average", "Count", "Distinct", "ElementAt",
         "ElementAtOrDefault", "Empty", "First", "FirstOrDefault", "Last", "LastOrDefault", "LongCount", "Max", "Min", "Single", "SingleOrDefault", "Sum",
         "ToArray", "ToImmutableArray", "ToDictionary", "ToList", "ToLookup");
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> LinqOperatorsTransparent = ImmutableArray.Create("AsEnumerable", "AsQueryable");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(OperationRule, QueryRule, QueryableRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -62,14 +53,14 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
         var sequenceTypeInfo = new SequenceTypeInfo(startContext.Compilation);
 
         startContext.SafeRegisterOperationBlockAction(context => AnalyzeCodeBlock(context, sequenceTypeInfo));
     }
 
-    private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, [NotNull] SequenceTypeInfo sequenceTypeInfo)
+    private static void AnalyzeCodeBlock(OperationBlockAnalysisContext context, SequenceTypeInfo sequenceTypeInfo)
     {
         if (context.OwningSymbol.DeclaredAccessibility != Accessibility.Public || !IsInMethodThatReturnsEnumerable(context.OwningSymbol, sequenceTypeInfo))
         {
@@ -82,12 +73,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         AnalyzeReturnStatements(collector.ReturnStatements, context);
     }
 
-    private static bool IsInMethodThatReturnsEnumerable([NotNull] ISymbol owningSymbol, [NotNull] SequenceTypeInfo sequenceTypeInfo)
+    private static bool IsInMethodThatReturnsEnumerable(ISymbol owningSymbol, SequenceTypeInfo sequenceTypeInfo)
     {
         return owningSymbol is IMethodSymbol { ReturnsVoid: false } method && sequenceTypeInfo.IsEnumerable(method.ReturnType);
     }
 
-    private static void AnalyzeReturnStatements([NotNull] [ItemNotNull] IList<IReturnOperation> returnStatements, OperationBlockAnalysisContext context)
+    private static void AnalyzeReturnStatements(IList<IReturnOperation> returnStatements, OperationBlockAnalysisContext context)
     {
         if (returnStatements.Any())
         {
@@ -101,9 +92,9 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void ReportDiagnosticAt([NotNull] IReturnOperation returnStatement, [NotNull] string operationName, OperationBlockAnalysisContext context)
+    private static void ReportDiagnosticAt(IReturnOperation returnStatement, string operationName, OperationBlockAnalysisContext context)
     {
-        Location location = returnStatement.TryGetLocationForKeyword();
+        Location? location = returnStatement.TryGetLocationForKeyword();
 
         if (location != null)
         {
@@ -117,8 +108,8 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport([NotNull] string operationName,
-        [NotNull] ISymbol containingMember, [NotNull] string memberName)
+    private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport(string operationName,
+        ISymbol containingMember, string memberName)
     {
         switch (operationName)
         {
@@ -152,18 +143,15 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     /// </summary>
     private sealed class ReturnStatementCollector : ExplicitOperationWalker
     {
-        [NotNull]
         private readonly SequenceTypeInfo sequenceTypeInfo;
 
         private readonly OperationBlockAnalysisContext context;
 
         private int scopeDepth;
 
-        [NotNull]
-        [ItemNotNull]
         public IList<IReturnOperation> ReturnStatements { get; } = [];
 
-        public ReturnStatementCollector([NotNull] SequenceTypeInfo sequenceTypeInfo, OperationBlockAnalysisContext context)
+        public ReturnStatementCollector(SequenceTypeInfo sequenceTypeInfo, OperationBlockAnalysisContext context)
         {
             Guard.NotNull(sequenceTypeInfo, nameof(sequenceTypeInfo));
 
@@ -171,7 +159,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             this.context = context;
         }
 
-        public void VisitBlocks([ItemNotNull] ImmutableArray<IOperation> blocks)
+        public void VisitBlocks(ImmutableArray<IOperation> blocks)
         {
             foreach (IOperation block in blocks)
             {
@@ -179,21 +167,21 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        public override void VisitLocalFunction([NotNull] ILocalFunctionOperation operation)
+        public override void VisitLocalFunction(ILocalFunctionOperation operation)
         {
             scopeDepth++;
             base.VisitLocalFunction(operation);
             scopeDepth--;
         }
 
-        public override void VisitAnonymousFunction([NotNull] IAnonymousFunctionOperation operation)
+        public override void VisitAnonymousFunction(IAnonymousFunctionOperation operation)
         {
             scopeDepth++;
             base.VisitAnonymousFunction(operation);
             scopeDepth--;
         }
 
-        public override void VisitReturn([NotNull] IReturnOperation operation)
+        public override void VisitReturn(IReturnOperation operation)
         {
             if (scopeDepth == 0 && operation.ReturnedValue != null && !ReturnsConstant(operation.ReturnedValue) &&
                 MethodSignatureTypeIsEnumerable(operation.ReturnedValue))
@@ -218,12 +206,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             base.VisitReturn(operation);
         }
 
-        private static bool ReturnsConstant([NotNull] IOperation returnValue)
+        private static bool ReturnsConstant(IOperation returnValue)
         {
             return returnValue.ConstantValue.HasValue;
         }
 
-        private bool MethodSignatureTypeIsEnumerable([NotNull] IOperation returnValue)
+        private bool MethodSignatureTypeIsEnumerable(IOperation returnValue)
         {
             return sequenceTypeInfo.IsEnumerable(returnValue.Type);
         }
@@ -236,10 +224,9 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     {
         private readonly OperationBlockAnalysisContext context = context;
 
-        [NotNull]
         private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
 
-        public void Analyze([NotNull] IReturnOperation returnStatement)
+        public void Analyze(IReturnOperation returnStatement)
         {
             EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue);
 
@@ -249,8 +236,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        [NotNull]
-        private EvaluationResult AnalyzeExpression([NotNull] IOperation expression)
+        private EvaluationResult AnalyzeExpression(IOperation expression)
         {
             Guard.NotNull(expression, nameof(expression));
 
@@ -267,21 +253,20 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         /// </summary>
         private sealed class ExpressionWalker : AbstractEvaluatingOperationWalker
         {
-            [NotNull]
             private readonly ReturnValueAnalyzer owner;
 
-            public ExpressionWalker([NotNull] ReturnValueAnalyzer owner)
+            public ExpressionWalker(ReturnValueAnalyzer owner)
             {
                 Guard.NotNull(owner, nameof(owner));
                 this.owner = owner;
             }
 
-            public override void VisitConversion([NotNull] IConversionOperation operation)
+            public override void VisitConversion(IConversionOperation operation)
             {
                 Visit(operation.Operand);
             }
 
-            public override void VisitInvocation([NotNull] IInvocationOperation operation)
+            public override void VisitInvocation(IInvocationOperation operation)
             {
                 base.VisitInvocation(operation);
 
@@ -296,7 +281,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 Result.SetUnknown();
             }
 
-            private bool IsExecutionDeferred([NotNull] IInvocationOperation operation)
+            private bool IsExecutionDeferred(IInvocationOperation operation)
             {
                 if (LinqOperatorsDeferred.Contains(operation.TargetMethod.Name))
                 {
@@ -310,7 +295,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 return false;
             }
 
-            private bool IsExecutionImmediate([NotNull] IInvocationOperation operation)
+            private bool IsExecutionImmediate(IInvocationOperation operation)
             {
                 if (LinqOperatorsImmediate.Contains(operation.TargetMethod.Name))
                 {
@@ -321,12 +306,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 return false;
             }
 
-            private bool IsExecutionTransparent([NotNull] IInvocationOperation operation)
+            private bool IsExecutionTransparent(IInvocationOperation operation)
             {
                 return LinqOperatorsTransparent.Contains(operation.TargetMethod.Name);
             }
 
-            public override void VisitLocalReference([NotNull] ILocalReferenceOperation operation)
+            public override void VisitLocalReference(ILocalReferenceOperation operation)
             {
                 if (IsInvokingDelegateVariable(operation))
                 {
@@ -341,12 +326,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 Result.CopyFrom(assignmentWalker.Result);
             }
 
-            private static bool IsInvokingDelegateVariable([NotNull] ILocalReferenceOperation operation)
+            private static bool IsInvokingDelegateVariable(ILocalReferenceOperation operation)
             {
                 return operation.Parent is IInvocationOperation;
             }
 
-            public override void VisitConditional([NotNull] IConditionalOperation operation)
+            public override void VisitConditional(IConditionalOperation operation)
             {
                 EvaluationResult trueResult = owner.AnalyzeExpression(operation.WhenTrue);
 
@@ -363,7 +348,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 }
             }
 
-            public override void VisitCoalesce([NotNull] ICoalesceOperation operation)
+            public override void VisitCoalesce(ICoalesceOperation operation)
             {
                 EvaluationResult valueResult = owner.AnalyzeExpression(operation.Value);
 
@@ -380,72 +365,72 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 }
             }
 
-            public override void VisitTranslatedQuery([NotNull] ITranslatedQueryOperation operation)
+            public override void VisitTranslatedQuery(ITranslatedQueryOperation operation)
             {
                 Result.CopyFrom(EvaluationResult.Query);
             }
 
-            public override void VisitObjectCreation([NotNull] IObjectCreationOperation operation)
+            public override void VisitObjectCreation(IObjectCreationOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitDynamicObjectCreation([NotNull] IDynamicObjectCreationOperation operation)
+            public override void VisitDynamicObjectCreation(IDynamicObjectCreationOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitArrayCreation([NotNull] IArrayCreationOperation operation)
+            public override void VisitArrayCreation(IArrayCreationOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitArrayElementReference([NotNull] IArrayElementReferenceOperation operation)
+            public override void VisitArrayElementReference(IArrayElementReferenceOperation operation)
             {
                 Result.SetUnknown();
             }
 
-            public override void VisitAnonymousObjectCreation([NotNull] IAnonymousObjectCreationOperation operation)
+            public override void VisitAnonymousObjectCreation(IAnonymousObjectCreationOperation operation)
             {
                 Result.SetUnknown();
             }
 
-            public override void VisitObjectOrCollectionInitializer([NotNull] IObjectOrCollectionInitializerOperation operation)
+            public override void VisitObjectOrCollectionInitializer(IObjectOrCollectionInitializerOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitCollectionElementInitializer([NotNull] ICollectionElementInitializerOperation operation)
+            public override void VisitCollectionElementInitializer(ICollectionElementInitializerOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitDefaultValue([NotNull] IDefaultValueOperation operation)
+            public override void VisitDefaultValue(IDefaultValueOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitDynamicInvocation([NotNull] IDynamicInvocationOperation operation)
+            public override void VisitDynamicInvocation(IDynamicInvocationOperation operation)
             {
                 Result.SetUnknown();
             }
 
-            public override void VisitDynamicMemberReference([NotNull] IDynamicMemberReferenceOperation operation)
+            public override void VisitDynamicMemberReference(IDynamicMemberReferenceOperation operation)
             {
                 Result.SetUnknown();
             }
 
-            public override void VisitNameOf([NotNull] INameOfOperation operation)
+            public override void VisitNameOf(INameOfOperation operation)
             {
                 Result.SetUnknown();
             }
 
-            public override void VisitLiteral([NotNull] ILiteralOperation operation)
+            public override void VisitLiteral(ILiteralOperation operation)
             {
                 Result.SetImmediate();
             }
 
-            public override void VisitThrow([NotNull] IThrowOperation operation)
+            public override void VisitThrow(IThrowOperation operation)
             {
                 Result.SetImmediate();
             }
@@ -456,16 +441,13 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         /// </summary>
         private sealed class VariableAssignmentWalker : AbstractEvaluatingOperationWalker
         {
-            [NotNull]
             private readonly ILocalSymbol currentLocal;
 
-            [NotNull]
             private readonly Location maxLocation;
 
-            [NotNull]
             private readonly ReturnValueAnalyzer owner;
 
-            public VariableAssignmentWalker([NotNull] ILocalSymbol local, [NotNull] Location maxLocation, [NotNull] ReturnValueAnalyzer owner)
+            public VariableAssignmentWalker(ILocalSymbol local, Location maxLocation, ReturnValueAnalyzer owner)
             {
                 Guard.NotNull(local, nameof(local));
                 Guard.NotNull(maxLocation, nameof(maxLocation));
@@ -478,7 +460,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
             public void VisitBlockBody()
             {
-                if (owner.variableEvaluationCache.TryGetValue(currentLocal, out EvaluationResult resultFromCache))
+                if (owner.variableEvaluationCache.TryGetValue(currentLocal, out EvaluationResult? resultFromCache))
                 {
                     Result.CopyFrom(resultFromCache);
                 }
@@ -491,7 +473,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 }
             }
 
-            public override void VisitVariableDeclarator([NotNull] IVariableDeclaratorOperation operation)
+            public override void VisitVariableDeclarator(IVariableDeclaratorOperation operation)
             {
                 base.VisitVariableDeclarator(operation);
 
@@ -506,7 +488,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 }
             }
 
-            public override void VisitSimpleAssignment([NotNull] ISimpleAssignmentOperation operation)
+            public override void VisitSimpleAssignment(ISimpleAssignmentOperation operation)
             {
                 base.VisitSimpleAssignment(operation);
 
@@ -516,7 +498,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 }
             }
 
-            public override void VisitDeconstructionAssignment([NotNull] IDeconstructionAssignmentOperation operation)
+            public override void VisitDeconstructionAssignment(IDeconstructionAssignmentOperation operation)
             {
                 base.VisitDeconstructionAssignment(operation);
 
@@ -532,12 +514,12 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 }
             }
 
-            private bool EndsBeforeMaxLocation([NotNull] IOperation operation)
+            private bool EndsBeforeMaxLocation(IOperation operation)
             {
                 return operation.Syntax.GetLocation().SourceSpan.End < maxLocation.SourceSpan.Start;
             }
 
-            private void AnalyzeAssignmentValue([NotNull] IOperation assignedValue)
+            private void AnalyzeAssignmentValue(IOperation assignedValue)
             {
                 Guard.NotNull(assignedValue, nameof(assignedValue));
 
@@ -545,7 +527,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 UpdateResult(result);
             }
 
-            private void UpdateResult([NotNull] EvaluationResult result)
+            private void UpdateResult(EvaluationResult result)
             {
                 if (result.IsConclusive)
                 {
@@ -559,24 +541,19 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
     private abstract class AbstractEvaluatingOperationWalker : OperationWalker
     {
-        [NotNull]
         public EvaluationResult Result { get; } = new();
     }
 
     private sealed class EvaluationResult
     {
-        [NotNull]
         public static readonly EvaluationResult Query = new(EvaluationState.Deferred, QueryOperationName);
 
-        [NotNull]
         public static readonly EvaluationResult Unknown = new(EvaluationState.Unknown, null);
 
         private EvaluationState evaluationState;
 
-        [CanBeNull]
-        private string deferredOperationNameOrNull;
+        private string? deferredOperationNameOrNull;
 
-        [NotNull]
         public string DeferredOperationName
         {
             get
@@ -586,8 +563,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                     throw new InvalidOperationException("Operation name is not available in non-deferred states.");
                 }
 
-                // ReSharper disable once AssignNullToNotNullAttribute
-                return deferredOperationNameOrNull;
+                return deferredOperationNameOrNull!;
             }
         }
 
@@ -599,7 +575,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         {
         }
 
-        private EvaluationResult(EvaluationState state, [CanBeNull] string deferredOperationNameOrNull)
+        private EvaluationResult(EvaluationState state, string? deferredOperationNameOrNull)
         {
             evaluationState = state;
             this.deferredOperationNameOrNull = deferredOperationNameOrNull;
@@ -615,7 +591,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             evaluationState = EvaluationState.Unknown;
         }
 
-        public void SetDeferred([NotNull] string operationName)
+        public void SetDeferred(string operationName)
         {
             Guard.NotNullNorWhiteSpace(operationName, nameof(operationName));
 
@@ -623,7 +599,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             deferredOperationNameOrNull = operationName;
         }
 
-        public void CopyFrom([NotNull] EvaluationResult result)
+        public void CopyFrom(EvaluationResult result)
         {
             Guard.NotNull(result, nameof(result));
 
@@ -631,8 +607,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             deferredOperationNameOrNull = result.deferredOperationNameOrNull;
         }
 
-        [NotNull]
-        public static EvaluationResult Unify([NotNull] EvaluationResult first, [NotNull] EvaluationResult second)
+        public static EvaluationResult Unify(EvaluationResult first, EvaluationResult second)
         {
             Guard.NotNull(first, nameof(first));
             Guard.NotNull(second, nameof(second));
@@ -666,13 +641,11 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
     private sealed class SequenceTypeInfo
     {
-        [ItemNotNull]
         private readonly ImmutableArray<INamedTypeSymbol> queryableTypes;
 
-        [ItemNotNull]
         private readonly ImmutableArray<INamedTypeSymbol> otherSequenceTypes;
 
-        public SequenceTypeInfo([NotNull] Compilation compilation)
+        public SequenceTypeInfo(Compilation compilation)
         {
             Guard.NotNull(compilation, nameof(compilation));
 
@@ -680,10 +653,9 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             otherSequenceTypes = GetOtherSequenceTypes(compilation);
         }
 
-        [ItemNotNull]
-        private ImmutableArray<INamedTypeSymbol> GetQueryableTypes([NotNull] Compilation compilation)
+        private ImmutableArray<INamedTypeSymbol> GetQueryableTypes(Compilation compilation)
         {
-            INamedTypeSymbol[] types =
+            INamedTypeSymbol?[] types =
             [
                 KnownTypes.SystemLinqIQueryableT(compilation),
                 KnownTypes.SystemLinqIOrderedQueryableT(compilation),
@@ -691,35 +663,34 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 KnownTypes.SystemLinqIOrderedQueryable(compilation)
             ];
 
-            return types.Where(type => type != null).ToImmutableArray();
+            return types.Where(type => type != null).Cast<INamedTypeSymbol>().ToImmutableArray();
         }
 
-        [ItemNotNull]
-        private ImmutableArray<INamedTypeSymbol> GetOtherSequenceTypes([NotNull] Compilation compilation)
+        private ImmutableArray<INamedTypeSymbol> GetOtherSequenceTypes(Compilation compilation)
         {
-            INamedTypeSymbol[] types =
+            INamedTypeSymbol?[] types =
             [
                 KnownTypes.SystemLinqIOrderedEnumerableT(compilation),
                 KnownTypes.SystemLinqIGroupingTKeyTElement(compilation),
                 KnownTypes.SystemLinqILookupTKeyTElement(compilation)
             ];
 
-            return types.Where(type => type != null).ToImmutableArray();
+            return types.Where(type => type != null).Cast<INamedTypeSymbol>().ToImmutableArray();
         }
 
-        public bool IsEnumerable([NotNull] ITypeSymbol type)
+        public bool IsEnumerable(ITypeSymbol type)
         {
             return type.IsEnumerableInterface();
         }
 
-        public bool IsQueryable([NotNull] ITypeSymbol type)
+        public bool IsQueryable(ITypeSymbol type)
         {
             Guard.NotNull(type, nameof(type));
 
             return queryableTypes.Contains(type.OriginalDefinition);
         }
 
-        public bool IsNonQueryableSequenceType([NotNull] ITypeSymbol type)
+        public bool IsNonQueryableSequenceType(ITypeSymbol type)
         {
             Guard.NotNull(type, nameof(type));
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,17 +20,14 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1704";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [NotNull]
     private static readonly char[] Digits =
     [
         '0',
@@ -46,10 +42,9 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         '9'
     ];
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -59,14 +54,14 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         RegisterForSyntax(context);
     }
 
-    private void RegisterForSymbols([NotNull] AnalysisContext context)
+    private void RegisterForSymbols(AnalysisContext context)
     {
         context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
         context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
         context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
-    private void RegisterForOperations([NotNull] AnalysisContext context)
+    private void RegisterForOperations(AnalysisContext context)
     {
         context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
         context.SafeRegisterOperationAction(AnalyzeVariableDeclarator, OperationKind.VariableDeclarator);
@@ -74,7 +69,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         context.SafeRegisterOperationAction(AnalyzeAnonymousObjectCreation, OperationKind.AnonymousObjectCreation);
     }
 
-    private void RegisterForSyntax([NotNull] AnalysisContext context)
+    private void RegisterForSyntax(AnalysisContext context)
     {
         context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
         context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
@@ -168,7 +163,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         AnalyzeTypeAsTuple(variable.Type, context.ReportDiagnostic);
     }
 
-    private static void AnalyzeTypeAsTuple([NotNull] ITypeSymbol type, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private static void AnalyzeTypeAsTuple(ITypeSymbol type, Action<Diagnostic> reportDiagnostic)
     {
         if (type.IsTupleType && type is INamedTypeSymbol tupleType)
         {
@@ -191,7 +186,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
 
         foreach (IOperation element in tuple.Elements)
         {
-            ILocalSymbol tupleElement = TryGetTupleElement(element);
+            ILocalSymbol? tupleElement = TryGetTupleElement(element);
 
             if (tupleElement != null && ContainsDigitsNonWhitelisted(tupleElement.Name))
             {
@@ -201,10 +196,9 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static ILocalSymbol TryGetTupleElement([NotNull] IOperation elementOperation)
+    private static ILocalSymbol? TryGetTupleElement(IOperation elementOperation)
     {
-        ILocalReferenceOperation localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
+        ILocalReferenceOperation? localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
             ? declarationExpression.Expression as ILocalReferenceOperation
             : elementOperation as ILocalReferenceOperation;
 
@@ -276,7 +270,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool ContainsDigitsNonWhitelisted([NotNull] string text)
+    private static bool ContainsDigitsNonWhitelisted(string text)
     {
         if (ContainsDigit(text))
         {
@@ -287,8 +281,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    [NotNull]
-    private static string RemoveWordsOnWhitelist([NotNull] string text)
+    private static string RemoveWordsOnWhitelist(string text)
     {
         var tokenizer = new WordsTokenizer(text);
         List<WordToken> tokens = tokenizer.GetTokens().ToList();
@@ -299,7 +292,7 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         return string.Join(string.Empty, texts);
     }
 
-    private static void RemoveWhitelistedTokens([NotNull] List<WordToken> tokens)
+    private static void RemoveWhitelistedTokens(List<WordToken> tokens)
     {
 #pragma warning disable AV1530 // Loop variable should not be written to in loop body
         for (int index = 0; index < tokens.Count - 1; index++)
@@ -316,12 +309,12 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
 #pragma warning restore AV1530 // Loop variable should not be written to in loop body
     }
 
-    private static bool IsDimensional([NotNull] string thisTokenText, [NotNull] string nextTokenText)
+    private static bool IsDimensional(string thisTokenText, string nextTokenText)
     {
         return thisTokenText is "2" or "3" or "4" && nextTokenText == "D";
     }
 
-    private static bool IsWindowsOrSystemInt([NotNull] string thisTokenText, [NotNull] string nextTokenText)
+    private static bool IsWindowsOrSystemInt(string thisTokenText, string nextTokenText)
     {
         bool isTextMatch = string.Equals(thisTokenText, "int", StringComparison.OrdinalIgnoreCase) ||
             string.Equals(thisTokenText, "win", StringComparison.OrdinalIgnoreCase);
@@ -329,14 +322,14 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
         return isTextMatch && nextTokenText is "16" or "32" or "64";
     }
 
-    private static bool IsEncoding([NotNull] string thisTokenText, [NotNull] string nextTokenText)
+    private static bool IsEncoding(string thisTokenText, string nextTokenText)
     {
         bool isTextMatch = string.Equals(thisTokenText, "utf", StringComparison.OrdinalIgnoreCase);
 
         return isTextMatch && nextTokenText is "7" or "8" or "16" or "32";
     }
 
-    private static bool ContainsDigit([NotNull] string text)
+    private static bool ContainsDigit(string text)
     {
         return text.IndexOfAny(Digits) != -1;
     }

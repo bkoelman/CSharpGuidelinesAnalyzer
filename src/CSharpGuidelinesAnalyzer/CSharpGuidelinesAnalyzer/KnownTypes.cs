@@ -1,236 +1,206 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer;
 
 internal static class KnownTypes
 {
-    [CanBeNull]
-    public static INamedTypeSymbol SystemObject([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemObject(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetSpecialType(SpecialType.System_Object);
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemBoolean([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemBoolean(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetSpecialType(SpecialType.System_Boolean);
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemNullableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemNullableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetSpecialType(SpecialType.System_Nullable_T);
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemEventArgs([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemEventArgs(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.EventArgs");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemException([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemException(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Exception");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemSystemException([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemSystemException(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.SystemException");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemApplicationException([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemApplicationException(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.ApplicationException");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemThreadingTasksTask([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemThreadingTasksTask(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemThreadingTasksTaskT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemThreadingTasksTaskT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemThreadingTasksValueTask([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemThreadingTasksValueTask(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemThreadingTasksValueTaskT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemThreadingTasksValueTaskT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemRuntimeCompilerServicesConfiguredValueTaskAwaitable([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemRuntimeCompilerServicesConfiguredValueTaskAwaitable(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.CallerArgumentExpressionAttribute");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemRuntimeCompilerServicesConfiguredValueTaskAwaitableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemRuntimeCompilerServicesConfiguredValueTaskAwaitableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericEqualityComparerT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericEqualityComparerT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.EqualityComparer`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericIEnumerableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericIEnumerableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericIAsyncEnumerableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericIAsyncEnumerableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.IAsyncEnumerable`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericIReadOnlyCollectionT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericIReadOnlyCollectionT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlyCollection`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericIReadOnlyListT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericIReadOnlyListT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlyList`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericIReadOnlySetT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericIReadOnlySetT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlySet`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Collections.Generic.IReadOnlyDictionary`2");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemRuntimeRemotingObjectHandle([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemRuntimeRemotingObjectHandle(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Runtime.Remoting.ObjectHandle");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqIOrderedEnumerableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqIOrderedEnumerableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Linq.IOrderedEnumerable`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqIGroupingTKeyTElement([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqIGroupingTKeyTElement(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Linq.IGrouping`2");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqILookupTKeyTElement([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqILookupTKeyTElement(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Linq.ILookup`2");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqIQueryable([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqIQueryable(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Linq.IQueryable");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqIQueryableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqIQueryableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Linq.IQueryable`1");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqIOrderedQueryable([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqIOrderedQueryable(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 
         return compilation.GetTypeByMetadataName("System.Linq.IOrderedQueryable");
     }
 
-    [CanBeNull]
-    public static INamedTypeSymbol SystemLinqIOrderedQueryableT([NotNull] Compilation compilation)
+    public static INamedTypeSymbol? SystemLinqIOrderedQueryableT(Compilation compilation)
     {
         Guard.NotNull(compilation, nameof(compilation));
 

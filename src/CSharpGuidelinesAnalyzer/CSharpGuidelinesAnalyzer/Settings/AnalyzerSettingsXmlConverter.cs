@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Settings;
 
 internal static class AnalyzerSettingsXmlConverter
 {
-    [NotNull]
-    public static AnalyzerSettingsRegistry ParseXml([NotNull] XmlReader reader)
+    public static AnalyzerSettingsRegistry ParseXml(XmlReader reader)
     {
         var settings = new AnalyzerSettingsRegistry();
 
@@ -22,11 +20,11 @@ internal static class AnalyzerSettingsXmlConverter
         return settings.IsEmpty ? AnalyzerSettingsRegistry.ImmutableEmpty : settings;
     }
 
-    private static void ParseSettingElement([NotNull] XmlReader reader, [NotNull] AnalyzerSettingsRegistry registry)
+    private static void ParseSettingElement(XmlReader reader, AnalyzerSettingsRegistry registry)
     {
-        string rule = reader.GetAttribute("rule");
-        string name = reader.GetAttribute("name");
-        string value = reader.GetAttribute("value");
+        string? rule = reader.GetAttribute("rule");
+        string? name = reader.GetAttribute("name");
+        string? value = reader.GetAttribute("value");
 
         if (!string.IsNullOrWhiteSpace(rule) && !string.IsNullOrWhiteSpace(name))
         {
@@ -34,7 +32,7 @@ internal static class AnalyzerSettingsXmlConverter
         }
     }
 
-    public static void WriteXml([NotNull] AnalyzerSettingsRegistry registry, [NotNull] XmlWriter writer)
+    public static void WriteXml(AnalyzerSettingsRegistry registry, XmlWriter writer)
     {
         writer.WriteStartElement("cSharpGuidelinesAnalyzerSettings");
 
@@ -46,7 +44,7 @@ internal static class AnalyzerSettingsXmlConverter
         writer.WriteEndElement();
     }
 
-    private static void WriteSettingElement([NotNull] AnalyzerSettingKey settingKey, [NotNull] string settingValue, [NotNull] XmlWriter writer)
+    private static void WriteSettingElement(AnalyzerSettingKey settingKey, string settingValue, XmlWriter writer)
     {
         writer.WriteStartElement("setting");
 

@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using System.Threading;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -17,14 +16,11 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1532";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly SyntaxKind[] LoopStatementKinds =
     [
         SyntaxKind.WhileStatement,
@@ -34,13 +30,11 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
         SyntaxKind.ForEachVariableStatement
     ];
 
-    [NotNull]
     private static readonly LoopBodyLocator BodyLocator = new();
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -50,7 +44,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeLoopStatement(SyntaxNodeAnalysisContext context)
     {
-        StatementSyntax loopBody = BodyLocator.Visit(context.Node);
+        StatementSyntax? loopBody = BodyLocator.Visit(context.Node);
 
         if (loopBody != null)
         {
@@ -58,7 +52,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeLoopBody([NotNull] StatementSyntax loopBody, SyntaxNodeAnalysisContext context)
+    private static void AnalyzeLoopBody(StatementSyntax loopBody, SyntaxNodeAnalysisContext context)
     {
         var walker = new LoopLocationWalker(context.CancellationToken);
         walker.Visit(loopBody);
@@ -70,34 +64,29 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private sealed class LoopBodyLocator : CSharpSyntaxVisitor<StatementSyntax>
+    private sealed class LoopBodyLocator : CSharpSyntaxVisitor<StatementSyntax?>
     {
-        [NotNull]
-        public override StatementSyntax VisitWhileStatement([NotNull] WhileStatementSyntax node)
+        public override StatementSyntax VisitWhileStatement(WhileStatementSyntax node)
         {
             return node.Statement;
         }
 
-        [NotNull]
-        public override StatementSyntax VisitDoStatement([NotNull] DoStatementSyntax node)
+        public override StatementSyntax VisitDoStatement(DoStatementSyntax node)
         {
             return node.Statement;
         }
 
-        [CanBeNull]
-        public override StatementSyntax VisitForStatement([NotNull] ForStatementSyntax node)
+        public override StatementSyntax? VisitForStatement(ForStatementSyntax node)
         {
             return node.Statement;
         }
 
-        [CanBeNull]
-        public override StatementSyntax VisitForEachStatement([NotNull] ForEachStatementSyntax node)
+        public override StatementSyntax? VisitForEachStatement(ForEachStatementSyntax node)
         {
             return node.Statement;
         }
 
-        [CanBeNull]
-        public override StatementSyntax VisitForEachVariableStatement([NotNull] ForEachVariableStatementSyntax node)
+        public override StatementSyntax? VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
         {
             return node.Statement;
         }
@@ -105,54 +94,53 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
 
     private sealed class LoopLocationWalker(CancellationToken cancellationToken) : CSharpSyntaxWalker
     {
-        [CanBeNull]
-        public Location LoopStatementLocation { get; private set; }
+        public Location? LoopStatementLocation { get; private set; }
 
-        public override void Visit([NotNull] SyntaxNode node)
+        public override void Visit(SyntaxNode node)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             base.Visit(node);
         }
 
-        public override void VisitWhileStatement([NotNull] WhileStatementSyntax node)
+        public override void VisitWhileStatement(WhileStatementSyntax node)
         {
             LoopStatementLocation = node.WhileKeyword.GetLocation();
         }
 
-        public override void VisitDoStatement([NotNull] DoStatementSyntax node)
+        public override void VisitDoStatement(DoStatementSyntax node)
         {
             LoopStatementLocation = node.DoKeyword.GetLocation();
         }
 
-        public override void VisitForStatement([NotNull] ForStatementSyntax node)
+        public override void VisitForStatement(ForStatementSyntax node)
         {
             LoopStatementLocation = node.ForKeyword.GetLocation();
         }
 
-        public override void VisitForEachStatement([NotNull] ForEachStatementSyntax node)
+        public override void VisitForEachStatement(ForEachStatementSyntax node)
         {
             LoopStatementLocation = node.ForEachKeyword.GetLocation();
         }
 
-        public override void VisitForEachVariableStatement([NotNull] ForEachVariableStatementSyntax node)
+        public override void VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
         {
             LoopStatementLocation = node.ForEachKeyword.GetLocation();
         }
 
-        public override void VisitLocalFunctionStatement([NotNull] LocalFunctionStatementSyntax node)
+        public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
         {
         }
 
-        public override void VisitSimpleLambdaExpression([NotNull] SimpleLambdaExpressionSyntax node)
+        public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
         {
         }
 
-        public override void VisitParenthesizedLambdaExpression([NotNull] ParenthesizedLambdaExpressionSyntax node)
+        public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
         {
         }
 
-        public override void VisitAnonymousMethodExpression([NotNull] AnonymousMethodExpressionSyntax node)
+        public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
         {
         }
     }

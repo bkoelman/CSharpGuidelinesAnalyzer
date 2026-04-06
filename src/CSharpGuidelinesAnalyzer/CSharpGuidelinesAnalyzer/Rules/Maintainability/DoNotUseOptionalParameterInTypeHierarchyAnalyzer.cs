@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -17,17 +16,14 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1554";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -64,7 +60,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
         }
     }
 
-    private static bool IsOverrideFromExternalAssembly([NotNull] IMethodSymbol method)
+    private static bool IsOverrideFromExternalAssembly(IMethodSymbol method)
     {
         IMethodSymbol baseMethod = method.OverriddenMethod;
 
@@ -81,7 +77,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
         return false;
     }
 
-    private static bool IsInterfaceImplementationFromExternalAssembly([NotNull] IMethodSymbol method)
+    private static bool IsInterfaceImplementationFromExternalAssembly(IMethodSymbol method)
     {
         foreach (ISymbol interfaceMethod in method.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
         {

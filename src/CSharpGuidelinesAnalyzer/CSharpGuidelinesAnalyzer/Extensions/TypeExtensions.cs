@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
 
 internal static class TypeExtensions
 {
-    [NotNull]
-    [ItemNotNull]
-    public static IReadOnlyCollection<Type> GetMostSpecificOperationInterfaces([NotNull] this Type type)
+    public static IReadOnlyCollection<Type> GetMostSpecificOperationInterfaces(this Type type)
     {
         Type[] operationInterfaces = GetPublicOperationInterfaces(type, true).ToArray();
 
@@ -24,9 +21,7 @@ internal static class TypeExtensions
         return mostSpecificInterfaces.OrderBy(@interface => @interface.FullName).ToArray();
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<Type> GetPublicOperationInterfaces([NotNull] Type type, bool includeSelf)
+    private static IEnumerable<Type> GetPublicOperationInterfaces(Type type, bool includeSelf)
     {
         if (includeSelf && IsPublicOperationInterface(type))
         {
@@ -39,14 +34,12 @@ internal static class TypeExtensions
         }
     }
 
-    private static bool IsPublicOperationInterface([NotNull] Type type)
+    private static bool IsPublicOperationInterface(Type type)
     {
         return type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsPublic && type.Name.EndsWith("Operation", StringComparison.Ordinal);
     }
 
-    [NotNull]
-    [ItemNotNull]
-    public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties([NotNull] [ItemNotNull] this IEnumerable<Type> operationInterfaces)
+    public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties(this IEnumerable<Type> operationInterfaces)
     {
         var properties = new HashSet<PropertyInfo>();
 
@@ -59,19 +52,18 @@ internal static class TypeExtensions
         return properties;
     }
 
-    [NotNull]
-    public static Type GetSequenceElementType([NotNull] this Type type)
+    public static Type GetSequenceElementType(this Type type)
     {
         if (IsGenericEnumerable(type))
         {
             return type.GenericTypeArguments.Single();
         }
 
-        Type enumerable = type.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(IsGenericEnumerable);
+        Type? enumerable = type.GetTypeInfo().ImplementedInterfaces.FirstOrDefault(IsGenericEnumerable);
         return enumerable != null ? enumerable.GenericTypeArguments.Single() : typeof(object);
     }
 
-    private static bool IsGenericEnumerable([NotNull] Type type)
+    private static bool IsGenericEnumerable(Type type)
     {
         return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
     }

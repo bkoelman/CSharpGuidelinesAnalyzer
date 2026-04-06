@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,14 +17,11 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1739";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly SyntaxKind[] AnonymousFunctionKinds =
     [
         SyntaxKind.SimpleLambdaExpression,
@@ -33,10 +29,9 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         SyntaxKind.AnonymousMethodExpression
     ];
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -62,10 +57,10 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         }
     }
 
-    private static void AnalyzeParameterUsage([ItemNotNull] ImmutableArray<IParameterSymbol> parameters, [NotNull] SyntaxNode bodySyntax,
+    private static void AnalyzeParameterUsage(ImmutableArray<IParameterSymbol> parameters, SyntaxNode bodySyntax,
         SyntaxNodeAnalysisContext context)
     {
-        DataFlowAnalysis dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.SemanticModel);
+        DataFlowAnalysis? dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.SemanticModel);
 
         if (dataFlowAnalysis == null)
         {
@@ -84,12 +79,12 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         }
     }
 
-    private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
+    private static bool IsRegularParameter(IParameterSymbol parameter)
     {
         return !parameter.IsSynthesized() && !ConsistsOfUnderscoresOnly(parameter.Name);
     }
 
-    private static bool ConsistsOfUnderscoresOnly([NotNull] string identifierName)
+    private static bool ConsistsOfUnderscoresOnly(string identifierName)
     {
         foreach (char ch in identifierName)
         {
@@ -102,13 +97,12 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         return true;
     }
 
-    [CanBeNull]
-    private static DataFlowAnalysis TryAnalyzeDataFlow([NotNull] SyntaxNode bodySyntax, [NotNull] SemanticModel semanticModel)
+    private static DataFlowAnalysis? TryAnalyzeDataFlow(SyntaxNode bodySyntax, SemanticModel semanticModel)
     {
         return semanticModel.SafeAnalyzeDataFlow(bodySyntax);
     }
 
-    private static bool IsParameterUsed([NotNull] IParameterSymbol parameter, [NotNull] DataFlowAnalysis dataFlowAnalysis)
+    private static bool IsParameterUsed(IParameterSymbol parameter, DataFlowAnalysis dataFlowAnalysis)
     {
         return dataFlowAnalysis.ReadInside.Contains(parameter) || dataFlowAnalysis.WrittenInside.Contains(parameter) ||
             dataFlowAnalysis.Captured.Contains(parameter);

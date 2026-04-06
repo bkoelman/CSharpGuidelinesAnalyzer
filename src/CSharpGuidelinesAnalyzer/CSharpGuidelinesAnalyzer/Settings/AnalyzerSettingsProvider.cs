@@ -16,8 +16,7 @@ public static class AnalyzerSettingsProvider
 {
     public const string SettingsFileName = "CSharpGuidelinesAnalyzer.config";
 
-    [NotNull]
-    internal static AnalyzerSettingsRegistry LoadSettings([NotNull] AnalyzerOptions options, CancellationToken cancellationToken)
+    internal static AnalyzerSettingsRegistry LoadSettings(AnalyzerOptions options, CancellationToken cancellationToken)
     {
         Guard.NotNull(options, nameof(options));
 
@@ -33,8 +32,7 @@ public static class AnalyzerSettingsProvider
         return AnalyzerSettingsRegistry.ImmutableEmpty;
     }
 
-    [NotNull]
-    private static AnalyzerSettingsRegistry SafeReadSourceText([NotNull] SourceText fileText, CancellationToken cancellationToken)
+    private static AnalyzerSettingsRegistry SafeReadSourceText(SourceText fileText, CancellationToken cancellationToken)
     {
         try
         {
@@ -48,14 +46,14 @@ public static class AnalyzerSettingsProvider
         return AnalyzerSettingsRegistry.ImmutableEmpty;
     }
 
-    private static bool IsSettingsFile([NotNull] string filePath)
+    private static bool IsSettingsFile(string filePath)
     {
         string fileName = Path.GetFileName(filePath);
         return string.Equals(fileName, SettingsFileName, StringComparison.OrdinalIgnoreCase);
     }
 
     [NotNull]
-    private static TResult ReadSourceText<TResult>([NotNull] SourceText sourceText, [NotNull] Func<XmlReader, TResult> readAction,
+    private static TResult ReadSourceText<TResult>(SourceText sourceText, Func<XmlReader, TResult> readAction,
         CancellationToken cancellationToken)
     {
         using var stream = new MemoryStream();
@@ -71,8 +69,7 @@ public static class AnalyzerSettingsProvider
         return readAction(xmlReader);
     }
 
-    [NotNull]
-    public static string ToFileContent([NotNull] AnalyzerSettingsRegistry registry)
+    public static string ToFileContent(AnalyzerSettingsRegistry registry)
     {
         Guard.NotNull(registry, nameof(registry));
 
@@ -84,8 +81,7 @@ public static class AnalyzerSettingsProvider
         });
     }
 
-    [NotNull]
-    private static string GetStringForXml([NotNull] Encoding encoding, [NotNull] Action<XmlWriter> writeAction)
+    private static string GetStringForXml(Encoding encoding, Action<XmlWriter> writeAction)
     {
         using var stream = new MemoryStream();
 
@@ -107,7 +103,6 @@ public static class AnalyzerSettingsProvider
         return reader.ReadToEnd();
     }
 
-    [NotNull]
     public static Encoding CreateEncoding()
     {
         return new UTF8Encoding();

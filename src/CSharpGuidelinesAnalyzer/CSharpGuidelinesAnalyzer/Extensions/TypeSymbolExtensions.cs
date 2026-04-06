@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
@@ -7,13 +6,12 @@ namespace CSharpGuidelinesAnalyzer.Extensions;
 /// <summary />
 internal static class TypeSymbolExtensions
 {
-    public static bool IsBooleanOrNullableBoolean([NotNull] this ITypeSymbol type)
+    public static bool IsBooleanOrNullableBoolean(this ITypeSymbol type)
     {
         return type.SpecialType == SpecialType.System_Boolean || IsNullableBoolean(type);
     }
 
-    [NotNull]
-    public static ITypeSymbol UnwrapNullableValueType([NotNull] this ITypeSymbol type)
+    public static ITypeSymbol UnwrapNullableValueType(this ITypeSymbol type)
     {
         if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
         {
@@ -28,7 +26,7 @@ internal static class TypeSymbolExtensions
         return type;
     }
 
-    public static bool IsNullableBoolean([NotNull] this ITypeSymbol type)
+    public static bool IsNullableBoolean(this ITypeSymbol type)
     {
         Guard.NotNull(type, nameof(type));
 
@@ -45,14 +43,14 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
-    public static bool IsNullableEnumeration([NotNull] this ITypeSymbol type)
+    public static bool IsNullableEnumeration(this ITypeSymbol type)
     {
         Guard.NotNull(type, nameof(type));
 
         if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
         {
             var namedTypeSymbol = type as INamedTypeSymbol;
-            ITypeSymbol innerType = namedTypeSymbol?.TypeArguments[0];
+            ITypeSymbol? innerType = namedTypeSymbol?.TypeArguments[0];
 
             if (innerType?.BaseType is { SpecialType: SpecialType.System_Enum })
             {
@@ -63,21 +61,21 @@ internal static class TypeSymbolExtensions
         return false;
     }
 
-    public static bool ImplementsIEnumerable([NotNull] this ITypeSymbol type)
+    public static bool ImplementsIEnumerable(this ITypeSymbol type)
     {
         Guard.NotNull(type, nameof(type));
 
         return type.AllInterfaces.Any(IsEnumerableInterface);
     }
 
-    public static bool IsOrImplementsIEnumerable([NotNull] this ITypeSymbol type)
+    public static bool IsOrImplementsIEnumerable(this ITypeSymbol type)
     {
         Guard.NotNull(type, nameof(type));
 
         return IsEnumerableInterface(type) || type.AllInterfaces.Any(IsEnumerableInterface);
     }
 
-    public static bool IsEnumerableInterface([NotNull] this ITypeSymbol type)
+    public static bool IsEnumerableInterface(this ITypeSymbol type)
     {
         Guard.NotNull(type, nameof(type));
 

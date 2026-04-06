@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -17,17 +16,14 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2230";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -35,15 +31,15 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         context.RegisterCompilationStartAction(RegisterCompilationStart);
     }
 
-    private static void RegisterCompilationStart([NotNull] CompilationStartAnalysisContext startContext)
+    private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        INamedTypeSymbol objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
+        INamedTypeSymbol? objectHandleType = KnownTypes.SystemRuntimeRemotingObjectHandle(startContext.Compilation);
 
         startContext.SafeRegisterOperationAction(context => AnalyzeConversion(context, objectHandleType), OperationKind.Conversion);
         startContext.SafeRegisterOperationAction(context => AnalyzeCompoundAssignment(context, objectHandleType), OperationKind.CompoundAssignment);
     }
 
-    private static void AnalyzeConversion(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
+    private static void AnalyzeConversion(OperationAnalysisContext context, INamedTypeSymbol? objectHandleType)
     {
         var conversion = (IConversionOperation)context.Operation;
 
@@ -62,7 +58,7 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeCompoundAssignment(OperationAnalysisContext context, [CanBeNull] INamedTypeSymbol objectHandleType)
+    private static void AnalyzeCompoundAssignment(OperationAnalysisContext context, INamedTypeSymbol? objectHandleType)
     {
         var compoundAssignment = (ICompoundAssignmentOperation)context.Operation;
 
@@ -76,7 +72,7 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool RequiresReport([CanBeNull] ITypeSymbol sourceType, [NotNull] ITypeSymbol destinationType, [CanBeNull] INamedTypeSymbol objectHandleType)
+    private static bool RequiresReport(ITypeSymbol? sourceType, ITypeSymbol destinationType, INamedTypeSymbol? objectHandleType)
     {
         if (!IsDynamic(destinationType))
         {
@@ -91,22 +87,22 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
         return sourceType.TypeKind != TypeKind.Dynamic;
     }
 
-    private static bool IsDynamic([NotNull] ITypeSymbol type)
+    private static bool IsDynamic(ITypeSymbol type)
     {
         return type.TypeKind == TypeKind.Dynamic;
     }
 
-    private static bool IsObject([NotNull] ITypeSymbol type)
+    private static bool IsObject(ITypeSymbol type)
     {
         return type.SpecialType == SpecialType.System_Object;
     }
 
-    private static bool IsObjectHandle([NotNull] ITypeSymbol type, [CanBeNull] INamedTypeSymbol objectHandleType)
+    private static bool IsObjectHandle(ITypeSymbol type, INamedTypeSymbol? objectHandleType)
     {
         return objectHandleType != null && objectHandleType.IsEqualTo(type);
     }
 
-    private static void ReportAt([NotNull] ITypeSymbol sourceType, [NotNull] Location reportLocation, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private static void ReportAt(ITypeSymbol sourceType, Location reportLocation, Action<Diagnostic> reportDiagnostic)
     {
         string sourceTypeName = sourceType.IsAnonymousType ? "(anonymous)" : sourceType.Name;
 

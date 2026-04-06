@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
 using System.Threading;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
@@ -12,18 +11,15 @@ namespace CSharpGuidelinesAnalyzer.Extensions;
 /// <summary />
 internal static class OperationExtensions
 {
-    [CanBeNull]
-    private static readonly PropertyInfo OperationSemanticModelProperty = typeof(IOperation).GetRuntimeProperty("SemanticModel");
+    private static readonly PropertyInfo? OperationSemanticModelProperty = typeof(IOperation).GetRuntimeProperty("SemanticModel");
 
-    [CanBeNull]
-    public static IdentifierInfo TryGetIdentifierInfo([CanBeNull] this IOperation identifier)
+    public static IdentifierInfo? TryGetIdentifierInfo(this IOperation? identifier)
     {
         var visitor = new IdentifierVisitor();
         return visitor.Visit(identifier, null);
     }
 
-    [CanBeNull]
-    public static Location TryGetLocationForKeyword([NotNull] this IOperation operation,
+    public static Location? TryGetLocationForKeyword(this IOperation operation,
         DoWhileLoopLookupKeywordStrategy doWhileLoopLookupStrategy = DoWhileLoopLookupKeywordStrategy.PreferDoKeyword,
         TryFinallyLookupKeywordStrategy tryFinallyLookupKeywordStrategy = TryFinallyLookupKeywordStrategy.PreferTryKeyword)
     {
@@ -36,7 +32,7 @@ internal static class OperationExtensions
         return visitor.Visit(operation, null);
     }
 
-    public static bool HasErrors([NotNull] this IOperation operation, [NotNull] Compilation compilation, CancellationToken cancellationToken = default)
+    public static bool HasErrors(this IOperation operation, Compilation compilation, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(operation, nameof(operation));
         Guard.NotNull(compilation, nameof(compilation));
@@ -51,7 +47,7 @@ internal static class OperationExtensions
         return model.GetDiagnostics(operation.Syntax.Span, cancellationToken).Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
     }
 
-    public static bool IsStatement([NotNull] this IOperation operation)
+    public static bool IsStatement(this IOperation operation)
     {
         if (operation.Type != null || HasConstantValue(operation))
         {
@@ -71,7 +67,7 @@ internal static class OperationExtensions
         return OperationIsStatementBecauseItExistsInBodyOfParent(operation);
     }
 
-    private static bool OperationIsStatementBecauseItExistsInBodyOfParent([NotNull] IOperation operation)
+    private static bool OperationIsStatementBecauseItExistsInBodyOfParent(IOperation operation)
     {
         return OperationExistsInBodyOfForLoop(operation) || OperationExistsInBodyOfForEachLoop(operation) || OperationExistsInBodyOfWhileLoop(operation) ||
             OperationExistsInBodyOfIfStatement(operation) || OperationExistsInBodyOfTryFinallyStatement(operation) ||
@@ -79,22 +75,22 @@ internal static class OperationExtensions
             OperationExistsInBodyOfLabel(operation) || OperationExistsInBodyOfUsingStatement(operation);
     }
 
-    private static bool OperationExistsInBodyOfForLoop([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfForLoop(IOperation operation)
     {
         return operation.Parent is IForLoopOperation parentForLoop && IsOperationInBodyOfParent(operation, parentForLoop.Body);
     }
 
-    private static bool OperationExistsInBodyOfForEachLoop([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfForEachLoop(IOperation operation)
     {
         return operation.Parent is IForEachLoopOperation parentForEachLoop && IsOperationInBodyOfParent(operation, parentForEachLoop.Body);
     }
 
-    private static bool OperationExistsInBodyOfWhileLoop([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfWhileLoop(IOperation operation)
     {
         return operation.Parent is IWhileLoopOperation parentWhileLoop && IsOperationInBodyOfParent(operation, parentWhileLoop.Body);
     }
 
-    private static bool OperationExistsInBodyOfIfStatement([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfIfStatement(IOperation operation)
     {
         if (operation.Parent is IConditionalOperation parentConditional && parentConditional.IsStatement())
         {
@@ -107,7 +103,7 @@ internal static class OperationExtensions
         return false;
     }
 
-    private static bool OperationExistsInBodyOfTryFinallyStatement([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfTryFinallyStatement(IOperation operation)
     {
         if (operation.Parent is ITryOperation parentTry)
         {
@@ -120,37 +116,37 @@ internal static class OperationExtensions
         return false;
     }
 
-    private static bool OperationExistsInBodyOfCatchClause([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfCatchClause(IOperation operation)
     {
         return operation.Parent is ICatchClauseOperation parentCatchClause && IsOperationInBodyOfParent(operation, parentCatchClause.Handler);
     }
 
-    private static bool OperationExistsInBodyOfCaseClause([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfCaseClause(IOperation operation)
     {
         return operation.Parent is ISwitchCaseOperation parentSwitchCase && parentSwitchCase.Body.Contains(operation);
     }
 
-    private static bool OperationExistsInBodyOfLockStatement([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfLockStatement(IOperation operation)
     {
         return operation.Parent is ILockOperation parentLock && IsOperationInBodyOfParent(operation, parentLock.Body);
     }
 
-    private static bool OperationExistsInBodyOfLabel([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfLabel(IOperation operation)
     {
         return operation.Parent is ILabeledOperation parentLabel && IsOperationInBodyOfParent(operation, parentLabel.Operation);
     }
 
-    private static bool OperationExistsInBodyOfUsingStatement([NotNull] IOperation operation)
+    private static bool OperationExistsInBodyOfUsingStatement(IOperation operation)
     {
         return operation.Parent is IUsingOperation parentUsing && IsOperationInBodyOfParent(operation, parentUsing.Body);
     }
 
-    private static bool HasConstantValue([NotNull] IOperation operation)
+    private static bool HasConstantValue(IOperation operation)
     {
         return operation.ConstantValue is { HasValue: true, Value: null };
     }
 
-    private static bool IsOperationInBodyOfParent([NotNull] IOperation operation, [NotNull] IOperation parentOperationBody)
+    private static bool IsOperationInBodyOfParent(IOperation operation, IOperation parentOperationBody)
     {
         if (parentOperationBody is IBlockOperation bodyBlockOperation)
         {
@@ -160,8 +156,7 @@ internal static class OperationExtensions
         return operation.Equals(parentOperationBody);
     }
 
-    [NotNull]
-    public static IOperation SkipTypeConversions([NotNull] this IOperation operation)
+    public static IOperation SkipTypeConversions(this IOperation operation)
     {
         IOperation currentOperation = operation;
 
@@ -173,15 +168,13 @@ internal static class OperationExtensions
         return currentOperation;
     }
 
-    [CanBeNull]
-    public static IMethodSymbol TryGetContainingMethod([NotNull] this IOperation operation, [NotNull] Compilation compilation)
+    public static IMethodSymbol? TryGetContainingMethod(this IOperation operation, Compilation compilation)
     {
         SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
         return model.GetEnclosingSymbol(operation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
     }
 
-    [NotNull]
-    public static SemanticModel GetSemanticModel([NotNull] this IOperation operation, [NotNull] Compilation compilation)
+    public static SemanticModel GetSemanticModel(this IOperation operation, Compilation compilation)
     {
         if (OperationSemanticModelProperty != null)
         {
@@ -191,10 +184,9 @@ internal static class OperationExtensions
         return compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
     }
 
-    private sealed class IdentifierVisitor : OperationVisitor<object, IdentifierInfo>
+    private sealed class IdentifierVisitor : OperationVisitor<object?, IdentifierInfo>
     {
-        [NotNull]
-        public override IdentifierInfo VisitLocalReference([NotNull] ILocalReferenceOperation operation, [CanBeNull] object argument)
+        public override IdentifierInfo VisitLocalReference(ILocalReferenceOperation operation, object? argument)
         {
             string longName = operation.Local.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             var identifierName = new IdentifierName(operation.Local.Name, longName);
@@ -202,8 +194,7 @@ internal static class OperationExtensions
             return new IdentifierInfo(identifierName, operation.Local.Type);
         }
 
-        [NotNull]
-        public override IdentifierInfo VisitParameterReference([NotNull] IParameterReferenceOperation operation, [CanBeNull] object argument)
+        public override IdentifierInfo VisitParameterReference(IParameterReferenceOperation operation, object? argument)
         {
             var name = new IdentifierName(operation.Parameter.Name,
                 /* CSharpShortErrorMessageFormat returns 'int', ie. without parameter name */
@@ -212,26 +203,22 @@ internal static class OperationExtensions
             return new IdentifierInfo(name, operation.Parameter.Type);
         }
 
-        [NotNull]
-        public override IdentifierInfo VisitFieldReference([NotNull] IFieldReferenceOperation operation, [CanBeNull] object argument)
+        public override IdentifierInfo VisitFieldReference(IFieldReferenceOperation operation, object? argument)
         {
             return CreateForMemberReferenceExpression(operation, operation.Field.Type);
         }
 
-        [NotNull]
-        public override IdentifierInfo VisitEventReference([NotNull] IEventReferenceOperation operation, [CanBeNull] object argument)
+        public override IdentifierInfo VisitEventReference(IEventReferenceOperation operation, object? argument)
         {
             return CreateForMemberReferenceExpression(operation, operation.Event.Type);
         }
 
-        [NotNull]
-        public override IdentifierInfo VisitPropertyReference([NotNull] IPropertyReferenceOperation operation, [CanBeNull] object argument)
+        public override IdentifierInfo VisitPropertyReference(IPropertyReferenceOperation operation, object? argument)
         {
             return CreateForMemberReferenceExpression(operation, operation.Property.Type);
         }
 
-        [NotNull]
-        private IdentifierInfo CreateForMemberReferenceExpression([NotNull] IMemberReferenceOperation operation, [NotNull] ITypeSymbol memberType)
+        private IdentifierInfo CreateForMemberReferenceExpression(IMemberReferenceOperation operation, ITypeSymbol memberType)
         {
             string longName = operation.Member.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             var identifierName = new IdentifierName(operation.Member.Name, longName);
@@ -239,8 +226,7 @@ internal static class OperationExtensions
             return new IdentifierInfo(identifierName, memberType);
         }
 
-        [NotNull]
-        public override IdentifierInfo VisitInvocation([NotNull] IInvocationOperation operation, [CanBeNull] object argument)
+        public override IdentifierInfo VisitInvocation(IInvocationOperation operation, object? argument)
         {
             string longName = operation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             var identifierName = new IdentifierName(operation.TargetMethod.Name, longName);
@@ -250,20 +236,18 @@ internal static class OperationExtensions
     }
 
     private sealed class OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
-        : ExplicitOperationVisitor<object, Location>
+        : ExplicitOperationVisitor<object, Location?>
     {
         private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy = doWhileStrategy;
         private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy = tryFinallyStrategy;
 
-        [NotNull]
-        public override Location VisitEmpty([NotNull] IEmptyOperation operation, [CanBeNull] object argument)
+        public override Location VisitEmpty(IEmptyOperation operation, object? argument)
         {
             var syntax = (EmptyStatementSyntax)operation.Syntax;
             return syntax.SemicolonToken.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitWhileLoop([NotNull] IWhileLoopOperation operation, [CanBeNull] object argument)
+        public override Location? VisitWhileLoop(IWhileLoopOperation operation, object? argument)
         {
             if (operation.Syntax is DoStatementSyntax doSyntax)
             {
@@ -280,22 +264,19 @@ internal static class OperationExtensions
             return base.VisitWhileLoop(operation, argument);
         }
 
-        [NotNull]
-        public override Location VisitForLoop([NotNull] IForLoopOperation operation, [CanBeNull] object argument)
+        public override Location VisitForLoop(IForLoopOperation operation, object? argument)
         {
             var syntax = (ForStatementSyntax)operation.Syntax;
             return syntax.ForKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitForEachLoop([NotNull] IForEachLoopOperation operation, [CanBeNull] object argument)
+        public override Location VisitForEachLoop(IForEachLoopOperation operation, object? argument)
         {
             var syntax = (CommonForEachStatementSyntax)operation.Syntax;
             return syntax.ForEachKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitReturn([NotNull] IReturnOperation operation, [CanBeNull] object argument)
+        public override Location? VisitReturn(IReturnOperation operation, object? argument)
         {
             if (operation.Syntax is ReturnStatementSyntax returnSyntax)
             {
@@ -310,8 +291,7 @@ internal static class OperationExtensions
             return base.VisitReturn(operation, argument);
         }
 
-        [NotNull]
-        private static Location GetLocationForYieldStatement([NotNull] YieldStatementSyntax yieldSyntax)
+        private static Location GetLocationForYieldStatement(YieldStatementSyntax yieldSyntax)
         {
             int start = yieldSyntax.YieldKeyword.GetLocation().SourceSpan.Start;
             int end = yieldSyntax.ReturnOrBreakKeyword.GetLocation().SourceSpan.End;
@@ -320,8 +300,7 @@ internal static class OperationExtensions
             return Location.Create(yieldSyntax.SyntaxTree, sourceSpan);
         }
 
-        [NotNull]
-        public override Location VisitBranch([NotNull] IBranchOperation operation, [CanBeNull] object argument)
+        public override Location? VisitBranch(IBranchOperation operation, object? argument)
         {
             switch (operation.BranchKind)
             {
@@ -344,29 +323,25 @@ internal static class OperationExtensions
             }
         }
 
-        [NotNull]
-        private static Location VisitContinueStatement([NotNull] IBranchOperation operation)
+        private static Location VisitContinueStatement(IBranchOperation operation)
         {
             var syntax = (ContinueStatementSyntax)operation.Syntax;
             return syntax.ContinueKeyword.GetLocation();
         }
 
-        [NotNull]
-        private static Location VisitBreakStatement([NotNull] IBranchOperation operation)
+        private static Location VisitBreakStatement(IBranchOperation operation)
         {
             var syntax = (BreakStatementSyntax)operation.Syntax;
             return syntax.BreakKeyword.GetLocation();
         }
 
-        [NotNull]
-        private static Location VisitGoToStatement([NotNull] IBranchOperation operation)
+        private static Location VisitGoToStatement(IBranchOperation operation)
         {
             var syntax = (GotoStatementSyntax)operation.Syntax;
             return syntax.GotoKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitConditional([NotNull] IConditionalOperation operation, [CanBeNull] object argument)
+        public override Location? VisitConditional(IConditionalOperation operation, object? argument)
         {
             if (operation.IsStatement())
             {
@@ -377,29 +352,25 @@ internal static class OperationExtensions
             return base.VisitConditional(operation, argument);
         }
 
-        [NotNull]
-        public override Location VisitUsing([NotNull] IUsingOperation operation, [CanBeNull] object argument)
+        public override Location VisitUsing(IUsingOperation operation, object? argument)
         {
             var syntax = (UsingStatementSyntax)operation.Syntax;
             return syntax.UsingKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitLock([NotNull] ILockOperation operation, [CanBeNull] object argument)
+        public override Location VisitLock(ILockOperation operation, object? argument)
         {
             var syntax = (LockStatementSyntax)operation.Syntax;
             return syntax.LockKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitSwitch([NotNull] ISwitchOperation operation, [CanBeNull] object argument)
+        public override Location VisitSwitch(ISwitchOperation operation, object? argument)
         {
             var syntax = (SwitchStatementSyntax)operation.Syntax;
             return syntax.SwitchKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitTry([NotNull] ITryOperation operation, [CanBeNull] object argument)
+        public override Location? VisitTry(ITryOperation operation, object? argument)
         {
             var trySyntax = (TryStatementSyntax)operation.Syntax;
 
@@ -408,7 +379,7 @@ internal static class OperationExtensions
                 return trySyntax.TryKeyword.GetLocation();
             }
 
-            FinallyClauseSyntax finallySyntax = TryGetFinallySyntax(operation);
+            FinallyClauseSyntax? finallySyntax = TryGetFinallySyntax(operation);
 
             if (finallySyntax != null)
             {
@@ -418,8 +389,7 @@ internal static class OperationExtensions
             return base.VisitTry(operation, argument);
         }
 
-        [CanBeNull]
-        private static FinallyClauseSyntax TryGetFinallySyntax([NotNull] ITryOperation operation)
+        private static FinallyClauseSyntax? TryGetFinallySyntax(ITryOperation operation)
         {
             var finallySyntax = operation.Finally.Syntax as FinallyClauseSyntax;
 
@@ -435,15 +405,13 @@ internal static class OperationExtensions
             return finallySyntax;
         }
 
-        [NotNull]
-        public override Location VisitCatchClause([NotNull] ICatchClauseOperation operation, [CanBeNull] object argument)
+        public override Location VisitCatchClause(ICatchClauseOperation operation, object? argument)
         {
             var syntax = (CatchClauseSyntax)operation.Syntax;
             return syntax.CatchKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitThrow([NotNull] IThrowOperation operation, [CanBeNull] object argument)
+        public override Location? VisitThrow(IThrowOperation operation, object? argument)
         {
             if (operation.IsStatement())
             {
@@ -454,50 +422,43 @@ internal static class OperationExtensions
             return base.VisitThrow(operation, argument);
         }
 
-        [NotNull]
-        public override Location VisitSingleValueCaseClause([NotNull] ISingleValueCaseClauseOperation operation, [CanBeNull] object argument)
+        public override Location VisitSingleValueCaseClause(ISingleValueCaseClauseOperation operation, object? argument)
         {
             var syntax = (SwitchLabelSyntax)operation.Syntax;
             return syntax.Keyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitDefaultCaseClause([NotNull] IDefaultCaseClauseOperation operation, [CanBeNull] object argument)
+        public override Location VisitDefaultCaseClause(IDefaultCaseClauseOperation operation, object? argument)
         {
             var syntax = (SwitchLabelSyntax)operation.Syntax;
             return syntax.Keyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitPatternCaseClause([NotNull] IPatternCaseClauseOperation operation, [CanBeNull] object argument)
+        public override Location VisitPatternCaseClause(IPatternCaseClauseOperation operation, object? argument)
         {
             var syntax = (SwitchLabelSyntax)operation.Syntax;
             return syntax.Keyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitAwait([NotNull] IAwaitOperation operation, [CanBeNull] object argument)
+        public override Location VisitAwait(IAwaitOperation operation, object? argument)
         {
             var syntax = (AwaitExpressionSyntax)operation.Syntax;
             return syntax.AwaitKeyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitSizeOf([NotNull] ISizeOfOperation operation, [CanBeNull] object argument)
+        public override Location VisitSizeOf(ISizeOfOperation operation, object? argument)
         {
             var syntax = (SizeOfExpressionSyntax)operation.Syntax;
             return syntax.Keyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitTypeOf([NotNull] ITypeOfOperation operation, [CanBeNull] object argument)
+        public override Location VisitTypeOf(ITypeOfOperation operation, object? argument)
         {
             var syntax = (TypeOfExpressionSyntax)operation.Syntax;
             return syntax.Keyword.GetLocation();
         }
 
-        [NotNull]
-        public override Location VisitNameOf([NotNull] INameOfOperation operation, [CanBeNull] object argument)
+        public override Location? VisitNameOf(INameOfOperation operation, object? argument)
         {
             if (operation.Syntax is InvocationExpressionSyntax { Expression: IdentifierNameSyntax expressionSyntax })
             {
@@ -507,8 +468,7 @@ internal static class OperationExtensions
             return base.VisitNameOf(operation, argument);
         }
 
-        [NotNull]
-        public override Location VisitLocalFunction([NotNull] ILocalFunctionOperation operation, [CanBeNull] object argument)
+        public override Location VisitLocalFunction(ILocalFunctionOperation operation, object? argument)
         {
             return operation.Symbol.Locations.FirstOrDefault();
         }

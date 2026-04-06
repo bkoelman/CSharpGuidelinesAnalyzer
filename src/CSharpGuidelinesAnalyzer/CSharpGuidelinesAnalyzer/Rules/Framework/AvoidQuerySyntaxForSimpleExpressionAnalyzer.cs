@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,17 +17,14 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "2220";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -53,8 +49,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         context.ReportDiagnostic(diagnostic);
     }
 
-    [NotNull]
-    private static Location GetLocation([NotNull] QueryExpressionSyntax queryExpression, [NotNull] SemanticModel semanticModel)
+    private static Location GetLocation(QueryExpressionSyntax queryExpression, SemanticModel semanticModel)
     {
         SyntaxNode parent = SkipParentParentheses(queryExpression.Parent);
 
@@ -72,8 +67,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         return queryExpression.GetLocation();
     }
 
-    [NotNull]
-    private static SyntaxNode SkipParentParentheses([NotNull] SyntaxNode syntax)
+    private static SyntaxNode SkipParentParentheses(SyntaxNode syntax)
     {
         SyntaxNode current;
 
@@ -84,7 +78,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         return current;
     }
 
-    private static bool IsEnumerableExtensionMethod([NotNull] IMethodSymbol method)
+    private static bool IsEnumerableExtensionMethod(IMethodSymbol method)
     {
         return method is { IsExtensionMethod: true, IsGenericMethod: true } && method.Name.StartsWith("To", StringComparison.Ordinal) &&
             method.ReturnType.IsOrImplementsIEnumerable();
@@ -102,7 +96,7 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         public bool SkipAlways { get; private set; }
         public int TotalCount => Math.Max(0, fromCount - 1) + castsInFromCount + whereCount + groupCount + orderCount + selectCount;
 
-        public override void Visit([NotNull] SyntaxNode node)
+        public override void Visit(SyntaxNode node)
         {
             if (node.IsMissing)
             {
@@ -114,17 +108,17 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
             }
         }
 
-        public override void VisitJoinClause([NotNull] JoinClauseSyntax node)
+        public override void VisitJoinClause(JoinClauseSyntax node)
         {
             SkipAlways = true;
         }
 
-        public override void VisitLetClause([NotNull] LetClauseSyntax node)
+        public override void VisitLetClause(LetClauseSyntax node)
         {
             SkipAlways = true;
         }
 
-        public override void VisitFromClause([NotNull] FromClauseSyntax node)
+        public override void VisitFromClause(FromClauseSyntax node)
         {
             if (node.Type != null)
             {
@@ -135,25 +129,25 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
             base.VisitFromClause(node);
         }
 
-        public override void VisitWhereClause([NotNull] WhereClauseSyntax node)
+        public override void VisitWhereClause(WhereClauseSyntax node)
         {
             whereCount++;
             base.VisitWhereClause(node);
         }
 
-        public override void VisitGroupClause([NotNull] GroupClauseSyntax node)
+        public override void VisitGroupClause(GroupClauseSyntax node)
         {
             groupCount++;
             base.VisitGroupClause(node);
         }
 
-        public override void VisitOrdering([NotNull] OrderingSyntax node)
+        public override void VisitOrdering(OrderingSyntax node)
         {
             orderCount++;
             base.VisitOrdering(node);
         }
 
-        public override void VisitSelectClause([NotNull] SelectClauseSyntax node)
+        public override void VisitSelectClause(SelectClauseSyntax node)
         {
             if (node.Expression is IdentifierNameSyntax)
             {

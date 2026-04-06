@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -24,25 +23,20 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1505";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor NamespaceRule = new(DiagnosticId, Title, NamespaceMessageFormat, Category.DisplayName, DiagnosticSeverity.Info,
         true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor TypeInNamespaceRule = new(DiagnosticId, Title, TypeInNamespaceMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor GlobalTypeRule = new(DiagnosticId, Title, GlobalTypeMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Info, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(NamespaceRule, TypeInNamespaceRule, GlobalTypeRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -61,12 +55,12 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static bool IsTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol)
+    private static bool IsTopLevelNamespace(INamespaceSymbol namespaceSymbol)
     {
         return namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
     }
 
-    private static void AnalyzeTopLevelNamespace([NotNull] INamespaceSymbol namespaceSymbol, SymbolAnalysisContext context)
+    private static void AnalyzeTopLevelNamespace(INamespaceSymbol namespaceSymbol, SymbolAnalysisContext context)
     {
         string reportAssemblyName = namespaceSymbol.ContainingAssembly.Name;
         string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
@@ -77,8 +71,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
         visitor.Visit(namespaceSymbol);
     }
 
-    [NotNull]
-    private static string GetAssemblyNameWithoutCore([NotNull] string assemblyName)
+    private static string GetAssemblyNameWithoutCore(string assemblyName)
     {
         if (assemblyName == "Core")
         {
@@ -99,32 +92,25 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
         }
     }
 
-    private static bool IsTopLevelStatementsContainer([NotNull] INamedTypeSymbol type)
+    private static bool IsTopLevelStatementsContainer(INamedTypeSymbol type)
     {
         return type.Name == TopLevelStatementsEntryPointTypeName && type.GetMembers(TopLevelStatementsEntryPointMethodName).Any();
     }
 
     private sealed class TypesInNamespaceVisitor : SymbolVisitor
     {
-        [ItemNotNull]
         private static readonly ImmutableArray<string> JetBrainsAnnotationsNamespace = ImmutableArray.Create("JetBrains", "Annotations");
 
-        [NotNull]
         private static readonly char[] DotSeparator = ['.'];
 
-        [ItemNotNull]
         private readonly ImmutableArray<string> assemblyNameParts;
 
-        [NotNull]
         private readonly string reportAssemblyName;
 
-        [NotNull]
-        [ItemNotNull]
         private readonly Stack<string> namespaceNames = new();
 
         private SymbolAnalysisContext context;
 
-        [NotNull]
         private string CurrentNamespaceName
         {
             get
@@ -134,7 +120,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
             }
         }
 
-        public TypesInNamespaceVisitor([NotNull] string assemblyName, [NotNull] string reportAssemblyName, SymbolAnalysisContext context)
+        public TypesInNamespaceVisitor(string assemblyName, string reportAssemblyName, SymbolAnalysisContext context)
         {
             Guard.NotNull(assemblyName, nameof(assemblyName));
             Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
@@ -145,7 +131,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
             this.context = context;
         }
 
-        public override void VisitNamespace([NotNull] INamespaceSymbol symbol)
+        public override void VisitNamespace(INamespaceSymbol symbol)
         {
             context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -162,7 +148,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
             namespaceNames.Pop();
         }
 
-        private void VisitChildren([NotNull] INamespaceSymbol namespaceSymbol)
+        private void VisitChildren(INamespaceSymbol namespaceSymbol)
         {
             foreach (INamedTypeSymbol typeMember in namespaceSymbol.GetTypeMembers())
             {
@@ -175,7 +161,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
             }
         }
 
-        public override void VisitNamedType([NotNull] INamedTypeSymbol symbol)
+        public override void VisitNamedType(INamedTypeSymbol symbol)
         {
             if (!IsCurrentNamespaceAllowed(NamespaceMatchMode.RequireCompleteMatchWithAssemblyName) && !symbol.IsSynthesized())
             {
@@ -198,7 +184,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
             return isMatchOnParts == null || isMatchOnParts.Value;
         }
 
-        private bool IsCurrentNamespacePartOfJetBrainsAnnotations([NotNull] [ItemNotNull] string[] currentNamespaceParts)
+        private bool IsCurrentNamespacePartOfJetBrainsAnnotations(string[] currentNamespaceParts)
         {
             switch (currentNamespaceParts.Length)
             {
@@ -215,8 +201,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
             return false;
         }
 
-        [CanBeNull]
-        private bool? IsMatchOnNamespaceParts([NotNull] [ItemNotNull] string[] currentNamespaceParts, NamespaceMatchMode matchMode)
+        private bool? IsMatchOnNamespaceParts(string[] currentNamespaceParts, NamespaceMatchMode matchMode)
         {
             if (matchMode == NamespaceMatchMode.RequireCompleteMatchWithAssemblyName && assemblyNameParts.Length > currentNamespaceParts.Length)
             {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -19,17 +18,14 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1738";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Info, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -55,7 +51,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeEventAssignmentMethod([NotNull] IMethodReferenceOperation binding, [NotNull] PortableEventAssignmentOperation assignment,
+    private static void AnalyzeEventAssignmentMethod(IMethodReferenceOperation binding, PortableEventAssignmentOperation assignment,
         OperationAnalysisContext context)
     {
         if (assignment.EventReference != null)
@@ -76,20 +72,18 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    private static string GetEventTargetName([NotNull] IEventReferenceOperation eventReference, [NotNull] IMethodSymbol targetMethod)
+    private static string GetEventTargetName(IEventReferenceOperation eventReference, IMethodSymbol targetMethod)
     {
         return eventReference.Instance != null ? GetInstanceEventTargetName(eventReference.Instance) : GetStaticEventTargetName(eventReference, targetMethod);
     }
 
-    [NotNull]
-    private static string GetInstanceEventTargetName([NotNull] IOperation eventInstance)
+    private static string GetInstanceEventTargetName(IOperation eventInstance)
     {
         bool isEventLocal = eventInstance is IInstanceReferenceOperation;
 
         if (!isEventLocal)
         {
-            IdentifierInfo info = eventInstance.TryGetIdentifierInfo();
+            IdentifierInfo? info = eventInstance.TryGetIdentifierInfo();
 
             if (info != null)
             {
@@ -100,27 +94,23 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
         return string.Empty;
     }
 
-    [NotNull]
-    private static string MakeCamelCaseWithoutUnderscorePrefix([NotNull] string identifierName)
+    private static string MakeCamelCaseWithoutUnderscorePrefix(string identifierName)
     {
         string noUnderscorePrefix = RemoveUnderscorePrefix(identifierName);
         return ToCamelCase(noUnderscorePrefix);
     }
 
-    [NotNull]
-    private static string RemoveUnderscorePrefix([NotNull] string identifierName)
+    private static string RemoveUnderscorePrefix(string identifierName)
     {
         return identifierName.StartsWith("_", StringComparison.Ordinal) ? identifierName.Substring(1) : identifierName;
     }
 
-    [NotNull]
-    private static string ToCamelCase([NotNull] string identifierName)
+    private static string ToCamelCase(string identifierName)
     {
         return identifierName.Length > 0 && char.IsLower(identifierName[0]) ? char.ToUpper(identifierName[0]) + identifierName.Substring(1) : identifierName;
     }
 
-    [NotNull]
-    private static string GetStaticEventTargetName([NotNull] IEventReferenceOperation eventReference, [NotNull] IMethodSymbol targetMethod)
+    private static string GetStaticEventTargetName(IEventReferenceOperation eventReference, IMethodSymbol targetMethod)
     {
         INamedTypeSymbol eventContainingType = eventReference.Event.ContainingType;
 
@@ -130,27 +120,22 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
 
     private sealed class PortableEventAssignmentOperation
     {
-        [NotNull]
         private static readonly MethodInfo EventReferencePropertyGetMethod = ResolveEventReferencePropertyGetMethod();
 
-        [NotNull]
         private readonly IEventAssignmentOperation innerOperation;
 
-        [CanBeNull]
-        public IEventReferenceOperation EventReference => InvokeEventReferencePropertyGetMethod();
+        public IEventReferenceOperation? EventReference => InvokeEventReferencePropertyGetMethod();
 
-        [NotNull]
         public IOperation HandlerValue => innerOperation.HandlerValue;
 
         public bool Adds => innerOperation.Adds;
 
-        public PortableEventAssignmentOperation([NotNull] IEventAssignmentOperation operation)
+        public PortableEventAssignmentOperation(IEventAssignmentOperation operation)
         {
             Guard.NotNull(operation, nameof(operation));
             innerOperation = operation;
         }
 
-        [NotNull]
         private static MethodInfo ResolveEventReferencePropertyGetMethod()
         {
             // Breaking change in Microsoft.CodeAnalysis v2.9:
@@ -160,8 +145,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
             return propertyInfo.GetMethod;
         }
 
-        [CanBeNull]
-        private IEventReferenceOperation InvokeEventReferencePropertyGetMethod()
+        private IEventReferenceOperation? InvokeEventReferencePropertyGetMethod()
         {
             object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, []);
             TypeInfo propertyType = propertyValue.GetType().GetTypeInfo();

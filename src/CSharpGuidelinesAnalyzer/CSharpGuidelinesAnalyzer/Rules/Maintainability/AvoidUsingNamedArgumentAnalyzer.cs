@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -20,17 +19,14 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1555";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -53,8 +49,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    private static IDictionary<IParameterSymbol, bool> GetParameterUsageMap([NotNull] IInvocationOperation invocation)
+    private static IDictionary<IParameterSymbol, bool> GetParameterUsageMap(IInvocationOperation invocation)
     {
         var parameterUsageMap = new Dictionary<IParameterSymbol, bool>();
 
@@ -75,8 +70,8 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         return parameterUsageMap;
     }
 
-    private static bool RequiresReport([NotNull] IArgumentOperation argument, [NotNull] IInvocationOperation invocation,
-        [NotNull] IDictionary<IParameterSymbol, bool> parameterUsageMap)
+    private static bool RequiresReport(IArgumentOperation argument, IInvocationOperation invocation,
+        IDictionary<IParameterSymbol, bool> parameterUsageMap)
     {
         if (RequiresAnalysis(argument))
         {
@@ -91,26 +86,24 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool RequiresAnalysis([NotNull] IArgumentOperation argument)
+    private static bool RequiresAnalysis(IArgumentOperation argument)
     {
         return !argument.IsImplicit && !argument.Parameter.Type.IsBooleanOrNullableBoolean() && IsNamedArgument(argument);
     }
 
-    private static bool IsNamedArgument([NotNull] IArgumentOperation argument)
+    private static bool IsNamedArgument(IArgumentOperation argument)
     {
         var syntax = argument.Syntax as ArgumentSyntax;
         return syntax?.NameColon != null;
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static ICollection<IParameterSymbol> GetPrecedingParameters([NotNull] IParameterSymbol parameter, [NotNull] IMethodSymbol method)
+    private static ICollection<IParameterSymbol> GetPrecedingParameters(IParameterSymbol parameter, IMethodSymbol method)
     {
         return method.Parameters.TakeWhile(nextParameter => !nextParameter.IsEqualTo(parameter)).ToList();
     }
 
-    private static bool AreParametersUsed([NotNull] [ItemNotNull] ICollection<IParameterSymbol> parameters,
-        [NotNull] IDictionary<IParameterSymbol, bool> parameterUsageMap)
+    private static bool AreParametersUsed(ICollection<IParameterSymbol> parameters,
+        IDictionary<IParameterSymbol, bool> parameterUsageMap)
     {
         foreach (IParameterSymbol parameter in parameters)
         {
@@ -128,7 +121,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         return true;
     }
 
-    private static void ReportArgument([NotNull] IArgumentOperation argument, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private static void ReportArgument(IArgumentOperation argument, Action<Diagnostic> reportDiagnostic)
     {
         var syntax = (ArgumentSyntax)argument.Syntax;
         string methodText = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);

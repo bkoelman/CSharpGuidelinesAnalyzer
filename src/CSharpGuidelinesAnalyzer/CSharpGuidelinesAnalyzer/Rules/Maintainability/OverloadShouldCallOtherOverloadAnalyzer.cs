@@ -3,7 +3,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -21,18 +20,14 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1551";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Maintainability;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor InvokeRule = new(DiagnosticId, Title, InvokeMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning,
         true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor MakeVirtualRule = new(DiagnosticId, Title, MakeVirtualMessageFormat, Category.DisplayName,
         DiagnosticSeverity.Warning, true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    [NotNull]
     private static readonly DiagnosticDescriptor OrderRule = new(DiagnosticId, Title, OrderMessageFormat, Category.DisplayName, DiagnosticSeverity.Warning,
         true, Description, Category.GetHelpLinkUri(DiagnosticId));
 
@@ -43,10 +38,9 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         MethodKind.ReducedExtension
     }.ToImmutableArray();
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(InvokeRule, MakeVirtualRule, OrderRule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -75,16 +69,12 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<IMethodSymbol> GetRegularMethodsInTypeHierarchy([NotNull] INamedTypeSymbol type, CancellationToken cancellationToken)
+    private static IEnumerable<IMethodSymbol> GetRegularMethodsInTypeHierarchy(INamedTypeSymbol type, CancellationToken cancellationToken)
     {
         return EnumerateSelfWithBaseTypes(type).SelectMany(nextType => GetRegularMethodsInType(nextType, cancellationToken)).ToArray();
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<INamedTypeSymbol> EnumerateSelfWithBaseTypes([NotNull] INamedTypeSymbol type)
+    private static IEnumerable<INamedTypeSymbol> EnumerateSelfWithBaseTypes(INamedTypeSymbol type)
     {
         for (INamedTypeSymbol nextType = type; nextType != null; nextType = nextType.BaseType)
         {
@@ -92,32 +82,30 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [NotNull]
-    [ItemNotNull]
-    private static IEnumerable<IMethodSymbol> GetRegularMethodsInType([NotNull] INamedTypeSymbol type, CancellationToken cancellationToken)
+    private static IEnumerable<IMethodSymbol> GetRegularMethodsInType(INamedTypeSymbol type, CancellationToken cancellationToken)
     {
         return type.GetMembers().OfType<IMethodSymbol>().Where(method => IsRegularMethod(method, cancellationToken)).ToArray();
     }
 
-    private static bool IsRegularMethod([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
+    private static bool IsRegularMethod(IMethodSymbol method, CancellationToken cancellationToken)
     {
         return RegularMethodKinds.Contains(method.MethodKind) && !method.IsSynthesized() && HasMethodBody(method, cancellationToken);
     }
 
-    private static bool HasMethodBody([NotNull] IMethodSymbol method, CancellationToken cancellationToken)
+    private static bool HasMethodBody(IMethodSymbol method, CancellationToken cancellationToken)
     {
         return method.TryGetBodySyntaxForMethod(cancellationToken) != null;
     }
 
-    private static bool HasAtLeastTwoItems<T>([NotNull] [ItemCanBeNull] IEnumerable<T> source)
+    private static bool HasAtLeastTwoItems<T>(IEnumerable<T?> source)
     {
         return source.Skip(1).Any();
     }
 
-    private static void AnalyzeMethodGroup([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] INamedTypeSymbol activeType,
+    private static void AnalyzeMethodGroup(IReadOnlyCollection<IMethodSymbol> methodGroup, INamedTypeSymbol activeType,
         SymbolAnalysisContext context)
     {
-        IMethodSymbol longestOverload = TryGetSingleLongestOverload(methodGroup);
+        IMethodSymbol? longestOverload = TryGetSingleLongestOverload(methodGroup);
 
         if (longestOverload != null)
         {
@@ -135,7 +123,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeOverloads(OverloadsInfo info, [NotNull] INamedTypeSymbol activeType)
+    private static void AnalyzeOverloads(OverloadsInfo info, INamedTypeSymbol activeType)
     {
         IEnumerable<IMethodSymbol> overloadsInActiveType = info.MethodGroup.Where(method =>
             !method.IsEqualTo(info.LongestOverload) && method.ContainingType.IsEqualTo(activeType));
@@ -146,7 +134,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeOverload(OverloadsInfo info, [NotNull] IMethodSymbol overload)
+    private static void AnalyzeOverload(OverloadsInfo info, IMethodSymbol overload)
     {
         if (!overload.IsOverride && !overload.IsInterfaceImplementation() && !overload.HidesBaseMember(info.Context.CancellationToken))
         {
@@ -165,8 +153,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    [CanBeNull]
-    private static IMethodSymbol TryGetSingleLongestOverload([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup)
+    private static IMethodSymbol? TryGetSingleLongestOverload(IReadOnlyCollection<IMethodSymbol> methodGroup)
     {
         IGrouping<int, IMethodSymbol> overloadsWithHighestParameterCount =
             methodGroup.GroupBy(group => group.Parameters.Length).OrderByDescending(group => group.Key).First();
@@ -174,14 +161,14 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return overloadsWithHighestParameterCount.Skip(1).FirstOrDefault() == null ? overloadsWithHighestParameterCount.First() : null;
     }
 
-    private static bool CanBeMadeVirtual([NotNull] IMethodSymbol method)
+    private static bool CanBeMadeVirtual(IMethodSymbol method)
     {
         return !method.IsStatic && method.DeclaredAccessibility != Accessibility.Private && !method.ContainingType.IsSealed &&
             method.ContainingType.TypeKind != TypeKind.Struct && method is { IsVirtual: false, IsOverride: false } &&
             !method.ExplicitInterfaceImplementations.Any();
     }
 
-    private static void CompareOrderOfParameters([NotNull] IMethodSymbol method, [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
+    private static void CompareOrderOfParameters(IMethodSymbol method, IMethodSymbol longestOverload, SymbolAnalysisContext context)
     {
         List<IParameterSymbol> parametersInLongestOverload = longestOverload.Parameters.ToList();
 
@@ -194,15 +181,15 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool AreParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
-        [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreParametersDeclaredInSameOrder(IMethodSymbol method,
+        List<IParameterSymbol> parametersInLongestOverload)
     {
         return AreRegularParametersDeclaredInSameOrder(method, parametersInLongestOverload) &&
             AreDefaultParametersDeclaredInSameOrder(method, parametersInLongestOverload);
     }
 
-    private static bool AreRegularParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
-        [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreRegularParametersDeclaredInSameOrder(IMethodSymbol method,
+        List<IParameterSymbol> parametersInLongestOverload)
     {
         List<IParameterSymbol> regularParametersInMethod = method.Parameters.Where(IsRegularParameter).ToList();
         List<IParameterSymbol> regularParametersInLongestOverload = parametersInLongestOverload.Where(IsRegularParameter).ToList();
@@ -210,18 +197,18 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return AreParametersDeclaredInSameOrder(regularParametersInMethod, regularParametersInLongestOverload);
     }
 
-    private static bool IsRegularParameter([NotNull] IParameterSymbol parameter)
+    private static bool IsRegularParameter(IParameterSymbol parameter)
     {
         return parameter is { HasExplicitDefaultValue: false, IsParams: false } && !IsCancellationToken(parameter.Type);
     }
 
-    private static bool IsCancellationToken([NotNull] ITypeSymbol type)
+    private static bool IsCancellationToken(ITypeSymbol type)
     {
         return type.ToDisplayString() == "System.Threading.CancellationToken";
     }
 
-    private static bool AreDefaultParametersDeclaredInSameOrder([NotNull] IMethodSymbol method,
-        [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreDefaultParametersDeclaredInSameOrder(IMethodSymbol method,
+        List<IParameterSymbol> parametersInLongestOverload)
     {
         List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
         List<IParameterSymbol> defaultParametersInLongestOverload = parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
@@ -229,13 +216,13 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return AreParametersDeclaredInSameOrder(defaultParametersInMethod, defaultParametersInLongestOverload);
     }
 
-    private static bool IsParameterWithDefaultValue([NotNull] IParameterSymbol parameter)
+    private static bool IsParameterWithDefaultValue(IParameterSymbol parameter)
     {
         return parameter is { HasExplicitDefaultValue: true, IsParams: false };
     }
 
-    private static bool AreParametersDeclaredInSameOrder([NotNull] [ItemNotNull] IList<IParameterSymbol> parameters,
-        [NotNull] [ItemNotNull] List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreParametersDeclaredInSameOrder(IList<IParameterSymbol> parameters,
+        List<IParameterSymbol> parametersInLongestOverload)
     {
         for (int parameterIndex = 0; parameterIndex < parameters.Count; parameterIndex++)
         {
@@ -251,10 +238,10 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return true;
     }
 
-    private static bool InvokesAnotherOverload([NotNull] IMethodSymbol methodToAnalyze, [NotNull] MethodInvocationWalker invocationWalker,
+    private static bool InvokesAnotherOverload(IMethodSymbol methodToAnalyze, MethodInvocationWalker invocationWalker,
         SymbolAnalysisContext context)
     {
-        IOperation operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
+        IOperation? operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
 
         if (operation != null)
         {
@@ -265,18 +252,15 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private sealed class MethodInvocationWalker([NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup) : ExplicitOperationWalker
+    private sealed class MethodInvocationWalker(IReadOnlyCollection<IMethodSymbol> methodGroup) : ExplicitOperationWalker
     {
-        [NotNull]
-        [ItemNotNull]
         private readonly IReadOnlyCollection<IMethodSymbol> methodGroup = methodGroup;
 
-        [CanBeNull]
-        private IMethodSymbol containingMethod;
+        private IMethodSymbol? containingMethod;
 
         public bool HasFoundInvocation { get; private set; }
 
-        public void AnalyzeBlock([NotNull] IOperation block, [NotNull] IMethodSymbol method)
+        public void AnalyzeBlock(IOperation block, IMethodSymbol method)
         {
             Guard.NotNull(block, nameof(block));
             Guard.NotNull(method, nameof(method));
@@ -287,7 +271,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
             Visit(block);
         }
 
-        public override void VisitInvocation([NotNull] IInvocationOperation operation)
+        public override void VisitInvocation(IInvocationOperation operation)
         {
             if (HasFoundInvocation)
             {
@@ -308,7 +292,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        private void VerifyInvocation([NotNull] IInvocationOperation operation, [NotNull] IMethodSymbol methodToFind)
+        private void VerifyInvocation(IInvocationOperation operation, IMethodSymbol methodToFind)
         {
             if (methodToFind.MethodKind == MethodKind.ExplicitInterfaceImplementation)
             {
@@ -323,7 +307,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        private void ScanExplicitInterfaceInvocation([NotNull] IInvocationOperation operation, [NotNull] IMethodSymbol methodToFind)
+        private void ScanExplicitInterfaceInvocation(IInvocationOperation operation, IMethodSymbol methodToFind)
         {
             foreach (IMethodSymbol interfaceMethod in methodToFind.ExplicitInterfaceImplementations)
             {
@@ -337,13 +321,10 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
     }
 
     private readonly struct OverloadsInfo(
-        [NotNull] [ItemNotNull] IReadOnlyCollection<IMethodSymbol> methodGroup, [NotNull] IMethodSymbol longestOverload, SymbolAnalysisContext context)
+        IReadOnlyCollection<IMethodSymbol> methodGroup, IMethodSymbol longestOverload, SymbolAnalysisContext context)
     {
-        [NotNull]
-        [ItemNotNull]
         public IReadOnlyCollection<IMethodSymbol> MethodGroup { get; } = methodGroup;
 
-        [NotNull]
         public IMethodSymbol LongestOverload { get; } = longestOverload;
 
         public SymbolAnalysisContext Context { get; } = context;

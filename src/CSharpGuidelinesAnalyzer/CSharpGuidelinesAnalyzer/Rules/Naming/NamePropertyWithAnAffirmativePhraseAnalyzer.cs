@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -16,24 +15,20 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1715";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, false,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds = ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field);
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> WordsWhitelist = ImmutableArray.Create("Are", "Be", "Is", "Was", "Were", "Has", "Have", "Can", "Could",
         "Shall", "Should", "May", "Might", "Will", "Need", "Needs", "Allow", "Allows", "Support", "Supports", "Do", "Does", "Did", "Hide", "Hides", "Contain",
         "Contains", "Require", "Requires", "Return", "Returns", "Starts", "Consists", "Targets");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -63,7 +58,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         }
     }
 
-    private static bool IsOperator([NotNull] ISymbol symbol)
+    private static bool IsOperator(ISymbol symbol)
     {
         var method = symbol as IMethodSymbol;
 
@@ -71,7 +66,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         return kind is MethodKind.UserDefinedOperator or MethodKind.BuiltinOperator;
     }
 
-    private static bool IsMemberAccessible([NotNull] ISymbol symbol)
+    private static bool IsMemberAccessible(ISymbol symbol)
     {
         return symbol.DeclaredAccessibility != Accessibility.Private && symbol.IsSymbolAccessibleFromRoot();
     }
@@ -92,18 +87,18 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         }
     }
 
-    private static bool IsParameterAccessible([NotNull] IParameterSymbol parameter)
+    private static bool IsParameterAccessible(IParameterSymbol parameter)
     {
         ISymbol containingMember = parameter.ContainingSymbol;
         return IsMemberAccessible(containingMember);
     }
 
-    private static bool IsWhitelisted([NotNull] string identifierName)
+    private static bool IsWhitelisted(string identifierName)
     {
         return identifierName.StartsWithWordInList(WordsWhitelist);
     }
 
-    private static void ReportAt(SymbolAnalysisContext context, [NotNull] ISymbol symbol)
+    private static void ReportAt(SymbolAnalysisContext context, ISymbol symbol)
     {
         Accessibility accessibility = symbol is IParameterSymbol parameterSymbol
             ? parameterSymbol.ContainingSymbol.DeclaredAccessibility

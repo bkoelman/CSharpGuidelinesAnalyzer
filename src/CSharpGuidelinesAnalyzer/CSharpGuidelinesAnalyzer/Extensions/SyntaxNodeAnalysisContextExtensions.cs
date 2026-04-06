@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
@@ -13,7 +12,7 @@ internal static class SyntaxNodeAnalysisContextExtensions
         return SyntaxToSymbolContext(syntaxContext, symbol);
     }
 
-    private static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext, [CanBeNull] ISymbol symbol)
+    private static SymbolAnalysisContext SyntaxToSymbolContext(SyntaxNodeAnalysisContext syntaxContext, ISymbol? symbol)
     {
         return new SymbolAnalysisContext(symbol, syntaxContext.SemanticModel.Compilation, syntaxContext.Options, syntaxContext.ReportDiagnostic, _ => true,
             syntaxContext.CancellationToken);

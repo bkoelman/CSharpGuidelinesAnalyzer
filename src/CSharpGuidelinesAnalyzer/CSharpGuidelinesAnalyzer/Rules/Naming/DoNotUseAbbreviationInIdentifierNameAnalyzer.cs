@@ -2,7 +2,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -20,25 +19,21 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
 
     public const string DiagnosticId = AnalyzerCategory.RulePrefix + "1706";
 
-    [NotNull]
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Naming;
 
-    [NotNull]
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
     private static readonly ImmutableArray<SymbolKind> MemberSymbolKinds =
         ImmutableArray.Create(SymbolKind.Property, SymbolKind.Method, SymbolKind.Field, SymbolKind.Event);
 
-    [ItemNotNull]
     private static readonly ImmutableArray<string> WordsBlacklist = ImmutableArray.Create("Btn", "Ctrl", "Frm", "Chk", "Cmb", "Ctx", "Dg", "Pnl", "Dlg", "Ex",
         "Lbl", "Txt", "Mnu", "Prg", "Rb", "Cnt", "Tv", "Ddl", "Fld", "Lnk", "Img", "Lit", "Vw", "Gv", "Dts", "Rpt", "Vld", "Pwd", "Ctl", "Tm", "Mgr", "Flt",
         "Len", "Idx", "Str", "Doc");
 
-    [ItemNotNull]
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
-    public override void Initialize([NotNull] AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
     {
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
@@ -48,14 +43,14 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
         RegisterForSyntax(context);
     }
 
-    private void RegisterForSymbols([NotNull] AnalysisContext context)
+    private void RegisterForSymbols(AnalysisContext context)
     {
         context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
         context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
         context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
     }
 
-    private void RegisterForOperations([NotNull] AnalysisContext context)
+    private void RegisterForOperations(AnalysisContext context)
     {
         context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
         context.SafeRegisterOperationAction(AnalyzeVariableDeclarator, OperationKind.VariableDeclarator);
@@ -63,7 +58,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
         context.SafeRegisterOperationAction(AnalyzeAnonymousObjectCreation, OperationKind.AnonymousObjectCreation);
     }
 
-    private void RegisterForSyntax([NotNull] AnalysisContext context)
+    private void RegisterForSyntax(AnalysisContext context)
     {
         context.RegisterSyntaxNodeAction(AnalyzeFromClause, SyntaxKind.FromClause);
         context.RegisterSyntaxNodeAction(AnalyzeJoinClause, SyntaxKind.JoinClause);
@@ -155,7 +150,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
         AnalyzeTypeAsTuple(variable.Type, context.ReportDiagnostic);
     }
 
-    private static void AnalyzeTypeAsTuple([NotNull] ITypeSymbol type, [NotNull] Action<Diagnostic> reportDiagnostic)
+    private static void AnalyzeTypeAsTuple(ITypeSymbol type, Action<Diagnostic> reportDiagnostic)
     {
         if (type.IsTupleType && type is INamedTypeSymbol tupleType)
         {
@@ -178,7 +173,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
 
         foreach (IOperation element in tuple.Elements)
         {
-            ILocalSymbol tupleElement = TryGetTupleElement(element);
+            ILocalSymbol? tupleElement = TryGetTupleElement(element);
 
             if (tupleElement != null && IsBlacklistedOrSingleLetter(tupleElement.Name))
             {
@@ -188,10 +183,9 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
         }
     }
 
-    [CanBeNull]
-    private static ILocalSymbol TryGetTupleElement([NotNull] IOperation elementOperation)
+    private static ILocalSymbol? TryGetTupleElement(IOperation elementOperation)
     {
-        ILocalReferenceOperation localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
+        ILocalReferenceOperation? localReference = elementOperation is IDeclarationExpressionOperation declarationExpression
             ? declarationExpression.Expression as ILocalReferenceOperation
             : elementOperation as ILocalReferenceOperation;
 
@@ -258,17 +252,17 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
         }
     }
 
-    private static bool IsBlacklistedOrSingleLetter([NotNull] string name)
+    private static bool IsBlacklistedOrSingleLetter(string name)
     {
         return IsBlacklisted(name) || IsSingleLetter(name);
     }
 
-    private static bool IsBlacklisted([NotNull] string name)
+    private static bool IsBlacklisted(string name)
     {
         return name.GetWordsInList(WordsBlacklist).Any();
     }
 
-    private static bool IsSingleLetter([NotNull] string name)
+    private static bool IsSingleLetter(string name)
     {
         return name.Length == 1 && char.IsLetter(name[0]);
     }
