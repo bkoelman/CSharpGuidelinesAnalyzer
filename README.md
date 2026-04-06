@@ -95,7 +95,7 @@ After each commit, a new prerelease NuGet package is automatically published to 
 
 ## Building from source
 
-Clone the repository and open `CSharpGuidelinesAnalyzer.sln` in Visual Studio.
+Clone the repository and open `CSharpGuidelinesAnalyzer.slnx` in Visual Studio.
 You can now build and run the tests.
 
 To debug an analyzer, set a breakpoint and press F5. This launches a second (experimental) Visual Studio instance with the debugger attached. In the experimental instance, open a project and observe your breakpoint get hit.

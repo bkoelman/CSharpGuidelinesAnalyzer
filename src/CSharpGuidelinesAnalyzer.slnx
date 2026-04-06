@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="CSharpGuidelinesAnalyzer/CSharpGuidelinesAnalyzer.Test/CSharpGuidelinesAnalyzer.Test.csproj" />
+  <Project Path="CSharpGuidelinesAnalyzer/CSharpGuidelinesAnalyzer.Vsix/CSharpGuidelinesAnalyzer.Vsix.csproj" DefaultStartup="true" />
+  <Project Path="CSharpGuidelinesAnalyzer/CSharpGuidelinesAnalyzer/CSharpGuidelinesAnalyzer.csproj" />
+</Solution>
