@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CSharpGuidelinesAnalyzer;
+﻿namespace CSharpGuidelinesAnalyzer;
 
 /// <summary>
 /// Breaks up camel-case, pascal-case and uppercase identifier names into words.

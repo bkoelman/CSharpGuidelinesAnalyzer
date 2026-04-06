@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace CSharpGuidelinesAnalyzer.Extensions;
+﻿namespace CSharpGuidelinesAnalyzer.Extensions;
 
 /// <summary />
 internal static class IdentifierExtensions

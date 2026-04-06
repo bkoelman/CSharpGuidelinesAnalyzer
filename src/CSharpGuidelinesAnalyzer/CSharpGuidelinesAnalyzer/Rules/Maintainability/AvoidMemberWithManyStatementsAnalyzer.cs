@@ -1,6 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using CSharpGuidelinesAnalyzer.Settings;
 using Microsoft.CodeAnalysis;

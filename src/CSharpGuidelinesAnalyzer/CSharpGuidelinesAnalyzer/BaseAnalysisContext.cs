@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 

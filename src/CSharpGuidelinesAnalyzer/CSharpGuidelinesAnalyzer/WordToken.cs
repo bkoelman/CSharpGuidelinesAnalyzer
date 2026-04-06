@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CSharpGuidelinesAnalyzer;
+﻿namespace CSharpGuidelinesAnalyzer;
 
 public readonly struct WordToken : IEquatable<WordToken>
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CSharpGuidelinesAnalyzer;
+﻿namespace CSharpGuidelinesAnalyzer;
 
 internal sealed class AnalyzerCategory
 {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CSharpGuidelinesAnalyzer.Extensions;
+﻿using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Operations;
 

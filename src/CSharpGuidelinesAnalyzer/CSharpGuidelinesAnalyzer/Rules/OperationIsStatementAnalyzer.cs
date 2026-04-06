@@ -1,6 +1,5 @@
 ﻿
 #if DEBUG
-using System;
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;

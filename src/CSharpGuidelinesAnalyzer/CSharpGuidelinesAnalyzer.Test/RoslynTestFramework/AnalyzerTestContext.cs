@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Net;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;

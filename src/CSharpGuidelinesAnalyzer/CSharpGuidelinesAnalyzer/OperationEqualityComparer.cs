@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
 using JetBrains.Annotations;

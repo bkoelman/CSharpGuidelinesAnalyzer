@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Text;
-using System.Threading;
 using CSharpGuidelinesAnalyzer.Extensions;
 using CSharpGuidelinesAnalyzer.Settings;
 using Microsoft.CodeAnalysis;
