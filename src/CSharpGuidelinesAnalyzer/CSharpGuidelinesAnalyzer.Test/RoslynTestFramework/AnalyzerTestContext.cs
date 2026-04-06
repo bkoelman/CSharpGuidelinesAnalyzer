@@ -34,9 +34,9 @@ public sealed class AnalyzerTestContext
         : this(sourceCode, sourceSpans, DefaultFileName, DefaultAssemblyName, DefaultReferencesLazy.Value, DefaultDocumentationMode, DefaultOutputKind,
             TreatWarningsAsErrors.None, DefaultTestValidationMode, options)
     {
-        FrameworkGuard.NotNull(sourceCode, nameof(sourceCode));
-        FrameworkGuard.NotNull(sourceSpans, nameof(sourceSpans));
-        FrameworkGuard.NotNull(options, nameof(options));
+        ArgumentNullException.ThrowIfNull(sourceCode);
+        ArgumentNullException.ThrowIfNull(sourceSpans);
+        ArgumentNullException.ThrowIfNull(options);
     }
 
 #pragma warning disable AV1561 // Signature contains too many parameters
@@ -79,8 +79,8 @@ public sealed class AnalyzerTestContext
 
     public AnalyzerTestContext WithCode(string sourceCode, IList<TextSpan> sourceSpans)
     {
-        FrameworkGuard.NotNull(sourceCode, nameof(sourceCode));
-        FrameworkGuard.NotNull(sourceSpans, nameof(sourceSpans));
+        ArgumentNullException.ThrowIfNull(sourceCode);
+        ArgumentNullException.ThrowIfNull(sourceSpans);
 
         return new AnalyzerTestContext(sourceCode, sourceSpans, FileName, AssemblyName, References, DocumentationMode, OutputKind, WarningsAsErrors,
             ValidationMode, Options);
@@ -88,7 +88,7 @@ public sealed class AnalyzerTestContext
 
     public AnalyzerTestContext InFileNamed(string fileName)
     {
-        FrameworkGuard.NotNullNorWhiteSpace(fileName, nameof(fileName));
+        ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
 
         return new AnalyzerTestContext(SourceCode, SourceSpans, fileName, AssemblyName, References, DocumentationMode, OutputKind, WarningsAsErrors,
             ValidationMode, Options);
@@ -102,7 +102,7 @@ public sealed class AnalyzerTestContext
 
     public AnalyzerTestContext WithReferences(IEnumerable<MetadataReference> references)
     {
-        FrameworkGuard.NotNull(references, nameof(references));
+        ArgumentNullException.ThrowIfNull(references);
 
         ImmutableHashSet<MetadataReference> referenceSet = references.ToImmutableHashSet();
 
@@ -136,7 +136,7 @@ public sealed class AnalyzerTestContext
 
     public AnalyzerTestContext WithOptions(AnalyzerOptions options)
     {
-        FrameworkGuard.NotNull(options, nameof(options));
+        ArgumentNullException.ThrowIfNull(options);
 
         return new AnalyzerTestContext(SourceCode, SourceSpans, FileName, AssemblyName, References, DocumentationMode, OutputKind, WarningsAsErrors,
             ValidationMode, options);

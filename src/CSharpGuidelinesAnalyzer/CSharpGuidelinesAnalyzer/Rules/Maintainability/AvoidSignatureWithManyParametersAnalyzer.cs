@@ -50,7 +50,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
     private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        Guard.NotNull(startContext, nameof(startContext));
+        ArgumentNullException.ThrowIfNull(startContext);
 
         var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
@@ -294,7 +294,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
         public ParameterCountInfo(BaseAnalysisContext<TTarget> context, ParameterSettings settings, bool isConstructor = false)
         {
-            Guard.NotNull(settings, nameof(settings));
+            ArgumentNullException.ThrowIfNull(settings);
 
             Context = context;
             this.settings = settings;

@@ -177,7 +177,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
 
         public LocalAssignmentWalker(ILocalSymbol local)
         {
-            Guard.NotNull(local, nameof(local));
+            ArgumentNullException.ThrowIfNull(local);
             this.local = local;
         }
 

@@ -24,7 +24,7 @@ internal sealed class TypeSourceCodeBuilder() : SourceCodeBuilder(DefaultNamespa
 
     public TypeSourceCodeBuilder InGlobalScope(string typeCode)
     {
-        Guard.NotNull(typeCode, nameof(typeCode));
+        ArgumentNullException.ThrowIfNull(typeCode);
 
         types.Add(typeCode);
         return this;

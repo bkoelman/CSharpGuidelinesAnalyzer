@@ -58,7 +58,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
 
         public TodoCommentAnalyzer(SourceText text, SyntaxTreeAnalysisContext context)
         {
-            Guard.NotNull(text, nameof(text));
+            ArgumentNullException.ThrowIfNull(text);
 
             this.text = text;
             this.context = context;

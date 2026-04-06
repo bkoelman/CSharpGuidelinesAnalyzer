@@ -14,7 +14,7 @@ public sealed class WordsTokenizer
 
     public WordsTokenizer(string text)
     {
-        Guard.NotNull(text, nameof(text));
+        ArgumentNullException.ThrowIfNull(text);
         this.text = text;
     }
 

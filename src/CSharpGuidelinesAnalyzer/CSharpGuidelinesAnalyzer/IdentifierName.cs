@@ -8,8 +8,8 @@ internal struct IdentifierName
 
     public IdentifierName(string shortName, string longName)
     {
-        Guard.NotNullNorWhiteSpace(shortName, nameof(shortName));
-        Guard.NotNullNorWhiteSpace(longName, nameof(longName));
+        ArgumentException.ThrowIfNullOrWhiteSpace(shortName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(longName);
 
         ShortName = shortName;
         LongName = longName;

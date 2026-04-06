@@ -25,8 +25,8 @@ public sealed class AnalyzerSettingsRegistry
 
     public void Add(string rule, string name, string? value)
     {
-        Guard.NotNull(rule, nameof(rule));
-        Guard.NotNull(name, nameof(name));
+        ArgumentNullException.ThrowIfNull(rule);
+        ArgumentNullException.ThrowIfNull(name);
 
         if (value != null)
         {
@@ -37,7 +37,7 @@ public sealed class AnalyzerSettingsRegistry
 
     internal int? TryGetInt32(AnalyzerSettingKey key, int minValue, int maxValue)
     {
-        Guard.NotNull(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(key);
 
         if (settings.ContainsKey(key) && !string.IsNullOrEmpty(settings[key]))
         {

@@ -122,8 +122,8 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
 
         public TypesInNamespaceVisitor(string assemblyName, string reportAssemblyName, SymbolAnalysisContext context)
         {
-            Guard.NotNull(assemblyName, nameof(assemblyName));
-            Guard.NotNullNorWhiteSpace(reportAssemblyName, nameof(reportAssemblyName));
+            ArgumentNullException.ThrowIfNull(assemblyName);
+            ArgumentException.ThrowIfNullOrWhiteSpace(reportAssemblyName);
 
             assemblyNameParts = assemblyName.Split(DotSeparator, StringSplitOptions.RemoveEmptyEntries).ToImmutableArray();
 

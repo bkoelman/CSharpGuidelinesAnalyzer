@@ -49,8 +49,8 @@ internal sealed class XmlSettingsBuilder : ITestDataBuilder<AdditionalText>
 
             public FakeSourceText(string content, Encoding encoding)
             {
-                Guard.NotNull(content, nameof(content));
-                Guard.NotNull(encoding, nameof(encoding));
+                ArgumentNullException.ThrowIfNull(content);
+                ArgumentNullException.ThrowIfNull(encoding);
 
                 this.content = content;
                 Encoding = encoding;

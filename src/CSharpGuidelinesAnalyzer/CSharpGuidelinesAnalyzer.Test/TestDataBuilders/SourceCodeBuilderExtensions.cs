@@ -14,7 +14,7 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder Using<TBuilder>(this TBuilder source, string? codeNamespace)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source);
 
         if (!string.IsNullOrWhiteSpace(codeNamespace))
         {
@@ -27,8 +27,8 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder InFileNamed<TBuilder>(this TBuilder source, string fileName)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
-        Guard.NotNullNorWhiteSpace(fileName, nameof(fileName));
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentException.ThrowIfNullOrWhiteSpace(fileName);
 
         source.Editor.UpdateTestContext(context => context.InFileNamed(fileName));
 
@@ -38,8 +38,8 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder InAssemblyNamed<TBuilder>(this TBuilder source, string assemblyName)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
-        Guard.NotNullNorWhiteSpace(assemblyName, nameof(assemblyName));
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentException.ThrowIfNullOrWhiteSpace(assemblyName);
 
         source.Editor.UpdateTestContext(context => context.InAssemblyNamed(assemblyName));
 
@@ -49,8 +49,8 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder WithReferenceToExternalAssemblyFor<TBuilder>(this TBuilder source, string code)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
-        Guard.NotNull(code, nameof(code));
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(code);
 
         Stream assemblyStream = GetInMemoryAssemblyStreamForCode(code, "TempAssembly");
         PortableExecutableReference reference = MetadataReference.CreateFromStream(assemblyStream);
@@ -94,7 +94,7 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder WithDocumentationComments<TBuilder>(this TBuilder source)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source);
 
         source.Editor.UpdateTestContext(context => context.WithDocumentationMode(DocumentationMode.Diagnose));
 
@@ -104,7 +104,7 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder WithOutputKind<TBuilder>(this TBuilder source, OutputKind outputKind)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source);
 
         source.Editor.UpdateTestContext(context => context.WithOutputKind(outputKind));
 
@@ -114,7 +114,7 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder CompileWithWarningAsError<TBuilder>(this TBuilder source)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source);
 
         source.Editor.UpdateTestContext(context => context.CompileWithWarningsAsErrors(TreatWarningsAsErrors.All));
 
@@ -124,7 +124,7 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder AllowingCompileErrors<TBuilder>(this TBuilder source)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(source);
 
         source.Editor.UpdateTestContext(context => context.InValidationMode(TestValidationMode.AllowCompileErrors));
 
@@ -134,7 +134,7 @@ internal static class SourceCodeBuilderExtensions
     public static TBuilder WithOptions<TBuilder>(this TBuilder source, AnalyzerOptionsBuilder builder)
         where TBuilder : SourceCodeBuilder
     {
-        Guard.NotNull(builder, nameof(builder));
+        ArgumentNullException.ThrowIfNull(builder);
 
         AnalyzerOptions options = builder.Build();
         source.Editor.UpdateTestContext(context => context.WithOptions(options));

@@ -12,7 +12,7 @@ internal struct NullCheckScanResult
 
     public NullCheckScanResult(IOperation target, NullCheckMethod method, NullCheckOperand operand)
     {
-        Guard.NotNull(target, nameof(target));
+        ArgumentNullException.ThrowIfNull(target);
 
         Target = target;
         Method = method;

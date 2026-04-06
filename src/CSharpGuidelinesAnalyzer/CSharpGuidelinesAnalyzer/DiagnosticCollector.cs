@@ -26,7 +26,7 @@ internal sealed class DiagnosticCollector : IDisposable
 
     public DiagnosticCollector(Action<Diagnostic> reportDiagnostic)
     {
-        Guard.NotNull(reportDiagnostic, nameof(reportDiagnostic));
+        ArgumentNullException.ThrowIfNull(reportDiagnostic);
 
         diagnostics = null;
         this.reportDiagnostic = reportDiagnostic;
@@ -34,7 +34,7 @@ internal sealed class DiagnosticCollector : IDisposable
 
     public void Add(Diagnostic diagnostic)
     {
-        Guard.NotNull(diagnostic, nameof(diagnostic));
+        ArgumentNullException.ThrowIfNull(diagnostic);
 
         diagnostics ??= [];
         diagnostics.Add(diagnostic);

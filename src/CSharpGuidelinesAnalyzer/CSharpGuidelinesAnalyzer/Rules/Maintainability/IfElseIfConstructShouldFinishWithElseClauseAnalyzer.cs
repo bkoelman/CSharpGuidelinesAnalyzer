@@ -93,7 +93,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
 
         public IfStatementAnalyzer(IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
         {
-            Guard.NotNull(ifStatementsToAnalyze, nameof(ifStatementsToAnalyze));
+            ArgumentNullException.ThrowIfNull(ifStatementsToAnalyze);
 
             ifStatementsLeftToAnalyze = ifStatementsToAnalyze;
             this.context = context;

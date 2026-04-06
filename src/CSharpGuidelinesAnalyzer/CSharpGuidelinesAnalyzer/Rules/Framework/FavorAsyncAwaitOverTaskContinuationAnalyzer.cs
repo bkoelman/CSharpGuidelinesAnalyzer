@@ -81,7 +81,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
 
         public TaskTypeInfo(Compilation compilation)
         {
-            Guard.NotNull(compilation, nameof(compilation));
+            ArgumentNullException.ThrowIfNull(compilation);
 
             GenericTaskType = KnownTypes.SystemThreadingTasksTaskT(compilation);
             TaskType = KnownTypes.SystemThreadingTasksTask(compilation);

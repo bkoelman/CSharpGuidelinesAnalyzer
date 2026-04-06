@@ -37,7 +37,7 @@ internal sealed class MemberSourceCodeBuilder() : SourceCodeBuilder(DefaultNames
 
     public MemberSourceCodeBuilder InDefaultClass(string memberCode)
     {
-        Guard.NotNull(memberCode, nameof(memberCode));
+        ArgumentNullException.ThrowIfNull(memberCode);
 
         members.Add(memberCode);
         return this;

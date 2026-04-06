@@ -28,7 +28,7 @@ internal static class TypeSymbolExtensions
 
     public static bool IsNullableBoolean(this ITypeSymbol type)
     {
-        Guard.NotNull(type, nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
 
         if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
         {
@@ -45,7 +45,7 @@ internal static class TypeSymbolExtensions
 
     public static bool IsNullableEnumeration(this ITypeSymbol type)
     {
-        Guard.NotNull(type, nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
 
         if (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
         {
@@ -63,21 +63,21 @@ internal static class TypeSymbolExtensions
 
     public static bool ImplementsIEnumerable(this ITypeSymbol type)
     {
-        Guard.NotNull(type, nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
 
         return type.AllInterfaces.Any(IsEnumerableInterface);
     }
 
     public static bool IsOrImplementsIEnumerable(this ITypeSymbol type)
     {
-        Guard.NotNull(type, nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
 
         return IsEnumerableInterface(type) || type.AllInterfaces.Any(IsEnumerableInterface);
     }
 
     public static bool IsEnumerableInterface(this ITypeSymbol type)
     {
-        Guard.NotNull(type, nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
 
         return type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ||
             type.SpecialType == SpecialType.System_Collections_IEnumerable;

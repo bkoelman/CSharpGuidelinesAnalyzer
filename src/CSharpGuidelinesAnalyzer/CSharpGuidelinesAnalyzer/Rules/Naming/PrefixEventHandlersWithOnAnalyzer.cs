@@ -132,7 +132,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
 
         public PortableEventAssignmentOperation(IEventAssignmentOperation operation)
         {
-            Guard.NotNull(operation, nameof(operation));
+            ArgumentNullException.ThrowIfNull(operation);
             innerOperation = operation;
         }
 

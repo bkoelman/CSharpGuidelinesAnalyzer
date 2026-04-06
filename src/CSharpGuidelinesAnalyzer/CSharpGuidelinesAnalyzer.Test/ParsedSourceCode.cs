@@ -8,8 +8,8 @@ internal sealed class ParsedSourceCode
 
     public ParsedSourceCode(string sourceText, AnalyzerTestContext testContext)
     {
-        Guard.NotNull(sourceText, nameof(sourceText));
-        Guard.NotNull(testContext, nameof(testContext));
+        ArgumentNullException.ThrowIfNull(sourceText);
+        ArgumentNullException.ThrowIfNull(testContext);
 
         var document = new FixableDocument(sourceText);
         TestContext = testContext.WithCode(document.SourceText, document.SourceSpans);

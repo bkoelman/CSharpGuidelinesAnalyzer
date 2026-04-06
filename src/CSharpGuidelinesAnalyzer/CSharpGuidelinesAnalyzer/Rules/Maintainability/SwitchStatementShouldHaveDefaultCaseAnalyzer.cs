@@ -274,8 +274,8 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
         public SwitchAnalysisContext(ISwitchOperation switchStatement, INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
         {
-            Guard.NotNull(switchStatement, nameof(switchStatement));
-            Guard.NotNull(systemBoolean, nameof(systemBoolean));
+            ArgumentNullException.ThrowIfNull(switchStatement);
+            ArgumentNullException.ThrowIfNull(systemBoolean);
 
             SwitchStatement = switchStatement;
             compilation = context.Compilation;

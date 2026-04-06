@@ -33,7 +33,7 @@ internal sealed class AnalyzerCategory
 
     public string GetHelpLinkUri(string ruleId)
     {
-        Guard.NotNullNorWhiteSpace(ruleId, nameof(ruleId));
+        ArgumentException.ThrowIfNullOrWhiteSpace(ruleId);
 
         if (!ruleId.StartsWith(RulePrefix, StringComparison.Ordinal) || ruleId.Length != 6)
         {

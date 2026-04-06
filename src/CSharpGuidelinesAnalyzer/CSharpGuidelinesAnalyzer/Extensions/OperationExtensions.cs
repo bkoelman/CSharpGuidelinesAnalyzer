@@ -34,8 +34,8 @@ internal static class OperationExtensions
 
     public static bool HasErrors(this IOperation operation, Compilation compilation, CancellationToken cancellationToken = default)
     {
-        Guard.NotNull(operation, nameof(operation));
-        Guard.NotNull(compilation, nameof(compilation));
+        ArgumentNullException.ThrowIfNull(operation);
+        ArgumentNullException.ThrowIfNull(compilation);
 
         if (operation.Syntax == null)
         {

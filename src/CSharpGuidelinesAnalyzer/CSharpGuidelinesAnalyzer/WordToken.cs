@@ -10,7 +10,7 @@ public readonly struct WordToken : IEquatable<WordToken>
 
     public WordToken(string text, WordTokenKind kind)
     {
-        Guard.NotNull(text, nameof(text));
+        ArgumentNullException.ThrowIfNull(text);
 
         Text = text;
         Kind = kind;

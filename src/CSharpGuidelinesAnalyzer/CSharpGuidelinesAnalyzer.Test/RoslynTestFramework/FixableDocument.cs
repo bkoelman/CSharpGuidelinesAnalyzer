@@ -33,7 +33,7 @@ internal sealed class FixableDocument
 
     public FixableDocument(string text)
     {
-        FrameworkGuard.NotNull(text, nameof(text));
+        ArgumentNullException.ThrowIfNull(text);
 
         var parser = new MarkupParser(text);
         parser.Parse();
@@ -66,7 +66,7 @@ internal sealed class FixableDocument
 
         public MarkupParser(string markupCode)
         {
-            FrameworkGuard.NotNull(markupCode, nameof(markupCode));
+            ArgumentNullException.ThrowIfNull(markupCode);
             this.markupCode = markupCode;
         }
 
@@ -266,7 +266,7 @@ internal sealed class FixableDocument
 
             public ParseStateMachine(MarkupParser parser)
             {
-                FrameworkGuard.NotNull(parser, nameof(parser));
+                ArgumentNullException.ThrowIfNull(parser);
 
                 this.parser = parser;
                 offset = -1;
@@ -341,8 +341,8 @@ internal sealed class FixableDocument
 
         protected TextBlock(string textBefore, string textAfter)
         {
-            FrameworkGuard.NotNull(textBefore, nameof(textBefore));
-            FrameworkGuard.NotNull(textAfter, nameof(textAfter));
+            ArgumentNullException.ThrowIfNull(textBefore);
+            ArgumentNullException.ThrowIfNull(textAfter);
 
             TextBefore = textBefore;
             TextAfter = textAfter;

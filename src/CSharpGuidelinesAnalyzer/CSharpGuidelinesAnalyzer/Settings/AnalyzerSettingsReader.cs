@@ -16,8 +16,8 @@ internal sealed class AnalyzerSettingsReader(AnalyzerOptions options, Cancellati
 
     internal int? TryGetInt32(SyntaxTree syntaxTree, AnalyzerSettingKey key, int minValue, int maxValue)
     {
-        Guard.NotNull(syntaxTree, nameof(syntaxTree));
-        Guard.NotNull(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(syntaxTree);
+        ArgumentNullException.ThrowIfNull(key);
 
         string keyName = GetEditorConfigKeyName(key);
         string? textValue = TryGetValue(syntaxTree, keyName);

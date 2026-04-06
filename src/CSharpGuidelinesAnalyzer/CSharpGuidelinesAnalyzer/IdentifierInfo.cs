@@ -10,7 +10,7 @@ internal sealed class IdentifierInfo
 
     public IdentifierInfo(IdentifierName name, ITypeSymbol type)
     {
-        Guard.NotNull(type, nameof(type));
+        ArgumentNullException.ThrowIfNull(type);
 
         Name = name;
         Type = type;

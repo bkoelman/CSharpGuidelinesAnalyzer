@@ -262,8 +262,8 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
 
         public void AnalyzeBlock(IOperation block, IMethodSymbol method)
         {
-            Guard.NotNull(block, nameof(block));
-            Guard.NotNull(method, nameof(method));
+            ArgumentNullException.ThrowIfNull(block);
+            ArgumentNullException.ThrowIfNull(method);
 
             containingMethod = method;
             HasFoundInvocation = false;

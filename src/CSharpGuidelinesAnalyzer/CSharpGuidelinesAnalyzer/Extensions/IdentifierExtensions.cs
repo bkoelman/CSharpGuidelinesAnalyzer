@@ -9,8 +9,8 @@ internal static class IdentifierExtensions
 {
     public static IReadOnlyCollection<WordToken> GetWordsInList(this string identifierName, ICollection<string> list)
     {
-        Guard.NotNull(identifierName, nameof(identifierName));
-        Guard.NotNullNorEmpty(list, nameof(list));
+        ArgumentNullException.ThrowIfNull(identifierName);
+        ArgumentNullException.ThrowIfNullOrEmpty(list);
 
         if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWordsListed(identifierName, list))
         {
@@ -23,8 +23,8 @@ internal static class IdentifierExtensions
 
     public static bool ContainsWordInTheMiddle(this string identifierName, string word)
     {
-        Guard.NotNull(identifierName, nameof(identifierName));
-        Guard.NotNullNorWhiteSpace(word, nameof(word));
+        ArgumentNullException.ThrowIfNull(identifierName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(word);
 
         if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWord(identifierName, word))
         {
@@ -54,8 +54,8 @@ internal static class IdentifierExtensions
 
     public static bool StartsWithWordInList(this string identifierName, ICollection<string> list)
     {
-        Guard.NotNull(identifierName, nameof(identifierName));
-        Guard.NotNullNorEmpty(list, nameof(list));
+        ArgumentNullException.ThrowIfNull(identifierName);
+        ArgumentNullException.ThrowIfNullOrEmpty(list);
 
         if (string.IsNullOrWhiteSpace(identifierName) || !QuickScanMayContainWordsListed(identifierName, list))
         {

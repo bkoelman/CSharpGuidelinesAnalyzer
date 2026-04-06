@@ -32,7 +32,7 @@ internal static class SymbolExtensions
 
     public static bool HidesBaseMember(this ISymbol member, CancellationToken cancellationToken)
     {
-        Guard.NotNull(member, nameof(member));
+        ArgumentNullException.ThrowIfNull(member);
 
         foreach (SyntaxReference reference in member.DeclaringSyntaxReferences)
         {
@@ -84,7 +84,7 @@ internal static class SymbolExtensions
 
     public static bool AreDocumentationCommentsReported(this ISymbol symbol)
     {
-        Guard.NotNull(symbol, nameof(symbol));
+        ArgumentNullException.ThrowIfNull(symbol);
 
         SyntaxReference reference = symbol.DeclaringSyntaxReferences.First();
         return reference.SyntaxTree.Options.DocumentationMode == DocumentationMode.Diagnose;
@@ -97,7 +97,7 @@ internal static class SymbolExtensions
 
     public static ISymbol GetContainingMember(this ISymbol owningSymbol)
     {
-        Guard.NotNull(owningSymbol, nameof(owningSymbol));
+        ArgumentNullException.ThrowIfNull(owningSymbol);
 
         return IsPropertyOrEventAccessor(owningSymbol) ? ((IMethodSymbol)owningSymbol).AssociatedSymbol : owningSymbol;
     }
@@ -124,7 +124,7 @@ internal static class SymbolExtensions
 
     public static bool IsInterfaceImplementation(this IParameterSymbol parameter)
     {
-        Guard.NotNull(parameter, nameof(parameter));
+        ArgumentNullException.ThrowIfNull(parameter);
 
         foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
         {
@@ -179,7 +179,7 @@ internal static class SymbolExtensions
 
     public static SyntaxNode? TryGetBodySyntaxForMethod(this IMethodSymbol method, CancellationToken cancellationToken)
     {
-        Guard.NotNull(method, nameof(method));
+        ArgumentNullException.ThrowIfNull(method);
 
         foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray())
         {
@@ -278,7 +278,7 @@ internal static class SymbolExtensions
 
     public static string GetKind(this ISymbol symbol)
     {
-        Guard.NotNull(symbol, nameof(symbol));
+        ArgumentNullException.ThrowIfNull(symbol);
 
         if (symbol.Kind == SymbolKind.Local)
         {
@@ -320,7 +320,7 @@ internal static class SymbolExtensions
 
     public static ITypeSymbol GetSymbolType(this ISymbol symbol)
     {
-        Guard.NotNull(symbol, nameof(symbol));
+        ArgumentNullException.ThrowIfNull(symbol);
 
         switch (symbol)
         {
@@ -357,7 +357,7 @@ internal static class SymbolExtensions
 
     public static bool IsSynthesized(this ISymbol symbol)
     {
-        Guard.NotNull(symbol, nameof(symbol));
+        ArgumentNullException.ThrowIfNull(symbol);
 
         return !symbol.Locations.Any();
     }

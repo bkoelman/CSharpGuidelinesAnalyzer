@@ -60,7 +60,7 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 
     protected string GetLinesOfCode(IEnumerable<string> codeBlocks)
     {
-        Guard.NotNull(codeBlocks, nameof(codeBlocks));
+        ArgumentNullException.ThrowIfNull(codeBlocks);
 
         var builder = new StringBuilder();
         AppendCodeBlocks(codeBlocks, builder);
@@ -124,13 +124,13 @@ internal abstract class SourceCodeBuilder : ITestDataBuilder<ParsedSourceCode>
 
         public CodeEditor(SourceCodeBuilder owner)
         {
-            Guard.NotNull(owner, nameof(owner));
+            ArgumentNullException.ThrowIfNull(owner);
             this.owner = owner;
         }
 
         public void UpdateTestContext(Func<AnalyzerTestContext, AnalyzerTestContext> change)
         {
-            Guard.NotNull(change, nameof(change));
+            ArgumentNullException.ThrowIfNull(change);
 
             owner.testContext = change(owner.testContext);
         }

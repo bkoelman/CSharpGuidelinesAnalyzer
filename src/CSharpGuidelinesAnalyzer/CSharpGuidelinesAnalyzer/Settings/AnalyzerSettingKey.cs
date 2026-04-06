@@ -15,8 +15,8 @@ internal sealed class AnalyzerSettingKey
 
     public AnalyzerSettingKey(string rule, string name)
     {
-        Guard.NotNullNorWhiteSpace(rule, nameof(rule));
-        Guard.NotNullNorWhiteSpace(name, nameof(name));
+        ArgumentException.ThrowIfNullOrWhiteSpace(rule);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
         Rule = rule;
         Name = name;

@@ -274,7 +274,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
 
         public AssignmentWalker(ICollection<IParameterSymbol> parameters)
         {
-            Guard.NotNull(parameters, nameof(parameters));
+            ArgumentNullException.ThrowIfNull(parameters);
 
             foreach (IParameterSymbol parameter in parameters)
             {

@@ -12,7 +12,7 @@ internal sealed class EmptySourceCodeBuilder() : SourceCodeBuilder([])
 
     public EmptySourceCodeBuilder WithCode(string code)
     {
-        Guard.NotNull(code, nameof(code));
+        ArgumentNullException.ThrowIfNull(code);
 
         text += code;
         return this;

@@ -15,8 +15,8 @@ public abstract class AnalysisTestFixture
 
     protected async Task AssertDiagnosticsAsync(AnalyzerTestContext context, params string[] messages)
     {
-        FrameworkGuard.NotNull(context, nameof(context));
-        FrameworkGuard.NotNull(messages, nameof(messages));
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(messages);
 
         await RunDiagnosticsAsync(context, messages);
     }
@@ -178,9 +178,9 @@ public abstract class AnalysisTestFixture
 
         public AnalysisResult(IList<Diagnostic> diagnostics, IList<TextSpan> spansExpected, IList<string> messagesExpected)
         {
-            FrameworkGuard.NotNull(diagnostics, nameof(diagnostics));
-            FrameworkGuard.NotNull(spansExpected, nameof(spansExpected));
-            FrameworkGuard.NotNull(messagesExpected, nameof(messagesExpected));
+            ArgumentNullException.ThrowIfNull(diagnostics);
+            ArgumentNullException.ThrowIfNull(spansExpected);
+            ArgumentNullException.ThrowIfNull(messagesExpected);
 
             Diagnostics = diagnostics;
             SpansExpected = spansExpected;

@@ -202,9 +202,9 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
         public AssignmentInfo(string leftName, Location operatorLocation, ITypeSymbol rightType)
         {
-            Guard.NotNull(leftName, nameof(leftName));
-            Guard.NotNull(operatorLocation, nameof(operatorLocation));
-            Guard.NotNull(rightType, nameof(rightType));
+            ArgumentNullException.ThrowIfNull(leftName);
+            ArgumentNullException.ThrowIfNull(operatorLocation);
+            ArgumentNullException.ThrowIfNull(rightType);
 
             LeftName = leftName;
             OperatorLocation = operatorLocation;

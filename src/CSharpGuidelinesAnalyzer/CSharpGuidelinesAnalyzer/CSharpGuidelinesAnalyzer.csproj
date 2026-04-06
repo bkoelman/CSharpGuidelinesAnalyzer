@@ -5,6 +5,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <BaseOutputPath>$(SolutionDir)..\bin</BaseOutputPath>
     <NoWarn>$(NoWarn);RS1012</NoWarn>
+    <PolyArgumentExceptions>true</PolyArgumentExceptions>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -41,6 +42,7 @@
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.147" PrivateAssets="all" />
     <!-- ReSharper disable once VulnerablePackage -->
     <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
+    <PackageReference Include="Polyfill" Version="10.0.0" PrivateAssets="all" />
   </ItemGroup>
 
   <!--

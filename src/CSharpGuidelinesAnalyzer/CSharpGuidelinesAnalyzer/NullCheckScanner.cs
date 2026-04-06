@@ -13,14 +13,14 @@ internal sealed class NullCheckScanner
 
     public NullCheckScanner(Compilation compilation)
     {
-        Guard.NotNull(compilation, nameof(compilation));
+        ArgumentNullException.ThrowIfNull(compilation);
 
         knownSymbols = new KnownSymbols(compilation);
     }
 
     public NullCheckScanResult? ScanPropertyReference(IPropertyReferenceOperation propertyReference)
     {
-        Guard.NotNull(propertyReference, nameof(propertyReference));
+        ArgumentNullException.ThrowIfNull(propertyReference);
 
         if (propertyReference.Property.OriginalDefinition.IsEqualTo(knownSymbols.NullableHasValueProperty) && IsNullableValueType(propertyReference.Instance))
         {
@@ -35,7 +35,7 @@ internal sealed class NullCheckScanner
 
     public NullCheckScanResult? ScanInvocation(IInvocationOperation invocation)
     {
-        Guard.NotNull(invocation, nameof(invocation));
+        ArgumentNullException.ThrowIfNull(invocation);
 
         if (invocation.TargetMethod != null)
         {
@@ -126,7 +126,7 @@ internal sealed class NullCheckScanner
 
     public NullCheckScanResult? ScanIsPattern(IIsPatternOperation isPattern)
     {
-        Guard.NotNull(isPattern, nameof(isPattern));
+        ArgumentNullException.ThrowIfNull(isPattern);
 
         if (isPattern.Pattern is IConstantPatternOperation constantPattern)
         {
@@ -143,7 +143,7 @@ internal sealed class NullCheckScanner
 
     public NullCheckScanResult? ScanBinaryOperator(IBinaryOperation binaryOperator)
     {
-        Guard.NotNull(binaryOperator, nameof(binaryOperator));
+        ArgumentNullException.ThrowIfNull(binaryOperator);
 
         NullCheckOperand? operatorNullCheckOperand = TryGetBinaryOperatorNullCheckOperand(binaryOperator);
 
@@ -249,7 +249,7 @@ internal sealed class NullCheckScanner
 
         public KnownSymbols(Compilation compilation)
         {
-            Guard.NotNull(compilation, nameof(compilation));
+            ArgumentNullException.ThrowIfNull(compilation);
 
             NullableHasValueProperty = ResolveNullableHasValueProperty(compilation);
             NullableValueProperty = ResolveNullableValueProperty(compilation);

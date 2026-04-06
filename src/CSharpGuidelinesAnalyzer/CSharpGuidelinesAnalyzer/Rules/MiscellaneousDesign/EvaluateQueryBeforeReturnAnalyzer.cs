@@ -153,7 +153,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public ReturnStatementCollector(SequenceTypeInfo sequenceTypeInfo, OperationBlockAnalysisContext context)
         {
-            Guard.NotNull(sequenceTypeInfo, nameof(sequenceTypeInfo));
+            ArgumentNullException.ThrowIfNull(sequenceTypeInfo);
 
             this.sequenceTypeInfo = sequenceTypeInfo;
             this.context = context;
@@ -238,7 +238,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         private EvaluationResult AnalyzeExpression(IOperation expression)
         {
-            Guard.NotNull(expression, nameof(expression));
+            ArgumentNullException.ThrowIfNull(expression);
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -257,7 +257,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
             public ExpressionWalker(ReturnValueAnalyzer owner)
             {
-                Guard.NotNull(owner, nameof(owner));
+                ArgumentNullException.ThrowIfNull(owner);
                 this.owner = owner;
             }
 
@@ -449,9 +449,9 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
             public VariableAssignmentWalker(ILocalSymbol local, Location maxLocation, ReturnValueAnalyzer owner)
             {
-                Guard.NotNull(local, nameof(local));
-                Guard.NotNull(maxLocation, nameof(maxLocation));
-                Guard.NotNull(owner, nameof(owner));
+                ArgumentNullException.ThrowIfNull(local);
+                ArgumentNullException.ThrowIfNull(maxLocation);
+                ArgumentNullException.ThrowIfNull(owner);
 
                 currentLocal = local;
                 this.maxLocation = maxLocation;
@@ -521,7 +521,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
             private void AnalyzeAssignmentValue(IOperation assignedValue)
             {
-                Guard.NotNull(assignedValue, nameof(assignedValue));
+                ArgumentNullException.ThrowIfNull(assignedValue);
 
                 EvaluationResult result = owner.AnalyzeExpression(assignedValue);
                 UpdateResult(result);
@@ -593,7 +593,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public void SetDeferred(string operationName)
         {
-            Guard.NotNullNorWhiteSpace(operationName, nameof(operationName));
+            ArgumentException.ThrowIfNullOrWhiteSpace(operationName);
 
             evaluationState = EvaluationState.Deferred;
             deferredOperationNameOrNull = operationName;
@@ -601,7 +601,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public void CopyFrom(EvaluationResult result)
         {
-            Guard.NotNull(result, nameof(result));
+            ArgumentNullException.ThrowIfNull(result);
 
             evaluationState = result.evaluationState;
             deferredOperationNameOrNull = result.deferredOperationNameOrNull;
@@ -609,8 +609,8 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public static EvaluationResult Unify(EvaluationResult first, EvaluationResult second)
         {
-            Guard.NotNull(first, nameof(first));
-            Guard.NotNull(second, nameof(second));
+            ArgumentNullException.ThrowIfNull(first);
+            ArgumentNullException.ThrowIfNull(second);
 
             if (first is { IsConclusive: true, IsDeferred: true })
             {
@@ -647,7 +647,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public SequenceTypeInfo(Compilation compilation)
         {
-            Guard.NotNull(compilation, nameof(compilation));
+            ArgumentNullException.ThrowIfNull(compilation);
 
             queryableTypes = GetQueryableTypes(compilation);
             otherSequenceTypes = GetOtherSequenceTypes(compilation);
@@ -685,14 +685,14 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public bool IsQueryable(ITypeSymbol type)
         {
-            Guard.NotNull(type, nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
 
             return queryableTypes.Contains(type.OriginalDefinition);
         }
 
         public bool IsNonQueryableSequenceType(ITypeSymbol type)
         {
-            Guard.NotNull(type, nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
 
             return IsEnumerable(type) || otherSequenceTypes.Contains(type.OriginalDefinition);
         }

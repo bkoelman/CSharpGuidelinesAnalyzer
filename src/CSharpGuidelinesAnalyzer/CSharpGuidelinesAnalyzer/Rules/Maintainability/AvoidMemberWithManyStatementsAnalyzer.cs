@@ -40,7 +40,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
     private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        Guard.NotNull(startContext, nameof(startContext));
+        ArgumentNullException.ThrowIfNull(startContext);
 
         var settingsReader = new AnalyzerSettingsReader(startContext.Options, startContext.CancellationToken);
 
@@ -72,8 +72,8 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
     private static int GetMaxStatementCountFromSettings(AnalyzerSettingsReader settingsReader, SyntaxTree syntaxTree)
     {
-        Guard.NotNull(settingsReader, nameof(settingsReader));
-        Guard.NotNull(syntaxTree, nameof(syntaxTree));
+        ArgumentNullException.ThrowIfNull(settingsReader);
+        ArgumentNullException.ThrowIfNull(syntaxTree);
 
         return settingsReader.TryGetInt32(syntaxTree, MaxStatementCountKey, 0, 255) ?? DefaultMaxStatementCount;
     }
@@ -90,7 +90,7 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
 
     private static string GetMemberKind(ISymbol member, CancellationToken cancellationToken)
     {
-        Guard.NotNull(member, nameof(member));
+        ArgumentNullException.ThrowIfNull(member);
 
         foreach (SyntaxNode syntax in member.DeclaringSyntaxReferences.Select(reference => reference.GetSyntax(cancellationToken)))
         {

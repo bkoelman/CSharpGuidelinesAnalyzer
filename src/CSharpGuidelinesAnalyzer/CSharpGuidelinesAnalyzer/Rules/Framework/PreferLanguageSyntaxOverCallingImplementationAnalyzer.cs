@@ -213,7 +213,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
 
         public NullCheckVisitor(NullCheckScanner scanner)
         {
-            Guard.NotNull(scanner, nameof(scanner));
+            ArgumentNullException.ThrowIfNull(scanner);
             this.scanner = scanner;
         }
 

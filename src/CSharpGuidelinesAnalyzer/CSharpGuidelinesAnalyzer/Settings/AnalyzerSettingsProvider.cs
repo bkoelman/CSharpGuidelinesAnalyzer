@@ -18,7 +18,7 @@ public static class AnalyzerSettingsProvider
 
     internal static AnalyzerSettingsRegistry LoadSettings(AnalyzerOptions options, CancellationToken cancellationToken)
     {
-        Guard.NotNull(options, nameof(options));
+        ArgumentNullException.ThrowIfNull(options);
 
         AdditionalText settingsFileOrNull = options.AdditionalFiles.FirstOrDefault(file => IsSettingsFile(file.Path));
 
@@ -71,7 +71,7 @@ public static class AnalyzerSettingsProvider
 
     public static string ToFileContent(AnalyzerSettingsRegistry registry)
     {
-        Guard.NotNull(registry, nameof(registry));
+        ArgumentNullException.ThrowIfNull(registry);
 
         Encoding encoding = CreateEncoding();
 
