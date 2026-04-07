@@ -22,7 +22,9 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
+#pragma warning disable RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer
     private static readonly ISymbol?[] NullSymbolArray = [null];
+#pragma warning restore RS1008 // Avoid storing per-compilation data into the fields of a diagnostic analyzer
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 

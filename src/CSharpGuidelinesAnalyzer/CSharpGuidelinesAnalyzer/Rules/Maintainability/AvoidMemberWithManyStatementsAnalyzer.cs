@@ -106,7 +106,8 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
         foreach (ArrowExpressionClauseSyntax arrowExpressionClause in member.DeclaringSyntaxReferences
             .Select(reference => reference.GetSyntax(cancellationToken)).OfType<ArrowExpressionClauseSyntax>())
         {
-            ISymbol parentSymbol = semanticModel.GetDeclaredSymbol(arrowExpressionClause.Parent);
+            SyntaxNode? parentSyntax = arrowExpressionClause.Parent;
+            ISymbol? parentSymbol = parentSyntax == null ? null : semanticModel.GetDeclaredSymbol(parentSyntax);
 
             if (parentSymbol != null && parentSymbol.Locations.Any())
             {
@@ -121,11 +122,11 @@ public sealed class AvoidMemberWithManyStatementsAnalyzer : DiagnosticAnalyzer
     {
         public int StatementCount { get; private set; }
 
-        public override void Visit(SyntaxNode node)
+        public override void Visit(SyntaxNode? node)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (IsStatement(node))
+            if (node != null && IsStatement(node))
             {
                 StatementCount++;
             }

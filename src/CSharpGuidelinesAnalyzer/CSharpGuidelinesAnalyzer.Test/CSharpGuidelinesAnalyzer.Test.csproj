@@ -9,7 +9,7 @@
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.8.5" PrivateAssets="all" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.9.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="5.3.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="xunit" Version="2.7.1" />
     <PackageReference Include="xunit.runner.console" Version="2.7.1" PrivateAssets="all" />

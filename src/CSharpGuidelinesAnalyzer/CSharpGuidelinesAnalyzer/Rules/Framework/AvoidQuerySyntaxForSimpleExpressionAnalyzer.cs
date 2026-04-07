@@ -50,13 +50,13 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
 
     private static Location GetLocation(QueryExpressionSyntax queryExpression, SemanticModel semanticModel)
     {
-        SyntaxNode parent = SkipParentParentheses(queryExpression.Parent);
+        SyntaxNode? parent = SkipParentParentheses(queryExpression.Parent);
 
         if (parent is MemberAccessExpressionSyntax memberAccess)
         {
             SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(memberAccess);
 
-            if (symbolInfo.Symbol is IMethodSymbol methodSymbol && IsEnumerableExtensionMethod(methodSymbol))
+            if (symbolInfo.Symbol is IMethodSymbol methodSymbol && memberAccess.Parent != null && IsEnumerableExtensionMethod(methodSymbol))
             {
                 // Expand location to the containing .ToArray()/.ToList()/... call.
                 return memberAccess.Parent.GetLocation();
@@ -66,9 +66,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         return queryExpression.GetLocation();
     }
 
-    private static SyntaxNode SkipParentParentheses(SyntaxNode syntax)
+    private static SyntaxNode? SkipParentParentheses(SyntaxNode? syntax)
     {
-        SyntaxNode current;
+        SyntaxNode? current;
 
         for (current = syntax; current is ParenthesizedExpressionSyntax && current.Parent != null; current = current.Parent)
         {
@@ -95,9 +95,9 @@ public sealed class AvoidQuerySyntaxForSimpleExpressionAnalyzer : DiagnosticAnal
         public bool SkipAlways { get; private set; }
         public int TotalCount => Math.Max(0, fromCount - 1) + castsInFromCount + whereCount + groupCount + orderCount + selectCount;
 
-        public override void Visit(SyntaxNode node)
+        public override void Visit(SyntaxNode? node)
         {
-            if (node.IsMissing)
+            if (node == null || node.IsMissing)
             {
                 SkipAlways = true;
             }

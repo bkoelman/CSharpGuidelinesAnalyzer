@@ -108,7 +108,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        string documentationXml = symbol.GetDocumentationCommentXml(null, false, context.CancellationToken);
+        string? documentationXml = symbol.GetDocumentationCommentXml(null, false, context.CancellationToken);
 
         if (string.IsNullOrEmpty(documentationXml))
         {

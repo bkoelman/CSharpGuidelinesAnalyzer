@@ -59,9 +59,12 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         }
 
         foreach (IArgumentOperation argumentInMap in invocation.Arguments.Where(argument =>
-            !argument.IsImplicit && parameterUsageMap.ContainsKey(argument.Parameter)))
+            !argument.IsImplicit && argument.Parameter != null && parameterUsageMap.ContainsKey(argument.Parameter)))
         {
-            parameterUsageMap[argumentInMap.Parameter] = true;
+            if (argumentInMap.Parameter != null)
+            {
+                parameterUsageMap[argumentInMap.Parameter] = true;
+            }
         }
 
         return parameterUsageMap;
@@ -70,7 +73,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
     private static bool RequiresReport(IArgumentOperation argument, IInvocationOperation invocation,
         IDictionary<IParameterSymbol, bool> parameterUsageMap)
     {
-        if (RequiresAnalysis(argument))
+        if (RequiresAnalysis(argument) && argument.Parameter != null)
         {
             ICollection<IParameterSymbol> precedingParameters = GetPrecedingParameters(argument.Parameter, invocation.TargetMethod);
 
@@ -85,7 +88,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
 
     private static bool RequiresAnalysis(IArgumentOperation argument)
     {
-        return !argument.IsImplicit && !argument.Parameter.Type.IsBooleanOrNullableBoolean() && IsNamedArgument(argument);
+        return !argument.IsImplicit && argument.Parameter != null && !argument.Parameter.Type.IsBooleanOrNullableBoolean() && IsNamedArgument(argument);
     }
 
     private static bool IsNamedArgument(IArgumentOperation argument)
@@ -121,10 +124,14 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
     private static void ReportArgument(IArgumentOperation argument, Action<Diagnostic> reportDiagnostic)
     {
         var syntax = (ArgumentSyntax)argument.Syntax;
-        string methodText = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-        Location location = syntax.NameColon.GetLocation();
 
-        var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, methodText);
-        reportDiagnostic(diagnostic);
+        if (argument.Parameter != null && syntax.NameColon != null)
+        {
+            string methodText = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = syntax.NameColon.GetLocation();
+
+            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, methodText);
+            reportDiagnostic(diagnostic);
+        }
     }
 }

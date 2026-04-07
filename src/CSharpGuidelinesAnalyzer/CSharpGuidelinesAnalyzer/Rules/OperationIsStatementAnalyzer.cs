@@ -41,17 +41,20 @@ public sealed class OperationIsStatementAnalyzer : DiagnosticAnalyzer
             Location? locationForKeyword = context.Operation.TryGetLocationForKeyword();
             Location location = locationForKeyword ?? context.Operation.Syntax.GetLocation();
 
-            string keywordText = GetTextAt(location);
+            string? keywordText = GetTextAt(location);
 
-            var diagnostic = Diagnostic.Create(Rule, location, keywordText);
-            context.ReportDiagnostic(diagnostic);
+            if (keywordText != null)
+            {
+                var diagnostic = Diagnostic.Create(Rule, location, keywordText);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
     }
 
-    private static string GetTextAt(Location locationForKeyword)
+    private static string? GetTextAt(Location locationForKeyword)
     {
         TextSpan sourceSpan = locationForKeyword.SourceSpan;
-        return locationForKeyword.SourceTree.ToString().Substring(sourceSpan.Start, sourceSpan.Length);
+        return locationForKeyword.SourceTree?.ToString().Substring(sourceSpan.Start, sourceSpan.Length);
     }
 }
 #endif

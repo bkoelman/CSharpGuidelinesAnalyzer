@@ -52,7 +52,7 @@ public sealed class AvoidConditionWithDoubleNegationAnalyzer : DiagnosticAnalyze
     {
         if (operand != null)
         {
-            ISymbol symbol = model.GetSymbolInfo(operand, cancellationToken).Symbol;
+            ISymbol? symbol = model.GetSymbolInfo(operand, cancellationToken).Symbol;
 
             if (symbol != null && ContainsNegatingWord(symbol.Name))
             {

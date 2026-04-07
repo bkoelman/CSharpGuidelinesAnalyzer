@@ -56,12 +56,15 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
 
     private static void AnalyzeEventInvocation(OperationAnalysisContext context, IInvocationOperation invocation)
     {
-        IEventSymbol? @event = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
-
-        if (@event != null)
+        if (invocation.Instance != null)
         {
-            IMethodSymbol? containingMethod = invocation.TryGetContainingMethod(context.Compilation);
-            AnalyzeContainingMethod(containingMethod, @event, context);
+            IEventSymbol? @event = TryGetEvent(invocation.Instance, context.ContainingSymbol as IMethodSymbol, context);
+
+            if (@event != null)
+            {
+                IMethodSymbol? containingMethod = invocation.TryGetContainingMethod(context.Compilation);
+                AnalyzeContainingMethod(containingMethod, @event, context);
+            }
         }
     }
 
@@ -194,7 +197,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         {
             if (local.IsEqualTo(operation.Symbol))
             {
-                IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+                IVariableInitializerOperation? initializer = operation.GetVariableInitializer();
 
                 if (initializer != null)
                 {

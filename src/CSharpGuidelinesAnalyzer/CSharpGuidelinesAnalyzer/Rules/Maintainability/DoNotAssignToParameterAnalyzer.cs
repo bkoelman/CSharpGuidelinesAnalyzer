@@ -241,7 +241,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
 
         SemanticModel model = context.Compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-        IOperation bodyOperation = model.GetOperation(bodySyntax);
+        IOperation? bodyOperation = model.GetOperation(bodySyntax);
 
         if (bodyOperation == null || bodyOperation.HasErrors(context.Compilation, context.CancellationToken))
         {
@@ -316,7 +316,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
 
         public override void VisitArgument(IArgumentOperation operation)
         {
-            if (operation.Parameter.RefKind is RefKind.Ref or RefKind.Out)
+            if (operation.Parameter?.RefKind is RefKind.Ref or RefKind.Out)
             {
                 RegisterAssignmentToParameter(operation.Value);
             }

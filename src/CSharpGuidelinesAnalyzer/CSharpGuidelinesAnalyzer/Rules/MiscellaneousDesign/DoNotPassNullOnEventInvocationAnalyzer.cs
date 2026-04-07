@@ -76,12 +76,12 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool? IsStaticEvent(IOperation operation, Compilation compilation)
+    private static bool? IsStaticEvent(IOperation? operation, Compilation compilation)
     {
         return IsStaticEventInvocation(operation) ?? IsStaticEventInvocationUsingNullConditionalAccessOperator(operation, compilation);
     }
 
-    private static bool? IsStaticEventInvocation(IOperation operation)
+    private static bool? IsStaticEventInvocation(IOperation? operation)
     {
         if (operation is IEventReferenceOperation eventReference)
         {
@@ -91,7 +91,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator(IOperation operation, Compilation compilation)
+    private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator(IOperation? operation, Compilation compilation)
     {
         if (operation is IConditionalAccessInstanceOperation)
         {
@@ -121,9 +121,9 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
 
     private static IArgumentOperation? GetSenderArgument(IInvocationOperation invocation)
     {
-        IArgumentOperation argument = invocation.Arguments.FirstOrDefault(nextArgument => nextArgument.Parameter.Name == "sender");
+        IArgumentOperation? argument = invocation.Arguments.FirstOrDefault(nextArgument => nextArgument.Parameter?.Name == "sender");
 
-        return argument != null && argument.Parameter.Type.SpecialType == SpecialType.System_Object ? argument : null;
+        return argument != null && argument.Parameter?.Type.SpecialType == SpecialType.System_Object ? argument : null;
     }
 
     private static void AnalyzeArgsArgument(IInvocationOperation invocation, INamedTypeSymbol systemEventArgs,
@@ -131,7 +131,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     {
         IArgumentOperation? argsArgument = GetArgsArgument(invocation, systemEventArgs);
 
-        if (argsArgument != null && IsNullConstant(argsArgument.Value))
+        if (argsArgument != null && IsNullConstant(argsArgument.Value) && argsArgument.Parameter != null)
         {
             Location location = argsArgument.Syntax.GetLocation();
 

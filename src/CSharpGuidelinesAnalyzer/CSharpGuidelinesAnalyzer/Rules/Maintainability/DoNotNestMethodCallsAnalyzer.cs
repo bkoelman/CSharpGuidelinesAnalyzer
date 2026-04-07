@@ -46,7 +46,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
             string innerName = invocation.TargetMethod.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             ReportAt(argument, innerName, context);
         }
-        else if (argumentValue is IObjectCreationOperation objectCreation)
+        else if (argumentValue is IObjectCreationOperation objectCreation && objectCreation.Constructor != null)
         {
             string innerName = objectCreation.Constructor.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
             ReportAt(argument, innerName, context);
@@ -55,9 +55,9 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
 
     private static bool IsThisArgumentInExtensionMethod(IArgumentOperation argument)
     {
-        if (argument.Parameter.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
+        if (argument.Parameter?.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
         {
-            IParameterSymbol thisParameter = method.Parameters.FirstOrDefault();
+            IParameterSymbol? thisParameter = method.Parameters.FirstOrDefault();
 
             if (thisParameter != null && argument.Parameter.IsEqualTo(thisParameter))
             {
@@ -70,7 +70,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
 
     private static bool IsInFieldOrConstructorInitializer(IArgumentOperation argument)
     {
-        IOperation parent = argument.Parent;
+        IOperation? parent = argument.Parent;
 
         while (parent != null)
         {
@@ -79,8 +79,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
                 return true;
             }
 
-            // IConstructorBodyOperation is unavailable in the version of Microsoft.CodeAnalysis we depend on.
-            if (parent.GetType().ToString() == "Microsoft.CodeAnalysis.Operations.ConstructorBodyOperation" &&
+            if (argument.Parameter != null && parent is IConstructorBodyOperation &&
                 IsConstructor(argument.Parameter.ContainingSymbol))
             {
                 return true;
@@ -109,10 +108,13 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
 
     private static void ReportAt(IArgumentOperation argument, string innerName, OperationAnalysisContext context)
     {
-        string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-        Location location = argument.Value.Syntax.GetLocation();
+        if (argument.Parameter != null)
+        {
+            string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+            Location location = argument.Value.Syntax.GetLocation();
 
-        var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
-        context.ReportDiagnostic(diagnostic);
+            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
+            context.ReportDiagnostic(diagnostic);
+        }
     }
 }

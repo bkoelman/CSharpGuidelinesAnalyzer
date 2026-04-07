@@ -78,9 +78,9 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
 
     private static void ReportType(SemanticModelAnalysisContext context, SyntaxNode typeSyntax)
     {
-        ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(typeSyntax, context.CancellationToken);
+        ISymbol? symbol = context.SemanticModel.GetDeclaredSymbol(typeSyntax, context.CancellationToken);
 
-        if (!symbol.IsSynthesized())
+        if (symbol != null && !symbol.IsSynthesized())
         {
             string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
             string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);

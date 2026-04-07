@@ -45,7 +45,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
     {
         context.SafeRegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
         context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
-        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeParameter, SymbolKind.Parameter);
     }
 
     private void RegisterForOperations(AnalysisContext context)
@@ -194,7 +194,7 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
     {
         var creationExpression = (IAnonymousObjectCreationOperation)context.Operation;
 
-        if (!creationExpression.IsImplicit)
+        if (!creationExpression.IsImplicit && creationExpression.Type != null)
         {
             foreach (IPropertySymbol property in creationExpression.Type.GetMembers().OfType<IPropertySymbol>())
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Extensions;
@@ -10,6 +11,14 @@ namespace CSharpGuidelinesAnalyzer.Extensions;
 /// </summary>
 internal static class AnalysisContextExtensions
 {
+    private static readonly ImmutableArray<SyntaxKind> ExtraParameterContainerSyntaxKinds =
+    [
+        SyntaxKind.LocalFunctionStatement,
+        SyntaxKind.SimpleLambdaExpression,
+        SyntaxKind.ParenthesizedLambdaExpression,
+        SyntaxKind.AnonymousMethodExpression
+    ];
+
     public static void SafeRegisterOperationAction(this AnalysisContext analysisContext, Action<OperationAnalysisContext> action,
         params OperationKind[] operationKinds)
     {
@@ -30,25 +39,55 @@ internal static class AnalysisContextExtensions
     public static void SafeRegisterSymbolAction(this AnalysisContext analysisContext, Action<SymbolAnalysisContext> action,
         params SymbolKind[] symbolKinds)
     {
-        analysisContext.RegisterSymbolAction(context => SkipEmptyName(context, action), symbolKinds);
+        var symbolKindArray = ImmutableArray.Create(symbolKinds);
+        analysisContext.SafeRegisterSymbolAction(action, symbolKindArray);
     }
 
     public static void SafeRegisterSymbolAction(this AnalysisContext analysisContext, Action<SymbolAnalysisContext> action,
         ImmutableArray<SymbolKind> symbolKinds)
     {
+        if (symbolKinds.Contains(SymbolKind.Parameter))
+        {
+            // Workaround for https://github.com/dotnet/roslyn/issues/35770
+
+            analysisContext.RegisterSyntaxNodeAction(context =>
+            {
+                if (context.Node is LocalFunctionStatementSyntax localFunctionSyntax)
+                {
+                    IMethodSymbol? methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunctionSyntax);
+                    SafeRegisterParametersAction(context, methodSymbol, action);
+                }
+                else if (context.Node is LambdaExpressionSyntax lambdaSyntax)
+                {
+                    IMethodSymbol? methodSymbol = context.SemanticModel.GetSymbolInfo(lambdaSyntax).Symbol as IMethodSymbol;
+                    SafeRegisterParametersAction(context, methodSymbol, action);
+                }
+                else if (context.Node is AnonymousMethodExpressionSyntax anonymousMethodSyntax)
+                {
+                    IMethodSymbol? methodSymbol = context.SemanticModel.GetSymbolInfo(anonymousMethodSyntax).Symbol as IMethodSymbol;
+                    SafeRegisterParametersAction(context, methodSymbol, action);
+                }
+            }, ExtraParameterContainerSyntaxKinds);
+        }
+
         analysisContext.RegisterSymbolAction(context => SkipEmptyName(context, action), symbolKinds);
     }
 
-    public static void SafeRegisterSyntaxNodeAction(this AnalysisContext analysisContext, Action<SymbolAnalysisContext> action,
-        params SyntaxKind[] syntaxKinds)
+    private static void SafeRegisterParametersAction(SyntaxNodeAnalysisContext syntaxContext, IMethodSymbol? methodSymbol, Action<SymbolAnalysisContext> action)
     {
-        analysisContext.RegisterSyntaxNodeAction(context => SkipEmptyName(context, action), syntaxKinds);
-    }
+        foreach (IParameterSymbol parameter in methodSymbol?.Parameters ?? ImmutableArray<IParameterSymbol>.Empty)
+        {
+            if (!parameter.IsImplicitlyDeclared)
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                var symbolContext = new SymbolAnalysisContext(parameter, syntaxContext.Compilation, syntaxContext.Options, syntaxContext.ReportDiagnostic,
+                    _ => true, syntaxContext.CancellationToken);
+#pragma warning restore CS0618 // Type or member is obsolete
 
-    public static void SafeRegisterSyntaxNodeAction(this AnalysisContext analysisContext, Action<SymbolAnalysisContext> action,
-        ImmutableArray<SyntaxKind> syntaxKinds)
-    {
-        analysisContext.RegisterSyntaxNodeAction(context => SkipEmptyName(context, action), syntaxKinds);
+                var safeAction = (SymbolAnalysisContext context) => SkipEmptyName(context, action);
+                safeAction(symbolContext);
+            }
+        }
     }
 
     public static void SafeRegisterOperationAction(this CompilationStartAnalysisContext compilationStartAnalysisContext,
@@ -81,18 +120,6 @@ internal static class AnalysisContextExtensions
         compilationStartAnalysisContext.RegisterSymbolAction(context => SkipEmptyName(context, action), symbolKinds);
     }
 
-    public static void SafeRegisterSyntaxNodeAction(this CompilationStartAnalysisContext compilationStartAnalysisContext,
-        Action<SymbolAnalysisContext> action, params SyntaxKind[] syntaxKinds)
-    {
-        compilationStartAnalysisContext.RegisterSyntaxNodeAction(context => SkipEmptyName(context, action), syntaxKinds);
-    }
-
-    public static void SafeRegisterSyntaxNodeAction(this CompilationStartAnalysisContext compilationStartAnalysisContext,
-        Action<SymbolAnalysisContext> action, ImmutableArray<SyntaxKind> syntaxKinds)
-    {
-        compilationStartAnalysisContext.RegisterSyntaxNodeAction(context => SkipEmptyName(context, action), syntaxKinds);
-    }
-
     private static void SkipInvalid(OperationAnalysisContext context, Action<OperationAnalysisContext> action)
     {
         if (!context.Operation.HasErrors(context.Compilation, context.CancellationToken))
@@ -115,11 +142,5 @@ internal static class AnalysisContextExtensions
         {
             action(context);
         }
-    }
-
-    private static void SkipEmptyName(SyntaxNodeAnalysisContext context, Action<SymbolAnalysisContext> action)
-    {
-        SymbolAnalysisContext symbolContext = context.ToSymbolContext();
-        SkipEmptyName(symbolContext, _ => action(symbolContext));
     }
 }

@@ -47,10 +47,10 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        ITypeSymbol sourceType = conversion.Operand.Type;
-        ITypeSymbol destinationType = conversion.Type;
+        ITypeSymbol? sourceType = conversion.Operand.Type;
+        ITypeSymbol? destinationType = conversion.Type;
 
-        if (RequiresReport(sourceType, destinationType, objectHandleType))
+        if (sourceType != null && destinationType != null && RequiresReport(sourceType, destinationType, objectHandleType))
         {
             Location location = conversion.Syntax.GetLocation();
             ReportAt(sourceType, location, context.ReportDiagnostic);
@@ -61,24 +61,24 @@ public sealed class DoNotImplicitlyConvertToDynamicAnalyzer : DiagnosticAnalyzer
     {
         var compoundAssignment = (ICompoundAssignmentOperation)context.Operation;
 
-        ITypeSymbol sourceType = compoundAssignment.Value.Type;
-        ITypeSymbol destinationType = compoundAssignment.Target.Type;
+        ITypeSymbol? sourceType = compoundAssignment.Value.Type;
+        ITypeSymbol? destinationType = compoundAssignment.Target.Type;
 
-        if (RequiresReport(sourceType, destinationType, objectHandleType))
+        if (sourceType != null && destinationType != null && RequiresReport(sourceType, destinationType, objectHandleType))
         {
             Location location = compoundAssignment.Value.Syntax.GetLocation();
             ReportAt(sourceType, location, context.ReportDiagnostic);
         }
     }
 
-    private static bool RequiresReport(ITypeSymbol? sourceType, ITypeSymbol destinationType, INamedTypeSymbol? objectHandleType)
+    private static bool RequiresReport(ITypeSymbol sourceType, ITypeSymbol destinationType, INamedTypeSymbol? objectHandleType)
     {
         if (!IsDynamic(destinationType))
         {
             return false;
         }
 
-        if (sourceType == null || IsObject(sourceType) || IsObjectHandle(sourceType, objectHandleType))
+        if (IsObject(sourceType) || IsObjectHandle(sourceType, objectHandleType))
         {
             return false;
         }

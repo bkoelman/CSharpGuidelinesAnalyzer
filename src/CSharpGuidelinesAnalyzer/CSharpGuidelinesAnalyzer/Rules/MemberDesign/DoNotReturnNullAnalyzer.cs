@@ -73,7 +73,8 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
 
     private static bool ReturnsStringOrCollectionOrTask(IReturnOperation returnOperation, IList<INamedTypeSymbol> taskTypes)
     {
-        return returnOperation.ReturnedValue.Type.IsOrImplementsIEnumerable() || IsTask(returnOperation.ReturnedValue.Type, taskTypes);
+        return returnOperation.ReturnedValue?.Type != null &&
+            (returnOperation.ReturnedValue.Type.IsOrImplementsIEnumerable() || IsTask(returnOperation.ReturnedValue.Type, taskTypes));
     }
 
     private static bool IsTask(ITypeSymbol type, IList<INamedTypeSymbol> taskTypes)
@@ -85,7 +86,7 @@ public sealed class DoNotReturnNullAnalyzer : DiagnosticAnalyzer
     {
         IMethodSymbol? method = returnOperation.TryGetContainingMethod(context.Compilation);
 
-        if (method != null && !method.IsSynthesized())
+        if (method != null && !method.IsSynthesized() && returnOperation.ReturnedValue != null)
         {
             Location location = returnOperation.ReturnedValue.Syntax.GetLocation();
             string kind = method.GetKind().ToLowerInvariant();

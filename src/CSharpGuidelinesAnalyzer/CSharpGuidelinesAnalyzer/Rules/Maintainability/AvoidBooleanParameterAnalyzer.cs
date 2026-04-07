@@ -27,7 +27,7 @@ public sealed class AvoidBooleanParameterAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeParameter, SymbolKind.Parameter);
     }
 
     private static void AnalyzeParameter(SymbolAnalysisContext context)

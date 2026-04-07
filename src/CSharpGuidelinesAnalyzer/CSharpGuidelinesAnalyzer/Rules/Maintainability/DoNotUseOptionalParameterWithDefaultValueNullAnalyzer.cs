@@ -37,7 +37,7 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         INamedTypeSymbol? callerArgumentExpressionAttributeType =
             KnownTypes.SystemRuntimeCompilerServicesCallerArgumentExpressionAttribute(startContext.Compilation);
 
-        startContext.SafeRegisterSyntaxNodeAction(context => AnalyzeParameter(context, taskTypes, callerArgumentExpressionAttributeType), SyntaxKind.Parameter);
+        startContext.SafeRegisterSymbolAction(context => AnalyzeParameter(context, taskTypes, callerArgumentExpressionAttributeType), SymbolKind.Parameter);
     }
 
     private static IEnumerable<INamedTypeSymbol> ResolveTaskTypes(Compilation compilation)

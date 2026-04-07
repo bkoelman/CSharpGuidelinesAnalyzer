@@ -47,7 +47,7 @@ public sealed class DoNotChangeLoopVariableAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeLoopVariable(SyntaxNodeAnalysisContext context, VariableDeclaratorSyntax variableDeclaratorSyntax,
         StatementSyntax statementSyntax)
     {
-        ISymbol variableSymbol = context.SemanticModel.GetDeclaredSymbol(variableDeclaratorSyntax);
+        ISymbol? variableSymbol = context.SemanticModel.GetDeclaredSymbol(variableDeclaratorSyntax);
 
         if (variableSymbol != null)
         {

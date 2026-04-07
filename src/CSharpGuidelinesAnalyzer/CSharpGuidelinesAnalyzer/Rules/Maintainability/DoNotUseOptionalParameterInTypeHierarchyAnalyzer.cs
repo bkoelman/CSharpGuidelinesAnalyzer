@@ -27,7 +27,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeParameter, SymbolKind.Parameter);
     }
 
     private static void AnalyzeParameter(SymbolAnalysisContext context)
@@ -61,7 +61,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
 
     private static bool IsOverrideFromExternalAssembly(IMethodSymbol method)
     {
-        IMethodSymbol baseMethod = method.OverriddenMethod;
+        IMethodSymbol? baseMethod = method.OverriddenMethod;
 
         while (baseMethod != null)
         {
@@ -80,7 +80,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
     {
         foreach (ISymbol interfaceMethod in method.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
         {
-            ISymbol implementer = method.ContainingType.FindImplementationForInterfaceMember(interfaceMethod);
+            ISymbol? implementer = method.ContainingType.FindImplementationForInterfaceMember(interfaceMethod);
 
             if (method.Equals(implementer))
             {

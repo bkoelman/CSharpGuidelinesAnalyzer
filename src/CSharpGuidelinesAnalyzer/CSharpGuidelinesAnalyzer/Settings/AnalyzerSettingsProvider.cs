@@ -16,11 +16,11 @@ public static class AnalyzerSettingsProvider
     {
         ArgumentNullException.ThrowIfNull(options);
 
-        AdditionalText settingsFileOrNull = options.AdditionalFiles.FirstOrDefault(file => IsSettingsFile(file.Path));
+        AdditionalText? settingsFileOrNull = options.AdditionalFiles.FirstOrDefault(file => IsSettingsFile(file.Path));
 
         if (settingsFileOrNull != null)
         {
-            SourceText fileText = settingsFileOrNull.GetText(cancellationToken);
+            SourceText? fileText = settingsFileOrNull.GetText(cancellationToken);
 
             return SafeReadSourceText(fileText, cancellationToken);
         }
@@ -28,15 +28,22 @@ public static class AnalyzerSettingsProvider
         return AnalyzerSettingsRegistry.ImmutableEmpty;
     }
 
-    private static AnalyzerSettingsRegistry SafeReadSourceText(SourceText fileText, CancellationToken cancellationToken)
+    private static AnalyzerSettingsRegistry SafeReadSourceText(SourceText? fileText, CancellationToken cancellationToken)
     {
-        try
+        if (fileText == null)
         {
-            return ReadSourceText(fileText, AnalyzerSettingsXmlConverter.ParseXml, cancellationToken);
+            Debug.Write("Failed to read analyzer settings file. Using default settings.");
         }
-        catch (XmlException exception)
+        else
         {
-            Debug.Write("Failed to parse analyzer settings file. Using default settings. Exception: " + exception);
+            try
+            {
+                return ReadSourceText(fileText, AnalyzerSettingsXmlConverter.ParseXml, cancellationToken);
+            }
+            catch (XmlException exception)
+            {
+                Debug.Write("Failed to parse analyzer settings file. Using default settings. Exception: " + exception);
+            }
         }
 
         return AnalyzerSettingsRegistry.ImmutableEmpty;

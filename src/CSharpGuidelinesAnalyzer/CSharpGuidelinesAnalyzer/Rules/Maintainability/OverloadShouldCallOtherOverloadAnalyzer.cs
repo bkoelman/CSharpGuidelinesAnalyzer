@@ -73,7 +73,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
 
     private static IEnumerable<INamedTypeSymbol> EnumerateSelfWithBaseTypes(INamedTypeSymbol type)
     {
-        for (INamedTypeSymbol nextType = type; nextType != null; nextType = nextType.BaseType)
+        for (INamedTypeSymbol? nextType = type; nextType != null; nextType = nextType.BaseType)
         {
             yield return nextType;
         }

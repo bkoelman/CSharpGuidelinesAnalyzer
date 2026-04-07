@@ -145,7 +145,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
                     {
                         owner.context.CancellationToken.ThrowIfCancellationRequested();
 
-                        IOperation falseBlock = ifStatement.WhenFalse;
+                        IOperation? falseBlock = ifStatement.WhenFalse;
 
                         if (!AnalyzeFalseBlock(falseBlock))
                         {

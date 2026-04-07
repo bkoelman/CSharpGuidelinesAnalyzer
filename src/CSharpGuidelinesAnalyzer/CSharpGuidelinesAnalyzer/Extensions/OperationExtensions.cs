@@ -35,11 +35,6 @@ internal static class OperationExtensions
         ArgumentNullException.ThrowIfNull(operation);
         ArgumentNullException.ThrowIfNull(compilation);
 
-        if (operation.Syntax == null)
-        {
-            return true;
-        }
-
         SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
 
         return model.GetDiagnostics(operation.Syntax.Span, cancellationToken).Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
@@ -144,8 +139,13 @@ internal static class OperationExtensions
         return operation.ConstantValue is { HasValue: true, Value: null };
     }
 
-    private static bool IsOperationInBodyOfParent(IOperation operation, IOperation parentOperationBody)
+    private static bool IsOperationInBodyOfParent(IOperation operation, IOperation? parentOperationBody)
     {
+        if (parentOperationBody == null)
+        {
+            return false;
+        }
+
         if (parentOperationBody is IBlockOperation bodyBlockOperation)
         {
             return bodyBlockOperation.Operations.Contains(operation);
@@ -389,12 +389,12 @@ internal static class OperationExtensions
 
         private static FinallyClauseSyntax? TryGetFinallySyntax(ITryOperation operation)
         {
-            var finallySyntax = operation.Finally.Syntax as FinallyClauseSyntax;
+            var finallySyntax = operation.Finally?.Syntax as FinallyClauseSyntax;
 
             if (finallySyntax == null)
             {
                 // Bug workaround for https://github.com/dotnet/roslyn/issues/27208
-                if (operation.Finally.Syntax is BlockSyntax finallyBlockSyntax)
+                if (operation.Finally?.Syntax is BlockSyntax finallyBlockSyntax)
                 {
                     finallySyntax = finallyBlockSyntax.Parent as FinallyClauseSyntax;
                 }
@@ -466,7 +466,7 @@ internal static class OperationExtensions
             return base.VisitNameOf(operation, argument);
         }
 
-        public override Location VisitLocalFunction(ILocalFunctionOperation operation, object? argument)
+        public override Location? VisitLocalFunction(ILocalFunctionOperation operation, object? argument)
         {
             return operation.Symbol.Locations.FirstOrDefault();
         }

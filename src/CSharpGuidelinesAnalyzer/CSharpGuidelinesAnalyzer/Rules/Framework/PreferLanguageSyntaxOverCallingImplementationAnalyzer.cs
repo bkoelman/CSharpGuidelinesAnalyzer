@@ -175,7 +175,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         {
             if (propertyReference.Property.OriginalDefinition.IsEqualTo(nullableHasValueProperty))
             {
-                return propertyReference.Instance;
+                return propertyReference.Instance!;
             }
         }
 
@@ -202,7 +202,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
 
     private static bool IsNullableValueType(IOperation operation)
     {
-        return operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
+        return operation.Type?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
     }
 
     private sealed class NullCheckVisitor : ExplicitOperationVisitor

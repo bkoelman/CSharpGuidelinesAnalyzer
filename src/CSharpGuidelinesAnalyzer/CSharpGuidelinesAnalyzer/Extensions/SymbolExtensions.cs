@@ -58,7 +58,7 @@ internal static class SymbolExtensions
             }
             case VariableDeclaratorSyntax:
             {
-                if (syntax.Parent.Parent is BaseFieldDeclarationSyntax eventFieldSyntax)
+                if (syntax.Parent?.Parent is BaseFieldDeclarationSyntax eventFieldSyntax)
                 {
                     return eventFieldSyntax.Modifiers;
                 }
@@ -95,7 +95,7 @@ internal static class SymbolExtensions
     {
         ArgumentNullException.ThrowIfNull(owningSymbol);
 
-        return IsPropertyOrEventAccessor(owningSymbol) ? ((IMethodSymbol)owningSymbol).AssociatedSymbol : owningSymbol;
+        return IsPropertyOrEventAccessor(owningSymbol) ? ((IMethodSymbol)owningSymbol).AssociatedSymbol! : owningSymbol;
     }
 
     public static bool IsPropertyOrEventAccessor(this ISymbol? symbol)
@@ -124,7 +124,7 @@ internal static class SymbolExtensions
 
         foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
         {
-            ISymbol implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
+            ISymbol? implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
             if (parameter.ContainingSymbol.IsEqualTo(implementer))
             {
@@ -142,7 +142,7 @@ internal static class SymbolExtensions
         {
             foreach (TSymbol interfaceMember in member.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers().OfType<TSymbol>()))
             {
-                ISymbol implementer = member.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
+                ISymbol? implementer = member.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
                 if (member.Equals(implementer))
                 {
@@ -162,7 +162,7 @@ internal static class SymbolExtensions
         if (bodySyntax != null)
         {
             SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-            IOperation operation = model.GetOperation(bodySyntax);
+            IOperation? operation = model.GetOperation(bodySyntax);
 
             if (operation != null && !operation.HasErrors(compilation, cancellationToken))
             {
@@ -196,11 +196,11 @@ internal static class SymbolExtensions
         {
             case BaseMethodDeclarationSyntax methodSyntax:
             {
-                return (SyntaxNode)methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
+                return (SyntaxNode?)methodSyntax.Body ?? methodSyntax.ExpressionBody?.Expression;
             }
             case AccessorDeclarationSyntax accessorSyntax:
             {
-                return (SyntaxNode)accessorSyntax.Body ?? accessorSyntax.ExpressionBody?.Expression;
+                return (SyntaxNode?)accessorSyntax.Body ?? accessorSyntax.ExpressionBody?.Expression;
             }
             case PropertyDeclarationSyntax propertySyntax:
             {
@@ -216,7 +216,7 @@ internal static class SymbolExtensions
             }
             case LocalFunctionStatementSyntax localFunctionSyntax:
             {
-                return (SyntaxNode)localFunctionSyntax.Body ?? localFunctionSyntax.ExpressionBody?.Expression;
+                return (SyntaxNode?)localFunctionSyntax.Body ?? localFunctionSyntax.ExpressionBody?.Expression;
             }
             default:
             {
@@ -239,9 +239,9 @@ internal static class SymbolExtensions
     {
         foreach (AttributeData attribute in method.GetAttributes())
         {
-            string attributeClassName = attribute.AttributeClass.ToString();
+            string? attributeClassName = attribute.AttributeClass?.ToString();
 
-            if (UnitTestFrameworkMethodAttributeNames.Contains(attributeClassName))
+            if (attributeClassName != null && UnitTestFrameworkMethodAttributeNames.Contains(attributeClassName))
             {
                 return true;
             }

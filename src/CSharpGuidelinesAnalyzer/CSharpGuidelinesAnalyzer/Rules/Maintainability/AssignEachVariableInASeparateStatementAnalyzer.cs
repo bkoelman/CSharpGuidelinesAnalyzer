@@ -60,7 +60,10 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
             AnalyzeForLoopSection(ForLoopSection.Before, beforeOperation, context);
         }
 
-        AnalyzeForLoopSection(ForLoopSection.Condition, forLoopOperation.Condition, context);
+        if (forLoopOperation.Condition != null)
+        {
+            AnalyzeForLoopSection(ForLoopSection.Condition, forLoopOperation.Condition, context);
+        }
 
         foreach (IOperation bottomOperation in forLoopOperation.AtLoopBottom)
         {
@@ -145,7 +148,7 @@ public sealed class AssignEachVariableInASeparateStatementAnalyzer : DiagnosticA
 
         public override void VisitVariableDeclarator(IVariableDeclaratorOperation operation)
         {
-            IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+            IVariableInitializerOperation? initializer = operation.GetVariableInitializer();
 
             if (initializer != null)
             {

@@ -159,7 +159,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
 
     private static void AnalyzeDelegate(INamedTypeSymbol type, SymbolAnalysisContext context, ParameterSettings settings)
     {
-        IMethodSymbol method = type.DelegateInvokeMethod;
+        IMethodSymbol? method = type.DelegateInvokeMethod;
 
         if (method != null)
         {

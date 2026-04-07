@@ -31,7 +31,7 @@ public sealed class AvoidMisleadingNameAnalyzer : DiagnosticAnalyzer
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
         context.SafeRegisterOperationAction(AnalyzeVariableDeclarator, OperationKind.VariableDeclarator);
-        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeParameter, SymbolKind.Parameter);
     }
 
     private static void AnalyzeVariableDeclarator(OperationAnalysisContext context)

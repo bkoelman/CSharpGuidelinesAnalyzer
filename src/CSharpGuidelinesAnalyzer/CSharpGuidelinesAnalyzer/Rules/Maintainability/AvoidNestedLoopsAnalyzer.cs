@@ -95,7 +95,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
     {
         public Location? LoopStatementLocation { get; private set; }
 
-        public override void Visit(SyntaxNode node)
+        public override void Visit(SyntaxNode? node)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

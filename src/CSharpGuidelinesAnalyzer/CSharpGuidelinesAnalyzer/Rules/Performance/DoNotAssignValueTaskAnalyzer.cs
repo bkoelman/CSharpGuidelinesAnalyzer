@@ -77,7 +77,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
     {
         var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
 
-        IOperation operation = context.SemanticModel.GetOperation(equalsValueClause, context.CancellationToken);
+        IOperation? operation = context.SemanticModel.GetOperation(equalsValueClause, context.CancellationToken);
 
         if (operation != null)
         {
@@ -94,7 +94,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
     {
         if (operation is ISymbolInitializerOperation symbolInitializer)
         {
-            ITypeSymbol rightType = symbolInitializer.Value.SkipTypeConversions().Type;
+            ITypeSymbol? rightType = symbolInitializer.Value.SkipTypeConversions().Type;
 
             if (rightType != null)
             {
@@ -114,8 +114,8 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
                     }
                     case IVariableInitializerOperation:
                     {
-                        string leftName = ((VariableDeclaratorSyntax)equalsValueClause.Parent).Identifier.ToString();
-                        return new AssignmentInfo(leftName, location, rightType);
+                        string? leftName = ((VariableDeclaratorSyntax?)equalsValueClause.Parent)?.Identifier.ToString();
+                        return leftName == null ? null : new AssignmentInfo(leftName, location, rightType);
                     }
                 }
             }
@@ -128,11 +128,11 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
     {
         var assignmentExpression = (AssignmentExpressionSyntax)context.Node;
 
-        IOperation operation = context.SemanticModel.GetOperation(assignmentExpression.Right, context.CancellationToken);
+        IOperation? operation = context.SemanticModel.GetOperation(assignmentExpression.Right, context.CancellationToken);
 
         if (operation?.Type != null)
         {
-            ISymbol leftSymbol = context.SemanticModel.GetSymbolInfo(assignmentExpression.Left).Symbol;
+            ISymbol? leftSymbol = context.SemanticModel.GetSymbolInfo(assignmentExpression.Left).Symbol;
 
             if (leftSymbol != null)
             {
@@ -161,9 +161,9 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
 
         if (context.SemanticModel.GetOperation(argument) is IArgumentOperation argumentOperation)
         {
-            ITypeSymbol argumentType = argumentOperation.Value.SkipTypeConversions().Type;
+            ITypeSymbol? argumentType = argumentOperation.Value.SkipTypeConversions().Type;
 
-            if (IsValueTask(argumentType, valueTaskTypes))
+            if (argumentOperation.Parameter != null && IsValueTask(argumentType, valueTaskTypes))
             {
                 Location location = argument.GetLocation();
                 string parameterName = argumentOperation.Parameter.Name;
@@ -177,7 +177,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsValueTask(ITypeSymbol type, IList<INamedTypeSymbol> valueTaskTypes)
+    private static bool IsValueTask(ITypeSymbol? type, IList<INamedTypeSymbol> valueTaskTypes)
     {
         if (type is INamedTypeSymbol namedType)
         {

@@ -183,20 +183,23 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             if (scopeDepth == 0 && operation.ReturnedValue != null && !ReturnsConstant(operation.ReturnedValue) &&
                 MethodSignatureTypeIsEnumerable(operation.ReturnedValue))
             {
-                ITypeSymbol returnValueType = operation.ReturnedValue.SkipTypeConversions().Type;
+                ITypeSymbol? returnValueType = operation.ReturnedValue.SkipTypeConversions().Type;
 
-                if (sequenceTypeInfo.IsQueryable(returnValueType))
+                if (returnValueType != null)
                 {
-                    ReportDiagnosticAt(operation, QueryableOperationName, context);
-                }
-                else if (sequenceTypeInfo.IsNonQueryableSequenceType(returnValueType))
-                {
-                    ReturnStatements.Add(operation);
-                }
-                // ReSharper disable once RedundantIfElseBlock
-                else
-                {
-                    // No action required.
+                    if (sequenceTypeInfo.IsQueryable(returnValueType))
+                    {
+                        ReportDiagnosticAt(operation, QueryableOperationName, context);
+                    }
+                    else if (sequenceTypeInfo.IsNonQueryableSequenceType(returnValueType))
+                    {
+                        ReturnStatements.Add(operation);
+                    }
+                    // ReSharper disable once RedundantIfElseBlock
+                    else
+                    {
+                        // No action required.
+                    }
                 }
             }
 
@@ -210,7 +213,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         private bool MethodSignatureTypeIsEnumerable(IOperation returnValue)
         {
-            return sequenceTypeInfo.IsEnumerable(returnValue.Type);
+            return returnValue.Type != null && sequenceTypeInfo.IsEnumerable(returnValue.Type);
         }
     }
 
@@ -225,11 +228,15 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
         public void Analyze(IReturnOperation returnStatement)
         {
-            EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue);
-
-            if (result.IsConclusive && result.IsDeferred)
+            if (returnStatement.ReturnedValue != null)
             {
-                ReportDiagnosticAt(returnStatement, result.DeferredOperationName, context);
+                EvaluationResult result = AnalyzeExpression(returnStatement.ReturnedValue);
+
+                if (result.IsConclusive && result.IsDeferred)
+                {
+                    ReportDiagnosticAt(returnStatement, result.DeferredOperationName, context);
+                }
+
             }
         }
 
@@ -397,11 +404,6 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 Result.SetImmediate();
             }
 
-            public override void VisitCollectionElementInitializer(ICollectionElementInitializerOperation operation)
-            {
-                Result.SetImmediate();
-            }
-
             public override void VisitDefaultValue(IDefaultValueOperation operation)
             {
                 Result.SetImmediate();
@@ -476,7 +478,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
 
                 if (currentLocal.IsEqualTo(operation.Symbol) && EndsBeforeMaxLocation(operation))
                 {
-                    IVariableInitializerOperation initializer = operation.GetVariableInitializer();
+                    IVariableInitializerOperation? initializer = operation.GetVariableInitializer();
 
                     if (initializer != null)
                     {

@@ -4,8 +4,9 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <BaseOutputPath>$(SolutionDir)..\bin</BaseOutputPath>
-    <NoWarn>$(NoWarn);RS1012</NoWarn>
+    <NoWarn>$(NoWarn);RS2008;RS1012</NoWarn>
     <PolyArgumentExceptions>true</PolyArgumentExceptions>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -40,8 +41,7 @@
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
     <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.147" PrivateAssets="all" />
-    <!-- ReSharper disable once VulnerablePackage -->
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.6.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" PrivateAssets="all" />
     <PackageReference Include="Polyfill" Version="10.0.0" PrivateAssets="all" />
   </ItemGroup>
 

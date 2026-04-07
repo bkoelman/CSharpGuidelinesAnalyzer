@@ -42,11 +42,6 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
     {
         var anonymousFunction = (AnonymousFunctionExpressionSyntax)context.Node;
 
-        if (anonymousFunction.Body == null)
-        {
-            return;
-        }
-
         if (context.SemanticModel.GetSymbolInfo(anonymousFunction, context.CancellationToken).Symbol is IMethodSymbol method)
         {
             if (method.Parameters.Any(IsRegularParameter))

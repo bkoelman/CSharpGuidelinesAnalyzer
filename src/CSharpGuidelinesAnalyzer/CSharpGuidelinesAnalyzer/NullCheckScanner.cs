@@ -21,7 +21,8 @@ internal sealed class NullCheckScanner
     {
         ArgumentNullException.ThrowIfNull(propertyReference);
 
-        if (propertyReference.Property.OriginalDefinition.IsEqualTo(knownSymbols.NullableHasValueProperty) && IsNullableValueType(propertyReference.Instance))
+        if (propertyReference.Property.OriginalDefinition.IsEqualTo(knownSymbols.NullableHasValueProperty) && propertyReference.Instance != null &&
+            IsNullableValueType(propertyReference.Instance))
         {
             NullCheckOperand nullCheckOperand = GetParentNullCheckOperand(propertyReference);
             NullCheckOperand toggledOperand = nullCheckOperand.Toggle();
@@ -36,20 +37,12 @@ internal sealed class NullCheckScanner
     {
         ArgumentNullException.ThrowIfNull(invocation);
 
-        if (invocation.TargetMethod != null)
+        return invocation.Arguments.Length switch
         {
-            if (invocation.Arguments.Length == 1)
-            {
-                return AnalyzeSingleArgumentInvocation(invocation);
-            }
-
-            if (invocation.Arguments.Length == 2)
-            {
-                return AnalyzeDoubleArgumentInvocation(invocation);
-            }
-        }
-
-        return null;
+            1 => AnalyzeSingleArgumentInvocation(invocation),
+            2 => AnalyzeDoubleArgumentInvocation(invocation),
+            _ => null
+        };
     }
 
     private NullCheckScanResult? AnalyzeSingleArgumentInvocation(IInvocationOperation invocation)
@@ -177,7 +170,7 @@ internal sealed class NullCheckScanner
     {
         var operand = NullCheckOperand.IsNull;
 
-        IOperation currentOperation = operation.Parent;
+        IOperation? currentOperation = operation.Parent;
 
         while (currentOperation is IUnaryOperation { OperatorKind: UnaryOperatorKind.Not })
         {
@@ -229,7 +222,7 @@ internal sealed class NullCheckScanner
 
     private bool IsNullableValueType(IOperation? operation)
     {
-        return operation != null && operation.Type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
+        return operation?.Type?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
     }
 
     private sealed class KnownSymbols

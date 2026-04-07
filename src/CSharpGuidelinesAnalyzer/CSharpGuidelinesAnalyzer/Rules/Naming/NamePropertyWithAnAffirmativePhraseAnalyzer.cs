@@ -34,7 +34,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
         context.SafeRegisterSymbolAction(AnalyzeMember, MemberSymbolKinds);
-        context.SafeRegisterSyntaxNodeAction(AnalyzeParameter, SyntaxKind.Parameter);
+        context.SafeRegisterSymbolAction(AnalyzeParameter, SymbolKind.Parameter);
     }
 
     private static void AnalyzeMember(SymbolAnalysisContext context)
