@@ -82,11 +82,15 @@ public sealed class AvoidMultipleTypesPerFileAnalyzer : DiagnosticAnalyzer
 
         if (symbol != null && !symbol.IsSynthesized())
         {
-            string fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
-            string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+            string? fileName = Path.GetFileName(context.SemanticModel.SyntaxTree.FilePath);
 
-            var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName);
-            context.ReportDiagnostic(diagnostic);
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string typeName = symbol.ToDisplayString(SymbolDisplayFormat.CSharpErrorMessageFormat);
+
+                var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], fileName, typeName);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
     }
 

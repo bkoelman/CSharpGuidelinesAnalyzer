@@ -105,7 +105,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
 
         if (longestOverload != null)
         {
-            if (longestOverload.ContainingType.IsEqualTo(activeType) && CanBeMadeVirtual(longestOverload))
+            if (longestOverload.NullableContainingType.IsEqualTo(activeType) && CanBeMadeVirtual(longestOverload))
             {
                 IMethodSymbol methodToReport = longestOverload.PartialImplementationPart ?? longestOverload;
 
@@ -122,7 +122,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeOverloads(OverloadsInfo info, INamedTypeSymbol activeType)
     {
         IEnumerable<IMethodSymbol> overloadsInActiveType = info.MethodGroup.Where(method =>
-            !method.IsEqualTo(info.LongestOverload) && method.ContainingType.IsEqualTo(activeType));
+            !method.IsEqualTo(info.LongestOverload) && method.NullableContainingType.IsEqualTo(activeType));
 
         foreach (IMethodSymbol overload in overloadsInActiveType)
         {
@@ -159,8 +159,10 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
 
     private static bool CanBeMadeVirtual(IMethodSymbol method)
     {
-        return !method.IsStatic && method.DeclaredAccessibility != Accessibility.Private && !method.ContainingType.IsSealed &&
-            method.ContainingType.TypeKind != TypeKind.Struct && method is { IsVirtual: false, IsOverride: false } &&
+        INamedTypeSymbol? methodContainingType = method.NullableContainingType;
+
+        return !method.IsStatic && method.DeclaredAccessibility != Accessibility.Private && methodContainingType is { IsSealed: false } &&
+            methodContainingType.TypeKind != TypeKind.Struct && method is { IsVirtual: false, IsOverride: false } &&
             !method.ExplicitInterfaceImplementations.Any();
     }
 

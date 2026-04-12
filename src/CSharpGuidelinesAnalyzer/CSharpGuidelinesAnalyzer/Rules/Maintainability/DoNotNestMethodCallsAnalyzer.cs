@@ -55,7 +55,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
 
     private static bool IsThisArgumentInExtensionMethod(IArgumentOperation argument)
     {
-        if (argument.Parameter?.ContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
+        if (argument.Parameter?.NullableContainingSymbol is IMethodSymbol { IsExtensionMethod: true } method)
         {
             IParameterSymbol? thisParameter = method.Parameters.FirstOrDefault();
 
@@ -79,7 +79,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
                 return true;
             }
 
-            if (argument.Parameter != null && parent is IConstructorBodyOperation && IsConstructor(argument.Parameter.ContainingSymbol))
+            if (argument.Parameter != null && parent is IConstructorBodyOperation && IsConstructor(argument.Parameter.NullableContainingSymbol))
             {
                 return true;
             }
@@ -90,7 +90,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IsConstructor(ISymbol symbol)
+    private static bool IsConstructor(ISymbol? symbol)
     {
         if (symbol is IMethodSymbol method)
         {
@@ -109,11 +109,16 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
     {
         if (argument.Parameter != null)
         {
-            string outerName = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-            Location location = argument.Value.Syntax.GetLocation();
+            ISymbol? parameterContainingSymbol = argument.Parameter.NullableContainingSymbol;
 
-            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
-            context.ReportDiagnostic(diagnostic);
+            if (parameterContainingSymbol != null)
+            {
+                string outerName = parameterContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                Location location = argument.Value.Syntax.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, outerName, innerName);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
     }
 }

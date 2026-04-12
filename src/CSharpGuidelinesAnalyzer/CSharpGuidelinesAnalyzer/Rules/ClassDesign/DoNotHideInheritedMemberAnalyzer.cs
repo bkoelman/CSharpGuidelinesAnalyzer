@@ -34,7 +34,7 @@ public sealed class DoNotHideInheritedMemberAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeMember(SymbolAnalysisContext context)
     {
-        if (context.Symbol is INamedTypeSymbol { ContainingType: null })
+        if (context.Symbol is INamedTypeSymbol { NullableContainingType: null })
         {
             return;
         }

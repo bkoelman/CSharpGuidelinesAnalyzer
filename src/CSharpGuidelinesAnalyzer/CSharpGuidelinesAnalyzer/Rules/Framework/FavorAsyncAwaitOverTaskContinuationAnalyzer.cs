@@ -45,8 +45,10 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
     {
         var invocation = (IInvocationOperation)context.Operation;
 
-        if (invocation.TargetMethod.ContainingType.IsEqualTo(taskInfo.TaskType) ||
-            invocation.TargetMethod.ContainingType.ConstructedFrom.IsEqualTo(taskInfo.GenericTaskType))
+        INamedTypeSymbol? targetMethodContainingType = invocation.TargetMethod.NullableContainingType;
+
+        if (targetMethodContainingType != null && (targetMethodContainingType.IsEqualTo(taskInfo.TaskType) ||
+            targetMethodContainingType.ConstructedFrom.IsEqualTo(taskInfo.GenericTaskType)))
         {
             IMethodSymbol openTypedTargetMethod = invocation.TargetMethod.OriginalDefinition;
 

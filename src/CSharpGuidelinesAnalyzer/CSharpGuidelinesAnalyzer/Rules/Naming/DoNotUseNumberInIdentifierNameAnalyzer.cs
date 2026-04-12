@@ -132,7 +132,8 @@ public sealed class DoNotUseNumberInIdentifierNameAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        if (ContainsDigitsNonWhitelisted(parameter.Name) && !parameter.ContainingSymbol.IsOverride && !parameter.IsInterfaceImplementation())
+        if (ContainsDigitsNonWhitelisted(parameter.Name) && parameter.NullableContainingSymbol is { IsOverride: false } &&
+            !parameter.IsInterfaceImplementation())
         {
             var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name);
             context.ReportDiagnostic(diagnostic);

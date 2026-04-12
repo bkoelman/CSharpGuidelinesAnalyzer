@@ -127,7 +127,7 @@ public sealed class AvoidSignatureWithManyParametersAnalyzer : DiagnosticAnalyze
     {
         var builder = new StringBuilder();
         builder.Append("Constructor for '");
-        builder.Append(method.ContainingType.Name);
+        builder.Append(method.NullableContainingType?.Name ?? "?");
         builder.Append("'");
         return builder.ToString();
     }

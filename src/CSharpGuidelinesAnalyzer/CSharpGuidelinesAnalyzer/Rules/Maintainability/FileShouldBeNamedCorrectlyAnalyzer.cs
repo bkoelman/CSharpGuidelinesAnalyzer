@@ -41,7 +41,7 @@ public sealed class FileShouldBeNamedCorrectlyAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
     {
-        string fileName = Path.GetFileName(context.Tree.FilePath);
+        string? fileName = Path.GetFileName(context.Tree.FilePath);
 
         if (string.IsNullOrEmpty(fileName))
         {

@@ -46,13 +46,12 @@ internal sealed class AnalyzerSettingsReader(AnalyzerOptions options, Cancellati
 
     private sealed class AnalyzerConfigOptionsProviderShim(AnalyzerOptions options)
     {
-        private static readonly PropertyInfo? AnalyzerConfigOptionsProviderProperty =
-            typeof(AnalyzerOptions).GetRuntimeProperty("AnalyzerConfigOptionsProvider");
+        private static readonly PropertyInfo? AnalyzerConfigOptionsProviderProperty = typeof(AnalyzerOptions).GetProperty("AnalyzerConfigOptionsProvider");
 
         private static readonly MethodInfo? GetOptionsMethod =
-            AnalyzerConfigOptionsProviderProperty?.PropertyType.GetRuntimeMethod("GetOptions", [typeof(SyntaxTree)]);
+            AnalyzerConfigOptionsProviderProperty?.PropertyType.GetMethod("GetOptions", [typeof(SyntaxTree)]);
 
-        private static readonly MethodInfo? TryGetValueMethod = GetOptionsMethod?.ReturnType.GetRuntimeMethod("TryGetValue", [
+        private static readonly MethodInfo? TryGetValueMethod = GetOptionsMethod?.ReturnType.GetMethod("TryGetValue", [
             typeof(string),
             typeof(string).MakeByRefType()
         ]);
@@ -63,7 +62,7 @@ internal sealed class AnalyzerSettingsReader(AnalyzerOptions options, Cancellati
         {
             if (providerInstance != null && GetOptionsMethod != null && TryGetValueMethod != null)
             {
-                object options = GetOptionsMethod.Invoke(providerInstance, [syntaxTree]);
+                object? options = GetOptionsMethod.Invoke(providerInstance, [syntaxTree]);
 
                 object?[] parameters =
                 [

@@ -61,8 +61,9 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
     {
         var parameter = (IParameterSymbol)context.Symbol;
 
-        if (parameter.IsOptional && parameter.HasExplicitDefaultValue && parameter.ExplicitDefaultValue == null && !parameter.ContainingSymbol.IsOverride &&
-            !parameter.ContainingSymbol.IsInterfaceImplementation() && !HasCallerArgumentExpressionAttribute(parameter, callerArgumentExpressionAttributeType))
+        if (parameter is { IsOptional: true, HasExplicitDefaultValue: true, ExplicitDefaultValue: null, NullableContainingSymbol.IsOverride: false } &&
+            !parameter.NullableContainingSymbol.IsInterfaceImplementation() &&
+            !HasCallerArgumentExpressionAttribute(parameter, callerArgumentExpressionAttributeType))
         {
             if (parameter.Type.IsOrImplementsIEnumerable() || IsTask(parameter.Type, taskTypes))
             {

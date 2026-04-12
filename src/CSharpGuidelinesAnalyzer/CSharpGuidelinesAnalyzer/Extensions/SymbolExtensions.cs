@@ -15,8 +15,8 @@ internal static class SymbolExtensions
 
     private static readonly Lazy<IEqualityComparer<ISymbol?>> SymbolComparerLazy = new(() =>
     {
-        Type comparerType = typeof(ISymbol).GetTypeInfo().Assembly.GetType("Microsoft.CodeAnalysis.SymbolEqualityComparer");
-        FieldInfo? includeField = comparerType?.GetTypeInfo().GetDeclaredField("IncludeNullability");
+        Type? comparerType = typeof(ISymbol).Assembly.GetType("Microsoft.CodeAnalysis.SymbolEqualityComparer");
+        FieldInfo? includeField = comparerType?.GetField("IncludeNullability");
 
         if (includeField != null && includeField.GetValue(null) is IEqualityComparer<ISymbol?> comparer)
         {
@@ -122,31 +122,41 @@ internal static class SymbolExtensions
     {
         ArgumentNullException.ThrowIfNull(parameter);
 
-        foreach (ISymbol interfaceMember in parameter.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
-        {
-            ISymbol? implementer = parameter.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
+        INamedTypeSymbol? parameterContainingType = parameter.NullableContainingType;
 
-            if (parameter.ContainingSymbol.IsEqualTo(implementer))
+        if (parameterContainingType != null)
+        {
+            foreach (ISymbol interfaceMember in parameterContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
             {
-                return true;
+                ISymbol? implementer = parameterContainingType.FindImplementationForInterfaceMember(interfaceMember);
+
+                if (parameter.NullableContainingSymbol.IsEqualTo(implementer))
+                {
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
-    public static bool IsInterfaceImplementation<TSymbol>(this TSymbol member)
-        where TSymbol : ISymbol
+    public static bool IsInterfaceImplementation<TSymbol>(this TSymbol? member)
+        where TSymbol : class, ISymbol
     {
-        if (member is not IFieldSymbol)
+        if (member != null)
         {
-            foreach (TSymbol interfaceMember in member.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers().OfType<TSymbol>()))
-            {
-                ISymbol? implementer = member.ContainingType.FindImplementationForInterfaceMember(interfaceMember);
+            INamedTypeSymbol? memberContainingType = member.NullableContainingType;
 
-                if (member.Equals(implementer))
+            if (member is not IFieldSymbol && memberContainingType != null)
+            {
+                foreach (TSymbol interfaceMember in memberContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers().OfType<TSymbol>()))
                 {
-                    return true;
+                    ISymbol? implementer = memberContainingType.FindImplementationForInterfaceMember(interfaceMember);
+
+                    if (member.Equals(implementer))
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -260,7 +270,7 @@ internal static class SymbolExtensions
                 return false;
             }
 
-            container = container.ContainingType;
+            container = container.NullableContainingType;
         }
 
         return true;

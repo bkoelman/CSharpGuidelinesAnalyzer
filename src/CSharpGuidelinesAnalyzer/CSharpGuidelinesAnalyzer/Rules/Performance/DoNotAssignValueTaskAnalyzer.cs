@@ -137,7 +137,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
             if (leftSymbol != null)
             {
                 Location location = assignmentExpression.OperatorToken.GetLocation();
-                string leftName = leftSymbol.ToString();
+                string? leftName = leftSymbol.ToString();
                 var assignmentInfo = new AssignmentInfo(leftName, location, operation.Type);
 
                 AnalyzeRightHandSideType(assignmentInfo, valueTaskTypes, context);
@@ -167,11 +167,14 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
                 Location location = argument.GetLocation();
                 string parameterName = argumentOperation.Parameter.Name;
 
-                ISymbol method = argumentOperation.Parameter.ContainingSymbol.OriginalDefinition;
-                string containerName = method.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
+                ISymbol? method = argumentOperation.Parameter.NullableContainingSymbol?.OriginalDefinition;
+                string? containerName = method?.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-                var diagnostic = Diagnostic.Create(ArgumentRule, location, parameterName, containerName);
-                context.ReportDiagnostic(diagnostic);
+                if (containerName != null)
+                {
+                    var diagnostic = Diagnostic.Create(ArgumentRule, location, parameterName, containerName);
+                    context.ReportDiagnostic(diagnostic);
+                }
             }
         }
     }

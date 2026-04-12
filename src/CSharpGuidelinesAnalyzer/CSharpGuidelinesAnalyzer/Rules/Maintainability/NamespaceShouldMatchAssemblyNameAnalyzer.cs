@@ -54,18 +54,23 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
 
     private static bool IsTopLevelNamespace(INamespaceSymbol namespaceSymbol)
     {
-        return namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
+        return namespaceSymbol.NullableContainingNamespace is { IsGlobalNamespace: true };
     }
 
     private static void AnalyzeTopLevelNamespace(INamespaceSymbol namespaceSymbol, SymbolAnalysisContext context)
     {
-        string reportAssemblyName = namespaceSymbol.ContainingAssembly.Name;
-        string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
+        IAssemblySymbol? namespaceContainingAssembly = namespaceSymbol.NullableContainingAssembly;
 
-        context.CancellationToken.ThrowIfCancellationRequested();
+        if (namespaceContainingAssembly != null)
+        {
+            string reportAssemblyName = namespaceContainingAssembly.Name;
+            string assemblyName = GetAssemblyNameWithoutCore(reportAssemblyName);
 
-        var visitor = new TypesInNamespaceVisitor(assemblyName, reportAssemblyName, context);
-        visitor.Visit(namespaceSymbol);
+            context.CancellationToken.ThrowIfCancellationRequested();
+
+            var visitor = new TypesInNamespaceVisitor(assemblyName, reportAssemblyName, context);
+            visitor.Visit(namespaceSymbol);
+        }
     }
 
     private static string GetAssemblyNameWithoutCore(string assemblyName)
@@ -82,10 +87,15 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
     {
         var type = (INamedTypeSymbol)context.Symbol;
 
-        if (type.ContainingNamespace.IsGlobalNamespace && !type.IsSynthesized() && !IsTopLevelStatementsContainer(type))
+        if (type.NullableContainingNamespace is { IsGlobalNamespace: true } && !type.IsSynthesized() && !IsTopLevelStatementsContainer(type))
         {
-            var diagnostic = Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, type.ContainingAssembly.Name);
-            context.ReportDiagnostic(diagnostic);
+            IAssemblySymbol? typeContainingAssembly = type.NullableContainingAssembly;
+
+            if (typeContainingAssembly != null)
+            {
+                var diagnostic = Diagnostic.Create(GlobalTypeRule, type.Locations[0], type.Name, typeContainingAssembly.Name);
+                context.ReportDiagnostic(diagnostic);
+            }
         }
     }
 

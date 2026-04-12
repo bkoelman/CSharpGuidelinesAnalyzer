@@ -112,7 +112,7 @@ internal sealed class FixableDocument
             {
                 int index = markupCode.IndexOf(SpanOpenText, startIndex, StringComparison.Ordinal);
 
-                (int, char)? result = TryGetNextSpanStartForIndex(index);
+                (int spanStartIndex, char spanKind)? result = TryGetNextSpanStartForIndex(index);
 
                 if (result != null)
                 {

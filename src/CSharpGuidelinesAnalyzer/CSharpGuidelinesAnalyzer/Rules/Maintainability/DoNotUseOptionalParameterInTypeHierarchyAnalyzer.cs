@@ -35,14 +35,14 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
 
         if (parameter.IsOptional)
         {
-            INamedTypeSymbol type = parameter.ContainingType;
+            INamedTypeSymbol? type = parameter.NullableContainingType;
 
-            if (parameter.ContainingSymbol is not IMethodSymbol method)
+            if (parameter.NullableContainingSymbol is not IMethodSymbol method)
             {
                 return;
             }
 
-            if (type.TypeKind == TypeKind.Interface || method.IsInterfaceImplementation() || method.IsAbstract || method.IsVirtual || method.IsOverride)
+            if (type?.TypeKind == TypeKind.Interface || method.IsInterfaceImplementation() || method.IsAbstract || method.IsVirtual || method.IsOverride)
             {
                 if (!IsOverrideFromExternalAssembly(method) && !IsInterfaceImplementationFromExternalAssembly(method))
                 {
@@ -64,7 +64,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
 
         while (baseMethod != null)
         {
-            if (!baseMethod.ContainingAssembly.Equals(method.ContainingAssembly))
+            if (!Equals(baseMethod.NullableContainingAssembly, method.NullableContainingAssembly))
             {
                 return true;
             }
@@ -77,13 +77,18 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
 
     private static bool IsInterfaceImplementationFromExternalAssembly(IMethodSymbol method)
     {
-        foreach (ISymbol interfaceMethod in method.ContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
-        {
-            ISymbol? implementer = method.ContainingType.FindImplementationForInterfaceMember(interfaceMethod);
+        INamedTypeSymbol? methodContainingType = method.NullableContainingType;
 
-            if (method.Equals(implementer))
+        if (methodContainingType != null)
+        {
+            foreach (ISymbol interfaceMethod in methodContainingType.AllInterfaces.SelectMany(@interface => @interface.GetMembers()))
             {
-                return !method.ContainingAssembly.Equals(interfaceMethod.ContainingAssembly);
+                ISymbol? implementer = methodContainingType.FindImplementationForInterfaceMember(interfaceMethod);
+
+                if (Equals(method, implementer))
+                {
+                    return !Equals(method.NullableContainingAssembly, interfaceMethod.NullableContainingAssembly);
+                }
             }
         }
 

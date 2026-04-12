@@ -20,9 +20,9 @@ internal class ExplicitOperationVisitor : OperationVisitor
 /// <summary>
 /// A visitor that skips compiler-generated / implicitly computed operations.
 /// </summary>
-internal abstract class ExplicitOperationVisitor<TArgument, TResult> : OperationVisitor<TArgument?, TResult?>
+internal abstract class ExplicitOperationVisitor<TArgument, TResult> : OperationVisitor<TArgument, TResult>
 {
-    public override TResult? Visit(IOperation? operation, TArgument? argument)
+    public override TResult? Visit(IOperation? operation, TArgument argument)
     {
         if (operation is { IsImplicit: false })
         {

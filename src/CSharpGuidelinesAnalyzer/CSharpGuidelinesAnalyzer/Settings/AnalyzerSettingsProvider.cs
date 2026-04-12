@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Xml;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
@@ -51,11 +50,10 @@ public static class AnalyzerSettingsProvider
 
     private static bool IsSettingsFile(string filePath)
     {
-        string fileName = Path.GetFileName(filePath);
+        string? fileName = Path.GetFileName(filePath);
         return string.Equals(fileName, SettingsFileName, StringComparison.OrdinalIgnoreCase);
     }
 
-    [NotNull]
     private static TResult ReadSourceText<TResult>(SourceText sourceText, Func<XmlReader, TResult> readAction, CancellationToken cancellationToken)
     {
         using var stream = new MemoryStream();

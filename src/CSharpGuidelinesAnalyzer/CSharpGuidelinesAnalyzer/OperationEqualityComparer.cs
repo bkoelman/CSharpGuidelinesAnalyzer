@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
-using ReflectionTypeInfo = System.Reflection.TypeInfo;
 
 namespace CSharpGuidelinesAnalyzer;
 
 internal sealed class OperationEqualityComparer
 {
-    private static readonly ReflectionTypeInfo SymbolInterface = typeof(ISymbol).GetTypeInfo();
+    private static readonly Type SymbolInterface = typeof(ISymbol);
 
-    private static readonly ReflectionTypeInfo OperationInterface = typeof(IOperation).GetTypeInfo();
+    private static readonly Type OperationInterface = typeof(IOperation);
 
-    private static readonly ReflectionTypeInfo EnumerableInterface = typeof(IEnumerable).GetTypeInfo();
+    private static readonly Type EnumerableInterface = typeof(IEnumerable);
 
     private static readonly IReadOnlyCollection<string> PropertyNamesToSkip = new[]
     {
@@ -65,7 +63,7 @@ internal sealed class OperationEqualityComparer
     {
         object leftValue = property.GetMethod.Invoke(left, []);
         object rightValue = property.GetMethod.Invoke(right, []);
-        ReflectionTypeInfo propertyType = property.PropertyType.GetTypeInfo();
+        Type propertyType = property.PropertyType;
 
         if (EnumerableInterface.IsAssignableFrom(propertyType))
         {
@@ -77,7 +75,7 @@ internal sealed class OperationEqualityComparer
         return AreValuesEqual(property.PropertyType, leftValue, rightValue);
     }
 
-    private bool AreOptionalSequenceValuesEqual(Type elementType, [ItemNotNull] IEnumerable? leftSequence, [ItemNotNull] IEnumerable? rightSequence)
+    private bool AreOptionalSequenceValuesEqual(Type elementType, IEnumerable? leftSequence, IEnumerable? rightSequence)
     {
         if (ReferenceEquals(leftSequence, rightSequence))
         {
@@ -123,9 +121,7 @@ internal sealed class OperationEqualityComparer
 
     private bool AreValuesEqual(Type type, object? leftValue, object? rightValue)
     {
-        ReflectionTypeInfo typeInfo = type.GetTypeInfo();
-
-        if (SymbolInterface.IsAssignableFrom(typeInfo))
+        if (SymbolInterface.IsAssignableFrom(type))
         {
             var leftSymbol = (ISymbol?)leftValue;
             var rightSymbol = (ISymbol?)rightValue;
@@ -133,7 +129,7 @@ internal sealed class OperationEqualityComparer
             return leftSymbol.IsEqualTo(rightSymbol);
         }
 
-        if (OperationInterface.IsAssignableFrom(typeInfo))
+        if (OperationInterface.IsAssignableFrom(type))
         {
             return Equals((IOperation?)leftValue, (IOperation?)rightValue);
         }

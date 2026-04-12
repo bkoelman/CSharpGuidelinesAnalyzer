@@ -63,7 +63,7 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private sealed class LoopBodyLocator : CSharpSyntaxVisitor<StatementSyntax?>
+    private sealed class LoopBodyLocator : CSharpSyntaxVisitor<StatementSyntax>
     {
         public override StatementSyntax VisitWhileStatement(WhileStatementSyntax node)
         {

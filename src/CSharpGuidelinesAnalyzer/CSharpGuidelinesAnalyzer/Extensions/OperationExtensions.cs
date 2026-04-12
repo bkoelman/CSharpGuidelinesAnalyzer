@@ -9,7 +9,7 @@ namespace CSharpGuidelinesAnalyzer.Extensions;
 /// <summary />
 internal static class OperationExtensions
 {
-    private static readonly PropertyInfo? OperationSemanticModelProperty = typeof(IOperation).GetRuntimeProperty("SemanticModel");
+    private static readonly PropertyInfo? OperationSemanticModelProperty = typeof(IOperation).GetProperty("SemanticModel");
 
     public static IdentifierInfo? TryGetIdentifierInfo(this IOperation? identifier)
     {
@@ -234,7 +234,7 @@ internal static class OperationExtensions
     }
 
     private sealed class OperationLocationVisitor(DoWhileLoopLookupKeywordStrategy doWhileStrategy, TryFinallyLookupKeywordStrategy tryFinallyStrategy)
-        : ExplicitOperationVisitor<object, Location?>
+        : ExplicitOperationVisitor<object?, Location>
     {
         private readonly DoWhileLoopLookupKeywordStrategy doWhileStrategy = doWhileStrategy;
         private readonly TryFinallyLookupKeywordStrategy tryFinallyStrategy = tryFinallyStrategy;

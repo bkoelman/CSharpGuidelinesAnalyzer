@@ -4,7 +4,6 @@ using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
-using TypeInfo = System.Reflection.TypeInfo;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Naming;
 
@@ -111,10 +110,19 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
 
     private static string GetStaticEventTargetName(IEventReferenceOperation eventReference, IMethodSymbol targetMethod)
     {
-        INamedTypeSymbol eventContainingType = eventReference.Event.ContainingType;
+        INamedTypeSymbol? eventContainingType = eventReference.Event.NullableContainingType;
 
-        bool isEventLocal = eventContainingType.IsEqualTo(targetMethod.ContainingType);
-        return isEventLocal ? string.Empty : eventContainingType.Name;
+        if (eventContainingType != null)
+        {
+            bool isEventLocal = eventContainingType.IsEqualTo(targetMethod.NullableContainingType);
+
+            if (!isEventLocal)
+            {
+                return eventContainingType.Name;
+            }
+        }
+
+        return string.Empty;
     }
 
     private sealed class PortableEventAssignmentOperation
@@ -140,16 +148,16 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
             // Breaking change in Microsoft.CodeAnalysis v2.9:
             // type of IEventAssignmentOperation.EventReference was changed from IEventReferenceOperation to IOperation.
 
-            PropertyInfo propertyInfo = typeof(IEventAssignmentOperation).GetRuntimeProperty("EventReference");
-            return propertyInfo.GetMethod;
+            PropertyInfo? propertyInfo = typeof(IEventAssignmentOperation).GetProperty("EventReference");
+            return propertyInfo!.GetMethod;
         }
 
         private IEventReferenceOperation? InvokeEventReferencePropertyGetMethod()
         {
-            object propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, []);
-            TypeInfo propertyType = propertyValue.GetType().GetTypeInfo();
+            object? propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, []);
+            Type propertyType = propertyValue.GetType();
 
-            return typeof(IEventReferenceOperation).GetTypeInfo().IsAssignableFrom(propertyType) ? (IEventReferenceOperation)propertyValue : null;
+            return typeof(IEventReferenceOperation).IsAssignableFrom(propertyType) ? (IEventReferenceOperation)propertyValue : null;
         }
     }
 }

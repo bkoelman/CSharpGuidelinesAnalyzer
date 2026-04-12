@@ -74,7 +74,7 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
     {
         var parameter = (IParameterSymbol)context.Symbol;
 
-        if (!IsParameterAccessible(parameter) || parameter.ContainingSymbol.IsOverride || !parameter.Type.IsBooleanOrNullableBoolean() ||
+        if (!IsParameterAccessible(parameter) || parameter.NullableContainingSymbol is { IsOverride: true } || !parameter.Type.IsBooleanOrNullableBoolean() ||
             parameter.IsSynthesized())
         {
             return;
@@ -88,8 +88,8 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
 
     private static bool IsParameterAccessible(IParameterSymbol parameter)
     {
-        ISymbol containingMember = parameter.ContainingSymbol;
-        return IsMemberAccessible(containingMember);
+        ISymbol? containingMember = parameter.NullableContainingSymbol;
+        return containingMember != null && IsMemberAccessible(containingMember);
     }
 
     private static bool IsWhitelisted(string identifierName)
@@ -99,14 +99,17 @@ public sealed class NamePropertyWithAnAffirmativePhraseAnalyzer : DiagnosticAnal
 
     private static void ReportAt(SymbolAnalysisContext context, ISymbol symbol)
     {
-        Accessibility accessibility = symbol is IParameterSymbol parameterSymbol
-            ? parameterSymbol.ContainingSymbol.DeclaredAccessibility
+        Accessibility? accessibility = symbol is IParameterSymbol parameterSymbol
+            ? parameterSymbol.NullableContainingSymbol?.DeclaredAccessibility
             : symbol.DeclaredAccessibility;
 
-        string accessibilityText = accessibility.ToText().ToLowerInvariant();
-        string kindText = symbol.GetKind().ToLowerInvariant();
+        if (accessibility != null)
+        {
+            string accessibilityText = accessibility.Value.ToText().ToLowerInvariant();
+            string kindText = symbol.GetKind().ToLowerInvariant();
 
-        var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], accessibilityText, kindText, symbol.Name);
-        context.ReportDiagnostic(diagnostic);
+            var diagnostic = Diagnostic.Create(Rule, symbol.Locations[0], accessibilityText, kindText, symbol.Name);
+            context.ReportDiagnostic(diagnostic);
+        }
     }
 }

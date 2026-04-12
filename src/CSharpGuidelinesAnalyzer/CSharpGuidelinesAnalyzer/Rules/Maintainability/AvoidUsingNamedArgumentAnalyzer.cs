@@ -125,11 +125,15 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
 
         if (argument.Parameter != null && syntax.NameColon != null)
         {
-            string methodText = argument.Parameter.ContainingSymbol.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
-            Location location = syntax.NameColon.GetLocation();
+            string? methodText = argument.Parameter.NullableContainingSymbol?.ToDisplayString(SymbolDisplayFormat.CSharpShortErrorMessageFormat);
 
-            var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, methodText);
-            reportDiagnostic(diagnostic);
+            if (methodText != null)
+            {
+                Location location = syntax.NameColon.GetLocation();
+
+                var diagnostic = Diagnostic.Create(Rule, location, argument.Parameter.Name, methodText);
+                reportDiagnostic(diagnostic);
+            }
         }
     }
 }

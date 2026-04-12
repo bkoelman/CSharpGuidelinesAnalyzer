@@ -288,7 +288,7 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
             {
                 if (LinqOperatorsDeferred.Contains(operation.TargetMethod.Name))
                 {
-                    if (operation.TargetMethod.ContainingType.SpecialType != SpecialType.System_String)
+                    if (operation.TargetMethod.NullableContainingType is not { SpecialType: SpecialType.System_String })
                     {
                         Result.SetDeferred(operation.TargetMethod.Name);
                         return true;

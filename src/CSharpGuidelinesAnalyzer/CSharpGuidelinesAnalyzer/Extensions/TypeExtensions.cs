@@ -33,7 +33,7 @@ internal static class TypeExtensions
 
     private static bool IsPublicOperationInterface(Type type)
     {
-        return type.GetTypeInfo().IsInterface && type.GetTypeInfo().IsPublic && type.Name.EndsWith("Operation", StringComparison.Ordinal);
+        return type is { IsInterface: true, IsPublic: true } && type.Name.EndsWith("Operation", StringComparison.Ordinal);
     }
 
     public static IReadOnlyCollection<PropertyInfo> DeepGetOperationProperties(this IEnumerable<Type> operationInterfaces)
@@ -41,7 +41,7 @@ internal static class TypeExtensions
         var properties = new HashSet<PropertyInfo>();
 
         foreach (PropertyInfo property in operationInterfaces.SelectMany(@interface => GetPublicOperationInterfaces(@interface, true))
-            .SelectMany(operationInterface => operationInterface.GetTypeInfo().DeclaredProperties))
+            .SelectMany(operationInterface => operationInterface.GetProperties()))
         {
             properties.Add(property);
         }
@@ -62,6 +62,6 @@ internal static class TypeExtensions
 
     private static bool IsGenericEnumerable(Type type)
     {
-        return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
     }
 }

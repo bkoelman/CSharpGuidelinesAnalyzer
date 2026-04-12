@@ -33,7 +33,7 @@ public sealed class AvoidBooleanParameterAnalyzer : DiagnosticAnalyzer
     {
         var parameter = (IParameterSymbol)context.Symbol;
 
-        if (parameter.ContainingSymbol.IsDeconstructor() || parameter.IsSynthesized())
+        if (parameter.NullableContainingSymbol.IsDeconstructor() || parameter.IsSynthesized())
         {
             return;
         }
@@ -46,17 +46,17 @@ public sealed class AvoidBooleanParameterAnalyzer : DiagnosticAnalyzer
 
     private static bool IsParameterAccessible(IParameterSymbol parameter)
     {
-        ISymbol containingMember = parameter.ContainingSymbol;
+        ISymbol? containingMember = parameter.NullableContainingSymbol;
 
-        return containingMember.DeclaredAccessibility != Accessibility.Private && containingMember.IsSymbolAccessibleFromRoot();
+        return containingMember != null && containingMember.DeclaredAccessibility != Accessibility.Private && containingMember.IsSymbolAccessibleFromRoot();
     }
 
     private static void AnalyzeBooleanParameter(IParameterSymbol parameter, SymbolAnalysisContext context)
     {
-        ISymbol containingMember = parameter.ContainingSymbol;
+        ISymbol? containingMember = parameter.NullableContainingSymbol;
 
-        if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) && !parameter.IsInterfaceImplementation() &&
-            !IsDisposablePattern(parameter))
+        if (containingMember is { IsOverride: false } && !containingMember.HidesBaseMember(context.CancellationToken) &&
+            !parameter.IsInterfaceImplementation() && !IsDisposablePattern(parameter))
         {
             var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name, parameter.Type);
             context.ReportDiagnostic(diagnostic);
@@ -65,7 +65,7 @@ public sealed class AvoidBooleanParameterAnalyzer : DiagnosticAnalyzer
 
     private static bool IsDisposablePattern(IParameterSymbol parameter)
     {
-        if (parameter is { Name: "disposing", ContainingSymbol: IMethodSymbol { Name: "Dispose" } containingMethod })
+        if (parameter is { Name: "disposing", NullableContainingSymbol: IMethodSymbol { Name: "Dispose" } containingMethod })
         {
             if (containingMethod.IsVirtual && containingMethod.DeclaredAccessibility == Accessibility.Protected)
             {

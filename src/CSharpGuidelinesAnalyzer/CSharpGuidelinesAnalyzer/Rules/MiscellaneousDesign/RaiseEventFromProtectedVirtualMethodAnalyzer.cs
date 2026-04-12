@@ -154,7 +154,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
 
     private static void AnalyzeMethodSignature(IMethodSymbol method, IEventSymbol @event, OperationAnalysisContext context)
     {
-        if (!method.ContainingType.IsSealed && !method.IsStatic && method.MethodKind != MethodKind.ExplicitInterfaceImplementation)
+        if (method is { NullableContainingType.IsSealed: false, IsStatic: false } && method.MethodKind != MethodKind.ExplicitInterfaceImplementation)
         {
             if (!method.IsVirtual || !IsProtected(method))
             {

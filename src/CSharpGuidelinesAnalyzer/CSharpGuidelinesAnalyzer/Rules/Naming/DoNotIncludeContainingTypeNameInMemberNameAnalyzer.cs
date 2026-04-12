@@ -39,9 +39,9 @@ public sealed class DoNotIncludeContainingTypeNameInMemberNameAnalyzer : Diagnos
             return;
         }
 
-        string typeName = context.Symbol.ContainingType.Name;
+        string? typeName = context.Symbol.NullableContainingType?.Name;
 
-        if (typeName.Length < 2 || context.Symbol.IsPropertyOrEventAccessor())
+        if (typeName == null || typeName.Length < 2 || context.Symbol.IsPropertyOrEventAccessor())
         {
             return;
         }

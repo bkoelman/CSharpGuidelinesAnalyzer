@@ -20,7 +20,7 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
 
-    private static readonly PropertyInfo? IsRefLikeTypeProperty = typeof(ITypeSymbol).GetRuntimeProperty("IsRefLikeType");
+    private static readonly PropertyInfo? IsRefLikeTypeProperty = typeof(ITypeSymbol).GetProperty("IsRefLikeType");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -36,7 +36,7 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
     {
         var parameter = (IParameterSymbol)context.Symbol;
 
-        if (parameter.ContainingSymbol.IsDeconstructor() || parameter.IsSynthesized())
+        if (parameter.NullableContainingSymbol.IsDeconstructor() || parameter.IsSynthesized())
         {
             return;
         }
@@ -56,7 +56,7 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
 
     private static bool IsOutParameterInTryMethod(IParameterSymbol parameter)
     {
-        return parameter is { RefKind: RefKind.Out, ContainingSymbol: IMethodSymbol method } && method.Name.StartsWith("Try", StringComparison.Ordinal);
+        return parameter is { RefKind: RefKind.Out, NullableContainingSymbol: IMethodSymbol method } && method.Name.StartsWith("Try", StringComparison.Ordinal);
     }
 
     private static void AnalyzeRefParameter(IParameterSymbol parameter, SymbolAnalysisContext context)
@@ -66,9 +66,9 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
             return;
         }
 
-        ISymbol containingMember = parameter.ContainingSymbol;
+        ISymbol? containingMember = parameter.NullableContainingSymbol;
 
-        if (!containingMember.IsOverride && !containingMember.HidesBaseMember(context.CancellationToken) && !parameter.IsInterfaceImplementation())
+        if (containingMember is { IsOverride: false } && !containingMember.HidesBaseMember(context.CancellationToken) && !parameter.IsInterfaceImplementation())
         {
             var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name);
             context.ReportDiagnostic(diagnostic);

@@ -141,7 +141,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
     private static IArgumentOperation? GetArgsArgument(IInvocationOperation invocation, INamedTypeSymbol systemEventArgs)
     {
         return invocation.Arguments.FirstOrDefault(argument =>
-            !string.IsNullOrEmpty(argument.Parameter?.Name) && IsEventArgs(argument.Parameter?.Type, systemEventArgs));
+            argument.Parameter?.Name is not (null or "") && IsEventArgs(argument.Parameter.Type, systemEventArgs));
     }
 
     private static bool IsEventArgs(ITypeSymbol? type, INamedTypeSymbol systemEventArgs)

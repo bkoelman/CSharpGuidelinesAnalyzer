@@ -1,6 +1,5 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
-using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -119,7 +118,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static void RemoveRange<T>([ItemNotNull] ICollection<T> source, [ItemNotNull] ICollection<T> elementsToRemove)
+    private static void RemoveRange<T>(ICollection<T> source, ICollection<T> elementsToRemove)
     {
         foreach (T elementToRemove in elementsToRemove)
         {

@@ -39,8 +39,6 @@
   <ItemGroup>
     <PackageReference Include="CSharpGuidelinesAnalyzer" Version="3.8.5" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.147" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" PrivateAssets="all" />
     <PackageReference Include="Polyfill" Version="10.0.0" PrivateAssets="all" />
   </ItemGroup>

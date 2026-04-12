@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer;
@@ -41,7 +40,7 @@ internal readonly struct BaseAnalysisContext<TTarget>
         reportDiagnosticCallback(diagnostic);
     }
 
-    public BaseAnalysisContext<TOther> WithTarget<TOther>([NotNull] TOther target)
+    public BaseAnalysisContext<TOther> WithTarget<TOther>(TOther target)
     {
         return new BaseAnalysisContext<TOther>(Compilation, Options, CancellationToken, reportDiagnosticCallback, target);
     }

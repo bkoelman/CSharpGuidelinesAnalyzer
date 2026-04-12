@@ -117,18 +117,16 @@ public sealed class DoNotUseAbbreviationInIdentifierNameAnalyzer : DiagnosticAna
     {
         var parameter = (IParameterSymbol)context.Symbol;
 
-        if (parameter.ContainingSymbol.IsOverride || parameter.IsSynthesized())
+        if (parameter.NullableContainingSymbol is { IsOverride: false } && !parameter.IsSynthesized())
         {
-            return;
-        }
+            if (IsBlacklistedOrSingleLetter(parameter.Name) && !parameter.IsInterfaceImplementation())
+            {
+                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name);
+                context.ReportDiagnostic(diagnostic);
+            }
 
-        if (IsBlacklistedOrSingleLetter(parameter.Name) && !parameter.IsInterfaceImplementation())
-        {
-            var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Kind, parameter.Name);
-            context.ReportDiagnostic(diagnostic);
+            AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
         }
-
-        AnalyzeTypeAsTuple(parameter.Type, context.ReportDiagnostic);
     }
 
     private static void AnalyzeVariableDeclarator(OperationAnalysisContext context)

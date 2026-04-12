@@ -86,7 +86,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
 
     private static bool HasInternalTypeInHierarchy(ISymbol symbol)
     {
-        ISymbol container = symbol;
+        ISymbol? container = symbol;
 
         while (container != null)
         {
@@ -95,7 +95,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
                 return true;
             }
 
-            container = container.ContainingType;
+            container = container.NullableContainingType;
         }
 
         return false;
