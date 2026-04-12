@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Text;
@@ -9,8 +8,6 @@ namespace CSharpGuidelinesAnalyzer.Extensions;
 /// <summary />
 internal static class OperationExtensions
 {
-    private static readonly PropertyInfo? OperationSemanticModelProperty = typeof(IOperation).GetProperty("SemanticModel");
-
     public static IdentifierInfo? TryGetIdentifierInfo(this IOperation? identifier)
     {
         var visitor = new IdentifierVisitor();
@@ -170,16 +167,6 @@ internal static class OperationExtensions
     {
         SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
         return model.GetEnclosingSymbol(operation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
-    }
-
-    public static SemanticModel GetSemanticModel(this IOperation operation, Compilation compilation)
-    {
-        if (OperationSemanticModelProperty != null)
-        {
-            return (SemanticModel)OperationSemanticModelProperty.GetMethod.Invoke(operation, []);
-        }
-
-        return compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
     }
 
     private sealed class IdentifierVisitor : OperationVisitor<object?, IdentifierInfo>

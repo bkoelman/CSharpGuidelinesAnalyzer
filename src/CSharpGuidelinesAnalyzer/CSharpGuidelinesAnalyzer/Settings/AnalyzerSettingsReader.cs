@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Settings;
@@ -7,8 +6,6 @@ namespace CSharpGuidelinesAnalyzer.Settings;
 internal sealed class AnalyzerSettingsReader(AnalyzerOptions options, CancellationToken cancellationToken)
 {
     private const string EditorConfigFileName = ".editorconfig";
-
-    private readonly AnalyzerConfigOptionsProviderShim analyzerConfigOptionsProvider = new(options);
 
     private readonly AnalyzerSettingsRegistry settingsRegistry = AnalyzerSettingsProvider.LoadSettings(options, cancellationToken);
 
@@ -18,7 +15,7 @@ internal sealed class AnalyzerSettingsReader(AnalyzerOptions options, Cancellati
         ArgumentNullException.ThrowIfNull(key);
 
         string keyName = GetEditorConfigKeyName(key);
-        string? textValue = TryGetValue(syntaxTree, keyName);
+        string? textValue = TryGetOptionValue(syntaxTree, keyName);
 
         if (textValue != null)
         {
@@ -39,48 +36,9 @@ internal sealed class AnalyzerSettingsReader(AnalyzerOptions options, Cancellati
         return string.Join(".", "dotnet_diagnostic", key.Rule, key.NameInSnakeCase);
     }
 
-    private string? TryGetValue(SyntaxTree syntaxTree, string keyPath)
+    private string? TryGetOptionValue(SyntaxTree syntaxTree, string key)
     {
-        return analyzerConfigOptionsProvider.TryGetOptionValue(syntaxTree, keyPath, out string? value) ? value : null;
-    }
-
-    private sealed class AnalyzerConfigOptionsProviderShim(AnalyzerOptions options)
-    {
-        private static readonly PropertyInfo? AnalyzerConfigOptionsProviderProperty = typeof(AnalyzerOptions).GetProperty("AnalyzerConfigOptionsProvider");
-
-        private static readonly MethodInfo? GetOptionsMethod =
-            AnalyzerConfigOptionsProviderProperty?.PropertyType.GetMethod("GetOptions", [typeof(SyntaxTree)]);
-
-        private static readonly MethodInfo? TryGetValueMethod = GetOptionsMethod?.ReturnType.GetMethod("TryGetValue", [
-            typeof(string),
-            typeof(string).MakeByRefType()
-        ]);
-
-        private readonly object? providerInstance = AnalyzerConfigOptionsProviderProperty?.GetValue(options);
-
-        public bool TryGetOptionValue(SyntaxTree syntaxTree, string key, out string? value)
-        {
-            if (providerInstance != null && GetOptionsMethod != null && TryGetValueMethod != null)
-            {
-                object? options = GetOptionsMethod.Invoke(providerInstance, [syntaxTree]);
-
-                object?[] parameters =
-                [
-                    key,
-                    null
-                ];
-
-                bool succeeded = (bool)TryGetValueMethod.Invoke(options, parameters);
-
-                if (succeeded)
-                {
-                    value = (string?)parameters[1];
-                    return true;
-                }
-            }
-
-            value = null;
-            return false;
-        }
+        AnalyzerConfigOptions analyzerConfigOptions = options.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
+        return analyzerConfigOptions.TryGetValue(key, out string? value) ? value : null;
     }
 }

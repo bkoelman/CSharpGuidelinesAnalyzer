@@ -59,7 +59,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeEventInvocation(IInvocationOperation invocation, OperationAnalysisContext context, INamedTypeSymbol systemEventArgs)
     {
-        bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
+        bool? targetsStaticEvent = IsStaticEvent(invocation.Instance);
 
         if (targetsStaticEvent != null)
         {
@@ -75,9 +75,9 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool? IsStaticEvent(IOperation? operation, Compilation compilation)
+    private static bool? IsStaticEvent(IOperation? operation)
     {
-        return IsStaticEventInvocation(operation) ?? IsStaticEventInvocationUsingNullConditionalAccessOperator(operation, compilation);
+        return IsStaticEventInvocation(operation) ?? IsStaticEventInvocationUsingNullConditionalAccessOperator(operation);
     }
 
     private static bool? IsStaticEventInvocation(IOperation? operation)
@@ -90,13 +90,11 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator(IOperation? operation, Compilation compilation)
+    private static bool? IsStaticEventInvocationUsingNullConditionalAccessOperator(IOperation? operation)
     {
         if (operation is IConditionalAccessInstanceOperation)
         {
-            SemanticModel model = operation.GetSemanticModel(compilation);
-
-            if (model.GetSymbolInfo(operation.Syntax).Symbol is IEventSymbol eventSymbol)
+            if (operation.SemanticModel?.GetSymbolInfo(operation.Syntax).Symbol is IEventSymbol eventSymbol)
             {
                 return eventSymbol.IsStatic;
             }

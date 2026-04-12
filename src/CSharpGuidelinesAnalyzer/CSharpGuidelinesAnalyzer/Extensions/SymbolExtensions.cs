@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,19 +11,6 @@ internal static class SymbolExtensions
     private static readonly ImmutableArray<string> UnitTestFrameworkMethodAttributeNames = ImmutableArray.Create(
         "Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute", "Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethodAttribute",
         "Xunit.FactAttribute", "Xunit.TheoryAttribute", "NUnit.Framework.TestAttribute", "NUnit.Framework.TestCaseAttribute", "MbUnit.Framework.TestAttribute");
-
-    private static readonly Lazy<IEqualityComparer<ISymbol?>> SymbolComparerLazy = new(() =>
-    {
-        Type? comparerType = typeof(ISymbol).Assembly.GetType("Microsoft.CodeAnalysis.SymbolEqualityComparer");
-        FieldInfo? includeField = comparerType?.GetField("IncludeNullability");
-
-        if (includeField != null && includeField.GetValue(null) is IEqualityComparer<ISymbol?> comparer)
-        {
-            return comparer;
-        }
-
-        return EqualityComparer<ISymbol?>.Default;
-    });
 
     public static bool HidesBaseMember(this ISymbol member, CancellationToken cancellationToken)
     {
@@ -382,6 +368,6 @@ internal static class SymbolExtensions
 
     public static bool IsEqualTo(this ISymbol? first, ISymbol? second)
     {
-        return SymbolComparerLazy.Value.Equals(first, second);
+        return SymbolEqualityComparer.IncludeNullability.Equals(first, second);
     }
 }

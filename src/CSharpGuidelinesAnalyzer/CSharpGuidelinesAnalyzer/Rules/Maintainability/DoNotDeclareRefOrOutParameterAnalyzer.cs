@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -19,8 +18,6 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
 
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
         Description, Category.GetHelpLinkUri(DiagnosticId));
-
-    private static readonly PropertyInfo? IsRefLikeTypeProperty = typeof(ITypeSymbol).GetProperty("IsRefLikeType");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
@@ -77,6 +74,6 @@ public sealed class DoNotDeclareRefOrOutParameterAnalyzer : DiagnosticAnalyzer
 
     private static bool IsRefStruct(ITypeSymbol type)
     {
-        return IsRefLikeTypeProperty != null && type.TypeKind == TypeKind.Struct && (bool)IsRefLikeTypeProperty.GetValue(type);
+        return type is { TypeKind: TypeKind.Struct, IsRefLikeType: true };
     }
 }

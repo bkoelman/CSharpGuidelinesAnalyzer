@@ -70,8 +70,7 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
 
     private static IEventSymbol? TryGetEvent(IOperation operation, IMethodSymbol? containingMethod, OperationAnalysisContext context)
     {
-        return TryGetEventForInvocation(operation) ??
-            TryGetEventForNullConditionalAccessInvocation(operation, context.Compilation, context.CancellationToken) ??
+        return TryGetEventForInvocation(operation) ?? TryGetEventForNullConditionalAccessInvocation(operation, context.CancellationToken) ??
             TryGetEventForLocalCopy(operation, containingMethod, context);
     }
 
@@ -81,13 +80,11 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         return eventReference?.Event;
     }
 
-    private static IEventSymbol? TryGetEventForNullConditionalAccessInvocation(IOperation operation, Compilation compilation,
-        CancellationToken cancellationToken)
+    private static IEventSymbol? TryGetEventForNullConditionalAccessInvocation(IOperation operation, CancellationToken cancellationToken)
     {
         if (operation is IConditionalAccessInstanceOperation)
         {
-            SemanticModel model = operation.GetSemanticModel(compilation);
-            return model.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
+            return operation.SemanticModel?.GetSymbolInfo(operation.Syntax, cancellationToken).Symbol as IEventSymbol;
         }
 
         return null;

@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Reflection;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -33,7 +32,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
 
     private static void AnalyzeEventAssignment(OperationAnalysisContext context)
     {
-        var assignment = new PortableEventAssignmentOperation((IEventAssignmentOperation)context.Operation);
+        var assignment = (IEventAssignmentOperation)context.Operation;
 
         if (!assignment.Adds)
         {
@@ -49,13 +48,12 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeEventAssignmentMethod(IMethodReferenceOperation binding, PortableEventAssignmentOperation assignment,
-        OperationAnalysisContext context)
+    private static void AnalyzeEventAssignmentMethod(IMethodReferenceOperation binding, IEventAssignmentOperation assignment, OperationAnalysisContext context)
     {
-        if (assignment.EventReference != null)
+        if (assignment.EventReference is IEventReferenceOperation eventReference)
         {
-            string eventTargetName = GetEventTargetName(assignment.EventReference, binding.Method);
-            string handlerNameExpected = string.Concat(eventTargetName, "On", assignment.EventReference.Event.Name);
+            string eventTargetName = GetEventTargetName(eventReference, binding.Method);
+            string handlerNameExpected = string.Concat(eventTargetName, "On", eventReference.Event.Name);
 
             string handlerNameActual = binding.Method.Name;
 
@@ -64,7 +62,7 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
                 Location location = binding.Syntax.GetLocation();
                 string kindText = binding.Method.GetKind();
 
-                var diagnostic = Diagnostic.Create(Rule, location, kindText, handlerNameActual, assignment.EventReference.Event.Name, handlerNameExpected);
+                var diagnostic = Diagnostic.Create(Rule, location, kindText, handlerNameActual, eventReference.Event.Name, handlerNameExpected);
                 context.ReportDiagnostic(diagnostic);
             }
         }
@@ -123,41 +121,5 @@ public sealed class PrefixEventHandlersWithOnAnalyzer : DiagnosticAnalyzer
         }
 
         return string.Empty;
-    }
-
-    private sealed class PortableEventAssignmentOperation
-    {
-        private static readonly MethodInfo EventReferencePropertyGetMethod = ResolveEventReferencePropertyGetMethod();
-
-        private readonly IEventAssignmentOperation innerOperation;
-
-        public IEventReferenceOperation? EventReference => InvokeEventReferencePropertyGetMethod();
-
-        public IOperation HandlerValue => innerOperation.HandlerValue;
-
-        public bool Adds => innerOperation.Adds;
-
-        public PortableEventAssignmentOperation(IEventAssignmentOperation operation)
-        {
-            ArgumentNullException.ThrowIfNull(operation);
-            innerOperation = operation;
-        }
-
-        private static MethodInfo ResolveEventReferencePropertyGetMethod()
-        {
-            // Breaking change in Microsoft.CodeAnalysis v2.9:
-            // type of IEventAssignmentOperation.EventReference was changed from IEventReferenceOperation to IOperation.
-
-            PropertyInfo? propertyInfo = typeof(IEventAssignmentOperation).GetProperty("EventReference");
-            return propertyInfo!.GetMethod;
-        }
-
-        private IEventReferenceOperation? InvokeEventReferencePropertyGetMethod()
-        {
-            object? propertyValue = EventReferencePropertyGetMethod.Invoke(innerOperation, []);
-            Type propertyType = propertyValue.GetType();
-
-            return typeof(IEventReferenceOperation).IsAssignableFrom(propertyType) ? (IEventReferenceOperation)propertyValue : null;
-        }
     }
 }

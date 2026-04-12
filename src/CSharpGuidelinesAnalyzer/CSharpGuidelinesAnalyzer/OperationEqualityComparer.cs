@@ -126,7 +126,7 @@ internal sealed class OperationEqualityComparer
             var leftSymbol = (ISymbol?)leftValue;
             var rightSymbol = (ISymbol?)rightValue;
 
-            return leftSymbol.IsEqualTo(rightSymbol);
+            return SymbolEqualityComparer.IncludeNullability.Equals(leftSymbol, rightSymbol);
         }
 
         if (OperationInterface.IsAssignableFrom(type))
