@@ -253,32 +253,32 @@ internal sealed class NullCheckScanner
 
         private static IPropertySymbol? ResolveNullableHasValueProperty(Compilation compilation)
         {
-            INamedTypeSymbol? nullableType = KnownTypes.SystemNullableT(compilation);
-            return nullableType?.GetMembers("HasValue").OfType<IPropertySymbol>().FirstOrDefault();
+            INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+            return nullableType.GetMembers("HasValue").OfType<IPropertySymbol>().FirstOrDefault();
         }
 
         private static IPropertySymbol? ResolveNullableValueProperty(Compilation compilation)
         {
-            INamedTypeSymbol? nullableType = KnownTypes.SystemNullableT(compilation);
-            return nullableType?.GetMembers("Value").OfType<IPropertySymbol>().FirstOrDefault();
+            INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+            return nullableType.GetMembers("Value").OfType<IPropertySymbol>().FirstOrDefault();
         }
 
         private IMethodSymbol? ResolveObjectReferenceEquals(Compilation compilation)
         {
-            INamedTypeSymbol? objectType = KnownTypes.SystemObject(compilation);
-            return objectType?.GetMembers("ReferenceEquals").OfType<IMethodSymbol>().FirstOrDefault();
+            INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
+            return objectType.GetMembers("ReferenceEquals").OfType<IMethodSymbol>().FirstOrDefault();
         }
 
         private IMethodSymbol? ResolveStaticObjectEquals(Compilation compilation)
         {
-            INamedTypeSymbol? objectType = KnownTypes.SystemObject(compilation);
-            return objectType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault(method => method.IsStatic);
+            INamedTypeSymbol objectType = KnownTypes.SystemObject(compilation);
+            return objectType.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault(method => method.IsStatic);
         }
 
         private IMethodSymbol? ResolveNullableEquals(Compilation compilation)
         {
-            INamedTypeSymbol? nullableType = KnownTypes.SystemNullableT(compilation);
-            return nullableType?.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
+            INamedTypeSymbol nullableType = KnownTypes.SystemNullableT(compilation);
+            return nullableType.GetMembers("Equals").OfType<IMethodSymbol>().FirstOrDefault();
         }
 
         private IMethodSymbol? ResolveEqualityComparerEquals(Compilation compilation)
@@ -288,8 +288,7 @@ internal sealed class NullCheckScanner
         }
     }
 
-    private readonly struct ArgumentsInfo(
-        IOperation leftArgument, IOperation rightArgument, NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
+    private readonly struct ArgumentsInfo(IOperation leftArgument, IOperation rightArgument, NullCheckMethod nullCheckMethod, NullCheckOperand nullCheckOperand)
     {
         public IOperation LeftArgument { get; } = leftArgument;
 

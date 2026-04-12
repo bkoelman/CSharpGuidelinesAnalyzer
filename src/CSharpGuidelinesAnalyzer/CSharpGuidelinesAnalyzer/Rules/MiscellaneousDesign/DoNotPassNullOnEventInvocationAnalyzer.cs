@@ -57,8 +57,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         AnalyzeEventInvocation(invocation, context, systemEventArgs);
     }
 
-    private static void AnalyzeEventInvocation(IInvocationOperation invocation, OperationAnalysisContext context,
-        INamedTypeSymbol systemEventArgs)
+    private static void AnalyzeEventInvocation(IInvocationOperation invocation, OperationAnalysisContext context, INamedTypeSymbol systemEventArgs)
     {
         bool? targetsStaticEvent = IsStaticEvent(invocation.Instance, context.Compilation);
 
@@ -126,8 +125,7 @@ public sealed class DoNotPassNullOnEventInvocationAnalyzer : DiagnosticAnalyzer
         return argument != null && argument.Parameter?.Type.SpecialType == SpecialType.System_Object ? argument : null;
     }
 
-    private static void AnalyzeArgsArgument(IInvocationOperation invocation, INamedTypeSymbol systemEventArgs,
-        OperationAnalysisContext context)
+    private static void AnalyzeArgsArgument(IInvocationOperation invocation, INamedTypeSymbol systemEventArgs, OperationAnalysisContext context)
     {
         IArgumentOperation? argsArgument = GetArgsArgument(invocation, systemEventArgs);
 

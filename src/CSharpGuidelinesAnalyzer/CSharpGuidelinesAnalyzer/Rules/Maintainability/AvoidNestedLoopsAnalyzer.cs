@@ -75,17 +75,17 @@ public sealed class AvoidNestedLoopsAnalyzer : DiagnosticAnalyzer
             return node.Statement;
         }
 
-        public override StatementSyntax? VisitForStatement(ForStatementSyntax node)
+        public override StatementSyntax VisitForStatement(ForStatementSyntax node)
         {
             return node.Statement;
         }
 
-        public override StatementSyntax? VisitForEachStatement(ForEachStatementSyntax node)
+        public override StatementSyntax VisitForEachStatement(ForEachStatementSyntax node)
         {
             return node.Statement;
         }
 
-        public override StatementSyntax? VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
+        public override StatementSyntax VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
         {
             return node.Statement;
         }

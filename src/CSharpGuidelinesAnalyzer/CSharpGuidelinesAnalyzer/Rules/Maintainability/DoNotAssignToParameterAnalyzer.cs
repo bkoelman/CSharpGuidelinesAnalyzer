@@ -251,8 +251,7 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         CollectAssignedStructParameters(context.Target, bodyOperation, collector);
     }
 
-    private static void CollectAssignedStructParameters(ICollection<IParameterSymbol> parameters, IOperation bodyOperation,
-        DiagnosticCollector collector)
+    private static void CollectAssignedStructParameters(ICollection<IParameterSymbol> parameters, IOperation bodyOperation, DiagnosticCollector collector)
     {
         var walker = new AssignmentWalker(parameters);
         walker.Visit(bodyOperation);

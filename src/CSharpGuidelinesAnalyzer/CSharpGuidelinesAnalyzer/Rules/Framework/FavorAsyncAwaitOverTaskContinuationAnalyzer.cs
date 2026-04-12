@@ -88,8 +88,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
             ContinueWithMethodGroup = GetTaskContinueWithMethodGroup(TaskType, GenericTaskType);
         }
 
-        private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup(INamedTypeSymbol? taskType,
-            INamedTypeSymbol? genericTaskType)
+        private static ImmutableArray<ISymbol> GetTaskContinueWithMethodGroup(INamedTypeSymbol? taskType, INamedTypeSymbol? genericTaskType)
         {
             ImmutableArray<ISymbol> taskContinueWithMethodGroup = taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
             ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;

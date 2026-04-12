@@ -106,7 +106,7 @@ public sealed class NamespaceShouldMatchAssemblyNameAnalyzer : DiagnosticAnalyze
 
         private readonly Stack<string> namespaceNames = new();
 
-        private SymbolAnalysisContext context;
+        private readonly SymbolAnalysisContext context;
 
         private string CurrentNamespaceName
         {

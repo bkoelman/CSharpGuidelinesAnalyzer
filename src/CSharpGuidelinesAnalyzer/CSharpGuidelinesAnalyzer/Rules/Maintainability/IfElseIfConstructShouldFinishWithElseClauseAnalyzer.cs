@@ -87,7 +87,7 @@ public sealed class IfElseIfConstructShouldFinishWithElseClauseAnalyzer : Diagno
     {
         private readonly IDictionary<Location, IConditionalOperation> ifStatementsLeftToAnalyze;
 
-        private OperationBlockAnalysisContext context;
+        private readonly OperationBlockAnalysisContext context;
 
         public IfStatementAnalyzer(IDictionary<Location, IConditionalOperation> ifStatementsToAnalyze, OperationBlockAnalysisContext context)
         {

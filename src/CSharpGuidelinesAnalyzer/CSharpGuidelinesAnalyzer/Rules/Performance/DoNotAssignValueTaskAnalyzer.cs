@@ -145,8 +145,7 @@ public sealed class DoNotAssignValueTaskAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static void AnalyzeRightHandSideType(AssignmentInfo assignmentInfo, IList<INamedTypeSymbol> valueTaskTypes,
-        SyntaxNodeAnalysisContext context)
+    private static void AnalyzeRightHandSideType(AssignmentInfo assignmentInfo, IList<INamedTypeSymbol> valueTaskTypes, SyntaxNodeAnalysisContext context)
     {
         if (IsValueTask(assignmentInfo.RightType, valueTaskTypes))
         {

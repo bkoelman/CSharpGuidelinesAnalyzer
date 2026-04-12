@@ -135,8 +135,7 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         return tagIndex != -1;
     }
 
-    private static void AnalyzeParameters(ImmutableArray<IParameterSymbol> parameters, string? documentationXml,
-        SymbolAnalysisContext context)
+    private static void AnalyzeParameters(ImmutableArray<IParameterSymbol> parameters, string? documentationXml, SymbolAnalysisContext context)
     {
         context.CancellationToken.ThrowIfCancellationRequested();
 
@@ -182,8 +181,8 @@ public sealed class DocumentInternalMemberAnalyzer : DiagnosticAnalyzer
         return parameterNames;
     }
 
-    private static void AnalyzeMissingParameters(ImmutableArray<IParameterSymbol> parameters,
-        ISet<string> parameterNamesInDocumentation, SymbolAnalysisContext context)
+    private static void AnalyzeMissingParameters(ImmutableArray<IParameterSymbol> parameters, ISet<string> parameterNamesInDocumentation,
+        SymbolAnalysisContext context)
     {
         foreach (IParameterSymbol parameter in parameters)
         {

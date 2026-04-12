@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 

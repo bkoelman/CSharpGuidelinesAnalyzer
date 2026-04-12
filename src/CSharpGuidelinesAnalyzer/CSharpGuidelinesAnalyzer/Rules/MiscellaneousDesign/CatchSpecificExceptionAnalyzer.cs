@@ -70,8 +70,7 @@ public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static ISymbol? TryGetExceptionType(CatchDeclarationSyntax? declaration, SemanticModel model,
-        CancellationToken cancellationToken)
+    private static ISymbol? TryGetExceptionType(CatchDeclarationSyntax? declaration, SemanticModel model, CancellationToken cancellationToken)
     {
         return declaration != null ? model.GetSymbolInfo(declaration.Type, cancellationToken).Symbol : null;
     }

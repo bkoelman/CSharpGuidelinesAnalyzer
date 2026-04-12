@@ -1,7 +1,6 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CSharpGuidelinesAnalyzer.Rules.Maintainability;
@@ -77,8 +76,7 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
         }
     }
 
-    private static bool HasCallerArgumentExpressionAttribute(IParameterSymbol parameter,
-        INamedTypeSymbol? callerArgumentExpressionAttributeType)
+    private static bool HasCallerArgumentExpressionAttribute(IParameterSymbol parameter, INamedTypeSymbol? callerArgumentExpressionAttributeType)
     {
         return callerArgumentExpressionAttributeType != null &&
             parameter.GetAttributes().Any(attr => Equals(attr.AttributeClass, callerArgumentExpressionAttributeType));

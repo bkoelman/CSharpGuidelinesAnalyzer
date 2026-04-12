@@ -105,8 +105,8 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport(string operationName,
-        ISymbol containingMember, string memberName)
+    private static (DiagnosticDescriptor rule, object[] messageArguments) GetArgumentsForReport(string operationName, ISymbol containingMember,
+        string memberName)
     {
         switch (operationName)
         {
@@ -236,7 +236,6 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
                 {
                     ReportDiagnosticAt(returnStatement, result.DeferredOperationName, context);
                 }
-
             }
         }
 

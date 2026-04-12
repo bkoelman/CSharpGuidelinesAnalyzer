@@ -104,8 +104,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
         return false;
     }
 
-    private static bool DoReportForMatchingRightOperandInNullableComparison(IOperation rightOperand, NullCheckScanner scanner,
-        IOperation leftTarget)
+    private static bool DoReportForMatchingRightOperandInNullableComparison(IOperation rightOperand, NullCheckScanner scanner, IOperation leftTarget)
     {
         if (rightOperand is IBinaryOperation rightOperation && NumericComparisonOperators.Contains(rightOperation.OperatorKind))
         {

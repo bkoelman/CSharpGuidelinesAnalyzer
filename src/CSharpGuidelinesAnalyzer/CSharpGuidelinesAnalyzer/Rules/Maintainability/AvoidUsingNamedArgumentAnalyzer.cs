@@ -70,8 +70,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         return parameterUsageMap;
     }
 
-    private static bool RequiresReport(IArgumentOperation argument, IInvocationOperation invocation,
-        IDictionary<IParameterSymbol, bool> parameterUsageMap)
+    private static bool RequiresReport(IArgumentOperation argument, IInvocationOperation invocation, IDictionary<IParameterSymbol, bool> parameterUsageMap)
     {
         if (RequiresAnalysis(argument) && argument.Parameter != null)
         {
@@ -102,8 +101,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
         return method.Parameters.TakeWhile(nextParameter => !nextParameter.IsEqualTo(parameter)).ToList();
     }
 
-    private static bool AreParametersUsed(ICollection<IParameterSymbol> parameters,
-        IDictionary<IParameterSymbol, bool> parameterUsageMap)
+    private static bool AreParametersUsed(ICollection<IParameterSymbol> parameters, IDictionary<IParameterSymbol, bool> parameterUsageMap)
     {
         foreach (IParameterSymbol parameter in parameters)
         {

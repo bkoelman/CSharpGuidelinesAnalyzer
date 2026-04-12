@@ -51,8 +51,7 @@ public sealed class UseUnderscoreForUnusedLambdaParameterAnalyzer : DiagnosticAn
         }
     }
 
-    private static void AnalyzeParameterUsage(ImmutableArray<IParameterSymbol> parameters, SyntaxNode bodySyntax,
-        SyntaxNodeAnalysisContext context)
+    private static void AnalyzeParameterUsage(ImmutableArray<IParameterSymbol> parameters, SyntaxNode bodySyntax, SyntaxNodeAnalysisContext context)
     {
         DataFlowAnalysis? dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.SemanticModel);
 

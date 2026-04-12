@@ -38,12 +38,9 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
 
     private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        INamedTypeSymbol? systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
+        INamedTypeSymbol systemBoolean = KnownTypes.SystemBoolean(startContext.Compilation);
 
-        if (systemBoolean != null)
-        {
-            startContext.SafeRegisterOperationAction(context => AnalyzeSwitchStatement(context, systemBoolean), OperationKind.Switch);
-        }
+        startContext.SafeRegisterOperationAction(context => AnalyzeSwitchStatement(context, systemBoolean), OperationKind.Switch);
     }
 
     private static void AnalyzeSwitchStatement(OperationAnalysisContext context, INamedTypeSymbol systemBoolean)
@@ -60,8 +57,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         AnalyzeSwitchExhaustiveness(switchStatement, systemBoolean, context);
     }
 
-    private static void AnalyzeSwitchExhaustiveness(ISwitchOperation switchStatement, INamedTypeSymbol systemBoolean,
-        OperationAnalysisContext context)
+    private static void AnalyzeSwitchExhaustiveness(ISwitchOperation switchStatement, INamedTypeSymbol systemBoolean, OperationAnalysisContext context)
     {
         var analysisContext = new SwitchAnalysisContext(switchStatement, systemBoolean, context);
 
@@ -141,8 +137,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         return caseClauseValues == null ? null : HasCaseClauseForExpectedValues(expectedValues, caseClauseValues);
     }
 
-    private static bool? HasCaseClauseForExpectedValues(ICollection<ISymbol?> expectedValues,
-        ICollection<ISymbol?> caseClauseValues)
+    private static bool? HasCaseClauseForExpectedValues(ICollection<ISymbol?> expectedValues, ICollection<ISymbol?> caseClauseValues)
     {
         foreach (ISymbol? expectedValue in expectedValues)
         {

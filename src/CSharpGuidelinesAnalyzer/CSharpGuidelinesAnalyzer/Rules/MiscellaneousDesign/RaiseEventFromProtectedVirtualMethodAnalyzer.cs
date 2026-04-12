@@ -93,16 +93,14 @@ public sealed class RaiseEventFromProtectedVirtualMethodAnalyzer : DiagnosticAna
         return null;
     }
 
-    private static IEventSymbol? TryGetEventForLocalCopy(IOperation operation, IMethodSymbol? containingMethod,
-        OperationAnalysisContext context)
+    private static IEventSymbol? TryGetEventForLocalCopy(IOperation operation, IMethodSymbol? containingMethod, OperationAnalysisContext context)
     {
         return operation is ILocalReferenceOperation local && containingMethod != null
             ? TryGetEventFromMethodStatements(containingMethod, local.Local, context)
             : null;
     }
 
-    private static IEventSymbol? TryGetEventFromMethodStatements(IMethodSymbol containingMethod, ILocalSymbol local,
-        OperationAnalysisContext context)
+    private static IEventSymbol? TryGetEventFromMethodStatements(IMethodSymbol containingMethod, ILocalSymbol local, OperationAnalysisContext context)
     {
         IOperation? body = containingMethod.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
 

@@ -36,10 +36,9 @@ internal static class AnalysisContextExtensions
         analysisContext.RegisterOperationBlockAction(context => SkipInvalid(context, action));
     }
 
-    public static void SafeRegisterSymbolAction(this AnalysisContext analysisContext, Action<SymbolAnalysisContext> action,
-        params SymbolKind[] symbolKinds)
+    public static void SafeRegisterSymbolAction(this AnalysisContext analysisContext, Action<SymbolAnalysisContext> action, params SymbolKind[] symbolKinds)
     {
-        var symbolKindArray = ImmutableArray.Create(symbolKinds);
+        ImmutableArray<SymbolKind> symbolKindArray = ImmutableArray.Create(symbolKinds);
         analysisContext.SafeRegisterSymbolAction(action, symbolKindArray);
     }
 
@@ -59,12 +58,12 @@ internal static class AnalysisContextExtensions
                 }
                 else if (context.Node is LambdaExpressionSyntax lambdaSyntax)
                 {
-                    IMethodSymbol? methodSymbol = context.SemanticModel.GetSymbolInfo(lambdaSyntax).Symbol as IMethodSymbol;
+                    var methodSymbol = context.SemanticModel.GetSymbolInfo(lambdaSyntax).Symbol as IMethodSymbol;
                     SafeRegisterParametersAction(context, methodSymbol, action);
                 }
                 else if (context.Node is AnonymousMethodExpressionSyntax anonymousMethodSyntax)
                 {
-                    IMethodSymbol? methodSymbol = context.SemanticModel.GetSymbolInfo(anonymousMethodSyntax).Symbol as IMethodSymbol;
+                    var methodSymbol = context.SemanticModel.GetSymbolInfo(anonymousMethodSyntax).Symbol as IMethodSymbol;
                     SafeRegisterParametersAction(context, methodSymbol, action);
                 }
             }, ExtraParameterContainerSyntaxKinds);
@@ -84,7 +83,7 @@ internal static class AnalysisContextExtensions
                     _ => true, syntaxContext.CancellationToken);
 #pragma warning restore CS0618 // Type or member is obsolete
 
-                var safeAction = (SymbolAnalysisContext context) => SkipEmptyName(context, action);
+                Action<SymbolAnalysisContext> safeAction = context => SkipEmptyName(context, action);
                 safeAction(symbolContext);
             }
         }
@@ -108,14 +107,14 @@ internal static class AnalysisContextExtensions
         compilationStartAnalysisContext.RegisterOperationBlockAction(context => SkipInvalid(context, action));
     }
 
-    public static void SafeRegisterSymbolAction(this CompilationStartAnalysisContext compilationStartAnalysisContext,
-        Action<SymbolAnalysisContext> action, params SymbolKind[] symbolKinds)
+    public static void SafeRegisterSymbolAction(this CompilationStartAnalysisContext compilationStartAnalysisContext, Action<SymbolAnalysisContext> action,
+        params SymbolKind[] symbolKinds)
     {
         compilationStartAnalysisContext.RegisterSymbolAction(context => SkipEmptyName(context, action), symbolKinds);
     }
 
-    public static void SafeRegisterSymbolAction(this CompilationStartAnalysisContext compilationStartAnalysisContext,
-        Action<SymbolAnalysisContext> action, ImmutableArray<SymbolKind> symbolKinds)
+    public static void SafeRegisterSymbolAction(this CompilationStartAnalysisContext compilationStartAnalysisContext, Action<SymbolAnalysisContext> action,
+        ImmutableArray<SymbolKind> symbolKinds)
     {
         compilationStartAnalysisContext.RegisterSymbolAction(context => SkipEmptyName(context, action), symbolKinds);
     }

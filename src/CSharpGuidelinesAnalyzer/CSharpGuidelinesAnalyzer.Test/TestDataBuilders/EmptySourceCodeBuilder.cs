@@ -1,7 +1,8 @@
 ﻿namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 
 /// <summary />
-internal sealed class EmptySourceCodeBuilder() : SourceCodeBuilder([])
+internal sealed class EmptySourceCodeBuilder()
+    : SourceCodeBuilder([])
 {
     private string text = string.Empty;
 

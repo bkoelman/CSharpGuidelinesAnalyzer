@@ -79,8 +79,7 @@ public sealed class DoNotNestMethodCallsAnalyzer : DiagnosticAnalyzer
                 return true;
             }
 
-            if (argument.Parameter != null && parent is IConstructorBodyOperation &&
-                IsConstructor(argument.Parameter.ContainingSymbol))
+            if (argument.Parameter != null && parent is IConstructorBodyOperation && IsConstructor(argument.Parameter.ContainingSymbol))
             {
                 return true;
             }

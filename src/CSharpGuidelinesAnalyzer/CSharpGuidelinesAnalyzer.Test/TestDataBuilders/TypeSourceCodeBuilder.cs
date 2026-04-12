@@ -3,7 +3,8 @@
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 
 /// <summary />
-internal sealed class TypeSourceCodeBuilder() : SourceCodeBuilder(DefaultNamespaceImports)
+internal sealed class TypeSourceCodeBuilder()
+    : SourceCodeBuilder(DefaultNamespaceImports)
 {
     private readonly List<string> types = [];
 

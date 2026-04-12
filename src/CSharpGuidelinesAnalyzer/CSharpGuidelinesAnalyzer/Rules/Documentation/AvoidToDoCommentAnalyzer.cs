@@ -53,7 +53,7 @@ public sealed class AvoidToDoCommentAnalyzer : DiagnosticAnalyzer
 
         private readonly SourceText text;
 
-        private SyntaxTreeAnalysisContext context;
+        private readonly SyntaxTreeAnalysisContext context;
 
         public TodoCommentAnalyzer(SourceText text, SyntaxTreeAnalysisContext context)
         {

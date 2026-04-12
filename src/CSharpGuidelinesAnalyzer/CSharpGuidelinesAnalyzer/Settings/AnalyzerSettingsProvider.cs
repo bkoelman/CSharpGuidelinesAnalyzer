@@ -56,8 +56,7 @@ public static class AnalyzerSettingsProvider
     }
 
     [NotNull]
-    private static TResult ReadSourceText<TResult>(SourceText sourceText, Func<XmlReader, TResult> readAction,
-        CancellationToken cancellationToken)
+    private static TResult ReadSourceText<TResult>(SourceText sourceText, Func<XmlReader, TResult> readAction, CancellationToken cancellationToken)
     {
         using var stream = new MemoryStream();
         using var writer = new StreamWriter(stream);

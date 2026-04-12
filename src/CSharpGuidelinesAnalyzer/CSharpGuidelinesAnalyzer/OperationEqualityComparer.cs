@@ -43,8 +43,7 @@ internal sealed class OperationEqualityComparer
         return leftInterfaces.SequenceEqual(rightInterfaces) && AreOperationPropertiesEqual(leftInterfaces, left, right);
     }
 
-    private bool AreOperationPropertiesEqual(IReadOnlyCollection<Type> interfaces, IOperation left,
-        IOperation right)
+    private bool AreOperationPropertiesEqual(IReadOnlyCollection<Type> interfaces, IOperation left, IOperation right)
     {
         foreach (PropertyInfo property in interfaces.DeepGetOperationProperties())
         {
@@ -78,8 +77,7 @@ internal sealed class OperationEqualityComparer
         return AreValuesEqual(property.PropertyType, leftValue, rightValue);
     }
 
-    private bool AreOptionalSequenceValuesEqual(Type elementType, [ItemNotNull] IEnumerable? leftSequence,
-        [ItemNotNull] IEnumerable? rightSequence)
+    private bool AreOptionalSequenceValuesEqual(Type elementType, [ItemNotNull] IEnumerable? leftSequence, [ItemNotNull] IEnumerable? rightSequence)
     {
         if (ReferenceEquals(leftSequence, rightSequence))
         {

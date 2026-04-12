@@ -22,8 +22,8 @@ internal readonly struct BaseAnalysisContext<TTarget>
 
     public TTarget Target { get; }
 
-    public BaseAnalysisContext(Compilation compilation, AnalyzerOptions options, CancellationToken cancellationToken,
-        Action<Diagnostic> reportDiagnostic, TTarget target)
+    public BaseAnalysisContext(Compilation compilation, AnalyzerOptions options, CancellationToken cancellationToken, Action<Diagnostic> reportDiagnostic,
+        TTarget target)
     {
         ArgumentNullException.ThrowIfNull(compilation);
         ArgumentNullException.ThrowIfNull(options);

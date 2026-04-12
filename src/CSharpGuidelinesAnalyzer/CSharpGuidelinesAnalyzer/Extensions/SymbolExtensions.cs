@@ -154,8 +154,7 @@ internal static class SymbolExtensions
         return false;
     }
 
-    public static IOperation? TryGetOperationBlockForMethod(this IMethodSymbol method, Compilation compilation,
-        CancellationToken cancellationToken)
+    public static IOperation? TryGetOperationBlockForMethod(this IMethodSymbol method, Compilation compilation, CancellationToken cancellationToken)
     {
         SyntaxNode? bodySyntax = TryGetBodySyntaxForMethod(method, cancellationToken);
 

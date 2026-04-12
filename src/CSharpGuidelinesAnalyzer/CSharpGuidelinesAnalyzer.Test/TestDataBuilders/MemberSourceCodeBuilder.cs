@@ -3,7 +3,8 @@
 namespace CSharpGuidelinesAnalyzer.Test.TestDataBuilders;
 
 /// <summary />
-internal sealed class MemberSourceCodeBuilder() : SourceCodeBuilder(DefaultNamespaceImports)
+internal sealed class MemberSourceCodeBuilder()
+    : SourceCodeBuilder(DefaultNamespaceImports)
 {
     private readonly List<string> members = [];
 

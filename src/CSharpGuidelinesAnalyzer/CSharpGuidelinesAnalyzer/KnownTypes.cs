@@ -4,21 +4,21 @@ namespace CSharpGuidelinesAnalyzer;
 
 internal static class KnownTypes
 {
-    public static INamedTypeSymbol? SystemObject(Compilation compilation)
+    public static INamedTypeSymbol SystemObject(Compilation compilation)
     {
         ArgumentNullException.ThrowIfNull(compilation);
 
         return compilation.GetSpecialType(SpecialType.System_Object);
     }
 
-    public static INamedTypeSymbol? SystemBoolean(Compilation compilation)
+    public static INamedTypeSymbol SystemBoolean(Compilation compilation)
     {
         ArgumentNullException.ThrowIfNull(compilation);
 
         return compilation.GetSpecialType(SpecialType.System_Boolean);
     }
 
-    public static INamedTypeSymbol? SystemNullableT(Compilation compilation)
+    public static INamedTypeSymbol SystemNullableT(Compilation compilation)
     {
         ArgumentNullException.ThrowIfNull(compilation);
 

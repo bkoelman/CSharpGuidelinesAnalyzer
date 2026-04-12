@@ -99,8 +99,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return source.Skip(1).Any();
     }
 
-    private static void AnalyzeMethodGroup(IReadOnlyCollection<IMethodSymbol> methodGroup, INamedTypeSymbol activeType,
-        SymbolAnalysisContext context)
+    private static void AnalyzeMethodGroup(IReadOnlyCollection<IMethodSymbol> methodGroup, INamedTypeSymbol activeType, SymbolAnalysisContext context)
     {
         IMethodSymbol? longestOverload = TryGetSingleLongestOverload(methodGroup);
 
@@ -178,15 +177,13 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool AreParametersDeclaredInSameOrder(IMethodSymbol method,
-        List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreParametersDeclaredInSameOrder(IMethodSymbol method, List<IParameterSymbol> parametersInLongestOverload)
     {
         return AreRegularParametersDeclaredInSameOrder(method, parametersInLongestOverload) &&
             AreDefaultParametersDeclaredInSameOrder(method, parametersInLongestOverload);
     }
 
-    private static bool AreRegularParametersDeclaredInSameOrder(IMethodSymbol method,
-        List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreRegularParametersDeclaredInSameOrder(IMethodSymbol method, List<IParameterSymbol> parametersInLongestOverload)
     {
         List<IParameterSymbol> regularParametersInMethod = method.Parameters.Where(IsRegularParameter).ToList();
         List<IParameterSymbol> regularParametersInLongestOverload = parametersInLongestOverload.Where(IsRegularParameter).ToList();
@@ -204,8 +201,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return type.ToDisplayString() == "System.Threading.CancellationToken";
     }
 
-    private static bool AreDefaultParametersDeclaredInSameOrder(IMethodSymbol method,
-        List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreDefaultParametersDeclaredInSameOrder(IMethodSymbol method, List<IParameterSymbol> parametersInLongestOverload)
     {
         List<IParameterSymbol> defaultParametersInMethod = method.Parameters.Where(IsParameterWithDefaultValue).ToList();
         List<IParameterSymbol> defaultParametersInLongestOverload = parametersInLongestOverload.Where(IsParameterWithDefaultValue).ToList();
@@ -218,8 +214,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return parameter is { HasExplicitDefaultValue: true, IsParams: false };
     }
 
-    private static bool AreParametersDeclaredInSameOrder(IList<IParameterSymbol> parameters,
-        List<IParameterSymbol> parametersInLongestOverload)
+    private static bool AreParametersDeclaredInSameOrder(IList<IParameterSymbol> parameters, List<IParameterSymbol> parametersInLongestOverload)
     {
         for (int parameterIndex = 0; parameterIndex < parameters.Count; parameterIndex++)
         {
@@ -235,8 +230,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         return true;
     }
 
-    private static bool InvokesAnotherOverload(IMethodSymbol methodToAnalyze, MethodInvocationWalker invocationWalker,
-        SymbolAnalysisContext context)
+    private static bool InvokesAnotherOverload(IMethodSymbol methodToAnalyze, MethodInvocationWalker invocationWalker, SymbolAnalysisContext context)
     {
         IOperation? operation = methodToAnalyze.TryGetOperationBlockForMethod(context.Compilation, context.CancellationToken);
 
@@ -317,8 +311,7 @@ public sealed class OverloadShouldCallOtherOverloadAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private readonly struct OverloadsInfo(
-        IReadOnlyCollection<IMethodSymbol> methodGroup, IMethodSymbol longestOverload, SymbolAnalysisContext context)
+    private readonly struct OverloadsInfo(IReadOnlyCollection<IMethodSymbol> methodGroup, IMethodSymbol longestOverload, SymbolAnalysisContext context)
     {
         public IReadOnlyCollection<IMethodSymbol> MethodGroup { get; } = methodGroup;
 
