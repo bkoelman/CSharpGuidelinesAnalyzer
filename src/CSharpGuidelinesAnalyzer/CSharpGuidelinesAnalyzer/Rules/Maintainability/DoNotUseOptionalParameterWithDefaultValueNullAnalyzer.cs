@@ -80,7 +80,7 @@ public sealed class DoNotUseOptionalParameterWithDefaultValueNullAnalyzer : Diag
     private static bool HasCallerArgumentExpressionAttribute(IParameterSymbol parameter, INamedTypeSymbol? callerArgumentExpressionAttributeType)
     {
         return callerArgumentExpressionAttributeType != null &&
-            parameter.GetAttributes().Any(attr => Equals(attr.AttributeClass, callerArgumentExpressionAttributeType));
+            parameter.GetAttributes().Any(attr => attr.AttributeClass.IsEqualTo(callerArgumentExpressionAttributeType));
     }
 
     private static bool IsTask(ITypeSymbol type, IList<INamedTypeSymbol> taskTypes)

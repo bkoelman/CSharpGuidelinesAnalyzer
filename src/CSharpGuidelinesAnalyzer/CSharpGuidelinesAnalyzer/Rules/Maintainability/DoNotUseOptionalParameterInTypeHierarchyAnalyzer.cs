@@ -64,7 +64,7 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
 
         while (baseMethod != null)
         {
-            if (!Equals(baseMethod.NullableContainingAssembly, method.NullableContainingAssembly))
+            if (!baseMethod.NullableContainingAssembly.IsEqualTo(method.NullableContainingAssembly))
             {
                 return true;
             }
@@ -85,9 +85,9 @@ public sealed class DoNotUseOptionalParameterInTypeHierarchyAnalyzer : Diagnosti
             {
                 ISymbol? implementer = methodContainingType.FindImplementationForInterfaceMember(interfaceMethod);
 
-                if (Equals(method, implementer))
+                if (method.IsEqualTo(implementer))
                 {
-                    return !Equals(method.NullableContainingAssembly, interfaceMethod.NullableContainingAssembly);
+                    return !method.NullableContainingAssembly.IsEqualTo(interfaceMethod.NullableContainingAssembly);
                 }
             }
         }

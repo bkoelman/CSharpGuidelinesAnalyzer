@@ -48,7 +48,7 @@ public sealed class AvoidUsingNamedArgumentAnalyzer : DiagnosticAnalyzer
 
     private static IDictionary<IParameterSymbol, bool> GetParameterUsageMap(IInvocationOperation invocation)
     {
-        var parameterUsageMap = new Dictionary<IParameterSymbol, bool>();
+        var parameterUsageMap = new Dictionary<IParameterSymbol, bool>(SymbolEqualityComparer.IncludeNullability);
 
         foreach (IParameterSymbol parameter in invocation.TargetMethod.Parameters)
         {

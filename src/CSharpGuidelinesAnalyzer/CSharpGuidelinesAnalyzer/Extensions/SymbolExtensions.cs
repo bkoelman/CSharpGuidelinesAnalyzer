@@ -139,7 +139,7 @@ internal static class SymbolExtensions
                 {
                     ISymbol? implementer = memberContainingType.FindImplementationForInterfaceMember(interfaceMember);
 
-                    if (member.Equals(implementer))
+                    if (member.IsEqualTo(implementer))
                     {
                         return true;
                     }

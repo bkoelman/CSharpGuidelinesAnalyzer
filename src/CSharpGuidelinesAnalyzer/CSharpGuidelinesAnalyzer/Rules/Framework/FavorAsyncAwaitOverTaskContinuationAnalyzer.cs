@@ -95,7 +95,7 @@ public sealed class FavorAsyncAwaitOverTaskContinuationAnalyzer : DiagnosticAnal
             ImmutableArray<ISymbol> taskContinueWithMethodGroup = taskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
             ImmutableArray<ISymbol> genericTaskContinueWithMethodGroup = genericTaskType?.GetMembers("ContinueWith") ?? ImmutableArray<ISymbol>.Empty;
 
-            return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup).ToImmutableArray();
+            return taskContinueWithMethodGroup.Union(genericTaskContinueWithMethodGroup, SymbolEqualityComparer.IncludeNullability).ToImmutableArray();
         }
     }
 }

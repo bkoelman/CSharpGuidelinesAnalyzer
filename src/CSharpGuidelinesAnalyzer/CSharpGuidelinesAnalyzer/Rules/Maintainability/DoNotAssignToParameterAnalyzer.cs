@@ -264,7 +264,8 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
 
     private sealed class AssignmentWalker : ExplicitOperationWalker
     {
-        private readonly IDictionary<IParameterSymbol, bool> seenAssignmentPerParameter = new Dictionary<IParameterSymbol, bool>();
+        private readonly IDictionary<IParameterSymbol, bool> seenAssignmentPerParameter =
+            new Dictionary<IParameterSymbol, bool>(SymbolEqualityComparer.IncludeNullability);
 
         public ICollection<IParameterSymbol> ParametersAssigned => seenAssignmentPerParameter.Where(pair => pair.Value).Select(pair => pair.Key).ToArray();
 

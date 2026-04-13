@@ -33,7 +33,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
 
     private static void RegisterCompilationStart(CompilationStartAnalysisContext startContext)
     {
-        ISet<INamedTypeSymbol> unchangeableCollectionInterfaces = ResolveUnchangeableCollectionInterfaces(startContext.Compilation);
+        ImmutableArray<ITypeSymbol> unchangeableCollectionInterfaces = ResolveUnchangeableCollectionInterfaces(startContext.Compilation);
 
         if (unchangeableCollectionInterfaces.Any())
         {
@@ -41,9 +41,9 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         }
     }
 
-    private static ISet<INamedTypeSymbol> ResolveUnchangeableCollectionInterfaces(Compilation compilation)
+    private static ImmutableArray<ITypeSymbol> ResolveUnchangeableCollectionInterfaces(Compilation compilation)
     {
-        INamedTypeSymbol?[] types =
+        ITypeSymbol?[] types =
         [
             KnownTypes.SystemCollectionsGenericIEnumerableT(compilation),
             KnownTypes.SystemCollectionsGenericIAsyncEnumerableT(compilation),
@@ -55,10 +55,10 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
             KnownTypes.SystemCollectionsGenericIReadOnlyDictionaryTKeyTValue(compilation)
         ];
 
-        return types.Where(type => type != null).Cast<INamedTypeSymbol>().ToImmutableHashSet();
+        return types.Where(type => type != null).Cast<ITypeSymbol>().ToImmutableArray();
     }
 
-    private static void AnalyzeMethod(SymbolAnalysisContext context, ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
+    private static void AnalyzeMethod(SymbolAnalysisContext context, ImmutableArray<ITypeSymbol> unchangeableCollectionInterfaces)
     {
         var method = (IMethodSymbol)context.Symbol;
 
@@ -103,7 +103,7 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         return type.TypeKind == TypeKind.Array;
     }
 
-    private static bool IsChangeableCollection(ITypeSymbol type, ISet<INamedTypeSymbol> unchangeableCollectionInterfaces)
+    private static bool IsChangeableCollection(ITypeSymbol type, ImmutableArray<ITypeSymbol> unchangeableCollectionInterfaces)
     {
         if (!type.ImplementsIEnumerable())
         {
@@ -111,8 +111,8 @@ public sealed class ReturnInterfaceToUnchangeableCollectionAnalyzer : Diagnostic
         }
 
         return type is INamedTypeSymbol { IsGenericType: true } genericType
-            ? !unchangeableCollectionInterfaces.Contains(genericType.ConstructedFrom)
-            : !unchangeableCollectionInterfaces.Contains(type);
+            ? !unchangeableCollectionInterfaces.Contains(genericType.ConstructedFrom, SymbolEqualityComparer.IncludeNullability)
+            : !unchangeableCollectionInterfaces.Contains(type, SymbolEqualityComparer.IncludeNullability);
     }
 
     private static bool IsWhitelisted(IMethodSymbol method)

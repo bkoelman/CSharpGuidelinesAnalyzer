@@ -224,7 +224,8 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
     {
         private readonly OperationBlockAnalysisContext context = context;
 
-        private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache = new Dictionary<ILocalSymbol, EvaluationResult>();
+        private readonly IDictionary<ILocalSymbol, EvaluationResult> variableEvaluationCache =
+            new Dictionary<ILocalSymbol, EvaluationResult>(SymbolEqualityComparer.IncludeNullability);
 
         public void Analyze(IReturnOperation returnStatement)
         {
@@ -685,14 +686,14 @@ public sealed class EvaluateQueryBeforeReturnAnalyzer : DiagnosticAnalyzer
         {
             ArgumentNullException.ThrowIfNull(type);
 
-            return queryableTypes.Contains(type.OriginalDefinition);
+            return queryableTypes.Contains(type.OriginalDefinition, SymbolEqualityComparer.IncludeNullability);
         }
 
         public bool IsNonQueryableSequenceType(ITypeSymbol type)
         {
             ArgumentNullException.ThrowIfNull(type);
 
-            return IsEnumerable(type) || otherSequenceTypes.Contains(type.OriginalDefinition);
+            return IsEnumerable(type) || otherSequenceTypes.Contains(type.OriginalDefinition, SymbolEqualityComparer.IncludeNullability);
         }
     }
 }

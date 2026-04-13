@@ -148,7 +148,7 @@ internal static class OperationExtensions
             return bodyBlockOperation.Operations.Contains(operation);
         }
 
-        return operation.Equals(parentOperationBody);
+        return operation == parentOperationBody;
     }
 
     public static IOperation SkipTypeConversions(this IOperation operation)

@@ -60,7 +60,7 @@ public sealed class CatchSpecificExceptionAnalyzer : DiagnosticAnalyzer
         {
             ISymbol? exceptionType = TryGetExceptionType(catchClause.Declaration, context.SemanticModel, context.CancellationToken);
 
-            if (exceptionType == null || exceptionTypes.Contains(exceptionType))
+            if (exceptionType == null || exceptionTypes.Contains(exceptionType, SymbolEqualityComparer.IncludeNullability))
             {
                 Location location = catchClause.CatchKeyword.GetLocation();
 
