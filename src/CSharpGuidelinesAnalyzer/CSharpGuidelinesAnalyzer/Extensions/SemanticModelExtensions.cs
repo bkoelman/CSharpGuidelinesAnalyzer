@@ -6,15 +6,7 @@ internal static class SemanticModelExtensions
 {
     public static DataFlowAnalysis? SafeAnalyzeDataFlow(this SemanticModel model, SyntaxNode bodySyntax)
     {
-        try
-        {
-            DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
-            return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
-        }
-        catch (NullReferenceException)
-        {
-            // Bug workaround for https://github.com/dotnet/roslyn/issues/27969
-            return null;
-        }
+        DataFlowAnalysis dataFlowAnalysis = model.AnalyzeDataFlow(bodySyntax);
+        return dataFlowAnalysis.Succeeded ? dataFlowAnalysis : null;
     }
 }

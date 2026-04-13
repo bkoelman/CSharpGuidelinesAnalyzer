@@ -1,8 +1,6 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -88,7 +86,7 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
 
     private static bool DoReportForNullableComparison(IBinaryOperation binaryOperator, NullCheckScanner scanner)
     {
-        if (IsLogicalAnd(binaryOperator))
+        if (binaryOperator.OperatorKind == BinaryOperatorKind.ConditionalAnd)
         {
             IOperation? leftTarget = TryGetTargetInNotNullCheck(binaryOperator.LeftOperand, scanner);
 
@@ -114,25 +112,6 @@ public sealed class PreferLanguageSyntaxOverCallingImplementationAnalyzer : Diag
                 {
                     return true;
                 }
-            }
-        }
-
-        return false;
-    }
-
-    private static bool IsLogicalAnd(IBinaryOperation binaryOperation)
-    {
-        if (binaryOperation.OperatorKind == BinaryOperatorKind.ConditionalAnd)
-        {
-            return true;
-        }
-
-        // Bug workaround for https://github.com/dotnet/roslyn/issues/27209
-        if (binaryOperation is { OperatorKind: BinaryOperatorKind.And, Syntax: BinaryExpressionSyntax binaryExpressionSyntax })
-        {
-            if (binaryExpressionSyntax.OperatorToken.IsKind(SyntaxKind.AmpersandAmpersandToken))
-            {
-                return true;
             }
         }
 
