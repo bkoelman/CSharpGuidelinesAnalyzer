@@ -16,7 +16,7 @@ public sealed class BuildWithTheHighestWarningLevelAnalyzer : DiagnosticAnalyzer
     private static readonly AnalyzerCategory Category = AnalyzerCategory.Framework;
 
     private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, Title, MessageFormat, Category.DisplayName, DiagnosticSeverity.Warning, true,
-        Description, Category.GetHelpLinkUri(DiagnosticId));
+        Description, Category.GetHelpLinkUri(DiagnosticId), "CompilationEnd");
 
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
