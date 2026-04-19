@@ -283,6 +283,7 @@ public sealed class SwitchStatementShouldHaveDefaultCaseAnalyzer : DiagnosticAna
         {
             if (memberSyntax != null)
             {
+                // TODO: Don't invoke Compilation.GetSemanticModel.
                 SemanticModel model = compilation.GetSemanticModel(memberSyntax.SyntaxTree);
                 return model.GetSymbolInfo(memberSyntax, CancellationToken).Symbol as IFieldSymbol;
             }

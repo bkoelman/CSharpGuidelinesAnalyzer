@@ -1,6 +1,8 @@
 using System.Collections.Immutable;
 using CSharpGuidelinesAnalyzer.Extensions;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
@@ -25,6 +27,15 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         SpecialType.System_UInt32, SpecialType.System_Int64, SpecialType.System_UInt64, SpecialType.System_Decimal, SpecialType.System_Single,
         SpecialType.System_Double, SpecialType.System_IntPtr, SpecialType.System_UIntPtr, SpecialType.System_DateTime);
 
+    private static readonly ImmutableArray<SyntaxKind> ParameterSyntaxKinds = [SyntaxKind.Parameter];
+
+    private static readonly ImmutableArray<SyntaxKind> PropertyIndexerEventSyntaxKinds =
+    [
+        SyntaxKind.PropertyDeclaration,
+        SyntaxKind.IndexerDeclaration,
+        SyntaxKind.EventDeclaration
+    ];
+
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
 
     public override void Initialize(AnalysisContext context)
@@ -32,227 +43,97 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
         context.EnableConcurrentExecution();
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-        context.SafeRegisterSymbolAction(AnalyzeMethod, SymbolKind.Method);
-        context.SafeRegisterSymbolAction(AnalyzeProperty, SymbolKind.Property);
-        context.SafeRegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
-        context.SafeRegisterOperationAction(AnalyzeLocalFunction, OperationKind.LocalFunction);
-        context.SafeRegisterOperationAction(AnalyzeAnonymousFunction, OperationKind.AnonymousFunction);
+        context.RegisterSyntaxNodeAction(AnalyzeParameter, ParameterSyntaxKinds);
+        context.RegisterSyntaxNodeAction(AnalyzePropertyOrIndexerOrEvent, PropertyIndexerEventSyntaxKinds);
     }
 
-    private static void AnalyzeMethod(SymbolAnalysisContext context)
+    private static void AnalyzeParameter(SyntaxNodeAnalysisContext context)
     {
-        var method = (IMethodSymbol)context.Symbol;
-
-        if (ShouldSkip(method) || method.IsPropertyOrEventAccessor())
+        if (context.SemanticModel.GetDeclaredSymbol(context.Node) is IParameterSymbol parameterSymbol)
         {
-            return;
-        }
-
-        using var collector = new DiagnosticCollector(context.ReportDiagnostic);
-
-        BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(method);
-        InnerAnalyzeMethod(methodContext, collector);
-    }
-
-    private static void AnalyzeProperty(SymbolAnalysisContext context)
-    {
-        var property = (IPropertySymbol)context.Symbol;
-
-        using var collector = new DiagnosticCollector(context.ReportDiagnostic);
-
-        AnalyzeAccessorMethod(property.GetMethod, collector, context);
-        AnalyzeAccessorMethod(property.SetMethod, collector, context);
-
-        FilterDuplicateLocations(collector.Diagnostics);
-    }
-
-    private static void AnalyzeEvent(SymbolAnalysisContext context)
-    {
-        var @event = (IEventSymbol)context.Symbol;
-
-        using var collector = new DiagnosticCollector(context.ReportDiagnostic);
-
-        AnalyzeAccessorMethod(@event.AddMethod, collector, context);
-        AnalyzeAccessorMethod(@event.RemoveMethod, collector, context);
-
-        FilterDuplicateLocations(collector.Diagnostics);
-    }
-
-    private static void AnalyzeAccessorMethod(IMethodSymbol? accessorMethod, DiagnosticCollector collector, SymbolAnalysisContext context)
-    {
-        if (accessorMethod == null || ShouldSkip(accessorMethod))
-        {
-            return;
-        }
-
-        BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(accessorMethod);
-        InnerAnalyzeMethod(methodContext, collector);
-    }
-
-    private static void FilterDuplicateLocations(ICollection<Diagnostic> diagnostics)
-    {
-        while (true)
-        {
-            if (!RemoveNextDuplicate(diagnostics))
+            if (parameterSymbol is { RefKind: RefKind.None, ContainingSymbol: IMethodSymbol { IsAbstract: false } containingMethod } &&
+                !containingMethod.IsSynthesized())
             {
-                return;
+                SyntaxNode? bodySyntax = containingMethod.TryGetBodySyntaxForMethod(context.CancellationToken);
+
+                if (bodySyntax != null)
+                {
+                    using var collector = new DiagnosticCollector(context.ReportDiagnostic);
+                    AnalyzeDataFlow([parameterSymbol], bodySyntax, collector, context);
+                }
             }
         }
     }
 
-    private static bool RemoveNextDuplicate(ICollection<Diagnostic> diagnostics)
+    private static void AnalyzePropertyOrIndexerOrEvent(SyntaxNodeAnalysisContext context)
     {
-        foreach (Diagnostic diagnostic in diagnostics)
-        {
-            Diagnostic[] duplicates = diagnostics.Where(nextDiagnostic =>
-                !ReferenceEquals(nextDiagnostic, diagnostic) && nextDiagnostic.Location == diagnostic.Location).ToArray();
-
-            if (duplicates.Any())
-            {
-                RemoveRange(diagnostics, duplicates);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static void RemoveRange<T>(ICollection<T> source, ICollection<T> elementsToRemove)
-    {
-        foreach (T elementToRemove in elementsToRemove)
-        {
-            source.Remove(elementToRemove);
-        }
-    }
-
-    private static void AnalyzeLocalFunction(OperationAnalysisContext context)
-    {
-        var localFunction = (ILocalFunctionOperation)context.Operation;
-
-        if (ShouldSkip(localFunction.Symbol))
-        {
-            return;
-        }
-
+        var propertySyntax = (BasePropertyDeclarationSyntax)context.Node;
         using var collector = new DiagnosticCollector(context.ReportDiagnostic);
 
-        BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(localFunction.Symbol);
-        InnerAnalyzeMethod(methodContext, collector);
-    }
-
-    private static void AnalyzeAnonymousFunction(OperationAnalysisContext context)
-    {
-        var anonymousFunction = (IAnonymousFunctionOperation)context.Operation;
-
-        if (ShouldSkip(anonymousFunction.Symbol))
+        if (context.SemanticModel.GetDeclaredSymbol(propertySyntax) is IPropertySymbol propertySymbol)
         {
-            return;
+            AnalyzeAccessorMethod(propertySymbol.GetMethod, collector, context);
+            AnalyzeAccessorMethod(propertySymbol.SetMethod, collector, context);
         }
-
-        using var collector = new DiagnosticCollector(context.ReportDiagnostic);
-
-        BaseAnalysisContext<IMethodSymbol> methodContext = context.Wrap(anonymousFunction.Symbol);
-        InnerAnalyzeMethod(methodContext, collector);
-    }
-
-    private static bool ShouldSkip(IMethodSymbol method)
-    {
-        return method.IsAbstract || method.IsSynthesized() || !method.Parameters.Any();
-    }
-
-    private static void InnerAnalyzeMethod(BaseAnalysisContext<IMethodSymbol> context, DiagnosticCollector collector)
-    {
-        SyntaxNode? bodySyntax = context.Target.TryGetBodySyntaxForMethod(context.CancellationToken);
-
-        if (bodySyntax == null)
+        else if (context.SemanticModel.GetDeclaredSymbol(propertySyntax) is IEventSymbol eventSymbol)
         {
-            return;
-        }
-
-        BaseAnalysisContext<ImmutableArray<IParameterSymbol>> analysisContext = context.WithTarget(context.Target.Parameters);
-        AnalyzeParametersInMethod(analysisContext, bodySyntax, collector);
-    }
-
-    private static void AnalyzeParametersInMethod(BaseAnalysisContext<ImmutableArray<IParameterSymbol>> context, SyntaxNode bodySyntax,
-        DiagnosticCollector collector)
-    {
-        IGrouping<bool, IParameterSymbol>[] parameterGrouping = context.Target
-            .Where(parameter => parameter.RefKind == RefKind.None && !parameter.IsSynthesized()).GroupBy(IsUserDefinedStruct).ToArray();
-
-        ICollection<IParameterSymbol> ordinaryParameters = parameterGrouping.Where(group => !group.Key).SelectMany(group => group).ToArray();
-
-        if (ordinaryParameters.Any())
-        {
-            BaseAnalysisContext<ICollection<IParameterSymbol>> analysisContext = context.WithTarget(ordinaryParameters);
-            AnalyzeOrdinaryParameters(analysisContext, bodySyntax, collector);
-        }
-
-        ICollection<IParameterSymbol> structParameters = parameterGrouping.Where(group => group.Key).SelectMany(group => group).ToArray();
-
-        if (structParameters.Any())
-        {
-            BaseAnalysisContext<ICollection<IParameterSymbol>> analysisContext = context.WithTarget(structParameters);
-            AnalyzeStructParameters(analysisContext, bodySyntax, collector);
+            AnalyzeAccessorMethod(eventSymbol.AddMethod, collector, context);
+            AnalyzeAccessorMethod(eventSymbol.RemoveMethod, collector, context);
         }
     }
 
-    private static bool IsUserDefinedStruct(IParameterSymbol parameter)
+    private static void AnalyzeAccessorMethod(IMethodSymbol? accessorMethod, DiagnosticCollector collector, SyntaxNodeAnalysisContext context)
     {
-        return parameter.Type.TypeKind == TypeKind.Struct && !IsSimpleType(parameter.Type);
-    }
-
-    private static bool IsSimpleType(ITypeSymbol type)
-    {
-        return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T || SimpleTypes.Contains(type.SpecialType);
-    }
-
-    private static void AnalyzeOrdinaryParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context, SyntaxNode bodySyntax,
-        DiagnosticCollector collector)
-    {
-        DataFlowAnalysis? dataFlowAnalysis = TryAnalyzeDataFlow(bodySyntax, context.Compilation);
-
-        if (dataFlowAnalysis == null)
+        if (accessorMethod is { Parameters.Length: > 0 } && !accessorMethod.IsSynthesized())
         {
-            return;
-        }
+            SyntaxNode? bodySyntax = accessorMethod.TryGetBodySyntaxForMethod(context.CancellationToken);
 
-        foreach (IParameterSymbol parameter in context.Target)
-        {
-            if (dataFlowAnalysis.WrittenInside.Contains(parameter))
+            if (bodySyntax != null)
             {
-                var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name);
-                collector.Add(diagnostic);
+                AnalyzeDataFlow(accessorMethod.Parameters, bodySyntax, collector, context);
             }
         }
     }
 
-    private static DataFlowAnalysis? TryAnalyzeDataFlow(SyntaxNode bodySyntax, Compilation compilation)
+    private static void AnalyzeDataFlow(ImmutableArray<IParameterSymbol> parameterSymbols, SyntaxNode bodySyntax, DiagnosticCollector collector,
+        SyntaxNodeAnalysisContext context)
     {
-        SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-        return model.SafeAnalyzeDataFlow(bodySyntax);
+        if (IsTypeUserDefinedStruct(parameterSymbols[0]))
+        {
+            // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow
+            // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
+
+            CustomAnalyzeDataFlow(parameterSymbols, bodySyntax, collector, context);
+        }
+        else
+        {
+            DataFlowAnalysis? dataFlowAnalysis = context.SemanticModel.SafeAnalyzeDataFlow(bodySyntax);
+
+            if (dataFlowAnalysis != null)
+            {
+                foreach (IParameterSymbol? parameterSymbol in parameterSymbols)
+                {
+                    if (dataFlowAnalysis.WrittenInside.Contains(parameterSymbol))
+                    {
+                        var diagnostic = Diagnostic.Create(Rule, parameterSymbol.Locations[0], parameterSymbol.Name);
+                        collector.Add(diagnostic);
+                    }
+                }
+            }
+        }
     }
 
-    private static void AnalyzeStructParameters(BaseAnalysisContext<ICollection<IParameterSymbol>> context, SyntaxNode bodySyntax,
-        DiagnosticCollector collector)
+    private static void CustomAnalyzeDataFlow(ImmutableArray<IParameterSymbol> parameterSymbols, SyntaxNode bodySyntax, DiagnosticCollector collector,
+        SyntaxNodeAnalysisContext context)
     {
-        // A user-defined struct can reassign its 'this' parameter on invocation. That's why the compiler dataflow
-        // analysis reports all access as writes. Because that's not very practical, we run our own assignment analysis.
-
-        SemanticModel model = context.Compilation.GetSemanticModel(bodySyntax.SyntaxTree);
-        IOperation? bodyOperation = model.GetOperation(bodySyntax);
+        IOperation? bodyOperation = context.SemanticModel.GetOperation(bodySyntax);
 
         if (bodyOperation == null || bodyOperation.HasErrors(context.Compilation, context.CancellationToken))
         {
             return;
         }
 
-        CollectAssignedStructParameters(context.Target, bodyOperation, collector);
-    }
-
-    private static void CollectAssignedStructParameters(ICollection<IParameterSymbol> parameters, IOperation bodyOperation, DiagnosticCollector collector)
-    {
-        var walker = new AssignmentWalker(parameters);
+        var walker = new AssignmentWalker(parameterSymbols);
         walker.Visit(bodyOperation);
 
         foreach (IParameterSymbol parameter in walker.ParametersAssigned)
@@ -260,6 +141,16 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
             var diagnostic = Diagnostic.Create(Rule, parameter.Locations[0], parameter.Name);
             collector.Add(diagnostic);
         }
+    }
+
+    private static bool IsTypeUserDefinedStruct(IParameterSymbol parameter)
+    {
+        return parameter.Type.TypeKind == TypeKind.Struct && !IsSimpleType(parameter.Type);
+    }
+
+    private static bool IsSimpleType(ITypeSymbol type)
+    {
+        return type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T || SimpleTypes.Contains(type.SpecialType);
     }
 
     private sealed class AssignmentWalker : ExplicitOperationWalker
@@ -311,6 +202,13 @@ public sealed class DoNotAssignToParameterAnalyzer : DiagnosticAnalyzer
             }
 
             base.VisitDeconstructionAssignment(operation);
+        }
+
+        public override void VisitCoalesceAssignment(ICoalesceAssignmentOperation operation)
+        {
+            RegisterAssignmentToParameter(operation.Target);
+
+            base.VisitCoalesceAssignment(operation);
         }
 
         public override void VisitArgument(IArgumentOperation operation)

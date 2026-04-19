@@ -32,6 +32,7 @@ internal static class OperationExtensions
         ArgumentNullException.ThrowIfNull(operation);
         ArgumentNullException.ThrowIfNull(compilation);
 
+        // TODO: Don't invoke Compilation.GetSemanticModel.
         SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
 
         return model.GetDiagnostics(operation.Syntax.Span, cancellationToken).Any(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error);
@@ -165,6 +166,7 @@ internal static class OperationExtensions
 
     public static IMethodSymbol? TryGetContainingMethod(this IOperation operation, Compilation compilation)
     {
+        // TODO: Don't invoke Compilation.GetSemanticModel.
         SemanticModel model = compilation.GetSemanticModel(operation.Syntax.SyntaxTree);
         return model.GetEnclosingSymbol(operation.Syntax.GetLocation().SourceSpan.Start) as IMethodSymbol;
     }

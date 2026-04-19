@@ -156,6 +156,7 @@ internal static class SymbolExtensions
 
         if (bodySyntax != null)
         {
+            // TODO: Don't invoke Compilation.GetSemanticModel.
             SemanticModel model = compilation.GetSemanticModel(bodySyntax.SyntaxTree);
             IOperation? operation = model.GetOperation(bodySyntax);
 
@@ -172,7 +173,7 @@ internal static class SymbolExtensions
     {
         ArgumentNullException.ThrowIfNull(method);
 
-        foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)).ToArray())
+        foreach (SyntaxNode syntaxNode in method.DeclaringSyntaxReferences.Select(syntaxReference => syntaxReference.GetSyntax(cancellationToken)))
         {
             SyntaxNode? bodySyntax = TryGetDeclarationBody(syntaxNode);
 

@@ -7,7 +7,7 @@ internal sealed class DiagnosticCollector : IDisposable
 {
     private readonly Action<Diagnostic> reportDiagnostic;
 
-    private List<Diagnostic>? diagnostics;
+    private HashSet<Diagnostic>? diagnostics;
 
     public ICollection<Diagnostic> Diagnostics
     {
