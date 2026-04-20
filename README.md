@@ -3,6 +3,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/q37dldfggtcwf6u4/branch/master?svg=true)](https://ci.appveyor.com/project/bkoelman/csharpguidelinesanalyzer/branch/master)
 [![codecov](https://codecov.io/gh/bkoelman/CSharpGuidelinesAnalyzer/branch/master/graph/badge.svg)](https://codecov.io/gh/bkoelman/CSharpGuidelinesAnalyzer)
 
+> [!WARNING]
+> This project is no longer maintained. See motivation [here](https://github.com/bkoelman/CSharpGuidelinesAnalyzer/issues/164).
+
 This Visual Studio analyzer supports you in making your code comply with the C# coding guidelines at [CSharpGuidelines](https://github.com/dennisdoomen/CSharpGuidelines).
 
 Note that many guidelines are already covered by [Resharper](https://www.jetbrains.com/resharper/), for which [a layer file is provided](/docs/Resharper%20Settings.md).
